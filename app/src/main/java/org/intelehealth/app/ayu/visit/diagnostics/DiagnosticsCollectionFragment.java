@@ -129,6 +129,8 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
 
         mBinding.btnSubmit.setOnClickListener(this);
         mBinding.btnSubmit.setClickable(true);
+        mBinding.btnCancel.setOnClickListener(this);
+        mBinding.btnCancel.setClickable(true);
 
         if (mIsEditMode && results == null) {
             loadSavedDateForEditFromDB();
@@ -376,6 +378,9 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
                 mActionListener.onFormSubmitted(VisitCreationActivity.STEP_2_DIAGNOSTICS_SUMMARY, mIsEditMode, results);
             }
             setDisabledSubmit(!isValid);
+        }
+        if (view.getId() == R.id.btn_cancel) {
+            mActionListener.onFormSubmitted(VisitCreationActivity.STEP_1_VITAL_SUMMARY, false, null);
         }
     }
 
