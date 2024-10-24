@@ -833,6 +833,10 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
         return context;
     }
 
+    /**
+     *
+     */
+
     private void cancelResendAndHideView() {
         if (countDownTimer != null)
             countDownTimer.cancel();    // reset any existing countdown.
