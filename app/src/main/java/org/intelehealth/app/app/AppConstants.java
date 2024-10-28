@@ -1,6 +1,7 @@
 package org.intelehealth.app.app;
 
 
+import android.content.Context;
 import android.os.Environment;
 
 import androidx.work.Constraints;
@@ -9,7 +10,6 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.PeriodicWorkRequest;
 
 import org.intelehealth.app.BuildConfig;
-import org.intelehealth.app.database.InteleHealthDatabaseHelper;
 import org.intelehealth.app.networkApiCalls.ApiClient;
 import org.intelehealth.app.networkApiCalls.ApiInterface;
 import org.intelehealth.app.syncModule.LastSyncWork;
@@ -17,7 +17,6 @@ import org.intelehealth.app.syncModule.SyncWorkManager;
 import org.intelehealth.app.syncModule.VisitSummaryWork;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.NotificationUtils;
-import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.UuidGenerator;
 
 import java.io.File;
@@ -25,18 +24,22 @@ import java.util.concurrent.TimeUnit;
 
 public class AppConstants {
     //Constants
-    public static final String DATABASE_NAME = "localrecords.db";
+    public static final String DATABASE_NAME = BuildConfig.FLAVOR_client + "-localrecords.db";
     public static final int DATABASE_VERSION = 4;
     public static final String JSON_FOLDER = "Engines";
     public static final String JSON_FOLDER_Update = "Engines_Update";
     public static final String IMAGE_APP_ID = "app2";
     public static final String dbfilepath = Environment.getExternalStorageDirectory() + File.separator + "InteleHealth_DB" + File.separator + "Intelehealth.db"; // directory: Intelehealth_DB   ,  filename: Intelehealth.db
+    public static final int FORGOT_USER_NAME_ACTION = 50001;
+    public static final int FORGOT_USER_PASSWORD_ACTION = 50002;
     public static String CONFIG_FILE_NAME = "config.json";
     public static final String IMAGE_PATH = IntelehealthApplication.getAppContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES) + File.separator;
     public static final String MESSAGE_PROGRESS = "message_progress";
 
     public static final int PAGE_LIMIT = 50;
 
+    public static final long FOLLOW_UP_SCHEDULE_ONE_DURATION = 5;
+    public static final long FOLLOW_UP_SCHEDULE_TWO_DURATION = 24;
 
     //App vitals constants
 
@@ -144,6 +147,8 @@ public class AppConstants {
     public static final int SYNC_PULL_DATA_DONE = 1;
     public static final int SYNC_PUSH_DATA_DONE = 2;
 
+    public static final int ALL_SYNC_DONE = 0;
+
     public static final int SYNC_PUSH_DATA_TO_LOCAL_DB_DONE = 5;
     public static final int SYNC_APPOINTMENT_PULL_DATA_DONE = 22;
     public static final int SYNC_PULL_PUSH_APPOINTMENT_PULL_DATA_DONE = 25;
@@ -187,6 +192,13 @@ public class AppConstants {
     public static final int PRIVACY_POLICY_ACCEPT = 3;
     public static final int PRIVACY_POLICY_DECLINE = 4;
 
+    public static final int TELECONSULTATION_CONSENT_ACCEPT = 5;
+    public static final int TELECONSULTATION_CONSENT_DECLINE = 6;
+
+    public static final int PERSONAL_CONSENT_ACCEPT = 5;
+
+    public static final int PERSONAL_CONSENT_DECLINE = 6;
+
 
     public static final int EVENT_FLAG_START = 0;
     public static final int EVENT_FLAG_SUCCESS = 1;
@@ -195,11 +207,19 @@ public class AppConstants {
     // OBS IMAGE TYPE
     public static final String IMAGE_ADDITIONAL_DOC = "ADDITIONAL_DOC";
 
-    public static final int EVENT_APPOINTMENT_BOOKING = 3992;
+    public static final int EVENT_APPOINTMENT_BOOKING_FROM_VISIT_SUMMARY = 3992;
+    public static final int EVENT_APPOINTMENT_BOOKING_APPOINTMENT_DETAILS = 3993;
 
     //status of appointment
     public static final String CANCELLED = "cancelled";
     public static final String BOOKED = "booked";
 
+    public static String getAppPlayStoreUrl(Context context) {
+        return "https://play.google.com/store/apps/details?id=" + context.getApplicationContext().getPackageName();
+    }
+
+    public static String getAppMarketUrl(Context context) {
+        return "market://details?id=" + context.getApplicationContext().getPackageName();
+    }
 }
 

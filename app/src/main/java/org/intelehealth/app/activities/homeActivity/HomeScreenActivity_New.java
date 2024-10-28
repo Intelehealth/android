@@ -16,8 +16,8 @@ import static org.intelehealth.app.utilities.StringUtils.getFullMonthName;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
-import android.annotation.SuppressLint;
 import android.app.ActivityManager;
+import android.app.AlarmManager;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.app.usage.UsageStats;
@@ -33,16 +33,18 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
-import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.LocaleList;
 import android.os.Looper;
+import android.provider.Settings;
 import android.text.Html;
 import android.util.DisplayMetrics;
-import android.util.Log;
+
+import org.intelehealth.app.utilities.CustomLog;
+
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -51,12 +53,13 @@ import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
-import androidx.activity.OnBackPressedDispatcher;
-import androidx.activity.OnBackPressedDispatcherOwner;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -68,14 +71,17 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.WorkManager;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.github.ajalt.timberkt.Timber;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
@@ -87,7 +93,7 @@ import org.intelehealth.app.activities.achievements.fragments.MyAchievementsFrag
 import org.intelehealth.app.activities.help.activities.HelpFragment_New;
 import org.intelehealth.app.activities.informativeVideos.fragments.InformativeVideosFragment_New;
 import org.intelehealth.app.activities.loginActivity.LoginActivityNew;
-import org.intelehealth.app.activities.notification.NotificationActivity;
+import org.intelehealth.app.activities.notification.view.NotificationActivity;
 import org.intelehealth.app.activities.onboarding.PrivacyPolicyActivity_New;
 import org.intelehealth.app.activities.settingsActivity.Language_ProtocolsActivity;
 import org.intelehealth.app.app.AppConstants;
@@ -101,9 +107,11 @@ import org.intelehealth.app.models.CheckAppUpdateRes;
 import org.intelehealth.app.models.dto.ProviderAttributeDTO;
 import org.intelehealth.app.models.dto.ProviderDTO;
 import org.intelehealth.app.profile.MyProfileActivity;
+import org.intelehealth.app.services.MyIntentService;
 import org.intelehealth.app.services.firebase_services.DeviceInfoUtils;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
+import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.DownloadFilesUtils;
@@ -117,7 +125,10 @@ import org.intelehealth.app.utilities.TooltipWindow;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.app.webrtc.activity.IDACallLogActivity;
+import org.intelehealth.config.room.entity.FeatureActiveStatus;
 import org.intelehealth.fcm.utils.FcmTokenGenerator;
+import org.intelehealth.fcm.utils.NotificationBroadCast;
+import org.intelehealth.klivekit.data.PreferenceHelper;
 import org.intelehealth.klivekit.utils.FirebaseUtils;
 import org.intelehealth.klivekit.utils.Manager;
 
@@ -141,6 +152,7 @@ import okhttp3.ResponseBody;
 
 public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils.InternetCheckUpdateInterface {
     private static final String TAG = "HomeScreenActivity";
+    private PreferenceHelper preferenceHelper;
     ImageView imageViewIsInternet, ivHamburger, imageview_notifications_home;
     private boolean isConnected = false;
     private static final int ID_DOWN = 2;
@@ -150,6 +162,10 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
     NavigationView mNavigationView;
     private int versionCode = 0;
     private ProgressDialog mSyncProgressDialog, mRefreshProgressDialog, mResetSyncDialog;
+    private AlertDialog mSyncAlertDialog;
+    private ProgressBar syncProgressbar;
+
+    TextView progressTvStart, progressTvEnd;
     private CompositeDisposable disposable = new CompositeDisposable();
     private ObjectAnimator syncAnimator;
     SyncUtils syncUtils = new SyncUtils();
@@ -158,7 +174,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
     TextView tvTitleHomeScreenCommon, tvAppLastSync;
     BottomNavigationView bottomNav;
     private CardView survey_snackbar_cv;
-    ImageView imageViewIsNotification, ivCloseDrawer, ivProfileIcon;
+    ImageView imageViewIsNotification, ivCloseDrawer, ivProfileIcon, ivNotificationIcon;
     TextView tvEditProfile, tvAppVersion, tvUsername, tvUserId;
     LinearLayout menuResetApp;
     private static final String ACTION_NAME = "org.intelehealth.app.RTC_MESSAGING_EVENT";
@@ -173,6 +189,10 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
     private static final String TAG_HOME = "TAG_HOME";
     private static final String TAG_ACHIEVEMENT = "TAG_ACHIEVEMENT";
     private static final String TAG_HELP = "TAG_HELP";
+    private NotificationReceiver notificationReceiver;
+
+    private ActivityResultLauncher<Intent> scheduleExactAlarmPermissionLauncher;
+
 
     private void saveToken() {
         Manager.getInstance().setBaseUrl(BuildConfig.SERVER_URL);
@@ -183,7 +203,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        Log.v(TAG, "onNewIntent");
+        CustomLog.v(TAG, "onNewIntent");
 //        catchFCMMessageData();
     }
 
@@ -194,7 +214,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
 //            Bundle remoteMessage = getIntent().getExtras();
 //            try {
 //                if (remoteMessage.containsKey("actionType") && remoteMessage.getString("actionType").equals("TEXT_CHAT")) {
-//                    //Log.d(TAG, "actionType : TEXT_CHAT");
+//                    //CustomLog.d(TAG, "actionType : TEXT_CHAT");
 //                    String fromUUId = remoteMessage.getString("toUser");
 //                    String toUUId = remoteMessage.getString("fromUser");
 //                    String patientUUid = remoteMessage.getString("patientId");
@@ -221,7 +241,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
 //                    startActivity(chatIntent);
 //
 //                } else if (remoteMessage.containsKey("actionType") && remoteMessage.getString("actionType").equals("VIDEO_CALL")) {
-//                    //Log.d(TAG, "actionType : VIDEO_CALL");
+//                    //CustomLog.d(TAG, "actionType : VIDEO_CALL");
 //                    Intent in = new Intent(this, CompleteActivity.class);
 //                    String roomId = remoteMessage.getString("roomId");
 //                    String doctorName = remoteMessage.getString("doctorName");
@@ -278,7 +298,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
     private UpdateFragmentOnEvent mUpdateFragmentOnEvent;
 
     public void initUpdateFragmentOnEvent(UpdateFragmentOnEvent listener) {
-        Log.v(TAG, "initUpdateFragmentOnEvent");
+        CustomLog.v(TAG, "initUpdateFragmentOnEvent");
         mUpdateFragmentOnEvent = listener;
     }
 
@@ -288,7 +308,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         setLocale(HomeScreenActivity_New.this);
         setContentView(R.layout.activity_home_screen_ui2);
         context = HomeScreenActivity_New.this;
-
+        preferenceHelper = new PreferenceHelper(this);
         networkUtils = new NetworkUtils(context, this);
         DeviceInfoUtils.saveDeviceInfo(this);
         FcmTokenGenerator.getDeviceToken(token -> {
@@ -298,17 +318,72 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         });
 //        catchFCMMessageData();
 
+
+        notificationReceiver = new NotificationReceiver();
+        notificationReceiver.registerModuleBReceiver(this);
+
+
         loadFragment(new HomeFragment_New(), TAG_HOME);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(getResources().getColor(R.color.white));
+            getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.white));
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
 
         }
         sessionManager = new SessionManager(this);
+
+        backPress();
         initUI();
         clickListeners();
+
+        //checking alerm parmission added or not
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            setupAlarmPermissionLauncher();
+            checkAlarmAndReminderPermission();
+        }
 //        getOnBackPressedDispatcher().addCallback(backPressedCallback);
     }
+
+    private void checkAlarmAndReminderPermission() {
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            if (!alarmManager.canScheduleExactAlarms()) {
+                Intent intent = new Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM);
+                scheduleExactAlarmPermissionLauncher.launch(intent);
+            }
+        }
+    }
+
+    private void setupAlarmPermissionLauncher() {
+        scheduleExactAlarmPermissionLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                        if (!alarmManager.canScheduleExactAlarms()) {
+                            String message = getString(R.string.required_alarm_and_reminder_permission);
+                            String title = getString(R.string.error);
+                            String action = getString(R.string.button_allow);
+                            String cancel = getString(R.string.cancel);
+                            new DialogUtils().showCommonDialog(
+                                    this, R.drawable.close_patient_svg, title,
+                                    message, false, action, cancel,
+                                    new DialogUtils.CustomDialogListener() {
+                                        @Override
+                                        public void onDialogActionDone(int action) {
+                                            if (action == DialogUtils.CustomDialogListener.NEGATIVE_CLICK) {
+                                                finish();
+                                            } else if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
+                                                checkAlarmAndReminderPermission();
+                                            }
+                                        }
+                                    }
+                            );
+                        }
+                    }
+                }
+        );
+    }
+
 
     private void clickListeners() {
         Intent intent_exit = getIntent();
@@ -343,7 +418,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         tvEditProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isNetworkConnected()) {
+                if (NetworkConnection.isOnline(HomeScreenActivity_New.this)) {
                     mDrawerLayout.closeDrawer(GravityCompat.START);
                     Intent intent = new Intent(HomeScreenActivity_New.this, MyProfileActivity.class);
                     startActivity(intent);
@@ -379,20 +454,18 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
     }
 
     private void showResetConfirmationDialog() {
-        patientRegistrationDialog(context, getResources().getDrawable(R.drawable.ui2_ic_warning_internet),
-                getString(R.string.reset_app_new_title),
-                getString(R.string.sure_to_reset_app), getString(R.string.generic_yes), getString(R.string.no), action -> {
-                    if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
-                        checkNetworkConnectionAndPerformSync();
-                    }
-                });
+        patientRegistrationDialog(context, ContextCompat.getDrawable(context, R.drawable.ui2_ic_warning_internet), getString(R.string.reset_app_new_title), getString(R.string.sure_to_reset_app), getString(R.string.generic_yes), getString(R.string.no), action -> {
+            if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
+                checkNetworkConnectionAndPerformSync();
+            }
+        });
     }
 
     private void checkNetworkConnectionAndPerformSync() {
-        if ((isNetworkConnected())) {
+        if ((NetworkConnection.isOnline(this))) {
 
             // first we're showing the sync in progress dialog - Added by Arpan Sircar
-            showSimpleDialog(resetAlertDialogBuilder, getString(R.string.app_sync_dialog_title), getString(R.string.please_wait_sync_progress), getResources().getDrawable(R.drawable.ui2_icon_logging_in));
+            showSimpleDialog(resetAlertDialogBuilder, getString(R.string.app_sync_dialog_title), getString(R.string.please_wait_sync_progress), ContextCompat.getDrawable(this, R.drawable.ui2_icon_logging_in));
 
             boolean isSynced = syncUtils.syncForeground("home");
             if (isSynced) {
@@ -400,7 +473,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
                 new Handler().postDelayed(() -> {
 
                     // next we're displaying the sync successful message - Added by Arpan Sircar
-                    updateSimpleDialog(resetDialog, getString(R.string.sync_successful), getString(R.string.please_wait_app_reset), getResources().getDrawable(R.drawable.ui2_icon_login_success));
+                    updateSimpleDialog(resetDialog, getString(R.string.sync_successful), getString(R.string.please_wait_app_reset), ContextCompat.getDrawable(this, R.drawable.ui2_icon_login_success));
 
                     new Handler().postDelayed(() -> {
 
@@ -422,7 +495,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
                 dialogUtils.showOkDialog(this, getString(R.string.error), getString(R.string.sync_failed), getString(R.string.generic_ok));
             }
         } else {
-            MaterialAlertDialogBuilder builder = new DialogUtils().showErrorDialogWithTryAgainButton(this, getDrawable(R.drawable.ui2_icon_logging_in), getString(R.string.network_failure), getString(R.string.reset_app_requires_internet_message), getString(R.string.try_again));
+            MaterialAlertDialogBuilder builder = new DialogUtils().showErrorDialogWithTryAgainButton(this, ContextCompat.getDrawable(this, R.drawable.ui2_icon_logging_in), getString(R.string.network_failure), getString(R.string.reset_app_requires_internet_message), getString(R.string.try_again));
             AlertDialog networkFailureDialog = builder.show();
 
             networkFailureDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
@@ -441,7 +514,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
     private void showResetProgressbar() {
         resetDialog.dismiss();
         MaterialAlertDialogBuilder resetDialogBuilder = new MaterialAlertDialogBuilder(context);
-        showSimpleDialog(resetDialogBuilder, getString(R.string.resetting_app_dialog), getString(R.string.please_wait_app_reset), getResources().getDrawable(R.drawable.ui2_icon_logging_in));
+        showSimpleDialog(resetDialogBuilder, getString(R.string.resetting_app_dialog), getString(R.string.please_wait_app_reset), ContextCompat.getDrawable(this, R.drawable.ui2_icon_logging_in));
     }
 
     public void deleteCache(Context context) {
@@ -538,13 +611,14 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         tvAppLastSync = toolbarHome.findViewById(R.id.tv_app_sync_time);
         imageViewIsInternet = toolbarHome.findViewById(R.id.imageview_is_internet);
         imageViewIsNotification = toolbarHome.findViewById(R.id.imageview_notifications_home);
+        ivNotificationIcon = toolbarHome.findViewById(R.id.ivNotificationIcon);
         ivHamburger = toolbarHome.findViewById(R.id.iv_hamburger);
         ivHamburger.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ui2_ic_hamburger));
 
         ivHamburger.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "onClick: icon clicked");
+                CustomLog.d(TAG, "onClick: icon clicked");
                 mDrawerLayout.openDrawer(GravityCompat.START);
 
             }
@@ -570,7 +644,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         imageViewIsInternet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isNetworkConnected()) {
+                if (NetworkConnection.isOnline(HomeScreenActivity_New.this)) {
                     imageViewIsInternet.clearAnimation();
                     syncAnimator.start();
                     syncUtils.syncForeground("home");
@@ -582,26 +656,19 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             }
         });
         if (sessionManager.isFirstTimeLaunched()) {
-            mSyncProgressDialog = new ProgressDialog(HomeScreenActivity_New.this, R.style.AlertDialogStyle); //thats how to add a style!
-            mSyncProgressDialog.setTitle(R.string.syncInProgress);
-            mSyncProgressDialog.setCancelable(false);
-            mSyncProgressDialog.setMax(100);
-            mSyncProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-            mSyncProgressDialog.setIndeterminate(false);
-            mSyncProgressDialog.show();
-            sessionManager.setFirstTimeLaunched(false);
+            showRefreshDialog();
             SyncDAO.getSyncProgress_LiveData().observe(this, syncLiveData);
             showRefreshInProgressDialog();
             Executors.newSingleThreadExecutor().execute(() -> syncUtils.initialSync("home", this));
         } else {
             // if initial setup done then we can directly set the periodic background sync job
-            WorkManager.getInstance().enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
+            WorkManager.getInstance(this).enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
             saveToken();
 //            requestPermission();
         }
         //bottom nav
         bottomNav = findViewById(R.id.bottom_nav_home);
-        bottomNav.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
+        bottomNav.setOnItemSelectedListener(navigationItemSelectedListener);
         bottomNav.setItemIconTintList(null);
         bottomNav.getMenu().findItem(R.id.bottom_nav_home_menu).setChecked(true);
         tvAppVersion.setText(getString(R.string.app_version_string, "4.0 - Beta"));
@@ -610,13 +677,29 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
 
     }
 
+    /**
+     * alert dialog to show refresh percentage
+     */
+    private void showRefreshDialog() {
+        mSyncAlertDialog = new AlertDialog.Builder(this).create();
+        View syncView = LayoutInflater.from(this).inflate(R.layout.dialog_sync_progress, null);
+        mSyncAlertDialog.setView(syncView);
+        mSyncAlertDialog.setCancelable(false);
+        syncProgressbar = syncView.findViewById(R.id.progressBar);
+        progressTvStart = syncView.findViewById(R.id.progressTvStart);
+        progressTvEnd = syncView.findViewById(R.id.progressTvEnd);
+        syncProgressbar.setMax(100);
+        syncProgressbar.setIndeterminate(false);
+        mSyncAlertDialog.show();
+    }
+
     private void showSnackBarAndRemoveLater(String text) {
         survey_snackbar_cv.setVisibility(View.VISIBLE);
         TextView textView = findViewById(R.id.snackbar_text);
         ImageView snackbar_icon = findViewById(R.id.snackbar_icon);
 
         textView.setText(text);
-        snackbar_icon.setImageDrawable(getDrawable(R.drawable.ui2_ic_exit_app));
+        snackbar_icon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ui2_ic_exit_app));
         Handler handler = new Handler(Looper.getMainLooper());
         handler.postDelayed(new Runnable() {
             @Override
@@ -628,21 +711,28 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
 
     private void checkForInternet() {
         boolean result = NetworkConnection.isOnline(this);
-        Log.d(TAG, "checkForInternet: result : " + result);
+        CustomLog.d(TAG, "checkForInternet: result : " + result);
     }
 
-    @SuppressLint("MissingSuperCall")
-    @Override
-    public void onBackPressed() {
-        if (mDrawerLayout.isDrawerOpen(GravityCompat.START))
-            mDrawerLayout.closeDrawer(GravityCompat.START);
-        else handleBackPress();
+    /**
+     * removed onBackPressed function due to deprecation
+     * and added this one to handle onBackPressed
+     */
+    private void backPress() {
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if (mDrawerLayout.isDrawerOpen(GravityCompat.START))
+                    mDrawerLayout.closeDrawer(GravityCompat.START);
+                else handleBackPress();
+            }
+        });
     }
 
     private void handleBackPress() {
         int backStackEntryCount = getSupportFragmentManager().getBackStackEntryCount();
-        Timber.tag(TAG).d("backStackEntryCount %s", backStackEntryCount);
-        Log.v(TAG, "backStackEntryCount - " + backStackEntryCount);
+        CustomLog.d(TAG, "backStackEntryCount %s", backStackEntryCount);
+        CustomLog.v(TAG, "backStackEntryCount - " + backStackEntryCount);
         String topFragmentTag = getTopFragmentTag();
         if (topFragmentTag.equals(TAG_HOME)) {
             // finish();
@@ -691,7 +781,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             return "";
         }
         String topFragment = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
-        Log.v(TAG, topFragment);
+        CustomLog.v(TAG, topFragment);
         return topFragment;
 
     }
@@ -707,7 +797,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         Button noButton = convertView.findViewById(R.id.button_no_appointment);
         Button yesButton = convertView.findViewById(R.id.btn_yes_appointment);
 
-        icon.setImageDrawable(context.getResources().getDrawable(R.drawable.ui2_ic_exit_app));
+        icon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ui2_ic_exit_app));
 
         dialog_title.setText(title);
         tvInfo.setText(Html.fromHtml(subTitle));
@@ -746,7 +836,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         Button noButton = convertView.findViewById(R.id.button_no_appointment);
         Button yesButton = convertView.findViewById(R.id.btn_yes_appointment);
 
-        icon.setImageDrawable(context.getResources().getDrawable(R.drawable.ui2_ic_exit_app));
+        icon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ui2_ic_exit_app));
 
         dialog_title.setText(title);
         tvInfo.setText(Html.fromHtml(subTitle));
@@ -821,6 +911,9 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        notificationReceiver.unregisterModuleBReceiver(this);
+        scheduleExactAlarmPermissionLauncher.unregister();
+
 //        Log.v(TAG, "Is BG Service On - " + CallListenerBackgroundService.isInstanceCreated());
 //        if (!CallListenerBackgroundService.isInstanceCreated()) {
 //            Intent serviceIntent = new Intent(this, CallListenerBackgroundService.class);
@@ -889,6 +982,14 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         });
     }
 
+    @Override
+    protected void onFeatureActiveStatusLoaded(FeatureActiveStatus activeStatus) {
+        super.onFeatureActiveStatusLoaded(activeStatus);
+        if (mNavigationView != null) {
+            mNavigationView.getMenu().findItem(R.id.menu_view_call_log).setVisible(activeStatus.getVideoSection());
+        }
+    }
+
     public void selectDrawerItem(MenuItem menuItem) {
         Fragment fragment = null;
         Class fragmentClass = null;
@@ -906,6 +1007,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         } else if (itemId == R.id.menu_video_lib) {
             tvTitleHomeScreenCommon.setText(getResources().getString(R.string.videos));
             fragment = new InformativeVideosFragment_New();
+            tag = InformativeVideosFragment_New.TAG;
         } else if (itemId == R.id.menu_change_language) {
             Intent intent = new Intent(HomeScreenActivity_New.this, Language_ProtocolsActivity.class);
             startActivity(intent);
@@ -936,11 +1038,24 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
 
     @Override
     protected void onResume() {
-        Timber.tag(TAG).d("onResume");
+
+        if (new PreferenceHelper(this).get(PreferenceHelper.IS_NOTIFICATION, false)) {
+            ivNotificationIcon.setVisibility(View.VISIBLE);
+        } else {
+            ivNotificationIcon.setVisibility(View.GONE);
+        }
+
+        IntentFilter filter = new IntentFilter(AppConstants.SYNC_INTENT_ACTION);
+        ContextCompat.registerReceiver(this, syncBroadcastReceiver, filter, ContextCompat.RECEIVER_NOT_EXPORTED);
+//        requestPermission();
+        //register receiver for internet check
+        networkUtils.callBroadcastReceiver();
+
+
         if (mIsFirstTimeSyncDone && dialogRefreshInProgress != null && dialogRefreshInProgress.isShowing()) {
             dialogRefreshInProgress.dismiss();
         }
-        Log.d(TAG, "check11onResume: home");
+        CustomLog.d(TAG, "check11onResume: home");
         loadLastSelectedFragment();
         //toolbarHome.setVisibility(View.VISIBLE);
         String lastSync = getResources().getString(R.string.last_sync) + ": " + sessionManager.getLastSyncDateTime();
@@ -951,7 +1066,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         //ui2.0 update user details in  nav header
         updateNavHeaderUserDetails();
         firstLogin = getIntent().getStringExtra("firstLogin");
-        Log.d(TAG, "onCreate: firstLogin : " + firstLogin);
+        CustomLog.d(TAG, "onCreate: firstLogin : " + firstLogin);
         if (sessionManager.getIsLoggedIn() && firstLogin != null && !firstLogin.isEmpty() && firstLogin.equalsIgnoreCase("firstLogin")) {
             firstLogin = "";
             getIntent().putExtra("firstLogin", "");
@@ -959,19 +1074,9 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             showLoggingInDialog();
 
         }
-//        checkAppVer();  //auto-update feature.
+        checkAppVer();  //auto-update feature.
         bottomNav.getMenu().findItem(R.id.bottom_nav_home_menu).setChecked(true);
         super.onResume();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        IntentFilter filter = new IntentFilter(AppConstants.SYNC_INTENT_ACTION);
-        ContextCompat.registerReceiver(this, syncBroadcastReceiver, filter, ContextCompat.RECEIVER_NOT_EXPORTED);
-//        requestPermission();
-        //register receiver for internet check
-        networkUtils.callBroadcastReceiver();
     }
 
     private void checkAppVer() {
@@ -994,11 +1099,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
 
                 if (latestVersionCode > versionCode) {
                     android.app.AlertDialog.Builder builder;
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        builder = new android.app.AlertDialog.Builder(HomeScreenActivity_New.this, android.R.style.Theme_Material_Dialog_Alert);
-                    } else {
-                        builder = new android.app.AlertDialog.Builder(HomeScreenActivity_New.this);
-                    }
+                    builder = new android.app.AlertDialog.Builder(HomeScreenActivity_New.this, android.R.style.Theme_Material_Dialog_Alert);
 
 
                     builder.setTitle(getResources().getString(R.string.new_update_available)).setCancelable(false).setMessage(getResources().getString(R.string.update_app_note)).setPositiveButton(getResources().getString(R.string.update), new DialogInterface.OnClickListener() {
@@ -1017,17 +1118,15 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
                             .setIcon(android.R.drawable.ic_dialog_alert).setCancelable(false);
 
                     Dialog dialog = builder.show();
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        int textViewId = dialog.getContext().getResources().getIdentifier("android:id/alertTitle", null, null);
-                        TextView tv = (TextView) dialog.findViewById(textViewId);
-                        tv.setTextColor(getResources().getColor(R.color.white));
-                    }
+                    int textViewId = dialog.getContext().getResources().getIdentifier("android:id/alertTitle", null, null);
+                    TextView tv = (TextView) dialog.findViewById(textViewId);
+                    tv.setTextColor(ContextCompat.getColor(HomeScreenActivity_New.this, R.color.white));
                 }
             }
 
             @Override
             public void onError(Throwable e) {
-                Log.e("Error", "" + e);
+                CustomLog.e("Error", "" + e);
             }
         }));
 
@@ -1044,14 +1143,14 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
                 int flagType = intent.getIntExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_FAILED);
                 mTempSyncHelperList.add(flagType);
                 if (flagType == AppConstants.SYNC_FAILED) {
-//                    if (sessionManager.isFirstTimeLaunched()) {
-                    hideSyncProgressBar(false);
-                    showRefreshFailedDialog();
-                    //finish();
-//                    }
+                    if (sessionManager.isFirstTimeLaunched()) {
+                        hideSyncProgressBar(false);
+                        showRefreshFailedDialog();
+                        //finish();
+                    }
                 }
 
-                Log.v("syncBroadcastReceiver", new Gson().toJson(mTempSyncHelperList));
+                CustomLog.v("syncBroadcastReceiver", new Gson().toJson(mTempSyncHelperList));
                 if (mTempSyncHelperList.contains(AppConstants.SYNC_PULL_DATA_DONE) &&
                         mTempSyncHelperList.contains(AppConstants.SYNC_APPOINTMENT_PULL_DATA_DONE)) {
                     hideSyncProgressBar(true);
@@ -1160,8 +1259,8 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
+    protected void onPause() {
+        super.onPause();
         try {
             unregisterReceiver(syncBroadcastReceiver);
             //unregister receiver for internet check
@@ -1169,11 +1268,9 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
         }
-
     }
 
-
-//    private void requestPermission() {
+    //    private void requestPermission() {
 //        Intent serviceIntent = new Intent(this, CallListenerBackgroundService.class);
 //        if (!CallListenerBackgroundService.isInstanceCreated()) {
 //            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -1184,19 +1281,14 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
 //        }
 //    }
 
-    private boolean isNetworkConnected() {
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
-    }
-
-    BottomNavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
+    NavigationBarView.OnItemSelectedListener navigationItemSelectedListener = new BottomNavigationView.OnItemSelectedListener() {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             Fragment fragment;
 
             switch (item.getItemId()) {
                 case R.id.bottom_nav_home_menu:
-                    Log.d(TAG, "onNavigationItemSelected: bottom_nav_home_menu");
+                    CustomLog.d(TAG, "onNavigationItemSelected: bottom_nav_home_menu");
                     tvTitleHomeScreenCommon.setText(getResources().getString(R.string.title_home_screen));
                     fragment = new HomeFragment_New();
                     ivHamburger.setVisibility(View.VISIBLE);
@@ -1257,8 +1349,9 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
                 tvUserId.setText(getString(R.string.chw_id).concat(" ").concat(sessionManager.getChwname()));
 
                 if (providerDTO.getImagePath() != null && !providerDTO.getImagePath().isEmpty()) {
-
-                    Glide.with(HomeScreenActivity_New.this).load(providerDTO.getImagePath()).thumbnail(0.3f).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(ivProfileIcon);
+                    RequestBuilder<Drawable> requestBuilder = Glide.with(this)
+                            .asDrawable().sizeMultiplier(0.3f);
+                    Glide.with(HomeScreenActivity_New.this).load(providerDTO.getImagePath()).thumbnail(requestBuilder).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(ivProfileIcon);
 
 
                 }
@@ -1306,12 +1399,12 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
 
 
     public void profilePicDownloaded(ProviderDTO providerDTO) throws DAOException {
-        Log.d(TAG, "profilePicDownloaded: ");
+        CustomLog.d(TAG, "profilePicDownloaded: ");
         SessionManager sessionManager = new SessionManager(HomeScreenActivity_New.this);
         UrlModifiers urlModifiers = new UrlModifiers();
         String uuid = sessionManager.getProviderID();
         String url = urlModifiers.getProviderProfileImageUrl(uuid);
-        Log.d(TAG, "profilePicDownloaded:: url : " + url);
+        CustomLog.d(TAG, "profilePicDownloaded:: url : " + url);
 
 
         Observable<ResponseBody> profilePicDownload = AppConstants.apiInterface.PROVIDER_PROFILE_PIC_DOWNLOAD(url, "Basic " + sessionManager.getEncoded());
@@ -1319,7 +1412,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         profilePicDownload.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new DisposableObserver<ResponseBody>() {
             @Override
             public void onNext(ResponseBody file) {
-                Log.d(TAG, "onNext: ");
+                CustomLog.d(TAG, "onNext: ");
                 DownloadFilesUtils downloadFilesUtils = new DownloadFilesUtils();
                 downloadFilesUtils.saveToDisk(file, uuid);
             }
@@ -1342,7 +1435,10 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
                     FirebaseCrashlytics.getInstance().recordException(e);
                 }
                 if (updated) {
-                    Glide.with(HomeScreenActivity_New.this).load(AppConstants.IMAGE_PATH + uuid + ".jpg").thumbnail(0.3f).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(ivProfileIcon);
+
+                    RequestBuilder<Drawable> requestBuilder = Glide.with(HomeScreenActivity_New.this)
+                            .asDrawable().sizeMultiplier(0.3f);
+                    Glide.with(HomeScreenActivity_New.this).load(AppConstants.IMAGE_PATH + uuid + ".jpg").thumbnail(requestBuilder).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(ivProfileIcon);
                 }
                 ImagesDAO imagesDAO = new ImagesDAO();
                 boolean isImageDownloaded = false;
@@ -1361,10 +1457,10 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
     @Override
     public void updateUIForInternetAvailability(boolean isInternetAvailable) {
         if (isInternetAvailable) {
-            imageViewIsInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_internet_available));
+            imageViewIsInternet.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ui2_ic_internet_available));
 
         } else {
-            imageViewIsInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
+            imageViewIsInternet.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ui2_ic_no_internet));
 
         }
     }
@@ -1457,8 +1553,13 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         @Override
         public void onChanged(Integer progress) {
             Logger.logD(SyncDAO.PULL_ISSUE, "onchanged of livedata again called up");
-            if (mSyncProgressDialog != null) {
-                mSyncProgressDialog.setProgress(progress);
+            if (mSyncAlertDialog != null) {
+                if (progress < 0) progress = 0;
+                syncProgressbar.setProgress(progress);
+                if (progress <= 100) {
+                    progressTvStart.setText((progress) + "%");
+                    progressTvEnd.setText(progress + "/100");
+                }
                 Logger.logD(SyncDAO.PULL_ISSUE, "% -> " + String.valueOf(progress));
 
                 if (progress == 100) {
@@ -1467,11 +1568,35 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            mSyncProgressDialog.dismiss();
+                            mSyncAlertDialog.dismiss();
                         }
                     }, 2000);
                 }
             }
         }
     };
+
+
+    public class NotificationReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals(NotificationBroadCast.CUSTOM_ACTION)) {
+                // FCM A added action received
+                String moduleName = intent.getStringExtra(NotificationBroadCast.FCM_MODULE);
+                ivNotificationIcon.setVisibility(View.VISIBLE);
+                preferenceHelper.save(PreferenceHelper.IS_NOTIFICATION, true);
+            }
+        }
+
+        public void registerModuleBReceiver(Context context) {
+            IntentFilter filter = new IntentFilter(NotificationBroadCast.CUSTOM_ACTION);
+            LocalBroadcastManager.getInstance(context).registerReceiver(this, filter);
+        }
+
+        public void unregisterModuleBReceiver(Context context) {
+            LocalBroadcastManager.getInstance(context).unregisterReceiver(this);
+        }
+    }
+
 }

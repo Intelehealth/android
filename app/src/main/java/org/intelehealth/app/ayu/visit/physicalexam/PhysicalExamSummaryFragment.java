@@ -2,9 +2,8 @@ package org.intelehealth.app.ayu.visit.physicalexam;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,11 +20,13 @@ import org.intelehealth.app.R;
 import org.intelehealth.app.ayu.visit.VisitCreationActionListener;
 import org.intelehealth.app.ayu.visit.VisitCreationActivity;
 import org.intelehealth.app.ayu.visit.common.adapter.SummaryViewAdapter;
+import org.intelehealth.app.ayu.visit.model.CommonVisitData;
 import org.intelehealth.app.ayu.visit.model.VisitSummaryData;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.config.room.entity.FeatureActiveStatus;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -46,7 +48,7 @@ public class PhysicalExamSummaryFragment extends Fragment {
 
     private String mSummaryString;
 
-    public static PhysicalExamSummaryFragment newInstance(Intent intent, String values, boolean isEditMode) {
+    public static PhysicalExamSummaryFragment newInstance(CommonVisitData commonVisitData, String values, boolean isEditMode) {
         PhysicalExamSummaryFragment fragment = new PhysicalExamSummaryFragment();
         fragment.mSummaryString = values;
         fragment.mIsEditMode = isEditMode;
@@ -65,6 +67,16 @@ public class PhysicalExamSummaryFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        FeatureActiveStatus status = ((VisitCreationActivity) requireActivity()).getFeatureActiveStatus();
+        int index = status.getVitalSection() ? 3 : 2;
+        int total = status.getVitalSection() ? 4 : 3;
+        TextView tvTitle = view.findViewById(R.id.tv_sub_title);
+        tvTitle.setText(getString(R.string.ui2_physical_exam_summay_title, index, total));
     }
 
     @Override
@@ -158,7 +170,7 @@ public class PhysicalExamSummaryFragment extends Fragment {
                 String lastString = "";
 
                 for (int i = 0; i < _list.size(); i++) {
-                    Log.v("PH0", _list.get(i));
+                    CustomLog.v("PH0", _list.get(i));
                     String val = _list.get(i);
                     String v1 = val;
                     if (lastString.equals(v1)) continue;
@@ -175,8 +187,8 @@ public class PhysicalExamSummaryFragment extends Fragment {
                         while (v.endsWith("-")) {
                             v = v.substring(0, v.length() - 1);
                         }
-                        if(v.endsWith(",")){
-                            v =  v.substring(0, v.length()-1);
+                        if (v.endsWith(",")) {
+                            v = v.substring(0, v.length() - 1);
                         }
                         summaryData.setDisplayValue(v);
                         visitSummaryDataList.add(summaryData);

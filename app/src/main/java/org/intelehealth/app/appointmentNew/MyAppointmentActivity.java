@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -13,12 +13,16 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.gson.Gson;
 
 import org.intelehealth.app.BuildConfig;
@@ -46,7 +50,7 @@ public class MyAppointmentActivity extends BaseActivity implements UpdateAppoint
     private static final String TAG = "MyAppointmentActivity";
     BottomNavigationView bottomNav;
     TabLayout tabLayout;
-    ViewPager viewPager;
+    ViewPager2 viewPager;
     String fromFragment = "";
     int totalCount;
     NetworkUtils networkUtils;
@@ -56,8 +60,9 @@ public class MyAppointmentActivity extends BaseActivity implements UpdateAppoint
     private HashMap<Integer, UpdateFragmentOnEvent> mUpdateFragmentOnEventHashMap = new HashMap<>();
 
     public void initUpdateFragmentOnEvent(int tab, UpdateFragmentOnEvent listener) {
-        Log.v(TAG, "initUpdateFragmentOnEvent");
+        CustomLog.v(TAG, "initUpdateFragmentOnEvent");
         mUpdateFragmentOnEventHashMap.put(tab, listener);
+
     }
 
     @Override
@@ -78,7 +83,7 @@ public class MyAppointmentActivity extends BaseActivity implements UpdateAppoint
     }
 
     private void loadAllAppointments() {
-        Log.v(TAG, "loadAllAppointments");
+        CustomLog.v(TAG, "loadAllAppointments");
         String baseurl = BuildConfig.SERVER_URL + ":3004";
         int tabIndex = tabLayout.getSelectedTabPosition();
         if (mUpdateFragmentOnEventHashMap.containsKey(tabIndex))
@@ -92,7 +97,7 @@ public class MyAppointmentActivity extends BaseActivity implements UpdateAppoint
                     @Override
                     public void onResponse(Call<AppointmentListingResponse> call, retrofit2.Response<AppointmentListingResponse> response) {
                         if (response.body() == null) return;
-                        Log.v(TAG, "onResponse - " + new Gson().toJson(response.body()));
+                        CustomLog.v(TAG, "onResponse - " + new Gson().toJson(response.body()));
                         AppointmentListingResponse slotInfoResponse = response.body();
                         AppointmentDAO appointmentDAO = new AppointmentDAO();
                         appointmentDAO.deleteAllAppointments();
@@ -126,13 +131,13 @@ public class MyAppointmentActivity extends BaseActivity implements UpdateAppoint
                         }*/
 
                         //getAppointments();
-                        Log.v(TAG, "onFinished - " + new Gson().toJson(slotInfoResponse));
+                        CustomLog.v(TAG, "onFinished - " + new Gson().toJson(slotInfoResponse));
                         Objects.requireNonNull(mUpdateFragmentOnEventHashMap.get(tabIndex)).onFinished(AppConstants.EVENT_FLAG_SUCCESS);
                     }
 
                     @Override
                     public void onFailure(Call<AppointmentListingResponse> call, Throwable t) {
-                        Log.v("onFailure", t.getMessage());
+                        CustomLog.v("onFailure", t.getMessage());
                         Objects.requireNonNull(mUpdateFragmentOnEventHashMap.get(tabIndex)).onFinished(AppConstants.EVENT_FLAG_FAILED);
                         //log out operation if response code is 401
                         new NavigationUtils().logoutOperation(MyAppointmentActivity.this,t);
@@ -162,12 +167,10 @@ public class MyAppointmentActivity extends BaseActivity implements UpdateAppoint
 
         configureTabLayout();
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(Color.WHITE);
-        }
+        getWindow().setStatusBarColor(Color.WHITE);
 
         bottomNav = findViewById(R.id.bottom_nav_my_appointments);
-        bottomNav.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
+        bottomNav.setOnItemSelectedListener(navigationItemSelectedListener);
         bottomNav.setItemIconTintList(null);
         bottomNav.getMenu().findItem(R.id.bottom_nav_home_menu).setChecked(false);
 
@@ -176,27 +179,37 @@ public class MyAppointmentActivity extends BaseActivity implements UpdateAppoint
     public void configureTabLayout() {
         tabLayout = findViewById(R.id.tablayout_appointments);
 
-        tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.todays)));
-        tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.all_appointments)));
+       /* tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.todays)));
+        tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.all_appointments)));*/
 
         viewPager = findViewById(R.id.pager_appointments);
-        PagerAdapter adapter = new MyAppointmentsPagerAdapter
-                (getSupportFragmentManager(), tabLayout.getTabCount(), MyAppointmentActivity.this);
+        MyAppointmentsPagerAdapter adapter = new MyAppointmentsPagerAdapter
+                (getSupportFragmentManager(), 2, MyAppointmentActivity.this);
         viewPager.setAdapter(adapter);
 
-        viewPager.setOffscreenPageLimit(adapter.getCount() - 1);
+        viewPager.setOffscreenPageLimit(adapter.getItemCount() - 1);
 
         // int limit = (adapter.getCount() > 1 ? adapter.getCount() - 1 : 1);
 
         //viewPager.setOffscreenPageLimit(limit);
 
-        viewPager.addOnPageChangeListener(new
-                TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        /*viewPager.addOnPageChangeListener(new
+                TabLayout.TabLayoutOnPageChangeListener(tabLayout));*/
+        new TabLayoutMediator(tabLayout, viewPager, new TabLayoutMediator.TabConfigurationStrategy() {
+            @Override
+            public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
+                if (position == 0) {
+                    tab.setText(getString(R.string.todays));
+                } else {
+                    tab.setText(getString(R.string.all_appointments));
+                }
+            }
+        }).attach();
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());
-              /*  Log.d(TAG, "onTabSelected:position : : " + tab.getPosition());
+              /*  CustomLog.d(TAG, "onTabSelected:position : : " + tab.getPosition());
                 if (fromFragment != null && !fromFragment.isEmpty() && fromFragment.equals("today")) {
                     if (tab.getPosition() == 0) {
                         tab.setText("Today's (" + totalCount + ")");
@@ -227,15 +240,15 @@ public class MyAppointmentActivity extends BaseActivity implements UpdateAppoint
 
     }
 
-    BottomNavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener =
-            new BottomNavigationView.OnNavigationItemSelectedListener() {
+    NavigationBarView.OnItemSelectedListener navigationItemSelectedListener =
+            new BottomNavigationView.OnItemSelectedListener() {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                     Fragment fragment;
 
                     switch (item.getItemId()) {
                         case R.id.bottom_nav_home_menu:
-                           /* Log.d(TAG, "onNavigationItemSelected: bottom_nav_home_menu");
+                           /* CustomLog.d(TAG, "onNavigationItemSelected: bottom_nav_home_menu");
                             tvTitleHomeScreenCommon.setText(getResources().getString(R.string.title_home_screen));
                             fragment = new HomeFragment_New();
                             loadFragment(fragment);*/
@@ -264,9 +277,9 @@ public class MyAppointmentActivity extends BaseActivity implements UpdateAppoint
 
     @Override
     public void updateCount(String whichFrag, int count) {
-        //  Log.d(TAG, "updateCount:selected tab : " + tabLayout.getSelectedTabPosition());
+        //  CustomLog.d(TAG, "updateCount:selected tab : " + tabLayout.getSelectedTabPosition());
 
-        //  Log.d(TAG, "updateCount: count : " + count);
+        //  CustomLog.d(TAG, "updateCount: count : " + count);
 
      /*   fromFragment = whichFrag;
         totalCount = count;*/
@@ -307,10 +320,10 @@ public class MyAppointmentActivity extends BaseActivity implements UpdateAppoint
     public void updateUIForInternetAvailability(boolean isInternetAvailable) {
         mIsInternetAvailable = isInternetAvailable;
         if (isInternetAvailable) {
-            ivIsInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_internet_available));
+            ivIsInternet.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.ui2_ic_internet_available));
 
         } else {
-            ivIsInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
+            ivIsInternet.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.ui2_ic_no_internet));
 
         }
     }

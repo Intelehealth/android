@@ -3,8 +3,9 @@ apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
 apply plugin: 'androidx.navigation.safeargs'
 apply plugin: 'org.jetbrains.kotlin.android'
+apply plugin: "kotlin-kapt"
 apply from: "resdir.gradle"
-apply from: "environment.gradle"
+apply from: "whitelabel.gradle"
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 
@@ -12,6 +13,7 @@ static def getDateTime() {
     DateFormat df = new SimpleDateFormat("yyyyMMddHHmm");
     return df.format(new Date());
 }
+
 android {
     namespace 'org.intelehealth.app'
     compileSdk 34
@@ -20,18 +22,19 @@ android {
         applicationId "org.intelehealth.app"
         minSdk 23
         targetSdk 34
-        versionCode 66
-        versionName '4.1'
+        versionCode 67
+        versionName '5.0'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         //Change this to true to enable multidex support for Kitkat
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
-        archivesBaseName = "Intelehealth UIUX_" + versionName + " - " + getDateTime()
+        archivesBaseName = "IDA-" + versionName + "-" + getDateTime()
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
     }
+
     buildTypes {
         release {
             lintOptions {
@@ -43,6 +46,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
     // use the bundle block to control which types of configuration APKs
     // you want your app bundle to support.
     bundle {
@@ -58,7 +62,7 @@ android {
             enableSplit = false
         }
         density {
-           enableSplit = false
+            enableSplit = false
         }
         abi {
             enableSplit = true
@@ -75,22 +79,27 @@ android {
         jvmTarget = '17'
     }
 
+//    dynamicFeatures = [':features:ondemand:klivekit']
 }
 dependencies {
-    implementation project(':klivekit')
-    implementation project(':fcm')
+    implementation project(':features:ondemand:klivekit')
+    api project(':fcm')
+    api project(':config')
+//    api project(':common')
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'androidx.appcompat:appcompat:1.7.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'com.google.android.material:material:1.11.0'
+    implementation 'com.google.android.material:material:1.12.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.android.support.constraint:constraint-layout:2.0.4'
-    implementation 'com.google.android.gms:play-services-fido:20.1.0'
+    implementation 'com.google.android.gms:play-services-fido:21.1.0'
     implementation project(path: ':ihutils')
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.7.7'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.7.7'
     testImplementation 'junit:junit:4.13.2'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.media:media:1.7.0'
-    implementation 'androidx.vectordrawable:vectordrawable-animated:1.1.0'
+    implementation 'androidx.vectordrawable:vectordrawable-animated:1.2.0'
 
     //fingerprint lock
     implementation 'androidx.biometric:biometric:1.1.0'
@@ -98,8 +107,10 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
     //mvvm
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.8.6"
+    implementation 'androidx.lifecycle:lifecycle-viewmodel:2.8.6'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel:2.6.2'
+
     // JSON Converter
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     // RxJava
@@ -110,7 +121,7 @@ dependencies {
     //RxBindings
     implementation 'com.jakewharton.rxbinding2:rxbinding:2.2.0'
     //Retrofit
-    implementation 'com.google.code.gson:gson:2.9.0'
+    implementation 'com.google.code.gson:gson:2.10.1'
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
 
@@ -127,6 +138,9 @@ dependencies {
     implementation 'com.parse:parse-android:1.15.7'
     //date and time
     implementation 'joda-time:joda-time:2.9.9'
+
+    //jsoup to parse html
+    implementation 'org.jsoup:jsoup:1.15.2'
 
     implementation 'org.apache.commons:commons-lang3:3.6'
 
@@ -163,6 +177,7 @@ dependencies {
     implementation 'com.makeramen:roundedimageview:2.3.0'
     implementation 'com.google.android.flexbox:flexbox:3.0.0'
     implementation 'com.github.EusebiuCandrea:ToolTipPopupWordTV:1.0.1'//
-
+    implementation 'com.github.zerobranch:SwipeLayout:1.3.1'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3'
 }
 apply plugin: 'com.google.gms.google-services'  // Google Play services Gradle plugin

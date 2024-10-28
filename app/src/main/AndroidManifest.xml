@@ -2,9 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
     <!-- To auto-complete the email text field in the login form with the user's emails -->
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" /> <!-- <uses-permission android:name="android.permission.READ_CONTACTS" /> -->
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
@@ -48,6 +49,13 @@
         android:usesCleartextTraffic="true"
         tools:ignore="UnusedAttribute, LockedOrientationActivity"
         tools:replace="allowBackup">
+        <activity
+            android:name=".activities.onboarding.CommonWebviewActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.onboarding.PersonalConsentActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".profile.MyProfileActivity"
             android:exported="true"
@@ -175,6 +183,11 @@
             android:theme="@style/AppThemeMaterialNew"
             android:windowSoftInputMode="adjustPan" />
         <activity
+            android:name=".appointmentNew.MyAppointmentNew.MyAppointmentActivityNew"
+            android:exported="true"
+            android:theme="@style/AppThemeMaterialNew"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
             android:name=".activities.help.activities.ChatSupportHelpActivity_New"
             android:exported="true"
             android:theme="@style/AppThemeMaterialNew"
@@ -195,7 +208,7 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".activities.chooseLanguageActivity.SplashScreenActivity"
+            android:name=".ui.splash.activity.SplashActivity"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan">
@@ -206,9 +219,20 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.notification.NotificationActivity"
+            android:name=".ui.patient.activity.PatientRegistrationActivity"
+            android:exported="true"
+            android:theme="@style/AppThemeMaterialNew"
+            android:windowSoftInputMode="adjustPan">
+            <!--            <intent-filter>-->
+            <!--                <action android:name="android.intent.action.MAIN" />-->
+
+            <!--                <category android:name="android.intent.category.LAUNCHER" />-->
+            <!--            </intent-filter>-->
+        </activity>
+        <activity
+            android:name=".activities.notification.view.NotificationActivity"
             android:exported="false"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:theme="@style/AppThemeMaterialNew"
             android:windowSoftInputMode="adjustNothing|adjustPan" />
         <activity
             android:name=".activities.visit.VisitDetailsActivity"
@@ -231,6 +255,11 @@
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".activities.onboarding.TermsAndConditionsActivity_New"
+            android:exported="true"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activities.onboarding.CommonWebViewActivity"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
@@ -259,25 +288,19 @@
             android:name=".activities.forgotPasswordNew.ForgotPasswordOtpVerificationActivity_New"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan">
-
-
-        </activity>
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".activities.forgotPasswordNew.ForgotPasswordActivity_New"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan" />
-
-        <!--        <receiver-->
-        <!--            android:name=".services.firebase_services.RTCMessageReceiver"-->
-        <!--            android:enabled="true"-->
-        <!--            android:exported="true">-->
-        <!--            <intent-filter>-->
-        <!--                <action android:name="org.intelehealth.app.RTC_MESSAGING_EVENT" />-->
-        <!--            </intent-filter>-->
-        <!--        </receiver>-->
-
+            android:windowSoftInputMode="adjustPan" /> <!-- <receiver -->
+        <!-- android:name=".services.firebase_services.RTCMessageReceiver" -->
+        <!-- android:enabled="true" -->
+        <!-- android:exported="true"> -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="org.intelehealth.app.RTC_MESSAGING_EVENT" /> -->
+        <!-- </intent-filter> -->
+        <!-- </receiver> -->
         <receiver
             android:name=".services.CameraOpenRequestReceiver"
             android:enabled="true"
@@ -335,8 +358,7 @@
             android:name=".activities.onboarding.SetupPrivacyNoteActivity_New"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan" />
-        <!-- <service -->
+            android:windowSoftInputMode="adjustPan" /> <!-- <service -->
         <!-- android:name=".services.OnClearFromRecentService" -->
         <!-- android:stopWithTask="false" /> -->
         <activity
@@ -347,13 +369,12 @@
         <activity
             android:name=".appointmentNew.ScheduleAppointmentActivity_New"
             android:exported="true"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:theme="@style/AppThemeMaterialNew"
             android:windowSoftInputMode="adjustPan">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-
         <activity
             android:name=".webrtc.activity.IDAChatActivity"
             android:exported="true"
@@ -424,23 +445,29 @@
             </intent-filter>
         </receiver>
 
+        <receiver android:name=".notificationScheduler.ScheduleNotificationReceiver"/>
+
         <meta-data
             android:name="firebase_crashlytics_collection_enabled"
             android:value="false" />
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" /> <!-- Firebase Realdb -->
-
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/ic_launcher" />
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorPrimary" />
+
+        <activity
+            android:name=".activities.patientDetailActivity.TeleconsultationConsentActivity"
+            android:exported="true"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
     </application>
 
 </manifest>

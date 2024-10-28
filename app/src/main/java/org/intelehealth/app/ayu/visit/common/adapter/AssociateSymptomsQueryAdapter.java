@@ -6,7 +6,7 @@ import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextWatcher;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -103,37 +104,37 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
 
             genericViewHolder.questionTextView.setText((position + 1) + ". " + genericViewHolder.node.findDisplay());
             //genericViewHolder.recyclerView.setAdapter(reasonChipsGridAdapter);
-
-            if (mItemList.get(position).isNoSelected()) {
-                genericViewHolder.noTextView.setTextColor(mContext.getResources().getColor(R.color.white));
-                genericViewHolder.noTextView.setBackgroundResource(R.drawable.ui2_common_button_bg_submit);
-                genericViewHolder.noTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_close_18_white, 0, 0, 0);
-            } else {
-                genericViewHolder.noTextView.setTextColor(mContext.getResources().getColor(R.color.ui2_black_text_color));
-                genericViewHolder.noTextView.setBackgroundResource(R.drawable.normal_white_reounded_bg);
-                genericViewHolder.noTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_close_18_green, 0, 0, 0);
-            }
+            genericViewHolder.noTextView.setSelected(mItemList.get(position).isNoSelected());
+//            if (mItemList.get(position).isNoSelected()) {
+//                genericViewHolder.noTextView.setTextColor(ContextCompat.getColor(mContext,R.color.white));
+//                genericViewHolder.noTextView.setBackgroundResource(R.drawable.ui2_common_button_bg_submit);
+//                genericViewHolder.noTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_close_18_white, 0, 0, 0);
+//            } else {
+//                genericViewHolder.noTextView.setTextColor(ContextCompat.getColor(mContext,R.color.ui2_black_text_color));
+//                genericViewHolder.noTextView.setBackgroundResource(R.drawable.normal_white_reounded_bg);
+//                genericViewHolder.noTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_close_18_green, 0, 0, 0);
+//            }
             genericViewHolder.currentRootOptionList = mItemList.get(position).getOptionsList();
-
+            genericViewHolder.yesTextView.setSelected(mItemList.get(position).isSelected());
             if (mItemList.get(position).isSelected()) {
-                genericViewHolder.yesTextView.setTextColor(mContext.getResources().getColor(R.color.white));
-                genericViewHolder.yesTextView.setBackgroundResource(R.drawable.ui2_common_button_bg_submit);
-                genericViewHolder.yesTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_check_18_white, 0, 0, 0);
+//                genericViewHolder.yesTextView.setTextColor(ContextCompat.getColor(mContext,R.color.white));
+//                genericViewHolder.yesTextView.setBackgroundResource(R.drawable.ui2_common_button_bg_submit);
+//                genericViewHolder.yesTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_check_18_white, 0, 0, 0);
 
                 String type = genericViewHolder.node.getInputType();
-                Log.v(TAG, "onBindViewHolder Type - " + type);
-                Log.v(TAG, "onBindViewHolder Node - " + new Gson().toJson(genericViewHolder.node));
+                CustomLog.v(TAG, "onBindViewHolder Type - " + type);
+                CustomLog.v(TAG, "onBindViewHolder Node - " + new Gson().toJson(genericViewHolder.node));
                 if (type == null || type.isEmpty() && (genericViewHolder.node.getOptionsList() != null && !genericViewHolder.node.getOptionsList().isEmpty())) {
                     type = "options";
                 }
-                Log.v(TAG, "type - " + type);
+                CustomLog.v(TAG, "type - " + type);
                 if (type.equalsIgnoreCase("text")) {
                     genericViewHolder.singleComponentContainer.removeAllViews();
                     genericViewHolder.singleComponentContainer.setVisibility(View.VISIBLE);
                     addTextEnterView(mItemList.get(position), genericViewHolder, position);
                 } else if (type.equalsIgnoreCase("options") && mItemList.get(position).getOptionsList().size() == 1 && mItemList.get(position).getOptionsList().get(0).getOptionsList() == null) {
                     String _type = mItemList.get(position).getOptionsList().get(0).getInputType();
-                    Log.v(TAG, "Single option - " + type);
+                    CustomLog.v(TAG, "Single option - " + type);
                     if (_type.equalsIgnoreCase("text")) {
                         genericViewHolder.singleComponentContainer.removeAllViews();
                         genericViewHolder.singleComponentContainer.setVisibility(View.VISIBLE);
@@ -146,7 +147,7 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
                 } else {
                     genericViewHolder.singleComponentContainer.removeAllViews();
                     genericViewHolder.singleComponentContainer.setVisibility(View.GONE);
-                    Log.v(TAG, "onBindViewHolder options" + new Gson().toJson(mItemList.get(position).getOptionsList()));
+                    CustomLog.v(TAG, "onBindViewHolder options" + new Gson().toJson(mItemList.get(position).getOptionsList()));
                     if (mItemList.get(position).getOptionsList() != null && mItemList.get(position).getOptionsList().size() > 0) {
                         genericViewHolder.recyclerView.setVisibility(View.VISIBLE);
                         genericViewHolder.recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
@@ -167,10 +168,10 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
                             @Override
                             public void onSelect(Node node, int index, boolean isSkipped, Node parentNode) {
 
-                                Log.v(TAG, "currentComplainNodeOptionsIndex - " + genericViewHolder.currentComplainNodeOptionsIndex);
-                                Log.v(TAG, "mItemList.get(position).getOptionsList().size() - " + mItemList.get(position).getOptionsList().size());
-                                Log.v(TAG, "index - " + index);
-                                Log.v(TAG, "Node - " + new Gson().toJson(node));
+                                CustomLog.v(TAG, "currentComplainNodeOptionsIndex - " + genericViewHolder.currentComplainNodeOptionsIndex);
+                                CustomLog.v(TAG, "mItemList.get(position).getOptionsList().size() - " + mItemList.get(position).getOptionsList().size());
+                                CustomLog.v(TAG, "index - " + index);
+                                CustomLog.v(TAG, "Node - " + new Gson().toJson(node));
                                 if (genericViewHolder.isHavingDirectOption)
                                     return;
                                 if (genericViewHolder.currentComplainNodeOptionsIndex - index >= 1) {
@@ -182,7 +183,7 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
                                     genericViewHolder.questionsListingAdapter.notifyItemChanged(index);
                                 }
                                 //if (mItemList.get(position).isContainsTheQuestionBeforeOptions()) {
-                                //Log.v("onSelect", "node - " + node.getText());
+                                //CustomLog.v("onSelect", "node - " + node.getText());
                                 if (genericViewHolder.currentComplainNodeOptionsIndex < mItemList.get(position).getOptionsList().size() - 1) {
                                     genericViewHolder.currentComplainNodeOptionsIndex++;
                                     //genericViewHolder.questionsListingAdapter.addItem(mItemList.get(position).getOptionsList().get(genericViewHolder.currentComplainNodeOptionsIndex));
@@ -240,10 +241,9 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
             } else {
                 genericViewHolder.singleComponentContainer.removeAllViews();
                 genericViewHolder.singleComponentContainer.setVisibility(View.GONE);
-
-                genericViewHolder.yesTextView.setTextColor(mContext.getResources().getColor(R.color.ui2_black_text_color));
-                genericViewHolder.yesTextView.setBackgroundResource(R.drawable.normal_white_reounded_bg);
-                genericViewHolder.yesTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_check_18_green, 0, 0, 0);
+//                genericViewHolder.yesTextView.setTextColor(ContextCompat.getColor(mContext,R.color.ui2_black_text_color));
+//                genericViewHolder.yesTextView.setBackgroundResource(R.drawable.normal_white_reounded_bg);
+//                genericViewHolder.yesTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_check_18_green, 0, 0, 0);
                 genericViewHolder.recyclerView.setVisibility(View.GONE);
             }
 

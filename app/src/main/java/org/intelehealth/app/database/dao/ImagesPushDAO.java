@@ -1,7 +1,7 @@
 package org.intelehealth.app.database.dao;
 
 import android.content.Intent;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 
 import com.github.ajalt.timberkt.Timber;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
@@ -53,7 +53,7 @@ public class ImagesPushDAO {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
 
-        // Log.d(TAG, "patientProfileImagesPush: getBase64EncodedImage "+ patientProfile.getBase64EncodedImage());
+        // CustomLog.d(TAG, "patientProfileImagesPush: getBase64EncodedImage "+ patientProfile.getBase64EncodedImage());
         for (PatientProfile p : patientProfiles) {
             Single<ResponseBody> personProfilePicUpload = AppConstants.apiInterface.PERSON_PROFILE_PIC_UPLOAD(url, "Basic " + encoded, p);
             personProfilePicUpload.subscribeOn(Schedulers.io())
@@ -80,7 +80,8 @@ public class ImagesPushDAO {
         }
         sessionManager.setPullSyncFinished(true);
         IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
-                .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_PATIENT_PROFILE_IMAGE_PUSH_DONE));
+                .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_PATIENT_PROFILE_IMAGE_PUSH_DONE)
+                .setPackage(IntelehealthApplication.getAppContext().getPackageName()));
 //        AppConstants.notificationUtils.DownloadDone("Patient Profile", "Completed Uploading Patient Profile", 4, IntelehealthApplication.getAppContext());
         return true;
     }
@@ -96,7 +97,7 @@ public class ImagesPushDAO {
         List<ObsPushDTO> obsImageJsons = new ArrayList<>();
         try {
             obsImageJsons = imagesDAO.getObsUnsyncedImages();
-            Log.e(TAG, "image request model" + gson.toJson(obsImageJsons));
+            CustomLog.e(TAG, "image request model" + gson.toJson(obsImageJsons));
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
@@ -106,8 +107,8 @@ public class ImagesPushDAO {
             //pass it like this
             File file = null;
             file = new File(AppConstants.IMAGE_PATH + p.getUuid() + ".jpg");
-            Log.e(TAG, "File size:" + file.length());
-            RequestBody requestFile = RequestBody.create(MediaType.parse("application/json"), file);
+            CustomLog.e(TAG, "File size:" + file.length());
+            RequestBody requestFile = RequestBody.create(file,MediaType.parse("application/json"));
             // MultipartBody.Part is used to send also the actual file name
             MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(), requestFile);
 
@@ -143,7 +144,8 @@ public class ImagesPushDAO {
         //added the checking to prevent any broadcaster receiver event while logout
         if(!sessionManager.isLogout()){
             IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
-                    .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_OBS_IMAGE_PUSH_DONE));
+                    .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_OBS_IMAGE_PUSH_DONE)
+                    .setPackage(IntelehealthApplication.getAppContext().getPackageName()));
         }
 //        AppConstants.notificationUtils.DownloadDone("Patient Profile", "Completed Uploading Patient Profile", 4, IntelehealthApplication.getAppContext());
         return true;
@@ -202,7 +204,7 @@ public class ImagesPushDAO {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
         if (providerProfile != null && providerProfile.getFile() != null && !providerProfile.getFile().isEmpty()) {
-            Log.d(TAG, "loggedInUserProfileImagesPush: in conditions : ");
+            CustomLog.d(TAG, "loggedInUserProfileImagesPush: in conditions : ");
 
             Single<ResponseBody> personProfilePicUpload = AppConstants.apiInterface.PROVIDER_PROFILE_PIC_UPLOAD(url, providerProfile, "Basic " + encoded);
             personProfilePicUpload.subscribeOn(Schedulers.io())
@@ -231,7 +233,8 @@ public class ImagesPushDAO {
         //added the checking to prevent any broadcaster receiver event while logout
         if(!sessionManager.isLogout()){
             IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
-                    .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_PATIENT_PROFILE_IMAGE_PUSH_DONE));
+                    .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_PATIENT_PROFILE_IMAGE_PUSH_DONE)
+                    .setPackage(IntelehealthApplication.getAppContext().getPackageName()));
         }
 //        AppConstants.notificationUtils.DownloadDone("Patient Profile", "Completed Uploading Patient Profile", 4, IntelehealthApplication.getAppContext());
         return true;

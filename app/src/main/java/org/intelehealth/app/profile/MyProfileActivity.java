@@ -33,7 +33,7 @@ import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -51,8 +51,8 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.biometric.BiometricManager;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
@@ -119,8 +119,7 @@ import okhttp3.ResponseBody;
 public class MyProfileActivity extends BaseActivity implements SendSelectedDateInterface, NetworkUtils.InternetCheckUpdateInterface {
     private static final String TAG = "MyProfileActivity";
     TextInputEditText etEmail, etMobileNo;
-    TextView tvDob, tvAge, tvChangePhoto, tvErrorFirstName, tvErrorLastName, tvErrorMobileNo, tvErrorDob,
-            etUsername, etFirstName, etMiddleName, etLastName;
+    TextView tvDob, tvAge, tvChangePhoto, tvErrorFirstName, tvErrorLastName, tvErrorMobileNo, tvErrorDob, etUsername, etFirstName, etMiddleName, etLastName;
     LinearLayout layoutParent, ll_middlename;
     String selectedGender, profileImagePAth = "", errorMsg = "", mSelectedCountryCode = "", dobToDb;
     ImageView ivProfileImage, ivIsInternet, refresh;
@@ -135,7 +134,7 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
     NetworkUtils networkUtils;
     private boolean isSynced = false;
     private MyProfilePOJO myProfilePOJO = new MyProfilePOJO();
-    Switch fingerprintSwitch;
+    SwitchCompat fingerprintSwitch;
     private int mSelectedMobileNumberValidationLength = 0;
     private ObjectAnimator syncAnimator;
     String prevDOB = "", prevPhoneNum = null, prevEmail = null, prevCountryCode = null;
@@ -155,13 +154,10 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
         context = MyProfileActivity.this;
         // Status Bar color -> White
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(Color.WHITE);
-        }
+        getWindow().setStatusBarColor(Color.WHITE);
         networkUtils = new NetworkUtils(MyProfileActivity.this, this);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onResume() {
         super.onResume();
@@ -175,7 +171,6 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
     }
 
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void initUI() throws DAOException {
         snackbarUtils = new SnackbarUtils();
         sessionManager = new SessionManager(this);
@@ -187,10 +182,7 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
         snackbar_cv = findViewById(R.id.snackbar_cv);
         snackbar_text = findViewById(R.id.snackbar_text);
 
-        if (sessionManager.isEnableAppLock())
-            fingerprintSwitch.setChecked(true);
-        else
-            fingerprintSwitch.setChecked(false);
+        fingerprintSwitch.setChecked(sessionManager.isEnableAppLock());
 
         ivBack = toolbar.findViewById(R.id.iv_back_arrow_common);
         tvTitle.setText(getResources().getString(R.string.my_profile));
@@ -230,8 +222,7 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
 
         refresh.setOnClickListener(v -> {
             isSynced = syncNow(MyProfileActivity.this, refresh, syncAnimator);
-            if (isSynced)
-                fetchUserDetails();
+            if (isSynced) fetchUserDetails();
         });
 
         ivBack.setOnClickListener(new View.OnClickListener() {
@@ -310,7 +301,7 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
         });
 
         btnSave.setOnClickListener(v -> {
-            Log.i("Btn Save", ": Clicked");
+            CustomLog.i("Btn Save", ": Clicked");
             hideSoftKeyboard(MyProfileActivity.this, btnSave);
             checkInternetAndUpdateProfile();
         });
@@ -340,12 +331,12 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
                 if (s.length() > 0) {
                     if (TextUtils.isEmpty(etFirstName.getText().toString())) {
                         tvErrorFirstName.setVisibility(View.VISIBLE);
-                        etFirstName.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
+                        etFirstName.setBackground(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
 
                         return;
                     } else {
                         tvErrorFirstName.setVisibility(View.GONE);
-                        etFirstName.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
+                        etFirstName.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
 
                     }
                 }
@@ -374,12 +365,12 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
                 myProfilePOJO.setNewLastName(s.toString());
                 if (TextUtils.isEmpty(etLastName.getText().toString())) {
                     tvErrorLastName.setVisibility(View.VISIBLE);
-                    etLastName.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
+                    etLastName.setBackground(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
 
                     return;
                 } else {
                     tvErrorLastName.setVisibility(View.GONE);
-                    etLastName.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
+                    etLastName.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
 
                 }
             }
@@ -504,9 +495,16 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
 
     private void checkInternetAndUpdateProfile() {
         if (NetworkConnection.isOnline(MyProfileActivity.this)) {
-            if (isValidData()) updateDetails();
+            if (isValidData()) {
+                if (personUuid == null || personUuid.isEmpty()) {
+                    Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                    finish();
+                } else {
+                    updateDetails();
+                }
+            }
         } else {
-            MaterialAlertDialogBuilder builder = new DialogUtils().showErrorDialogWithTryAgainButton(this, getDrawable(R.drawable.ui2_icon_logging_in), getString(R.string.network_failure), getString(R.string.profile_update_requires_internet), getString(R.string.try_again));
+            MaterialAlertDialogBuilder builder = new DialogUtils().showErrorDialogWithTryAgainButton(this, ContextCompat.getDrawable(context, R.drawable.ui2_icon_logging_in), getString(R.string.network_failure), getString(R.string.profile_update_requires_internet), getString(R.string.try_again));
             AlertDialog networkFailureDialog = builder.show();
 
             networkFailureDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
@@ -566,6 +564,7 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
     }
 
     private void updateDetails() {
+
         Integer updatedAge = Integer.parseInt(tvAge.getText().toString());
         String updatedDOB = tvDob.getText().toString();
         String formattedDOB = dobToDb + "T00:00:00.000+0530";
@@ -576,8 +575,7 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
         if (!updatedDOB.equalsIgnoreCase(prevDOB)) {
             updateDOB(updatedAge, formattedDOB, gender);
         }
-        if (prevPhoneNum == null && phoneAttributeUuid == null && !updatedPhoneNum.trim().equalsIgnoreCase("")
-                && !updatedPhoneNum.equalsIgnoreCase(prevPhoneNum)) {
+        if (prevPhoneNum == null && phoneAttributeUuid == null && !updatedPhoneNum.trim().equalsIgnoreCase("") && !updatedPhoneNum.equalsIgnoreCase(prevPhoneNum)) {
             createProfileAttribute("e3a7e03a-5fd0-4e6c-b2e3-938adb3bbb37", updatedPhoneNum);
         } else if (phoneAttributeUuid != null && !updatedPhoneNum.equalsIgnoreCase(prevPhoneNum)) {
             updateProfileAttribute(phoneAttributeUuid, updatedPhoneNum);
@@ -609,8 +607,7 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
 
         ApiClient.changeApiBaseUrl(BuildConfig.SERVER_URL);
         ApiInterface apiService = ApiClient.createService(ApiInterface.class);
-        Observable<ResponseBody> profileAttributeCreateRequest = apiService.PROFILE_ATTRIBUTE_CREATE(sessionManager.getProviderID(),
-                inputModel, "Basic " + sessionManager.getEncoded());
+        Observable<ResponseBody> profileAttributeCreateRequest = apiService.PROFILE_ATTRIBUTE_CREATE(sessionManager.getProviderID(), inputModel, "Basic " + sessionManager.getEncoded());
         profileAttributeCreateRequest.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new DisposableObserver<ResponseBody>() {
             @Override
             public void onNext(ResponseBody responseBody) {
@@ -641,8 +638,7 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
 
         ApiClient.changeApiBaseUrl(serverUrl);
         ApiInterface apiService = ApiClient.createService(ApiInterface.class);
-        Observable<ResponseBody> profileAttributeUpdateRequest = apiService.PROFILE_ATTRIBUTE_UPDATE(attributeTypeUuid,
-                inputModel, "Basic " + sessionManager.getEncoded());
+        Observable<ResponseBody> profileAttributeUpdateRequest = apiService.PROFILE_ATTRIBUTE_UPDATE(attributeTypeUuid, inputModel, "Basic " + sessionManager.getEncoded());
         profileAttributeUpdateRequest.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new DisposableObserver<ResponseBody>() {
             @Override
             public void onNext(ResponseBody responseBody) {
@@ -670,8 +666,7 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
 
         ApiClient.changeApiBaseUrl(BuildConfig.SERVER_URL);
         ApiInterface apiService = ApiClient.createService(ApiInterface.class);
-        Observable<ResponseBody> profileAgeUpdateRequest = apiService.PROFILE_AGE_UPDATE(personUuid,
-                inputModel, "Basic " + sessionManager.getEncoded());
+        Observable<ResponseBody> profileAgeUpdateRequest = apiService.PROFILE_AGE_UPDATE(personUuid, inputModel, "Basic " + sessionManager.getEncoded());
         profileAgeUpdateRequest.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new DisposableObserver<ResponseBody>() {
             @Override
             public void onNext(ResponseBody responseBody) {
@@ -694,7 +689,7 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
     private boolean checkFingerprintSensor() {
         boolean isFingerPrintAvailable = true;
         BiometricManager biometricManager = BiometricManager.from(this);
-        switch (biometricManager.canAuthenticate()) {
+        switch (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_WEAK)) {
             case BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE:
                 errorMsg = getResources().getString(R.string.no_fingerprint_sensor_dialog);
                 isFingerPrintAvailable = false;
@@ -716,7 +711,7 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
         if (mSelectedCountryCode.equals("91")) {
             mSelectedMobileNumberValidationLength = 10;
         }
-        etMobileNo.setInputType(InputType.TYPE_CLASS_PHONE);
+        etMobileNo.setInputType(InputType.TYPE_CLASS_NUMBER);
         InputFilter inputFilter = new InputFilter() {
             @Override
             public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
@@ -767,28 +762,28 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
             if (gender != null && !gender.isEmpty()) {
 
                 if (gender.equalsIgnoreCase("m")) {
-                    rbMale.setButtonDrawable(getDrawable(R.drawable.ui2_ic_selected_green));
-                    rbFemale.setButtonDrawable(getDrawable(R.drawable.ui2_ic_circle));
-                    rbOther.setButtonDrawable(getDrawable(R.drawable.ui2_ic_circle));
+                    rbMale.setButtonDrawable(ContextCompat.getDrawable(context, R.drawable.ui2_ic_selected_green));
+                    rbFemale.setButtonDrawable(ContextCompat.getDrawable(context, R.drawable.ui2_ic_circle));
+                    rbOther.setButtonDrawable(ContextCompat.getDrawable(context, R.drawable.ui2_ic_circle));
 
                 } else if (gender.equalsIgnoreCase("f")) {
-                    rbMale.setButtonDrawable(getDrawable(R.drawable.ui2_ic_circle));
-                    rbFemale.setButtonDrawable(getDrawable(R.drawable.ui2_ic_selected_green));
-                    rbOther.setButtonDrawable(getDrawable(R.drawable.ui2_ic_circle));
+                    rbMale.setButtonDrawable(ContextCompat.getDrawable(context, R.drawable.ui2_ic_circle));
+                    rbFemale.setButtonDrawable(ContextCompat.getDrawable(context, R.drawable.ui2_ic_selected_green));
+                    rbOther.setButtonDrawable(ContextCompat.getDrawable(context, R.drawable.ui2_ic_circle));
                 } else if (gender.equalsIgnoreCase("o")) {
-                    rbMale.setButtonDrawable(getDrawable(R.drawable.ui2_ic_circle));
-                    rbFemale.setButtonDrawable(getDrawable(R.drawable.ui2_ic_circle));
-                    rbOther.setButtonDrawable(getDrawable(R.drawable.ui2_ic_selected_green));
+                    rbMale.setButtonDrawable(ContextCompat.getDrawable(context, R.drawable.ui2_ic_circle));
+                    rbFemale.setButtonDrawable(ContextCompat.getDrawable(context, R.drawable.ui2_ic_circle));
+                    rbOther.setButtonDrawable(ContextCompat.getDrawable(context, R.drawable.ui2_ic_selected_green));
                 }
             }
 
             if (providerDTO.getImagePath() != null && !providerDTO.getImagePath().isEmpty()) {
                 bindProfilePictureToUI(providerDTO.getImagePath());
             } else {
-                ivProfileImage.setImageDrawable(getResources().getDrawable(R.drawable.avatar1));
+                ivProfileImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.avatar1));
             }
 
-            Log.d(TAG, "fetchUserDetailsIfAdded: path : " + providerDTO.getImagePath());
+            CustomLog.d(TAG, "fetchUserDetailsIfAdded: path : " + providerDTO.getImagePath());
             if (providerDTO.getImagePath() == null || providerDTO.getImagePath().equalsIgnoreCase("")) {
                 if (NetworkConnection.isOnline(this)) {
                     profilePicDownloaded(providerDTO);
@@ -801,34 +796,23 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
 
     private AlertDialog mImagePickerAlertDialog;
 
-    private final ActivityResultLauncher<Intent> cameraIntentLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(), result -> {
-                Timber.tag(TAG).d("Camera result=>%s", new Gson().toJson(result));
-                if (result.getResultCode() == RESULT_OK) {
-                    if (result.getData() != null) captureImage(result.getData());
-                }
-            }
-    );
+    private final ActivityResultLauncher<Intent> cameraIntentLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        Timber.tag(TAG).d("Camera result=>%s", new Gson().toJson(result));
+        if (result.getResultCode() == RESULT_OK) {
+            if (result.getData() != null) captureImage(result.getData());
+        }
+    });
 
-    private final ActivityResultLauncher<Intent> galleryIntentLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(), result -> {
-                Timber.tag(TAG).d("Gallery result=>%s", new Gson().toJson(result));
-                if (result.getResultCode() == RESULT_OK) {
-                    if (result.getData() != null) pickImage(result.getData());
-                }
-            }
-    );
+    private final ActivityResultLauncher<Intent> galleryIntentLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        Timber.tag(TAG).d("Gallery result=>%s", new Gson().toJson(result));
+        if (result.getResultCode() == RESULT_OK) {
+            if (result.getData() != null) pickImage(result.getData());
+        }
+    });
 
     private void bindProfilePictureToUI(String url) {
-        RequestBuilder<Drawable> requestBuilder = Glide.with(this)
-                .asDrawable().sizeMultiplier(0.25f);
-        Glide.with(MyProfileActivity.this)
-                .load(new File(url))
-                .thumbnail(requestBuilder)
-                .centerCrop()
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .skipMemoryCache(true)
-                .into(ivProfileImage);
+        RequestBuilder<Drawable> requestBuilder = Glide.with(this).asDrawable().sizeMultiplier(0.25f);
+        Glide.with(MyProfileActivity.this).load(new File(url)).thumbnail(requestBuilder).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(ivProfileImage);
     }
 
     private void captureImage(Intent data) {
@@ -848,7 +832,7 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
                 String picturePath = c.getString(columnIndex);
                 c.close();
                 //Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
-                Log.v("path", picturePath + "");
+                CustomLog.v("path", picturePath + "");
 
                 // copy & rename the file
                 String finalImageName = UUID.randomUUID().toString();
@@ -889,12 +873,10 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
                     cameraIntent.putExtra(CameraActivity.SET_IMAGE_NAME, imageName);
                     cameraIntent.putExtra(CameraActivity.SET_IMAGE_PATH, AppConstants.IMAGE_PATH);
                     cameraIntentLauncher.launch(cameraIntent);
-//                    startActivityForResult(cameraIntent, CameraActivity.TAKE_IMAGE);
 
                 } else if (action == DialogUtils.ImagePickerDialogListener.GALLERY) {
                     Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     galleryIntentLauncher.launch(intent);
-//                    startActivityForResult(intent, PICK_IMAGE_FROM_GALLERY);
                 }
             }
         });
@@ -929,12 +911,7 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
             ProviderDAO providerDAO = new ProviderDAO();
             ProviderDTO providerDTO = providerDAO.getLoginUserDetails(sessionManager.getProviderID());
             if (providerDTO != null) {
-                ProviderDTO inputDTO = new ProviderDTO(providerDTO.getRole(),
-                        providerDTO.getUseruuid(), etEmail.getText().toString().trim(),
-                        etMobileNo.getText().toString().trim(), providerDTO.getProviderId(),
-                        etFirstName.getText().toString().trim(), etLastName.getText().toString().trim(),
-                        providerDTO.getVoided(), selectedGender, dobToDb, providerDTO.getUuid(),
-                        providerDTO.getIdentifier(), selectedCode, etMiddleName.getText().toString().trim());
+                ProviderDTO inputDTO = new ProviderDTO(providerDTO.getRole(), providerDTO.getUseruuid(), etEmail.getText().toString().trim(), etMobileNo.getText().toString().trim(), providerDTO.getProviderId(), etFirstName.getText().toString().trim(), etLastName.getText().toString().trim(), providerDTO.getVoided(), selectedGender, dobToDb, providerDTO.getUuid(), providerDTO.getIdentifier(), selectedCode, etMiddleName.getText().toString().trim());
 
                 String imagePath = "";
                 if (profileImagePAth != null && !profileImagePAth.isEmpty()) {
@@ -985,14 +962,14 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
     }
 
     private void saveImage(String picturePath) {
-        Log.v("saveImage", "picturePath = " + picturePath);
+        CustomLog.v("saveImage", "picturePath = " + picturePath);
         File photo = new File(picturePath);
         if (photo.exists()) {
             try {
 
                 long length = photo.length();
                 length = length / 1024;
-                Log.e("------->>>>", length + "");
+                CustomLog.e("------->>>>", length + "");
             } catch (Exception e) {
                 e.printStackTrace();
                 System.out.println("File not found : " + e.getMessage() + e);
@@ -1044,13 +1021,8 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
         if (requestCode == CameraActivity.TAKE_IMAGE) {
             if (resultCode == RESULT_OK) {
                 String mCurrentPhotoPath = data.getStringExtra("RESULT");
-                Glide.with(MyProfileActivity.this)
-                        .load(new File(mCurrentPhotoPath))
-                        .thumbnail(0.25f)
-                        .centerCrop()
-                        .diskCacheStrategy(DiskCacheStrategy.NONE)
-                        .skipMemoryCache(true)
-                        .into(ivProfileImage);
+                RequestBuilder<Drawable> requestBuilder = Glide.with(MyProfileActivity.this).asDrawable().sizeMultiplier(0.3f);
+                Glide.with(MyProfileActivity.this).load(new File(mCurrentPhotoPath)).thumbnail(requestBuilder).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(ivProfileImage);
 
                 saveImage(mCurrentPhotoPath);
             }
@@ -1065,7 +1037,7 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
                     String picturePath = c.getString(columnIndex);
                     c.close();
                     //Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
-                    Log.v("path", picturePath + "");
+                    CustomLog.v("path", picturePath + "");
 
                     // copy & rename the file
                     String finalImageName = UUID.randomUUID().toString();
@@ -1082,7 +1054,8 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
                             runOnUiThread(new Runnable() //run on ui thread
                             {
                                 public void run() {
-                                    Glide.with(MyProfileActivity.this).load(finalFilePath).thumbnail(0.3f).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(ivProfileImage);
+                                    RequestBuilder<Drawable> requestBuilder = Glide.with(MyProfileActivity.this).asDrawable().sizeMultiplier(0.3f);
+                                    Glide.with(MyProfileActivity.this).load(finalFilePath).thumbnail(requestBuilder).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(ivProfileImage);
                                 }
                             });
                         }
@@ -1150,10 +1123,10 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
         Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
         Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
 
-        positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+        positiveButton.setTextColor(ContextCompat.getColor(this,R.color.colorPrimary));
         //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
 
-        negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+        negativeButton.setTextColor(ContextCompat.getColor(this,R.color.colorPrimary));
         //negativeButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
         IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
     }
@@ -1184,7 +1157,7 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
             e.printStackTrace();
         }
         String url = new UrlModifiers().getHWProfileDetails(uuid);
-        Log.d(TAG, "profilePicDownloaded:: url : " + url);
+        CustomLog.d(TAG, "profilePicDownloaded:: url : " + url);
 
         Observable<Profile> profileDetailsDownload = AppConstants.apiInterface.PROVIDER_PROFILE_DETAILS_DOWNLOAD(url, "Basic " + sessionManager.getEncoded());
         profileDetailsDownload.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new DisposableObserver<Profile>() {
@@ -1192,7 +1165,7 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
             public void onNext(Profile profile) {
                 if (profile != null) {
                     Timber.tag(TAG).d("Profile =>%s", new Gson().toJson(profile));
-                    Log.d(TAG, "fetchUserDetails: " + profile.getResults().get(0).getPerson().getPreferredName().getMiddleName());
+                    CustomLog.d(TAG, "fetchUserDetails: " + profile.getResults().get(0).getPerson().getPreferredName().getMiddleName());
 
                     personUuid = profile.getResults().get(0).getPerson().getUuid();
                     if (profile.getResults().get(0).getPerson().getPreferredName().getGivenName() != null)
@@ -1225,18 +1198,18 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
                     gender = profile.getResults().get(0).getPerson().getGender();
                     if (gender != null && !gender.isEmpty()) {
                         if (gender.equalsIgnoreCase("m")) {
-                            rbMale.setButtonDrawable(getDrawable(R.drawable.ui2_ic_selected_green));
-                            rbFemale.setButtonDrawable(getDrawable(R.drawable.ui2_ic_circle));
-                            rbOther.setButtonDrawable(getDrawable(R.drawable.ui2_ic_circle));
+                            rbMale.setButtonDrawable(ContextCompat.getDrawable(context, R.drawable.ui2_ic_selected_green));
+                            rbFemale.setButtonDrawable(ContextCompat.getDrawable(context, R.drawable.ui2_ic_circle));
+                            rbOther.setButtonDrawable(ContextCompat.getDrawable(context, R.drawable.ui2_ic_circle));
 
                         } else if (gender.equalsIgnoreCase("f")) {
-                            rbMale.setButtonDrawable(getDrawable(R.drawable.ui2_ic_circle));
-                            rbFemale.setButtonDrawable(getDrawable(R.drawable.ui2_ic_selected_green));
-                            rbOther.setButtonDrawable(getDrawable(R.drawable.ui2_ic_circle));
+                            rbMale.setButtonDrawable(ContextCompat.getDrawable(context, R.drawable.ui2_ic_circle));
+                            rbFemale.setButtonDrawable(ContextCompat.getDrawable(context, R.drawable.ui2_ic_selected_green));
+                            rbOther.setButtonDrawable(ContextCompat.getDrawable(context, R.drawable.ui2_ic_circle));
                         } else if (gender.equalsIgnoreCase("o")) {
-                            rbMale.setButtonDrawable(getDrawable(R.drawable.ui2_ic_circle));
-                            rbFemale.setButtonDrawable(getDrawable(R.drawable.ui2_ic_circle));
-                            rbOther.setButtonDrawable(getDrawable(R.drawable.ui2_ic_selected_green));
+                            rbMale.setButtonDrawable(ContextCompat.getDrawable(context, R.drawable.ui2_ic_circle));
+                            rbFemale.setButtonDrawable(ContextCompat.getDrawable(context, R.drawable.ui2_ic_circle));
+                            rbOther.setButtonDrawable(ContextCompat.getDrawable(context, R.drawable.ui2_ic_selected_green));
                         }
                     }
                     List<PersonAttributes> personAttributes = new ArrayList<>();
@@ -1270,6 +1243,9 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
             public void onError(Throwable e) {
                 e.printStackTrace();
                 Logger.logD(TAG, e.getMessage());
+                // need to close this activity if not able to fetch the data
+                Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                finish();
             }
 
             @Override
@@ -1281,17 +1257,13 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
 
 
         if (providerDTO != null && providerDTO.getImagePath() != null && !providerDTO.getImagePath().isEmpty()) {
-            Glide.with(this)
-                    .load(providerDTO.getImagePath())
-                    .thumbnail(0.3f)
-                    .centerCrop()
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .skipMemoryCache(true).into(ivProfileImage);
+            RequestBuilder<Drawable> requestBuilder = Glide.with(this).asDrawable().sizeMultiplier(0.3f);
+            Glide.with(this).load(providerDTO.getImagePath()).thumbnail(requestBuilder).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(ivProfileImage);
         } else {
-            ivProfileImage.setImageDrawable(getResources().getDrawable(R.drawable.avatar1));
+            ivProfileImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.avatar1));
         }
 
-        Log.d(TAG, "fetchUserDetailsIfAdded: path : " + providerDTO.getImagePath());
+        CustomLog.d(TAG, "fetchUserDetailsIfAdded: path : " + providerDTO.getImagePath());
         if (providerDTO.getImagePath() == null || providerDTO.getImagePath().equalsIgnoreCase("")) {
             if (NetworkConnection.isOnline(this)) {
                 try {
@@ -1320,12 +1292,12 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
     }
 
     public void profilePicDownloaded(ProviderDTO providerDTO) throws DAOException {
-        Log.d(TAG, "profilePicDownloaded: ");
+        CustomLog.d(TAG, "profilePicDownloaded: ");
         SessionManager sessionManager = new SessionManager(MyProfileActivity.this);
         UrlModifiers urlModifiers = new UrlModifiers();
         String uuid = sessionManager.getProviderID();
         String url = urlModifiers.getProviderProfileImageUrl(uuid);
-        Log.d(TAG, "profilePicDownloaded:: url : " + url);
+        CustomLog.d(TAG, "profilePicDownloaded:: url : " + url);
 
 
         Observable<ResponseBody> profilePicDownload = AppConstants.apiInterface.PROVIDER_PROFILE_PIC_DOWNLOAD(url, "Basic " + sessionManager.getEncoded());
@@ -1334,7 +1306,7 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
         profilePicDownload.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new DisposableObserver<ResponseBody>() {
             @Override
             public void onNext(ResponseBody file) {
-                Log.d(TAG, "onNext: ");
+                CustomLog.d(TAG, "onNext: ");
                 DownloadFilesUtils downloadFilesUtils = new DownloadFilesUtils();
                 downloadFilesUtils.saveToDisk(file, uuid);
             }
@@ -1357,7 +1329,8 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
                     FirebaseCrashlytics.getInstance().recordException(e);
                 }
                 if (updated) {
-                    Glide.with(MyProfileActivity.this).load(AppConstants.IMAGE_PATH + uuid + ".jpg").thumbnail(0.3f).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(ivProfileImage);
+                    RequestBuilder<Drawable> requestBuilder = Glide.with(MyProfileActivity.this).asDrawable().sizeMultiplier(0.3f);
+                    Glide.with(MyProfileActivity.this).load(AppConstants.IMAGE_PATH + uuid + ".jpg").thumbnail(requestBuilder).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(ivProfileImage);
                 }
                 ImagesDAO imagesDAO = new ImagesDAO();
                 boolean isImageDownloaded = false;
@@ -1374,7 +1347,7 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
 
     @Override
     public void getSelectedDate(String selectedDate, String whichDate) {
-        Log.d(TAG, "getSelectedDate: selectedDate from interface : " + selectedDate);
+        CustomLog.d(TAG, "getSelectedDate: selectedDate from interface : " + selectedDate);
         String dateToshow1 = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(selectedDate);
         if (!selectedDate.isEmpty()) {
             dobToDb = DateAndTimeUtils.convertDateToYyyyMMddFormat(selectedDate);
@@ -1383,10 +1356,10 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
             //dobToDb = dateForAge.replace("/","-");
             String age = DateAndTimeUtils.getAge_FollowUp(DateAndTimeUtils.convertDateToYyyyMMddFormat(selectedDate), this);
             //for age
-            Log.d(TAG, "getSelectedDate: date : " + DateAndTimeUtils.convertDateToYyyyMMddFormat(selectedDate));
+            CustomLog.d(TAG, "getSelectedDate: date : " + DateAndTimeUtils.convertDateToYyyyMMddFormat(selectedDate));
             String[] splitedDate = selectedDate.split("/");
 
-            Log.d(TAG, "getSelectedDate: age : " + age);
+            CustomLog.d(TAG, "getSelectedDate: age : " + age);
             if (age != null && !age.isEmpty() && Integer.parseInt(age) >= 18) {
                 tvAge.setText(age);
                 tvDob.setText(dateToshow1 + ", " + splitedDate[2]);
@@ -1394,10 +1367,9 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
                     tvDob.setText(en_hi_dob_updated(dateToshow1) + ", " + splitedDate[2]);
                 }
                 myProfilePOJO.setNewDateOfBirth(dateToshow1 + ", " + splitedDate[2]);
-                if (tvErrorDob.getVisibility() == View.VISIBLE)
-                    tvErrorDob.setVisibility(View.GONE);
+                if (tvErrorDob.getVisibility() == View.VISIBLE) tvErrorDob.setVisibility(View.GONE);
                 shouldActivateSaveButton();
-                Log.d(TAG, "getSelectedDate: " + dateToshow1 + ", " + splitedDate[2]);
+                CustomLog.d(TAG, "getSelectedDate: " + dateToshow1 + ", " + splitedDate[2]);
             } else if (age != null && !age.isEmpty() && Integer.parseInt(age) < 18) {
                 tvAge.setText("");
                 tvDob.setText("");
@@ -1412,7 +1384,7 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
 
 
         } else {
-            Log.d(TAG, "onClick: date empty");
+            CustomLog.d(TAG, "onClick: date empty");
         }
     }
 
@@ -1425,12 +1397,12 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
         if (TextUtils.isEmpty(firstName)) {
             result = false;
             tvErrorFirstName.setVisibility(View.VISIBLE);
-            etFirstName.setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.input_field_error_bg_ui2));
+            etFirstName.setBackground(ContextCompat.getDrawable(this, R.drawable.input_field_error_bg_ui2));
 
         } else if (TextUtils.isEmpty(lastName)) {
             result = false;
             tvErrorLastName.setVisibility(View.VISIBLE);
-            etLastName.setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.input_field_error_bg_ui2));
+            etLastName.setBackground(ContextCompat.getDrawable(this, R.drawable.input_field_error_bg_ui2));
 
         } else if (TextUtils.isEmpty(mobileNo)) {
             result = false;
@@ -1438,8 +1410,8 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
             etMobileNo.setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.input_field_error_bg_ui2));
 
         } else {
-            etFirstName.setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.bg_input_fieldnew));
-            etLastName.setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.bg_input_fieldnew));
+            etFirstName.setBackground(ContextCompat.getDrawable(this, R.drawable.bg_input_fieldnew));
+            etLastName.setBackground(ContextCompat.getDrawable(this, R.drawable.bg_input_fieldnew));
             etMobileNo.setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.bg_input_fieldnew));
 
             result = true;
@@ -1469,10 +1441,10 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
     @Override
     public void updateUIForInternetAvailability(boolean isInternetAvailable) {
         if (isInternetAvailable) {
-            ivIsInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_internet_available));
+            ivIsInternet.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ui2_ic_internet_available));
 
         } else {
-            ivIsInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
+            ivIsInternet.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ui2_ic_no_internet));
 
         }
     }

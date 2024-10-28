@@ -19,10 +19,12 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.google.android.cameraview.CameraView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -186,8 +188,6 @@ public class CameraActivity extends AppCompatActivity {
                     options.inSampleSize = calculateInSampleSize(options, actualWidth, actualHeight);
                     options.inJustDecodeBounds = false;
                     options.inDither = false;
-                    options.inPurgeable = true;
-                    options.inInputShareable = true;
                     options.inTempStorage = new byte[16 * 1024];
 
                     try {
@@ -310,13 +310,12 @@ public class CameraActivity extends AppCompatActivity {
         setContentView(R.layout.utils_activity_camera);
         mCameraView = findViewById(R.id.utils_camera_surface_CameraView);
 
+        handleBackPress();
 
         if (mCameraView != null) mCameraView.addCallback(mCallback);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(getResources().getColor(R.color.white));
-            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.white));
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
 
-        }
     }
 
     @Override
@@ -417,12 +416,17 @@ public class CameraActivity extends AppCompatActivity {
         return mBackgroundHandler;
     }
 
-    @Override
-    public void onBackPressed() {
-        //do nothing
-        super.onBackPressed();
-        finish();
-
+    /**
+     * removed onBackPressed function due to deprecation
+     * and added this one to handle onBackPressed
+     */
+    private void handleBackPress() {
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                finish();
+            }
+        });
     }
 
     public void endCameraSession(View view) {

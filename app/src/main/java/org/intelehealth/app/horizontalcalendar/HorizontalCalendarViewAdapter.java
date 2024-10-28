@@ -2,13 +2,14 @@ package org.intelehealth.app.horizontalcalendar;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.intelehealth.app.R;
@@ -50,19 +51,19 @@ public class HorizontalCalendarViewAdapter extends RecyclerView.Adapter<Horizont
         holder.tvDay.setText(calendarModel.getDay());
 
         //changeToSelect(selectedPos == position ? Color.parseColor("#ca3854") : Color.BLACK, holder);
-        Log.d(TAG, "onBindViewHolder: selected month : " + calendarModel.getSelectedMonthForDays());
-        Log.d(TAG, "onBindViewHolder: currentMonth : " + currentMonth);
-        makeTodaysDateSelected(calendarModel, holder, currentMonth);
+        CustomLog.d(TAG, "onBindViewHolder: selected month : " + calendarModel.getSelectedMonthForDays());
+        CustomLog.d(TAG, "onBindViewHolder: currentMonth : " + currentMonth);
+//        makeTodaysDateSelected(calendarModel, holder, currentMonth);
 
         holder.cardParent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (listener != null) {
                     //  int position = getAdapterPosition();
-                    if (holder.getAdapterPosition() != RecyclerView.NO_POSITION) {
+                    if (holder.getBindingAdapterPosition() != RecyclerView.NO_POSITION) {
                         listener.onItemClick(calendarModel);
                         notifyItemChanged(selectedPos);
-                        selectedPos = holder.getAdapterPosition();
+                        selectedPos = holder.getBindingAdapterPosition();
                         notifyItemChanged(selectedPos);
                     }
                 }
@@ -75,13 +76,15 @@ public class HorizontalCalendarViewAdapter extends RecyclerView.Adapter<Horizont
     private void makeTodaysDateSelected(CalendarModel calendarModel, HorizontalCalendarViewAdapter.MyViewHolder holder, int currentMonth) {
         if (String.valueOf(currentMonth).trim().equals(calendarModel.getSelectedMonthForDays().trim()) && calendarModel.isCurrentDate) {
             holder.tvDay.setText(context.getString(R.string.today));
-            holder.cardParent.setBackground(context.getResources().getDrawable(R.drawable.bg_horizontal_cal_view_selected));
-            holder.tvDate.setTextColor(context.getResources().getColor(R.color.textColorWhite));
-            holder.tvDay.setTextColor(context.getResources().getColor(R.color.textColorWhite));
+            holder.cardParent.setSelected(true);
+//            holder.cardParent.setBackground(ContextCompat.getDrawable(context,R.drawable.bg_horizontal_cal_view_selected));
+//            holder.tvDate.setTextColor(ContextCompat.getColor(context,R.color.textColorWhite));
+//            holder.tvDay.setTextColor(ContextCompat.getColor(context,R.color.textColorWhite));
         } else {
-            holder.cardParent.setBackground(context.getResources().getDrawable(R.drawable.bg_horizontal_cal_view_ui2));
-            holder.tvDate.setTextColor(context.getResources().getColor(R.color.colorPrimary));
-            holder.tvDay.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+            holder.cardParent.setSelected(false);
+//            holder.cardParent.setBackground(ContextCompat.getDrawable(context,R.drawable.bg_horizontal_cal_view_ui2));
+//            holder.tvDate.setTextColor(ContextCompat.getColor(context,R.color.colorPrimary));
+//            holder.tvDay.setTextColor(ContextCompat.getColor(context,R.color.colorPrimary));
         }
     }
 
@@ -89,21 +92,21 @@ public class HorizontalCalendarViewAdapter extends RecyclerView.Adapter<Horizont
         holder.cardParent.setBackgroundColor(colorBackground);
     }*/
     public void changeToSelect(int selectedPos, int position, HorizontalCalendarViewAdapter.MyViewHolder holder) {
-        Log.d(TAG, "changeToSelect: selectedPos : " + selectedPos);
-        Log.d(TAG, "changeToSelect: position : " + position);
-
-        if (selectedPos == position) {
-            Log.d(TAG, "changeToSelect: in true");
-            holder.cardParent.setBackground(context.getResources().getDrawable(R.drawable.bg_horizontal_cal_view_selected));
-            holder.tvDate.setTextColor(context.getResources().getColor(R.color.textColorWhite));
-            holder.tvDay.setTextColor(context.getResources().getColor(R.color.textColorWhite));
-        } else {
-            Log.d(TAG, "changeToSelect: in false");
-
-            holder.cardParent.setBackground(context.getResources().getDrawable(R.drawable.bg_horizontal_cal_view_ui2));
-            holder.tvDate.setTextColor(context.getResources().getColor(R.color.colorPrimary));
-            holder.tvDay.setTextColor(context.getResources().getColor(R.color.colorPrimary));
-        }
+        CustomLog.d(TAG, "changeToSelect: selectedPos : " + selectedPos);
+        CustomLog.d(TAG, "changeToSelect: position : " + position);
+        holder.cardParent.setSelected(selectedPos == position);
+//        if (selectedPos == position) {
+//            CustomLog.d(TAG, "changeToSelect: in true");
+//            holder.cardParent.setBackground(ContextCompat.getDrawable(context,R.drawable.bg_horizontal_cal_view_selected));
+//            holder.tvDate.setTextColor(ContextCompat.getColor(context,R.color.textColorWhite));
+//            holder.tvDay.setTextColor(ContextCompat.getColor(context,R.color.textColorWhite));
+//        } else {
+//            CustomLog.d(TAG, "changeToSelect: in false");
+//
+//            holder.cardParent.setBackground(ContextCompat.getDrawable(context,R.drawable.bg_horizontal_cal_view_ui2));
+//            holder.tvDate.setTextColor(ContextCompat.getColor(context,R.color.colorPrimary));
+//            holder.tvDay.setTextColor(ContextCompat.getColor(context,R.color.colorPrimary));
+//        }
     }
 
     @Override

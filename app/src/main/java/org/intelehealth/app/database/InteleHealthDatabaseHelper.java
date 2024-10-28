@@ -62,10 +62,11 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
      */
     public static final String CREATE_NOTIFICATIONS = "CREATE TABLE IF NOT EXISTS tbl_notifications (" +
             "uuid TEXT PRIMARY KEY," +
-            "description TEXT UNIQUE," +
+            "description TEXT," +
             "notification_type TEXT," +
             "obs_server_modified_date TEXT," +
-            "isdeleted TEXT)";
+            "isdeleted TEXT," +
+            "UNIQUE(uuid) ON CONFLICT IGNORE)";
 
     public static final String CREATE_ENCOUNTER_MAIN = "CREATE TABLE IF NOT EXISTS tbl_encounter (" +
             "uuid TEXT PRIMARY KEY," +
@@ -130,6 +131,11 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "education_status TEXT," +
             "caste TEXT," +
             "dead Text," +
+            "guardian_name TEXT," +
+            "guardian_type TEXT," +
+            "contact_type TEXT," +
+            "em_contact_name TEXT," +
+            "em_contact_num TEXT," +
             "modified_date TEXT," +
             "voided TEXT DEFAULT '0'," +
             "sync TEXT DEFAULT 'false' " +
@@ -239,6 +245,18 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
                     "voided TEXT," +
                     "sync TEXT)";
 
+    public static final String FOLLOW_UP_NOTIFICATION_SCHEDULE = "CREATE TABLE IF NOT EXISTS tbl_follow_up_notification_schedule (" +
+            "id TEXT," +
+            "date_time TEXT," +
+            "duration TEXT," +
+            "value TEXT," +
+            "name TEXT," +
+            "openmrs_id TEXT," +
+            "patient_uuid TEXT," +
+            "visit_uuid TEXT," +
+            "request_code TEXT" +
+            ")";
+
     public InteleHealthDatabaseHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -305,6 +323,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_APPOINTMENTS);
         db.execSQL(CREATE_NOTIFICATIONS);
         db.execSQL(CREATE_PROVIDER_ATTRIBUTES);
+        db.execSQL(FOLLOW_UP_NOTIFICATION_SCHEDULE);
         uuidInsert(db);
         database = db;
 

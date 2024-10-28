@@ -1,5 +1,6 @@
 package org.intelehealth.app.activities.visit;
 
+import static org.intelehealth.app.app.AppConstants.CONFIG_FILE_NAME;
 import static org.intelehealth.app.ayu.visit.common.VisitUtils.getTranslatedAssociatedSymptomQString;
 import static org.intelehealth.app.ayu.visit.common.VisitUtils.getTranslatedPatientDenies;
 import static org.intelehealth.app.database.dao.EncounterDAO.getStartVisitNoteEncounterByVisitUUID;
@@ -39,10 +40,9 @@ import android.print.PrintAttributes;
 import android.print.PrintDocumentAdapter;
 import android.print.PrintJob;
 import android.print.PrintManager;
-import android.text.Html;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -65,9 +65,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.databinding.DataBindingUtil;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.github.ajalt.timberkt.Timber;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -77,9 +80,9 @@ import com.google.gson.Gson;
 import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
-import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
 import org.intelehealth.app.activities.prescription.PrescriptionBuilder;
-import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.activities.visit.adapter.PrescribedMedicineAdapter;
+import org.intelehealth.app.activities.visit.model.PrescribedMedicineModel;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.appointment.dao.AppointmentDAO;
 import org.intelehealth.app.appointment.model.AppointmentInfo;
@@ -89,6 +92,7 @@ import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.database.dao.ProviderDAO;
 import org.intelehealth.app.database.dao.VisitAttributeListDAO;
 import org.intelehealth.app.database.dao.VisitsDAO;
+import org.intelehealth.app.databinding.ActivityPrescription2Binding;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.models.ClsDoctorDetails;
 import org.intelehealth.app.models.Patient;
@@ -98,23 +102,26 @@ import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.models.dto.ProviderDTO;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
+import org.intelehealth.app.ui.patient.activity.PatientRegistrationActivity;
 import org.intelehealth.app.utilities.AppointmentUtils;
+import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.FileUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
+import org.intelehealth.app.utilities.PatientRegStage;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
+import org.intelehealth.config.room.entity.FeatureActiveStatus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.io.Serializable;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -133,13 +140,15 @@ import java.util.Objects;
  */
 @SuppressLint("Range")
 public class PrescriptionActivity extends BaseActivity implements NetworkUtils.InternetCheckUpdateInterface {
+    private static final String TAG = "PrescriptionActivity";
     private String patientName, patientUuid, gender, age, openmrsID, vitalsUUID, adultInitialUUID, intentTag, visitID, visit_startDate, visit_speciality, patient_photo_path, chief_complaint_value;
     private ImageButton btn_up_header, btnup_drdetails_header, btnup_diagnosis_header, btnup_medication_header, btnup_test_header, btnup_speciality_header, btnup_followup_header, no_btn, yes_btn, downloadBtn;
     private LinearLayout presc_profile_header;
     private RelativeLayout dr_details_header_relative, diagnosis_header_relative, medication_header_relative, advice_header_relative, test_header_relative, referred_header_relative, followup_header_relative;
     private RelativeLayout vs_header_expandview, vs_drdetails_header_expandview, vs_diagnosis_header_expandview, vs_medication_header_expandview, vs_adviceheader_expandview, vs_testheader_expandview, vs_speciality_header_expandview, vs_followup_header_expandview, followup_date_block;
-    private TextView patName_txt, gender_age_txt, openmrsID_txt, chiefComplaint_txt, visitID_txt, presc_time, mCHWname, drname, dr_age_gender, qualification, dr_speciality, reminder, incomplete_act, archieved_notifi, diagnosis_txt, medication_txt, test_txt, advice_txt, referred_speciality_txt, no_followup_txt, followup_date_txt, followup_subtext;
+    private TextView patName_txt, gender_age_txt, openmrsID_txt, chiefComplaint_txt, visitID_txt, presc_time, mCHWname, drname, dr_age_gender, qualification, dr_speciality, reminder, incomplete_act, archieved_notifi, diagnosis_txt, test_txt, advice_txt, referred_speciality_txt, no_followup_txt, followup_date_txt, followup_subtext;
     private ImageView priorityTag, profile_image;
+    private ActivityPrescription2Binding mBinding;
     private SessionManager sessionManager;
     String diagnosisReturned = "", rxReturned = "", testsReturned = "", referredSpeciality = "", adviceReturned = "", doctorName = "", additionalReturned = "", followUpDate = "";
     String medicalAdvice_string = "", medicalAdvice_HyperLink = "";
@@ -160,7 +169,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
     public static String prescription1;
     public static String prescription2;
     boolean hasLicense = false, isRespiratory = false;
-    private static String mFileName = "config.json";
+    private static String mFileName = CONFIG_FILE_NAME;
     private ImageButton backArrow, refresh, filter;
     private NetworkUtils networkUtils;
     private ObjectAnimator syncAnimator;
@@ -188,13 +197,11 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_prescription2);
+        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_prescription2);
 
         // Status Bar color -> White
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(Color.WHITE);
-        }
+        getWindow().setStatusBarColor(Color.WHITE);
 
 
         initUI();
@@ -203,6 +210,17 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         setDataToView();
         expandableCardVisibilityHandling();
     }
+
+    private FeatureActiveStatus mFeatureActiveStatus;
+
+    @Override
+    protected void onFeatureActiveStatusLoaded(FeatureActiveStatus activeStatus) {
+        super.onFeatureActiveStatusLoaded(activeStatus);
+        if (activeStatus != null) {
+            mFeatureActiveStatus = activeStatus;
+        }
+    }
+
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -258,7 +276,6 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         dr_speciality = findViewById(R.id.dr_speciality);
 
         diagnosis_txt = findViewById(R.id.diagnosis_txt);
-        medication_txt = findViewById(R.id.medication_txt);
         advice_txt = findViewById(R.id.advice_txt);
         test_txt = findViewById(R.id.test_txt);
         referred_speciality_txt = findViewById(R.id.referred_speciality_txt);
@@ -321,7 +338,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             patientUuid = intent.getStringExtra("patientUuid");
             gender = intent.getStringExtra("gender");
             age = intent.getStringExtra("age");
-            Log.d("TAG", "getAge_FollowUp: s : " + age);
+            CustomLog.d("TAG", "getAge_FollowUp: s : " + age);
             openmrsID = intent.getStringExtra("openmrsID");
             visitID = intent.getStringExtra("visit_ID");
             vitalsUUID = intent.getStringExtra("encounterUuidVitals");
@@ -331,8 +348,9 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             intentTag = intent.getStringExtra("tag");
             try {
                 hasPrescription = new EncounterDAO().isPrescriptionReceived(visitID);
-                Timber.tag(PrescriptionActivity.class.getSimpleName()).d("has prescription main::%s", hasPrescription);
+                CustomLog.d(PrescriptionActivity.class.getSimpleName(),"has prescription main::%s", hasPrescription);
             } catch (DAOException e) {
+                CustomLog.e(TAG,e.getMessage());
                 throw new RuntimeException(e);
             }
             queryData(String.valueOf(patientUuid));
@@ -357,9 +375,11 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         // Patient Photo
         profile_image = findViewById(R.id.profile_image);
         if (patient_photo_path != null) {
-            Glide.with(this).load(patient_photo_path).thumbnail(0.3f).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(profile_image);
+            RequestBuilder<Drawable> requestBuilder = Glide.with(this)
+                    .asDrawable().sizeMultiplier(0.3f);
+            Glide.with(this).load(patient_photo_path).thumbnail(requestBuilder).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(profile_image);
         } else {
-            profile_image.setImageDrawable(getResources().getDrawable(R.drawable.avatar1));
+            profile_image.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.avatar1));
         }
         // end
 
@@ -422,6 +442,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                 doWebViewPrint_Button();
             } catch (ParseException e) {
                 e.printStackTrace();
+                CustomLog.e(TAG,e.getMessage());
             }
         });
 
@@ -479,18 +500,11 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
     private void showEndVisitConfirmationDialog() {
         if (hasPrescription) {
             DialogUtils dialogUtils = new DialogUtils();
-            dialogUtils.showCommonDialog(
-                    this, R.drawable.dialog_close_visit_icon,
-                    getResources().getString(R.string.confirm_end_visit_reason),
-                    getResources().getString(R.string.confirm_end_visit_reason_message),
-                    false,
-                    getResources().getString(R.string.confirm),
-                    getResources().getString(R.string.cancel),
-                    action -> {
-                        if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
-                            checkIfAppointmentExistsForVisit(visitID);
-                        }
-                    });
+            dialogUtils.showCommonDialog(this, R.drawable.dialog_close_visit_icon, getResources().getString(R.string.confirm_end_visit_reason), getResources().getString(R.string.confirm_end_visit_reason_message), false, getResources().getString(R.string.confirm), getResources().getString(R.string.cancel), action -> {
+                if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
+                    checkIfAppointmentExistsForVisit(visitID);
+                }
+            });
         } else {
             triggerEndVisit();
         }
@@ -538,9 +552,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 //        String vitalsUUID = fetchEncounterUuidForEncounterVitals(visitID);
 //        String adultInitialUUID = fetchEncounterUuidForEncounterAdultInitials(visitID);
 
-        endVisit(this, visitID, patient.getUuid(),
-                followUpDate, vitalsUUID, adultInitialUUID, "state", patient.getFirst_name()
-                        + " " + patient.getLast_name().substring(0, 1), PrescriptionActivity.class.getSimpleName());
+        endVisit(this, visitID, patient.getUuid(), followUpDate, vitalsUUID, adultInitialUUID, "state", patient.getFirst_name() + " " + patient.getLast_name().substring(0, 1), PrescriptionActivity.class.getSimpleName());
     }
 
     // permission code - start
@@ -550,6 +562,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                 doWebViewPrint_downloadBtn();
             } catch (ParseException e) {
                 e.printStackTrace();
+                CustomLog.e(TAG,e.getMessage());
             }
         }
     }
@@ -595,9 +608,9 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
         Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
 
-        positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+        positiveButton.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
 
-        negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+        negativeButton.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
         IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
     }
 
@@ -611,9 +624,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         }
 
         if (!listPermissionsNeeded.isEmpty()) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                requestPermissions(listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), GROUP_PERMISSION_REQUEST);
-            }
+            requestPermissions(listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), GROUP_PERMISSION_REQUEST);
             return false;
         }
         return true;
@@ -624,10 +635,11 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
     private void createWebPrintJob_downloadBtn(WebView webView, int contentHeight) {
 
         PrintManager printManager = (PrintManager) this.getSystemService(Context.PRINT_SERVICE);
+        String docName = this.getString(R.string.app_name) + " Prescription";
 
         // Get a print adapter instance
-        PrintDocumentAdapter printAdapter = webView.createPrintDocumentAdapter();
-        Log.d("webview content height", "webview content height: " + contentHeight);
+        PrintDocumentAdapter printAdapter = webView.createPrintDocumentAdapter(docName);
+        CustomLog.d("webview content height", "webview content height: " + contentHeight);
 
         if (contentHeight > 2683 && contentHeight <= 3000) {
             //medium size prescription...
@@ -669,21 +681,19 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
                 });
             } else {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                    //to write to a pdf file...
-                    pdfPrint.print(printAdapter, dir, fileName, new PdfPrint.CallbackPrint() {
-                        @Override
-                        public void success(String path) {
-                            Toast.makeText(PrescriptionActivity.this, getResources().getString(R.string.downloaded_to) + " " + path, Toast.LENGTH_SHORT).show();
-                        }
+                //to write to a pdf file...
+                pdfPrint.print(printAdapter, dir, fileName, new PdfPrint.CallbackPrint() {
+                    @Override
+                    public void success(String path) {
+                        Toast.makeText(PrescriptionActivity.this, getResources().getString(R.string.downloaded_to) + " " + path, Toast.LENGTH_SHORT).show();
+                    }
 
-                        @Override
-                        public void onFailure() {
-                            Toast.makeText(PrescriptionActivity.this, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
-                        }
+                    @Override
+                    public void onFailure() {
+                        Toast.makeText(PrescriptionActivity.this, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                    }
 
-                    });
-                }
+                });
             }
 
 //            PrintJob printJob = printManager.print(jobName, printAdapter,
@@ -713,37 +723,19 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 //                    pBuilder.build());
 
             //TODO: write different functions for <= Lollipop versions..
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                //to write to a pdf file...
-                pdfPrint.print(webView.createPrintDocumentAdapter(jobName), dir, fileName, new PdfPrint.CallbackPrint() {
-                    @Override
-                    public void success(String path) {
-                        Toast.makeText(PrescriptionActivity.this, getResources().getString(R.string.downloaded_to) + " " + path, Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onFailure() {
-                        Toast.makeText(PrescriptionActivity.this, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
-                    }
-
-                });
-            } else {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                    //to write to a pdf file...
-                    pdfPrint.print(printAdapter, dir, fileName, new PdfPrint.CallbackPrint() {
-                        @Override
-                        public void success(String path) {
-                            Toast.makeText(PrescriptionActivity.this, getResources().getString(R.string.downloaded_to) + " " + path, Toast.LENGTH_SHORT).show();
-                        }
-
-                        @Override
-                        public void onFailure() {
-                            Toast.makeText(PrescriptionActivity.this, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
-                        }
-
-                    });
+            //to write to a pdf file...
+            pdfPrint.print(webView.createPrintDocumentAdapter(jobName), dir, fileName, new PdfPrint.CallbackPrint() {
+                @Override
+                public void success(String path) {
+                    Toast.makeText(PrescriptionActivity.this, getResources().getString(R.string.downloaded_to) + " " + path, Toast.LENGTH_SHORT).show();
                 }
-            }
+
+                @Override
+                public void onFailure() {
+                    Toast.makeText(PrescriptionActivity.this, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                }
+
+            });
 
 //            PrintJob printJob = printManager.print(jobName, printAdapter,
 //                    pBuilder.build());
@@ -772,37 +764,19 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 //                    pBuilder.build());
 
             //TODO: write different functions for <= Lollipop versions..
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                //to write to a pdf file...
-                pdfPrint.print(webView.createPrintDocumentAdapter(jobName), dir, fileName, new PdfPrint.CallbackPrint() {
-                    @Override
-                    public void success(String path) {
-                        Toast.makeText(PrescriptionActivity.this, getResources().getString(R.string.downloaded_to) + " " + path, Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onFailure() {
-                        Toast.makeText(PrescriptionActivity.this, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
-                    }
-
-                });
-            } else {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                    //to write to a pdf file...
-                    pdfPrint.print(printAdapter, dir, fileName, new PdfPrint.CallbackPrint() {
-                        @Override
-                        public void success(String path) {
-                            Toast.makeText(PrescriptionActivity.this, getResources().getString(R.string.downloaded_to) + " " + path, Toast.LENGTH_SHORT).show();
-                        }
-
-                        @Override
-                        public void onFailure() {
-                            Toast.makeText(PrescriptionActivity.this, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
-                        }
-
-                    });
+            //to write to a pdf file...
+            pdfPrint.print(webView.createPrintDocumentAdapter(jobName), dir, fileName, new PdfPrint.CallbackPrint() {
+                @Override
+                public void success(String path) {
+                    Toast.makeText(PrescriptionActivity.this, getResources().getString(R.string.downloaded_to) + " " + path, Toast.LENGTH_SHORT).show();
                 }
-            }
+
+                @Override
+                public void onFailure() {
+                    Toast.makeText(PrescriptionActivity.this, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                }
+
+            });
 
 //            PrintJob printJob = printManager.print(jobName, printAdapter,
 //                    pBuilder.build());
@@ -811,7 +785,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             // Create a print job with name and adapter instance
             String jobName = getString(R.string.app_name) + " " + getResources().getString(R.string._visit_summary);
 
-            Log.d("PrintPDF", "PrintPDF");
+            CustomLog.d("PrintPDF", "PrintPDF");
             PrintAttributes.Builder pBuilder = new PrintAttributes.Builder();
             pBuilder.setMediaSize(PrintAttributes.MediaSize.NA_LETTER);
             pBuilder.setResolution(new PrintAttributes.Resolution("pdf", "pdf", 600, 600));
@@ -834,38 +808,20 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             //end...
 
             //TODO: write different functions for <= Lollipop versions..
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                //to write to a pdf file...
-                pdfPrint.print(webView.createPrintDocumentAdapter(jobName), dir, fileName, new PdfPrint.CallbackPrint() {
-                    @Override
-                    public void success(String path) {
-                        Toast.makeText(PrescriptionActivity.this, getResources().getString(R.string.downloaded_to) + " " + path, Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onFailure() {
-                        Toast.makeText(PrescriptionActivity.this, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
-                    }
-
-                });
-            } else {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                    //to write to a pdf file...
-                    pdfPrint.print(printAdapter, dir, fileName, new PdfPrint.CallbackPrint() {
-                        @Override
-                        public void success(String path) {
-                            Toast.makeText(PrescriptionActivity.this, getResources().getString(R.string.downloaded_to) + " " + path, Toast.LENGTH_SHORT).show();
-                        }
-
-                        @Override
-                        public void onFailure() {
-                            Toast.makeText(PrescriptionActivity.this, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
-                        }
-
-                    });
+            //to write to a pdf file...
+            pdfPrint.print(webView.createPrintDocumentAdapter(jobName), dir, fileName, new PdfPrint.CallbackPrint() {
+                @Override
+                public void success(String path) {
+                    Toast.makeText(PrescriptionActivity.this, getResources().getString(R.string.downloaded_to) + " " + path, Toast.LENGTH_SHORT).show();
                 }
-            }
-//            PrintJob printJob = printManager.print(jobName, printAdapter,
+
+                @Override
+                public void onFailure() {
+                    Toast.makeText(PrescriptionActivity.this, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                }
+
+            });
+            //            PrintJob printJob = printManager.print(jobName, printAdapter,
 //                    new PrintAttributes.Builder().build());
 
         }
@@ -894,9 +850,9 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
             @Override
             public void onPageFinished(WebView view, String url) {
-                Log.i("Patient WebView", "page finished loading " + url);
+                CustomLog.i("Patient WebView", "page finished loading " + url);
                 int webview_heightContent = view.getContentHeight();
-                Log.d("variable i", "variable i: " + webview_heightContent);
+                CustomLog.d("variable i", "variable i: " + webview_heightContent);
                 createWebPrintJob_downloadBtn(view, webview_heightContent);
                 mWebView = null;
             }
@@ -946,7 +902,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         try {
             JSONObject obj = null;
             if (hasLicense) {
-                obj = new JSONObject(Objects.requireNonNullElse(FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, this), String.valueOf(FileUtils.encodeJSON(this, AppConstants.CONFIG_FILE_NAME)))); //Load the config file
+                obj = new JSONObject(Objects.requireNonNullElse(FileUtils.readFileRoot(CONFIG_FILE_NAME, this), String.valueOf(FileUtils.encodeJSON(this, CONFIG_FILE_NAME)))); //Load the config file
             } else {
                 obj = new JSONObject(String.valueOf(FileUtils.encodeJSON(this, mFileName)));
             }//Load the config file
@@ -964,6 +920,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             }
         } catch (Exception e) {
             FirebaseCrashlytics.getInstance().recordException(e);
+            CustomLog.e(TAG,e.getMessage());
         }
         mresp = resp.getValue();
         mSPO2 = getResources().getString(R.string.spo2) + ": " + (!TextUtils.isEmpty(spO2.getValue()) ? spO2.getValue() : "");
@@ -1047,10 +1004,10 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                             advice_doctor__.lastIndexOf("Doctor_") + 9).toString();
 
             advice_web = stringToWeb(advice_split.replace("\n\n", "\n")); //showing advice here...
-            Log.d("Hyperlink", "hyper_print: " + advice_web); //gets called when clicked on button of print button
+            CustomLog.d("Hyperlink", "hyper_print: " + advice_web); //gets called when clicked on button of print button
         } else {
             advice_web = stringToWeb(advice_doctor__.replace("\n\n", "\n")); //showing advice here...
-            Log.d("Hyperlink", "hyper_print: " + advice_web); //gets called when clicked on button of print button
+            CustomLog.d("Hyperlink", "hyper_print: " + advice_web); //gets called when clicked on button of print button
         }*/
 
         String diagnosis_web = stringToWeb(diagnosisReturned);
@@ -1125,7 +1082,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             doctorSign = details.getTextOfSign();
 
             sign_url = BuildConfig.SERVER_URL + "/ds/" + details.getUuid() + "_sign.png";
-            Log.v("signurl", "signurl: " + sign_url);
+            CustomLog.v("signurl", "signurl: " + sign_url);
 
             doctrRegistartionNum = !TextUtils.isEmpty(details.getRegistrationNumber()) ? getString(R.string.dr_registration_no) + details.getRegistrationNumber() : "";
 
@@ -1231,12 +1188,12 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         });
 
         medication_header_relative.setOnClickListener(v -> {
-            if (vs_medication_header_expandview.getVisibility() == View.VISIBLE)
-                vs_medication_header_expandview.setVisibility(View.GONE);
-            else vs_medication_header_expandview.setVisibility(View.VISIBLE);
+            if (mBinding.llPrescribedMedicine.getVisibility() == View.VISIBLE)
+                mBinding.llPrescribedMedicine.setVisibility(View.GONE);
+            else mBinding.llPrescribedMedicine.setVisibility(View.VISIBLE);
         });
 
-        advice_header_relative.setOnClickListener(v -> { // todo: ddddd
+        advice_header_relative.setOnClickListener(v -> {
             if (vs_adviceheader_expandview.getVisibility() == View.VISIBLE)
                 vs_adviceheader_expandview.setVisibility(View.GONE);
             else vs_adviceheader_expandview.setVisibility(View.VISIBLE);
@@ -1269,14 +1226,14 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             Toast.makeText(this, getString(R.string.unablet_get_the_doct_info_alert), Toast.LENGTH_SHORT).show();
             return;
         }
-        Log.e("TAG", "parseDoctorDetails : " + dbValue);
+        CustomLog.e("TAG", "parseDoctorDetails : " + dbValue);
         Gson gson = new Gson();
         details = gson.fromJson(dbValue, ClsDoctorDetails.class);
 
         if (details == null) {
             return;
         }
-        Log.e("TAG", "TEST VISIT: " + details.toString());
+        CustomLog.e("TAG", "TEST VISIT: " + details.toString());
         drname.setText(details.getName());
         try {
             ProviderDTO providerDTO = new ProviderDAO().getProviderInfo(details.getUuid());
@@ -1285,6 +1242,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             dr_age_gender.setText("(" + providerDTO.getGender() + ", " + mAgeYears + ")");
         } catch (DAOException e) {
             e.printStackTrace();
+            CustomLog.e(TAG,e.getMessage());
         }
 
         if (details.getQualification() != null && !details.getQualification().isEmpty())
@@ -1363,31 +1321,32 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             }
 
             case UuidDictionary.JSV_MEDICATIONS: {
-                Log.i("TAG", "parse_va: " + value);
-                Log.i("TAG", "parseData: rx" + rxReturned);
+                CustomLog.i("TAG", "parse_va: " + value);
+                CustomLog.i("TAG", "parseData: rx" + rxReturned);
                 if (!rxReturned.trim().isEmpty() && !rxReturned.contains(value)) {
                     rxReturned = rxReturned + "\n" + value;
                 } else {
                     rxReturned = value;
                 }
-                Log.i("TAG", "parseData: rxfin" + rxReturned);
-                medication_txt.setText(Html.fromHtml(getMedicationData()));
+                CustomLog.i("TAG", "parseData: rxfin" + rxReturned);
+//                medication_txt.setText(Html.fromHtml(getMedicationData()));
+                setMedicationAdapter();
                 //checkForDoctor();
                 break;
             }
             case UuidDictionary.MEDICAL_ADVICE: {
                 if (!adviceReturned.isEmpty() && !adviceReturned.contains(value)) {
                     adviceReturned = adviceReturned + "\n" + value;
-                    Log.d("GAME", "GAME: " + adviceReturned);
+                    CustomLog.d("GAME", "GAME: " + adviceReturned);
                 } else {
                     adviceReturned = value;
-                    Log.d("GAME", "GAME_2: " + adviceReturned);
+                    CustomLog.d("GAME", "GAME_2: " + adviceReturned);
                 }
               /*  if (medicalAdviceCard.getVisibility() != View.VISIBLE) {
                     medicalAdviceCard.setVisibility(View.VISIBLE);
                 }*/
                 //medicalAdviceTextView.setText(adviceReturned);
-                Log.d("Hyperlink", "hyper_global: " + medicalAdvice_string);
+                CustomLog.d("Hyperlink", "hyper_global: " + medicalAdvice_string);
 
                 int j = adviceReturned.indexOf('<');
                 int i = adviceReturned.lastIndexOf('>');
@@ -1397,12 +1356,12 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                     medicalAdvice_HyperLink = "";
                 }
 
-                Log.d("Hyperlink", "Hyperlink: " + medicalAdvice_HyperLink);
+                CustomLog.d("Hyperlink", "Hyperlink: " + medicalAdvice_HyperLink);
 
                 medicalAdvice_string = adviceReturned.replaceAll(medicalAdvice_HyperLink, "");
                 if (!medicalAdvice_string.equalsIgnoreCase(""))
                     advice_txt.setText(medicalAdvice_string);
-                Log.d("Hyperlink", "hyper_string: " + medicalAdvice_string);
+                CustomLog.d("Hyperlink", "hyper_string: " + medicalAdvice_string);
 
                 /*
                  * variable a contains the hyperlink sent from webside.
@@ -1416,7 +1375,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                 //  medicalAdviceTextView.setText(Html.fromHtml(adviceReturned));
                /* medicalAdviceTextView.setText(Html.fromHtml(adviceReturned.replace("Doctor_", "Doctor")));
                 medicalAdviceTextView.setMovementMethod(LinkMovementMethod.getInstance());
-                Log.d("hyper_textview", "hyper_textview: " + medicalAdviceTextView.getText().toString());*/
+                CustomLog.d("hyper_textview", "hyper_textview: " + medicalAdviceTextView.getText().toString());*/
                 //checkForDoctor();
                 break;
             }
@@ -1490,7 +1449,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
                     followUpDate_format = StringUtils.en__hi_dob(followUpDate_format);
                 followup_date_txt.setText(followUpDate_format);
-                Log.v("Prescriotion", "followUpDate - " + followUpDate);
+                CustomLog.v("Prescriotion", "followUpDate - " + followUpDate);
 
                 if (DateAndTimeUtils.isCurrentDateBeforeFollowUpDate(followUpDate, "yyyy-MM-dd")) {
                     String followUpSubText = getResources().getString(R.string.doctor_suggested_follow_up_on, followUpDate_format);
@@ -1508,7 +1467,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             }
 
             default:
-                Log.i("TAG", "parseData: " + value);
+                CustomLog.i("TAG", "parseData: " + value);
                 break;
         }
     }
@@ -1523,11 +1482,13 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         }
 
         String finalMedicationDataString = "";
-        String titleStart = "<font color="+Color.GRAY+">";
+        String titleStart = "<font color=" + Color.GRAY + ">";
         String titleEnd = "</font>";
 
         StringBuilder medicationData = new StringBuilder();
+
         String[] medicationDataArray = rxReturned.split("\n");
+
         for (String s : medicationDataArray) {
             if (!s.contains(":")) {
                 medicationData.append(titleStart);
@@ -1535,17 +1496,66 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                 medicationData.append(titleEnd);
                 medicationData.append("<br>");
                 medicationData.append(s);
-            }else {
+            } else {
                 medicationData.append(s);
                 medicationData.append("<br>");
                 medicationData.append("<br>");
             }
         }
-        if(medicationData.length() == 0) return "";
+        if (medicationData.length() == 0) return "";
 
         finalMedicationDataString = medicationData.toString();
 
         return finalMedicationDataString;
+    }
+
+    private List<PrescribedMedicineModel> getMedicationData1() {
+        List<PrescribedMedicineModel> medicineModelList = new ArrayList<>();
+        if (rxReturned.isEmpty()) {
+            return medicineModelList;
+        } else {
+            mBinding.tvNoPrescription.setVisibility(View.GONE);
+            mBinding.dividerNoPrescription.setVisibility(View.GONE);
+        }
+        hideAdditionalInstruction();
+
+        String[] medicationDataArray = rxReturned.split("\n");
+
+        for (String medicine : medicationDataArray) {
+            if (medicine.contains(":")) {
+                String[] medicineDetailArray = medicine.split(":");
+                PrescribedMedicineModel medicineModel = new PrescribedMedicineModel();
+                for (int i = 0; i < medicineDetailArray.length; i++) {
+                    switch (i) {
+                        case 0 -> medicineModel.setMedicineName(medicineDetailArray[i]);
+                        case 1 -> medicineModel.setStrength(medicineDetailArray[i]);
+                        case 2 -> medicineModel.setNoOfDays(medicineDetailArray[i]);
+                        case 3 -> medicineModel.setTiming(medicineDetailArray[i]);
+                        default -> medicineModel.setRemark(medicineDetailArray[i]);
+                    }
+                }
+                medicineModelList.add(medicineModel);
+            } else {
+                if (!medicine.isEmpty()) {
+                    setAdditionalInstruction(medicine);
+                }
+
+            }
+        }
+        return medicineModelList;
+    }
+
+    private void hideAdditionalInstruction() {
+        mBinding.dividerAdditionalInstruction.setVisibility(View.GONE);
+        mBinding.tvAdditionalInstructionDesc.setVisibility(View.GONE);
+        mBinding.tvAdditionalInstructionTitle.setVisibility(View.GONE);
+    }
+
+    private void setAdditionalInstruction(String medicine) {
+        mBinding.dividerAdditionalInstruction.setVisibility(View.VISIBLE);
+        mBinding.tvAdditionalInstructionDesc.setVisibility(View.VISIBLE);
+        mBinding.tvAdditionalInstructionTitle.setVisibility(View.VISIBLE);
+        mBinding.tvAdditionalInstructionDesc.setText(medicine);
     }
 
     // parse presc value - end
@@ -1587,14 +1597,14 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
     // handle - start
     private void handleMessage(Intent msg) {
-        Log.i("TAG", "handleMessage: Entered");
+        CustomLog.i("TAG", "handleMessage: Entered");
         Bundle data = msg.getExtras();
         int check = 0;
         if (data != null) {
             check = data.getInt("Restart");
         }
         if (check == 100) {
-            Log.i("TAG", "handleMessage: 100");
+            CustomLog.i("TAG", "handleMessage: 100");
             diagnosisReturned = "";
             rxReturned = "";
             testsReturned = "";
@@ -1617,7 +1627,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             visitCursor.close();
 
         } else if (check == 200) {
-            Log.i("TAG", "handleMessage: 200");
+            CustomLog.i("TAG", "handleMessage: 200");
             String[] columns = {"concept_id"};
             String orderBy = "visit_id";
 
@@ -1635,19 +1645,19 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                 switch (dbConceptID) {
                     //case values for each prescription
                     case UuidDictionary.TELEMEDICINE_DIAGNOSIS:
-                        Log.i("TAG", "found diagnosis");
+                        CustomLog.i("TAG", "found diagnosis");
                         break;
                     case UuidDictionary.JSV_MEDICATIONS:
-                        Log.i("TAG", "found medications");
+                        CustomLog.i("TAG", "found medications");
                         break;
                     case UuidDictionary.MEDICAL_ADVICE:
-                        Log.i("TAG", "found medical advice");
+                        CustomLog.i("TAG", "found medical advice");
                         break;
                     case UuidDictionary.ADDITIONAL_COMMENTS:
-                        Log.i("TAG", "found additional comments");
+                        CustomLog.i("TAG", "found additional comments");
                         break;
                     case UuidDictionary.REQUESTED_TESTS:
-                        Log.i("TAG", "found tests");
+                        CustomLog.i("TAG", "found tests");
                         break;
                     default:
                 }
@@ -1670,24 +1680,14 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
     public void registerDownloadPrescription() {
         IntentFilter filter = new IntentFilter();
         filter.addAction("downloadprescription");
-        ContextCompat.registerReceiver(
-                this,
-                downloadPrescriptionService,
-                filter,
-                ContextCompat.RECEIVER_NOT_EXPORTED
-        );
+        ContextCompat.registerReceiver(this, downloadPrescriptionService, filter, ContextCompat.RECEIVER_NOT_EXPORTED);
     }
 
     public void callBroadcastReceiver() {
         if (!isReceiverRegistered) {
             IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
             receiver = new NetworkChangeReceiver();
-            ContextCompat.registerReceiver(
-                    this,
-                    receiver,
-                    filter,
-                    ContextCompat.RECEIVER_NOT_EXPORTED
-            );
+            ContextCompat.registerReceiver(this, receiver, filter, ContextCompat.RECEIVER_NOT_EXPORTED);
             isReceiverRegistered = true;
         }
     }
@@ -1697,12 +1697,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         super.onStart();
         registerDownloadPrescription();
         callBroadcastReceiver();
-        ContextCompat.registerReceiver(
-                this,
-                mMessageReceiver,
-                new IntentFilter(FILTER),
-                ContextCompat.RECEIVER_NOT_EXPORTED
-        );
+        ContextCompat.registerReceiver(this, mMessageReceiver, new IntentFilter(FILTER), ContextCompat.RECEIVER_NOT_EXPORTED);
 
         //register receiver for internet check
         networkUtils.callBroadcastReceiver();
@@ -1725,6 +1720,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             networkUtils.unregisterNetworkReceiver();
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
+            CustomLog.e(TAG,e.getMessage());
         }
     }
 
@@ -1823,20 +1819,20 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
     private void isNetworkAvailable(Context context) {
         int flag = 0;
 
-        ConnectivityManager connectivity = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (connectivity != null) {
-            NetworkInfo[] info = connectivity.getAllNetworkInfo();
-            if (info != null) {
-
-                for (int i = 0; i < info.length; i++) {
-                    if (info[i].getState() == NetworkInfo.State.CONNECTED) {
-                        if (!isConnected) {
-                            if (internetCheck != null) {
-                                internetCheck.setIcon(R.mipmap.ic_data_on);
-                                flag = 1;
-                            }
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        if (activeNetwork != null) {
+            switch (activeNetwork.getType()) {
+                case ConnectivityManager.TYPE_WIFI, ConnectivityManager.TYPE_MOBILE -> {
+                    if (!isConnected) {
+                        if (internetCheck != null) {
+                            internetCheck.setIcon(R.mipmap.ic_data_on);
+                            flag = 1;
                         }
                     }
+                }
+                default -> {
+                    flag = 0;
                 }
             }
         }
@@ -1879,7 +1875,6 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                 }
                 if (!rxReturned.isEmpty()) {
                     rxReturned = "";
-                    medication_txt.setText("");
                     //  prescriptionCard.setVisibility(View.GONE);
 
                 }
@@ -1925,6 +1920,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                         Toast.makeText(PrescriptionActivity.this, getResources().getString(R.string.downloaded_successfully), Toast.LENGTH_SHORT).show();
                     } catch (DAOException e) {
                         FirebaseCrashlytics.getInstance().recordException(e);
+                        CustomLog.e(TAG,e.getMessage());
                     }
                 }
                 downloadDoctorDetails();
@@ -1936,6 +1932,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
         } catch (DAOException e) {
             e.printStackTrace();
+            CustomLog.e(TAG,e.getMessage());
         }
     }
     // downlaod presc - end
@@ -1980,7 +1977,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                 if (!editText.getText().toString().equalsIgnoreCase("")) {
                     String phoneNumber = /*"+91" +*/ editText.getText().toString();
                     String whatsappMessage = String.format("https://api.whatsapp.com/send?phone=%s&text=%s", phoneNumber, getResources().getString(R.string.hello_thankyou_for_using_intelehealth_app_to_download_click_here) + partial_whatsapp_presc_url + Uri.encode("#") + prescription_link + getString(R.string.and_enter_your_patient_id) + openmrsID_txt.getText().toString());
-                    Log.v("whatsappMessage", whatsappMessage);
+                    CustomLog.v("whatsappMessage", whatsappMessage);
                     // Toast.makeText(context, R.string.whatsapp_presc_toast, Toast.LENGTH_LONG).show();
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(whatsappMessage)));
 
@@ -2034,7 +2031,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             alertDialog.setPositiveButton(getResources().getString(R.string.ok),
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
+                            Dialog.dismiss();
                         }
                     });
 
@@ -2103,7 +2100,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 //            alertDialog.setPositiveButton(getResources().getString(R.string.ok),
 //                    new DialogInterface.OnClickListener() {
 //                        public void onClick(DialogInterface dialog, int which) {
-//                            dialog.dismiss();
+//                            Dialog.dismiss();
 //                        }
 //                    });
 //
@@ -2133,9 +2130,9 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
             @Override
             public void onPageFinished(WebView view, String url) {
-                Log.i("Patient WebView", "page finished loading " + url);
+                CustomLog.i("Patient WebView", "page finished loading " + url);
                 int webview_heightContent = view.getContentHeight();
-                Log.d("variable i", "variable i: " + webview_heightContent);
+                CustomLog.d("variable i", "variable i: " + webview_heightContent);
                 createWebPrintJob_Button(view, webview_heightContent);
                 mWebView = null;
             }
@@ -2185,7 +2182,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         try {
             JSONObject obj = null;
             if (hasLicense) {
-                obj = new JSONObject(Objects.requireNonNullElse(FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, this), String.valueOf(FileUtils.encodeJSON(this, AppConstants.CONFIG_FILE_NAME)))); //Load the config file
+                obj = new JSONObject(Objects.requireNonNullElse(FileUtils.readFileRoot(CONFIG_FILE_NAME, this), String.valueOf(FileUtils.encodeJSON(this, CONFIG_FILE_NAME)))); //Load the config file
             } else {
                 obj = new JSONObject(String.valueOf(FileUtils.encodeJSON(this, mFileName)));
             }//Load the config file
@@ -2203,6 +2200,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             }
         } catch (Exception e) {
             FirebaseCrashlytics.getInstance().recordException(e);
+            CustomLog.e(TAG,e.getMessage());
         }
         mresp = resp.getValue();
         mSPO2 = getResources().getString(R.string.spo2) + ": " + (!TextUtils.isEmpty(spO2.getValue()) ? spO2.getValue() : "");
@@ -2264,6 +2262,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                     complaintLocalString = value;
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    CustomLog.e(TAG,e.getMessage());
                 }
             }
 
@@ -2334,7 +2333,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
             String val = mChiefComplainList.get(i).trim();
             val = val.replaceAll("<.*?>", "");
-            Log.v("mChiefComplainList", "CC - " + val);
+            CustomLog.v("mChiefComplainList", "CC - " + val);
             if (!val.toLowerCase().contains("h/o specific illness")) {
                 if (!stringBuilder.toString().isEmpty()) {
                     stringBuilder.append(",");
@@ -2385,10 +2384,10 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                             advice_doctor__.lastIndexOf("Doctor_") + 9).toString();
 
             advice_web = stringToWeb(advice_split.replace("\n\n", "\n")); //showing advice here...
-            Log.d("Hyperlink", "hyper_print: " + advice_web); //gets called when clicked on button of print button
+            CustomLog.d("Hyperlink", "hyper_print: " + advice_web); //gets called when clicked on button of print button
         } else {
             advice_web = stringToWeb(advice_doctor__.replace("\n\n", "\n")); //showing advice here...
-            Log.d("Hyperlink", "hyper_print: " + advice_web); //gets called when clicked on button of print button
+            CustomLog.d("Hyperlink", "hyper_print: " + advice_web); //gets called when clicked on button of print button
         }*/
 
         String diagnosis_web = stringToWeb(diagnosisReturned);
@@ -2463,7 +2462,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             doctorSign = details.getTextOfSign();
 
             sign_url = BuildConfig.SERVER_URL + "/ds/" + details.getUuid() + "_sign.png";
-            Log.v("signurl", "signurl: " + sign_url);
+            CustomLog.v("signurl", "signurl: " + sign_url);
 
             doctrRegistartionNum = !TextUtils.isEmpty(details.getRegistrationNumber()) ? getString(R.string.dr_registration_no) + details.getRegistrationNumber() : "";
 
@@ -2475,7 +2474,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
         PrescriptionBuilder prescriptionBuilder = new PrescriptionBuilder(this);
         VitalsObject vitalsData = getAllVitalsData();
-        String prescriptionString = prescriptionBuilder.builder(patient, vitalsData, diagnosisReturned, rxReturned, adviceReturned, testsReturned, referredSpeciality, followUpDate, details);
+        String prescriptionString = prescriptionBuilder.builder(patient, vitalsData, diagnosisReturned, rxReturned, adviceReturned, testsReturned, referredSpeciality, followUpDate, details, mFeatureActiveStatus);
 
         if (isRespiratory) {
             String htmlDocument = String.format(font_face + "<b><p id=\"heading_1\" style=\"font-size:16pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<p id=\"heading_2\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<p id=\"heading_3\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<hr style=\"font-size:12pt;\">" + "<br/>" +
@@ -2540,10 +2539,11 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
     private void createWebPrintJob_Button(WebView webView, int contentHeight) {
         // Get a PrintManager instance
         PrintManager printManager = (PrintManager) this.getSystemService(Context.PRINT_SERVICE);
+        String docName = this.getString(R.string.app_name) + " Prescription";
 
         // Get a print adapter instance
-        PrintDocumentAdapter printAdapter = webView.createPrintDocumentAdapter();
-        Log.d("webview content height", "webview content height: " + contentHeight);
+        PrintDocumentAdapter printAdapter = webView.createPrintDocumentAdapter(docName);
+        CustomLog.d("webview content height", "webview content height: " + contentHeight);
 
         if (contentHeight > 2683 && contentHeight <= 3000) {
             //medium size prescription...
@@ -2586,7 +2586,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         } else {
             String jobName = getString(R.string.app_name) + getResources().getString(R.string._visit_summary);
 
-            Log.d("PrintPDF", "PrintPDF");
+            CustomLog.d("PrintPDF", "PrintPDF");
             PrintAttributes.Builder pBuilder = new PrintAttributes.Builder();
             pBuilder.setMediaSize(PrintAttributes.MediaSize.NA_LETTER);
             pBuilder.setResolution(new PrintAttributes.Resolution("pdf", "pdf", 600, 600));
@@ -2616,7 +2616,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         try {
             JSONObject obj = null;
             if (hasLicense) {
-                obj = new JSONObject(Objects.requireNonNullElse(FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, this), String.valueOf(FileUtils.encodeJSON(this, AppConstants.CONFIG_FILE_NAME)))); //Load the config file
+                obj = new JSONObject(Objects.requireNonNullElse(FileUtils.readFileRoot(CONFIG_FILE_NAME, this), String.valueOf(FileUtils.encodeJSON(this, CONFIG_FILE_NAME)))); //Load the config file
             } else {
                 obj = new JSONObject(String.valueOf(FileUtils.encodeJSON(this, mFileName)));
             }
@@ -2799,11 +2799,11 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
     @Override
     public void updateUIForInternetAvailability(boolean isInternetAvailable) {
-        Log.d("TAG", "updateUIForInternetAvailability: ");
+        CustomLog.d("TAG", "updateUIForInternetAvailability: ");
         if (isInternetAvailable) {
-            refresh.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_internet_available));
+            refresh.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ui2_ic_internet_available));
         } else {
-            refresh.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
+            refresh.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ui2_ic_no_internet));
         }
     }
 
@@ -2892,14 +2892,30 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         }
         idCursor1.close();
 
-        Intent intent2 = new Intent(this, IdentificationActivity_New.class);
-        intent2.putExtra("patientUuid", patientDTO.getUuid());
-        intent2.putExtra("ScreenEdit", "personal_edit");
-        intent2.putExtra("patient_detail", true);
+        PatientRegistrationActivity.startPatientRegistration(this, patientDTO.getUuid(), PatientRegStage.PERSONAL);
+//        Intent intent2 = new Intent(this, IdentificationActivity_New.class);
+//        intent2.putExtra("patientUuid", patientDTO.getUuid());
+//        intent2.putExtra("ScreenEdit", "personal_edit");
+//        intent2.putExtra("patient_detail", true);
+//
+//        Bundle args = new Bundle();
+//        args.putSerializable("patientDTO", (Serializable) patientDTO);
+//        intent2.putExtra("BUNDLE", args);
+//        startActivity(intent2);
+    }
 
-        Bundle args = new Bundle();
-        args.putSerializable("patientDTO", (Serializable) patientDTO);
-        intent2.putExtra("BUNDLE", args);
-        startActivity(intent2);
+    private void setMedicationAdapter() {
+        // Initialize RecyclerView
+        mBinding.rvPrescribedMedicine.setLayoutManager(new LinearLayoutManager(this));
+
+        // Initialize your data
+        List<PrescribedMedicineModel> medicineList = getMedicationData1();
+        // Add your prescribed medications to medicineList
+
+        // Initialize adapter
+        PrescribedMedicineAdapter adapter = new PrescribedMedicineAdapter(medicineList);
+
+        // Set adapter to RecyclerView
+        mBinding.rvPrescribedMedicine.setAdapter(adapter);
     }
 }

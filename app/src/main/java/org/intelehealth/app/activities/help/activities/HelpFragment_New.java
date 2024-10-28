@@ -10,13 +10,14 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.LocaleList;
 import android.util.DisplayMetrics;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -236,7 +237,7 @@ public class HelpFragment_New extends Fragment implements View.OnClickListener, 
 
     @Override
     public void updateUIForInternetAvailability(boolean isInternetAvailable) {
-        Log.d(TAG, "updateUIForInternetAvailability: ");
+        CustomLog.d(TAG, "updateUIForInternetAvailability: ");
         layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         rvSearchedVideos.setLayoutManager(layoutManager);
 
@@ -246,7 +247,7 @@ public class HelpFragment_New extends Fragment implements View.OnClickListener, 
             MostSearchedVideosAdapter_New mostSearchedVideosAdapter_new = new MostSearchedVideosAdapter_New(getActivity(), getVideoList());
             rvSearchedVideos.setAdapter(mostSearchedVideosAdapter_new);
 
-            ivInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_internet_available));
+            ivInternet.setImageDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_internet_available));
 
         } else {
             rvSearchedVideos.setVisibility(View.GONE);
@@ -255,7 +256,7 @@ public class HelpFragment_New extends Fragment implements View.OnClickListener, 
             MostSearchedVideosAdapter_New mostSearchedVideosAdapter_new = new MostSearchedVideosAdapter_New(getActivity(), list);
             rvSearchedVideos.setAdapter(mostSearchedVideosAdapter_new);
 
-            ivInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
+            ivInternet.setImageDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_no_internet));
 
         }
     }

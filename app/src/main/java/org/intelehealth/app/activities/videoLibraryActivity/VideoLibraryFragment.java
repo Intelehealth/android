@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.LocaleList;
 import android.util.DisplayMetrics;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -83,16 +83,12 @@ public class VideoLibraryFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         mRecyclerView = view.findViewById(R.id.video_library_RecyclerView);
-    }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
         Bundle bundle = getArguments();
         String filePath = bundle.getString("FILEPATH");
 
         File file = new File(filePath);
-        Log.i(Node.TAG, "onActivityCreated: "+filePath);
+        CustomLog.i(Node.TAG, "onActivityCreated: "+filePath);
         File[] files = file.listFiles();
         if (files == null || files.length == 0) {
             Toast.makeText(getContext(), getString(R.string.error_no_file), Toast.LENGTH_LONG).show();
@@ -103,7 +99,6 @@ public class VideoLibraryFragment extends Fragment {
             mRecyclerView.setLayoutManager(mLayoutManager);
             mRecyclerView.setAdapter(adapter);
         }
-
     }
 
     // TODO: Rename method, update argument and hook method into UI event

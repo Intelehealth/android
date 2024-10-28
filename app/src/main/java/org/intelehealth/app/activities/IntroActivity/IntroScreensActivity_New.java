@@ -9,33 +9,37 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.LocaleList;
 import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.LayoutInflater;
+import org.intelehealth.app.utilities.CustomLog;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager.widget.PagerAdapter;
-import androidx.viewpager.widget.ViewPager;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.activities.chooseLanguageActivity.SplashScreenActivity;
 import org.intelehealth.app.activities.onboarding.SetupPrivacyNoteActivity_New;
+import org.intelehealth.app.models.IntroContent;
 import org.intelehealth.app.utilities.SessionManager;
 
+import java.util.ArrayList;
 import java.util.Locale;
 
 public class IntroScreensActivity_New extends AppCompatActivity {
     private static final String TAG = "IntroScreensActivityNew";
-    private ViewPager viewPager;
-    private MyViewPagerAdapter myViewPagerAdapter;
+    private ViewPager2 viewPager;
+    private ViewPager2.OnPageChangeCallback onPageChangeCallback;
+    private MyViewpagerAdapter myViewPagerAdapter;
     private LinearLayout dotsLayout;
     private TextView[] dots;
     private ImageView[] dots1;
+    Button btnSkip;
     private int[] layouts;
     private int page = 0;
     private Handler handler;
@@ -45,7 +49,7 @@ public class IntroScreensActivity_New extends AppCompatActivity {
 
     Runnable runnable = new Runnable() {
         public void run() {
-            if (myViewPagerAdapter.getCount() == page) {
+            if (myViewPagerAdapter.getItemCount() == page) {
                 page = 0;
             } else {
                 page++;
@@ -54,13 +58,15 @@ public class IntroScreensActivity_New extends AppCompatActivity {
             handler.postDelayed(this, delay);
         }
     };
+    private boolean dotFromCallback = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intro_screens_new_ui2);
         viewPager = findViewById(R.id.pager_intro_screens);
         dotsLayout = findViewById(R.id.layoutDots_intro);
-        Button btnSkip = findViewById(R.id.btn_skip_intro);
+        btnSkip = findViewById(R.id.btn_skip_intro);
         sessionManager = new SessionManager(IntroScreensActivity_New.this);
         ImageView ivBack = findViewById(R.id.iv_back_arrow);
         /*ivBack.setOnClickListener(new View.OnClickListener() {
@@ -80,7 +86,7 @@ public class IntroScreensActivity_New extends AppCompatActivity {
         btnSkip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "onClick: ");
+                CustomLog.d(TAG, "onClick: ");
                 Intent intent = new Intent(IntroScreensActivity_New.this, SetupPrivacyNoteActivity_New.class);
                 startActivity(intent);
                 finish();
@@ -92,18 +98,36 @@ public class IntroScreensActivity_New extends AppCompatActivity {
                 R.layout.layout_third_intro_screen_ui2
 
         };
-
         addBottomDots1(0);
-
-        myViewPagerAdapter = new MyViewPagerAdapter();
+        myViewPagerAdapter = new MyViewpagerAdapter(this);
         viewPager.setAdapter(myViewPagerAdapter);
-        viewPager.addOnPageChangeListener(viewPagerPageChangeListener);
+        //viewPager.addOnPageChangeListener(viewPagerPageChangeListener);
+
+        onPageChangeCallback = new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                //dot not showing when its calling first time from here
+                //that's why skipping first time call
+                if (position == 0 && !dotFromCallback) {
+                    dotFromCallback = true;
+                } else if (dotFromCallback) {
+                    addBottomDots1(position);
+                    page = position;
+                }
+
+                super.onPageSelected(position);
+            }
+        };
+
+        viewPager.registerOnPageChangeCallback(onPageChangeCallback);
+
         handler = new Handler();
 
         //auto slide layouts
 
 
     }
+
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -140,27 +164,14 @@ public class IntroScreensActivity_New extends AppCompatActivity {
         super.onPause();
         handler.removeCallbacks(runnable);
     }
-    ViewPager.OnPageChangeListener viewPagerPageChangeListener = new ViewPager.OnPageChangeListener() {
 
-        @Override
-        public void onPageSelected(int position) {
-            addBottomDots1(position);
-            page = position;
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        viewPager.unregisterOnPageChangeCallback(onPageChangeCallback);
+    }
 
-        }
-
-        @Override
-        public void onPageScrolled(int arg0, float arg1, int arg2) {
-
-        }
-
-        @Override
-        public void onPageScrollStateChanged(int arg0) {
-
-        }
-    };
-
-    public class MyViewPagerAdapter extends PagerAdapter {
+    /*public class MyViewPagerAdapter extends PagerAdapter {
         private LayoutInflater layoutInflater;
 
         public MyViewPagerAdapter() {
@@ -192,12 +203,34 @@ public class IntroScreensActivity_New extends AppCompatActivity {
             View view = (View) object;
             container.removeView(view);
         }
+    }*/
+
+    public static class MyViewpagerAdapter extends FragmentStateAdapter {
+
+        private final ArrayList<Fragment> introFragments = new ArrayList<>();
+
+        public MyViewpagerAdapter(@NonNull FragmentActivity fragmentActivity) {
+            super(fragmentActivity);
+            introFragments.add(SlideFragment.newInstance(IntroContent.getContent(fragmentActivity, ViewType.ONE)));
+            introFragments.add(SlideFragment.newInstance(IntroContent.getContent(fragmentActivity, ViewType.TWO)));
+            introFragments.add(SlideFragment.newInstance(IntroContent.getContent(fragmentActivity, ViewType.THREE)));
+        }
+
+        @NonNull
+        @Override
+        public Fragment createFragment(int position) {
+            return introFragments.get(position);
+        }
+
+        @Override
+        public int getItemCount() {
+            return introFragments.size();
+        }
     }
 
 
     private void addBottomDots1(int currentPage) {
         dotsLayout.removeAllViews();
-
         dots1 = new ImageView[layouts.length];
         for (int i = 0; i < dots1.length; i++) {
             dots1[i] = new ImageView(this);
@@ -212,7 +245,6 @@ public class IntroScreensActivity_New extends AppCompatActivity {
 
         if (dots1.length > 0) {
             dots1[currentPage].setBackgroundResource(R.drawable.ui2_ic_slider_bar);
-
         }
     }
 

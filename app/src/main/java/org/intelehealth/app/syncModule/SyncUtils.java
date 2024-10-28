@@ -2,6 +2,7 @@ package org.intelehealth.app.syncModule;
 
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
@@ -11,7 +12,6 @@ import android.widget.Toast;
 import androidx.work.WorkManager;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.activities.visit.EndVisitActivity;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.appointment.sync.AppointmentSync;
@@ -40,6 +40,19 @@ public class SyncUtils {
         Logger.logD(TAG, "Pull ended");
         // sync data
         AppointmentSync.getAppointments(context);
+    }
+
+    public void syncInBackground() {
+        SyncDAO syncDAO = new SyncDAO();
+        ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
+        SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+        syncDAO.pushDataApi();
+        syncDAO.pullData_Background(IntelehealthApplication.getAppContext(), 0);
+        imagesPushDAO.loggedInUserProfileImagesPush();
+        if (!sessionManager.isLogout()) {
+            AppointmentSync.getAppointments(IntelehealthApplication.getAppContext());
+        }
+
     }
 
     public void syncBackground() {
@@ -71,6 +84,11 @@ public class SyncUtils {
         }, 4000);
 
         imagesPushDAO.deleteObsImage();
+
+        IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
+                .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.ALL_SYNC_DONE)
+                .setPackage(IntelehealthApplication.getAppContext().getPackageName()));
+
         NotificationUtils notificationUtils = new NotificationUtils();
         notificationUtils.clearAllNotifications(IntelehealthApplication.getAppContext());
         WorkManager.getInstance(IntelehealthApplication.getAppContext())
@@ -122,7 +140,7 @@ public class SyncUtils {
         imagesPushDAO.deleteObsImage();
 
 
-        WorkManager.getInstance()
+        WorkManager.getInstance(IntelehealthApplication.getAppContext())
                 .beginWith(AppConstants.VISIT_SUMMARY_WORK_REQUEST)
                 .then(AppConstants.LAST_SYNC_WORK_REQUEST)
                 .enqueue();

@@ -9,8 +9,9 @@ import static org.intelehealth.app.utilities.UuidDictionary.PRESCRIPTION_LINK;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,9 +28,11 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
@@ -139,16 +142,18 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
             }
 
             if (model.getPatient_photo() != null) {
+                RequestBuilder<Drawable> requestBuilder = Glide.with(holder.itemView.getContext())
+                        .asDrawable().sizeMultiplier(0.3f);
                 Glide.with(context)
                         .load(model.getPatient_photo())
                         .override(100, 100)
-                        .thumbnail(0.3f)
+                        .thumbnail(requestBuilder)
                         .centerCrop()
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
                         .skipMemoryCache(true)
                         .into(holder.profile_image);
             } else {
-                holder.profile_image.setImageDrawable(context.getResources().getDrawable(R.drawable.avatar1));
+                holder.profile_image.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.avatar1));
             }
             // photo - end
 
@@ -157,7 +162,7 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
                 String startDate = model.getVisit_start_date();
                 startDate = DateAndTimeUtils.date_formatter(startDate,
                         "yyyy-MM-dd'T'HH:mm:ss.SSSZ", "dd MMM 'at' HH:mm a");    // IDA-1346
-                Log.v("startdate", "startDAte: " + startDate);
+                CustomLog.v("startdate", "startDAte: " + startDate);
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
                     startDate = StringUtils.en_hi_dob_three(startDate);
                 holder.fu_date_txtview.setText(startDate);
@@ -300,7 +305,7 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
                         phoneNumber, context.getResources().getString(R.string.hello_thankyou_for_using_intelehealth_app_to_download_click_here)
                                 + partial_whatsapp_presc_url + Uri.encode("#") + prescription_link + context.getResources().getString(R.string.and_enter_your_patient_id)
                                 + model.getOpenmrs_id());
-                Log.v("whatsappMessage", whatsappMessage);
+                CustomLog.v("whatsappMessage", whatsappMessage);
                 context.startActivity(new Intent(Intent.ACTION_VIEW,
                         Uri.parse(whatsappMessage)));
             } else {
@@ -381,10 +386,12 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
                             FirebaseCrashlytics.getInstance().recordException(e);
                         }
                         if (updated) {
+                            RequestBuilder<Drawable> requestBuilder = Glide.with(holder.itemView.getContext())
+                                    .asDrawable().sizeMultiplier(0.3f);
                             Glide.with(context)
                                     .load(AppConstants.IMAGE_PATH + model.getPatientUuid() + ".jpg")
                                     .override(100, 100)
-                                    .thumbnail(0.3f)
+                                    .thumbnail(requestBuilder)
                                     .centerCrop()
                                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                                     .skipMemoryCache(true)

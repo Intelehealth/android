@@ -77,7 +77,17 @@ public class PatientDTO implements Serializable {
     private String visit_startdate;
     private boolean prescription_exists = false;
 
+    private String guardianName;
+    private String guardianType;
+    private String contactType;
+    private String emContactName;
+    private String emContactNumber;
+
     private VisitDTO visitDTO;
+
+    private String profileTimestamp;
+
+    private String district;
 
     public String getUuid() {
         return uuid;
@@ -128,6 +138,20 @@ public class PatientDTO implements Serializable {
     }
 
     public String getPhonenumber() {
+        return phonenumber;
+    }
+
+    public String getMobileNumber() {
+//        if (phonenumber != null && phonenumber.length() == 13) {
+//            return phonenumber.substring(3);
+//        }
+        return phonenumber;
+    }
+
+    public String getCountryCode() {
+        if (phonenumber != null && phonenumber.length() == 13) {
+            return phonenumber.substring(0, 3);
+        }
         return phonenumber;
     }
 
@@ -264,7 +288,7 @@ public class PatientDTO implements Serializable {
         this.prescription_exists = prescription_exists;
     }
 
-    public String  getSon_dau_wife() {
+    public String getSon_dau_wife() {
         return son_dau_wife;
     }
 
@@ -320,6 +344,89 @@ public class PatientDTO implements Serializable {
         this.visitDTO = visitDTO;
     }
 
+    public String getGuardianName() {
+        return guardianName;
+    }
+
+    public void setGuardianName(String guardianName) {
+        this.guardianName = guardianName;
+    }
+
+    public String getGuardianType() {
+        return guardianType;
+    }
+
+    public void setGuardianType(String guardianType) {
+        this.guardianType = guardianType;
+    }
+
+    public String getContactType() {
+        return contactType;
+    }
+
+    public void setContactType(String contactType) {
+        this.contactType = contactType;
+    }
+
+    public String getEmContactName() {
+        return emContactName;
+    }
+
+    public void setEmContactName(String emContactName) {
+        this.emContactName = emContactName;
+    }
+
+    public String getEmContactNumber() {
+        return emContactNumber;
+    }
+
+    public void setEmContactNumber(String emContactNumber) {
+        this.emContactNumber = emContactNumber;
+    }
+
+    public String getEmMobileNumber() {
+        if (emContactNumber != null && emContactNumber.length() == 13) {
+            return emContactNumber.substring(3);
+        }
+        return emContactNumber;
+    }
+
+    public String getEmCountryCode() {
+        if (emContactNumber != null && emContactNumber.length() == 13) {
+            return emContactNumber.substring(0, 3);
+        }
+        return emContactNumber;
+    }
+
+    public String getProfileTimestamp() {
+        return profileTimestamp;
+    }
+
+    public void setProfileTimestamp(String profileTimestamp) {
+        this.profileTimestamp = profileTimestamp;
+    }
+
+    public String getDistrict() {
+        if (district != null && !district.isEmpty()) return district;
+        else return splitVillageAndDistrict(0);
+    }
+
+    public void setDistrict(String district) {
+        this.district = district;
+    }
+
+    public String getVillageWithoutDistrict() {
+        return splitVillageAndDistrict(1);
+    }
+
+    private String splitVillageAndDistrict(int index) {
+        if (cityvillage != null && !cityvillage.isEmpty() && cityvillage.contains(":")) {
+            return cityvillage.split(":")[index];
+        }
+        if (index == 1) return cityvillage;
+        else return null;
+    }
+
     @Override
     public String toString() {
         return "PatientDTO{" +
@@ -346,6 +453,11 @@ public class PatientDTO implements Serializable {
                 ", emergency=" + emergency +
                 ", visit_startdate='" + visit_startdate + '\'' +
                 ", prescription_exists=" + prescription_exists +
+                ", guardianType='" + guardianType + '\'' +
+                ", guardianName='" + guardianName + '\'' +
+                ", contactType='" + contactType + '\'' +
+                ", emContactName='" + emContactName + '\'' +
+                ", emContactNumber=" + emContactNumber +
                 '}';
     }
 }

@@ -28,12 +28,16 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
 import android.net.Uri;
+
+import androidx.core.content.ContextCompat;
 import androidx.core.view.ViewCompat;
 import android.util.AttributeSet;
+import android.view.View;
 import android.view.animation.Animation;
 import android.widget.ImageView;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.app.IntelehealthApplication;
 
 
 /**
@@ -169,11 +173,11 @@ public class CircleProgressBar extends ImageView {
 
             if (elevationSupported()) {
                 mBgCircle = new ShapeDrawable(new OvalShape());
-                ViewCompat.setRotation(this, SHADOW_ELEVATION * density);
+                this.setRotation(SHADOW_ELEVATION * density);
             } else {
                 OvalShape oval = new OvalShadow(mShadowRadius, mDiameter - mShadowRadius * 2);
                 mBgCircle = new ShapeDrawable(oval);
-                ViewCompat.setLayerType(this, ViewCompat.LAYER_TYPE_SOFTWARE, mBgCircle.getPaint());
+                this.setLayerType(LAYER_TYPE_SOFTWARE, mBgCircle.getPaint());
                 mBgCircle.getPaint().setShadowLayer(mShadowRadius, shadowXOffset, shadowYOffset,
                         KEY_SHADOW_COLOR);
                 final int padding = (int) mShadowRadius;
@@ -181,7 +185,7 @@ public class CircleProgressBar extends ImageView {
                 setPadding(padding, padding, padding, padding);
             }
             mBgCircle.getPaint().setColor(mBackGroundColor);
-            setBackgroundDrawable(mBgCircle);
+            setBackground(mBgCircle);
         }
         mProgressDrawable.setBackgroundColor(mBackGroundColor);
         mProgressDrawable.setColorSchemeColors(mColors);
@@ -269,7 +273,7 @@ public class CircleProgressBar extends ImageView {
         final Resources res = getResources();
         int[] colorRes = new int[colorResIds.length];
         for (int i = 0; i < colorResIds.length; i++) {
-            colorRes[i] = res.getColor(colorResIds[i]);
+            colorRes[i] = ContextCompat.getColor(IntelehealthApplication.getAppContext(),(colorResIds[i]));
         }
         setColorSchemeColors(colorRes);
     }

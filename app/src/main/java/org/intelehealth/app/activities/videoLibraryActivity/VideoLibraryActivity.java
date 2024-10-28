@@ -9,7 +9,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.view.View;
 import android.widget.Toast;
 
@@ -41,7 +41,7 @@ public class VideoLibraryActivity extends BaseActivity implements VideoLibraryFr
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onBackPressed();
+                getOnBackPressedDispatcher().onBackPressed();
             }
         });
 
@@ -105,14 +105,14 @@ public class VideoLibraryActivity extends BaseActivity implements VideoLibraryFr
                 Environment.DIRECTORY_MOVIES), folderName);
         Logger.logD(TAG, file.getAbsolutePath());
         if (!file.mkdirs()) {
-            Log.e(LOG_TAG, "Directory not created");
+            CustomLog.e(LOG_TAG, "Directory not created");
         }
         return file;
     }
 
     @Override
     public boolean onSupportNavigateUp() {
-        onBackPressed();
+        getOnBackPressedDispatcher().onBackPressed();
         return super.onSupportNavigateUp();
 
     }

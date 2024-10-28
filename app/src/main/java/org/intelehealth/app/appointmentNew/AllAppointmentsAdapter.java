@@ -5,9 +5,10 @@ import static org.intelehealth.app.utilities.StringUtils.setGenderAgeLocal;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.renderscript.Matrix4f;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,12 +21,14 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.searchPatientActivity.SearchPatientAdapter_New;
 import org.intelehealth.app.activities.visit.VisitDetailsActivity;
+import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity_New;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.appointment.model.AppointmentInfo;
 import org.intelehealth.app.database.dao.ImagesDAO;
@@ -94,15 +97,18 @@ public class AllAppointmentsAdapter extends RecyclerView.Adapter<AllAppointments
         // Set Age and Gender - end
 
         if (appointmentInfoModel.getPatientProfilePhoto() != null && !appointmentInfoModel.getPatientProfilePhoto().isEmpty()) {
+            RequestBuilder<Drawable> requestBuilder = Glide.with(holder.itemView.getContext())
+                    .asDrawable().sizeMultiplier(0.3f);
+
             Glide.with(context)
                     .load(appointmentInfoModel.getPatientProfilePhoto())
-                    .thumbnail(0.3f)
+                    .thumbnail(requestBuilder)
                     .centerCrop()
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .skipMemoryCache(true)
                     .into(holder.ivProfileImage);
         } else {
-            holder.ivProfileImage.setImageDrawable(context.getResources().getDrawable(R.drawable.avatar1));
+            holder.ivProfileImage.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.avatar1));
         }
 
         holder.doctNameTextView.setText(context.getString(R.string.doctor_annotation)+" " + appointmentInfoModel.getDrName());
@@ -119,7 +125,7 @@ public class AllAppointmentsAdapter extends RecyclerView.Adapter<AllAppointments
                 diff = dateFormat.parse(slottime).getTime() - dateFormat.parse(currentDateTime).getTime();
                 long second = diff / 1000;
                 long minutes = second / 60;
-                Log.v("AppointmentInfo", "Diff minutes - " + minutes);
+                CustomLog.v("AppointmentInfo", "Diff minutes - " + minutes);
 
                 String timeText = "";
                 //check for appointmet but presc not given and visit not completed
@@ -135,9 +141,7 @@ public class AllAppointmentsAdapter extends RecyclerView.Adapter<AllAppointments
                             else if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
                                 timeText = StringUtils.en_hi_dob_updated(DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(appointmentInfoModel.getSlotDate())) + ", "  +  appointmentInfoModel.getSlotTime() + " " + context.getString(R.string.at);
                             holder.tvDate.setText(timeText);
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                holder.tvDate.setTextColor(context.getColor(R.color.iconTintGray));
-                            }
+                            holder.tvDate.setTextColor(context.getColor(R.color.iconTintGray));
                         } else {
                             if (hours > 1) {
                                 if(sessionManager.getAppLanguage().equalsIgnoreCase("en"))
@@ -159,9 +163,7 @@ public class AllAppointmentsAdapter extends RecyclerView.Adapter<AllAppointments
                             }
                             holder.tvDate.setText(timeText);
                             holder.tvPatientName.setText(appointmentInfoModel.getPatientName());
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                holder.tvDate.setTextColor(context.getColor(R.color.colorPrimary1));
-                            }
+                            holder.tvDate.setTextColor(context.getColor(R.color.colorPrimary1));
                         }
                     }
                     else {
@@ -173,27 +175,25 @@ public class AllAppointmentsAdapter extends RecyclerView.Adapter<AllAppointments
                         holder.tvPatientName.setText(appointmentInfoModel.getPatientName());
 
                         holder.tvDate.setText(timeText);
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                            holder.tvDate.setTextColor(context.getColor(R.color.colorPrimary1));
-                        }
+                        holder.tvDate.setTextColor(context.getColor(R.color.colorPrimary1));
                     }
                 }
 
 
             } catch (ParseException e) {
-                Log.d(TAG, "onBindViewHolder: date exce : " + e.getLocalizedMessage());
+                CustomLog.d(TAG, "onBindViewHolder: date exce : " + e.getLocalizedMessage());
                 e.printStackTrace();
             }
 
         }
-        Log.d(TAG, "onBindViewHolder: whichAppointments : "+whichAppointments);
+        CustomLog.d(TAG, "onBindViewHolder: whichAppointments : "+whichAppointments);
         try {
             if (whichAppointments.equalsIgnoreCase("completed")) {
-                Log.d(TAG, "onBindViewHolder: in completed");
+                CustomLog.d(TAG, "onBindViewHolder: in completed");
                 holder.tvDate.setVisibility(View.VISIBLE);
                 holder.tvPatientName.setText(appointmentInfoModel.getPatientName());
                 holder.tvDate.setText(DateAndTimeUtils.getDisplayDateAndTime(appointmentInfoModel.getPresc_received_time(), context));
-                Log.d(TAG, "onBindViewHolder: presc time : "+appointmentInfoModel.getPresc_received_time());
+                CustomLog.d(TAG, "onBindViewHolder: presc time : "+appointmentInfoModel.getPresc_received_time());
 
                 if (appointmentInfoModel.isPrescription_exists()) {
                     holder.cvPrescRx.setVisibility(View.VISIBLE);
@@ -212,7 +212,7 @@ public class AllAppointmentsAdapter extends RecyclerView.Adapter<AllAppointments
             });
 
         } catch (Exception e) {
-            Log.d(TAG, "onBindViewHolder: e main : " + e.getLocalizedMessage());
+            CustomLog.d(TAG, "onBindViewHolder: e main : " + e.getLocalizedMessage());
             e.printStackTrace();
         }
         if (whichAppointments.equalsIgnoreCase("cancelled")) {
@@ -325,9 +325,11 @@ public class AllAppointmentsAdapter extends RecyclerView.Adapter<AllAppointments
                             FirebaseCrashlytics.getInstance().recordException(e);
                         }
                         if (updated) {
+                            RequestBuilder<Drawable> requestBuilder = Glide.with(holder.itemView.getContext())
+                                    .asDrawable().sizeMultiplier(0.3f);
                             Glide.with(context)
                                     .load(AppConstants.IMAGE_PATH + model.getUuid() + ".jpg")
-                                    .thumbnail(0.3f)
+                                    .thumbnail(requestBuilder)
                                     .centerCrop()
                                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                                     .skipMemoryCache(true)
@@ -347,9 +349,9 @@ public class AllAppointmentsAdapter extends RecyclerView.Adapter<AllAppointments
 
    /* public void searchForFilters(String appointmentType,
                                            String date, String fromWhere, String test) {
-        Log.d(TAG, "searchForProductAndVehicle:111 fromWhere : " + fromWhere);
-        Log.d(TAG, "searchForProductAndVehicle:111 product : " + product);
-        Log.d(TAG, "searchForProductAndVehicle:111 vehicleNo : " + vehicleNo);
+        CustomLog.d(TAG, "searchForProductAndVehicle:111 fromWhere : " + fromWhere);
+        CustomLog.d(TAG, "searchForProductAndVehicle:111 product : " + product);
+        CustomLog.d(TAG, "searchForProductAndVehicle:111 vehicleNo : " + vehicleNo);
 
         if (vehicleNo.isEmpty() && product.isEmpty()) {
             fleetListModelList.addAll(alltxnsModelList);
@@ -371,12 +373,12 @@ public class AllAppointmentsAdapter extends RecyclerView.Adapter<AllAppointments
             fleetListModelList.clear();
 
             for (ArrivallistModel arrivallistModel : alltxnsModelList) {
-                Log.d(TAG, "searchForProductAndVehicle:listalldata " + arrivallistModel.getProductName());
+                CustomLog.d(TAG, "searchForProductAndVehicle:listalldata " + arrivallistModel.getProductName());
 
                 if (arrivallistModel.getProductName().toUpperCase().trim().equals(product.toUpperCase().trim())) {
-                    Log.d(TAG, "searchForProductAndVehicle: check : ");
-                    Log.d(TAG, "searchForProductAndVehicle: 11ch : from list : " + arrivallistModel.getProductName());
-                    Log.d(TAG, "searchForProductAndVehicle: 11ch : from search : " + product.toUpperCase());
+                    CustomLog.d(TAG, "searchForProductAndVehicle: check : ");
+                    CustomLog.d(TAG, "searchForProductAndVehicle: 11ch : from list : " + arrivallistModel.getProductName());
+                    CustomLog.d(TAG, "searchForProductAndVehicle: 11ch : from search : " + product.toUpperCase());
 
                     fleetListModelList.add(arrivallistModel);
                 }

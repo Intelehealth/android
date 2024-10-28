@@ -7,7 +7,8 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
+import android.text.TextUtils;
+import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,11 +19,13 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -32,6 +35,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import org.intelehealth.app.R;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.ToastUtil;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -80,7 +84,7 @@ public class CustomCalendarViewUI2 extends DialogFragment {
         Bundle mArgs = getArguments();
         assert mArgs != null;
         whichDate = mArgs.getString("whichDate");
-        Log.d(TAG, "onCreateDialog:whichDate :  " + whichDate);
+        CustomLog.d(TAG, "onCreateDialog:whichDate :  " + whichDate);
         AlertDialog alertDialog = showDatePicker(context, "");
         return alertDialog;
     }
@@ -104,7 +108,7 @@ public class CustomCalendarViewUI2 extends DialogFragment {
                 String selectedPrevMonth = monthYear[0];
                 String selectedPrevMonthYear = monthYear[1];
                 //tvSelectedMonthYear.setText(selectedPrevMonth + ", " + selectedPrevMonthYear);
-                Log.d(TAG, "getPreviousMonthDates: tvSelectedMonthYear : " + selectedPrevMonth + ", " + selectedPrevMonthYear);
+                CustomLog.d(TAG, "getPreviousMonthDates: tvSelectedMonthYear : " + selectedPrevMonth + ", " + selectedPrevMonthYear);
                 if (monthToCompare.equals(String.valueOf(currentMonth)) && yearToCompare.equals(String.valueOf(currentYear))) {
                     // enableDisablePreviousButton(false);
 
@@ -172,7 +176,7 @@ public class CustomCalendarViewUI2 extends DialogFragment {
     }
 
     private void setValuesToTheYearSpinnerForDefault(int currentYear) {
-        Log.d(TAG, "setValuesToTheYearSpinnerForDefault: currentYear : " + currentYear);
+        CustomLog.d(TAG, "setValuesToTheYearSpinnerForDefault: currentYear : " + currentYear);
 
         for (int i = 0; i < yearsList.size(); i++) {
             CalendarviewYearModel calendarviewYearModel = yearsList.get(i);
@@ -185,9 +189,10 @@ public class CustomCalendarViewUI2 extends DialogFragment {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void fillDatesMonthsWise(String tag) {
-        if (!tag.isEmpty() && tag.equals("default")) {
-
+        if (!tag.equals("default")) {
+            selectedDate = "";
         }
+
         if (spinnerSelectedYearModel.getYear() == currentYear && spinnerSelectedMonthModel.getMonthNo() == currentMonth) {
             // enableDisablePreviousButton(false);
         } else {
@@ -207,8 +212,8 @@ public class CustomCalendarViewUI2 extends DialogFragment {
         //  String spinnerSelectedMonth = spinnerMonths.getSelectedItem().toString();
 
         if (spinnerSelectedMonthModel != null && spinnerSelectedYearModel != null) {
-            Log.d(TAG, "fillDatesMonthsWise: month : " + spinnerSelectedMonthModel.getMonthNo());
-            Log.d(TAG, "fillDatesMonthsWise: year : " + spinnerSelectedYearModel.getYear());
+            CustomLog.d(TAG, "fillDatesMonthsWise: month : " + spinnerSelectedMonthModel.getMonthNo());
+            CustomLog.d(TAG, "fillDatesMonthsWise: year : " + spinnerSelectedYearModel.getYear());
 
             YearMonth ym = YearMonth.of(spinnerSelectedYearModel.getYear(), spinnerSelectedMonthModel.getMonthNo());
 
@@ -297,8 +302,8 @@ public class CustomCalendarViewUI2 extends DialogFragment {
                     break;
 
             }
-            Log.d(TAG, "fillDatesMonthsWise: spinnerSelectedYearModel : " + spinnerSelectedYearModel.getYear());
-            Log.d(TAG, "fillDatesMonthsWise: spinnerSelectedMonthModel : " + spinnerSelectedMonthModel.getMonthNo());
+            CustomLog.d(TAG, "fillDatesMonthsWise: spinnerSelectedYearModel : " + spinnerSelectedYearModel.getYear());
+            CustomLog.d(TAG, "fillDatesMonthsWise: spinnerSelectedMonthModel : " + spinnerSelectedMonthModel.getMonthNo());
 
             //calculate total days for recyclerview
             int totalViewDays = monthTotalDays + noOfPrevMonthDaysRequired;
@@ -394,12 +399,12 @@ public class CustomCalendarViewUI2 extends DialogFragment {
                     //for upcoming dates
                     selectedDate = date + "/" + month + "/" + year;
                 }
-                Log.d(TAG, "selected from adapter fillDatesMonthsWise: selectedDate : " + selectedDate);
+                CustomLog.d(TAG, "selected from adapter fillDatesMonthsWise: selectedDate : " + selectedDate);
             }, whichDate));
 
 
         } else {
-            Log.d(TAG, "fillDatesMonthsWise: models are null");
+            CustomLog.d(TAG, "fillDatesMonthsWise: models are null");
         }
 
 
@@ -410,7 +415,7 @@ public class CustomCalendarViewUI2 extends DialogFragment {
         List<CalendarViewMonthModel> monthsList = new ArrayList<>();
         String[] monthsArray = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
         SessionManager sessionManager = new SessionManager(context);
-        if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
             monthsArray = new String[]{"जनवरी", "फ़रवरी", "मार्च", "अप्रैल", "मई", "जून", "जुलाई", "अगस्त", "सितंबर", "अक्टूबर", "नवंबर", "दिसंबर"};
         int[] monthsNoArray = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
         for (int i = 0; i < monthsArray.length; i++) {
@@ -420,7 +425,7 @@ public class CustomCalendarViewUI2 extends DialogFragment {
 
         MonthsSpinnerAdapter adapter = new MonthsSpinnerAdapter(context, R.layout.custom_spinner_text_calview_ui2, monthsList);
         adapter.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
-        spinnerMonths.setPopupBackgroundDrawable(context.getDrawable(R.drawable.popup_menu_background));
+        spinnerMonths.setPopupBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.popup_menu_background));
         spinnerMonths.setAdapter(adapter);
 
         spinnerMonths.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -429,8 +434,8 @@ public class CustomCalendarViewUI2 extends DialogFragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
                 spinnerSelectedMonthModel = adapter.getItem(position);
-                ((TextView) adapterView.getChildAt(0)).setTextColor(Color.parseColor("#2E1E91"));
-                spinnerMonths.setBackground(context.getResources().getDrawable(R.drawable.spinner_cal_view_bg_selected));
+                ((TextView) adapterView.getChildAt(0)).setTextColor(ContextCompat.getColor(view.getContext(), R.color.colorPrimary));
+                spinnerMonths.setBackground(ContextCompat.getDrawable(context, R.drawable.spinner_cal_view_bg_selected));
                 ((TextView) adapterView.getChildAt(0)).setTypeface(((TextView) adapterView.getChildAt(0)).getTypeface(), Typeface.BOLD);
 
                 fillDatesMonthsWise("fromSpinnerMonth");
@@ -511,7 +516,7 @@ public class CustomCalendarViewUI2 extends DialogFragment {
 
         YearSpinnerAdapter adapter = new YearSpinnerAdapter(context, R.layout.custom_spinner_text_calview_ui2, yearsList);
         adapter.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
-        spinnerYear.setPopupBackgroundDrawable(context.getDrawable(R.drawable.popup_menu_background));
+        spinnerYear.setPopupBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.popup_menu_background));
 
         spinnerYear.setAdapter(adapter);
 
@@ -522,7 +527,7 @@ public class CustomCalendarViewUI2 extends DialogFragment {
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
                 spinnerSelectedYearModel = adapter.getItem(position);
                 //spinnerYear.setBackground(getResources().getDrawable(R.drawable.spinner_cal_view_bg_selected));
-                ((TextView) adapterView.getChildAt(0)).setTextColor(Color.parseColor("#2E1E91"));
+                ((TextView) adapterView.getChildAt(0)).setTextColor(ContextCompat.getColor(view.getContext(), R.color.colorPrimary));
                 ((TextView) adapterView.getChildAt(0)).setTypeface(((TextView) adapterView.getChildAt(0)).getTypeface(), Typeface.BOLD);
 
                 fillDatesMonthsWise("fromSpinnerYear");
@@ -614,12 +619,12 @@ public class CustomCalendarViewUI2 extends DialogFragment {
                 String[] dateSplit = formateDate.split("/");
 
                 //tvSelectedMonthYear.setText(selectedNextMonth + ", " + selectedMonthYear);
-                Log.d(TAG, "getNextMonthDates: tvSelectedMonthYear : " + selectedNextMonth + ", " + selectedMonthYear);
-                Log.d(TAG, "getNextMonthDates: currentMonth : " + currentMonth);
-                Log.d(TAG, "getNextMonthDates: currentYear : " + currentYear);
-                Log.d(TAG, "getNextMonthDates: selectedMonthYear : " + selectedMonthYear);
-                Log.d(TAG, "getNextMonthDates: selectedNextMonth : " + selectedNextMonth);
-                Log.d(TAG, "getNextMonthDates: selectedNextMonthnew : " + dateSplit[1]);
+                CustomLog.d(TAG, "getNextMonthDates: tvSelectedMonthYear : " + selectedNextMonth + ", " + selectedMonthYear);
+                CustomLog.d(TAG, "getNextMonthDates: currentMonth : " + currentMonth);
+                CustomLog.d(TAG, "getNextMonthDates: currentYear : " + currentYear);
+                CustomLog.d(TAG, "getNextMonthDates: selectedMonthYear : " + selectedMonthYear);
+                CustomLog.d(TAG, "getNextMonthDates: selectedNextMonth : " + selectedNextMonth);
+                CustomLog.d(TAG, "getNextMonthDates: selectedNextMonthnew : " + dateSplit[1]);
 
                 if (dateSplit[1].equals(String.valueOf(currentMonth)) && selectedMonthYear.equals(String.valueOf(currentYear))) {
                     // getAllDatesOfSelectedMonth(calendarInstance, true, selectedNextMonth, selectedMonthYear, dateSplit[1]);
@@ -645,6 +650,8 @@ public class CustomCalendarViewUI2 extends DialogFragment {
             e.printStackTrace();
         }
     }
+
+
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public AlertDialog showDatePicker(Context context, String whichDate1) {
@@ -673,9 +680,9 @@ public class CustomCalendarViewUI2 extends DialogFragment {
         currentMonth = calendarInstanceDefault.get(Calendar.MONTH) + 1;
         currentYear = calendarInstanceDefault.get(Calendar.YEAR);
         monthTotalDays = calendarInstanceDefault.getActualMaximum(Calendar.DAY_OF_MONTH);
-        Log.v(TAG, "currentMonth - "+currentMonth);
-        Log.v(TAG, "currentYear - "+currentYear);
-        Log.v(TAG, "monthTotalDays - "+monthTotalDays);
+        CustomLog.v(TAG, "currentMonth - " + currentMonth);
+        CustomLog.v(TAG, "currentYear - " + currentYear);
+        CustomLog.v(TAG, "monthTotalDays - " + monthTotalDays);
 
 
         spinnerSelectedYearModel = new CalendarviewYearModel(currentYear, true);
@@ -701,15 +708,23 @@ public class CustomCalendarViewUI2 extends DialogFragment {
 
         btnOkCalendar.setOnClickListener(v -> {
             //for get the selected date - if calendar view called from activity
+            if (TextUtils.isEmpty(selectedDate)) {
+                ToastUtil.showShortToast(context, context.getString(R.string.please_select_date));
+                return;
+            }
             if (listener != null) {
                 listener.getSelectedDate(selectedDate, "");
             }
             //for get the selected date - if calendar view called from fragment
-            if (getTargetFragment() != null) {
-                Intent intent = new Intent()
-                        .putExtra("selectedDate", selectedDate)
-                        .putExtra("whichDate", whichDate);
-                getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, intent);
+            try {
+                if (getParentFragmentManager() != null) {
+                    //converted intent to bundle to support new method
+                    Bundle bundle = new Bundle();
+                    bundle.putString("selectedDate", selectedDate);
+                    bundle.putString("whichDate", whichDate);
+                    getParentFragmentManager().setFragmentResult("requestKey", bundle);
+                }
+            } catch (Exception e) {
             }
             alertDialog.dismiss();
         });

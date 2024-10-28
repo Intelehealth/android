@@ -1,7 +1,5 @@
 package org.intelehealth.app.activities.visit;
 
-import static org.intelehealth.app.database.dao.VisitsDAO.getPendingPrescCount;
-import static org.intelehealth.app.database.dao.VisitsDAO.getTotalCounts_EndVisit;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE;
 
 import android.app.Activity;
@@ -16,7 +14,7 @@ import android.os.Bundle;
 import android.os.LocaleList;
 import android.text.Html;
 import android.util.DisplayMetrics;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +29,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -40,9 +39,9 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.onboarding.PrivacyPolicyActivity_New;
-import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.EncounterDAO;
+import org.intelehealth.app.database.dao.VisitsDAO;
 import org.intelehealth.app.models.PrescriptionModel;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.VisitCountInterface;
@@ -121,11 +120,6 @@ public class VisitPendingFragment extends Fragment {
         return context;
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-    }
-
     private void initUI(View view) {
         progress = view.findViewById(R.id.progress);
         progress.setVisibility(View.VISIBLE);
@@ -181,7 +175,7 @@ public class VisitPendingFragment extends Fragment {
                         // update older data as it will not go at very bottom of list.
                         if (olderList != null && olderList.size() == 0) {
                             isolderFullyLoaded = true;
-                            Log.d("TAG", "pending: recent: " + recentList.size() + ", older: " + olderList.size());
+                            CustomLog.d("TAG", "pending: recent: " + recentList.size() + ", older: " + olderList.size());
                             return;
                         }
                         if (!isolderFullyLoaded) {
@@ -216,7 +210,7 @@ public class VisitPendingFragment extends Fragment {
         fetchOlderData();
 
         int totalCount = totalCounts_recent + totalCounts_older;
-        Log.d("rece", "defaultData: pending" + totalCount);
+        CustomLog.d("rece", "defaultData: pending" + totalCount);
 
         // loaded month data 1st for showing the count in main ui
 //        thisMonths_Visits();
@@ -230,7 +224,7 @@ public class VisitPendingFragment extends Fragment {
     private void fetchOlderData() {
         // pagination - start
         olderList = olderVisits(olderLimit, olderStart);
-        Log.d("TAG", "setPendingOlderMoreDataIntoRecyclerView: " + olderList.size());
+        CustomLog.d("TAG", "setPendingOlderMoreDataIntoRecyclerView: " + olderList.size());
         older_adapter = new VisitAdapter(getActivity(), olderList);
         recycler_older.setNestedScrollingEnabled(false);
         recycler_older.setAdapter(older_adapter);
@@ -279,7 +273,7 @@ public class VisitPendingFragment extends Fragment {
             List<PrescriptionModel> tempList = recentVisits(recentLimit, recentStart);  // for n iteration limit be fixed == 15 and start - offset will keep skipping each records.
             if (tempList.size() > 0) {
                 recentList.addAll(tempList);
-                Log.d("TAG", "setPendingRecentMoreDataIntoRecyclerView: " + recentList.size());
+                CustomLog.d("TAG", "setPendingRecentMoreDataIntoRecyclerView: " + recentList.size());
                 recent_adapter.list.addAll(tempList);
                 recent_adapter.notifyDataSetChanged();
                 recentStart = recentEnd;
@@ -302,7 +296,7 @@ public class VisitPendingFragment extends Fragment {
             List<PrescriptionModel> tempList = olderVisits(olderLimit, olderStart); // for n iteration limit be fixed == 15 and start - offset will keep skipping each records.
             if (tempList.size() > 0) {
                 olderList.addAll(tempList);
-                Log.d("TAG", "setPendingOlderMoreDataIntoRecyclerView: " + olderList.size());
+                CustomLog.d("TAG", "setPendingOlderMoreDataIntoRecyclerView: " + olderList.size());
                 older_adapter.list.addAll(tempList);
                 older_adapter.notifyDataSetChanged();
                 olderStart = olderEnd;
@@ -316,13 +310,13 @@ public class VisitPendingFragment extends Fragment {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                int total = getPendingPrescCount();
+                int total = new VisitsDAO().getVisitCountsByStatus(false);//getPendingPrescCount();
                 Activity activity = getActivity();
                 if (activity != null && isAdded()) {
                     activity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            String htmlvalue = getResources().getString(R.string.doctor_yet_to_send_prescription) + " " + "<b>" + total + " " + getResources().getString(R.string.patients) + "</b>, " + getResources().getString(R.string.you_can_remind_doctor);
+                            String htmlvalue = IntelehealthApplication.getInstance().getResources().getString(R.string.doctor_yet_to_send_prescription) + " " + "<b>" + total + " " + IntelehealthApplication.getInstance().getResources().getString(R.string.patients) + "</b>, " + IntelehealthApplication.getInstance().getResources().getString(R.string.you_can_remind_doctor);
                             pending_endvisit_no.setText(Html.fromHtml(htmlvalue));
                         }
                     });
@@ -362,9 +356,9 @@ public class VisitPendingFragment extends Fragment {
             @Override
             public boolean onQueryTextChange(String newText) {
                 if (!newText.equalsIgnoreCase(""))
-                    searchview_pending.setBackground(getResources().getDrawable(R.drawable.blue_border_bg));
+                    searchview_pending.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.blue_border_bg));
                 else
-                    searchview_pending.setBackground(getResources().getDrawable(R.drawable.ui2_common_input_bg));
+                    searchview_pending.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_common_input_bg));
                 return false;
             }
         });
@@ -441,9 +435,9 @@ public class VisitPendingFragment extends Fragment {
         Cursor cursor  = db.rawQuery("select p.patient_photo, p.first_name, p.middle_name, p.last_name, p.openmrs_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
                         " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
                         " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
-                        " v.enddate is null and" +
+                        //" v.enddate is null and" +
                         " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" +
-                        " v.startdate > DATETIME('now', '-4 day') group by e.visituuid ORDER BY v.startdate DESC limit ? offset ?",
+                        " v.startdate > DATETIME('now', '-4 day') group by p.openmrs_id ORDER BY v.startdate DESC limit ? offset ?",
 
                 new String[]{String.valueOf(limit), String.valueOf(offset)});
 
@@ -511,9 +505,9 @@ public class VisitPendingFragment extends Fragment {
         Cursor cursor  = db.rawQuery("select p.patient_photo, p.first_name, p.middle_name, p.last_name, p.openmrs_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
                         " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
                         " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
-                        " v.enddate is null and" +
+                        //" v.enddate is null and" +
                         " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" +
-                        " v.startdate > DATETIME('now', '-4 day') group by e.visituuid ORDER BY v.startdate DESC", new String[]{});
+                        " v.startdate > DATETIME('now', '-4 day') group by p.openmrs_id ORDER BY v.startdate DESC", new String[]{});
 
         db.setTransactionSuccessful();
         db.endTransaction();
@@ -580,9 +574,9 @@ public class VisitPendingFragment extends Fragment {
         Cursor cursor  = db.rawQuery("select p.patient_photo, p.first_name, p.middle_name, p.last_name, p.openmrs_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
                         " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
                         " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
-                        " v.enddate is null and" +
+                        //" v.enddate is null and" +
                         " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" +
-                        " v.startdate < DATETIME('now', '-4 day') group by e.visituuid ORDER BY v.startdate DESC limit ? offset ?",
+                        " v.startdate <= DATETIME('now', '-4 day') group by p.openmrs_id ORDER BY v.startdate DESC limit ? offset ?",
 
                 new String[]{String.valueOf(limit), String.valueOf(offset)});
 
@@ -648,9 +642,9 @@ public class VisitPendingFragment extends Fragment {
         Cursor cursor  = db.rawQuery("select p.patient_photo, p.first_name, p.middle_name, p.last_name, p.openmrs_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
                         " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
                         " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
-                        " v.enddate is null and" +
+                        //" v.enddate is null and" +
                         " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" +
-                        " v.startdate < DATETIME('now', '-4 day') group by e.visituuid ORDER BY v.startdate DESC",
+                        " v.startdate <= DATETIME('now', '-4 day') group by p.openmrs_id ORDER BY v.startdate DESC",
 
                 new String[]{});
 
@@ -891,7 +885,7 @@ public class VisitPendingFragment extends Fragment {
      * @param query
      */
     private void searchOperation(String query) {
-        Log.v("Search", "Search Word: " + query);
+        CustomLog.v("Search", "Search Word: " + query);
         query = query.toLowerCase().trim();
         query = query.replaceAll(" {2}", " ");
 
@@ -1045,7 +1039,7 @@ public class VisitPendingFragment extends Fragment {
 
         //
         recent_older_visibility(recentList, olderList);
-        Log.d("TAG", "resetData: " + recentList.size() + ", " + olderList.size());
+        CustomLog.d("TAG", "resetData: " + recentList.size() + ", " + olderList.size());
 
         recent_adapter = new VisitAdapter(getActivity(), recentList);
       //  recycler_recent.setNestedScrollingEnabled(false);

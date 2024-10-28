@@ -19,7 +19,8 @@ import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
+import android.view.ContextThemeWrapper;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -34,6 +35,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -97,7 +99,6 @@ public class SearchPatientActivity_New extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_patient_new);
-
         sessionManager = new SessionManager(this);
         search_recycelview = findViewById(R.id.search_recycelview);
         LinearLayoutManager lm = new LinearLayoutManager(getApplicationContext());
@@ -219,7 +220,7 @@ public class SearchPatientActivity_New extends BaseActivity {
             else
                 allPatientsTV.setText(getResources().getString(R.string.results_for) + " \"" + text + "\"");
 
-            mSearchEditText.setTextColor(getResources().getColor(R.color.white));
+            mSearchEditText.setTextColor(ContextCompat.getColor(this,R.color.white));
             managePreviousSearchStorage(text);
             query = text;
             doQuery(text);
@@ -259,11 +260,11 @@ public class SearchPatientActivity_New extends BaseActivity {
 
     private void queryAllPatients() {
         patientDTOList = PatientsDAO.getAllPatientsFromDB(limit, start);   // fetch first 15 records and dont skip any records ie. start = 0 for 2nd itertion skip first 15records.
-        Log.d(TAG, "queryAllPatients: " + patientDTOList.size());
+        CustomLog.d(TAG, "queryAllPatients: " + patientDTOList.size());
 
         if (patientDTOList.size() > 0) { // ie. the entered text is present in db
             patientDTOList = fetchDataforTags(patientDTOList);
-            Log.v(TAG, "size: " + patientDTOList.size());
+            CustomLog.v(TAG, "size: " + patientDTOList.size());
             searchData_Available();
             try {
                 adapter = new SearchPatientAdapter_New(this, patientDTOList);
@@ -368,7 +369,7 @@ public class SearchPatientActivity_New extends BaseActivity {
 
         if (recent.size() > 0) { // ie. the entered text is present in db
             recent = fetchDataforTags(recent);
-            Log.v(TAG, "size: " + recent.size());
+            CustomLog.v(TAG, "size: " + recent.size());
 
             searchData_Available();
             try {
@@ -378,7 +379,7 @@ public class SearchPatientActivity_New extends BaseActivity {
 
             } catch (Exception e) {
                 FirebaseCrashlytics.getInstance().recordException(e);
-                Logger.logE("doquery", "doquery", e);
+                CustomLog.e("doquery", "doquery", e);
             }
         } else {
             searchData_Unavailable();
@@ -417,7 +418,7 @@ public class SearchPatientActivity_New extends BaseActivity {
                 String visit_start_date = DateAndTimeUtils.date_formatter(visitDTO.getStartdate(),
                         "yyyy-MM-dd'T'HH:mm:ss.SSSZ",
                         "dd MMM 'at' HH:mm a");    // Eg. 26 Sep 2022 at 03:15 PM
-                Log.v("SearchPatient", "date: " + visit_start_date);
+                CustomLog.v("SearchPatient", "date: " + visit_start_date);
 
                 patientDTOList.get(i).setVisit_startdate(visit_start_date);
 
@@ -511,7 +512,7 @@ public class SearchPatientActivity_New extends BaseActivity {
             List<PatientDTO> tempList = PatientsDAO.getAllPatientsFromDB(limit, start); // for n iteration limit be fixed == 15 and start - offset will keep skipping each records.
             if (tempList.size() > 0) {
                 patientDTOList.addAll(tempList);
-                Log.d(TAG, "queryAllPatients: " + patientDTOList.size());
+                CustomLog.d(TAG, "queryAllPatients: " + patientDTOList.size());
                 adapter.patientDTOS.addAll(tempList);
                 adapter.notifyDataSetChanged();
                 start = end;

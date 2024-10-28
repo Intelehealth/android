@@ -22,8 +22,10 @@ import static org.intelehealth.app.utilities.StringUtils.switch_gu_caste_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_gu_economic_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_gu_education_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_hi_caste_edit;
+import static org.intelehealth.app.utilities.StringUtils.switch_hi_contact_type_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_hi_economic_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_hi_education_edit;
+import static org.intelehealth.app.utilities.StringUtils.switch_hi_guardian_type_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_kn_caste_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_kn_economic_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_kn_education_edit;
@@ -62,7 +64,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.LocaleList;
 import android.util.DisplayMetrics;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -75,12 +77,18 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
@@ -88,7 +96,6 @@ import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
-import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
 import org.intelehealth.app.activities.identificationActivity.model.DistData;
 import org.intelehealth.app.activities.identificationActivity.model.StateDistMaster;
 import org.intelehealth.app.activities.searchPatientActivity.SearchPatientActivity_New;
@@ -99,17 +106,21 @@ import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.ayu.visit.VisitCreationActivity;
 import org.intelehealth.app.ayu.visit.common.VisitUtils;
+import org.intelehealth.app.ayu.visit.model.CommonVisitData;
 import org.intelehealth.app.database.InteleHealthDatabaseHelper;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.database.dao.VisitsDAO;
+import org.intelehealth.app.databinding.ActivityPatientDetail2Binding;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.models.dto.VisitDTO;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
+import org.intelehealth.app.ui.patient.activity.PatientRegistrationActivity;
+import org.intelehealth.app.utilities.AgeUtils;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.DownloadFilesUtils;
@@ -117,15 +128,23 @@ import org.intelehealth.app.utilities.FileUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
+import org.intelehealth.app.utilities.PatientRegConfigKeys;
+import org.intelehealth.app.utilities.PatientRegFieldsUtils;
+import org.intelehealth.app.utilities.PatientRegStage;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
+import org.intelehealth.config.presenter.fields.data.RegFieldRepository;
+import org.intelehealth.config.presenter.fields.factory.RegFieldViewModelFactory;
+import org.intelehealth.config.presenter.fields.viewmodel.RegFieldViewModel;
+import org.intelehealth.config.room.ConfigDatabase;
+import org.intelehealth.config.room.entity.FeatureActiveStatus;
+import org.intelehealth.config.room.entity.PatientRegistrationFields;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -145,7 +164,14 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     private static final String TAG = PatientDetailActivity2.class.getSimpleName();
     TextView name_txtview, openmrsID_txt, patientname, gender, patientdob, patientage, phone,
             postalcode, patientcountry, patientstate, patientdistrict, village, address1, addr2View,
-            son_daughter_wife, patientoccupation, patientcaste, patienteducation, patienteconomicstatus, patientNationalID;
+            son_daughter_wife, patientoccupation, patientcaste, patienteducation, patienteconomicstatus, patientNationalID,
+            guardina_name_tv, guardian_type_tv, contact_type_tv, em_contact_name_tv, em_contact_number_tv;
+
+    TableRow nameTr, genderTr, dobTr, ageTr, phoneNumTr, guardianTypeTr, guardianNameTr,
+            emContactNameTr, emContactTypeTr, emContactNumberTr, postalCodeTr, countryTr,
+            stateTr, districtTr, villageCityTr, addressOneTr, addressTwoTr, nidTr, occupationTr, socialCategoryTr,
+            educationTr, economicCategoryTr;
+
     SessionManager sessionManager = null;
     //    Patient patientDTO = new Patient();
     PatientsDAO patientsDAO = new PatientsDAO();
@@ -180,22 +206,27 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     private ImageView refresh, cancelbtn;
     private NetworkUtils networkUtils;
     String tag = "";
-    private TableRow trAddress2;
+    RegFieldViewModel regFieldViewModel;
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-    }
+    List<PatientRegistrationFields> patientAllFields;
+    private ActivityPatientDetail2Binding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_patient_detail2);
+        binding = ActivityPatientDetail2Binding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
         sessionManager = new SessionManager(this);
         String language = sessionManager.getAppLanguage();
         context = PatientDetailActivity2.this;
 
         networkUtils = new NetworkUtils(this, this);
+
+        //config viewmodel initialization
+        RegFieldRepository repository = new RegFieldRepository(ConfigDatabase.getInstance(this).patientRegFieldDao());
+        RegFieldViewModelFactory factory = new RegFieldViewModelFactory(repository);
+        regFieldViewModel = new ViewModelProvider(this, factory).get(RegFieldViewModel.class);
+
         //In case of crash still the org should hold the current lang fix.
         if (!language.equalsIgnoreCase("")) {
             Locale locale = new Locale(language);
@@ -212,9 +243,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
         // changing status bar color
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(Color.WHITE);
-        }
+        getWindow().setStatusBarColor(Color.WHITE);
 
         Intent intent = getIntent();
         if (intent != null) {
@@ -233,38 +262,41 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
 
         personal_edit.setOnClickListener(v -> {
-            Intent intent2 = new Intent(PatientDetailActivity2.this, IdentificationActivity_New.class);
-            intent2.putExtra("patientUuid", patientDTO.getUuid());
-            intent2.putExtra("ScreenEdit", "personal_edit");
-            intent2.putExtra("patient_detail", true);
-            Bundle args = new Bundle();
-            args.putSerializable("patientDTO", (Serializable) patientDTO);
-            intent2.putExtra("BUNDLE", args);
-            startActivity(intent2);
+            PatientRegistrationActivity.startPatientRegistration(this, patientDTO.getUuid(), PatientRegStage.PERSONAL);
+//            Intent intent2 = new Intent(PatientDetailActivity2.this, IdentificationActivity_New.class);
+//            intent2.putExtra("patientUuid", patientDTO.getUuid());
+//            intent2.putExtra("ScreenEdit", "personal_edit");
+//            intent2.putExtra("patient_detail", true);
+//            Bundle args = new Bundle();
+//            args.putSerializable("patientDTO", (Serializable) patientDTO);
+//            intent2.putExtra("BUNDLE", args);
+//            startActivity(intent2);
             finish();
         });
 
         address_edit.setOnClickListener(v -> {
-            Intent intent2 = new Intent(PatientDetailActivity2.this, IdentificationActivity_New.class);
-            intent2.putExtra("patientUuid", patientDTO.getUuid());
-            intent2.putExtra("ScreenEdit", "address_edit");
-            intent2.putExtra("patient_detail", true);
-            Bundle args = new Bundle();
-            args.putSerializable("patientDTO", (Serializable) patientDTO);
-            intent2.putExtra("BUNDLE", args);
-            startActivity(intent2);
+            PatientRegistrationActivity.startPatientRegistration(this, patientDTO.getUuid(), PatientRegStage.ADDRESS);
+//            Intent intent2 = new Intent(PatientDetailActivity2.this, IdentificationActivity_New.class);
+//            intent2.putExtra("patientUuid", patientDTO.getUuid());
+//            intent2.putExtra("ScreenEdit", "address_edit");
+//            intent2.putExtra("patient_detail", true);
+//            Bundle args = new Bundle();
+//            args.putSerializable("patientDTO", (Serializable) patientDTO);
+//            intent2.putExtra("BUNDLE", args);
+//            startActivity(intent2);
             finish();
         });
 
         others_edit.setOnClickListener(v -> {
-            Intent intent2 = new Intent(PatientDetailActivity2.this, IdentificationActivity_New.class);
-            intent2.putExtra("patientUuid", patientDTO.getUuid());
-            intent2.putExtra("ScreenEdit", "others_edit");
-            intent2.putExtra("patient_detail", true);
-            Bundle args = new Bundle();
-            args.putSerializable("patientDTO", (Serializable) patientDTO);
-            intent2.putExtra("BUNDLE", args);
-            startActivity(intent2);
+            PatientRegistrationActivity.startPatientRegistration(this, patientDTO.getUuid(), PatientRegStage.OTHER);
+//            Intent intent2 = new Intent(PatientDetailActivity2.this, IdentificationActivity_New.class);
+//            intent2.putExtra("patientUuid", patientDTO.getUuid());
+//            intent2.putExtra("ScreenEdit", "others_edit");
+//            intent2.putExtra("patient_detail", true);
+//            Bundle args = new Bundle();
+//            args.putSerializable("patientDTO", (Serializable) patientDTO);
+//            intent2.putExtra("BUNDLE", args);
+//            startActivity(intent2);
             finish();
         });
 
@@ -276,7 +308,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
         startVisitBtn.setOnClickListener(v -> {
             patientRegistrationDialog(context,
-                    getResources().getDrawable(R.drawable.dialog_icon_complete),
+                    ContextCompat.getDrawable(this, R.drawable.dialog_icon_complete),
                     getResources().getString(R.string.patient_registered),
                     getResources().getString(R.string.does_patient_start_visit_now),
                     getResources().getString(R.string.button_continue),
@@ -284,7 +316,14 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                         @Override
                         public void onDialogActionDone(int action) {
                             if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
-                                startVisit();
+                                Intent in = new Intent(PatientDetailActivity2.this, TeleconsultationConsentActivity.class);
+                                CommonVisitData commonVisitData = new CommonVisitData();
+                                commonVisitData.setPatientUuid(patientDTO.getUuid());
+                                commonVisitData.setPrivacyNote(privacy_value_selected);
+                                in.putExtra("CommonVisitData", commonVisitData);
+                                startActivity(in);
+                                // startVisit();
+                                // mStartForConsentApproveResult.launch(new Intent(PatientDetailActivity2.this, TeleconsultationConsentActivity.class));
                             }
                         }
                     });
@@ -337,24 +376,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 }
             }
         });
-        mBroadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                //Toast.makeText(context, getString(R.string.sync_completed), Toast.LENGTH_SHORT).show();
-                Log.v(TAG, "Sync Done!");
-                refresh.clearAnimation();
-                syncAnimator.cancel();
-                recreate();
-            }
-        };
-        IntentFilter filterSend = new IntentFilter();
-        filterSend.addAction(AppConstants.SYNC_NOTIFY_INTENT_ACTION);
-        ContextCompat.registerReceiver(
-                context,
-                mBroadcastReceiver,
-                filterSend,
-                ContextCompat.RECEIVER_NOT_EXPORTED
-        );
+
         syncAnimator = ObjectAnimator.ofFloat(refresh, View.ROTATION, 0f, 359f).setDuration(1200);
         syncAnimator.setRepeatCount(ValueAnimator.INFINITE);
         syncAnimator.setInterpolator(new LinearInterpolator());
@@ -362,7 +384,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         cancelbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onBackPressed();
+                getOnBackPressedDispatcher().onBackPressed();
             }
         });
     }
@@ -370,10 +392,10 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     private BroadcastReceiver mBroadcastReceiver;
     private ObjectAnimator syncAnimator;
 
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unregisterReceiver(mBroadcastReceiver);
     }
 
     @Override
@@ -408,6 +430,18 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
     private RelativeLayout mPersonalHeaderRelativeLayout, mAddressHeaderRelativeLayout, mOthersHeaderRelativeLayout;
 
+    ActivityResultLauncher<Intent> mStartForConsentApproveResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == AppConstants.TELECONSULTATION_CONSENT_ACCEPT) {
+                        //Intent intent = result.getData();
+                        // Handle the Intent
+                        startVisit();
+                    }
+                }
+            });
+
     private void startVisit() {
         // before starting, we determine if it is new visit for a returning patient
         // extract both FH and PMH
@@ -425,7 +459,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         encounterDTO.setVisituuid(uuid);
         encounterDTO.setSyncd(false);
         encounterDTO.setProvideruuid(sessionManager.getProviderID());
-        Log.d("DTO", "DTO:detail " + encounterDTO.getProvideruuid());
+        CustomLog.d("DTO", "DTO:detail " + encounterDTO.getProvideruuid());
         encounterDTO.setVoided(0);
         encounterDTO.setPrivacynotice_value(privacy_value_selected);//privacy value added.
 
@@ -433,6 +467,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             encounterDAO.createEncountersToDB(encounterDTO);
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
+            CustomLog.e(TAG,e.getMessage());
         }
 
         InteleHealthDatabaseHelper mDatabaseHelper = new InteleHealthDatabaseHelper(PatientDetailActivity2.this);
@@ -478,6 +513,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             visitsDAO.insertPatientToDB(visitDTO);
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
+            CustomLog.e(TAG,e.getMessage());
         }
 
         // visitUuid = String.valueOf(visitLong);
@@ -510,13 +546,44 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         patientage = findViewById(R.id.age);
         phone = findViewById(R.id.phone);
 
+        guardian_type_tv = findViewById(R.id.guardian_type_tv);
+        guardina_name_tv = findViewById(R.id.guardian_name_tv);
+        contact_type_tv = findViewById(R.id.contact_type_tv);
+        em_contact_name_tv = findViewById(R.id.em_contact_name_tv);
+        em_contact_number_tv = findViewById(R.id.em_contact_number_tv);
+
+        nameTr = findViewById(R.id.name_tr);
+        genderTr = findViewById(R.id.gender_tr);
+        dobTr = findViewById(R.id.dob_tr);
+        ageTr = findViewById(R.id.age_tr);
+        phoneNumTr = findViewById(R.id.phone_num_tr);
+        guardianTypeTr = findViewById(R.id.guardian_type_table_row);
+        guardianNameTr = findViewById(R.id.guardian_name_table_row);
+        emContactNameTr = findViewById(R.id.em_contact_name_tr);
+        emContactNumberTr = findViewById(R.id.em_contact_num_tr);
+        emContactTypeTr = findViewById(R.id.contact_type_tr);
+
+        postalCodeTr = findViewById(R.id.postal_code_tr);
+        countryTr = findViewById(R.id.country_tr);
+        stateTr = findViewById(R.id.state_tr);
+        districtTr = findViewById(R.id.district_tr);
+        villageCityTr = findViewById(R.id.village_city_tr);
+        guardianTypeTr = findViewById(R.id.guardian_type_table_row);
+        addressOneTr = findViewById(R.id.address1_tr);
+        addressTwoTr = findViewById(R.id.tr_address_2);
+
+        nidTr = findViewById(R.id.nid_tr);
+        occupationTr = findViewById(R.id.occupation_tr);
+        socialCategoryTr = findViewById(R.id.social_category_tr);
+        educationTr = findViewById(R.id.education_tr);
+        economicCategoryTr = findViewById(R.id.economic_category_tr);
+
         postalcode = findViewById(R.id.postalcode);
         patientcountry = findViewById(R.id.country);
         patientstate = findViewById(R.id.state);
         patientdistrict = findViewById(R.id.district);
         village = findViewById(R.id.village);
         address1 = findViewById(R.id.address1);
-        trAddress2 = findViewById(R.id.tr_address_2);
         addr2View = findViewById(R.id.addr2View);
 
         son_daughter_wife = findViewById(R.id.son_daughter_wife);
@@ -539,10 +606,234 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         mPastVisitsRecyclerView = findViewById(R.id.rcv_past_visits);
         mPastVisitsRecyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
 
+        fetchAllConfig();
+
         setFullName();
         initForOpenVisit();
         initForPastVisit();
     }
+
+    /**
+     * fetching reg config from local db
+     */
+    private void fetchAllConfig() {
+        regFieldViewModel.fetchEnabledAllRegFields()
+                .observe(this, it -> {
+                            patientAllFields = it;
+                            configAllFields();
+                        }
+                );
+    }
+
+    /**
+     * changing fields status based on config data
+     */
+    private void configAllFields() {
+        String[] ymdData = DateAndTimeUtils.getAgeInYearMonth(patientDTO.getDateofbirth()).split(" ");
+        boolean isGuardianRequire = false;
+        if (ymdData.length > 2) {
+            int mAgeYears = ymdData[0] != null && !ymdData[0].isEmpty() ? Integer.parseInt(ymdData[0]) : 0;
+            int mAgeMonths = ymdData[1] != null && !ymdData[1].isEmpty() ? Integer.parseInt(ymdData[1]) : 0;
+            int mAgeDays = ymdData[2] != null && !ymdData[2].isEmpty() ? Integer.parseInt(ymdData[2]) : 0;
+            isGuardianRequire = AgeUtils.INSTANCE.isGuardianRequired(mAgeYears, mAgeMonths, mAgeDays);
+        }
+
+        for (PatientRegistrationFields fields : patientAllFields) {
+            switch (fields.getIdKey()) {
+                case PatientRegConfigKeys.GENDER -> PatientRegFieldsUtils.INSTANCE.configField(
+                        false,
+                        fields,
+                        genderTr,
+                        null,
+                        null,
+                        null
+                );
+                case PatientRegConfigKeys.DOB -> PatientRegFieldsUtils.INSTANCE.configField(
+                        false,
+                        fields,
+                        dobTr,
+                        null,
+                        null,
+                        null
+                );
+                case PatientRegConfigKeys.AGE -> PatientRegFieldsUtils.INSTANCE.configField(
+                        false,
+                        fields,
+                        ageTr,
+                        null,
+                        null,
+                        null
+                );
+                case PatientRegConfigKeys.GUARDIAN_TYPE -> {
+                    if (isGuardianRequire) {
+                        PatientRegFieldsUtils.INSTANCE.configField(
+                                false,
+                                fields,
+                                guardianTypeTr,
+                                null,
+                                null,
+                                null
+                        );
+                    }
+                }
+                case PatientRegConfigKeys.GUARDIAN_NAME -> {
+                    if (isGuardianRequire) {
+                        PatientRegFieldsUtils.INSTANCE.configField(
+                                false,
+                                fields,
+                                guardianNameTr,
+                                null,
+                                null,
+                                null
+                        );
+                    }
+                }
+                case PatientRegConfigKeys.PHONE_NUM -> PatientRegFieldsUtils.INSTANCE.configField(
+                        false,
+                        fields,
+                        phoneNumTr,
+                        null,
+                        null,
+                        null
+                );
+                case PatientRegConfigKeys.EM_CONTACT_TYPE ->
+                        PatientRegFieldsUtils.INSTANCE.configField(
+                                false,
+                                fields,
+                                emContactTypeTr,
+                                null,
+                                null,
+                                null
+                        );
+                case PatientRegConfigKeys.EM_CONTACT_NAME ->
+                        PatientRegFieldsUtils.INSTANCE.configField(
+                                false,
+                                fields,
+                                emContactNameTr,
+                                null,
+                                null,
+                                null
+                        );
+                case PatientRegConfigKeys.EM_CONTACT_NUMBER ->
+                        PatientRegFieldsUtils.INSTANCE.configField(
+                                false,
+                                fields,
+                                emContactNumberTr,
+                                null,
+                                null,
+                                null
+                        );
+
+                case PatientRegConfigKeys.POSTAL_CODE -> PatientRegFieldsUtils.INSTANCE.configField(
+                        false,
+                        fields,
+                        postalCodeTr,
+                        null,
+                        null,
+                        null
+                );
+                case PatientRegConfigKeys.COUNTRY -> {
+                    PatientRegFieldsUtils.INSTANCE.configField(
+                            false,
+                            fields,
+                            countryTr,
+                            null,
+                            null,
+                            null
+                    );
+                }
+                case PatientRegConfigKeys.STATE -> PatientRegFieldsUtils.INSTANCE.configField(
+                        false,
+                        fields,
+                        stateTr,
+                        null,
+                        null,
+                        null
+                );
+                case PatientRegConfigKeys.DISTRICT -> PatientRegFieldsUtils.INSTANCE.configField(
+                        false,
+                        fields,
+                        districtTr,
+                        null,
+                        null,
+                        null
+                );
+                case PatientRegConfigKeys.VILLAGE_TOWN_CITY -> {
+                    PatientRegFieldsUtils.INSTANCE.configField(
+                            false,
+                            fields,
+                            villageCityTr,
+                            null,
+                            null,
+                            null
+                    );
+                }
+                case PatientRegConfigKeys.ADDRESS_1 -> PatientRegFieldsUtils.INSTANCE.configField(
+                        false,
+                        fields,
+                        addressOneTr,
+                        null,
+                        null,
+                        null
+                );
+                case PatientRegConfigKeys.ADDRESS_2 -> PatientRegFieldsUtils.INSTANCE.configField(
+                        false,
+                        fields,
+                        addressTwoTr,
+                        null,
+                        null,
+                        null
+                );
+
+                case PatientRegConfigKeys.NATIONAL_ID -> {
+                    PatientRegFieldsUtils.INSTANCE.configField(
+                            false,
+                            fields,
+                            nidTr,
+                            null,
+                            null,
+                            null
+                    );
+                }
+                case PatientRegConfigKeys.OCCUPATION -> PatientRegFieldsUtils.INSTANCE.configField(
+                        false,
+                        fields,
+                        occupationTr,
+                        null,
+                        null,
+                        null
+                );
+                case PatientRegConfigKeys.SOCIAL_CATEGORY ->
+                        PatientRegFieldsUtils.INSTANCE.configField(
+                                false,
+                                fields,
+                                socialCategoryTr,
+                                null,
+                                null,
+                                null
+                        );
+                case PatientRegConfigKeys.EDUCATION -> PatientRegFieldsUtils.INSTANCE.configField(
+                        false,
+                        fields,
+                        educationTr,
+                        null,
+                        null,
+                        null
+                );
+
+                case PatientRegConfigKeys.ECONOMIC_CATEGORY ->
+                        PatientRegFieldsUtils.INSTANCE.configField(
+                                false,
+                                fields,
+                                economicCategoryTr,
+                                null,
+                                null,
+                                null
+                        );
+            }
+        }
+    }
+
 
     private RecyclerView mPastVisitsRecyclerView;
     private List<PastVisitData> mPastVisitDataList = new ArrayList<PastVisitData>();
@@ -579,6 +870,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                     isCompletedExitedSurvey = new EncounterDAO().isCompletedExitedSurvey(visit_id);
                 } catch (DAOException e) {
                     e.printStackTrace();
+                    CustomLog.e(TAG,e.getMessage());
                 }
                 if (!isCompletedExitedSurvey) {
 
@@ -623,6 +915,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
+                                CustomLog.e(TAG,e.getMessage());
                             }
                         } else {
                             needToShowCoreValue = true;
@@ -661,7 +954,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                                 String chiefComplain = "";
                                 visitValue = visitValue.replaceAll("<.*?>", "");
                                 System.out.println(visitValue);
-                                Log.v(TAG, visitValue);
+                                CustomLog.v(TAG, visitValue);
                                 //►दस्त::● आपको ये लक्षण कब से है• 6 घंटे● दस्त शुरू कैसे हुए?•धीरे धीरे● २४ घंटे में कितनी बार दस्त हुए?•३ से कम बार● दस्त किस प्रकार के है?•पक्का● क्या आपको पिछले महीनो में दस्त शुरू होने से पहले किसी असामान्य भोजन/तरल पदार्थ से अपच महसूस हुआ है•नहीं● क्या आपने आज यहां आने से पहले इस समस्या के लिए कोई उपचार (स्व-दवा या घरेलू उपचार सहित) लिया है या किसी स्वास्थ्य प्रदाता को दिखाया है?•कोई नहीं● अतिरिक्त जानकारी•bsbdbd►क्या आपको निम्न लक्षण है::•उल्टीPatient denies -•दस्त के साथ पेट दर्द•सुजन•मल में खून•बुखार•अन्य [वर्णन करे]
 
                                 String[] spt = visitValue.split("►");
@@ -716,10 +1009,11 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                                 pastVisitData.setEncounterVitals(encountervitalsLocal);
                                 pastVisitData.setEncounterAdultInitial(encounterlocalAdultintial);
                                 mCurrentVisitDataList.add(pastVisitData);
-                                Log.v(TAG, new Gson().toJson(mCurrentVisitDataList));
+                                CustomLog.v(TAG, new Gson().toJson(mCurrentVisitDataList));
 
                             } catch (ParseException e) {
                                 FirebaseCrashlytics.getInstance().recordException(e);
+                                CustomLog.e(TAG,e.getMessage());
                             }
                         }
                     }
@@ -728,7 +1022,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 }
             } while (visitCursor.moveToPrevious());
         }
-        Log.v(TAG, "initForOpenVisit - " + new Gson().toJson(mCurrentVisitDataList));
+        CustomLog.v(TAG, "initForOpenVisit - " + new Gson().toJson(mCurrentVisitDataList));
         if (!mCurrentVisitDataList.isEmpty()) {
             PastVisitListingAdapter pastVisitListingAdapter = new PastVisitListingAdapter(mCurrentVisitsRecyclerView, PatientDetailActivity2.this, mCurrentVisitDataList, new PastVisitListingAdapter.OnItemSelected() {
                 @Override
@@ -784,7 +1078,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         String[] patientColumns = {"uuid", "openmrs_id", "first_name", "middle_name", "last_name", "gender",
                 "date_of_birth", "address1", "address2", "city_village", "state_province",
                 "postal_code", "country", "phone_number", "gender", "sdw",
-                "patient_photo"};
+                "patient_photo", "guardian_type", "guardian_name", "contact_type", "em_contact_name", "em_contact_num"};
         Cursor idCursor = db.query("tbl_patient", patientColumns, patientSelection, patientArgs, null, null, null);
         if (idCursor.moveToFirst()) {
             do {
@@ -804,6 +1098,12 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 patientDTO.setPhonenumber(idCursor.getString(idCursor.getColumnIndexOrThrow("phone_number")));
                 patientDTO.setGender(idCursor.getString(idCursor.getColumnIndexOrThrow("gender")));
                 patientDTO.setPatientPhoto(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_photo")));
+
+                patientDTO.setGuardianType(idCursor.getString(idCursor.getColumnIndexOrThrow("guardian_type")));
+                patientDTO.setGuardianName(idCursor.getString(idCursor.getColumnIndexOrThrow("guardian_name")));
+                patientDTO.setContactType(idCursor.getString(idCursor.getColumnIndexOrThrow("contact_type")));
+                patientDTO.setEmContactName(idCursor.getString(idCursor.getColumnIndexOrThrow("em_contact_name")));
+                patientDTO.setEmContactNumber(idCursor.getString(idCursor.getColumnIndexOrThrow("em_contact_num")));
             } while (idCursor.moveToNext());
         }
         idCursor.close();
@@ -819,6 +1119,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                     name = patientsDAO.getAttributesName(idCursor1.getString(idCursor1.getColumnIndexOrThrow("person_attribute_type_uuid")));
                 } catch (DAOException e) {
                     FirebaseCrashlytics.getInstance().recordException(e);
+                    CustomLog.e(TAG,e.getMessage());
                 }
 
                 if (name.equalsIgnoreCase("caste")) {
@@ -890,6 +1191,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 */
         } catch (JSONException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
+            CustomLog.e(TAG,e.getMessage());
 //            Issue #627
 //            added the catch exception to check the config and throwing back to setup activity
             Toast.makeText(getApplicationContext(), "JsonException" + e, Toast.LENGTH_LONG).show();
@@ -912,6 +1214,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             profileImage = imagesDAO.getPatientProfileChangeTime(patientDTO.getUuid());
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
+            CustomLog.e(TAG,e.getMessage());
         }
 
         if (patientDTO.getPatientPhoto() == null || patientDTO.getPatientPhoto().equalsIgnoreCase("")) {
@@ -924,9 +1227,12 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 profilePicDownloaded();
             }
         }
+        RequestBuilder<Drawable> requestBuilder = Glide.with(this)
+                .asDrawable().sizeMultiplier(0.3f);
+
         Glide.with(this)
                 .load(patientDTO.getPatientPhoto())
-                .thumbnail(0.3f)
+                .thumbnail(requestBuilder)
                 .centerCrop()
                 .error(R.drawable.avatar1)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
@@ -942,60 +1248,63 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
         // setTitle(patientDTO.getOpenmrs_id());
 
-        Log.e(TAG, "patientDTO - " + new Gson().toJson(patientDTO));
+        CustomLog.e(TAG, "patientDTO - " + new Gson().toJson(patientDTO));
+        int mAgeYears = -1, mAgeMonths = 0, mAgeDays = 0;
         // setting age
-        String[] ymdData = DateAndTimeUtils.getAgeInYearMonth(patientDTO.getDateofbirth()).split(" ");
-        int mAgeYears = Integer.parseInt(ymdData[0]);
-        int mAgeMonths = Integer.parseInt(ymdData[1]);
-        int mAgeDays = Integer.parseInt(ymdData[2]);
-        String age = DateAndTimeUtils.formatAgeInYearsMonthsDate(this, mAgeYears, mAgeMonths, mAgeDays).replace("-", "");
-        patientage.setText(age);
-        float_ageYear_Month = DateAndTimeUtils.getFloat_Age_Year_Month(patientDTO.getDateofbirth());
+        if (patientDTO.getDateofbirth() != null) {
+            String[] ymdData = DateAndTimeUtils.getAgeInYearMonth(patientDTO.getDateofbirth()).split(" ");
+            mAgeYears = Integer.parseInt(ymdData[0]);
+            mAgeMonths = Integer.parseInt(ymdData[1]);
+            mAgeDays = Integer.parseInt(ymdData[2]);
+            String age = DateAndTimeUtils.formatAgeInYearsMonthsDate(this, mAgeYears, mAgeMonths, mAgeDays).replace("-", "");
+            patientage.setText(age);
+            float_ageYear_Month = DateAndTimeUtils.getFloat_Age_Year_Month(patientDTO.getDateofbirth());
 
-        // setting date of birth
-        String dob = DateAndTimeUtils.getFormatedDateOfBirthAsView(patientDTO.getDateofbirth());
-        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-            String dob_text = en__hi_dob(dob); //to show text of English into Hindi...
-            patientdob.setText(dob_text);
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
-            String dob_text = en__or_dob(dob); //to show text of English into Odiya...
-            patientdob.setText(dob_text);
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
-            String dob_text = en__bn_dob(dob); //to show text of English into Odiya...
-            patientdob.setText(dob_text);
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
-            String dob_text = en__gu_dob(dob); //to show text of English into Gujarati...
-            patientdob.setText(dob_text);
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
-            String dob_text = en__te_dob(dob); //to show text of English into telugu...
-            patientdob.setText(dob_text);
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
-            String dob_text = en__mr_dob(dob); //to show text of English into telugu...
-            patientdob.setText(dob_text);
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
-            String dob_text = en__as_dob(dob); //to show text of English into telugu...
-            patientdob.setText(dob_text);
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
-            String dob_text = en__ml_dob(dob); //to show text of English into telugu...
-            patientdob.setText(dob_text);
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
-            String dob_text = en__kn_dob(dob); //to show text of English into telugu...
-            patientdob.setText(dob_text);
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
-            String dob_text = en__ru_dob(dob); //to show text of English into Russian...
-            patientdob.setText(dob_text);
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
-            String dob_text = en__ta_dob(dob); //to show text of English into Tamil...
-            patientdob.setText(dob_text);
-        } else {
-            patientdob.setText(dob);
+            // setting date of birth
+            String dob = DateAndTimeUtils.getFormatedDateOfBirthAsView(patientDTO.getDateofbirth());
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                String dob_text = en__hi_dob(dob); //to show text of English into Hindi...
+                patientdob.setText(dob_text);
+            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+                String dob_text = en__or_dob(dob); //to show text of English into Odiya...
+                patientdob.setText(dob_text);
+            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
+                String dob_text = en__bn_dob(dob); //to show text of English into Odiya...
+                patientdob.setText(dob_text);
+            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
+                String dob_text = en__gu_dob(dob); //to show text of English into Gujarati...
+                patientdob.setText(dob_text);
+            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
+                String dob_text = en__te_dob(dob); //to show text of English into telugu...
+                patientdob.setText(dob_text);
+            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+                String dob_text = en__mr_dob(dob); //to show text of English into telugu...
+                patientdob.setText(dob_text);
+            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
+                String dob_text = en__as_dob(dob); //to show text of English into telugu...
+                patientdob.setText(dob_text);
+            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
+                String dob_text = en__ml_dob(dob); //to show text of English into telugu...
+                patientdob.setText(dob_text);
+            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
+                String dob_text = en__kn_dob(dob); //to show text of English into telugu...
+                patientdob.setText(dob_text);
+            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+                String dob_text = en__ru_dob(dob); //to show text of English into Russian...
+                patientdob.setText(dob_text);
+            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
+                String dob_text = en__ta_dob(dob); //to show text of English into Tamil...
+                patientdob.setText(dob_text);
+            } else {
+                patientdob.setText(dob);
+            }
         }
 
         // setting gender
-        mGender = patientDTO.getGender();
         if (patientDTO.getGender() == null || patientDTO.getGender().equals("")) {
             gender.setVisibility(View.GONE);
         } else {
+            mGender = patientDTO.getGender();
             if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                 if (patientDTO.getGender().equalsIgnoreCase("M")) {
                     gender.setText(getResources().getString(R.string.identification_screen_checkbox_male));
@@ -1119,8 +1428,9 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             address1.setText(patientDTO.getAddress1());
         }
 
+        //setting address 2
         if (patientDTO.getAddress2() == null || patientDTO.getAddress2().equals("")) { //
-            trAddress2.setVisibility(View.GONE);
+            addr2View.setText(getResources().getString(R.string.no_address_added));
         } else {
             addr2View.setText(patientDTO.getAddress2());
         }
@@ -1144,13 +1454,17 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         patientstate.setText(getStateTranslated(state, sessionManager.getAppLanguage()));
 
         // setting district and city
-        String[] district_city = patientDTO.getCityvillage().trim().split(":");
+
         String district = null;
-        String city_village = null;
-        if (district_city.length == 2) {
-            district = district_city[0];
-            city_village = district_city[1];
+        String city_village = patientDTO.getCityvillage();
+        if (patientDTO.getCityvillage() != null && patientDTO.getCityvillage().length() > 0) {
+            String[] district_city = patientDTO.getCityvillage().trim().split(":");
+            if (district_city.length == 2) {
+                district = district_city[0];
+                city_village = district_city[1];
+            }
         }
+
 
         if (district != null) {
             patientdistrict.setText(getDistrictTranslated(state, district, sessionManager.getAppLanguage()));
@@ -1163,6 +1477,8 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         } else {
             village.setText(getResources().getString(R.string.no_city_added));
         }
+
+
         // end - city and district
 
         // setting postal code
@@ -1407,24 +1723,90 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         }
 
         // setting son/daughet_wife value
-        if (patientDTO.getSon_dau_wife() != null && !patientDTO.getSon_dau_wife().equals("")) {
+        if (patientDTO.getSon_dau_wife() != null && !patientDTO.getSon_dau_wife().
+
+                equals("")) {
             son_daughter_wife.setText(patientDTO.getSon_dau_wife());
         } else {
             son_daughter_wife.setVisibility(View.GONE);
         }
 
         // setting national ID value
-        if (patientDTO.getNationalID() != null && !patientDTO.getNationalID().equals("")) {
+        if (patientDTO.getNationalID() != null && !patientDTO.getNationalID().
+
+                equals("")) {
             patientNationalID.setText(patientDTO.getNationalID());
         } else {
             patientNationalID.setText(getResources().getString(R.string.not_provided));
         }
 
         // setting occupation value
-        if (patientDTO.getOccupation() != null && !patientDTO.getOccupation().equals("")) {
+        if (patientDTO.getOccupation() != null && !patientDTO.getOccupation().
+
+                equals("")) {
             patientoccupation.setText(patientDTO.getOccupation());
         } else {
             patientoccupation.setText(getString(R.string.not_provided));
+        }
+
+        if (AgeUtils.INSTANCE.isGuardianRequired(mAgeYears, mAgeMonths, mAgeDays) && mAgeYears > -1) {
+            guardianNameTr.setVisibility(View.VISIBLE);
+            guardianTypeTr.setVisibility(View.VISIBLE);
+
+            //guardian type
+            if (patientDTO.getGuardianType() != null && !patientDTO.getGuardianType().equals("")) {
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                    String type = switch_hi_guardian_type_edit(patientDTO.getGuardianType());
+                    guardian_type_tv.setText(type);
+                } else {
+                    guardian_type_tv.setText(patientDTO.getGuardianType());
+                }
+            } else {
+                guardian_type_tv.setText(getString(R.string.not_provided));
+            }
+
+            //guardian name
+            if (patientDTO.getGuardianName() != null && !patientDTO.getGuardianName().equals("")) {
+                guardina_name_tv.setText(patientDTO.getGuardianName());
+            } else {
+                guardina_name_tv.setText(getString(R.string.not_provided));
+            }
+        } else {
+            guardianNameTr.setVisibility(View.GONE);
+            guardianTypeTr.setVisibility(View.GONE);
+
+        }
+
+        //contact type
+        if (patientDTO.getContactType() != null && !patientDTO.getContactType().
+
+                equals("")) {
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                String type = switch_hi_contact_type_edit(patientDTO.getContactType());
+                contact_type_tv.setText(type);
+            } else {
+                contact_type_tv.setText(patientDTO.getContactType());
+            }
+        } else {
+            contact_type_tv.setText(getString(R.string.not_provided));
+        }
+
+        //emergency contact name
+        if (patientDTO.getEmContactName() != null && !patientDTO.getEmContactName().
+
+                equals("")) {
+            em_contact_name_tv.setText(patientDTO.getEmContactName());
+        } else {
+            em_contact_name_tv.setText(getString(R.string.not_provided));
+        }
+
+        //emergency contact number
+        if (patientDTO.getEmContactNumber() != null && !patientDTO.getEmContactNumber().
+
+                equals("")) {
+            em_contact_number_tv.setText(patientDTO.getEmContactNumber());
+        } else {
+            em_contact_number_tv.setText(getString(R.string.not_provided));
         }
     }
 
@@ -1463,7 +1845,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         }
 
         if (distDataList != null && !distDataList.isEmpty())
-            for (int i = 0; i <= distDataList.size(); i++) {
+            for (int i = 0; i < distDataList.size(); i++) {
                 if (distDataList.get(i).getName().equalsIgnoreCase(district)) {
                     if (language.equalsIgnoreCase("hi"))
                         desiredVal = distDataList.get(i).getNameHindi();
@@ -1506,11 +1888,14 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                             updated = patientsDAO.updatePatientPhoto(patientDTO.getUuid(), AppConstants.IMAGE_PATH + patientDTO.getUuid() + ".jpg");
                         } catch (DAOException e) {
                             FirebaseCrashlytics.getInstance().recordException(e);
+                            CustomLog.e(TAG,e.getMessage());
                         }
                         if (updated) {
+                            RequestBuilder<Drawable> requestBuilder = Glide.with(PatientDetailActivity2.this)
+                                    .asDrawable().sizeMultiplier(0.3f);
                             Glide.with(PatientDetailActivity2.this)
                                     .load(AppConstants.IMAGE_PATH + patientDTO.getUuid() + ".jpg")
-                                    .thumbnail(0.3f)
+                                    .thumbnail(requestBuilder)
                                     .centerCrop()
                                     .error(R.drawable.avatar1)
                                     .diskCacheStrategy(DiskCacheStrategy.NONE)
@@ -1524,6 +1909,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                                     patientDTO.getUuid() + ".jpg", patientDTO.getUuid());
                         } catch (DAOException e) {
                             FirebaseCrashlytics.getInstance().recordException(e);
+                            CustomLog.e(TAG,e.getMessage());
                         }
                     }
                 });
@@ -1548,14 +1934,16 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     public class Myreceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
+
             try {
                 openmrsID_txt.setText(patientsDAO.getOpenmrsId(patientDTO.getUuid()));
-
+                setTitle(openmrsID_txt.getText());
             } catch (DAOException e) {
                 FirebaseCrashlytics.getInstance().recordException(e);
+                CustomLog.e(TAG,e.getMessage());
             }
-            setTitle(openmrsID_txt.getText());
         }
+
     }
 
     @Override
@@ -1568,6 +1956,35 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 ContextCompat.RECEIVER_NOT_EXPORTED
         );
 
+        mBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                //Toast.makeText(context, getString(R.string.sync_completed), Toast.LENGTH_SHORT).show();
+                CustomLog.v(TAG, "Sync Done!");
+                try {
+                    refresh.clearAnimation();
+                    syncAnimator.cancel();
+                    recreate();
+                } catch (Exception e) {
+                    CustomLog.d(TAG,e.getMessage());
+                }
+            }
+        };
+
+
+        // sometimes crash happens whenever we register mBroadcastReceiver on oncreate and unregister from ondestroy
+        // because the onreceive function listen the broadcaster receiver even out activity is on background mode
+        // So that's why registering the mBroadcastReceiver on onstart and destroying it from onstop
+
+        IntentFilter filterSend = new IntentFilter();
+        filterSend.addAction(AppConstants.SYNC_NOTIFY_INTENT_ACTION);
+        ContextCompat.registerReceiver(
+                context,
+                mBroadcastReceiver,
+                filterSend,
+                ContextCompat.RECEIVER_NOT_EXPORTED
+        );
+
         //register receiver for internet check
         networkUtils.callBroadcastReceiver();
     }
@@ -1575,12 +1992,17 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     @Override
     public void onStop() {
         super.onStop();
-        unregisterReceiver(reMyreceive);
         try {
+            unregisterReceiver(reMyreceive);
+            // sometimes crash happens whenever we register mBroadcastReceiver on oncreate and unregister from ondestroy
+            // because the onreceive function listen the broadcaster receiver even out activity is on background mode
+            // So that's why registering the mBroadcastReceiver on onstart and destroying it from onstop
+            unregisterReceiver(mBroadcastReceiver);
             //unregister receiver for internet check
             networkUtils.unregisterNetworkReceiver();
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
+            CustomLog.d(TAG,e.getMessage());
         }
     }
 
@@ -1646,7 +2068,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         encounterDTO.setVisituuid(uuid);
         encounterDTO.setSyncd(false);
         encounterDTO.setProvideruuid(sessionManager.getProviderID());
-        Log.d("DTO", "DTO:detail " + encounterDTO.getProvideruuid());
+        CustomLog.d("DTO", "DTO:detail " + encounterDTO.getProvideruuid());
         encounterDTO.setVoided(0);
         //   encounterDTO.setPrivacynotice_value(privacy_value_selected);//privacy value added. // TODO: handle later.
 
@@ -1736,11 +2158,11 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
     @Override
     public void updateUIForInternetAvailability(boolean isInternetAvailable) {
-        Log.d("TAG", "updateUIForInternetAvailability: ");
+        CustomLog.d("TAG", "updateUIForInternetAvailability: ");
         if (isInternetAvailable) {
-            refresh.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_internet_available));
+            refresh.setImageDrawable(ContextCompat.getDrawable(PatientDetailActivity2.this, R.drawable.ui2_ic_internet_available));
         } else {
-            refresh.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
+            refresh.setImageDrawable(ContextCompat.getDrawable(PatientDetailActivity2.this, R.drawable.ui2_ic_no_internet));
         }
     }
 
@@ -1850,7 +2272,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                                     String chiefComplain = "";
                                     visitValue = visitValue.replaceAll("<.*?>", "");
                                     System.out.println(visitValue);
-                                    Log.v(TAG, visitValue);
+                                    CustomLog.v(TAG, visitValue);
                                     //►दस्त::● आपको ये लक्षण कब से है• 6 घंटे● दस्त शुरू कैसे हुए?•धीरे धीरे● २४ घंटे में कितनी बार दस्त हुए?•३ से कम बार● दस्त किस प्रकार के है?•पक्का● क्या आपको पिछले महीनो में दस्त शुरू होने से पहले किसी असामान्य भोजन/तरल पदार्थ से अपच महसूस हुआ है•नहीं● क्या आपने आज यहां आने से पहले इस समस्या के लिए कोई उपचार (स्व-दवा या घरेलू उपचार सहित) लिया है या किसी स्वास्थ्य प्रदाता को दिखाया है?•कोई नहीं● अतिरिक्त जानकारी•bsbdbd►क्या आपको निम्न लक्षण है::•उल्टीPatient denies -•दस्त के साथ पेट दर्द•सुजन•मल में खून•बुखार•अन्य [वर्णन करे]
 
                                     String[] spt = visitValue.split("►");
@@ -1905,7 +2327,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                                     pastVisitData.setEncounterVitals(encountervitalsLocal);
                                     pastVisitData.setEncounterAdultInitial(encounterlocalAdultintial);
                                     mPastVisitDataList.add(pastVisitData);
-                                    Log.v(TAG, new Gson().toJson(mPastVisitDataList));
+                                    CustomLog.v(TAG, new Gson().toJson(mPastVisitDataList));
 
                                 } catch (ParseException e) {
                                     FirebaseCrashlytics.getInstance().recordException(e);
@@ -1933,4 +2355,12 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         }
     }
 
+    @Override
+    protected void onFeatureActiveStatusLoaded(FeatureActiveStatus activeStatus) {
+        super.onFeatureActiveStatusLoaded(activeStatus);
+        if (activeStatus != null) {
+            binding.setAddressActiveStatus(activeStatus.getActiveStatusPatientAddress());
+            binding.setOtherActiveStatus(activeStatus.getActiveStatusPatientOther());
+        }
+    }
 }

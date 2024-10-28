@@ -1,8 +1,13 @@
 package org.intelehealth.app.activities.prescription;
 
+import static org.intelehealth.app.app.AppConstants.CONFIG_FILE_NAME;
+import static org.intelehealth.app.utilities.StringUtils.convertCtoF;
+
 import android.text.TextUtils;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.models.ClsDoctorDetails;
@@ -10,9 +15,20 @@ import org.intelehealth.app.models.Patient;
 import org.intelehealth.app.models.VitalsObject;
 import org.intelehealth.app.utilities.Base64Utils;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
+import org.intelehealth.app.utilities.FileUtils;
+import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.config.room.entity.FeatureActiveStatus;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Objects;
 
 public class PrescriptionBuilder {
     private final AppCompatActivity activityContext;
+    JSONObject obj;
+    String disclaimerStr = "";
+    private static String mFileName = CONFIG_FILE_NAME;
+    private FeatureActiveStatus mFeatureActiveStatus;
 
     public PrescriptionBuilder(AppCompatActivity activityContext) {
         this.activityContext = activityContext;
@@ -27,8 +43,10 @@ public class PrescriptionBuilder {
             String testData,
             String referredOutData,
             String followUpData,
-            ClsDoctorDetails details
+            ClsDoctorDetails details,
+            FeatureActiveStatus featureActiveStatus
     ) {
+        mFeatureActiveStatus = featureActiveStatus;
         String prescriptionHTML = "";
         String headingDocTypeTag = "<!doctype html>";
         String headingHTMLLangTag = "<html lang=\"en\">";
@@ -38,9 +56,45 @@ public class PrescriptionBuilder {
                 + headingHTMLLangTag
                 + buildHeadData()
                 + buildBodyData(patient, vitalsData, diagnosisData, medicationData, adviceData, testData, referredOutData, followUpData, details)
+                + buildDisclaimerData()
                 + htmlClosingTag;
 
         return prescriptionHTML;
+    }
+
+    private String buildDisclaimerData() {
+        SessionManager sessionManager = new SessionManager(activityContext);
+
+        try {
+            obj = new JSONObject(Objects.requireNonNullElse(FileUtils.readFileRoot(CONFIG_FILE_NAME, activityContext), String.valueOf(FileUtils.encodeJSON(activityContext, CONFIG_FILE_NAME)))); //Load the config file
+
+            disclaimerStr = obj.getString("prescriptionDisclaimer_English");
+
+            //uncomment the below line if any hindi disclaimer is available
+            //disclaimerStr = sessionManager.getAppLanguage().equalsIgnoreCase("hi") ? obj.getString("prescriptionDisclaimer_Hindi") : obj.getString("prescriptionDisclaimer_English");
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+
+
+        if (disclaimerStr.isEmpty()) {
+            return "";
+        }
+
+        String finalDisclaimerString;
+        String closingDivTag = "</div>";
+        String openingDivTag = "<div>";
+
+        String divClassDisclaimerTag =
+                "<div style=\" position: fixed; bottom: 0; left: 0; width: 100%; text-align: center;\">" + disclaimerStr + closingDivTag;
+
+        finalDisclaimerString = openingDivTag
+                + openingDivTag
+                + divClassDisclaimerTag
+                + closingDivTag
+                + closingDivTag;
+
+        return finalDisclaimerString;
     }
 
     private String buildHeadData() {
@@ -176,6 +230,7 @@ public class PrescriptionBuilder {
 
     /**
      * return full gender from gender char
+     *
      * @param gender
      * @return
      */
@@ -220,6 +275,7 @@ public class PrescriptionBuilder {
     }
 
     private String generateVitalsData(VitalsObject vitalsData) {
+        if (!mFeatureActiveStatus.getVitalSection())  return "";
         String finalVitalsData = "";
         String openingDivTag = "<div class=\"col-md-12 px-3 mb-3\">\n";
         String openingDataSectionTag = "<div class=\"data-section\">\n";
@@ -241,11 +297,35 @@ public class PrescriptionBuilder {
         vitalsDataString = vitalsDataString + createVitalsListItem(activityContext.getString(R.string.prescription_systolic_blood_pressure), vitalsData.getBpsys());
         vitalsDataString = vitalsDataString + createVitalsListItem(activityContext.getString(R.string.prescription_diastolic_blood_pressure), vitalsData.getBpdia());
         vitalsDataString = vitalsDataString + createVitalsListItem(activityContext.getString(R.string.prescription_pulse), vitalsData.getPulse());
-        vitalsDataString = vitalsDataString + createVitalsListItem(activityContext.getString(R.string.table_temp), vitalsData.getTemperature());
+
+        try {
+            JSONObject obj = null;
+            //TODO: Need to link whether its in license version or not
+            boolean hasLicense = !new SessionManager(activityContext).getLicenseKey().isEmpty();
+            if (hasLicense) {
+                obj = new JSONObject(Objects.requireNonNullElse(FileUtils.readFileRoot(CONFIG_FILE_NAME, activityContext), String.valueOf(FileUtils.encodeJSON(activityContext, CONFIG_FILE_NAME)))); //Load the config file
+            } else {
+                obj = new JSONObject(String.valueOf(FileUtils.encodeJSON(activityContext, mFileName)));
+            }//Load the config file
+
+            if (obj.getBoolean("mTemperature")) {
+                if (obj.getBoolean("mCelsius")) {
+
+                    vitalsDataString = vitalsDataString + createVitalsListItem(activityContext.getResources().getString(R.string.prescription_temp_c), !TextUtils.isEmpty(vitalsData.getTemperature()) ? vitalsData.getTemperature().toString() : "");
+                } else if (obj.getBoolean("mFahrenheit")) {
+
+                    vitalsDataString = vitalsDataString + createVitalsListItem(activityContext.getResources().getString(R.string.prescription_temp_f), !TextUtils.isEmpty(vitalsData.getTemperature()) ? convertCtoF(vitalsData.getTemperature()) : "");
+                }
+            }
+        } catch (Exception e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+        //vitalsDataString = vitalsDataString + createVitalsListItem(activityContext.getString(R.string.table_temp), vitalsData.getTemperature());
         vitalsDataString = vitalsDataString + createVitalsListItem(activityContext.getString(R.string.table_spo2), vitalsData.getSpo2());
         vitalsDataString = vitalsDataString + createVitalsListItem(activityContext.getString(R.string.respiratory_rate), vitalsData.getResp());
 
-        if(vitalsDataString.isEmpty()) return "";
+        if (vitalsDataString.isEmpty()) return "";
 
         finalVitalsData = openingDivTag
                 + openingDataSectionTag
@@ -281,7 +361,7 @@ public class PrescriptionBuilder {
         return listOpeningTag
                 + divListItemOpeningTag
                 + labelOpeningTag
-                + label + ": "
+                + label + (label.endsWith(":") ? " " : ": ")
                 + labelClosingTag
                 + divListItemContentOpeningTag
                 + newValue
@@ -454,11 +534,11 @@ public class PrescriptionBuilder {
                 + closingDivTag
                 + closingDivTag;
 
-        if((tableDataFinalString+tableAdditionalDataFinalString).isEmpty()){
+        if ((tableDataFinalString + tableAdditionalDataFinalString).isEmpty()) {
             return "";
         }
 
-        return finalMedicationData+lineBreak;
+        return finalMedicationData + lineBreak;
     }
 
     private String bifurcateMedicationData(String medicationData) {
@@ -567,7 +647,7 @@ public class PrescriptionBuilder {
                 additionalInstructionsData.append(listClosingTag);
             }
         }
-        if(additionalInstructionsData.length() == 0) return "";
+        if (additionalInstructionsData.length() == 0) return "";
 
         finalAdditionalDataString = divClassLabelTag
                 + unorderedListOpeningTag
@@ -594,7 +674,7 @@ public class PrescriptionBuilder {
 
         String bifurcatedAdviceData = checkAndBifurcateAdviceData(adviceData);
 
-        if(bifurcatedAdviceData.isEmpty()) return "";
+        if (bifurcatedAdviceData.isEmpty()) return "";
 
         finalAdviceString = openingDivTag
                 + dataSectionTag
@@ -607,7 +687,7 @@ public class PrescriptionBuilder {
                 + closingDivTag
                 + closingDivTag;
 
-        return finalAdviceString+lineBreak;
+        return finalAdviceString + lineBreak;
     }
 
     private String checkAndBifurcateAdviceData(String adviceData) {
@@ -623,7 +703,7 @@ public class PrescriptionBuilder {
             //checking any advice exist or not
             //if not then return empty string
             //because we will disable advice ui if advice is empty
-            if(adviceData.isEmpty()) return "";
+            if (adviceData.isEmpty()) return "";
             finalAdviceStringBuilder.append(listOpeningTag);
             finalAdviceStringBuilder.append(divClassOpeningTagCenter);
             finalAdviceStringBuilder.append(spanOpeningTag);
@@ -636,7 +716,7 @@ public class PrescriptionBuilder {
             //checking any advice exist or not
             //if not then return empty string
             //because we will disable advice ui if advice is empty
-            if(adviceArray.length == 0) return "";
+            if (adviceArray.length == 0) return "";
             for (String advice : adviceArray) {
                 finalAdviceStringBuilder.append(listOpeningTag);
                 finalAdviceStringBuilder.append(divClassOpeningTagCenter);
@@ -668,7 +748,7 @@ public class PrescriptionBuilder {
 
         String bifurcatedTestsData = checkAndBifurcateTestData(testData);
 
-        if(bifurcatedTestsData.isEmpty()) return "";
+        if (bifurcatedTestsData.isEmpty()) return "";
         finalTestString = divOpeningTag
                 + divDataSectionOpening
                 + divDataSectionTitleTag
@@ -680,7 +760,7 @@ public class PrescriptionBuilder {
                 + divClosingTag
                 + divClosingTag;
 
-        return finalTestString+lineBreak;
+        return finalTestString + lineBreak;
     }
 
     private String checkAndBifurcateTestData(String testsData) {
@@ -697,7 +777,7 @@ public class PrescriptionBuilder {
             //checking any test exist or not
             //if not then return empty string
             //because we will disable test ui if test is empty
-            if(testsData.isEmpty()) return "";
+            if (testsData.isEmpty()) return "";
             finalTestsStringBuilder.append(listOpeningTag);
             finalTestsStringBuilder.append(divClassOpeningTagCenter);
             finalTestsStringBuilder.append(spanOpeningTag);
@@ -710,7 +790,7 @@ public class PrescriptionBuilder {
             //checking any test exist or not
             //if not then return empty string
             //because we will disable test ui if test is empty
-            if(adviceArray.length == 0) return "";
+            if (adviceArray.length == 0) return "";
 
             for (String advice : adviceArray) {
                 finalTestsStringBuilder.append(listOpeningTag);
@@ -751,7 +831,7 @@ public class PrescriptionBuilder {
 
         String bifurcatedReferralData = checkAndBifurcateReferredData(referredOutData);
 
-        if(bifurcatedReferralData.isEmpty()) return "";
+        if (bifurcatedReferralData.isEmpty()) return "";
 
         finalReferredOutString = divOpeningTag
                 + divDataSectionOpening
@@ -802,7 +882,7 @@ public class PrescriptionBuilder {
             //checking any referral out exist or not
             //if not then return empty string
             //because we will disable referral out ui if referral out is empty
-            if(referredOutArray.length == 0) return "";
+            if (referredOutArray.length == 0) return "";
 
             for (String referred : referredOutArray) {
                 if (referred.contains(":")) {
@@ -859,36 +939,61 @@ public class PrescriptionBuilder {
                 + "</li>";
 
         if (!followUpData.equalsIgnoreCase("")) {
-
+            //added these logic to handle array indexOutOfBound exception
+            String date = "";
+            if (followUpArrayData.length > 0) {
+                date = followUpArrayData[0];
+            }
             divSectionContentOpeningTag = divSectionContentOpeningTag
                     + "<li>"
                     + "<div class=\"list-item\">"
                     + "<label>Follow-up Date</label>"
                     + "<div class=\"list-item-content\">"
-                    + DateAndTimeUtils.formatDateFromOnetoAnother(followUpArrayData[0], "yyyy-MM-dd", "dd-MM-yyyy")
+                    + DateAndTimeUtils.formatDateFromOnetoAnother(date, "yyyy-MM-dd", "dd-MM-yyyy")
                     + "</div>"
                     + "</div>"
                     + "</li>";
 
             if (followUpData.contains("Time:")) {
+
+                //added these logic to handle array indexOutOfBound exception
+                String time = "";
+                if (followUpArrayData.length > 1) {
+                    if (followUpArrayData[1].contains("Time:")) {
+                        if (followUpArrayData[1].split("Time:").length > 1) {
+                            time = followUpArrayData[1].split("Time:")[1];
+                        }
+                    }
+
+                }
                 divSectionContentOpeningTag = divSectionContentOpeningTag
                         + "<li>"
                         + "<div class=\"list-item\">"
                         + "<label>Follow-up Time</label>"
                         + "<div class=\"list-item-content\">"
-                        + followUpArrayData[1].split("Time:")[1]
+                        + time
                         + "</div>"
                         + "</div>"
                         + "</li>";
             }
 
             if (followUpData.contains("Remark:")) {
+                //added these logic to handle array indexOutOfBound exception
+                String remarks = "";
+                if (followUpArrayData.length > 2) {
+                    if (followUpArrayData[2].contains("Remark:")) {
+                        if (followUpArrayData[2].split("Remark:").length > 1) {
+                            remarks = followUpArrayData[2].split("Remark:")[1];
+                        }
+                    }
+
+                }
                 divSectionContentOpeningTag = divSectionContentOpeningTag
                         + "<li>"
                         + "<div class=\"list-item\">"
                         + "<label>Reason for follow-up</label>"
                         + "<div class=\"list-item-content\">"
-                        + followUpArrayData[2].split("Remark:")[1]
+                        + remarks
                         + "</div>"
                         + "</div>"
                         + "</li>";

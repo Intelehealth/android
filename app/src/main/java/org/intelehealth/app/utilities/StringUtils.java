@@ -28,7 +28,9 @@ import org.intelehealth.app.app.IntelehealthApplication;
 import java.io.File;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 
 public final class StringUtils {
     private static final String NULL_AS_STRING = "null";
@@ -154,6 +156,8 @@ public final class StringUtils {
             val = switch_hi_caste(val);
             val = switch_hi_economic(val);
             val = switch_hi_education(val);
+            val = switch_hi_guardian_type(val);
+            val = switch_hi_contact_type(val);
         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
             val = switch_or_caste(val);
             val = switch_or_economic(val);
@@ -430,6 +434,9 @@ public final class StringUtils {
             case "Illiterate":
                 val = "अशिक्षित";
                 break;
+            case "Pre-Primary":
+                val = "प्री-प्राइमरी";
+                break;
             case "Primary":
                 val = "प्रथम";
                 break;
@@ -439,8 +446,11 @@ public final class StringUtils {
             case "Higher Secondary":
                 val = "उच्च माध्यमिक";
                 break;
-            case "Graduation & Higher":
-                val = "स्नातक और उच्चतर";
+            case "Graduate":
+                val = "स्नातक";
+                break;
+            case "Masters & Higher":
+                val = "परास्नातक एवं उच्चतर";
                 break;
             default:
                 return val;
@@ -455,6 +465,9 @@ public final class StringUtils {
             case "अशिक्षित":
                 val = "Illiterate";
                 break;
+            case "प्री-प्राइमरी":
+                val = "Pre-Primary";
+                break;
             case "प्रथम":
                 val = "Primary";
                 break;
@@ -464,8 +477,11 @@ public final class StringUtils {
             case "उच्च माध्यमिक":
                 val = "Higher Secondary";
                 break;
-            case "स्नातक और उच्चतर":
-                val = "Graduation & Higher";
+            case "स्नातक":
+                val = "Graduate";
+                break;
+            case "परास्नातक एवं उच्चतर":
+                val = "Masters & Higher";
                 break;
             default:
                 return val;
@@ -4040,6 +4056,58 @@ public final class StringUtils {
         return val;
     }
 
+    public static String switch_hi_guardian_type(String val) {
+        if(val == null || val.isEmpty()) return "";
+        switch (val) {
+            case "मां" -> val = "Mother";
+            case "पिता" -> val = "Father";
+            case "दादा-दादी" -> val = "Grandparent";
+            case "पति/पत्नी" -> val = "Spouse";
+            default -> {
+                return val;
+            }
+        }
+        return val;
+    }
+
+    public static String switch_hi_guardian_type_edit(String val) {
+        if(val == null || val.isEmpty()) return "";
+        switch (val) {
+            case "Mother" -> val = "मां";
+            case "Father" -> val = "पिता";
+            case "Grandparent" -> val = "दादा-दादी";
+            case "Spouse" -> val = "पति/पत्नी";
+            default -> {
+                return val;
+            }
+        }
+        return val;
+    }
+
+    public static String switch_hi_contact_type(String val) {
+        if(val == null || val.isEmpty()) return "";
+        switch (val) {
+            case "स्वयं" -> val = "Self";
+            case "परिवार" -> val = "Family";
+            default -> {
+                return val;
+            }
+        }
+        return val;
+    }
+
+    public static String switch_hi_contact_type_edit(String val) {
+        if(val == null || val.isEmpty()) return "";
+        switch (val) {
+            case "Self" -> val = "स्वयं";
+            case "Family" -> val = "परिवार";
+            default -> {
+                return val;
+            }
+        }
+        return val;
+    }
+
     public static InputFilter inputFilter_Name = new InputFilter() { //filter input for name fields
         @Override
         public CharSequence filter(CharSequence charSequence, int start, int end, Spanned spanned, int i2, int i3) {
@@ -4253,10 +4321,137 @@ public final class StringUtils {
         }
     }
 
+    /**
+     * Setting local language for Gender data.
+     * @param context
+     * @param genderView
+     * @param patient
+     * @param sessionManager
+     */
+    public static void setGenderAgeLocalByCommaContact(Context context, TextView genderView, String dob, String gender, SessionManager sessionManager) {
+        //  1. Age
+        String age = DateAndTimeUtils.getAge_FollowUp(dob, context);
+
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+            if (gender.equalsIgnoreCase("M")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_male) + ", " + age);
+            } else if (gender.equalsIgnoreCase("F")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_female) + ", " + age);
+            } else if (gender.equalsIgnoreCase("O")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_other) + ", " + age);
+            } else {
+                genderView.setText(gender + ", " + age);
+            }
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+            if (gender.equalsIgnoreCase("M")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_male) + ", " + age);
+            } else if (gender.equalsIgnoreCase("F")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_female) + ", " + age);
+            }  else if (gender.equalsIgnoreCase("O")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_other) + ", " + age);
+            } else {
+                genderView.setText(gender + ", " + age);
+            }
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
+            if (gender.equalsIgnoreCase("M")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_male) + ", " + age);
+            } else if (gender.equalsIgnoreCase("F")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_female) + ", " + age);
+            }  else if (gender.equalsIgnoreCase("O")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_other) + ", " + age);
+            } else {
+                genderView.setText(gender + ", " + age);
+            }
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+            if (gender.equalsIgnoreCase("M")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_male) + ", " + age);
+            } else if (gender.equalsIgnoreCase("F")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_female) + ", " + age);
+            }  else if (gender.equalsIgnoreCase("O")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_other) + ", " + age);
+            } else {
+                genderView.setText(gender + ", " + age);
+            }
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
+            if (gender.equalsIgnoreCase("M")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_male) + ", " + age);
+            } else if (gender.equalsIgnoreCase("F")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_female) + ", " + age);
+            }  else if (gender.equalsIgnoreCase("O")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_other) + ", " + age);
+            } else {
+                genderView.setText(gender + ", " + age);
+            }
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
+            if (gender.equalsIgnoreCase("M")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_male) + ", " + age);
+            } else if (gender.equalsIgnoreCase("F")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_female) + ", " + age);
+            }  else if (gender.equalsIgnoreCase("O")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_other) + ", " + age);
+            } else {
+                genderView.setText(gender + ", " + age);
+            }
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
+            if (gender.equalsIgnoreCase("M")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_male) + ", " + age);
+            } else if (gender.equalsIgnoreCase("F")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_female) + ", " + age);
+            }  else if (gender.equalsIgnoreCase("O")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_other) + ", " + age);
+            } else {
+                genderView.setText(gender + ", " + age);
+            }
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
+            if (gender.equalsIgnoreCase("M")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_male) + ", " + age);
+            } else if (gender.equalsIgnoreCase("F")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_female) + ", " + age);
+            }  else if (gender.equalsIgnoreCase("O")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_other) + ", " + age);
+            } else {
+                genderView.setText(gender + ", " + age);
+            }
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
+            if (gender.equalsIgnoreCase("M")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_male) + ", " + age);
+            } else if (gender.equalsIgnoreCase("F")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_female) + ", " + age);
+            } else if (gender.equalsIgnoreCase("O")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_other) + ", " + age);
+            } else {
+                genderView.setText(gender + ", " + age);
+            }
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
+            if (gender.equalsIgnoreCase("M")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_male) + ", " + age);
+            } else if (gender.equalsIgnoreCase("F")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_female) + ", " + age);
+            } else if (gender.equalsIgnoreCase("O")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_other) + ", " + age);
+            } else {
+                genderView.setText(gender + ", " + age);
+            }
+        } else {
+            genderView.setText(gender + ", " + age);
+        }
+    }
+
     public static boolean isValidPassword(String passwd){
         if(passwd==null || passwd.isEmpty()) return false;
         //String pattern = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}"; // with special character
         String pattern = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,}"; // without special character
        return passwd.matches(pattern);
+    }
+
+    public static String convertCtoF(String temperature) {
+        String resultVal;
+        NumberFormat nf = NumberFormat.getInstance(Locale.ENGLISH);
+        double a = Double.parseDouble(temperature);
+        double b = (a * 9 / 5) + 32;
+        nf.format(b);
+        double roundOff = Math.round(b * 100.0) / 100.0;
+        resultVal = nf.format(roundOff);
+        return resultVal;
     }
 }

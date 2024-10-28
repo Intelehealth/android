@@ -1,5 +1,6 @@
 package org.intelehealth.app.activities.onboarding;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -10,27 +11,42 @@ import android.os.Bundle;
 import android.os.LocaleList;
 import android.util.DisplayMetrics;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ImageView;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.activities.IntroActivity.IntroScreensActivity_New;
-import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.shared.BaseActivity;
+import org.intelehealth.app.utilities.ConfigUtils;
+import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.WebViewStatus;
 
 import java.util.Locale;
 
-public class PrivacyPolicyActivity_New extends BaseActivity {
+public class PrivacyPolicyActivity_New extends BaseActivity implements WebViewStatus {
     private static final String TAG = "PrivacyPolicyActivityNe";
     private Button btn_accept_privacy;
     private int mIntentFrom;
     String appLanguage, intentType;
+    WebView webView;
     SessionManager sessionManager = null;
+    private AlertDialog loadingDialog;
 
+    ActivityResultLauncher<Intent> activityResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        if (result.getResultCode() == AppConstants.PERSONAL_CONSENT_ACCEPT ||
+                result.getResultCode() == AppConstants.PERSONAL_CONSENT_DECLINE) {
+            finish();
+        }
+    });
+
+    @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,13 +55,26 @@ public class PrivacyPolicyActivity_New extends BaseActivity {
 
         // changing status bar color
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(Color.WHITE);
-        }
+        getWindow().setStatusBarColor(Color.WHITE);
         mIntentFrom = getIntent().getIntExtra("IntentFrom", 0);
         intentType = getIntent().getStringExtra("intentType");
         ImageView ivBack = findViewById(R.id.iv_back_arrow_terms);
         btn_accept_privacy = findViewById(R.id.btn_accept_privacy);
+        webView = findViewById(R.id.webview);
+
+        loadingDialog = new DialogUtils().showCommonLoadingDialog(
+                this,
+                getString(R.string.loading),
+                getString(R.string.please_wait)
+        );
+
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.setWebViewClient(new GenericWebViewClient(this));
+        String text;
+        text = "<html><body style='color:black;font-size: 0.8em;' >"; //style='text-align:justify;text-justify: inter-word;'
+        text += new ConfigUtils(this).getPrivacyPolicyText(sessionManager.getAppLanguage()) ;
+        text += "</body></html>";
+        webView.loadDataWithBaseURL(null, text, "text/html", "utf-8", null);
 
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,29 +86,22 @@ public class PrivacyPolicyActivity_New extends BaseActivity {
         });
 
         //show button if it's from add patient
-        if(!intentType.equalsIgnoreCase("doNotNavigateFurther")){
+        if (!intentType.equalsIgnoreCase("doNotNavigateFurther")) {
             findViewById(R.id.layout_button_privacy).setVisibility(View.VISIBLE);
-        }else {
+        } else {
             findViewById(R.id.layout_button_privacy).setVisibility(View.GONE);
         }
 
         btn_accept_privacy.setOnClickListener(v -> {
-            if(intentType.equalsIgnoreCase("doNotNavigateFurther")){
+            if (intentType.equalsIgnoreCase("doNotNavigateFurther")) {
                 setResult(AppConstants.PRIVACY_POLICY_ACCEPT);
                 finish();
-            }else {
-                Intent intent = new Intent(this, IdentificationActivity_New.class);
-                startActivity(intent);
-                finish();
+            } else {
+                Intent intent = new Intent(this, PersonalConsentActivity.class);
+                activityResult.launch(intent);
             }
         });
 
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        //overridePendingTransition(R.anim.ui2_slide_in_right, R.anim.ui2_slide_bottom_down);
     }
 
     public void declinePP(View view) {
@@ -109,5 +131,20 @@ public class PrivacyPolicyActivity_New extends BaseActivity {
         }
         res.updateConfiguration(conf, dm);
         return context;
+    }
+
+    @Override
+    public void onPageStarted() {
+        loadingDialog.show();
+    }
+
+    @Override
+    public void onPageFinish() {
+        loadingDialog.dismiss();
+    }
+
+    @Override
+    public void onPageError(@NonNull String error) {
+        loadingDialog.dismiss();
     }
 }

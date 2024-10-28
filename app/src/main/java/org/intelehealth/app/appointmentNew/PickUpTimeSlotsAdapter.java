@@ -2,7 +2,7 @@ package org.intelehealth.app.appointmentNew;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.intelehealth.app.R;
@@ -71,17 +72,17 @@ public class PickUpTimeSlotsAdapter extends RecyclerView.Adapter<PickUpTimeSlots
                 public void onClick(View v) {
                     if (mOnItemSelection != null) {
                         //  int position = getAdapterPosition();
-                        Log.d(TAG, "onClick: getAdapterPosition : " + holder.getAdapterPosition());
-                        Log.d(TAG, "onClick: RecyclerView.NO_POSITION : " + RecyclerView.NO_POSITION);
+                        CustomLog.d(TAG, "onClick: getAdapterPosition : " + holder.getBindingAdapterPosition());
+                        CustomLog.d(TAG, "onClick: RecyclerView.NO_POSITION : " + RecyclerView.NO_POSITION);
 
-                        if (holder.getAdapterPosition() != RecyclerView.NO_POSITION) {
+                        if (holder.getBindingAdapterPosition() != RecyclerView.NO_POSITION) {
                             mOnItemSelection.onSelect(holder.slotInfo);
                             notifyItemChanged(selectedPos);
-                            selectedPos = holder.getAdapterPosition();
+                            selectedPos = holder.getBindingAdapterPosition();
                             notifyItemChanged(selectedPos);
                         }
                     } else {
-                        Log.d(TAG, "onClick:listener is null");
+                        CustomLog.d(TAG, "onClick:listener is null");
                     }
                 }
             });
@@ -89,15 +90,15 @@ public class PickUpTimeSlotsAdapter extends RecyclerView.Adapter<PickUpTimeSlots
     }
 
     public void changeToSelect(int selectedPos, int position, PickUpTimeSlotsAdapter.GenericViewHolder holder) {
-
-        if (selectedPos == position) {
-            holder.tvTime.setTextColor(context.getResources().getColor(R.color.textColorWhite));
-            holder.layoutParent.setBackground(context.getResources().getDrawable(R.drawable.bg_selcted_time_slot_ui2));
-        } else {
-
-            holder.layoutParent.setBackground(context.getResources().getDrawable(R.drawable.ui2_bg_disabled_time_slot));
-            holder.tvTime.setTextColor(context.getResources().getColor(R.color.textColorGray));
-        }
+        holder.layoutParent.setSelected(selectedPos == position);
+//        if (selectedPos == position) {
+//            holder.tvTime.setTextColor(ContextCompat.getColor(context,R.color.textColorWhite));
+//            holder.layoutParent.setBackground(ContextCompat.getDrawable(context,R.drawable.bg_selcted_time_slot_ui2));
+//        } else {
+//
+//            holder.layoutParent.setBackground(ContextCompat.getDrawable(context,R.drawable.ui2_bg_disabled_time_slot));
+//            holder.tvTime.setTextColor(ContextCompat.getColor(context,R.color.textColorGray));
+//        }
     }
 
 

@@ -5,8 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
+import android.net.Network;
 import android.net.NetworkInfo;
-import android.util.Log;
+
+import org.intelehealth.app.utilities.CustomLog;
 
 import androidx.core.content.ContextCompat;
 
@@ -28,21 +30,21 @@ public class NetworkUtils {
     }
 
     public void callBroadcastReceiver() {
-        if (context != null) {
-            if (!isReceiverRegistered) {
-                IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
-                receiver = new NetworkChangeReceiver();
-                ContextCompat.registerReceiver(
-                        context,
-                        receiver,
-                        filter,
-                        ContextCompat.RECEIVER_NOT_EXPORTED
-                );
-                isReceiverRegistered = true;
+        try {
+            if (context != null) {
+                if (!isReceiverRegistered) {
+                    IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+                    receiver = new NetworkChangeReceiver();
+                    ContextCompat.registerReceiver(context, receiver, filter, ContextCompat.RECEIVER_NOT_EXPORTED);
+                    isReceiverRegistered = true;
+                }
+            } else {
+                CustomLog.d("TAG", "callBroadcastReceiver: context is null");
             }
-        } else {
-            Log.d("TAG", "callBroadcastReceiver: context is null");
+        } catch (IllegalArgumentException e) {
+            CustomLog.e("NetworkUtils", "BroadcastReceiver:" + e.getMessage(), e);
         }
+
 
     }
 
@@ -61,37 +63,32 @@ public class NetworkUtils {
     }
 
     public boolean isNetworkAvailable(Context context) {
-        int flag = 0;
-
         ConnectivityManager connectivity = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (connectivity != null) {
-            NetworkInfo[] info = connectivity.getAllNetworkInfo();
-            if (info != null) {
-
-                for (int i = 0; i < info.length; i++) {
-                    if (info[i].getState() == NetworkInfo.State.CONNECTED) {
-                        if (!isConnected) {
-                            flag = 1;
-                            isInternetAvailable = true;
-
-                        }
-                    }
+        NetworkInfo activeNetwork = connectivity.getActiveNetworkInfo();
+        if (activeNetwork != null) {
+            switch (activeNetwork.getType()) {
+                case ConnectivityManager.TYPE_WIFI, ConnectivityManager.TYPE_MOBILE -> {
+                    return true;
+                }
+                default -> {
+                    return false;
                 }
             }
+        } else {
+            return false;
         }
-
-        if (flag == 0) {
-            isInternetAvailable = false;
-
-        }
-        return isInternetAvailable;
 
     }
 
     public void unregisterNetworkReceiver() {
-        if (receiver != null) {
-            context.unregisterReceiver(receiver);
+        try {
+            if (receiver != null) {
+                context.unregisterReceiver(receiver);
+            }
+        } catch (IllegalArgumentException e) {
+            CustomLog.e("NetworkUtils", "BroadcastReceiver: not registered=>" + e.getMessage(), e);
         }
+
     }
 
     public interface InternetCheckUpdateInterface {

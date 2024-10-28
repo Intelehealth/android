@@ -14,7 +14,7 @@ import android.os.LocaleList;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -27,6 +27,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
@@ -38,6 +39,7 @@ import org.intelehealth.app.appointment.api.ApiClientAppointment;
 import org.intelehealth.app.appointment.dao.AppointmentDAO;
 import org.intelehealth.app.appointment.model.AppointmentInfo;
 import org.intelehealth.app.appointment.model.AppointmentListingResponse;
+import org.intelehealth.app.appointmentNew.MyAppointmentNew.MyAppointmentActivityNew;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.models.dto.VisitDTO;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
@@ -101,15 +103,15 @@ public class TodaysMyAppointmentsFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setLocale(getContext());
-        ((MyAppointmentActivity) getActivity()).initUpdateFragmentOnEvent(0, new UpdateFragmentOnEvent() {
+        ((MyAppointmentActivityNew) getActivity()).initUpdateFragmentOnEvent(0, new UpdateFragmentOnEvent() {
             @Override
             public void onStart(int eventFlag) {
-                Log.v(TAG, "onStart");
+                CustomLog.v(TAG, "onStart");
             }
 
             @Override
             public void onFinished(int eventFlag) {
-                Log.v(TAG, "onFinished");
+                CustomLog.v(TAG, "onFinished");
                 initLimits();
                 getAppointments();
             }
@@ -201,16 +203,16 @@ public class TodaysMyAppointmentsFragment extends Fragment {
             resetData();
         });
 
-        cardCancelledAppointments.setBackground(getResources().getDrawable(R.drawable.ui2_ic_bg_options_appointment));
-        cardCompletedAppointments.setBackground(getResources().getDrawable(R.drawable.ui2_ic_bg_options_appointment));
-        layoutMainAppOptions.setBackground(getResources().getDrawable(R.drawable.ui2_ic_bg_options_appointment));
-        cardUpcomingAppointments.setBackground(getResources().getDrawable(R.drawable.ui2_bg_selcted_card));
-
+//        cardCancelledAppointments.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_bg_options_appointment));
+//        cardCompletedAppointments.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_bg_options_appointment));
+//        layoutMainAppOptions.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_bg_options_appointment));
+//        cardUpcomingAppointments.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_bg_selcted_card));
+        cardUpcomingAppointments.setSelected(true);
         layoutUpcoming.setVisibility(View.VISIBLE);
         layoutCompleted.setVisibility(View.VISIBLE);
         layoutCancelled.setVisibility(View.VISIBLE);
 
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.FILL_PARENT);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
         params.weight = 1.0f;
         params.gravity = Gravity.TOP;
 
@@ -385,16 +387,15 @@ public class TodaysMyAppointmentsFragment extends Fragment {
 
     private void clickListeners() {
         cardUpcomingAppointments.setOnClickListener(v -> {
-            cardCancelledAppointments.setBackground(getResources().getDrawable(R.drawable.ui2_ic_bg_options_appointment));
-            cardCompletedAppointments.setBackground(getResources().getDrawable(R.drawable.ui2_ic_bg_options_appointment));
-            layoutMainAppOptions.setBackground(getResources().getDrawable(R.drawable.ui2_ic_bg_options_appointment));
-            cardUpcomingAppointments.setBackground(getResources().getDrawable(R.drawable.ui2_bg_selcted_card));
+            cardCancelledAppointments.setSelected(false);
+            cardCompletedAppointments.setSelected(false);
+            cardUpcomingAppointments.setSelected(true);
 
             layoutUpcoming.setVisibility(View.VISIBLE);
             layoutCompleted.setVisibility(View.VISIBLE);
             layoutCancelled.setVisibility(View.VISIBLE);
 
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.FILL_PARENT);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
             params.weight = 1.0f;
             params.gravity = Gravity.TOP;
 
@@ -402,17 +403,21 @@ public class TodaysMyAppointmentsFragment extends Fragment {
         });
         cardCancelledAppointments.setOnClickListener(v -> {
 
-            cardUpcomingAppointments.setBackground(getResources().getDrawable(R.drawable.ui2_ic_bg_options_appointment));
-            cardCompletedAppointments.setBackground(getResources().getDrawable(R.drawable.ui2_ic_bg_options_appointment));
+//            cardUpcomingAppointments.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_bg_options_appointment));
+//            cardCompletedAppointments.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_bg_options_appointment));
+//
+//            layoutMainAppOptions.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_bg_options_appointment));
+//            cardCancelledAppointments.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_bg_selcted_card));
 
-            layoutMainAppOptions.setBackground(getResources().getDrawable(R.drawable.ui2_ic_bg_options_appointment));
-            cardCancelledAppointments.setBackground(getResources().getDrawable(R.drawable.ui2_bg_selcted_card));
+            cardCancelledAppointments.setSelected(true);
+            cardCompletedAppointments.setSelected(false);
+            cardUpcomingAppointments.setSelected(false);
 
             layoutUpcoming.setVisibility(View.GONE);
             layoutCompleted.setVisibility(View.VISIBLE);
             layoutCancelled.setVisibility(View.VISIBLE);
 
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.FILL_PARENT);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
             params.weight = 1.0f;
             params.gravity = Gravity.TOP;
 
@@ -420,17 +425,21 @@ public class TodaysMyAppointmentsFragment extends Fragment {
 
         });
         cardCompletedAppointments.setOnClickListener(v -> {
-            cardCancelledAppointments.setBackground(getResources().getDrawable(R.drawable.ui2_ic_bg_options_appointment));
-            cardUpcomingAppointments.setBackground(getResources().getDrawable(R.drawable.ui2_ic_bg_options_appointment));
+//            cardCancelledAppointments.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_bg_options_appointment));
+//            cardUpcomingAppointments.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_bg_options_appointment));
+//
+//            layoutMainAppOptions.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_bg_options_appointment));
+//            cardCompletedAppointments.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_bg_selcted_card));
 
-            layoutMainAppOptions.setBackground(getResources().getDrawable(R.drawable.ui2_ic_bg_options_appointment));
-            cardCompletedAppointments.setBackground(getResources().getDrawable(R.drawable.ui2_bg_selcted_card));
+            cardCancelledAppointments.setSelected(false);
+            cardCompletedAppointments.setSelected(true);
+            cardUpcomingAppointments.setSelected(false);
 
             layoutCompleted.setVisibility(View.VISIBLE);
             layoutCancelled.setVisibility(View.GONE);
             layoutUpcoming.setVisibility(View.GONE);
 
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.FILL_PARENT);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
             params.weight = 1.0f;
             params.gravity = Gravity.TOP;
 
@@ -513,7 +522,7 @@ public class TodaysMyAppointmentsFragment extends Fragment {
                 try {
                     String encounterId = EncounterDAO.getEncounterIdForCompletedVisit(visitDTO.getUuid());
                     String prescReceivedTime = EncounterDAO.getPrescriptionReceivedTime(encounterId);
-                    Log.d(TAG, "getDataForCompletedAppointments:  receivedtime : " + prescReceivedTime);
+                    CustomLog.d(TAG, "getDataForCompletedAppointments:  receivedtime : " + prescReceivedTime);
 
                     if (prescReceivedTime != null && !prescReceivedTime.isEmpty()) {
                         completedAppointmentInfoList.get(i).setPresc_received_time(prescReceivedTime);
@@ -638,9 +647,9 @@ public class TodaysMyAppointmentsFragment extends Fragment {
 
             @Override
             public void onFailure(Call<AppointmentListingResponse> call, Throwable t) {
-                Log.v("onFailure", t.getMessage());
+                CustomLog.v("onFailure", t.getMessage());
                 //log out operation if response code is 401
-                new NavigationUtils().logoutOperation(getActivity(),t);
+                new NavigationUtils().logoutOperation(getActivity(), t);
             }
         });
     }

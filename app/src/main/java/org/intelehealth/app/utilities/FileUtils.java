@@ -1,18 +1,13 @@
 package org.intelehealth.app.utilities;
 
-import android.Manifest;
 import android.content.Context;
-import android.content.pm.PackageManager;
-import android.os.Build;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.widget.Toast;
-
-
-import androidx.core.app.ActivityCompat;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.app.AppConstants;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -23,13 +18,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 
-import org.intelehealth.app.app.AppConstants;
-
 public class FileUtils {
     public static String TAG = FileUtils.class.getSimpleName();
 
     public static String readFile(String FILENAME, Context context) {
-        Log.i(TAG, "Reading from file");
+        CustomLog.i(TAG, "Reading from file");
 
         try {
             File myDir = new File(context.getFilesDir().getAbsolutePath() + File.separator + AppConstants.JSON_FOLDER + File.separator + FILENAME);
@@ -45,7 +38,7 @@ public class FileUtils {
                 s += readstring;
             }
             InputRead.close();
-            Log.i("FILEREAD>", s);
+            CustomLog.i("FILEREAD>", s);
             return s;
 
         } catch (Exception e) {
@@ -56,7 +49,7 @@ public class FileUtils {
     }
 
     public static String readFileRoot(String FILENAME, Context context) {
-        Log.i(TAG, "Reading from file");
+        CustomLog.i(TAG, "Reading from file - "+FILENAME);
 
         try {
             File myDir = new File(context.getFilesDir().getAbsolutePath() + File.separator + File.separator + FILENAME);
@@ -72,7 +65,7 @@ public class FileUtils {
                 s += readstring;
             }
             InputRead.close();
-            Log.i("FILEREAD>", s);
+            CustomLog.i("FILEREAD>", s);
             return s;
 
         } catch (Exception e) {
@@ -99,6 +92,25 @@ public class FileUtils {
             encoded = new JSONObject(raw_json);
         } catch (JSONException | NullPointerException e) {
             Toast.makeText(context, context.getString(R.string.config_file_missing), Toast.LENGTH_SHORT).show();
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+        return encoded;
+
+    }
+
+    /**
+     * this method is required during license mm load from Engines folder
+     * @param context
+     * @param fileName
+     * @return
+     */
+    public static JSONObject encodeJSONFromFile(Context context, String fileName) {
+        JSONObject encoded = null;
+        try {
+            encoded = new JSONObject(FileUtils.readFile(fileName, context));
+
+        } catch (JSONException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
 

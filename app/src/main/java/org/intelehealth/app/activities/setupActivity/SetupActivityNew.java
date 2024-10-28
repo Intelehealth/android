@@ -9,6 +9,7 @@ import android.content.res.Resources;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.LocaleList;
@@ -17,7 +18,7 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.util.Patterns;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -34,9 +35,14 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.DefaultLifecycleObserver;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.ProcessLifecycleOwner;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
@@ -47,7 +53,10 @@ import com.parse.Parse;
 import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.forgotPasswordNew.ForgotPasswordActivity_New;
+import org.intelehealth.app.activities.forgotPasswordNew.ForgotPasswordOtpVerificationActivity_New;
+import org.intelehealth.app.activities.forgotPasswordNew.ResetPasswordActivity_New;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
+import org.intelehealth.app.activities.loginActivity.LoginActivityNew;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.models.DownloadMindMapRes;
@@ -71,6 +80,7 @@ import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.authJWT_API.AuthJWTBody;
 import org.intelehealth.app.utilities.authJWT_API.AuthJWTResponse;
 import org.intelehealth.app.widget.materialprogressbar.CustomProgressDialog;
+import org.intelehealth.klivekit.data.PreferenceHelper;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -80,7 +90,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -172,7 +181,20 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(SetupActivityNew.this, ForgotPasswordActivity_New.class);
+                intent.putExtra("action",AppConstants.FORGOT_USER_PASSWORD_ACTION);
                 startActivity(intent);
+            }
+        });
+        TextView forgotUserNameLabelTextView = findViewById(R.id.tv_forgot_username);
+
+        forgotUserNameLabelTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               /* Intent intent = new Intent(SetupActivityNew.this, ForgotPasswordActivity_New.class);
+                intent.putExtra("action",AppConstants.FORGOT_USER_NAME_ACTION);
+                startActivity(intent);*/
+                DialogUtils dialogUtils = new DialogUtils();
+                dialogUtils.showOkDialog(SetupActivityNew.this, getString(R.string.forgot_your_username), getString(R.string.contact_your_admin), getString(R.string.generic_ok));
             }
         });
 
@@ -201,6 +223,16 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
                 return false;
             }
         });
+
+        //onebackpressed is deprecated
+        //that's why added the implementation
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                finish();
+            }
+        });
+
     }
 
     @Override
@@ -242,12 +274,6 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
         }
         res.updateConfiguration(conf, dm);
         return context;
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        finish();
     }
 
     @Override
@@ -373,17 +399,33 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
         }
 
         if (location != null) {
-            Log.i(TAG, location.getDisplay());
+            CustomLog.i(TAG, location.getDisplay());
             //TestSetup(BuildConfig.SERVER_URL, userName, password, admin_password, location);
             //getting jwt token here
             getJWTToken(BuildConfig.SERVER_URL, userName, password, admin_password,location);
-            Log.d(TAG, "attempting setup");
+            CustomLog.d(TAG, "attempting setup");
         }
     }
 
+    /**
+     * some deprecated code updated
+     * @return
+     */
     private boolean isNetworkConnected() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        if (activeNetwork != null) {
+            switch (activeNetwork.getType()) {
+                case ConnectivityManager.TYPE_WIFI, ConnectivityManager.TYPE_MOBILE -> {
+                    return true;
+                }
+                default -> {
+                    return false;
+                }
+            }
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -420,6 +462,7 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
                         }
 
                         sessionManager.setJwtAuthToken(authJWTResponse.getToken());
+                        new PreferenceHelper(SetupActivityNew.this).save(PreferenceHelper.AUTH_TOKEN,authJWTResponse.getToken());
                         TestSetup(urlString, username, password, admin_password,location);
                     }
 
@@ -437,13 +480,13 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
     }
 
     public void TestSetup(String CLEAN_URL, String USERNAME, String PASSWORD, String ADMIN_PASSWORD, Location location) {
-        Log.d(TAG, "TestSetup: ");
+        CustomLog.d(TAG, "TestSetup: ");
         String urlString = urlModifiers.loginUrl(CLEAN_URL);
         encoded = base64Utils.encoded(USERNAME, PASSWORD);
         sessionManager.setEncoded(encoded);
-        Log.d(TAG, "TestSetup: urlString : " + urlString);
-        Log.d(TAG, "TestSetup: encoded : " + encoded);
-        Log.d(TAG, "TestSetup: encodednew : " + "Basic " + encoded);
+        CustomLog.d(TAG, "TestSetup: urlString : " + urlString);
+        CustomLog.d(TAG, "TestSetup: encoded : " + encoded);
+        CustomLog.d(TAG, "TestSetup: encodednew : " + "Basic " + encoded);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
@@ -452,110 +495,110 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<LoginModel>() {
-            @Override
-            public void onSubscribe(Disposable d) {
-            }
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                    }
 
-            @Override
-            public void onNext(LoginModel loginModel) {
-                if (loginModel != null) {
-                    Boolean authencated = loginModel.getAuthenticated();
-                    if (authencated) {
-                        Gson gson = new Gson();
-                        sessionManager.setChwname(loginModel.getUser().getDisplay());
-                        sessionManager.setCreatorID(loginModel.getUser().getUuid());
-                        sessionManager.setSessionID(loginModel.getSessionId());
-                        sessionManager.setProviderID(loginModel.getUser().getPerson().getUuid());
-                        UrlModifiers urlModifiers = new UrlModifiers();
-                        String url = urlModifiers.loginUrlProvider(CLEAN_URL, loginModel.getUser().getUuid());
+                    @Override
+                    public void onNext(LoginModel loginModel) {
+                        if (loginModel != null) {
+                            Boolean authencated = loginModel.getAuthenticated();
+                            if (authencated) {
+                                Gson gson = new Gson();
+                                sessionManager.setChwname(loginModel.getUser().getDisplay());
+                                sessionManager.setCreatorID(loginModel.getUser().getUuid());
+                                sessionManager.setSessionID(loginModel.getSessionId());
+                                sessionManager.setProviderID(loginModel.getUser().getPerson().getUuid());
+                                UrlModifiers urlModifiers = new UrlModifiers();
+                                String url = urlModifiers.loginUrlProvider(CLEAN_URL, loginModel.getUser().getUuid());
 
-                        Observable<LoginProviderModel> loginProviderModelObservable = AppConstants.apiInterface.LOGIN_PROVIDER_MODEL_OBSERVABLE(url, "Basic " + encoded);
-                        loginProviderModelObservable
-                                .subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe(new DisposableObserver<LoginProviderModel>() {
-                                    @Override
-                                    public void onNext(LoginProviderModel loginProviderModel) {
-                                        if (loginProviderModel.getResults().size() != 0) {
-                                            for (int i = 0; i < loginProviderModel.getResults().size(); i++) {
-                                                Log.i(TAG, "doInBackground: " + loginProviderModel.getResults().get(i).getUuid());
-                                                try {
-                                                    sessionManager.setProviderID(loginProviderModel.getResults().get(i).getUuid());
+                                Observable<LoginProviderModel> loginProviderModelObservable = AppConstants.apiInterface.LOGIN_PROVIDER_MODEL_OBSERVABLE(url, "Basic " + encoded);
+                                loginProviderModelObservable
+                                        .subscribeOn(Schedulers.io())
+                                        .observeOn(AndroidSchedulers.mainThread())
+                                        .subscribe(new DisposableObserver<LoginProviderModel>() {
+                                            @Override
+                                            public void onNext(LoginProviderModel loginProviderModel) {
+                                                if (loginProviderModel.getResults().size() != 0) {
+                                                    for (int i = 0; i < loginProviderModel.getResults().size(); i++) {
+                                                        CustomLog.i(TAG, "doInBackground: " + loginProviderModel.getResults().get(i).getUuid());
+                                                        try {
+                                                            sessionManager.setProviderID(loginProviderModel.getResults().get(i).getUuid());
 //                                                responsecode = 200;
                                           /*  final Account account = new Account(USERNAME, "io.intelehealth.openmrs");
                                             manager.addAccountExplicitly(account, PASSWORD, null);*/
 
-                                                    sessionManager.setLocationName(location.getDisplay());
-                                                    sessionManager.setLocationUuid(location.getUuid());
-                                                    sessionManager.setLocationDescription(location.getDescription());
-                                                    sessionManager.setServerUrl(CLEAN_URL);
-                                                    sessionManager.setServerUrlRest(BASE_URL);
-                                                    sessionManager.setServerUrlBase(CLEAN_URL + "/openmrs");
-                                                    sessionManager.setBaseUrl(BASE_URL);
-                                                    sessionManager.setSetupComplete(true);
-                                                    sessionManager.setFirstTimeLaunch(false);
-                                                    sessionManager.setFirstProviderLoginTime(AppConstants.dateAndTimeUtils.currentDateTime());
+                                                            sessionManager.setLocationName(location.getDisplay());
+                                                            sessionManager.setLocationUuid(location.getUuid());
+                                                            sessionManager.setLocationDescription(location.getDescription());
+                                                            sessionManager.setServerUrl(CLEAN_URL);
+                                                            sessionManager.setServerUrlRest(BASE_URL);
+                                                            sessionManager.setServerUrlBase(CLEAN_URL + "/openmrs");
+                                                            sessionManager.setBaseUrl(BASE_URL);
+                                                            sessionManager.setSetupComplete(true);
+                                                            sessionManager.setFirstTimeLaunch(false);
+                                                            sessionManager.setFirstProviderLoginTime(AppConstants.dateAndTimeUtils.currentDateTime());
 
-                                                    IntelehealthApplication.getInstance().initSocketConnection();
-                                                    Log.d(TAG, "onNext: 11");
-                                                    // OfflineLogin.getOfflineLogin().setUpOfflineLogin(USERNAME, PASSWORD);
-                                                    AdminPassword.getAdminPassword().setUp(ADMIN_PASSWORD);
+                                                            IntelehealthApplication.getInstance().initSocketConnection();
+                                                            CustomLog.d(TAG, "onNext: 11");
+                                                            // OfflineLogin.getOfflineLogin().setUpOfflineLogin(USERNAME, PASSWORD);
+                                                            AdminPassword.getAdminPassword().setUp(ADMIN_PASSWORD);
 
-                                                    Parse.initialize(new Parse.Configuration.Builder(getApplicationContext())
-                                                            .applicationId(AppConstants.IMAGE_APP_ID)
-                                                            .server("https://" + CLEAN_URL + ":1337/parse/")
-                                                            .build()
-                                                    );
+                                                            Parse.initialize(new Parse.Configuration.Builder(getApplicationContext())
+                                                                    .applicationId(AppConstants.IMAGE_APP_ID)
+                                                                    .server("https://" + CLEAN_URL + ":1337/parse/")
+                                                                    .build()
+                                                            );
 
-                                                    SQLiteDatabase sqLiteDatabase = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
-                                                    //SQLiteDatabase read_db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
+                                                            SQLiteDatabase sqLiteDatabase = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+                                                            //SQLiteDatabase read_db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
 
-                                                    sqLiteDatabase.beginTransaction();
-                                                    //read_db.beginTransaction();
-                                                    ContentValues values = new ContentValues();
-                                                    //StringEncryption stringEncryption = new StringEncryption();
-                                                    String random_salt = getSalt_DATA();
+                                                            sqLiteDatabase.beginTransaction();
+                                                            //read_db.beginTransaction();
+                                                            ContentValues values = new ContentValues();
+                                                            //StringEncryption stringEncryption = new StringEncryption();
+                                                            String random_salt = getSalt_DATA();
 
-                                                    //String random_salt = stringEncryption.getRandomSaltString();
-                                                    Log.d("salt", "salt: " + random_salt);
-                                                    //Salt_Getter_Setter salt_getter_setter = new Salt_Getter_Setter();
-                                                    //salt_getter_setter.setSalt(random`_salt);
+                                                            //String random_salt = stringEncryption.getRandomSaltString();
+                                                            CustomLog.d("salt", "salt: " + random_salt);
+                                                            //Salt_Getter_Setter salt_getter_setter = new Salt_Getter_Setter();
+                                                            //salt_getter_setter.setSalt(random`_salt);
 
 
-                                                    String hash_password = null;
-                                                    try {
-                                                        //hash_email = StringEncryption.convertToSHA256(random_salt + mEmail);
-                                                        hash_password = StringEncryption.convertToSHA256(random_salt + PASSWORD);
-                                                    } catch (NoSuchAlgorithmException |
-                                                             UnsupportedEncodingException e) {
-                                                        FirebaseCrashlytics.getInstance().recordException(e);
-                                                    }
+                                                            String hash_password = null;
+                                                            try {
+                                                                //hash_email = StringEncryption.convertToSHA256(random_salt + mEmail);
+                                                                hash_password = StringEncryption.convertToSHA256(random_salt + PASSWORD);
+                                                            } catch (NoSuchAlgorithmException |
+                                                                     UnsupportedEncodingException e) {
+                                                                FirebaseCrashlytics.getInstance().recordException(e);
+                                                            }
 
-                                                    try {
-                                                        values.put("username", USERNAME);
-                                                        values.put("password", hash_password);
-                                                        values.put("creator_uuid_cred", loginModel.getUser().getUuid());
-                                                        values.put("chwname", loginModel.getUser().getDisplay());
-                                                        values.put("provider_uuid_cred", sessionManager.getProviderID());
-                                                        createdRecordsCount = sqLiteDatabase.insertWithOnConflict("tbl_user_credentials", null, values, SQLiteDatabase.CONFLICT_REPLACE);
-                                                        sqLiteDatabase.setTransactionSuccessful();
-                                                        Log.d(TAG, "onCreate: selected chw1 : " + loginModel.getUser().getDisplay());
+                                                            try {
+                                                                values.put("username", USERNAME);
+                                                                values.put("password", hash_password);
+                                                                values.put("creator_uuid_cred", loginModel.getUser().getUuid());
+                                                                values.put("chwname", loginModel.getUser().getDisplay());
+                                                                values.put("provider_uuid_cred", sessionManager.getProviderID());
+                                                                createdRecordsCount = sqLiteDatabase.insertWithOnConflict("tbl_user_credentials", null, values, SQLiteDatabase.CONFLICT_REPLACE);
+                                                                sqLiteDatabase.setTransactionSuccessful();
+                                                                CustomLog.d(TAG, "onCreate: selected chw1 : " + loginModel.getUser().getDisplay());
 
-                                                        Logger.logD("values", "values" + values);
-                                                        Logger.logD("created user credentials", "create user records" + createdRecordsCount);
-                                                    } catch (SQLException e) {
-                                                        Log.d("SQL", "SQL user credentials: " + e);
-                                                    } finally {
-                                                        sqLiteDatabase.endTransaction();
-                                                    }
-                                                    Log.i(TAG, "onPostExecute: Parse init");
-                                                    sessionManager.setIsLoggedIn(true);
+                                                                Logger.logD("values", "values" + values);
+                                                                Logger.logD("created user credentials", "create user records" + createdRecordsCount);
+                                                            } catch (SQLException e) {
+                                                                CustomLog.d("SQL", "SQL user credentials: " + e);
+                                                            } finally {
+                                                                sqLiteDatabase.endTransaction();
+                                                            }
+                                                            CustomLog.i(TAG, "onPostExecute: Parse init");
+                                                            sessionManager.setIsLoggedIn(true);
 
-                                                    Intent intent = new Intent(SetupActivityNew.this, HomeScreenActivity_New.class);
-                                                    intent.putExtra("setup", true);
-                                                    intent.putExtra("firstLogin", "firstLogin");
+                                                            Intent intent = new Intent(SetupActivityNew.this, HomeScreenActivity_New.class);
+                                                            intent.putExtra("setup", true);
+                                                            intent.putExtra("firstLogin", "firstLogin");
 
-                                                    //  if (r2.isChecked()) {
+                                                            //  if (r2.isChecked()) {
                                                /* if (!sessionManager.getLicenseKey().isEmpty()) {
                                                     sessionManager.setTriggerNoti("no");
                                                     startActivity(intent);
@@ -563,62 +606,62 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
                                                 } else {
                                                     Toast.makeText(SetupActivityNew.this, R.string.please_enter_valid_license_key, Toast.LENGTH_LONG).show();
                                                 }*/
-                                                    //   } else {
-                                                    sessionManager.setTriggerNoti("no");
-                                                    startActivity(intent);
-                                                    finish();
-                                                    // }
-                                                    //  progress.dismiss();
-                                                } catch (Exception e) {
-                                                    e.printStackTrace();
+                                                            //   } else {
+                                                            sessionManager.setTriggerNoti("no");
+                                                            startActivity(intent);
+                                                            finish();
+                                                            // }
+                                                            //  progress.dismiss();
+                                                        } catch (Exception e) {
+                                                            e.printStackTrace();
+                                                        }
+
+                                                    }
                                                 }
 
                                             }
-                                        }
 
-                                    }
+                                            @Override
+                                            public void onError(Throwable e) {
+                                                Logger.logD(TAG, "handle provider error" + e.getMessage());
+                                                e.printStackTrace();
+                                                cpd.dismiss();
+                                                ////   progress.dismiss();
+                                                // dismissLoggingInDialog();
+                                            }
 
-                                    @Override
-                                    public void onError(Throwable e) {
-                                        Logger.logD(TAG, "handle provider error" + e.getMessage());
-                                        e.printStackTrace();
-                                        cpd.dismiss();
-                                        ////   progress.dismiss();
-                                        // dismissLoggingInDialog();
-                                    }
+                                            @Override
+                                            public void onComplete() {
 
-                                    @Override
-                                    public void onComplete() {
+                                            }
+                                        });
+                                cpd.dismiss();
+                            }
+                            else {
+                                CustomLog.d(TAG, "onNext: loginmodel is null");
+                                cpd.dismiss();
+                                showErrorDialog();
+                            }
+                        }
 
-                                    }
-                                });
-                        cpd.dismiss();
                     }
-                    else {
-                        Log.d(TAG, "onNext: loginmodel is null");
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Logger.logD(TAG, "Login Failure" + e.getMessage());
+                        e.printStackTrace();
+                        // progress.dismiss();
+                        ///  dismissLoggingInDialog();
                         cpd.dismiss();
                         showErrorDialog();
+
                     }
-                }
 
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                Logger.logD(TAG, "Login Failure" + e.getMessage());
-                e.printStackTrace();
-                // progress.dismiss();
-                ///  dismissLoggingInDialog();
-                cpd.dismiss();
-                showErrorDialog();
-
-            }
-
-            @Override
-            public void onComplete() {
-                Logger.logD(TAG, "completed");
-            }
-        });
+                    @Override
+                    public void onComplete() {
+                        Logger.logD(TAG, "completed");
+                    }
+                });
 
 
     }
@@ -652,10 +695,10 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
                             public void onNext(Results<Location> locationResults) {
                                 if (locationResults.getResults() != null) {
                                     Results<Location> locationList = locationResults;
-                                    Log.d(TAG, "11onNext: locations list size : " + locationList.getResults().size());
+                                    CustomLog.d(TAG, "11onNext: locations list size : " + locationList.getResults().size());
                                     mLocations = locationList.getResults();
                                     List<String> items = getLocationStringList(locationList.getResults());
-                                    Log.d(TAG, "11onNext: items size : " + items.size());
+                                    CustomLog.d(TAG, "11onNext: items size : " + items.size());
                                     LocationArrayAdapter adapter = new LocationArrayAdapter(SetupActivityNew.this, items);
                                     autotvLocations.setAdapter(adapter);
                                     isLocationFetched = true;
@@ -709,12 +752,12 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
         try {
             for (int i = 0; i < locationList.size(); i++) {
                 list.add(locationList.get(i).getDisplay());
-                Log.d(TAG, "getLocationStringList: value : " + locationList.get(i).getDisplay());
+                CustomLog.d(TAG, "getLocationStringList: value : " + locationList.get(i).getDisplay());
             }
 
 
         } catch (Exception e) {
-            Log.d(TAG, "getLocationStringList: " + e.getLocalizedMessage());
+            CustomLog.d(TAG, "getLocationStringList: " + e.getLocalizedMessage());
             e.printStackTrace();
         }
 
@@ -741,7 +784,7 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
             while ((mLine = reader.readLine()) != null) {
                 //process line
                 salt = mLine;
-                Log.d("SA", "SA " + salt);
+                CustomLog.d("SA", "SA " + salt);
             }
         } catch (Exception e) {
             //log the exception
@@ -755,7 +798,6 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
             }
         }
         return salt;
-
     }
 
     public void onRadioClick(View v) {
@@ -791,8 +833,8 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
                         Button negativeButton = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
 
                         // Change the alert dialog buttons text and background color
-                        positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-                        negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+                        positiveButton.setTextColor(ContextCompat.getColor(this,R.color.colorPrimary));
+                        negativeButton.setTextColor(ContextCompat.getColor(this,R.color.colorPrimary));
 
                         positiveButton.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -889,9 +931,10 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
     private void getMindmapDownloadURL(String url) {
         customProgressDialog.show(getString(R.string.please_wait));
         ApiClient.changeApiBaseUrl(url);
+        String encoded1 = sessionManager.getJwtAuthToken();
         ApiInterface apiService = ApiClient.createService(ApiInterface.class);
         try {
-            Observable<DownloadMindMapRes> resultsObservable = apiService.DOWNLOAD_MIND_MAP_RES_OBSERVABLE(key);
+            Observable<DownloadMindMapRes> resultsObservable = apiService.DOWNLOAD_MIND_MAP_RES_OBSERVABLE(key,"Bearer "+encoded1);
             resultsObservable
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -901,8 +944,8 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
                             customProgressDialog.dismiss();
                             if (res.getMessage() != null && res.getMessage().equalsIgnoreCase("Success")) {
 
-                                Log.e("MindMapURL", "Successfully get MindMap URL");
-                                mTask = new DownloadMindMaps(context, mProgressDialog, "setup");
+                                CustomLog.e("MindMapURL", "Successfully get MindMap URL");
+                                //mTask = new DownloadMindMaps(context, mProgressDialog, "setup");
                                 mindmapURL = res.getMindmap().trim();
                                 sessionManager.setLicenseKey(key);
                                 checkExistingMindMaps();
@@ -916,7 +959,7 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
                         @Override
                         public void onError(Throwable e) {
                             customProgressDialog.dismiss();
-                            Log.e("MindMapURL", " " + e);
+                            CustomLog.e("MindMapURL", " " + e);
                             Toast.makeText(SetupActivityNew.this, getResources().getString(R.string.unable_to_get_proper_response), Toast.LENGTH_LONG).show();
                         }
 
@@ -926,17 +969,9 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
                         }
                     });
         } catch (IllegalArgumentException e) {
-            Log.e(TAG, "changeApiBaseUrl: " + e.getMessage());
-            Log.e(TAG, "changeApiBaseUrl: " + e.getStackTrace());
+            CustomLog.e(TAG, "changeApiBaseUrl: " + e.getMessage());
+            CustomLog.e(TAG, "changeApiBaseUrl: " + e.getStackTrace());
         }
-    }
-
-    private void showProgressbar() {
-        mProgressDialog = new ProgressDialog(SetupActivityNew.this);
-        mProgressDialog.setMessage(getString(R.string.download_protocols));
-        mProgressDialog.setIndeterminate(true);
-        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        mProgressDialog.setCancelable(false);
     }
 
     private void checkExistingMindMaps() {
@@ -944,39 +979,39 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
         //Check is there any existing mindmaps are present, if yes then delete.
 
         File engines = new File(context.getFilesDir().getAbsolutePath(), "/Engines");
-        Log.e(TAG, "Engines folder=" + engines.exists());
+        CustomLog.e(TAG, "Engines folder=" + engines.exists());
         if (engines.exists()) {
             engines.delete();
         }
         File logo = new File(context.getFilesDir().getAbsolutePath(), "/logo");
-        Log.e(TAG, "Logo folder=" + logo.exists());
+        CustomLog.e(TAG, "Logo folder=" + logo.exists());
         if (logo.exists()) {
             logo.delete();
         }
         File physicalExam = new File(context.getFilesDir().getAbsolutePath() + "/physExam.json");
-        Log.e(TAG, "physExam.json=" + physicalExam.exists());
+        CustomLog.e(TAG, "physExam.json=" + physicalExam.exists());
         if (physicalExam.exists()) {
             physicalExam.delete();
         }
         File familyHistory = new File(context.getFilesDir().getAbsolutePath() + "/famHist.json");
-        Log.e(TAG, "famHist.json=" + familyHistory.exists());
+        CustomLog.e(TAG, "famHist.json=" + familyHistory.exists());
         if (familyHistory.exists()) {
             familyHistory.delete();
         }
         File pastMedicalHistory = new File(context.getFilesDir().getAbsolutePath() + "/patHist.json");
-        Log.e(TAG, "patHist.json=" + pastMedicalHistory.exists());
+        CustomLog.e(TAG, "patHist.json=" + pastMedicalHistory.exists());
         if (pastMedicalHistory.exists()) {
             pastMedicalHistory.delete();
         }
         File config = new File(context.getFilesDir().getAbsolutePath() + "/config.json");
-        Log.e(TAG, "config.json=" + config.exists());
+        CustomLog.e(TAG, "config.json=" + config.exists());
         if (config.exists()) {
             config.delete();
         }
 
         //Start downloading mindmaps
         mTask.execute(mindmapURL, context.getFilesDir().getAbsolutePath() + "/mindmaps.zip");
-        Log.e("DOWNLOAD", "isSTARTED");
+        CustomLog.e("DOWNLOAD", "isSTARTED");
 
     }
 

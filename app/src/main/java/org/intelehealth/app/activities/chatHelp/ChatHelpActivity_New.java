@@ -1,5 +1,7 @@
 package org.intelehealth.app.activities.chatHelp;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
@@ -15,6 +17,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -22,7 +25,7 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.StrictMode;
 import android.provider.MediaStore;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -33,6 +36,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
@@ -119,9 +123,9 @@ public class ChatHelpActivity_New extends BaseActivity implements ClickListenerI
 
 
         if (CheckInternetAvailability.isNetworkAvailable(this)) {
-            ivIsInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_internet_available));
+            ivIsInternet.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.ui2_ic_internet_available));
         } else {
-            ivIsInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
+            ivIsInternet.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.ui2_ic_no_internet));
 
         }
         checkPerm();
@@ -139,7 +143,7 @@ public class ChatHelpActivity_New extends BaseActivity implements ClickListenerI
     private void fillDataInList() {
         String outgoingMsg = etSendMessage.getText().toString();
         // SimpleDateFormat formatDate = new SimpleDateFormat("hh:mm a");
-        //  Log.d(TAG, "fillDataInList: formatDate : " + formatDate);
+        //  CustomLog.d(TAG, "fillDataInList: formatDate : " + formatDate);
 
 
         ChatHelpModel c1 = new ChatHelpModel("", outgoingMsg, "",
@@ -157,7 +161,7 @@ public class ChatHelpActivity_New extends BaseActivity implements ClickListenerI
         chatHelpAdapter_new = new ChatHelpAdapter_New(this, chattingDetailsList, this);
         rvChatSupport.setAdapter(chatHelpAdapter_new);
 
-        Log.d(TAG, "fillDataInList: chattingDetailsList size  :" + chattingDetailsList.size());
+        CustomLog.d(TAG, "fillDataInList: chattingDetailsList size  :" + chattingDetailsList.size());
 
         etSendMessage.setText("");
     }
@@ -167,7 +171,7 @@ public class ChatHelpActivity_New extends BaseActivity implements ClickListenerI
         ivSendAttachment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "onClick: ivSendAttachment");
+                CustomLog.d(TAG, "onClick: ivSendAttachment");
                 layoutMediaOptions.setVisibility(View.VISIBLE);
             }
         });
@@ -179,7 +183,7 @@ public class ChatHelpActivity_New extends BaseActivity implements ClickListenerI
             String imageName = UUID.randomUUID().toString();
             cameraIntent.putExtra(CameraActivity.SET_IMAGE_NAME, imageName);
             cameraIntent.putExtra(CameraActivity.SET_IMAGE_PATH, AppConstants.IMAGE_PATH);
-            startActivityForResult(cameraIntent, CameraActivity.TAKE_IMAGE);
+            cameraActivityResult.launch(cameraIntent);
         });
 
         layoutGallery.setOnClickListener(v -> {
@@ -198,7 +202,7 @@ public class ChatHelpActivity_New extends BaseActivity implements ClickListenerI
             Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
             photoPickerIntent.setType("*/*");
             photoPickerIntent.putExtra(Intent.EXTRA_MIME_TYPES, new String[]{"image/*", "video/*"});
-            startActivityForResult(photoPickerIntent, PICK_IMAGE_FROM_GALLERY);
+            galleryActivityResult.launch(photoPickerIntent);
         });
 
         layoutDocument.setOnClickListener(new View.OnClickListener() {
@@ -208,34 +212,25 @@ public class ChatHelpActivity_New extends BaseActivity implements ClickListenerI
 
                 Intent chooseFile = new Intent(Intent.ACTION_GET_CONTENT);
                 chooseFile.setType("application/pdf");
-                startActivityForResult(
-                        Intent.createChooser(chooseFile, "Choose a file"),
-                        PICKFILE_RESULT_CODE
-                );
+                layoutMediaResult.launch(chooseFile);
             }
         });
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-    }
+    ActivityResultLauncher<Intent> cameraActivityResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        if (result.getResultCode() == RESULT_OK) {
+            String mCurrentPhotoPath = result.getData().getStringExtra("RESULT");
+            saveImage(mCurrentPhotoPath);
+        }
+    });
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == CameraActivity.TAKE_IMAGE) {
-            if (resultCode == RESULT_OK) {
-                String mCurrentPhotoPath = data.getStringExtra("RESULT");
-                saveImage(mCurrentPhotoPath);
-            }
-        } else if (requestCode == PICK_IMAGE_FROM_GALLERY) {
-            if (data != null) {
-                Uri selectedImage = data.getData();
-                Log.d(TAG, "onActivityResult: selectedImage : " + selectedImage);
+    ActivityResultLauncher<Intent> galleryActivityResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        if (result.getResultCode() == RESULT_OK) {
+            if (result.getData() != null) {
+                Uri selectedImage = result.getData().getData();
+                CustomLog.d(TAG, "onActivityResult: selectedImage : " + selectedImage);
                 if (selectedImage.toString().toLowerCase().contains("image") || selectedImage.toString().toLowerCase().contains(".jpeg") || selectedImage.toString().toLowerCase().contains(".jpg")) {
-                    Log.d(TAG, "onActivityResult: im image if");
+                    CustomLog.d(TAG, "onActivityResult: im image if");
                     //handle image
                     String[] filePath = {MediaStore.Images.Media.DATA};
                     Cursor c = getContentResolver().query(selectedImage, filePath, null, null, null);
@@ -244,7 +239,7 @@ public class ChatHelpActivity_New extends BaseActivity implements ClickListenerI
                     String picturePath = c.getString(columnIndex);
                     c.close();
                     //Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
-                    Log.v("path", picturePath + "");
+                    CustomLog.v("path", picturePath + "");
 
                     // copy & rename the file
                     String finalImageName = UUID.randomUUID().toString();
@@ -254,7 +249,7 @@ public class ChatHelpActivity_New extends BaseActivity implements ClickListenerI
                 } else if (selectedImage.toString().toLowerCase().contains("video") || selectedImage.toString().toLowerCase().contains(".mp4")) {
                     //handle video
                     String filemanagerstring = selectedImage.getPath();
-                    Log.d(TAG, "onActivityResult: video result : " + filemanagerstring);
+                    CustomLog.d(TAG, "onActivityResult: video result : " + filemanagerstring);
 
                     // MEDIA GALLERY
                     String selectedImagePath = getPath(selectedImage);
@@ -265,7 +260,7 @@ public class ChatHelpActivity_New extends BaseActivity implements ClickListenerI
                                 false, false, false, selectedImagePath,
                                 "");
                         chattingDetailsList.add(c1);
-                        Log.d(TAG, "saveImage: chattingDetailsList size : " + chattingDetailsList.size());
+                        CustomLog.d(TAG, "saveImage: chattingDetailsList size : " + chattingDetailsList.size());
                         chatHelpAdapter_new = new ChatHelpAdapter_New(this, chattingDetailsList, this);
                         rvChatSupport.setAdapter(chatHelpAdapter_new);
                     }
@@ -274,12 +269,16 @@ public class ChatHelpActivity_New extends BaseActivity implements ClickListenerI
 
 
             }
-        } else if (requestCode == PICKFILE_RESULT_CODE) {
-            Uri uri = data.getData();
+        }
+    });
+
+    ActivityResultLauncher<Intent>  layoutMediaResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        if (result.getResultCode() == RESULT_OK) {
+            Uri uri = result.getData().getData();
             String selectedDocPath = getPathNew(uri);
-            Log.d(TAG, "onActivityResult: src file path : " + selectedDocPath);
+            CustomLog.d(TAG, "onActivityResult: src file path : " + selectedDocPath);
             String filename = selectedDocPath.substring(selectedDocPath.lastIndexOf("/") + 1);
-            Log.d(TAG, "onActivityResult: filename  : " + filename);
+            CustomLog.d(TAG, "onActivityResult: filename  : " + filename);
 
             ChatHelpModel c1 = new ChatHelpModel("", "", "",
                     getCurrentTime(), "", false,
@@ -288,11 +287,11 @@ public class ChatHelpActivity_New extends BaseActivity implements ClickListenerI
                     false, false, false, selectedDocPath,
                     "");
             chattingDetailsList.add(c1);
-            Log.d(TAG, "saveImage: chattingDetailsList size : " + chattingDetailsList.size());
+            CustomLog.d(TAG, "saveImage: chattingDetailsList size : " + chattingDetailsList.size());
             chatHelpAdapter_new = new ChatHelpAdapter_New(this, chattingDetailsList, this);
             rvChatSupport.setAdapter(chatHelpAdapter_new);
         }
-    }
+    });
 
     public String getPathNew(Uri uri) {
 
@@ -327,7 +326,7 @@ public class ChatHelpActivity_New extends BaseActivity implements ClickListenerI
     }
 
     private void saveImage(String picturePath) {
-        Log.v("AdditionalDocuments", "picturePath = " + picturePath);
+        CustomLog.v("AdditionalDocuments", "picturePath = " + picturePath);
         try {
 
 
@@ -336,7 +335,7 @@ public class ChatHelpActivity_New extends BaseActivity implements ClickListenerI
                 try {
                     long length = photo.length();
                     length = length / 1024;
-                    Log.e("------->>>>", length + "");
+                    CustomLog.e("------->>>>", length + "");
                 } catch (Exception e) {
                     System.out.println("File not found : " + e.getMessage() + e);
                 }
@@ -346,7 +345,7 @@ public class ChatHelpActivity_New extends BaseActivity implements ClickListenerI
                         false, false, false, false,
                         false, false, false, picturePath, "");
                 chattingDetailsList.add(c1);
-                Log.d(TAG, "saveImage: chattingDetailsList size : " + chattingDetailsList.size());
+                CustomLog.d(TAG, "saveImage: chattingDetailsList size : " + chattingDetailsList.size());
                 chatHelpAdapter_new = new ChatHelpAdapter_New(this, chattingDetailsList, this);
                 rvChatSupport.setAdapter(chatHelpAdapter_new);
                 //chatHelpAdapter_new.add(c1);
@@ -354,7 +353,7 @@ public class ChatHelpActivity_New extends BaseActivity implements ClickListenerI
             }
 
         } catch (Exception e) {
-            Log.d(TAG, "saveImage: exception : " + e.getLocalizedMessage());
+            CustomLog.d(TAG, "saveImage: exception : " + e.getLocalizedMessage());
         }
     }
 
@@ -472,10 +471,10 @@ public class ChatHelpActivity_New extends BaseActivity implements ClickListenerI
         Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
         Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
 
-        positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+        positiveButton.setTextColor(ContextCompat.getColor(this,R.color.colorPrimary));
         //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
 
-        negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+        negativeButton.setTextColor(ContextCompat.getColor(this,R.color.colorPrimary));
         //negativeButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
         IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
     }
@@ -522,7 +521,7 @@ public class ChatHelpActivity_New extends BaseActivity implements ClickListenerI
     }
 
     private void openDocument(String mediaPath) {
-        Log.d(TAG, "openDocument: mediaPath : "+mediaPath);
+        CustomLog.d(TAG, "openDocument: mediaPath : "+mediaPath);
      /*   File file = new File(Environment.getExternalStorageDirectory(),
                 mediaPath);
         Uri path = Uri.fromFile(file);
@@ -550,9 +549,11 @@ public class ChatHelpActivity_New extends BaseActivity implements ClickListenerI
         ImageView ivFullImage = convertView.findViewById(R.id.iv_full_image);
 
         AlertDialog alertDialog = alertdialogBuilder.create();
+        RequestBuilder<Drawable> requestBuilder = Glide.with(this)
+                .asDrawable().sizeMultiplier(0.3f);
         Glide.with(ChatHelpActivity_New.this)
                 .load(mediaPath)
-                .thumbnail(0.3f)
+                .thumbnail(requestBuilder)
                 .centerCrop()
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .skipMemoryCache(true)

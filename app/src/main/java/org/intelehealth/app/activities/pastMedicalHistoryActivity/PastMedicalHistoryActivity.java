@@ -18,13 +18,14 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Html;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
@@ -169,7 +170,7 @@ public class PastMedicalHistoryActivity extends BaseActivity implements Question
                     .inflate(R.layout.past_fam_hist_previous_details, null);
             alertdialog.setView(layoutInflater);
             TextView textView = layoutInflater.findViewById(R.id.textview_details);
-            Log.v(TAG, new_result);
+            CustomLog.v(TAG, new_result);
             textView.setText(Html.fromHtml(new_result));
 
 
@@ -223,11 +224,11 @@ public class PastMedicalHistoryActivity extends BaseActivity implements Question
             alertDialog.show();
 
             Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-            pb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+            pb.setTextColor(ContextCompat.getColor(this,(R.color.colorPrimary)));
             pb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
 
             Button nb = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
-            nb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+            nb.setTextColor(ContextCompat.getColor(this,(R.color.colorPrimary)));
             nb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
 
             alertDialog.setCancelable(false);
@@ -348,7 +349,7 @@ public class PastMedicalHistoryActivity extends BaseActivity implements Question
             }
         }
 
-        Log.i(TAG, String.valueOf(clickedNode.isTerminal()));
+        CustomLog.i(TAG, String.valueOf(clickedNode.isTerminal()));
         if (!clickedNode.isTerminal() && clickedNode.isSelected()) {
             imageName = UUID.randomUUID().toString();
 
@@ -501,14 +502,10 @@ public class PastMedicalHistoryActivity extends BaseActivity implements Question
             if (resultCode == RESULT_OK) {
                 String mCurrentPhotoPath = data.getStringExtra("RESULT");
                 patientHistoryMap.setImagePath(mCurrentPhotoPath);
-                Log.i(TAG, mCurrentPhotoPath);
+                CustomLog.i(TAG, mCurrentPhotoPath);
                 patientHistoryMap.displayImage(this, filePath.getAbsolutePath(), imageName);
             }
         }
-    }
-
-    @Override
-    public void onBackPressed() {
     }
 
     @Override

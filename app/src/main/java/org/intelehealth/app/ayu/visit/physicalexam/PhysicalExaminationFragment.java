@@ -2,9 +2,8 @@ package org.intelehealth.app.ayu.visit.physicalexam;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +20,7 @@ import org.intelehealth.app.ayu.visit.VisitCreationActivity;
 import org.intelehealth.app.ayu.visit.common.OnItemSelection;
 import org.intelehealth.app.ayu.visit.common.VisitUtils;
 import org.intelehealth.app.ayu.visit.common.adapter.QuestionsListingAdapter;
+import org.intelehealth.app.ayu.visit.model.CommonVisitData;
 import org.intelehealth.app.ayu.visit.model.ComplainBasicInfo;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.knowledgeEngine.PhysicalExam;
@@ -66,7 +66,7 @@ public class PhysicalExaminationFragment extends Fragment {
         });
     }
 
-    public static PhysicalExaminationFragment newInstance(Intent intent, boolean isEditMode, PhysicalExam physicalExamMap) {
+    public static PhysicalExaminationFragment newInstance(CommonVisitData commonVisitData, boolean isEditMode, PhysicalExam physicalExamMap) {
         PhysicalExaminationFragment fragment = new PhysicalExaminationFragment();
         fragment.mIsEditMode = isEditMode;
         fragment.physicalExam = physicalExamMap;
@@ -137,7 +137,7 @@ public class PhysicalExaminationFragment extends Fragment {
                         mQuestionsListingAdapter.geItems().get(index).setDataCaptured(false);
                         mQuestionsListingAdapter.notifyItemChanged(index);
                     }
-                    Log.v("onSelect", "node - " + node.getText());
+                    CustomLog.v("onSelect", "node - " + node.getText());
                     if (mCurrentComplainNodeOptionsIndex < physicalExam.getTotalNumberOfExams() - 1) {
                         //if (mCurrentChildComplainNodeOptionsIndex < physicalExam.getExamNode(mCurrentComplainNodeOptionsIndex).getOptionsList().size()) {
                         //if (mCurrentChildComplainNodeOptionsIndex == physicalExam.getExamNode(mCurrentComplainNodeOptionsIndex).getOptionsList().size() - 1) {

@@ -16,15 +16,17 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
 
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
@@ -53,6 +55,7 @@ import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.authJWT_API.AuthJWTBody;
 import org.intelehealth.app.utilities.authJWT_API.AuthJWTResponse;
 import org.intelehealth.app.widget.materialprogressbar.CustomProgressDialog;
+import org.intelehealth.klivekit.data.PreferenceHelper;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -71,6 +74,7 @@ public class LoginActivityNew extends AppCompatActivity {
     private static final String TAG = "LoginActivityNew";
     TextInputEditText etUsername, etPassword;
     SessionManager sessionManager = null;
+    PreferenceHelper preferenceHelper = null; //klivekit shared pref
     Context context;
     private OfflineLogin offlineLogin = null;
     CustomProgressDialog cpd;
@@ -90,13 +94,17 @@ public class LoginActivityNew extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_new_ui2);
 
+        handleBackPress();
+
         context = LoginActivityNew.this;
         sessionManager = new SessionManager(context);
+        preferenceHelper = new PreferenceHelper(context);
         cpd = new CustomProgressDialog(context);
         snackbarUtils = new SnackbarUtils();
 
 
         TextView textviewPassword = findViewById(R.id.tv_forgot_password1);
+        TextView forgotUserNameLabelTextView = findViewById(R.id.tv_forgot_username);
         TextView buttonLogin = findViewById(R.id.button_login);
         tvUsernameError = findViewById(R.id.tv_username_error);
         tvPasswordError = findViewById(R.id.tv_password_error);
@@ -111,7 +119,18 @@ public class LoginActivityNew extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(LoginActivityNew.this, ForgotPasswordActivity_New.class);
+                intent.putExtra("action",AppConstants.FORGOT_USER_PASSWORD_ACTION);
                 startActivity(intent);
+            }
+        });
+        forgotUserNameLabelTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               /* Intent intent = new Intent(LoginActivityNew.this, ForgotPasswordActivity_New.class);
+                intent.putExtra("action",AppConstants.FORGOT_USER_NAME_ACTION);
+                startActivity(intent);*/
+                DialogUtils dialogUtils = new DialogUtils();
+                dialogUtils.showOkDialog(LoginActivityNew.this, getString(R.string.forgot_your_username), getString(R.string.contact_your_admin), getString(R.string.generic_ok));
             }
         });
         buttonLogin.setOnClickListener(new View.OnClickListener() {
@@ -254,12 +273,9 @@ public class LoginActivityNew extends AppCompatActivity {
             }
         });
 
-        etUsername.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(final View v, boolean hasFocus) {
-                if (hasFocus) {
-                    appBarLayout.setExpanded(false, true);
-                }
+        etUsername.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) {
+                appBarLayout.setExpanded(false, true);
             }
         });
 
@@ -335,7 +351,7 @@ public class LoginActivityNew extends AppCompatActivity {
     public void UserLoginTask(String mEmail, String mPassword) {
         String urlString = urlModifiers.loginUrl(BuildConfig.SERVER_URL);
 
-        Log.d(TAG, "UserLoginTask: urlString : " + urlString);
+        CustomLog.d(TAG, "UserLoginTask: urlString : " + urlString);
         Logger.logD(TAG, "username and password" + mEmail + mPassword);
         encoded = base64Utils.encoded(mEmail, mPassword);
         sessionManager.setEncoded(encoded);
@@ -364,18 +380,18 @@ public class LoginActivityNew extends AppCompatActivity {
 
                     sessionManager.setChwname(loginModel.getUser().getDisplay());
                     sessionManager.setCreatorID(loginModel.getUser().getUuid());
-                    Log.d(TAG, "SESSOO_creator: " + loginModel.getUser().getUuid());
+                    CustomLog.d(TAG, "SESSOO_creator: " + loginModel.getUser().getUuid());
                     sessionManager.setSessionID(loginModel.getSessionId());
-                    Log.d(TAG, "SESSOO: " + sessionManager.getSessionID());
+                    CustomLog.d(TAG, "SESSOO: " + sessionManager.getSessionID());
                     sessionManager.setProviderID(loginModel.getUser().getPerson().getUuid());
-                    Log.d(TAG, "SESSOO_PROVIDER: " + loginModel.getUser().getPerson().getUuid());
-                    Log.d(TAG, "SESSOO_PROVIDER_session: " + sessionManager.getProviderID());
+                    CustomLog.d(TAG, "SESSOO_PROVIDER: " + loginModel.getUser().getPerson().getUuid());
+                    CustomLog.d(TAG, "SESSOO_PROVIDER_session: " + sessionManager.getProviderID());
 
 
                     UrlModifiers urlModifiers = new UrlModifiers();
                     // String url = urlModifiers.loginUrlProvider(sessionManager.getServerUrl(), loginModel.getUser().getUuid());
                     String url = urlModifiers.loginUrlProvider(BuildConfig.SERVER_URL, loginModel.getUser().getUuid());
-                    Log.d(TAG, "onNext: url : " + url);
+                    CustomLog.d(TAG, "onNext: url : " + url);
                     Observable<LoginProviderModel> loginProviderModelObservable = AppConstants.apiInterface.LOGIN_PROVIDER_MODEL_OBSERVABLE(url, "Basic " + encoded);
                     loginProviderModelObservable
                             .subscribeOn(Schedulers.io())
@@ -385,7 +401,7 @@ public class LoginActivityNew extends AppCompatActivity {
                                 public void onNext(LoginProviderModel loginProviderModel) {
                                     if (loginProviderModel.getResults().size() != 0) {
                                         for (int i = 0; i < loginProviderModel.getResults().size(); i++) {
-                                            Log.i(TAG, "doInBackground: " + loginProviderModel.getResults().get(i).getUuid());
+                                            CustomLog.i(TAG, "doInBackground: " + loginProviderModel.getResults().get(i).getUuid());
                                             sessionManager.setProviderID(loginProviderModel.getResults().get(i).getUuid());
 
                                             provider_url_uuid = loginProviderModel.getResults().get(i).getUuid();
@@ -393,7 +409,7 @@ public class LoginActivityNew extends AppCompatActivity {
 //                                                success = true;
                                           /*  final Account account = new Account(mEmail, "io.intelehealth.openmrs");
                                             manager.addAccountExplicitly(account, mPassword, null);
-                                            Log.d("MANAGER", "MANAGER " + account);*/
+                                            CustomLog.d("MANAGER", "MANAGER " + account);*/
                                             //offlineLogin.invalidateLoginCredentials();
 
 
@@ -410,7 +426,7 @@ public class LoginActivityNew extends AppCompatActivity {
                                     String random_salt = getSalt_DATA();
 
                                     //String random_salt = stringEncryption.getRandomSaltString();
-                                    Log.d("salt", "salt: " + random_salt);
+                                    CustomLog.d("salt", "salt: " + random_salt);
                                     //Salt_Getter_Setter salt_getter_setter = new Salt_Getter_Setter();
                                     //salt_getter_setter.setSalt(random`_salt);
 
@@ -436,7 +452,7 @@ public class LoginActivityNew extends AppCompatActivity {
                                         Logger.logD("values", "values" + values);
                                         Logger.logD("created user credentials", "create user records" + createdRecordsCount);
                                     } catch (SQLException e) {
-                                        Log.d("SQL", "SQL user credentials: " + e);
+                                        CustomLog.d("SQL", "SQL user credentials: " + e);
                                     } finally {
                                         sqLiteDatabase.endTransaction();
                                     }
@@ -492,10 +508,17 @@ public class LoginActivityNew extends AppCompatActivity {
 
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        moveTaskToBack(true);
+    /**
+     * removed onBackPressed function due to deprecation
+     * and added this one to handle onBackPressed
+     */
+    private void handleBackPress() {
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                moveTaskToBack(true);
+            }
+        });
     }
 
     public String getSalt_DATA() {
@@ -510,7 +533,7 @@ public class LoginActivityNew extends AppCompatActivity {
             while ((mLine = reader.readLine()) != null) {
                 //process line
                 salt = mLine;
-                Log.d("SA", "SA " + salt);
+                CustomLog.d("SA", "SA " + salt);
             }
         } catch (Exception e) {
             //log the exception
@@ -576,6 +599,8 @@ public class LoginActivityNew extends AppCompatActivity {
                         }
 
                         sessionManager.setJwtAuthToken(authJWTResponse.getToken());
+                        preferenceHelper.save(PreferenceHelper.AUTH_TOKEN,authJWTResponse.getToken());
+
                         UserLoginTask(username, password);
                     }
 

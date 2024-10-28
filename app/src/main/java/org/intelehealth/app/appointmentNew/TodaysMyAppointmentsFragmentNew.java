@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -23,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -121,10 +122,10 @@ public class TodaysMyAppointmentsFragmentNew extends Fragment {
             getAppointments();
         });
 
-        cardCancelledAppointments.setBackground(getResources().getDrawable(R.drawable.ui2_ic_bg_options_appointment));
-        cardCompletedAppointments.setBackground(getResources().getDrawable(R.drawable.ui2_ic_bg_options_appointment));
-        layoutMainAppOptions.setBackground(getResources().getDrawable(R.drawable.ui2_ic_bg_options_appointment));
-        cardUpcomingAppointments.setBackground(getResources().getDrawable(R.drawable.ui2_bg_selcted_card));
+        cardCancelledAppointments.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_bg_options_appointment));
+        cardCompletedAppointments.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_bg_options_appointment));
+        layoutMainAppOptions.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_bg_options_appointment));
+        cardUpcomingAppointments.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_bg_selcted_card));
         Animation fadeOut = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_out_ui2);
         cardUpcomingAppointments.startAnimation(fadeOut);
 
@@ -132,7 +133,7 @@ public class TodaysMyAppointmentsFragmentNew extends Fragment {
         layoutCompleted.setVisibility(View.VISIBLE);
         layoutCancelled.setVisibility(View.VISIBLE);
 
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.FILL_PARENT);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
         params.weight = 1.0f;
         params.gravity = Gravity.TOP;
 
@@ -175,7 +176,7 @@ public class TodaysMyAppointmentsFragmentNew extends Fragment {
                     } else {
                         searchPatientText = "";
 
-                        Log.d(TAG, "afterTextChanged: in else");
+                        CustomLog.d(TAG, "afterTextChanged: in else");
                         getAppointments();
                     }
                     return true;
@@ -188,10 +189,10 @@ public class TodaysMyAppointmentsFragmentNew extends Fragment {
 
     private void clickListeners() {
         cardUpcomingAppointments.setOnClickListener(v -> {
-            cardCancelledAppointments.setBackground(getResources().getDrawable(R.drawable.ui2_ic_bg_options_appointment));
-            cardCompletedAppointments.setBackground(getResources().getDrawable(R.drawable.ui2_ic_bg_options_appointment));
-            layoutMainAppOptions.setBackground(getResources().getDrawable(R.drawable.ui2_ic_bg_options_appointment));
-            cardUpcomingAppointments.setBackground(getResources().getDrawable(R.drawable.ui2_bg_selcted_card));
+            cardCancelledAppointments.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_bg_options_appointment));
+            cardCompletedAppointments.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_bg_options_appointment));
+            layoutMainAppOptions.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_bg_options_appointment));
+            cardUpcomingAppointments.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_bg_selcted_card));
             Animation fadeOut = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_out_ui2);
             cardUpcomingAppointments.startAnimation(fadeOut);
 
@@ -199,7 +200,7 @@ public class TodaysMyAppointmentsFragmentNew extends Fragment {
             layoutCompleted.setVisibility(View.VISIBLE);
             layoutCancelled.setVisibility(View.VISIBLE);
 
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.FILL_PARENT);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
             params.weight = 1.0f;
             params.gravity = Gravity.TOP;
 
@@ -207,11 +208,11 @@ public class TodaysMyAppointmentsFragmentNew extends Fragment {
         });
         cardCancelledAppointments.setOnClickListener(v -> {
 
-            cardUpcomingAppointments.setBackground(getResources().getDrawable(R.drawable.ui2_ic_bg_options_appointment));
-            cardCompletedAppointments.setBackground(getResources().getDrawable(R.drawable.ui2_ic_bg_options_appointment));
+            cardUpcomingAppointments.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_bg_options_appointment));
+            cardCompletedAppointments.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_bg_options_appointment));
 
-            layoutMainAppOptions.setBackground(getResources().getDrawable(R.drawable.ui2_ic_bg_options_appointment));
-            cardCancelledAppointments.setBackground(getResources().getDrawable(R.drawable.ui2_bg_selcted_card));
+            layoutMainAppOptions.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_bg_options_appointment));
+            cardCancelledAppointments.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_bg_selcted_card));
             Animation fadeOut = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_out_ui2);
             cardCancelledAppointments.startAnimation(fadeOut);
 
@@ -219,7 +220,7 @@ public class TodaysMyAppointmentsFragmentNew extends Fragment {
             layoutCompleted.setVisibility(View.VISIBLE);
             layoutCancelled.setVisibility(View.VISIBLE);
 
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.FILL_PARENT);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
             params.weight = 1.0f;
             params.gravity = Gravity.TOP;
 
@@ -227,11 +228,11 @@ public class TodaysMyAppointmentsFragmentNew extends Fragment {
 
         });
         cardCompletedAppointments.setOnClickListener(v -> {
-            cardCancelledAppointments.setBackground(getResources().getDrawable(R.drawable.ui2_ic_bg_options_appointment));
-            cardUpcomingAppointments.setBackground(getResources().getDrawable(R.drawable.ui2_ic_bg_options_appointment));
+            cardCancelledAppointments.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_bg_options_appointment));
+            cardUpcomingAppointments.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_bg_options_appointment));
 
-            layoutMainAppOptions.setBackground(getResources().getDrawable(R.drawable.ui2_ic_bg_options_appointment));
-            cardCompletedAppointments.setBackground(getResources().getDrawable(R.drawable.ui2_bg_selcted_card));
+            layoutMainAppOptions.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_bg_options_appointment));
+            cardCompletedAppointments.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_bg_selcted_card));
             Animation fadeOut = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_out_ui2);
             cardCompletedAppointments.startAnimation(fadeOut);
 
@@ -239,7 +240,7 @@ public class TodaysMyAppointmentsFragmentNew extends Fragment {
             layoutCancelled.setVisibility(View.GONE);
             layoutUpcoming.setVisibility(View.GONE);
 
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.FILL_PARENT);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
             params.weight = 1.0f;
             params.gravity = Gravity.TOP;
 
@@ -263,8 +264,8 @@ public class TodaysMyAppointmentsFragmentNew extends Fragment {
         tvUpcomingAppointments.setText("0");
         tvUpcomingAppointmentsTitle.setText(getResources().getString(R.string.completed_0));
         List<AppointmentInfo> appointmentInfoList = new AppointmentDAO().getAppointmentsWithFiltersForToday(searchPatientText, currentDate);
-        Log.d(TAG, "getUpcomingAppointments: appointmentInfoList size : " + appointmentInfoList.size());
-        Log.d(TAG, "getUpcomingAppointments: searchPatientText " + searchPatientText);
+        CustomLog.d(TAG, "getUpcomingAppointments: appointmentInfoList size : " + appointmentInfoList.size());
+        CustomLog.d(TAG, "getUpcomingAppointments: searchPatientText " + searchPatientText);
         List<AppointmentInfo> upcomingAppointmentsList = new ArrayList<>();
 
         try {
@@ -388,7 +389,7 @@ public class TodaysMyAppointmentsFragmentNew extends Fragment {
     }
 
     private String getPatientProfile(String patientUuid) {
-        Log.d(TAG, "getPatientProfile: patientUuid : " + patientUuid);
+        CustomLog.d(TAG, "getPatientProfile: patientUuid : " + patientUuid);
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
 
         String imagePath = "";
@@ -450,7 +451,7 @@ public class TodaysMyAppointmentsFragmentNew extends Fragment {
             tvCancelledAppsCountTitle.setText(getResources().getString(R.string.cancelled) + " (" + cancelledAppointmentsList.size() + ")");
 
         } catch (Exception e) {
-            Log.d(TAG, "getCancelledAppointments: e : " + e.getLocalizedMessage());
+            CustomLog.d(TAG, "getCancelledAppointments: e : " + e.getLocalizedMessage());
         }
 
 

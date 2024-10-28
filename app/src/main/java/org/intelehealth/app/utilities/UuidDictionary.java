@@ -8,6 +8,7 @@ package org.intelehealth.app.utilities;
 public class UuidDictionary {
 
     //Concepts
+    public static final String BLOOD_GROUP = "9d2df0c6-538f-11e6-9cfe-86f436325720";
     public static final String CURRENT_COMPLAINT = "3edb0e09-9135-481e-b8f0-07a26fa9a5ce";
     public static final String PHYSICAL_EXAMINATION = "e1761e85-9b50-48ae-8c4d-e6b7eeeba084";
     public static final String HEIGHT = "5090AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
@@ -75,6 +76,15 @@ public class UuidDictionary {
     public static final String SPECIALITY = "3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d";
     public static final String ADDITIONAL_NOTES = "64aa50c8-e913-48c6-b8ad-dfa0bccb202b";
     public static final String PRESCRIPTION_LINK = "1e02db7e-e117-4b16-9a1e-6e583c3994da";
+
+    public static final String SEVERITY = "6593f000-f1f8-4f35-a3b9-8d1909f5c945";
+    public static final String FACILITY = "ea56e00a-fe4f-492e-b947-cb68c5e5ea7b";
+    public static final String FOLLOWUP_ENCOUNTER_ID = "b4fcf4dd-7f9c-4c0e-b874-2113963291f0";
+    public static final String HW_FOLLOWUP_CONCEPT_ID = "596c7f50-ec12-4ad8-b92a-7491ad80341b";
+    public static final String VISIT_UPLOAD_TIME = "e76eee5e-9d73-4d07-8f30-16b77e626ccf";
+
+
+
 
 
 }

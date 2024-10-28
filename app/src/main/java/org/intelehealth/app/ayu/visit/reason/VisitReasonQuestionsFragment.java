@@ -2,10 +2,9 @@ package org.intelehealth.app.ayu.visit.reason;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +23,7 @@ import org.intelehealth.app.ayu.visit.VisitCreationActivity;
 import org.intelehealth.app.ayu.visit.common.OnItemSelection;
 import org.intelehealth.app.ayu.visit.common.VisitUtils;
 import org.intelehealth.app.ayu.visit.common.adapter.QuestionsListingAdapter;
+import org.intelehealth.app.ayu.visit.model.CommonVisitData;
 import org.intelehealth.app.ayu.visit.model.ComplainBasicInfo;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.models.AnswerResult;
@@ -56,7 +56,7 @@ public class VisitReasonQuestionsFragment extends Fragment {
     }
 
 
-    public static VisitReasonQuestionsFragment newInstance(Intent intent, boolean isEditMode, List<Node> nodeList) {
+    public static VisitReasonQuestionsFragment newInstance(CommonVisitData commonVisitData, boolean isEditMode, List<Node> nodeList) {
         VisitReasonQuestionsFragment fragment = new VisitReasonQuestionsFragment();
         fragment.mIsEditMode = isEditMode;
         fragment.mChiefComplainRootNodeList = nodeList;
@@ -121,7 +121,7 @@ public class VisitReasonQuestionsFragment extends Fragment {
         //mCurrentRootOptionList = mCurrentNode.getOptionsList();
 
         for (int i = 0; i < mChiefComplainRootNodeList.size(); i++) {
-            Log.v("VISIT_REASON", new Gson().toJson(mChiefComplainRootNodeList.get(i)));
+            CustomLog.v("VISIT_REASON", new Gson().toJson(mChiefComplainRootNodeList.get(i)));
             ComplainBasicInfo complainBasicInfo = new ComplainBasicInfo();
             complainBasicInfo.setComplainName(mChiefComplainRootNodeList.get(i).getText());
             complainBasicInfo.setComplainNameByLocale(mChiefComplainRootNodeList.get(i).findDisplay());
@@ -264,13 +264,13 @@ public class VisitReasonQuestionsFragment extends Fragment {
 
         @Override
         public void onSelect(Node node, int index, boolean isSkipped, Node parentNode) {
-            Log.v("onSelect QuestionsListingAdapter", "index - " + index + " \t mCurrentComplainNodeOptionsIndex - " + mCurrentComplainNodeOptionsIndex);
-            Log.v("onSelect QuestionsListingAdapter", "node - " + node.getText());
+            CustomLog.v("onSelect QuestionsListingAdapter", "index - " + index + " \t mCurrentComplainNodeOptionsIndex - " + mCurrentComplainNodeOptionsIndex);
+            CustomLog.v("onSelect QuestionsListingAdapter", "node - " + node.getText());
             // avoid the scroll for old data change
             String parentRootQuestionId = mQuestionsListingAdapter.geItems().get(index).getId();
             String parentRootQuestionDisplay = mQuestionsListingAdapter.geItems().get(index).findDisplay();
-            Log.v("onSelect", "parentRootQuestionId - " + parentRootQuestionId);
-            Log.v("onSelect", "parentRootQuestionDisplay - " + parentRootQuestionDisplay);
+            CustomLog.v("onSelect", "parentRootQuestionId - " + parentRootQuestionId);
+            CustomLog.v("onSelect", "parentRootQuestionDisplay - " + parentRootQuestionDisplay);
 
             if (mCurrentComplainNodeOptionsIndex - index >= 1) {
 //                mLoadedIds.add(parentRootQuestionId);
@@ -279,7 +279,7 @@ public class VisitReasonQuestionsFragment extends Fragment {
                 return;
             }
 
-            Log.v("onSelect QuestionsListingAdapter", "mLoadedIds - " + mLoadedIds);
+            CustomLog.v("onSelect QuestionsListingAdapter", "mLoadedIds - " + mLoadedIds);
             if (isSkipped) {
                 boolean isRequiredToUnselectParent = mQuestionsListingAdapter.geItems().get(index).getOptionsList() == null || mQuestionsListingAdapter.geItems().get(index).size() <= 1;
                 if (isRequiredToUnselectParent) {

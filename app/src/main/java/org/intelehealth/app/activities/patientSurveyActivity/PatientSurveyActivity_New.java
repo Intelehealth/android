@@ -1,6 +1,7 @@
 package org.intelehealth.app.activities.patientSurveyActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,7 +14,7 @@ import android.os.Bundle;
 import android.os.LocaleList;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -35,6 +36,7 @@ import org.intelehealth.app.models.dto.ObsDTO;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.NetworkUtils;
+import org.intelehealth.app.utilities.NotificationSchedulerUtils;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
@@ -77,9 +79,7 @@ public class PatientSurveyActivity_New extends BaseActivity implements NetworkUt
 
         // changing status bar color
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(Color.WHITE);
-        }
+        getWindow().setStatusBarColor(Color.WHITE);
 
         getIntentValues();
         initUI();
@@ -120,7 +120,7 @@ public class PatientSurveyActivity_New extends BaseActivity implements NetworkUt
                 //Getting the rating
                 rating = String.valueOf(ratingBar.getRating());
                 if (rating != null && !TextUtils.isEmpty(rating)) {
-                    Log.d(TAG, "Rating is " + rating);
+                    CustomLog.d(TAG, "Rating is " + rating);
                     uploadSurvey();
                     endVisit("Feedback screen with feedback");
                 } else {
@@ -163,12 +163,6 @@ public class PatientSurveyActivity_New extends BaseActivity implements NetworkUt
         mSubmit = findViewById(R.id.btn_submit);
         ratingBar = (RatingBar) findViewById(R.id.ratingbar);
         refresh = findViewById(R.id.refresh);
-    }
-
-
-    @Override
-    public void onBackPressed() {
-        //do nothing
     }
 
     /**
@@ -245,6 +239,10 @@ public class PatientSurveyActivity_New extends BaseActivity implements NetworkUt
         VisitsDAO visitsDAO = new VisitsDAO();
         try {
             visitsDAO.updateVisitEnddate(visitUuid, AppConstants.dateAndTimeUtils.currentDateTime());
+
+            //cancelling alarm manager for end visit followup
+            NotificationSchedulerUtils.cancelNotification(visitUuid + "-" + AppConstants.FOLLOW_UP_SCHEDULE_ONE_DURATION);
+            NotificationSchedulerUtils.cancelNotification(visitUuid + "-" + AppConstants.FOLLOW_UP_SCHEDULE_TWO_DURATION);
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
@@ -260,12 +258,12 @@ public class PatientSurveyActivity_New extends BaseActivity implements NetworkUt
 
     @Override
     public void updateUIForInternetAvailability(boolean isInternetAvailable) {
-        Log.d("TAG", "updateUIForInternetAvailability: ");
+        CustomLog.d("TAG", "updateUIForInternetAvailability: ");
         if (isInternetAvailable) {
-            refresh.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_internet_available));
+            refresh.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.ui2_ic_internet_available));
         }
         else {
-            refresh.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
+            refresh.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.ui2_ic_no_internet));
         }
     }
 

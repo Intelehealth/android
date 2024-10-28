@@ -3,12 +3,13 @@ package org.intelehealth.app.ayu.visit.reason.adapter;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Handler;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
@@ -65,26 +66,26 @@ public class OptionsChipsGridAdapter extends RecyclerView.Adapter<RecyclerView.V
             genericViewHolder.node = mItemList.get(genericViewHolder.index);
             genericViewHolder.tvName.setText(mItemList.get(genericViewHolder.index).findDisplay());
 
-            //Log.v("node", String.valueOf(genericViewHolder.node.isSelected()));
+            //CustomLog.v("node", String.valueOf(genericViewHolder.node.isSelected()));
 
 
             if (genericViewHolder.node.isSelected()) {
                 if (genericViewHolder.node.isNeedToHide()) {
                     genericViewHolder.tvName.setEnabled(false);
                     genericViewHolder.tvName.setBackgroundResource(R.drawable.ui2_chip_type_inactive_bg);
-                    genericViewHolder.tvName.setTextColor(mContext.getResources().getColor(R.color.ui2_black_text_color));
+                    genericViewHolder.tvName.setTextColor(ContextCompat.getColor(mContext,R.color.ui2_black_text_color));
                     genericViewHolder.node.setSelected(false);
                     genericViewHolder.node.setDataCaptured(false);
                 } else {
                     genericViewHolder.tvName.setBackgroundResource(R.drawable.ui2_common_button_bg_submit);
-                    genericViewHolder.tvName.setTextColor(mContext.getResources().getColor(R.color.white));
+                    genericViewHolder.tvName.setTextColor(ContextCompat.getColor(mContext,R.color.white));
                     genericViewHolder.tvName.setEnabled(true);
                 }
                 //if (mItemList.get(genericViewHolder.index).getOptionsList() != null && !mItemList.get(genericViewHolder.index).getOptionsList().isEmpty())
                 new Handler().postDelayed(() -> {
                     String id = mItemList.get(genericViewHolder.index).getId();
-                    Log.v(TAG, "TAG - " + id);
-                    Log.v(TAG, "mEditTimeLoadedIds - " + new Gson().toJson(mEditTimeLoadedIds));
+                    CustomLog.v(TAG, "TAG - " + id);
+                    CustomLog.v(TAG, "mEditTimeLoadedIds - " + new Gson().toJson(mEditTimeLoadedIds));
                     if (!mEditTimeLoadedIds.contains(id)) {
                         mEditTimeLoadedIds.add(id);
                         mOnItemSelection.onSelect(mItemList.get(genericViewHolder.index), true);
@@ -93,7 +94,7 @@ public class OptionsChipsGridAdapter extends RecyclerView.Adapter<RecyclerView.V
 
             } else {
                 genericViewHolder.tvName.setBackgroundResource(R.drawable.edittext_border_blue);
-                genericViewHolder.tvName.setTextColor(mContext.getResources().getColor(R.color.ui2_black_text_color));
+                genericViewHolder.tvName.setTextColor(ContextCompat.getColor(mContext,R.color.ui2_black_text_color));
 
                 if (genericViewHolder.node.isNeedToHide()) {
                     genericViewHolder.tvName.setEnabled(false);
@@ -122,10 +123,10 @@ public class OptionsChipsGridAdapter extends RecyclerView.Adapter<RecyclerView.V
             super(itemView);
             tvName = itemView.findViewById(R.id.tv_name);
             tvName.setOnClickListener(view -> {
-                Log.v("node", "isMultiChoice - " + mParentNode.isMultiChoice());
-                Log.v("node", "isExcludedFromMultiChoice - " + node.isExcludedFromMultiChoice());
-                Log.v("node", "enableExclusiveOption - " + node.isEnableExclusiveOption());
-                Log.v("node", "isExclusiveOption - " + node.isExclusiveOption());
+                CustomLog.v("node", "isMultiChoice - " + mParentNode.isMultiChoice());
+                CustomLog.v("node", "isExcludedFromMultiChoice - " + node.isExcludedFromMultiChoice());
+                CustomLog.v("node", "enableExclusiveOption - " + node.isEnableExclusiveOption());
+                CustomLog.v("node", "isExclusiveOption - " + node.isExclusiveOption());
                 if (!mParentNode.isMultiChoice()) {
                     if (mParentNode.isEnableExclusiveOption()) {
                         if (!node.isExclusiveOption()) {

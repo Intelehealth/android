@@ -55,7 +55,6 @@
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-
             android:layout_weight="1"
             android:background="@drawable/ui2_common_input_bg"
             android:drawableTint="@color/iconTintWhite"
@@ -68,7 +67,8 @@
             android:textAllCaps="false"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/common_button_text_size"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            app:backgroundTint="@null" />
 
         <Button
             android:id="@+id/btn_submit"
@@ -135,7 +135,6 @@
                     style="@style/label_misc_txt_14sp_dark_bold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/toolbar"
                     android:layout_centerVertical="true"
                     android:gravity="center"
                     android:lineSpacingExtra="1sp"
@@ -146,15 +145,15 @@
                     style="@style/label_misc_txt_12sp_primary"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/toolbar"
                     android:layout_alignParentEnd="true"
                     android:background="@drawable/ui2_common_gray_round_stroke_bg"
-                    android:drawableStart="@drawable/ui2_ic_edit"
                     android:drawablePadding="4dip"
                     android:gravity="center"
                     android:lineSpacingExtra="1sp"
                     android:padding="@dimen/padding_5"
-                    android:text="@string/change" />
+                    android:text="@string/change"
+                    app:drawableStartCompat="@drawable/ui2_ic_edit"
+                    app:drawableTint="?attr/colorPrimary" />
             </RelativeLayout>
 
             <LinearLayout
@@ -165,6 +164,7 @@
                 android:orientation="vertical">
 
                 <LinearLayout
+                    android:id="@+id/ll_height_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
@@ -201,6 +201,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/ll_weight_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_8"
@@ -238,6 +239,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/ll_bmi"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_8"
@@ -275,6 +277,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/ll_bp_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_8"
@@ -312,6 +315,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/ll_pulse_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_8"
@@ -349,6 +353,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/ll_temperature_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_8"
@@ -386,6 +391,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/ll_spo2_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_8"
@@ -423,6 +429,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/ll_respiratory_rate_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_8"
@@ -449,6 +456,44 @@
 
                     <TextView
                         android:id="@+id/tv_respiratory_rate"
+                        style="@style/label_misc_txt_14sp_dark"
+                        android:layout_width="0dip"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/toolbar"
+                        android:layout_centerVertical="true"
+                        android:layout_weight="1"
+                        android:lineSpacingExtra="1sp"
+                        android:text="@string/no_information" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_blood_group_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_8"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+                    <ImageView
+                        android:layout_width="6dip"
+                        android:layout_height="6dip"
+                        android:layout_marginEnd="@dimen/padding_5"
+                        android:src="@drawable/ic_baseline_lens_24" />
+
+                    <TextView
+                        android:id="@+id/tv_blood_group_label"
+                        style="@style/label_misc_txt_14sp_dark_1"
+                        android:layout_width="0dip"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/toolbar"
+                        android:layout_centerVertical="true"
+                        android:layout_weight="1"
+                        android:lineSpacingExtra="1sp"
+                        android:text="@string/blood_group_txt" />
+
+                    <TextView
+                        android:id="@+id/tv_blood_group"
                         style="@style/label_misc_txt_14sp_dark"
                         android:layout_width="0dip"
                         android:layout_height="wrap_content"

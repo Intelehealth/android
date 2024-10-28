@@ -23,10 +23,12 @@ import com.parse.Parse;
 import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.database.InteleHealthDatabaseHelper;
+import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.webrtc.activity.IDACallLogActivity;
 import org.intelehealth.app.webrtc.activity.IDAChatActivity;
 import org.intelehealth.app.webrtc.activity.IDAVideoActivity;
+import org.intelehealth.config.Config;
 import org.intelehealth.klivekit.RtcEngine;
 import org.intelehealth.klivekit.socket.SocketManager;
 import org.intelehealth.klivekit.utils.DateTimeResource;
@@ -75,6 +77,7 @@ public class IntelehealthApplication extends MultiDexApplication implements Defa
     @Override
     public void onCreate() {
         super.onCreate();
+        new Config.Builder(BuildConfig.SERVER_URL + ":4004");
         sIntelehealthApplication = this;
         inteleHealthDatabaseHelper = InteleHealthDatabaseHelper.getInstance(sIntelehealthApplication);
         //For Vector Drawables Backward Compatibility(<API 21)
@@ -108,7 +111,7 @@ public class IntelehealthApplication extends MultiDexApplication implements Defa
                 .server(BuildConfig.SERVER_URL + ":1337/parse/")
                 .build()
         );
-        Log.i(TAG, "onCreate: Parse init");
+        CustomLog.i(TAG, "onCreate: Parse init");
 
         InteleHealthDatabaseHelper mDbHelper = new InteleHealthDatabaseHelper(this);
         SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
@@ -124,12 +127,12 @@ public class IntelehealthApplication extends MultiDexApplication implements Defa
     }
 
     private void configureCrashReporting() {
+
 //        CrashlyticsCore crashlyticsCore = new CrashlyticsCore.Builder()
 //                //.disabled(BuildConfig.DEBUG) // comment by Venu as per intelesafe
 //                .build();
 //        Fabric.with(this, new Crashlytics.Builder().core(crashlyticsCore).build());
-
-        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
+        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(BuildConfig.ACTIVE_CRASH);
 
     }
 
@@ -162,7 +165,7 @@ public class IntelehealthApplication extends MultiDexApplication implements Defa
      */
     public void initSocketConnection() {
         DateTimeResource.build(this);
-        Log.d(TAG, "initSocketConnection: ");
+        CustomLog.d(TAG, "initSocketConnection: ");
         if (sessionManager.getProviderID() != null && !sessionManager.getProviderID().isEmpty()) {
             Manager.getInstance().setBaseUrl(BuildConfig.SERVER_URL);
             String socketUrl = BuildConfig.SERVER_URL + ":3004" + "?userId="

@@ -1,12 +1,63 @@
 package org.intelehealth.app.ayu.visit.common;
 
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.DecimalFormat;
 
 public class VisitUtils {
+
+    /*A POSITIVE  = 690
+A NEGATIVE  = 692
+B POSITIVE = 694
+B NEGATIVE = 696
+O POSITIVE  = 699
+O NEGATIVE = 701
+AB POSITIVE = 1230
+AB NEGATIVE = 1231*/
+    public static String getBloodPressureCode(String text) {
+        if (text.equalsIgnoreCase("A+")) {
+            return "9d2e98dc-538f-11e6-9cfe-86f436325720";
+        } else if (text.equalsIgnoreCase("A-")) {
+            return "9d2e999b-538f-11e6-9cfe-86f436325720";
+        } else if (text.equalsIgnoreCase("B+")) {
+            return "9d2e9a1f-538f-11e6-9cfe-86f436325720";
+        } else if (text.equalsIgnoreCase("B-")) {
+            return "9d2e9aa2-538f-11e6-9cfe-86f436325720";
+        } else if (text.equalsIgnoreCase("O+")) {
+            return "9d2e9b6a-538f-11e6-9cfe-86f436325720";
+        } else if (text.equalsIgnoreCase("O-")) {
+            return "9d2e9bf0-538f-11e6-9cfe-86f436325720";
+        } else if (text.equalsIgnoreCase("AB+")) {
+            return "9d30fe5a-538f-11e6-9cfe-86f436325720";
+        } else if (text.equalsIgnoreCase("AB-")) {
+            return "9d30fea0-538f-11e6-9cfe-86f436325720";
+        }
+        return "";
+    }
+
+    public static String getBloodPressureEnStringFromCode(String codeString) {
+        if (codeString.equalsIgnoreCase("9d2e98dc-538f-11e6-9cfe-86f436325720") || codeString.equalsIgnoreCase("690")) {
+            return "A+";
+        } else if (codeString.equalsIgnoreCase("9d2e999b-538f-11e6-9cfe-86f436325720") || codeString.equalsIgnoreCase("692")) {
+            return "A-";
+        } else if (codeString.equalsIgnoreCase("9d2e9a1f-538f-11e6-9cfe-86f436325720") || codeString.equalsIgnoreCase("694")) {
+            return "B+";
+        } else if (codeString.equalsIgnoreCase("9d2e9aa2-538f-11e6-9cfe-86f436325720") || codeString.equalsIgnoreCase("696")) {
+            return "B-";
+        } else if (codeString.equalsIgnoreCase("9d2e9b6a-538f-11e6-9cfe-86f436325720") || codeString.equalsIgnoreCase("699")) {
+            return "O+";
+        } else if (codeString.equalsIgnoreCase("9d2e9bf0-538f-11e6-9cfe-86f436325720") || codeString.equalsIgnoreCase("701")) {
+            return "O-";
+        } else if (codeString.equalsIgnoreCase("9d30fe5a-538f-11e6-9cfe-86f436325720") || codeString.equalsIgnoreCase("1230")) {
+            return "AB+";
+        } else if (codeString.equalsIgnoreCase("9d30fea0-538f-11e6-9cfe-86f436325720") || codeString.equalsIgnoreCase("1231")) {
+            return "AB-";
+        }
+        return "";
+    }
+
     public static String getSplitLangByIndex(String text, int requiredIndex) {
         String[] val = text.trim().split(" ");
         if (val.length - 1 >= requiredIndex) {
@@ -18,6 +69,9 @@ public class VisitUtils {
 
     public static boolean checkNodeValidByGenderAndAge(String patientGender, float floatAgeYearMonth, String nodeGender, String minAge, String maxAge) {
 
+        if(nodeGender==null || nodeGender.isEmpty()){
+            return true;
+        }
         float minAgeF = minAge != null && !minAge.isEmpty() ? Float.parseFloat(minAge) : 0f;
         float maxAgeF = maxAge != null && !maxAge.isEmpty() ? Float.parseFloat(maxAge) : 0f;
         boolean isValidByGender = true;
@@ -44,13 +98,13 @@ public class VisitUtils {
 
 
     public static void scrollNow(RecyclerView recyclerView, long delayMills, int dx, int dy, boolean isEditMode, boolean isAlreadyLoaded) {
-        Log.v("VisitUtils", "scrollNow isEditMode - " + isEditMode +"\tisAlreadyLoaded - "+isAlreadyLoaded);
+        CustomLog.v("VisitUtils", "scrollNow isEditMode - " + isEditMode + "\tisAlreadyLoaded - " + isAlreadyLoaded);
         if (!isEditMode && !isAlreadyLoaded)
             recyclerView.postDelayed(() -> recyclerView.smoothScrollBy(dx, dy), delayMills);
     }
 
     public static String replaceEnglishCommonString(String data, String locale) {
-        Log.v("VisitUtils", "RAW - " + data);
+        CustomLog.v("VisitUtils", "RAW - " + data);
         String result = data;
         if (locale.equalsIgnoreCase("hi")) {
 
@@ -179,13 +233,13 @@ public class VisitUtils {
                     .replace("times per month", "மாதம் முறை")
                     .replace("times per year", "வருடத்திற்கு முறை");
         }
-        Log.v("VisitUtils", "OUT - " + result);
+        CustomLog.v("VisitUtils", "OUT - " + result);
 
         return result;
     }
 
     public static String replaceToEnglishCommonString(String data, String locale) {
-        Log.v("VisitUtils", "replaceToEnglishCommonString - " + data);
+        CustomLog.v("VisitUtils", "replaceToEnglishCommonString - " + data);
         String result = data;
         if (locale.equalsIgnoreCase("hi")) {
 
@@ -262,7 +316,7 @@ public class VisitUtils {
 
 
         }
-        Log.v("VisitUtils", "OUT - " + result);
+        CustomLog.v("VisitUtils", "OUT - " + result);
 
         return result;
     }
@@ -299,7 +353,7 @@ public class VisitUtils {
     }
 
     public static String convertFtoC(String TAG, String temperature) {
-        Log.i(TAG, "convertFtoC IN: " + temperature);
+        CustomLog.i(TAG, "convertFtoC IN: " + temperature);
         if (temperature != null && temperature.length() > 0) {
             String result = "";
             double fTemp = Double.parseDouble(temperature);
@@ -310,7 +364,7 @@ public class VisitUtils {
             cTemp = Double.parseDouble(dtime.format(cTemp));
             result = String.format("%.1f", cTemp);
             //result = String.valueOf(cTemp);
-            Log.i(TAG, "convertFtoC OUT: " + result);
+            CustomLog.i(TAG, "convertFtoC OUT: " + result);
 
             return result;
         }
@@ -319,9 +373,9 @@ public class VisitUtils {
     }
 
     public static String convertCtoF(String TAG, String temperature) {
-        Log.i(TAG, "convertCtoF IN: " + temperature);
+        CustomLog.i(TAG, "convertCtoF IN: " + temperature);
 
-        if (temperature == null) return "";
+        if (temperature == null || temperature.isEmpty()) return "";
         String result = "";
         double a = Double.parseDouble(String.valueOf(temperature));
         Double b = (a * 9 / 5) + 32;
@@ -331,7 +385,7 @@ public class VisitUtils {
         b = Double.parseDouble(dtime.format(b));
         result = String.format("%.1f", b);
         //result = String.valueOf(b);
-        Log.i(TAG, "convertCtoF OUT: " + result);
+        CustomLog.i(TAG, "convertCtoF OUT: " + result);
         return result;
 
     }
