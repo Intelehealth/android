@@ -660,6 +660,7 @@
     <string name="slider_desc">ৰেঞ্জ স্লাইডাৰ</string>
     <string name="drag_tow_capture_range_from_0_to_100">ড্ৰেগ ট\' কেপচাৰ ৰেঞ্জ ০ৰ পৰা ১০০লৈকে</string>
     <string name="chw_id">চি এইচ ডব্লিউ আইডি:</string>
+    <string name="mcc_id">MCC ID:</string>
     <string name="sync_successful">ছিঙ্ক সফল</string>
     <string name="app_reset_successfully">এপ সফলভাৱে ৰিছেট কৰক</string>
     <string name="please_open_the_app_again">অনুগ্ৰহ কৰি পুনৰ এপটো খুলিব।</string>
