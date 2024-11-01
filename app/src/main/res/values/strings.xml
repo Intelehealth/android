@@ -1141,5 +1141,7 @@
     <string name="setup_select_secondary_village_str">Select Secondary Village</string>
     <string name="setup_select_dropdown_village_msg">Select Village from dropdown</string>
     <string name="switch_location">Switch Location</string>
+    <string name="no_network_sync">You are not connected to the internet. Please try again later.</string>
+    <string name="confirm_switch_location">You are currently logged into the \'%1$s\' village. Are you sure that you wish to switch to the \'%2$s\' village?</string>
 
 </resources>

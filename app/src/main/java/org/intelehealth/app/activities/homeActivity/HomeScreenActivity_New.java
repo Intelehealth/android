@@ -32,6 +32,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
@@ -42,7 +43,9 @@ import android.os.Looper;
 import android.provider.Settings;
 import android.text.Html;
 import android.util.DisplayMetrics;
+
 import org.intelehealth.app.utilities.CustomLog;
+
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -76,7 +79,6 @@ import androidx.work.WorkManager;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.github.ajalt.timberkt.Timber;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.navigation.NavigationBarView;
@@ -105,11 +107,9 @@ import org.intelehealth.app.models.CheckAppUpdateRes;
 import org.intelehealth.app.models.dto.ProviderAttributeDTO;
 import org.intelehealth.app.models.dto.ProviderDTO;
 import org.intelehealth.app.profile.MyProfileActivity;
-import org.intelehealth.app.services.MyIntentService;
 import org.intelehealth.app.services.firebase_services.DeviceInfoUtils;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
-import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.DownloadFilesUtils;
@@ -124,6 +124,7 @@ import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.app.webrtc.activity.IDACallLogActivity;
 import org.intelehealth.config.room.entity.FeatureActiveStatus;
+import org.intelehealth.fcm.utils.FcmConstants;
 import org.intelehealth.fcm.utils.FcmTokenGenerator;
 import org.intelehealth.fcm.utils.NotificationBroadCast;
 import org.intelehealth.klivekit.data.PreferenceHelper;
@@ -132,6 +133,7 @@ import org.intelehealth.klivekit.utils.Manager;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -190,7 +192,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
     private NotificationReceiver notificationReceiver;
 
     private ActivityResultLauncher<Intent> scheduleExactAlarmPermissionLauncher;
-
+    private String notificationPatientUuid = null, notificationVisitUuid = null, clickAction = null;
 
     private void saveToken() {
         Manager.getInstance().setBaseUrl(BuildConfig.SERVER_URL);
@@ -350,6 +352,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             }
         }
     }
+
     private void setupAlarmPermissionLauncher() {
         scheduleExactAlarmPermissionLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
@@ -728,7 +731,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
 
     private void handleBackPress() {
         int backStackEntryCount = getSupportFragmentManager().getBackStackEntryCount();
-        CustomLog.d(TAG,"backStackEntryCount %s", backStackEntryCount);
+        CustomLog.d(TAG, "backStackEntryCount %s", backStackEntryCount);
         CustomLog.v(TAG, "backStackEntryCount - " + backStackEntryCount);
         String topFragmentTag = getTopFragmentTag();
         if (topFragmentTag.equals(TAG_HOME)) {
@@ -1012,6 +1015,8 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         } else if (itemId == R.id.menu_view_call_log) {
             Intent intent = new Intent(HomeScreenActivity_New.this, IDACallLogActivity.class);
             startActivity(intent);
+        } else if (itemId == R.id.menu_switch_location) {
+            switchLocationSync();
         } else if (itemId == R.id.menu_about_us) {
             Intent i = new Intent(HomeScreenActivity_New.this, AboutUsActivity.class);
             startActivity(i);
@@ -1031,6 +1036,95 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             // setTitle(menuItem.getTitle());
         }
 
+    }
+
+    private void switchLocationSync() {
+        DialogUtils dialogUtils = new DialogUtils();
+
+        if (!networkUtils.isNetworkAvailable(this)) {
+            dialogUtils.showOkDialog(this, getString(R.string.error_network), getString(R.string.no_network_sync), getString(R.string.generic_ok));
+            return;
+        }
+
+        mSyncProgressDialog.show();
+        boolean isSynced = syncUtils.syncForeground("home");
+        if (!isSynced) {
+            mSyncProgressDialog.dismiss();
+            dialogUtils.showOkDialog(this, getString(R.string.error), getString(R.string.sync_failed), getString(R.string.generic_ok));
+            return;
+        }
+
+        final Handler handler = new Handler();
+        handler.postDelayed(() -> {
+            mSyncProgressDialog.dismiss();
+            showSwitchLocationConfirmationDialog();
+        }, 3000);
+    }
+
+    private void showSwitchLocationConfirmationDialog() {
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
+        builder.setMessage(getString(R.string.confirm_switch_location, sessionManager.getCurrentLocationName(), sessionManager.getSecondaryLocationName()));
+        builder.setPositiveButton(getString(R.string.generic_yes), (dialog, which) -> {
+            switchLocation(notificationPatientUuid, notificationVisitUuid);
+        });
+    }
+
+    private void switchLocation(String patientUuid, String visitUuid) {
+        HashMap<String, String> hashMap = new HashMap<>();
+        Map.Entry<String, String> village_name = null;
+        hashMap.put(sessionManager.getSecondaryLocationUuid(), sessionManager.getSecondaryLocationName());
+
+        for (Map.Entry<String, String> entry : hashMap.entrySet()) {
+            village_name = entry;
+        }
+
+        if (village_name != null) {
+            switchLocationSetup(village_name, patientUuid, visitUuid);
+        }
+    }
+
+    private void switchLocationSetup(Map.Entry<String, String> villageName, String patientUuid, String visitUuid) {
+        ProgressDialog progress;
+        progress = new ProgressDialog(HomeScreenActivity_New.this, R.style.AlertDialogStyle);
+        progress.setTitle(getString(R.string.please_wait_progress));
+        progress.setMessage(getString(R.string.logging_in));
+        progress.show();
+
+        sessionManager.setSecondaryLocationName(sessionManager.getCurrentLocationName());
+        sessionManager.setSecondaryLocationUuid(sessionManager.getCurrentLocationUuid());
+        sessionManager.setCurrentLocationName(villageName.getValue());
+        sessionManager.setCurrentLocationUuid(villageName.getKey());
+        sessionManager.setPullExcutedTime("2006-08-22 22:21:48 ");
+
+        clearDatabase();
+        progress.dismiss();
+        Intent intent = new Intent(HomeScreenActivity_New.this, HomeScreenActivity_New.class);
+        intent.putExtra("intentType", "switchLocation");
+
+        if (clickAction != null && clickAction.equalsIgnoreCase(FcmConstants.FCM_PLUGIN_HOME_ACTIVITY)) {
+            intent.putExtra(AppConstants.INTENT_VISIT_UUID, visitUuid);
+            intent.putExtra(AppConstants.INTENT_PATIENT_ID, patientUuid);
+            intent.putExtra(AppConstants.INTENT_IS_DIFFERENT_LOCATION_PRESCRIPTION, true);
+        }
+
+        startActivity(intent);
+        finish();
+    }
+
+    private void clearDatabase() {
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        db.beginTransaction();
+        db.delete("tbl_appointments", null, null);
+        db.delete("tbl_encounter", null, null);
+        db.delete("tbl_dr_speciality", null, null);
+        db.delete("tbl_visit_attribute", null, null);
+        db.delete("tbl_patient", null, null);
+        db.delete("tbl_patient_attribute", null, null);
+        db.delete("tbl_visit", null, null);
+        db.delete("tbl_obs", null, null);
+        db.delete("tbl_image_records", null, null);
+        db.setTransactionSuccessful();
+        db.endTransaction();
     }
 
     @Override

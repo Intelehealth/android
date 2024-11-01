@@ -246,5 +246,7 @@ public class AppConstants {
     public static final String DISTANCE_TO_NEAREST_PRIVATE_CLINIC_WITH_ALTERNATIVE_MEDICINE_UUID_TEXT = "distance_to_nearest_private_clinic_with_alternate_medicine";
     public static final String JAL_JEEVAN_YOJANA_UUID_TEXT = "does_the_village_get_water_under_jal_jeevan_yojana_scheme";
 
+    public static final String INTENT_IS_DIFFERENT_LOCATION_PRESCRIPTION = "isDifferentLocationPrescriptionReceived";
+    public static final String INTENT_PATIENT_ID = "patientId";
+    public static final String INTENT_VISIT_UUID = "visitUuid";
 }
-

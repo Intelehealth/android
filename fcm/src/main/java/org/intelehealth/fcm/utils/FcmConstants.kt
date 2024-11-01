@@ -18,6 +18,9 @@ object FcmConstants {
     const val FCM_TITLE_KEY = "title"
     const val FCM_BODY_KEY = "body"
 
+    const val INTENT_CLICK_ACTION = "click_action"
+    const val FCM_PLUGIN_HOME_ACTIVITY = "FCM_PLUGIN_HOME_ACTIVITY"
+
     fun getBackgroundBroadcastAction(context: Context): String {
         return "${context.applicationContext.packageName}.$FCM_BACKGROUND_BROADCAST_ACTION"
     }
