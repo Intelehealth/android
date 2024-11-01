@@ -3,6 +3,7 @@ package org.intelehealth.fcm
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ProcessLifecycleOwner
 import org.intelehealth.fcm.utils.FcmConstants
@@ -29,6 +30,7 @@ abstract class FcmBroadcastReceiver : BroadcastReceiver() {
             val action = FcmConstants.getBackgroundBroadcastAction(context!!)
             println("Action => $action")
             println("Intent Action => ${it.action}")
+            print("FCMBroadcastReceiver onReceive: ${intent.getStringExtra(FcmConstants.FCM_DATA_PAYLOAD)}")
             if (it.action.equals(action, false)) {
                 println("FcmBroadcastReceiver ACTION +++ $action")
                 hasValidExtras(intent) {
@@ -65,6 +67,7 @@ abstract class FcmBroadcastReceiver : BroadcastReceiver() {
             }
         }
 
+        println("FCMBroadcastReceiver: $data")
         onMessageReceived(context, notification, data)
     }
 

@@ -1,15 +1,8 @@
 package org.intelehealth.ekalarogya.webrtc.receiver
 
-import android.app.NotificationChannel
-import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.media.RingtoneManager
-import android.os.Build
-import android.util.Log
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 import com.github.ajalt.timberkt.Timber
 import com.google.firebase.messaging.RemoteMessage
 import com.google.gson.Gson
@@ -17,10 +10,14 @@ import org.intelehealth.ekalarogya.R
 import org.intelehealth.ekalarogya.activities.homeActivity.HomeActivity
 import org.intelehealth.ekalarogya.app.AppConstants
 import org.intelehealth.ekalarogya.database.dao.PatientsDAO
+import org.intelehealth.ekalarogya.database.dao.ProviderDAO
 import org.intelehealth.ekalarogya.utilities.NotificationUtils
 import org.intelehealth.ekalarogya.utilities.OfflineLogin
 import org.intelehealth.ekalarogya.utilities.SessionManager
+import org.intelehealth.ekalarogya.utilities.exception.DAOException
+import org.intelehealth.ekalarogya.webrtc.activity.EkalChatActivity
 import org.intelehealth.ekalarogya.webrtc.activity.EkalVideoActivity
+import org.intelehealth.ekalarogya.webrtc.notification.AppNotification
 import org.intelehealth.fcm.FcmBroadcastReceiver
 import org.intelehealth.fcm.FcmNotification
 import org.intelehealth.fcm.utils.FcmConstants
@@ -28,6 +25,7 @@ import org.intelehealth.klivekit.call.utils.CallHandlerUtils
 import org.intelehealth.klivekit.call.utils.CallMode
 import org.intelehealth.klivekit.call.utils.CallType
 import org.intelehealth.klivekit.call.utils.IntentUtils
+import org.intelehealth.klivekit.model.ChatMessage
 import org.intelehealth.klivekit.model.RtcArgs
 import org.intelehealth.klivekit.utils.Constants
 import org.intelehealth.klivekit.utils.extensions.fromJson
@@ -43,7 +41,7 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
         notification: RemoteMessage.Notification?,
         data: HashMap<String, String>
     ) {
-        Timber.tag(TAG).d("onMessageReceived: ")
+        Timber.tag(TAG).d("onMessageReceived: $data ")
         val sessionManager = SessionManager(context)
         if (sessionManager.isLogout) return
         context?.let {
@@ -67,6 +65,8 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
                         CallHandlerUtils.operateIncomingCall(it, arg, EkalVideoActivity::class.java)
                     }
                 }
+            } else if (data.containsKey("type") && data["type"].equals("text")) {
+                showChatNotification(context, data)
             } else {
                 parseMessage(notification, context, data)
             }
@@ -78,6 +78,7 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
         context: Context,
         data: HashMap<String, String>
     ) {
+        Timber.e { "parseMessage Called" }
         notification?.let {
             when (notification.body) {
                 "INVALIDATE_OFFLINE_LOGIN" -> {
@@ -104,6 +105,7 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
         context: Context,
         data: HashMap<String, String>
     ) {
+        Timber.e { "Webrtc: sendNotification" }
         val messageTitle = notification!!.title
         val messageBody = notification.body
         val clickAction: String? = data[FcmConstants.INTENT_CLICK_ACTION]
@@ -166,6 +168,25 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
 //            notificationManager.createNotificationChannel(channel)
 //        }
 //        notificationManager.notify(1, notificationBuilder.build())
+    }
+
+    private fun showChatNotification(context: Context?, data: HashMap<String, String>) {
+        val args = RtcArgs()
+        args.patientName = data["patientName"]
+        args.patientId = data["patientId"]
+        args.visitId = data["visitId"]
+        args.nurseId = data["toUser"]
+        args.doctorUuid = data["fromUser"]
+        try {
+            val title = ProviderDAO().getProviderName(args.doctorUuid)
+            AppNotification.Builder(context)
+                .title(title)
+                .body(data["message"])
+                .pendingIntent(EkalChatActivity.getPendingIntent(context, args))
+                .send()
+        } catch (e: DAOException) {
+            throw RuntimeException(e)
+        }
     }
 
     companion object {

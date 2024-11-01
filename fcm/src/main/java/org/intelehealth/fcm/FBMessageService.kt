@@ -27,7 +27,7 @@ abstract class FBMessageService(private val clazz: Class<*>) : FirebaseMessaging
 
         val data = gson.toJson(message.data)
         println("FBMessageService isAppInBackground")
-        println("data $data")
+        println("FBMessageService data: $data")
 
         NotificationHandler.getPendingIntentBroadcast(
             context = this,

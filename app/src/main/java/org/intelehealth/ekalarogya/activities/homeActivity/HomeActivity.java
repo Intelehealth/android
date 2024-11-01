@@ -978,6 +978,7 @@ public class HomeActivity extends BaseActivity implements SyncListener {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        IntelehealthApplication.getInstance().stopRealTimeObserverAndSocket();
     }
 
     private void showAppInfo() {
@@ -1077,4 +1078,6 @@ public class HomeActivity extends BaseActivity implements SyncListener {
             openVisitSummary(notificationVisitUuid, notificationPatientUuid);
         }
     }
+
+
 }

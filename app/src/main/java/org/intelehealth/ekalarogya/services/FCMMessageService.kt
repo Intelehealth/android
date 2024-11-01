@@ -30,6 +30,7 @@ class FCMMessageService : FBMessageService(FCMNotificationReceiver::class.java) 
 
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
+        Timber.d { "Webrtc: Background message" }
         Timber.d { "Remote message ${Gson().toJson(message)}" }
     }
 }

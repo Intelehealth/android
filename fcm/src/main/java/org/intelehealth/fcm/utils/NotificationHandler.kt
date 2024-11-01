@@ -128,12 +128,12 @@ object NotificationHandler {
 
     private fun getPendingIntentFlag() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            PendingIntent.FLAG_MUTABLE
+            PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         } else {
-            PendingIntent.FLAG_ONE_SHOT
+            PendingIntent.FLAG_UPDATE_CURRENT
         }
     } else {
-        PendingIntent.FLAG_CANCEL_CURRENT
+        PendingIntent.FLAG_UPDATE_CURRENT
     }
 
     fun getLocalNotificationBroadcast(
