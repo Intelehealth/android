@@ -1140,5 +1140,6 @@
     <string name="setup_select_primary_village_str">Select Primary Village</string>
     <string name="setup_select_secondary_village_str">Select Secondary Village</string>
     <string name="setup_select_dropdown_village_msg">Select Village from dropdown</string>
+    <string name="switch_location">Switch Location</string>
 
 </resources>

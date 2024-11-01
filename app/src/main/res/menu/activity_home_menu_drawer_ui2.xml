@@ -22,13 +22,19 @@
             android:icon="@drawable/ui2_ic_icon_tune"
             android:title="@string/action_settings"
             app:iconTint="?colorPrimary" />
-<!--        android:title="@string/change_lang"-->
+        <!--        android:title="@string/change_lang"-->
 
         <item
             android:id="@+id/menu_view_call_log"
             android:icon="@drawable/ic_call_log_video"
             android:title="@string/call_logs"
             app:iconTint="?colorPrimary" />
+
+        <item
+            android:id="@+id/menu_switch_location"
+            android:icon="@drawable/ic_switch_location"
+            android:title="@string/switch_location"
+            app:colorTint="?colorPrimary" />
 
         <item
             android:id="@+id/menu_about_us"
