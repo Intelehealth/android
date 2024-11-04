@@ -1038,6 +1038,17 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
 
     }
 
+    private void showProgressDialog() {
+        mSyncProgressDialog = new ProgressDialog(this);
+        mSyncProgressDialog.show();
+    }
+
+    private void hideProgressDialog() {
+        if (mSyncProgressDialog != null && mSyncProgressDialog.isShowing()) {
+            mSyncProgressDialog.dismiss();
+        }
+    }
+
     private void switchLocationSync() {
         DialogUtils dialogUtils = new DialogUtils();
 
@@ -1046,17 +1057,17 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             return;
         }
 
-        mSyncProgressDialog.show();
+        showProgressDialog();
         boolean isSynced = syncUtils.syncForeground("home");
         if (!isSynced) {
-            mSyncProgressDialog.dismiss();
+            hideProgressDialog();
             dialogUtils.showOkDialog(this, getString(R.string.error), getString(R.string.sync_failed), getString(R.string.generic_ok));
             return;
         }
 
         final Handler handler = new Handler();
         handler.postDelayed(() -> {
-            mSyncProgressDialog.dismiss();
+            hideProgressDialog();
             showSwitchLocationConfirmationDialog();
         }, 3000);
     }
@@ -1067,6 +1078,16 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         builder.setPositiveButton(getString(R.string.generic_yes), (dialog, which) -> {
             switchLocation(notificationPatientUuid, notificationVisitUuid);
         });
+
+        builder.setNegativeButton(getString(R.string.no), null);
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+
+        Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+        Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
+        positiveButton.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
+        negativeButton.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
+        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
     }
 
     private void switchLocation(String patientUuid, String visitUuid) {
