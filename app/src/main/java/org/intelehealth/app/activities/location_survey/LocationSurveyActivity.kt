@@ -258,7 +258,6 @@ class LocationSurveyActivity : AppCompatActivity() {
                     sessionManager?.villageName = selectedPrimaryVillage
                     sessionManager?.currentLocationName = selectedPrimaryVillage
 
-
                     val primaryVillageUuid: String? = newLocationDao?.getVillageUuid(
                         sessionManager?.stateName,
                         sessionManager?.districtName,
@@ -266,7 +265,7 @@ class LocationSurveyActivity : AppCompatActivity() {
                         sessionManager?.villageName
                     )
 
-                    sessionManager?.currentLocationUuid = primaryVillageUuid
+                    sessionManager?.setCurrentLocationUuid(primaryVillageUuid)
 
                     val tempPrimaryVillageHashMap: HashMap<String?, String?> = HashMap()
                     tempPrimaryVillageHashMap[primaryVillageUuid] = selectedPrimaryVillage

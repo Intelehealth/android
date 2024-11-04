@@ -389,7 +389,7 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
 
     private void attemptLogin() {
         // Store values at the time of the login attempt.
-        String serverURL = serverErrorTextView.getText().toString();
+        String serverURL = etServer.getText().toString();
         String userName = etUsername.getText().toString();
         String password = etPassword.getText().toString();
         String admin_password = etAdminPassword.getText().toString();

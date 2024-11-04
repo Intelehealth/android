@@ -34,7 +34,7 @@
             android:id="@+id/menu_switch_location"
             android:icon="@drawable/ic_switch_location"
             android:title="@string/switch_location"
-            app:colorTint="?colorPrimary" />
+            app:iconTint="?colorPrimary" />
 
         <item
             android:id="@+id/menu_about_us"
