@@ -7,13 +7,12 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+
 import org.intelehealth.app.utilities.CustomLog;
 
-import com.github.ajalt.timberkt.Timber;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
-import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
@@ -26,7 +25,6 @@ import org.intelehealth.app.models.pushRequestApiCall.PushRequestApiCall;
 import org.intelehealth.app.models.pushResponseApiCall.PushResponseApiCall;
 import org.intelehealth.app.services.InitialSyncIntentService;
 import org.intelehealth.app.syncModule.SyncProgress;
-import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NotificationID;
 import org.intelehealth.app.utilities.PatientsFrameJson;
@@ -81,7 +79,7 @@ public class SyncDAO {
 
         try {
             Logger.logD(TAG, "pull sync started");
-            saveConfig(responseDTO.getData().getConfigResponse());
+//            saveConfig(responseDTO.getData().getConfigResponse());
             patientsDAO.insertPatients(responseDTO.getData().getPatientDTO());
             patientsDAO.patientAttributes(responseDTO.getData().getPatientAttributesDTO());
             patientsDAO.patinetAttributeMaster(responseDTO.getData().getPatientAttributeTypeMasterDTO());
@@ -112,14 +110,14 @@ public class SyncDAO {
     }
 
     private void saveConfig(ConfigResponse response) {
-        CustomLog.d(TAG,"saveConfig");
+        CustomLog.d(TAG, "saveConfig");
         PreferenceHelper helper = new PreferenceHelper(IntelehealthApplication.getAppContext());
         int version = helper.get(CONFIG_VERSION, 0);
-        CustomLog.d(TAG,"saveConfig old version => %s", version);
+        CustomLog.d(TAG, "saveConfig old version => %s", version);
         if (version > 0 && response.getVersion() > version) {
             ConfigRepository repository = new ConfigRepository(IntelehealthApplication.getAppContext());
             repository.saveAllConfig(response, () -> Unit.INSTANCE);
-            CustomLog.d(TAG,"saveConfig new version => %s", response.getVersion());
+            CustomLog.d(TAG, "saveConfig new version => %s", response.getVersion());
         } else helper.save(CONFIG_VERSION, response.getVersion());
     }
 
@@ -131,9 +129,9 @@ public class SyncDAO {
         sessionManager = new SessionManager(context);
         String encoded = sessionManager.getEncoded();
         String oldDate = sessionManager.getPullExcutedTime();
-        String url = BuildConfig.SERVER_URL + "/EMR-Middleware/webapi/pull/pulldata/" +
-                sessionManager.getLocationUuid() + "/" + sessionManager.getPullExcutedTime() +
-                "/" + pageNo + "/" + AppConstants.PAGE_LIMIT;
+        String url = sessionManager.getServerUrl() + "/EMR-Middleware/webapi/pull/pulldata/" +
+                sessionManager.getCurrentLocationUuid() + "/" + sessionManager.getPullExcutedTime();
+//                + "/" + pageNo + "/" + AppConstants.PAGE_LIMIT;
         ;
 //        String url =  sessionManager.getServerUrl() + "/pulldata/" + sessionManager.getLocationUuid() + "/" + sessionManager.getPullExcutedTime();
         Call<ResponseDTO> middleWarePullResponseCall = AppConstants.apiInterface.RESPONSE_DTO_CALL(url, "Basic " + encoded);
@@ -188,7 +186,7 @@ public class SyncDAO {
 
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
-            CustomLog.e(TAG,e.getMessage());
+            CustomLog.e(TAG, e.getMessage());
         }
         if (sync) {
             int nextPageNo = response.body().getData().getPageNo();
@@ -256,9 +254,9 @@ public class SyncDAO {
         sessionManager = new SessionManager(context);
         String encoded = sessionManager.getEncoded();
         String oldDate = sessionManager.getPullExcutedTime();
-        String url = BuildConfig.SERVER_URL + "/EMR-Middleware/webapi/pull/pulldata/"
-                + sessionManager.getLocationUuid() + "/" + sessionManager.getPullExcutedTime() +
-                "/" + pageNo + "/" + AppConstants.PAGE_LIMIT;
+        String url = sessionManager.getServerUrl() + "/EMR-Middleware/webapi/pull/pulldata/"
+                + sessionManager.getCurrentLocationUuid() + "/" + sessionManager.getPullExcutedTime();
+//                + "/" + pageNo + "/" + AppConstants.PAGE_LIMIT;
 //        String url =  sessionManager.getServerUrl() + "/pulldata/" + sessionManager.getLocationUuid() + "/" + sessionManager.getPullExcutedTime();
         Call<ResponseDTO> middleWarePullResponseCall = AppConstants.apiInterface.RESPONSE_DTO_CALL(url, "Basic " + encoded);
         Logger.logD("Start pull request", "Started");
@@ -277,42 +275,42 @@ public class SyncDAO {
                         sync = SyncData(response.body());
                     } catch (DAOException e) {
                         FirebaseCrashlytics.getInstance().recordException(e);
-                        CustomLog.e(TAG,e.getMessage());
+                        CustomLog.e(TAG, e.getMessage());
                     }
                     if (sync) {
-                        int nextPageNo = response.body().getData().getPageNo();
-                        int totalCount = response.body().getData().getTotalCount();
+//                        int nextPageNo = response.body().getData().getPageNo();
+//                        int totalCount = response.body().getData().getTotalCount();
                         int percentage = 0; // this should be only in initialSync....
 
-                        if (nextPageNo != -1) {
-                            percentage = (int) Math.round(nextPageNo * AppConstants.PAGE_LIMIT * 100.0 / totalCount);
-                            Logger.logD(PULL_ISSUE, "percentage: " + percentage);
-                            setProgress(percentage);
-                            pullData(context, fromActivity, nextPageNo);
-                            return;
-                        } else {
-                            percentage = 100;
-                            sessionManager.setPullExcutedTime(sessionManager.isPulled());
-                            Logger.logD(PULL_ISSUE, "percentage page -1: " + percentage);
-                            setProgress(percentage);
-                            Intent broadcast = new Intent();
-                            broadcast.putExtra("JOB", AppConstants.SYNC_PULL_DATA_DONE);
-                            broadcast.setAction(AppConstants.SYNC_NOTIFY_INTENT_ACTION);
-                            broadcast.setPackage(IntelehealthApplication.getAppContext().getPackageName());
-                            context.sendBroadcast(broadcast);
-                            sessionManager.setLastSyncDateTime(AppConstants.dateAndTimeUtils.getcurrentDateTime(sessionManager.getAppLanguage()));
-                            if (fromActivity.equalsIgnoreCase("home")) {
-                                //Toast.makeText(context, context.getResources().getString(R.string.successfully_synced), Toast.LENGTH_LONG).show();
-                            } else if (fromActivity.equalsIgnoreCase("visitSummary")) {
-                                //Toast.makeText(context, context.getResources().getString(R.string.visit_uploaded_successfully), Toast.LENGTH_LONG).show();
-                            } else if (fromActivity.equalsIgnoreCase("downloadPrescription")) {
+//                        if (nextPageNo != -1) {
+//                            percentage = (int) Math.round(nextPageNo * AppConstants.PAGE_LIMIT * 100.0 / totalCount);
+//                            Logger.logD(PULL_ISSUE, "percentage: " + percentage);
+//                            setProgress(percentage);
+//                            pullData(context, fromActivity, nextPageNo);
+//                            return;
+//                        } else {
+                        percentage = 100;
+                        sessionManager.setPullExcutedTime(sessionManager.isPulled());
+                        Logger.logD(PULL_ISSUE, "percentage page -1: " + percentage);
+                        setProgress(percentage);
+                        Intent broadcast = new Intent();
+                        broadcast.putExtra("JOB", AppConstants.SYNC_PULL_DATA_DONE);
+                        broadcast.setAction(AppConstants.SYNC_NOTIFY_INTENT_ACTION);
+                        broadcast.setPackage(IntelehealthApplication.getAppContext().getPackageName());
+                        context.sendBroadcast(broadcast);
+                        sessionManager.setLastSyncDateTime(AppConstants.dateAndTimeUtils.getcurrentDateTime(sessionManager.getAppLanguage()));
+                        if (fromActivity.equalsIgnoreCase("home")) {
+                            //Toast.makeText(context, context.getResources().getString(R.string.successfully_synced), Toast.LENGTH_LONG).show();
+                        } else if (fromActivity.equalsIgnoreCase("visitSummary")) {
+                            //Toast.makeText(context, context.getResources().getString(R.string.visit_uploaded_successfully), Toast.LENGTH_LONG).show();
+                        } else if (fromActivity.equalsIgnoreCase("downloadPrescription")) {
 //                            AppConstants.notificationUtils.DownloadDone(context.getString(R.string.download_from_doctor), context.getString(R.string.prescription_downloaded), 3, context);
 //                            Toast.makeText(context, context.getString(R.string.prescription_downloaded), Toast.LENGTH_LONG).show();
-                            }
+                        }
 //                        else {
 //                            Toast.makeText(context, context.getString(R.string.successfully_synced), Toast.LENGTH_LONG).show();
 //                        }
-                        }
+//                        }
                     } else {
 //                        AppConstants.notificationUtils.DownloadDone(context.getString(R.string.sync), context.getString(R.string.failed_synced), 1, IntelehealthApplication.getAppContext());
 
@@ -402,8 +400,8 @@ public class SyncDAO {
         sessionManager = new SessionManager(context);
         String encoded = sessionManager.getEncoded();
         String oldDate = sessionManager.getPullExcutedTime();
-        String url = BuildConfig.SERVER_URL + "/EMR-Middleware/webapi/pull/pulldata/" + sessionManager.getLocationUuid() + "/" + sessionManager.getPullExcutedTime() +
-                "/" + pageNo + "/" + AppConstants.PAGE_LIMIT;
+        String url = sessionManager.getServerUrl() + "/EMR-Middleware/webapi/pull/pulldata/" + sessionManager.getCurrentLocationUuid() + "/" + sessionManager.getPullExcutedTime();
+//                + "/" + pageNo + "/" + AppConstants.PAGE_LIMIT;
         ;
 //        String url =  sessionManager.getServerUrl() + "/pulldata/" + sessionManager.getLocationUuid() + "/" + sessionManager.getPullExcutedTime();
         Logger.logD(PULL_ISSUE, url);
@@ -557,7 +555,7 @@ public class SyncDAO {
         CustomLog.d(TAG, "pushDataApi: encoded : " + encoded);
         Logger.logD(TAG, "push request model" + gson.toJson(pushRequestApiCall));
         CustomLog.e(TAG, "push request model" + gson.toJson(pushRequestApiCall));
-        String url = BuildConfig.SERVER_URL + "/EMR-Middleware/webapi/push/pushdata";
+        String url = sessionManager.getServerUrl() + "/EMR-Middleware/webapi/push/pushdata";
         Logger.logD(TAG, "push request url - " + url);
         Logger.logD(TAG, "push request encoded - " + encoded);
         if (!pushRequestApiCall.getVisits().isEmpty()
@@ -581,7 +579,7 @@ public class SyncDAO {
                                         CustomLog.d("SYNC", "ProvUUDI" + pushResponseApiCall.getData().getPatientlist().get(i).getUuid());
                                     } catch (DAOException e) {
                                         FirebaseCrashlytics.getInstance().recordException(e);
-                                        CustomLog.e(TAG,e.getMessage());
+                                        CustomLog.e(TAG, e.getMessage());
                                     }
                                 }
 
@@ -590,7 +588,7 @@ public class SyncDAO {
                                         visitsDAO.updateVisitSync(pushResponseApiCall.getData().getVisitlist().get(i).getUuid(), pushResponseApiCall.getData().getVisitlist().get(i).getSyncd().toString());
                                     } catch (DAOException e) {
                                         FirebaseCrashlytics.getInstance().recordException(e);
-                                        CustomLog.e(TAG,e.getMessage());
+                                        CustomLog.e(TAG, e.getMessage());
                                     }
                                 }
 
@@ -600,7 +598,7 @@ public class SyncDAO {
                                         CustomLog.d("SYNC", "Encounter Data: " + pushResponseApiCall.getData().getEncounterlist().get(i).toString());
                                     } catch (DAOException e) {
                                         FirebaseCrashlytics.getInstance().recordException(e);
-                                        CustomLog.e(TAG,e.getMessage());
+                                        CustomLog.e(TAG, e.getMessage());
                                     }
                                 }
 
@@ -611,7 +609,7 @@ public class SyncDAO {
                                         appointmentDAO.updateAppointmentSync(visitUuid, sync);
                                     } catch (DAOException exception) {
                                         FirebaseCrashlytics.getInstance().recordException(exception);
-                                        CustomLog.e(TAG,exception.getMessage());
+                                        CustomLog.e(TAG, exception.getMessage());
                                     }
                                 }
 
@@ -625,7 +623,7 @@ public class SyncDAO {
                                         } catch (DAOException e) {
                                             e.printStackTrace();
                                             FirebaseCrashlytics.getInstance().recordException(e);
-                                            CustomLog.e(TAG,e.getMessage());
+                                            CustomLog.e(TAG, e.getMessage());
                                         }
                                     }
                                 }
@@ -641,7 +639,7 @@ public class SyncDAO {
 
                             } catch (Exception e) {
                                 e.printStackTrace();
-                                CustomLog.e(TAG,e.getMessage());
+                                CustomLog.e(TAG, e.getMessage());
                             }
 
                         }
