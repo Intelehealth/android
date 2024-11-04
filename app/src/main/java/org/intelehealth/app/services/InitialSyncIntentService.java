@@ -48,16 +48,16 @@ public class InitialSyncIntentService extends IntentService {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
         if (sync) {
-            int nextPageNo = responseDTO.getData().getPageNo();
-            int totalCount = responseDTO.getData().getTotalCount();
+//            int nextPageNo = responseDTO.getData().getPageNo();
+//            int totalCount = responseDTO.getData().getTotalCount();
             int percentage = 0; // this should be only in initialSync....
 
-            if (nextPageNo != -1) {
-                percentage = (int) Math.round(nextPageNo * AppConstants.PAGE_LIMIT * 100.0/totalCount);
-                Logger.logD(SyncDAO.PULL_ISSUE, "percentage: " + percentage);
-                SyncDAO.setProgress(percentage);
-                syncDAO.pullDataBackgroundService(IntelehealthApplication.getAppContext(), fromActivity, nextPageNo);
-            }else {
+//            if (nextPageNo != -1) {
+//                percentage = (int) Math.round(nextPageNo * AppConstants.PAGE_LIMIT * 100.0/totalCount);
+//                Logger.logD(SyncDAO.PULL_ISSUE, "percentage: " + percentage);
+//                SyncDAO.setProgress(percentage);
+//                syncDAO.pullDataBackgroundService(IntelehealthApplication.getAppContext(), fromActivity, nextPageNo);
+//            }else {
                 percentage = 100;
                 Logger.logD(SyncDAO.PULL_ISSUE, "percentage page -1: " + percentage);
                 SyncDAO.setProgress(percentage);
@@ -79,7 +79,7 @@ public class InitialSyncIntentService extends IntentService {
 //                        else {
 //                            Toast.makeText(context, context.getString(R.string.successfully_synced), Toast.LENGTH_LONG).show();
 //                        }
-            }
+//            }
         }
         else {
 //                        AppConstants.notificationUtils.DownloadDone(context.getString(R.string.sync), context.getString(R.string.failed_synced), 1, IntelehealthApplication.getAppContext());
