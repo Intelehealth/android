@@ -28,7 +28,7 @@ android {
         //Change this to true to enable multidex support for Kitkat
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
-        archivesBaseName = "IDA-" + versionName + "-" + getDateTime()
+        archivesBaseName = "Ekal-" + versionName + "-" + getDateTime()
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
