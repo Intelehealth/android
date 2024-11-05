@@ -1143,5 +1143,7 @@
     <string name="switch_location">Switch Location</string>
     <string name="no_network_sync">You are not connected to the internet. Please try again later.</string>
     <string name="confirm_switch_location">You are currently logged into the \'%1$s\' village. Are you sure that you wish to switch to the \'%2$s\' village?</string>
+    <string name="start_sevika_visit">Start Sevika Visit</string>
+    <string name="start_doctor_visit">Start Doctor Visit</string>
 
 </resources>
