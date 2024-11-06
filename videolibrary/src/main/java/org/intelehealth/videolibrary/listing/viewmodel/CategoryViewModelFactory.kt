@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import org.intelehealth.videolibrary.restapi.VideoLibraryApiClient
 import org.intelehealth.videolibrary.room.dao.CategoryDao
-import org.intelehealth.videolibrary.room.dao.LibraryDao
 
 /**
  * Created by Arpan Sircar. on 08-02-2024.
@@ -13,13 +12,12 @@ import org.intelehealth.videolibrary.room.dao.LibraryDao
  **/
 
 @Suppress("UNCHECKED_CAST")
-class LibraryViewModelFactory(
+class CategoryViewModelFactory(
     private val service: VideoLibraryApiClient,
-    private val libraryDao: LibraryDao,
     private val categoryDao: CategoryDao
 ) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return YoutubeCategoryViewModel(service, libraryDao, categoryDao) as T
+        return YoutubeCategoryViewModel(service, categoryDao) as T
     }
 }

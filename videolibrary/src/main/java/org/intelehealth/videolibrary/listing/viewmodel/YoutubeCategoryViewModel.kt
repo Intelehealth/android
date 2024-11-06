@@ -7,12 +7,11 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.intelehealth.videolibrary.listing.data.CategoryDataSource
-import org.intelehealth.videolibrary.listing.data.CategoryRepository
+import org.intelehealth.videolibrary.listing.data.category.CategoryDataSource
+import org.intelehealth.videolibrary.listing.data.category.CategoryRepository
 import org.intelehealth.videolibrary.restapi.VideoLibraryApiClient
 import org.intelehealth.videolibrary.restapi.response.categories.MainCategoryResponse
 import org.intelehealth.videolibrary.room.dao.CategoryDao
-import org.intelehealth.videolibrary.room.dao.LibraryDao
 import org.intelehealth.videolibrary.utils.ResponseChecker
 import retrofit2.Response
 
@@ -24,7 +23,6 @@ import retrofit2.Response
 
 class YoutubeCategoryViewModel(
     service: VideoLibraryApiClient,
-    libraryDao: LibraryDao,
     categoryDao: CategoryDao
 ) : ViewModel() {
 
@@ -37,7 +35,7 @@ class YoutubeCategoryViewModel(
     var emptyListObserver: LiveData<Boolean> = _emptyListObserver
 
     init {
-        val dataSource = CategoryDataSource(service, libraryDao, categoryDao)
+        val dataSource = CategoryDataSource(service, categoryDao)
         repository = CategoryRepository(dataSource)
     }
 

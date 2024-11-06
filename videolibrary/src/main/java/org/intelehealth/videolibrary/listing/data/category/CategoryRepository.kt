@@ -1,4 +1,4 @@
-package org.intelehealth.videolibrary.listing.data
+package org.intelehealth.videolibrary.listing.data.category
 
 import org.intelehealth.videolibrary.model.Category
 

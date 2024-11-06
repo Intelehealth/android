@@ -15,7 +15,7 @@ import org.intelehealth.videolibrary.constants.Constants
 import org.intelehealth.videolibrary.data.PreferenceHelper
 import org.intelehealth.videolibrary.databinding.ActivityYoutubeListingBinding
 import org.intelehealth.videolibrary.listing.adapter.YoutubeListingAdapter
-import org.intelehealth.videolibrary.listing.viewmodel.LibraryViewModelFactory
+import org.intelehealth.videolibrary.listing.viewmodel.CategoryViewModelFactory
 import org.intelehealth.videolibrary.listing.viewmodel.YoutubeCategoryViewModel
 import org.intelehealth.videolibrary.model.Video
 import org.intelehealth.videolibrary.player.activity.VideoPlayerActivity
@@ -23,7 +23,6 @@ import org.intelehealth.videolibrary.restapi.RetrofitProvider
 import org.intelehealth.videolibrary.restapi.VideoLibraryApiClient
 import org.intelehealth.videolibrary.room.VideoLibraryDatabase
 import org.intelehealth.videolibrary.room.dao.CategoryDao
-import org.intelehealth.videolibrary.room.dao.LibraryDao
 
 /**
  * Created by Arpan Sircar. on 08-02-2024.
@@ -130,14 +129,13 @@ class YoutubeCategoryActivity : AppCompatActivity(), VideoClickedListener {
         packageName = applicationContext.packageName
 
         val service: VideoLibraryApiClient = RetrofitProvider.apiService
-        val libraryDao: LibraryDao =
-            VideoLibraryDatabase.getInstance(this@YoutubeCategoryActivity).libraryDao()
         val categoryDao: CategoryDao =
             VideoLibraryDatabase.getInstance(this@YoutubeCategoryActivity).categoryDao()
 
         viewmodel = ViewModelProvider(
-            owner = this@YoutubeCategoryActivity, factory = LibraryViewModelFactory(
-                service = service, dao = libraryDao
+            owner = this@YoutubeCategoryActivity, factory = CategoryViewModelFactory(
+                service = service,
+                categoryDao = categoryDao
             )
         )[YoutubeCategoryViewModel::class.java]
     }
