@@ -2,7 +2,9 @@ package org.intelehealth.app.utilities;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -21,6 +23,7 @@ import com.google.android.flexbox.JustifyContent;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.adapter.ImagePickerListAdapter;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.ayu.visit.model.ReasonData;
@@ -62,7 +65,7 @@ public class DialogUtils {
                 });
         AlertDialog dialog = alertDialog.show();
         Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-        positiveButton.setTextColor(ContextCompat.getColor(context,R.color.colorPrimaryDark));
+        positiveButton.setTextColor(ContextCompat.getColor(context, R.color.colorPrimaryDark));
         //alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTypeface(Typeface.DEFAULT, Typeface.BOLD);
         IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
     }
@@ -81,7 +84,7 @@ public class DialogUtils {
                 });
         AlertDialog dialog = alertDialog.show();
         Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-        positiveButton.setTextColor(ContextCompat.getColor(context,R.color.colorPrimaryDark));
+        positiveButton.setTextColor(ContextCompat.getColor(context, R.color.colorPrimaryDark));
         //alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTypeface(Typeface.DEFAULT, Typeface.BOLD);
         IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
     }
@@ -297,5 +300,23 @@ public class DialogUtils {
                 activityContext.getResources().getString(R.string.cancel),
                 customDialogListener
         );
+    }
+
+    public AlertDialog showSyncDialog(Context context, Resources resources) {
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View customLayout = inflater.inflate(R.layout.ui2_layout_dialog_refresh, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setCancelable(false);
+        builder.setView(customLayout);
+        int width = resources.getDimensionPixelSize(R.dimen.internet_dialog_width);
+
+        AlertDialog dialogRefreshInProgress = builder.create();
+        if (dialogRefreshInProgress.getWindow() != null) {
+            dialogRefreshInProgress.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg);
+            dialogRefreshInProgress.show();
+            dialogRefreshInProgress.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
+        }
+
+        return dialogRefreshInProgress;
     }
 }

@@ -1038,17 +1038,6 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
 
     }
 
-    private void showProgressDialog() {
-        mSyncProgressDialog = new ProgressDialog(this);
-        mSyncProgressDialog.show();
-    }
-
-    private void hideProgressDialog() {
-        if (mSyncProgressDialog != null && mSyncProgressDialog.isShowing()) {
-            mSyncProgressDialog.dismiss();
-        }
-    }
-
     private void switchLocationSync() {
         DialogUtils dialogUtils = new DialogUtils();
 
@@ -1057,17 +1046,17 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             return;
         }
 
-        showProgressDialog();
+        AlertDialog syncDialog = dialogUtils.showSyncDialog(this, getResources());
         boolean isSynced = syncUtils.syncForeground("home");
         if (!isSynced) {
-            hideProgressDialog();
+            syncDialog.dismiss();
             dialogUtils.showOkDialog(this, getString(R.string.error), getString(R.string.sync_failed), getString(R.string.generic_ok));
             return;
         }
 
         final Handler handler = new Handler();
         handler.postDelayed(() -> {
-            hideProgressDialog();
+            syncDialog.dismiss();
             showSwitchLocationConfirmationDialog();
         }, 3000);
     }

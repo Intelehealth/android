@@ -64,7 +64,6 @@ class SplashActivity : LanguageActivity(), BaseViewHolder.ViewHolderClickListene
         super.onCreate(savedInstanceState)
         binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        loadConfig()
         handleFcmCall()
 
         handleButtonClickListener()
@@ -183,6 +182,7 @@ class SplashActivity : LanguageActivity(), BaseViewHolder.ViewHolderClickListene
 //                    }
                 }, 2000)
             }
+            loadConfig()
         }
     }
 

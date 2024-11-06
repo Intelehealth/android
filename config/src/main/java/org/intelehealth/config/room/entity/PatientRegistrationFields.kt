@@ -20,7 +20,7 @@ data class PatientRegistrationFields(
     @SerializedName("is_mandatory")
     val isMandatory: Boolean,
     @SerializedName("is_editable")
-    val isEditable: Boolean,
+    val isEditable: Boolean = true,
     @SerializedName("is_enabled")
-    var isEnabled: Boolean
+    var isEnabled: Boolean = true
 )
