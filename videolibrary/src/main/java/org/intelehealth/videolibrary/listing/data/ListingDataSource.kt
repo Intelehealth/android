@@ -4,7 +4,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import org.intelehealth.videolibrary.model.Video
 import org.intelehealth.videolibrary.restapi.VideoLibraryApiClient
+import org.intelehealth.videolibrary.restapi.response.categories.MainCategoryResponse
 import org.intelehealth.videolibrary.restapi.response.videos.MainVideoResponse
+import org.intelehealth.videolibrary.room.dao.CategoryDao
 import org.intelehealth.videolibrary.room.dao.LibraryDao
 import retrofit2.Response
 
@@ -16,14 +18,12 @@ import retrofit2.Response
 
 class ListingDataSource(
     private val service: VideoLibraryApiClient,
-    private val libraryDao: LibraryDao
+    private val libraryDao: LibraryDao,
+    private val categoryDao: CategoryDao
 ) {
 
-    suspend fun fetchVideosFromServer(
-        packageName: String,
-        auth: String
-    ): Flow<Response<MainVideoResponse?>> = flow {
-        emit(service.fetchVideosFromServer(packageName, auth))
+    fun fetchAllCategoriesFromServer(auth: String): Flow<Response<MainCategoryResponse>> = flow {
+        emit(service.fetchAllCategories(auth))
     }
 
     suspend fun insertVideosToDb(videos: List<Video>) {
@@ -31,7 +31,8 @@ class ListingDataSource(
         libraryDao.insertAll(videos)
     }
 
-    fun fetchVideosFromDb(): Flow<List<Video>> = libraryDao.getAll()
+    fun fetchVideosFromDb(categoryId: Int): Flow<List<Video>> =
+        libraryDao.getVideosByCategoryId(categoryId)
 
     suspend fun deleteAll() {
         libraryDao.deleteAll()

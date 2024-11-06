@@ -5,10 +5,8 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
-import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.intelehealth.videolibrary.R
@@ -24,6 +22,7 @@ import org.intelehealth.videolibrary.player.activity.VideoPlayerActivity
 import org.intelehealth.videolibrary.restapi.RetrofitProvider
 import org.intelehealth.videolibrary.restapi.VideoLibraryApiClient
 import org.intelehealth.videolibrary.room.VideoLibraryDatabase
+import org.intelehealth.videolibrary.room.dao.CategoryDao
 import org.intelehealth.videolibrary.room.dao.LibraryDao
 
 /**
@@ -131,12 +130,14 @@ class YoutubeListingActivity : AppCompatActivity(), VideoClickedListener {
         packageName = applicationContext.packageName
 
         val service: VideoLibraryApiClient = RetrofitProvider.apiService
-        val dao: LibraryDao =
+        val libraryDao: LibraryDao =
             VideoLibraryDatabase.getInstance(this@YoutubeListingActivity).libraryDao()
+        val categoryDao: CategoryDao =
+            VideoLibraryDatabase.getInstance(this@YoutubeListingActivity).categoryDao()
 
         viewmodel = ViewModelProvider(
             owner = this@YoutubeListingActivity, factory = LibraryViewModelFactory(
-                service = service, dao = dao
+                service = service, dao = libraryDao
             )
         )[YoutubeListingViewModel::class.java]
     }

@@ -1,5 +1,6 @@
 package org.intelehealth.videolibrary.restapi
 
+import org.intelehealth.videolibrary.restapi.response.categories.MainCategoryResponse
 import org.intelehealth.videolibrary.restapi.response.videos.MainVideoResponse
 import retrofit2.Response
 import retrofit2.http.GET
@@ -14,12 +15,14 @@ import retrofit2.http.Path
 
 interface VideoLibraryApiClient {
 
-    @GET("api/video-library/getVideosByPackageId/{package}")
-    suspend fun fetchVideosFromServer(
-        @Path("package") packageName: String,
+    @GET("api/video-library/getAllCategories")
+    suspend fun fetchAllCategories(
         @Header("Authorization") auth: String
-    ): Response<MainVideoResponse?>
+    ): Response<MainCategoryResponse>
 
-    
-
+    @GET("api/video-library/getVideosByCategoryId/{category_id}")
+    suspend fun fetchVideoByCategoryId(
+        @Path("category") categoryId: String,
+        @Header("Authorization") auth: String
+    ): Response<MainVideoResponse>
 }

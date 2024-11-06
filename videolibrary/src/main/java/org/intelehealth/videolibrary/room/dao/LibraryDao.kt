@@ -16,11 +16,11 @@ import org.intelehealth.videolibrary.model.Video
 @Dao
 interface LibraryDao {
 
-    @Query("SELECT * FROM tbl_video_library")
-    fun getAll(): Flow<List<Video>>
+    @Query("SELECT * FROM tbl_video_library WHERE categoryId = :categoryId")
+    fun getVideosByCategoryId(categoryId: Int): Flow<List<Video>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAll(messages: List<Video>)
+    suspend fun insertAll(videos: List<Video>)
 
     @Query("DELETE FROM tbl_video_library")
     suspend fun deleteAll()

@@ -12,10 +12,13 @@ import org.intelehealth.videolibrary.listing.data.ListingDataSource
 import org.intelehealth.videolibrary.listing.data.ListingRepository
 import org.intelehealth.videolibrary.model.Video
 import org.intelehealth.videolibrary.restapi.VideoLibraryApiClient
+import org.intelehealth.videolibrary.restapi.response.categories.MainCategoryResponse
 import org.intelehealth.videolibrary.restapi.response.videos.MainVideoResponse
+import org.intelehealth.videolibrary.room.dao.CategoryDao
 import org.intelehealth.videolibrary.room.dao.LibraryDao
 import org.intelehealth.videolibrary.utils.ResponseChecker
 import retrofit2.Response
+import kotlin.math.truncate
 
 /**
  * Created by Arpan Sircar. on 08-02-2024.
@@ -23,7 +26,11 @@ import retrofit2.Response
  * Mob   : +919123116015
  **/
 
-class YoutubeListingViewModel(service: VideoLibraryApiClient, dao: LibraryDao) : ViewModel() {
+class YoutubeListingViewModel(
+    service: VideoLibraryApiClient,
+    libraryDao: LibraryDao,
+    categoryDao: CategoryDao
+) : ViewModel() {
 
     private var repository: ListingRepository
 
@@ -34,35 +41,30 @@ class YoutubeListingViewModel(service: VideoLibraryApiClient, dao: LibraryDao) :
     var emptyListObserver: LiveData<Boolean> = _emptyListObserver
 
     init {
-        val dataSource = ListingDataSource(service, dao)
+        val dataSource = ListingDataSource(service, libraryDao, categoryDao)
         repository = ListingRepository(dataSource)
     }
 
-    fun fetchVideosFromServer(packageName: String, auth: String) {
+    fun fetchCategoriesFromServer(auth: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            delay(5000)
-            repository.fetchVideosFromServer(packageName, auth)
+            repository
+                .fetchAllCategoriesFromServer(auth)
                 .collect { response ->
-                    handleResponses(response)
+                    handleCategoryResponse(response)
                 }
         }
     }
 
-    private fun handleResponses(response: Response<MainVideoResponse?>) {
+    private fun handleCategoryResponse(response: Response<MainCategoryResponse>) {
         val responseChecker = ResponseChecker(response)
         if (responseChecker.isNotAuthorized) {
             _tokenExpiredObserver.postValue(true)
         } else {
-            viewModelScope.launch(Dispatchers.IO) {
-                response.body()?.projectLibraryData?.videos?.let {
-                    _emptyListObserver.postValue(it.isEmpty())
-                    repository.insertVideos(it)
-                }
-            }
+
         }
     }
 
-    fun fetchVideosFromDb() = repository.fetchVideosFromDb().asLiveData()
+    fun fetchVideosFromDb(categoryId: Int) = repository.fetchVideosFromDb(categoryId).asLiveData()
 
     fun areListsSame(list1: List<Video>?, list2: List<Video>?) = list1 == list2
 
