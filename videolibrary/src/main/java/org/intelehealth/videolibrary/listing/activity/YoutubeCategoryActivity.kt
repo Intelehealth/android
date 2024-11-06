@@ -16,7 +16,7 @@ import org.intelehealth.videolibrary.data.PreferenceHelper
 import org.intelehealth.videolibrary.databinding.ActivityYoutubeListingBinding
 import org.intelehealth.videolibrary.listing.adapter.YoutubeListingAdapter
 import org.intelehealth.videolibrary.listing.viewmodel.LibraryViewModelFactory
-import org.intelehealth.videolibrary.listing.viewmodel.YoutubeListingViewModel
+import org.intelehealth.videolibrary.listing.viewmodel.YoutubeCategoryViewModel
 import org.intelehealth.videolibrary.model.Video
 import org.intelehealth.videolibrary.player.activity.VideoPlayerActivity
 import org.intelehealth.videolibrary.restapi.RetrofitProvider
@@ -31,11 +31,11 @@ import org.intelehealth.videolibrary.room.dao.LibraryDao
  * Mob   : +919123116015
  **/
 
-class YoutubeListingActivity : AppCompatActivity(), VideoClickedListener {
+class YoutubeCategoryActivity : AppCompatActivity(), VideoClickedListener {
 
     private var binding: ActivityYoutubeListingBinding? = null
     private var preferenceHelper: PreferenceHelper? = null
-    private var viewmodel: YoutubeListingViewModel? = null
+    private var viewmodel: YoutubeCategoryViewModel? = null
 
     private var authKey: String? = null
     private var packageName: String? = null
@@ -102,7 +102,7 @@ class YoutubeListingActivity : AppCompatActivity(), VideoClickedListener {
         viewmodel?.emptyListObserver?.observe(this) {
             if (it) {
                 Toast.makeText(
-                    this@YoutubeListingActivity,
+                    this@YoutubeCategoryActivity,
                     getString(R.string.no_videos_found_on_server),
                     Toast.LENGTH_LONG
                 ).show()
@@ -117,10 +117,10 @@ class YoutubeListingActivity : AppCompatActivity(), VideoClickedListener {
     }
 
     private fun updateRecyclerView(it: List<Video>) {
-        val adapter = YoutubeListingAdapter(it, lifecycle, this@YoutubeListingActivity)
+        val adapter = YoutubeListingAdapter(it, lifecycle, this@YoutubeCategoryActivity)
         binding?.recyclerview?.apply {
             this.adapter = adapter
-            this.layoutManager = LinearLayoutManager(this@YoutubeListingActivity)
+            this.layoutManager = LinearLayoutManager(this@YoutubeCategoryActivity)
         }
     }
 
@@ -131,21 +131,21 @@ class YoutubeListingActivity : AppCompatActivity(), VideoClickedListener {
 
         val service: VideoLibraryApiClient = RetrofitProvider.apiService
         val libraryDao: LibraryDao =
-            VideoLibraryDatabase.getInstance(this@YoutubeListingActivity).libraryDao()
+            VideoLibraryDatabase.getInstance(this@YoutubeCategoryActivity).libraryDao()
         val categoryDao: CategoryDao =
-            VideoLibraryDatabase.getInstance(this@YoutubeListingActivity).categoryDao()
+            VideoLibraryDatabase.getInstance(this@YoutubeCategoryActivity).categoryDao()
 
         viewmodel = ViewModelProvider(
-            owner = this@YoutubeListingActivity, factory = LibraryViewModelFactory(
+            owner = this@YoutubeCategoryActivity, factory = LibraryViewModelFactory(
                 service = service, dao = libraryDao
             )
-        )[YoutubeListingViewModel::class.java]
+        )[YoutubeCategoryViewModel::class.java]
     }
 
     private fun setToolbar() {
         binding?.toolbar?.apply {
             setSupportActionBar(this)
-            setTitleTextAppearance(this@YoutubeListingActivity, R.style.ToolbarTheme)
+            setTitleTextAppearance(this@YoutubeCategoryActivity, R.style.ToolbarTheme)
             setTitleTextColor(Color.WHITE)
         }
 
@@ -175,7 +175,7 @@ class YoutubeListingActivity : AppCompatActivity(), VideoClickedListener {
     }
 
     override fun onVideoClicked(videoId: String) {
-        val intent = Intent(this@YoutubeListingActivity, VideoPlayerActivity::class.java).also {
+        val intent = Intent(this@YoutubeCategoryActivity, VideoPlayerActivity::class.java).also {
             it.putExtra(Constants.VIDEO_ID, videoId)
         }
         startActivity(intent)

@@ -20,6 +20,6 @@ class LibraryViewModelFactory(
 ) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return YoutubeListingViewModel(service, libraryDao, categoryDao) as T
+        return YoutubeCategoryViewModel(service, libraryDao, categoryDao) as T
     }
 }

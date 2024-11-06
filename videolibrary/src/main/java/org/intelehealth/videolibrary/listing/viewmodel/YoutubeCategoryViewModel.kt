@@ -6,19 +6,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import org.intelehealth.videolibrary.listing.data.ListingDataSource
-import org.intelehealth.videolibrary.listing.data.ListingRepository
-import org.intelehealth.videolibrary.model.Video
+import org.intelehealth.videolibrary.listing.data.CategoryDataSource
+import org.intelehealth.videolibrary.listing.data.CategoryRepository
 import org.intelehealth.videolibrary.restapi.VideoLibraryApiClient
 import org.intelehealth.videolibrary.restapi.response.categories.MainCategoryResponse
-import org.intelehealth.videolibrary.restapi.response.videos.MainVideoResponse
 import org.intelehealth.videolibrary.room.dao.CategoryDao
 import org.intelehealth.videolibrary.room.dao.LibraryDao
 import org.intelehealth.videolibrary.utils.ResponseChecker
 import retrofit2.Response
-import kotlin.math.truncate
 
 /**
  * Created by Arpan Sircar. on 08-02-2024.
@@ -26,13 +22,13 @@ import kotlin.math.truncate
  * Mob   : +919123116015
  **/
 
-class YoutubeListingViewModel(
+class YoutubeCategoryViewModel(
     service: VideoLibraryApiClient,
     libraryDao: LibraryDao,
     categoryDao: CategoryDao
 ) : ViewModel() {
 
-    private var repository: ListingRepository
+    private var repository: CategoryRepository
 
     private var _tokenExpiredObserver: MutableLiveData<Boolean> = MutableLiveData(false)
     var tokenExpiredObserver: LiveData<Boolean> = _tokenExpiredObserver
@@ -41,8 +37,8 @@ class YoutubeListingViewModel(
     var emptyListObserver: LiveData<Boolean> = _emptyListObserver
 
     init {
-        val dataSource = ListingDataSource(service, libraryDao, categoryDao)
-        repository = ListingRepository(dataSource)
+        val dataSource = CategoryDataSource(service, libraryDao, categoryDao)
+        repository = CategoryRepository(dataSource)
     }
 
     fun fetchCategoriesFromServer(auth: String) {
@@ -60,17 +56,20 @@ class YoutubeListingViewModel(
         if (responseChecker.isNotAuthorized) {
             _tokenExpiredObserver.postValue(true)
         } else {
-
+            viewModelScope.launch(Dispatchers.IO) {
+                response.body()?.data?.let {
+                    _emptyListObserver.postValue(it.isEmpty())
+                    repository.insertCategories(it)
+                }
+            }
         }
     }
 
-    fun fetchVideosFromDb(categoryId: Int) = repository.fetchVideosFromDb(categoryId).asLiveData()
+    fun fetchCategoriesFromDb() = repository.fetchAllCategoriesFromDb().asLiveData()
 
-    fun areListsSame(list1: List<Video>?, list2: List<Video>?) = list1 == list2
-
-    fun deleteAllVideos() {
+    fun deleteAllCategories() {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.deleteAll()
+            repository.deleteAllCategories()
         }
     }
 }

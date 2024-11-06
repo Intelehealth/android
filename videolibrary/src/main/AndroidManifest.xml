@@ -12,7 +12,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
-            android:name=".listing.activity.YoutubeListingActivity"
+            android:name=".listing.activity.YoutubeCategoryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar" />
