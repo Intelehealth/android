@@ -8,7 +8,7 @@ import androidx.room.RoomDatabase
 import org.intelehealth.videolibrary.model.Category
 import org.intelehealth.videolibrary.model.Video
 import org.intelehealth.videolibrary.room.dao.CategoryDao
-import org.intelehealth.videolibrary.room.dao.LibraryDao
+import org.intelehealth.videolibrary.room.dao.VideoDao
 import org.intelehealth.videolibrary.utils.getApplicationName
 import java.util.Locale
 
@@ -21,7 +21,7 @@ import java.util.Locale
 @Database(entities = [Video::class, Category::class], version = 1)
 abstract class VideoLibraryDatabase : RoomDatabase() {
 
-    abstract fun libraryDao(): LibraryDao
+    abstract fun libraryDao(): VideoDao
     abstract fun categoryDao(): CategoryDao
 
     companion object {

@@ -14,7 +14,7 @@ import org.intelehealth.videolibrary.model.Video
  **/
 
 @Dao
-interface LibraryDao {
+interface VideoDao {
 
     @Query("SELECT * FROM tbl_video_library WHERE categoryId = :categoryId")
     fun getVideosByCategoryId(categoryId: Int): Flow<List<Video>>
@@ -24,5 +24,8 @@ interface LibraryDao {
 
     @Query("DELETE FROM tbl_video_library")
     suspend fun deleteAll()
+
+    @Query("DELETE FROM tbl_video_library WHERE categoryId = :categoryId")
+    suspend fun deleteVideosByCategoryId(categoryId: Int)
 
 }

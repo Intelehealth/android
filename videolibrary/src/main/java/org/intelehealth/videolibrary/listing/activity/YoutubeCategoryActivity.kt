@@ -15,8 +15,8 @@ import org.intelehealth.videolibrary.constants.Constants
 import org.intelehealth.videolibrary.data.PreferenceHelper
 import org.intelehealth.videolibrary.databinding.ActivityYoutubeListingBinding
 import org.intelehealth.videolibrary.listing.adapter.YoutubeListingAdapter
-import org.intelehealth.videolibrary.listing.viewmodel.CategoryViewModelFactory
-import org.intelehealth.videolibrary.listing.viewmodel.YoutubeCategoryViewModel
+import org.intelehealth.videolibrary.listing.viewmodel.category.CategoryViewModelFactory
+import org.intelehealth.videolibrary.listing.viewmodel.category.YoutubeCategoryViewModel
 import org.intelehealth.videolibrary.model.Video
 import org.intelehealth.videolibrary.player.activity.VideoPlayerActivity
 import org.intelehealth.videolibrary.restapi.RetrofitProvider

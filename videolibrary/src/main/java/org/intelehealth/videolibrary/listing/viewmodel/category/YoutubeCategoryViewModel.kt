@@ -1,4 +1,4 @@
-package org.intelehealth.videolibrary.listing.viewmodel
+package org.intelehealth.videolibrary.listing.viewmodel.category
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
