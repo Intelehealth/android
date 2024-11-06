@@ -23,8 +23,8 @@ data class Video(
     @SerializedName("createdBy")
     val createdBy: String,
 
-    @SerializedName("projectId")
-    val projectId: Int,
+    @SerializedName("categoryId")
+    val categoryId: Int,
 
     @SerializedName("title")
     val title: String,

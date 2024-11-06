@@ -4,7 +4,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import org.intelehealth.videolibrary.model.Video
 import org.intelehealth.videolibrary.restapi.VideoLibraryApiClient
-import org.intelehealth.videolibrary.restapi.response.VideoLibraryResponse
+import org.intelehealth.videolibrary.restapi.response.videos.MainVideoResponse
 import org.intelehealth.videolibrary.room.dao.LibraryDao
 import retrofit2.Response
 
@@ -22,7 +22,7 @@ class ListingDataSource(
     suspend fun fetchVideosFromServer(
         packageName: String,
         auth: String
-    ): Flow<Response<VideoLibraryResponse?>> = flow {
+    ): Flow<Response<MainVideoResponse?>> = flow {
         emit(service.fetchVideosFromServer(packageName, auth))
     }
 

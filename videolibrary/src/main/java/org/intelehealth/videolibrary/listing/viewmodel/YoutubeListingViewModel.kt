@@ -12,7 +12,7 @@ import org.intelehealth.videolibrary.listing.data.ListingDataSource
 import org.intelehealth.videolibrary.listing.data.ListingRepository
 import org.intelehealth.videolibrary.model.Video
 import org.intelehealth.videolibrary.restapi.VideoLibraryApiClient
-import org.intelehealth.videolibrary.restapi.response.VideoLibraryResponse
+import org.intelehealth.videolibrary.restapi.response.videos.MainVideoResponse
 import org.intelehealth.videolibrary.room.dao.LibraryDao
 import org.intelehealth.videolibrary.utils.ResponseChecker
 import retrofit2.Response
@@ -48,7 +48,7 @@ class YoutubeListingViewModel(service: VideoLibraryApiClient, dao: LibraryDao) :
         }
     }
 
-    private fun handleResponses(response: Response<VideoLibraryResponse?>) {
+    private fun handleResponses(response: Response<MainVideoResponse?>) {
         val responseChecker = ResponseChecker(response)
         if (responseChecker.isNotAuthorized) {
             _tokenExpiredObserver.postValue(true)

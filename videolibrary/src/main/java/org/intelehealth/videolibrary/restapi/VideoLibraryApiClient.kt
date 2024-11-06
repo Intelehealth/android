@@ -1,6 +1,6 @@
 package org.intelehealth.videolibrary.restapi
 
-import org.intelehealth.videolibrary.restapi.response.VideoLibraryResponse
+import org.intelehealth.videolibrary.restapi.response.videos.MainVideoResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Header
@@ -18,6 +18,8 @@ interface VideoLibraryApiClient {
     suspend fun fetchVideosFromServer(
         @Path("package") packageName: String,
         @Header("Authorization") auth: String
-    ): Response<VideoLibraryResponse?>
+    ): Response<MainVideoResponse?>
+
+    
 
 }

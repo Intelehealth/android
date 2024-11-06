@@ -1,4 +1,4 @@
-package org.intelehealth.videolibrary.restapi.response
+package org.intelehealth.videolibrary.restapi.response.videos
 
 import com.google.gson.annotations.SerializedName
 
@@ -8,10 +8,10 @@ import com.google.gson.annotations.SerializedName
  * Mob   : +919123116015
  **/
 
-data class VideoLibraryResponse(
+data class MainVideoResponse(
     @SerializedName("success")
     val success: Boolean,
 
     @SerializedName("data")
-    val projectLibraryData: ProjectLibraryData
+    val videoResponse: VideoResponse
 )

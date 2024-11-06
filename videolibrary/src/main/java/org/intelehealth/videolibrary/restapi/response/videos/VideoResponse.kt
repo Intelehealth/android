@@ -1,4 +1,4 @@
-package org.intelehealth.videolibrary.restapi.response
+package org.intelehealth.videolibrary.restapi.response.videos
 
 import com.google.gson.annotations.SerializedName
 import org.intelehealth.videolibrary.model.Video
@@ -9,7 +9,7 @@ import org.intelehealth.videolibrary.model.Video
  * Mob   : +919123116015
  **/
 
-data class ProjectLibraryData(
+data class VideoResponse(
 
     @SerializedName("createdAt")
     val createdAt: String,
@@ -19,9 +19,6 @@ data class ProjectLibraryData(
 
     @SerializedName("name")
     val name: String,
-
-    @SerializedName("packageId")
-    val packageId: String,
 
     @SerializedName("updatedAt")
     val updatedAt: String,
