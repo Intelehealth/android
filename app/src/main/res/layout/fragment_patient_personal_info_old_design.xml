@@ -183,7 +183,7 @@
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/textInputETMName"
-                            style="@style/AppTheme.InputBox.Name"
+                            style="@style/AppTheme.InputBox.Name1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/enter_middle_name"
@@ -224,7 +224,7 @@
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/textInputETLName"
-                            style="@style/AppTheme.InputBox.Name"
+                            style="@style/AppTheme.InputBox.Name1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/enter_last_name"
@@ -446,7 +446,7 @@
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/textInputETGuardianName"
-                            style="@style/AppTheme.InputBox.Name"
+                            style="@style/AppTheme.InputBox.Name1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/enter_guardian_name"
@@ -645,7 +645,7 @@
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/textInputETECName"
-                            style="@style/AppTheme.InputBox.Name"
+                            style="@style/AppTheme.InputBox.Name1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/enter_emergency_contact_name"
