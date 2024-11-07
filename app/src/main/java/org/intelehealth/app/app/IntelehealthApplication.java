@@ -24,8 +24,8 @@ import org.intelehealth.app.R;
 import org.intelehealth.app.database.InteleHealthDatabaseHelper;
 import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.SessionManager;
-import org.intelehealth.core.socket.SocketManager;
 import org.intelehealth.config.Config;
+import org.intelehealth.core.socket.SocketManager;
 import org.intelehealth.core.utils.utility.DateTimeResource;
 
 import io.reactivex.plugins.RxJavaPlugins;
@@ -73,7 +73,7 @@ public class IntelehealthApplication extends SplitCompatApplication implements D
     public void onCreate() {
         super.onCreate();
         new Config.Builder(BuildConfig.SERVER_URL + ":4004");
-        new CoreConfig.Builder(BuildConfig.SERVER_URL + ":3004");   // TODO: here instead we can use SOCKET_URL to get the port as well.
+//        new CoreConfig.Builder(BuildConfig.SERVER_URL + ":3004");   // TODO: here instead we can use SOCKET_URL to get the port as well.
         sIntelehealthApplication = this;
         inteleHealthDatabaseHelper = InteleHealthDatabaseHelper.getInstance(sIntelehealthApplication);
         //For Vector Drawables Backward Compatibility(<API 21)

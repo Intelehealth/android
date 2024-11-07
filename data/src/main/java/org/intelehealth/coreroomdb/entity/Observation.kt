@@ -13,13 +13,13 @@ import kotlinx.parcelize.Parcelize
 @Entity(tableName = "tbl_obs")
 data class Observation(
     @PrimaryKey
-    @SerializedName("uuid") var uuid: String,
+    @SerializedName("uuid") var uuid: String = "",
     @ColumnInfo("encounteruuid") @SerializedName("encounteruuid") var encounterUuid: String? = null,
     @ColumnInfo("conceptuuid") @SerializedName("conceptuuid", alternate = ["concept"]) var conceptUuid: String? = null,
     @SerializedName("value") var value: String? = null,
     @ColumnInfo("obsservermodifieddate") @SerializedName("obsservermodifieddate") var obsServerModifiedDate: String? = null,
-    @Ignore @SerializedName("obsDatetime") @Expose var obsDatetime: String,
-    @Ignore @SerializedName("encounter") @Expose var encounter: String,
+    @Ignore @SerializedName("obsDatetime") @Expose var obsDatetime: String = "",
+    @Ignore @SerializedName("encounter") @Expose var encounter: String = "",
     @SerializedName("creator", alternate = ["person"]) var creator: String? = null,
     @SerializedName("comment") var comment: String? = null,
     @SerializedName("voided") var voided: Int? = null,

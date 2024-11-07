@@ -40,26 +40,21 @@ object CoreApiClientProvider {
     }
 
     private fun provideCoreApiClient(retrofitBuilder: Retrofit.Builder): CoreApiClient =
-            retrofitBuilder
-                .baseUrl(CoreApiConfig.baseUrl)    // TODO: create a core config file for baseURL as using config module class was creating CD.
-                .build()
-                .create(CoreApiClient::class.java)
+        retrofitBuilder.baseUrl(CoreApiConfig.baseUrl)    // TODO: create a core config file for baseURL as using config module class was creating CD.
+            .build().create(CoreApiClient::class.java)
 
-    private fun provideRetrofitBuilder(provideOkHttpClient: OkHttpClient,
-        provideGsonConverterFactory: GsonConverterFactory): Retrofit.Builder = Retrofit.Builder()
-        .client(provideOkHttpClient)
-        .addConverterFactory(provideGsonConverterFactory)
+    private fun provideRetrofitBuilder(
+        provideOkHttpClient: OkHttpClient, provideGsonConverterFactory: GsonConverterFactory
+    ): Retrofit.Builder =
+        Retrofit.Builder().client(provideOkHttpClient).addConverterFactory(provideGsonConverterFactory)
 
 
-    private fun provideOkHttpClient(provideOkHttpBuilder: OkHttpClient.Builder)
-    : OkHttpClient = provideOkHttpBuilder.build()
+    private fun provideOkHttpClient(provideOkHttpBuilder: OkHttpClient.Builder): OkHttpClient =
+        provideOkHttpBuilder.build()
 
     private fun provideOkHttpBuilder(interceptor: HttpLoggingInterceptor) =
-        OkHttpClient.Builder().retryOnConnectionFailure(true)
-        .connectTimeout(60, TimeUnit.SECONDS)
-        .readTimeout(60, TimeUnit.SECONDS)
-        .writeTimeout(60, TimeUnit.SECONDS)
-        .addInterceptor(interceptor)
+        OkHttpClient.Builder().retryOnConnectionFailure(true).connectTimeout(60, TimeUnit.SECONDS)
+            .readTimeout(60, TimeUnit.SECONDS).writeTimeout(60, TimeUnit.SECONDS).addInterceptor(interceptor)
 
     private fun provideHttpLoggingInterceptor() = HttpLoggingInterceptor().apply {
         level = if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY
@@ -68,8 +63,7 @@ object CoreApiClientProvider {
 
     private fun provideGson(): Gson = Gson()
 
-    private fun provideGsonConverterFactory(gson: Gson)
-    : GsonConverterFactory = GsonConverterFactory.create(gson)
+    private fun provideGsonConverterFactory(gson: Gson): GsonConverterFactory = GsonConverterFactory.create(gson)
 
     private fun buildCoreApiClient(): CoreApiClient {
         return provideCoreApiClient(

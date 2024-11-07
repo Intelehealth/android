@@ -20,7 +20,7 @@ import org.intelehealth.coreroomdb.dao.*
     PatientAttributeTypeMaster::class, PatientLocation::class, Provider::class,
     ProviderAttribute::class, RtcConnectionLog::class, UserCredentials::class,
     Visit::class, VisitAttribute::class],
-    version = 1)
+    version = 1, exportSchema = false)
 
 abstract class IHDatabase: RoomDatabase() {
     abstract fun appointmentDao(): AppointmentDao

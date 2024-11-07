@@ -2,8 +2,7 @@ package org.intelehealth.core.network.helper
 
 import android.content.Context
 import androidx.preference.PreferenceManager
-import org.intelehealth.app.BuildConfig
-
+import org.intelehealth.core.network.BuildConfig
 
 
 /**
