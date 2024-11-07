@@ -4,11 +4,14 @@
     <color name="white">#FFFFFFFF</color>
 
     <color name="colorPrimary">#2E1E91</color>
-    <color name="colorPrimaryDark">#231670</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimaryDark">#201560</color>
+    <color name="colorAccent">#0FD197</color>
 
     <color name="backgroundGray">#FAF9FF</color>
     <color name="colorPrimaryLightCard">#1a2E1E91</color>
     <color name="textColorGray">#7F7B92</color>
+    <color name="red">#F44336</color>
+    <color name="primary_text">#212121</color>
+    <color name="gray_0">#F1F1F1</color>
 
 </resources>

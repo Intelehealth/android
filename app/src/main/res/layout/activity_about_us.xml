@@ -46,7 +46,7 @@
                     android:background="@null"
                     android:onClick="backPress"
                     android:padding="@dimen/margin_5"
-                    android:src="@drawable/ic_arrow_right" />
+                    android:src="@drawable/ic_arrow_left" />
 
                 <!-- Label -->
                 <TextView

@@ -10,4 +10,17 @@
     <dimen name="find_videos_margin_top">20dp</dimen>
     <dimen name="find_videos_margin_bottom">20dp</dimen>
 
+    <dimen name="toolbar_text_height">24dp</dimen>
+    <dimen name="fu_margin_start">15dp</dimen>
+    <dimen name="margin_30dp">30dp</dimen>
+
+    <dimen name="margin_5">5dp</dimen>
+    <dimen name="margin_10">10dp</dimen>
+    <dimen name="toolbar_text_size">18sp</dimen>
+    <dimen name="margin_6">6dp</dimen>
+    <dimen name="margin_20dp">20dp</dimen>
+    <dimen name="margin_15dp">15dp</dimen>
+    <dimen name="edittext_textsize_16sp">16sp</dimen>
+
+
 </resources>

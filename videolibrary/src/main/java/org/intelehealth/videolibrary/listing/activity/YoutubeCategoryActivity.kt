@@ -7,18 +7,16 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.WindowCompat
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
 import org.intelehealth.videolibrary.R
 import org.intelehealth.videolibrary.callbacks.VideoClickedListener
 import org.intelehealth.videolibrary.constants.Constants
 import org.intelehealth.videolibrary.data.PreferenceHelper
 import org.intelehealth.videolibrary.databinding.ActivityYoutubeListingBinding
-import org.intelehealth.videolibrary.listing.adapter.YoutubeListingAdapter
 import org.intelehealth.videolibrary.listing.viewmodel.category.CategoryViewModelFactory
 import org.intelehealth.videolibrary.listing.viewmodel.category.YoutubeCategoryViewModel
 import org.intelehealth.videolibrary.model.Category
-import org.intelehealth.videolibrary.model.Video
 import org.intelehealth.videolibrary.player.activity.VideoPlayerActivity
 import org.intelehealth.videolibrary.restapi.RetrofitProvider
 import org.intelehealth.videolibrary.restapi.VideoLibraryApiClient
@@ -47,7 +45,6 @@ class YoutubeCategoryActivity : AppCompatActivity(), VideoClickedListener {
         binding = ActivityYoutubeListingBinding.inflate(layoutInflater)
         setContentView(binding?.root)
 
-        setToolbar()
         setSwipeToRefreshLayout()
         initializeData()
         setObservers()
@@ -133,20 +130,10 @@ class YoutubeCategoryActivity : AppCompatActivity(), VideoClickedListener {
                 categoryDao = categoryDao
             )
         )[YoutubeCategoryViewModel::class.java]
-    }
 
-    private fun setToolbar() {
-        binding?.toolbar?.apply {
-            setSupportActionBar(this)
-            setTitleTextAppearance(this@YoutubeCategoryActivity, R.style.ToolbarTheme)
-            setTitleTextColor(Color.WHITE)
-        }
-
-        supportActionBar?.apply {
-            setDisplayHomeAsUpEnabled(true)
-            setDisplayShowTitleEnabled(true)
-            title = getString(R.string.video_library)
-        }
+        val windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
+        windowInsetsController.isAppearanceLightStatusBars = true
+        window.statusBarColor = Color.WHITE
     }
 
     private fun fetchVideosFromServer() {
