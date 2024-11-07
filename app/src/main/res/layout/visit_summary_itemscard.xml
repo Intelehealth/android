@@ -841,7 +841,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginStart="@dimen/margin_8"
                         android:layout_toEndOf="@+id/vs_icon"
-                        android:text="@string/physical_examination" />
+                        android:text="@string/relapse" />
 
                     <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
                         android:id="@+id/btn_up_phyexam_header"
@@ -883,7 +883,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:lineSpacingExtra="-3sp"
-                            android:text="@string/general_exams"
+                            android:text="@string/relapse_info"
                             android:textStyle="bold" />
 
                         <LinearLayout

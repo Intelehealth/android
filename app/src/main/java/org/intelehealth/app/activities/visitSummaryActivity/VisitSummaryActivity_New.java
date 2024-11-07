@@ -5419,8 +5419,13 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             if (isInOldFormat) {
                 physFindingsView.setVisibility(View.VISIBLE);
                 String valueArray[] = value.replace("General exams: <br>", "<b>General exams: </b><br/>").split("<b>General exams: </b><br/>");
-                if (valueArray.length > 1)
-                    physFindingsView.setText(Html.fromHtml(valueArray[1]));//.replaceFirst("<b>", "<br/><b>")));
+                if(BuildConfig.FLAVOR_client == "kcdo"){
+                    physFindingsView.setText(Html.fromHtml(valueArray[0]));
+                }else {
+                    if (valueArray.length > 1)
+                        physFindingsView.setText(Html.fromHtml(valueArray[1]));//.replaceFirst("<b>", "<br/><b>")));
+                }
+
             } else {
                 //physFindingsView.setText(Html.fromHtml(value.replaceFirst("<b>", "<br/><b>")));
                 setDataForPhysicalExamSummary(physicalExamLocaleString);

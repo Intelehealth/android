@@ -1037,4 +1037,10 @@
     <string name="lbl_clear_all">सभी साफ़ करें</string>
     <string name="sync">Refresh</string>
     <string name="sending_otp">Sending OTP...</string>
+    <string name="relapse_info">Relapse Info</string>
+    <string name="relapse">Relapse</string>
+    <string name="_relapse">%1$d/%2$d Relapse</string>
+    <string name="ui2_relapse_summary_title">%1$d/%2$d Relapse summary</string>
+
+
 </resources>
