@@ -70,7 +70,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_15dp"
-        android:paddingVertical="@dimen/margin_20dp"
+        android:paddingVertical="@dimen/margin_15dp"
         app:layout_constraintBottom_toTopOf="@id/vp_videos"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
