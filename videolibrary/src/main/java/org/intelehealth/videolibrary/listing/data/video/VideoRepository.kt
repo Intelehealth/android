@@ -15,9 +15,4 @@ class VideoRepository(private val source: VideoDataSource) {
     fun getVideosFromDbByCategoryId(categoryId: Int) =
         source.getVideosFromDbByCategoryId(categoryId)
 
-    suspend fun deleteAllVideos() = source.deleteAllVideos()
-
-    suspend fun deleteAllVideosByCategoryId(categoryId: Int) =
-        source.deleteAllVideosByCategoryId(categoryId)
-
 }

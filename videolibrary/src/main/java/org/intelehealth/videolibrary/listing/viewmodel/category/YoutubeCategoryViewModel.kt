@@ -10,10 +10,10 @@ import kotlinx.coroutines.launch
 import org.intelehealth.videolibrary.listing.data.category.CategoryDataSource
 import org.intelehealth.videolibrary.listing.data.category.CategoryRepository
 import org.intelehealth.videolibrary.model.Category
-import org.intelehealth.videolibrary.model.Video
 import org.intelehealth.videolibrary.restapi.VideoLibraryApiClient
 import org.intelehealth.videolibrary.restapi.response.categories.MainCategoryResponse
 import org.intelehealth.videolibrary.room.dao.CategoryDao
+import org.intelehealth.videolibrary.room.dao.VideoDao
 import org.intelehealth.videolibrary.utils.ResponseChecker
 import retrofit2.Response
 
@@ -25,7 +25,8 @@ import retrofit2.Response
 
 class YoutubeCategoryViewModel(
     service: VideoLibraryApiClient,
-    categoryDao: CategoryDao
+    categoryDao: CategoryDao,
+    videoDao: VideoDao
 ) : ViewModel() {
 
     private var repository: CategoryRepository
@@ -37,7 +38,7 @@ class YoutubeCategoryViewModel(
     var emptyListObserver: LiveData<Boolean> = _emptyListObserver
 
     init {
-        val dataSource = CategoryDataSource(service, categoryDao)
+        val dataSource = CategoryDataSource(service, categoryDao, videoDao)
         repository = CategoryRepository(dataSource)
     }
 
@@ -67,12 +68,23 @@ class YoutubeCategoryViewModel(
 
     fun fetchCategoriesFromDb() = repository.fetchAllCategoriesFromDb().asLiveData()
 
+    fun areListsSame(list1: List<Category>?, list2: List<Category>?) = list1 == list2
+
     fun deleteAllCategories() {
         viewModelScope.launch(Dispatchers.IO) {
             repository.deleteAllCategories()
         }
     }
 
-    fun areListsSame(list1: List<Category>?, list2: List<Category>?) = list1 == list2
+    fun deleteAllVideos() {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteAllVideos()
+        }
+    }
 
+    fun deleteVideosByCategoryId(categoryId: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteAllVideosByCategoryId(categoryId)
+        }
+    }
 }

@@ -1,9 +1,7 @@
 package org.intelehealth.videolibrary.listing.activity
 
-import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -11,7 +9,6 @@ import androidx.core.view.WindowCompat
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.tabs.TabLayoutMediator
 import org.intelehealth.videolibrary.R
-import org.intelehealth.videolibrary.callbacks.VideoClickedListener
 import org.intelehealth.videolibrary.constants.Constants
 import org.intelehealth.videolibrary.data.PreferenceHelper
 import org.intelehealth.videolibrary.databinding.ActivityYoutubeListingBinding
@@ -19,11 +16,11 @@ import org.intelehealth.videolibrary.listing.adapter.CategoryFragmentAdapter
 import org.intelehealth.videolibrary.listing.viewmodel.category.CategoryViewModelFactory
 import org.intelehealth.videolibrary.listing.viewmodel.category.YoutubeCategoryViewModel
 import org.intelehealth.videolibrary.model.Category
-import org.intelehealth.videolibrary.player.activity.VideoPlayerActivity
 import org.intelehealth.videolibrary.restapi.RetrofitProvider
 import org.intelehealth.videolibrary.restapi.VideoLibraryApiClient
 import org.intelehealth.videolibrary.room.VideoLibraryDatabase
 import org.intelehealth.videolibrary.room.dao.CategoryDao
+import org.intelehealth.videolibrary.room.dao.VideoDao
 
 /**
  * Created by Arpan Sircar. on 08-02-2024.
@@ -31,7 +28,7 @@ import org.intelehealth.videolibrary.room.dao.CategoryDao
  * Mob   : +919123116015
  **/
 
-class YoutubeCategoryActivity : AppCompatActivity(), VideoClickedListener {
+class YoutubeCategoryActivity : AppCompatActivity() {
 
     private var binding: ActivityYoutubeListingBinding? = null
     private var preferenceHelper: PreferenceHelper? = null
@@ -50,7 +47,7 @@ class YoutubeCategoryActivity : AppCompatActivity(), VideoClickedListener {
         initializeUI()
         initializeData()
         setObservers()
-        setVideoLibraryRecyclerView()
+        setVideoCategories()
     }
 
     private fun initializeUI() {
@@ -68,7 +65,7 @@ class YoutubeCategoryActivity : AppCompatActivity(), VideoClickedListener {
         // Refresh button
         binding?.ivRefresh?.setOnClickListener {
             binding?.progressBar?.visibility = View.VISIBLE
-            fetchVideosFromServer()
+            fetchCategoriesFromServer()
         }
     }
 
@@ -81,7 +78,7 @@ class YoutubeCategoryActivity : AppCompatActivity(), VideoClickedListener {
             if (it.isEmpty() && !isCallToServer) {
                 isCallToServer = false
                 binding?.progressBar?.visibility = View.VISIBLE
-                fetchVideosFromServer()
+                fetchCategoriesFromServer()
                 return@observe
             }
 
@@ -113,7 +110,7 @@ class YoutubeCategoryActivity : AppCompatActivity(), VideoClickedListener {
             if (it) {
                 Toast.makeText(
                     this@YoutubeCategoryActivity,
-                    getString(R.string.no_videos_found_on_server),
+                    getString(R.string.no_categories_found_on_server),
                     Toast.LENGTH_LONG
                 ).show()
 
@@ -144,37 +141,27 @@ class YoutubeCategoryActivity : AppCompatActivity(), VideoClickedListener {
         val service: VideoLibraryApiClient = RetrofitProvider.apiService
         val categoryDao: CategoryDao =
             VideoLibraryDatabase.getInstance(this@YoutubeCategoryActivity).categoryDao()
+        val videoDao: VideoDao =
+            VideoLibraryDatabase.getInstance(this@YoutubeCategoryActivity).videoDao()
 
         viewmodel = ViewModelProvider(
             owner = this@YoutubeCategoryActivity, factory = CategoryViewModelFactory(
                 service = service,
-                categoryDao = categoryDao
+                categoryDao = categoryDao,
+                videoDao = videoDao
             )
         )[YoutubeCategoryViewModel::class.java]
     }
 
-    private fun fetchVideosFromServer() {
+    private fun fetchCategoriesFromServer() {
         isCallToServer = true
+        viewmodel?.deleteAllVideos()
+        viewmodel?.deleteAllCategories()
         viewmodel?.fetchCategoriesFromServer(authKey!!)
     }
 
-    private fun setVideoLibraryRecyclerView() {
+    private fun setVideoCategories() {
         binding?.progressBar?.visibility = View.VISIBLE
         viewmodel?.fetchCategoriesFromDb()
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val itemId: Int = item.itemId
-        if (itemId == android.R.id.home) {
-            finish()
-        }
-        return super.onOptionsItemSelected(item)
-    }
-
-    override fun onVideoClicked(videoId: String) {
-        val intent = Intent(this@YoutubeCategoryActivity, VideoPlayerActivity::class.java).also {
-            it.putExtra(Constants.VIDEO_ID, videoId)
-        }
-        startActivity(intent)
     }
 }

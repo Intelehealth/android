@@ -20,4 +20,9 @@ class CategoryRepository(private val source: CategoryDataSource) {
 
     suspend fun deleteAllCategories() = source.deleteAllCategories()
 
+    suspend fun deleteAllVideos() = source.deleteAllVideos()
+
+    suspend fun deleteAllVideosByCategoryId(categoryId: Int) =
+        source.deleteAllVideosByCategoryId(categoryId)
+
 }

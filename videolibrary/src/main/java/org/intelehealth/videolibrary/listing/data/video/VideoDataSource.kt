@@ -29,11 +29,4 @@ class VideoDataSource(
         dao.getVideosByCategoryId(categoryId)
     }
 
-    suspend fun deleteAllVideos() {
-        dao.deleteAll()
-    }
-
-    suspend fun deleteAllVideosByCategoryId(categoryId: Int) =
-        dao.deleteVideosByCategoryId(categoryId)
-
 }

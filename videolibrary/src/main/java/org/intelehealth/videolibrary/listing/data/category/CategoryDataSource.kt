@@ -6,6 +6,7 @@ import org.intelehealth.videolibrary.model.Category
 import org.intelehealth.videolibrary.restapi.VideoLibraryApiClient
 import org.intelehealth.videolibrary.restapi.response.categories.MainCategoryResponse
 import org.intelehealth.videolibrary.room.dao.CategoryDao
+import org.intelehealth.videolibrary.room.dao.VideoDao
 import retrofit2.Response
 
 /**
@@ -16,7 +17,8 @@ import retrofit2.Response
 
 class CategoryDataSource(
     private val service: VideoLibraryApiClient,
-    private val categoryDao: CategoryDao
+    private val categoryDao: CategoryDao,
+    private val videoDao: VideoDao
 ) {
 
     fun fetchAllCategoriesFromServer(auth: String): Flow<Response<MainCategoryResponse>> = flow {
@@ -33,4 +35,11 @@ class CategoryDataSource(
     suspend fun deleteAllCategories() {
         categoryDao.deleteAll()
     }
+
+    suspend fun deleteAllVideos() {
+        videoDao.deleteAll()
+    }
+
+    suspend fun deleteAllVideosByCategoryId(categoryId: Int) =
+        videoDao.deleteVideosByCategoryId(categoryId)
 }
