@@ -21,7 +21,7 @@ import java.util.Locale
 @Database(entities = [Video::class, Category::class], version = 1)
 abstract class VideoLibraryDatabase : RoomDatabase() {
 
-    abstract fun libraryDao(): VideoDao
+    abstract fun videoDao(): VideoDao
     abstract fun categoryDao(): CategoryDao
 
     companion object {
