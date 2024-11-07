@@ -5,7 +5,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.widget.Toast
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -54,7 +56,41 @@ class VideoFragment : Fragment(), VideoClickedListener {
         super.onViewCreated(view, savedInstanceState)
 
         setObservers()
+        setListeners()
         fetchVideosFromDb()
+    }
+
+    private fun setListeners() {
+        binding?.tvFindVideos?.setOnEditorActionListener { v, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                performSearch(v.text.toString())
+                return@setOnEditorActionListener true
+            }
+            return@setOnEditorActionListener false
+        }
+
+        binding?.tilFindVideos?.setEndIconOnClickListener {
+            binding?.tvFindVideos?.setText("")
+            videoList?.let { it1 -> initializeRecyclerView(it1) }
+        }
+
+        binding?.tilFindVideos?.isEndIconVisible = false
+
+        binding?.tvFindVideos?.addTextChangedListener {
+            binding?.tilFindVideos?.isEndIconVisible = it?.toString()?.isEmpty() != true
+        }
+    }
+
+    private fun performSearch(searchString: String) {
+        val tempList = mutableListOf<Video>()
+
+        for (video in videoList!!) {
+            if (video.title.contains(searchString)) {
+                tempList.add(video)
+            }
+        }
+
+        initializeRecyclerView(tempList)
     }
 
     private fun setObservers() {
