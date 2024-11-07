@@ -112,12 +112,7 @@ class VideoFragment : Fragment(), VideoClickedListener {
 
         binding?.rvVideos?.apply {
             this.adapter = adapter
-            this.addItemDecoration(
-                DividerItemDecoration(
-                    requireActivity(),
-                    LinearLayoutManager.VERTICAL
-                )
-            )
+            this.layoutManager = LinearLayoutManager(requireContext())
         }
     }
 
