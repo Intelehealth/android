@@ -192,6 +192,7 @@ public class PatientsDAO {
 
             values.put("dead", false);
             values.put("sync", false);
+            values.put("address3", patientDTO.getAddress3());
 
             insertPatientAttributes(patientDTO.getPatientAttributesDTOList(), db);
             Logger.logD("pulldata", "datadumper" + values);
@@ -1017,6 +1018,7 @@ public class PatientsDAO {
                 patientDTO.setContactType(cursor.getString(cursor.getColumnIndexOrThrow("contact_type")));
                 patientDTO.setEmContactName(cursor.getString(cursor.getColumnIndexOrThrow("em_contact_name")));
                 patientDTO.setEmContactNumber(cursor.getString(cursor.getColumnIndexOrThrow("em_contact_num")));
+                patientDTO.setAddress3(cursor.getString(cursor.getColumnIndexOrThrow("address3")));
 
                 // Attributes
                 patientDTO.setPhonenumber(cursor.getString(cursor.getColumnIndexOrThrow("telephone")));
@@ -1029,6 +1031,7 @@ public class PatientsDAO {
                 patientDTO.setProfileTimestamp(cursor.getString(cursor.getColumnIndexOrThrow("profileImageTimestamp")));
                 patientDTO.setCaste(cursor.getString(cursor.getColumnIndexOrThrow("caste")));
                 patientDTO.setCreatedDate(cursor.getString(cursor.getColumnIndexOrThrow("createdDate")));
+                patientDTO.setHouseholdNumber(cursor.getString(cursor.getColumnIndexOrThrow("HouseHold")));
             } while (cursor.moveToNext());
         }
         cursor.close();
