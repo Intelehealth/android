@@ -8,16 +8,17 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import org.intelehealth.videolibrary.R
 import org.intelehealth.videolibrary.callbacks.VideoClickedListener
 import org.intelehealth.videolibrary.constants.Constants
 import org.intelehealth.videolibrary.data.PreferenceHelper
 import org.intelehealth.videolibrary.databinding.FragmentVideoCategoryBinding
-import org.intelehealth.videolibrary.listing.activity.YoutubeCategoryActivity
 import org.intelehealth.videolibrary.listing.activity.checkAndHideProgressBar
+import org.intelehealth.videolibrary.listing.adapter.YoutubeListingAdapter
 import org.intelehealth.videolibrary.listing.viewmodel.videos.VideoViewModelFactory
 import org.intelehealth.videolibrary.listing.viewmodel.videos.YoutubeVideoViewModel
-import org.intelehealth.videolibrary.model.Category
 import org.intelehealth.videolibrary.model.Video
 import org.intelehealth.videolibrary.player.activity.VideoPlayerActivity
 import org.intelehealth.videolibrary.restapi.RetrofitProvider
@@ -95,15 +96,29 @@ class VideoFragment : Fragment(), VideoClickedListener {
                 }
 
                 videoList = it
-                initializeRecyclerView()
+                initializeRecyclerView(it)
 
                 binding?.progressBar?.checkAndHideProgressBar()
             }
         }
     }
 
-    private fun initializeRecyclerView() {
+    private fun initializeRecyclerView(videos: List<Video>) {
+        val adapter = YoutubeListingAdapter(
+            videoIds = videos,
+            lifecycle = lifecycle,
+            listener = this@VideoFragment
+        )
 
+        binding?.rvVideos?.apply {
+            this.adapter = adapter
+            this.addItemDecoration(
+                DividerItemDecoration(
+                    requireActivity(),
+                    LinearLayoutManager.VERTICAL
+                )
+            )
+        }
     }
 
     private fun fetchVideosFromServer() {

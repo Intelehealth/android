@@ -30,6 +30,7 @@
         tools:ignore="SpeakableTextPresentCheck,UseCompatTextViewDrawableXml" />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_videos"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginStart="@dimen/find_videos_margin_start_new"

@@ -7,12 +7,12 @@ import android.view.MenuItem
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.WindowCompat
 import org.intelehealth.videolibrary.constants.Constants
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.FullscreenListener
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.options.IFramePlayerOptions
-import org.intelehealth.videolibrary.R
 import org.intelehealth.videolibrary.databinding.ActivityVideoPlayerBinding
 
 /**
@@ -52,23 +52,16 @@ class VideoPlayerActivity : AppCompatActivity() {
             it.enableAutomaticInitialization = false
         }
 
-        setToolbar()
+        initializeUI()
         playYouTubeVideo()
         addFullScreenListener()
     }
 
-    private fun setToolbar() {
-        binding?.toolbar?.apply {
-            setSupportActionBar(this)
-            setTitleTextAppearance(this@VideoPlayerActivity, R.style.ToolbarTheme)
-            setTitleTextColor(Color.WHITE)
-        }
-
-        supportActionBar?.apply {
-            setDisplayHomeAsUpEnabled(true)
-            setDisplayShowTitleEnabled(true)
-            title = getString(R.string.video_library)
-        }
+    private fun initializeUI() {
+        // Status Bar Charges
+        val windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
+        windowInsetsController.isAppearanceLightStatusBars = true
+        window.statusBarColor = Color.WHITE
     }
 
     private fun playYouTubeVideo() {
@@ -90,7 +83,6 @@ class VideoPlayerActivity : AppCompatActivity() {
                 binding?.youtubePlayerView?.visibility = View.GONE
                 binding?.fullScreenViewContainer?.visibility = View.VISIBLE
                 binding?.fullScreenViewContainer?.addView(fullscreenView)
-                binding?.appBarLayout?.visibility = View.GONE
                 requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
             }
 
@@ -99,7 +91,6 @@ class VideoPlayerActivity : AppCompatActivity() {
                 binding?.youtubePlayerView?.visibility = View.VISIBLE
                 binding?.fullScreenViewContainer?.visibility = View.GONE
                 binding?.fullScreenViewContainer?.removeAllViews()
-                binding?.appBarLayout?.visibility = View.VISIBLE
                 requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
             }
         })

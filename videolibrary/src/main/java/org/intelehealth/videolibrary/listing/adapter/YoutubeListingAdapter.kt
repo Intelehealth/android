@@ -40,7 +40,6 @@ internal class YoutubeListingAdapter(
 
     override fun onBindViewHolder(holder: YoutubeListingViewHolder, position: Int) {
         holder.cueVideo(videoIds[position].videoId)
-
     }
 
     class YoutubeListingViewHolder(
