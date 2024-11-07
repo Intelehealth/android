@@ -1,4 +1,5 @@
 <resources>
     <string name="video_library">Video Library</string>
     <string name="no_videos_found_on_server">No videos found on the server</string>
+    <string name="search_for_videos">Search for videos</string>
 </resources>

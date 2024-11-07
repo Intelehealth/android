@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="find_videos_margin_start_new">15dp</dimen>
+    <dimen name="find_videos_margin_end_new">15dp</dimen>
+    <dimen name="back_arrow_intro_height">24dp</dimen>
+    <dimen name="back_arrow_intro_width">24dp</dimen>
+    <dimen name="find_patient_icon_padding">10dp</dimen>
+    <dimen name="find_patient_padding">10dp</dimen>
+    <dimen name="find_patient_hint_size">14sp</dimen>
+    <dimen name="find_videos_margin_top">20dp</dimen>
+    <dimen name="find_videos_margin_bottom">20dp</dimen>
+
+</resources>

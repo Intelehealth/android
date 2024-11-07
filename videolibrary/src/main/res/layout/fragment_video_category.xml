@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tv_find_videos"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/find_videos_margin_start_new"
+        android:layout_marginTop="@dimen/find_videos_margin_top"
+        android:layout_marginEnd="@dimen/find_videos_margin_end_new"
+        android:background="@drawable/ui2_common_input_bg"
+        android:drawableStart="@drawable/ui2_ic_search_icon_home"
+        android:drawablePadding="@dimen/find_patient_icon_padding"
+        android:gravity="center_vertical"
+        android:importantForAutofill="no"
+        android:maxLines="1"
+        android:minHeight="52dp"
+        android:padding="@dimen/find_patient_padding"
+        android:singleLine="true"
+        android:text="@string/search_for_videos"
+        android:textColor="@color/textColorGray"
+        android:textSize="@dimen/find_patient_hint_size"
+        app:drawableTint="@color/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="SpeakableTextPresentCheck,UseCompatTextViewDrawableXml" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/find_videos_margin_start_new"
+        android:layout_marginTop="@dimen/find_videos_margin_top"
+        android:layout_marginEnd="@dimen/find_videos_margin_end_new"
+        android:layout_marginBottom="@dimen/find_videos_margin_bottom"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_find_videos" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
