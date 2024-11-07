@@ -10,7 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/find_videos_margin_start_new"
-        android:layout_marginTop="@dimen/find_videos_margin_top"
         android:layout_marginEnd="@dimen/find_videos_margin_end_new"
         android:background="@drawable/ui2_common_input_bg"
         android:drawableStart="@drawable/ui2_ic_search_icon_home"

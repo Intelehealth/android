@@ -21,6 +21,6 @@
     <dimen name="margin_20dp">20dp</dimen>
     <dimen name="margin_15dp">15dp</dimen>
     <dimen name="edittext_textsize_16sp">16sp</dimen>
-
+    <dimen name="tab_item_size">17sp</dimen>
 
 </resources>

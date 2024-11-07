@@ -9,11 +9,13 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.tabs.TabLayoutMediator
 import org.intelehealth.videolibrary.R
 import org.intelehealth.videolibrary.callbacks.VideoClickedListener
 import org.intelehealth.videolibrary.constants.Constants
 import org.intelehealth.videolibrary.data.PreferenceHelper
 import org.intelehealth.videolibrary.databinding.ActivityYoutubeListingBinding
+import org.intelehealth.videolibrary.listing.adapter.CategoryFragmentAdapter
 import org.intelehealth.videolibrary.listing.viewmodel.category.CategoryViewModelFactory
 import org.intelehealth.videolibrary.listing.viewmodel.category.YoutubeCategoryViewModel
 import org.intelehealth.videolibrary.model.Category
@@ -45,16 +47,9 @@ class YoutubeCategoryActivity : AppCompatActivity(), VideoClickedListener {
         binding = ActivityYoutubeListingBinding.inflate(layoutInflater)
         setContentView(binding?.root)
 
-        setSwipeToRefreshLayout()
         initializeData()
         setObservers()
         setVideoLibraryRecyclerView()
-    }
-
-    private fun setSwipeToRefreshLayout() {
-        binding?.swipeToRefresh?.setOnRefreshListener {
-            fetchVideosFromServer()
-        }
     }
 
     private fun setObservers() {
@@ -74,7 +69,6 @@ class YoutubeCategoryActivity : AppCompatActivity(), VideoClickedListener {
             // this is to prevent flickering issue as Flows are constantly updating our listing
             if (viewmodel?.areListsSame(categoryList, it) == true) {
                 binding?.progressBar?.checkAndHideProgressBar()
-                binding?.swipeToRefresh?.checkAndHideProgressBar()
                 return@observe
             }
 
@@ -84,7 +78,6 @@ class YoutubeCategoryActivity : AppCompatActivity(), VideoClickedListener {
 
             // Hiding the progress bars here is being handled by extension functions
             binding?.progressBar?.checkAndHideProgressBar()
-            binding?.swipeToRefresh?.checkAndHideProgressBar()
         }
 
         // used for detecting if the JWT token is expired
@@ -105,14 +98,22 @@ class YoutubeCategoryActivity : AppCompatActivity(), VideoClickedListener {
                 ).show()
 
                 // Hiding the progress bars here is being handled by extension functions
-                binding?.swipeToRefresh?.checkAndHideProgressBar()
                 binding?.progressBar?.checkAndHideProgressBar()
             }
         }
     }
 
     private fun initializeViewPager(categoryList: List<Category>) {
+        val adapter = CategoryFragmentAdapter(
+            categoryList = categoryList,
+            lifecycle = lifecycle,
+            manager = supportFragmentManager
+        )
 
+        binding?.vpVideos?.adapter = adapter
+        TabLayoutMediator(binding?.tlVideos!!, binding?.vpVideos!!) { tab, position ->
+            tab.text = categoryList[position].name
+        }.attach()
     }
 
     private fun initializeData() {
