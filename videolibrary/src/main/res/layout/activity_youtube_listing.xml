@@ -22,7 +22,7 @@
 
         <!-- arrow-right -->
         <ImageButton
-            android:id="@+id/backArrow"
+            android:id="@+id/iv_back"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:background="@null"
@@ -46,13 +46,13 @@
             android:textColor="@null"
             android:textSize="@dimen/toolbar_text_size"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/refresh"
-            app:layout_constraintStart_toEndOf="@id/backArrow"
+            app:layout_constraintEnd_toStartOf="@id/iv_refresh"
+            app:layout_constraintStart_toEndOf="@id/iv_back"
             app:layout_constraintTop_toTopOf="parent" />
 
 
         <ImageButton
-            android:id="@+id/refresh"
+            android:id="@+id/iv_refresh"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginEnd="@dimen/fu_margin_start"

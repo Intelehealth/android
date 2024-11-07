@@ -47,9 +47,29 @@ class YoutubeCategoryActivity : AppCompatActivity(), VideoClickedListener {
         binding = ActivityYoutubeListingBinding.inflate(layoutInflater)
         setContentView(binding?.root)
 
+        initializeUI()
         initializeData()
         setObservers()
         setVideoLibraryRecyclerView()
+    }
+
+    private fun initializeUI() {
+
+        // Status Bar Charges
+        val windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
+        windowInsetsController.isAppearanceLightStatusBars = true
+        window.statusBarColor = Color.WHITE
+
+        // Back button
+        binding?.ivBack?.setOnClickListener {
+            finish()
+        }
+
+        // Refresh button
+        binding?.ivRefresh?.setOnClickListener {
+            binding?.progressBar?.visibility = View.VISIBLE
+            fetchVideosFromServer()
+        }
     }
 
     private fun setObservers() {
@@ -131,10 +151,6 @@ class YoutubeCategoryActivity : AppCompatActivity(), VideoClickedListener {
                 categoryDao = categoryDao
             )
         )[YoutubeCategoryViewModel::class.java]
-
-        val windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
-        windowInsetsController.isAppearanceLightStatusBars = true
-        window.statusBarColor = Color.WHITE
     }
 
     private fun fetchVideosFromServer() {
