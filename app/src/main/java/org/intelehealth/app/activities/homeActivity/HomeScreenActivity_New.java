@@ -59,6 +59,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -114,6 +116,7 @@ import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.DownloadFilesUtils;
 import org.intelehealth.app.utilities.Logger;
+import org.intelehealth.app.utilities.NavigationUtils;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.OfflineLogin;
@@ -130,6 +133,8 @@ import org.intelehealth.fcm.utils.NotificationBroadCast;
 import org.intelehealth.klivekit.data.PreferenceHelper;
 import org.intelehealth.klivekit.utils.FirebaseUtils;
 import org.intelehealth.klivekit.utils.Manager;
+import org.intelehealth.videolibrary.constants.Constants;
+import org.intelehealth.videolibrary.utils.VideoLibraryManager;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -198,6 +203,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         Manager.getInstance().setBaseUrl(BuildConfig.SERVER_URL);
         // save fcm reg. token for chat (Video)
         FirebaseUtils.saveToken(this, sessionManager.getProviderID(), IntelehealthApplication.getInstance().refreshedFCMTokenID, sessionManager.getAppLanguage());
+        VideoLibraryManager.setBaseUrl(sessionManager.getServerUrl());
     }
 
     @Override
@@ -1004,6 +1010,8 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             imageViewIsNotification.setVisibility(View.GONE);
             fragment = new MyAchievementsFragment();
             tag = TAG_ACHIEVEMENT;
+        } else if (itemId == R.id.menu_video_library) {
+            startVideoLibrary();
         } else if (itemId == R.id.menu_video_lib) {
             tvTitleHomeScreenCommon.setText(getResources().getString(R.string.videos));
             fragment = new InformativeVideosFragment_New();
@@ -1036,6 +1044,26 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             // setTitle(menuItem.getTitle());
         }
 
+    }
+
+    ActivityResultLauncher<Intent> result = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<>() {
+        @Override
+        public void onActivityResult(ActivityResult o) {
+            if (o.getResultCode() == Constants.JWT_TOKEN_EXPIRED) {
+                sessionManager.setJwtAuthToken(null);
+                NavigationUtils navigationUtils = new NavigationUtils();
+                navigationUtils.triggerSignOutOn401Response(context);
+            }
+        }
+    });
+
+    private void startVideoLibrary() {
+        try {
+            Intent intent = new Intent(this, Class.forName("org.intelehealth.videolibrary.listing.activity.YoutubeCategoryActivity"));
+            result.launch(intent);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
     }
 
     private void switchLocationSync() {

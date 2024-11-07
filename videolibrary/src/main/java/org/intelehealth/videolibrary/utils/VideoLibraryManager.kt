@@ -12,7 +12,7 @@ object VideoLibraryManager {
     private var baseUrl = ""
 
     fun getBaseUrlWithPort(): String {
-        return "https://${getBaseUrl()}:3004"
+        return "${getBaseUrl()}:3004"
     }
 
     @JvmStatic

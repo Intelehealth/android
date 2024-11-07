@@ -17,6 +17,7 @@ import org.intelehealth.videolibrary.databinding.ActivityYoutubeListingBinding
 import org.intelehealth.videolibrary.listing.adapter.YoutubeListingAdapter
 import org.intelehealth.videolibrary.listing.viewmodel.category.CategoryViewModelFactory
 import org.intelehealth.videolibrary.listing.viewmodel.category.YoutubeCategoryViewModel
+import org.intelehealth.videolibrary.model.Category
 import org.intelehealth.videolibrary.model.Video
 import org.intelehealth.videolibrary.player.activity.VideoPlayerActivity
 import org.intelehealth.videolibrary.restapi.RetrofitProvider
@@ -38,7 +39,7 @@ class YoutubeCategoryActivity : AppCompatActivity(), VideoClickedListener {
 
     private var authKey: String? = null
     private var packageName: String? = null
-    private var videoList: List<Video>? = null
+    private var categoryList: List<Category>? = null
     private var isCallToServer: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,7 +63,7 @@ class YoutubeCategoryActivity : AppCompatActivity(), VideoClickedListener {
     private fun setObservers() {
 
         // used for fetching data from the db
-        viewmodel?.fetchVideosFromDb()?.observe(this) {
+        viewmodel?.fetchCategoriesFromDb()?.observe(this) {
 
             // to fetch the videos from the server in case the db is empty
             if (it.isEmpty() && !isCallToServer) {
@@ -74,15 +75,15 @@ class YoutubeCategoryActivity : AppCompatActivity(), VideoClickedListener {
 
             // to check if the same videos are being set or not
             // this is to prevent flickering issue as Flows are constantly updating our listing
-            if (viewmodel?.areListsSame(videoList, it) == true) {
+            if (viewmodel?.areListsSame(categoryList, it) == true) {
                 binding?.progressBar?.checkAndHideProgressBar()
                 binding?.swipeToRefresh?.checkAndHideProgressBar()
                 return@observe
             }
 
             // caching the list of videos fetched to maintain a record and prevent constant updates
-            videoList = it
-            updateRecyclerView(it)
+            categoryList = it
+            initializeViewPager(it)
 
             // Hiding the progress bars here is being handled by extension functions
             binding?.progressBar?.checkAndHideProgressBar()
@@ -109,18 +110,12 @@ class YoutubeCategoryActivity : AppCompatActivity(), VideoClickedListener {
                 // Hiding the progress bars here is being handled by extension functions
                 binding?.swipeToRefresh?.checkAndHideProgressBar()
                 binding?.progressBar?.checkAndHideProgressBar()
-
-                updateRecyclerView(emptyList())
             }
         }
     }
 
-    private fun updateRecyclerView(it: List<Video>) {
-        val adapter = YoutubeListingAdapter(it, lifecycle, this@YoutubeCategoryActivity)
-        binding?.recyclerview?.apply {
-            this.adapter = adapter
-            this.layoutManager = LinearLayoutManager(this@YoutubeCategoryActivity)
-        }
+    private fun initializeViewPager(categoryList: List<Category>) {
+
     }
 
     private fun initializeData() {
@@ -156,12 +151,12 @@ class YoutubeCategoryActivity : AppCompatActivity(), VideoClickedListener {
 
     private fun fetchVideosFromServer() {
         isCallToServer = true
-        viewmodel?.fetchVideosFromServer(packageName!!, authKey!!)
+        viewmodel?.fetchCategoriesFromServer(authKey!!)
     }
 
     private fun setVideoLibraryRecyclerView() {
         binding?.progressBar?.visibility = View.VISIBLE
-        viewmodel?.fetchVideosFromDb()
+        viewmodel?.fetchCategoriesFromDb()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

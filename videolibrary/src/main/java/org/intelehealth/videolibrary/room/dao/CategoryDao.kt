@@ -1,7 +1,6 @@
 package org.intelehealth.videolibrary.room.dao
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -17,7 +16,7 @@ interface CategoryDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(categories: List<Category>)
 
-    @Delete
+    @Query("DELETE FROM tbl_video_category")
     suspend fun deleteAll()
 
 }

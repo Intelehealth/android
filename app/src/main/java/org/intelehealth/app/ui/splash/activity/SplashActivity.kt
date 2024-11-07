@@ -68,6 +68,7 @@ class SplashActivity : LanguageActivity(), BaseViewHolder.ViewHolderClickListene
 
         handleButtonClickListener()
         initLanguageList()
+        nextActivity()
 
         binding.tvTitle.isVisible = BuildConfig.FLAVOR_client != "bmgf"
     }

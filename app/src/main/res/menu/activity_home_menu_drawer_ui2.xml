@@ -10,6 +10,13 @@
             android:icon="@drawable/ui2_ic_my_achievements"
             android:title="@string/my_achievements"
             app:iconTint="?colorPrimary" />
+
+        <item
+            android:id="@+id/menu_video_library"
+            android:icon="@drawable/ic_switch_location"
+            android:title="@string/video_library"
+            app:iconTint="?colorPrimary" />
+
         <item
             android:id="@+id/menu_video_lib"
             android:icon="@drawable/ui2_ic_icon_video_library"

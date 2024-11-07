@@ -9,6 +9,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.intelehealth.videolibrary.listing.data.category.CategoryDataSource
 import org.intelehealth.videolibrary.listing.data.category.CategoryRepository
+import org.intelehealth.videolibrary.model.Category
+import org.intelehealth.videolibrary.model.Video
 import org.intelehealth.videolibrary.restapi.VideoLibraryApiClient
 import org.intelehealth.videolibrary.restapi.response.categories.MainCategoryResponse
 import org.intelehealth.videolibrary.room.dao.CategoryDao
@@ -70,4 +72,7 @@ class YoutubeCategoryViewModel(
             repository.deleteAllCategories()
         }
     }
+
+    fun areListsSame(list1: List<Category>?, list2: List<Category>?) = list1 == list2
+
 }
