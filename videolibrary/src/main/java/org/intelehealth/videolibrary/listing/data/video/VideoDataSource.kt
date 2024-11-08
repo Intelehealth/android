@@ -21,7 +21,6 @@ class VideoDataSource(
     }
 
     suspend fun insertVideos(videos: List<Video>) {
-        dao.deleteAll()
         dao.insertAll(videos)
     }
 

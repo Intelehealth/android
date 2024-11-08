@@ -58,6 +58,7 @@ class VideoFragment : Fragment(), VideoClickedListener {
     private var categoryName: String? = null
     private var videoList: List<Video>? = null
     private var isCallToServer: Boolean = false
+    private var currentList: List<Video> = emptyList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -93,13 +94,16 @@ class VideoFragment : Fragment(), VideoClickedListener {
 
         binding?.tvFindVideos?.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                // No-op
+
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if (s.isNullOrBlank()) {
                     binding?.tilFindVideos?.endIconMode = TextInputLayout.END_ICON_NONE
                     binding?.tilFindVideos?.setEndIconOnClickListener(null)
+                    if (currentList != videoList) {
+                        videoList?.let { initializeRecyclerView(it) }
+                    }
                 } else {
                     binding?.tilFindVideos?.setEndIconOnClickListener(null)
                     binding?.tilFindVideos?.endIconMode = TextInputLayout.END_ICON_CUSTOM
@@ -117,7 +121,7 @@ class VideoFragment : Fragment(), VideoClickedListener {
             }
 
             override fun afterTextChanged(s: Editable?) {
-                // No-op
+
             }
         })
 
@@ -175,6 +179,8 @@ class VideoFragment : Fragment(), VideoClickedListener {
     }
 
     private fun initializeRecyclerView(videos: List<Video>) {
+        currentList = videos
+
         val adapter = YoutubeListingAdapter(
             videoIds = videos, lifecycle = lifecycle, listener = this@VideoFragment
         )
