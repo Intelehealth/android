@@ -13,7 +13,7 @@
 
         <item
             android:id="@+id/menu_video_library"
-            android:icon="@drawable/ic_switch_location"
+            android:icon="@drawable/ic_video_library"
             android:title="@string/video_library"
             app:iconTint="?colorPrimary" />
 

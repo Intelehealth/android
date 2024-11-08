@@ -1,17 +1,24 @@
 package org.intelehealth.videolibrary.listing.fragment
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.textfield.TextInputLayout
+import com.google.android.material.textfield.TextInputLayout.EndIconMode
 import org.intelehealth.videolibrary.R
 import org.intelehealth.videolibrary.callbacks.VideoClickedListener
 import org.intelehealth.videolibrary.constants.Constants
@@ -19,6 +26,7 @@ import org.intelehealth.videolibrary.data.PreferenceHelper
 import org.intelehealth.videolibrary.databinding.FragmentVideoCategoryBinding
 import org.intelehealth.videolibrary.listing.activity.checkAndHideProgressBar
 import org.intelehealth.videolibrary.listing.activity.emojiFilter
+import org.intelehealth.videolibrary.listing.activity.hideKeyboard
 import org.intelehealth.videolibrary.listing.adapter.YoutubeListingAdapter
 import org.intelehealth.videolibrary.listing.viewmodel.videos.VideoViewModelFactory
 import org.intelehealth.videolibrary.listing.viewmodel.videos.YoutubeVideoViewModel
@@ -39,10 +47,8 @@ class VideoFragment : Fragment(), VideoClickedListener {
         val service = RetrofitProvider.apiService
 
         ViewModelProvider(
-            owner = this@VideoFragment,
-            factory = VideoViewModelFactory(
-                service = service,
-                dao = dao
+            owner = this@VideoFragment, factory = VideoViewModelFactory(
+                service = service, dao = dao
             )
         )[YoutubeVideoViewModel::class.java]
     }
@@ -59,9 +65,7 @@ class VideoFragment : Fragment(), VideoClickedListener {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         binding = FragmentVideoCategoryBinding.inflate(inflater, container, false)
         return binding?.root
@@ -77,6 +81,8 @@ class VideoFragment : Fragment(), VideoClickedListener {
     private fun setListeners() {
         binding?.tvFindVideos?.filters = arrayOf(emojiFilter)
 
+        binding?.tilFindVideos?.endIconMode = TextInputLayout.END_ICON_NONE
+
         binding?.tvFindVideos?.setOnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 performSearch(v.text.toString())
@@ -85,16 +91,37 @@ class VideoFragment : Fragment(), VideoClickedListener {
             return@setOnEditorActionListener false
         }
 
-        binding?.tilFindVideos?.setEndIconOnClickListener {
-            binding?.tvFindVideos?.setText("")
-            videoList?.let { it1 -> initializeRecyclerView(it1) }
-        }
+        binding?.tvFindVideos?.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                // No-op
+            }
 
-        binding?.tilFindVideos?.isEndIconVisible = false
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (s.isNullOrBlank()) {
+                    binding?.tilFindVideos?.endIconMode = TextInputLayout.END_ICON_NONE
+                    binding?.tilFindVideos?.setEndIconOnClickListener(null)
+                } else {
+                    binding?.tilFindVideos?.setEndIconOnClickListener(null)
+                    binding?.tilFindVideos?.endIconMode = TextInputLayout.END_ICON_CUSTOM
+                    binding?.tilFindVideos?.endIconDrawable = ContextCompat.getDrawable(
+                        context!!,
+                        R.drawable.ic_clear
+                    )
 
-        binding?.tvFindVideos?.addTextChangedListener {
-            binding?.tilFindVideos?.isEndIconVisible = it?.toString()?.isEmpty() != true
-        }
+                    binding?.tilFindVideos?.setEndIconOnClickListener {
+                        binding?.tvFindVideos?.text?.clear()
+                        videoList?.let { it1 -> initializeRecyclerView(it1) }
+                        hideKeyboard(requireActivity())
+                    }
+                }
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                // No-op
+            }
+        })
+
+
     }
 
     private fun performSearch(searchString: String) {
@@ -120,16 +147,8 @@ class VideoFragment : Fragment(), VideoClickedListener {
         }
 
         viewModel.emptyListObserver.observe(viewLifecycleOwner) {
-            if (it) {
-                Toast.makeText(
-                    requireActivity(),
-                    getString(R.string.no_videos_found_on_server_for_category, categoryName),
-                    Toast.LENGTH_LONG
-                ).show()
-
-                // Hiding the progress bars here is being handled by extension functions
-                binding?.progressBar?.checkAndHideProgressBar()
-            }
+            // Hiding the progress bars here is being handled by extension functions
+            binding?.progressBar?.checkAndHideProgressBar()
         }
 
         categoryId?.let {
@@ -157,9 +176,7 @@ class VideoFragment : Fragment(), VideoClickedListener {
 
     private fun initializeRecyclerView(videos: List<Video>) {
         val adapter = YoutubeListingAdapter(
-            videoIds = videos,
-            lifecycle = lifecycle,
-            listener = this@VideoFragment
+            videoIds = videos, lifecycle = lifecycle, listener = this@VideoFragment
         )
 
         binding?.rvVideos?.apply {
@@ -171,8 +188,7 @@ class VideoFragment : Fragment(), VideoClickedListener {
     private fun fetchVideosFromServer() {
         isCallToServer = true
         viewModel.fetchCategoryVideosFromServer(
-            auth = auth!!,
-            categoryId = categoryId?.toString()!!
+            auth = auth!!, categoryId = categoryId?.toString()!!
         )
     }
 

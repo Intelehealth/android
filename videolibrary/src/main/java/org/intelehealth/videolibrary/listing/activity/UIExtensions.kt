@@ -1,10 +1,12 @@
 package org.intelehealth.videolibrary.listing.activity
 
+import android.app.Activity
 import android.text.InputFilter
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.TextUtils
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.ProgressBar
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 
@@ -63,4 +65,13 @@ val emojiFilter = InputFilter { source, start, end, dest, dstart, dend ->
 
 private fun isCharAllowed(c: Char): Boolean {
     return c.isLetter() || c.isWhitespace() || c.isDigit()
+}
+
+fun hideKeyboard(activity: Activity) {
+    val imm = activity.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+    var view = activity.currentFocus
+    if (view == null) {
+        view = View(activity)
+    }
+    imm.hideSoftInputFromWindow(view.windowToken, 0)
 }

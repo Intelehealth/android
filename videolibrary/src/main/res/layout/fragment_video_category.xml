@@ -22,7 +22,6 @@
             android:layout_height="wrap_content"
             android:background="@drawable/ui2_common_input_bg"
             android:drawableStart="@drawable/ui2_ic_search_icon_home"
-            android:drawableEnd="@drawable/ic_clear"
             android:drawablePadding="@dimen/find_patient_icon_padding"
             android:gravity="center_vertical"
             android:hint="@string/search_for_videos"
