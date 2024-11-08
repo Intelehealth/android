@@ -39,11 +39,12 @@ internal class YoutubeListingAdapter(
     override fun getItemCount(): Int = videoIds.size
 
     override fun onBindViewHolder(holder: YoutubeListingViewHolder, position: Int) {
+        holder.setText(videoIds[position].title)
         holder.cueVideo(videoIds[position].videoId)
     }
 
     class YoutubeListingViewHolder(
-        binding: ItemVideoListingBinding,
+        private val binding: ItemVideoListingBinding,
         lifecycle: Lifecycle,
         listener: VideoClickedListener
     ) : RecyclerView.ViewHolder(binding.root) {
@@ -66,6 +67,10 @@ internal class YoutubeListingAdapter(
             binding.overlayView.setOnClickListener {
                 currentVideoId?.let { id -> listener.onVideoClicked(id) }
             }
+        }
+
+        internal fun setText(title: String) {
+            binding.tvVideoTitle.text = title
         }
 
         internal fun cueVideo(videoId: String) {

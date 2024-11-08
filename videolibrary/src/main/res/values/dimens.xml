@@ -13,6 +13,7 @@
     <dimen name="toolbar_text_height">24dp</dimen>
     <dimen name="fu_margin_start">15dp</dimen>
     <dimen name="margin_30dp">30dp</dimen>
+    <dimen name="video_title_text_size">15sp</dimen>
 
     <dimen name="margin_5">5dp</dimen>
     <dimen name="margin_10">10dp</dimen>
