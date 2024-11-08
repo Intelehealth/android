@@ -62,6 +62,11 @@ class VideoPlayerActivity : AppCompatActivity() {
         val windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
         windowInsetsController.isAppearanceLightStatusBars = true
         window.statusBarColor = Color.WHITE
+
+        // Back button functionality
+        binding?.ivBack?.setOnClickListener {
+            finish()
+        }
     }
 
     private fun playYouTubeVideo() {

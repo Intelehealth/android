@@ -13,5 +13,6 @@
     <color name="red">#F44336</color>
     <color name="primary_text">#212121</color>
     <color name="gray_0">#F1F1F1</color>
+    <color name="divider">#e0e0e0</color>
 
 </resources>
