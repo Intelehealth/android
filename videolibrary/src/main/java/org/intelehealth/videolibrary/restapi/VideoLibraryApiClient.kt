@@ -22,7 +22,7 @@ interface VideoLibraryApiClient {
 
     @GET("api/video-library/getVideosByCategoryId/{category_id}")
     suspend fun fetchVideoByCategoryId(
-        @Path("category") categoryId: String,
-        @Header("Authorization") auth: String
+        @Header("Authorization") auth: String,
+        @Path("category_id") categoryId: String
     ): Response<MainVideoResponse>
 }

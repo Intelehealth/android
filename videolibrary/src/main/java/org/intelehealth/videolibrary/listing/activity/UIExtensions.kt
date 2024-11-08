@@ -1,9 +1,13 @@
 package org.intelehealth.videolibrary.listing.activity
 
+import android.text.InputFilter
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.TextUtils
 import android.view.View
 import android.widget.ProgressBar
-import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+
 
 fun ProgressBar?.checkAndHideProgressBar() {
     if (this?.visibility == View.VISIBLE) {
@@ -15,4 +19,48 @@ fun SwipeRefreshLayout?.checkAndHideProgressBar() {
     if (this?.isRefreshing == true) {
         this.isRefreshing = false
     }
+}
+
+val emojiFilter = InputFilter { source, start, end, dest, dstart, dend ->
+    var keepOriginal = true
+    val sb = StringBuilder(end - start)
+
+    for (i in start until end) {
+        val c = source[i]
+        if (isCharAllowed(c) || c in listOf(
+                '.',
+                '&',
+                '(',
+                ')',
+                '\'',
+                '-',
+                '#',
+                '@',
+                '%',
+                '/',
+                ':',
+                ','
+            )
+        ) {
+            sb.append(c)
+        } else {
+            keepOriginal = false
+        }
+    }
+
+    if (keepOriginal) {
+        null
+    } else {
+        if (source is Spanned) {
+            val sp = SpannableString(sb)
+            TextUtils.copySpansFrom(source, start, sb.length, null, sp, 0)
+            sp
+        } else {
+            sb
+        }
+    }
+}
+
+private fun isCharAllowed(c: Char): Boolean {
+    return c.isLetter() || c.isWhitespace() || c.isDigit()
 }

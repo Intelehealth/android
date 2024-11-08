@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.onStart
 import org.intelehealth.core.network.state.Result
+import retrofit2.Response
 
 open class BaseViewModel(
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
@@ -19,6 +20,8 @@ open class BaseViewModel(
     private val preferenceHelper: PreferenceHelper? = null
 ) : ViewModel() {
     private val loadingData = MutableLiveData<Boolean>()
+
+    var dataConnectionStatus = MutableLiveData<Boolean>(true)
 
     @JvmField
     var loading: LiveData<Boolean> = loadingData
@@ -90,6 +93,31 @@ open class BaseViewModel(
     fun updateFailResult(message: String) {
         failResult.postValue(message)
     }
+
+    fun <T, L> getLocalFirstThenNetwork(
+        networkCall: suspend () -> Response<T>,
+        localCall: suspend () -> L?,
+        saveDataCall: suspend (T?) -> L
+    ) = flow {
+        val localData = localCall.invoke()
+        localData?.let { emit(Result.Success(localData, "Success")) } ?: kotlin.run {
+            if (isInternetAvailable()) {
+                val response = networkCall()
+                if (response.code() == 200) {
+                    val data = saveDataCall(response.body())
+                    val result = Result.Success(data, "Success")
+                    result.message = response.message()
+                    emit(result)
+                } else {
+                    emit(Result.Error<L>(response.message()))
+                }
+            } else dataConnectionStatus.postValue(false)
+        }
+    }.onStart {
+        emit(Result.Loading<L>("Loading..."))
+    }.flowOn(dispatcher)
+
+    fun isInternetAvailable(): Boolean = networkHelper?.isNetworkConnected() ?: false
 
     companion object {
         private const val TAG = "BaseViewModel"

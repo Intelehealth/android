@@ -2,6 +2,7 @@ package org.intelehealth.videolibrary.listing.fragment
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +18,7 @@ import org.intelehealth.videolibrary.constants.Constants
 import org.intelehealth.videolibrary.data.PreferenceHelper
 import org.intelehealth.videolibrary.databinding.FragmentVideoCategoryBinding
 import org.intelehealth.videolibrary.listing.activity.checkAndHideProgressBar
+import org.intelehealth.videolibrary.listing.activity.emojiFilter
 import org.intelehealth.videolibrary.listing.adapter.YoutubeListingAdapter
 import org.intelehealth.videolibrary.listing.viewmodel.videos.VideoViewModelFactory
 import org.intelehealth.videolibrary.listing.viewmodel.videos.YoutubeVideoViewModel
@@ -28,7 +30,22 @@ import org.intelehealth.videolibrary.room.VideoLibraryDatabase
 class VideoFragment : Fragment(), VideoClickedListener {
 
     private var binding: FragmentVideoCategoryBinding? = null
-    private var viewModel: YoutubeVideoViewModel? = null
+    private val viewModel: YoutubeVideoViewModel by lazy {
+        val helper = PreferenceHelper(requireActivity())
+        auth = "Bearer ${helper.getJwtAuthToken()}"
+
+        val database = VideoLibraryDatabase.getInstance(requireContext().applicationContext)
+        val dao = database.videoDao()
+        val service = RetrofitProvider.apiService
+
+        ViewModelProvider(
+            owner = this@VideoFragment,
+            factory = VideoViewModelFactory(
+                service = service,
+                dao = dao
+            )
+        )[YoutubeVideoViewModel::class.java]
+    }
 
     private var auth: String? = null
     private var categoryId: Int? = null
@@ -38,8 +55,6 @@ class VideoFragment : Fragment(), VideoClickedListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        initializeData()
         getDataFromBundle(arguments)
     }
 
@@ -54,13 +69,14 @@ class VideoFragment : Fragment(), VideoClickedListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         setObservers()
         setListeners()
         fetchVideosFromDb()
     }
 
     private fun setListeners() {
+        binding?.tvFindVideos?.filters = arrayOf(emojiFilter)
+
         binding?.tvFindVideos?.setOnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 performSearch(v.text.toString())
@@ -85,7 +101,7 @@ class VideoFragment : Fragment(), VideoClickedListener {
         val tempList = mutableListOf<Video>()
 
         for (video in videoList!!) {
-            if (video.title.contains(searchString)) {
+            if (video.title.contains(searchString, ignoreCase = true)) {
                 tempList.add(video)
             }
         }
@@ -94,7 +110,7 @@ class VideoFragment : Fragment(), VideoClickedListener {
     }
 
     private fun setObservers() {
-        viewModel?.tokenExpiredObserver?.observe(requireActivity()) {
+        viewModel.tokenExpiredObserver.observe(viewLifecycleOwner) {
             if (it) {
                 requireActivity().apply {
                     setResult(Constants.JWT_TOKEN_EXPIRED)
@@ -103,7 +119,7 @@ class VideoFragment : Fragment(), VideoClickedListener {
             }
         }
 
-        viewModel?.emptyListObserver?.observe(requireActivity()) {
+        viewModel.emptyListObserver.observe(viewLifecycleOwner) {
             if (it) {
                 Toast.makeText(
                     requireActivity(),
@@ -116,22 +132,23 @@ class VideoFragment : Fragment(), VideoClickedListener {
             }
         }
 
-        categoryId?.let { categoryId ->
-            viewModel?.fetchVideosFromDb(categoryId)?.observe(requireActivity()) {
-                if (it.isEmpty() && !isCallToServer) {
+        categoryId?.let {
+            viewModel.fetchVideosFromDb(it).observe(viewLifecycleOwner) { list ->
+                Log.d("LiveData: ", "Inside Observer")
+                if (list.isEmpty() && !isCallToServer) {
                     isCallToServer = false
                     binding?.progressBar?.visibility = View.VISIBLE
                     fetchVideosFromServer()
                     return@observe
                 }
 
-                if (viewModel?.areListsSame(videoList, it) == true) {
+                if (viewModel.areListsSame(videoList, list)) {
                     binding?.progressBar?.checkAndHideProgressBar()
                     return@observe
                 }
 
-                videoList = it
-                initializeRecyclerView(it)
+                videoList = list
+                initializeRecyclerView(list)
 
                 binding?.progressBar?.checkAndHideProgressBar()
             }
@@ -153,27 +170,10 @@ class VideoFragment : Fragment(), VideoClickedListener {
 
     private fun fetchVideosFromServer() {
         isCallToServer = true
-        viewModel?.fetchCategoryVideosFromServer(
+        viewModel.fetchCategoryVideosFromServer(
             auth = auth!!,
             categoryId = categoryId?.toString()!!
         )
-    }
-
-    private fun initializeData() {
-        val helper = PreferenceHelper(requireActivity())
-        auth = "Bearer ${helper.getJwtAuthToken()}"
-
-        val database = VideoLibraryDatabase.getInstance(requireContext().applicationContext)
-        val dao = database.videoDao()
-        val service = RetrofitProvider.apiService
-
-        viewModel = ViewModelProvider(
-            owner = this@VideoFragment,
-            factory = VideoViewModelFactory(
-                service = service,
-                dao = dao
-            )
-        )[YoutubeVideoViewModel::class.java]
     }
 
     private fun getDataFromBundle(bundle: Bundle?) {
@@ -183,7 +183,7 @@ class VideoFragment : Fragment(), VideoClickedListener {
 
     private fun fetchVideosFromDb() {
         binding?.progressBar?.visibility = View.VISIBLE
-        categoryId?.let { viewModel?.fetchVideosFromDb(it) }
+        categoryId?.let { viewModel.fetchVideosFromDb(it) }
     }
 
     override fun onVideoClicked(videoId: String) {

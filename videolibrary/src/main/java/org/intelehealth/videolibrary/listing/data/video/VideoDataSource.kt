@@ -25,8 +25,6 @@ class VideoDataSource(
         dao.insertAll(videos)
     }
 
-    fun getVideosFromDbByCategoryId(categoryId: Int): Flow<List<Video>> = flow {
-        dao.getVideosByCategoryId(categoryId)
-    }
+    fun getVideosFromDbByCategoryId(categoryId: Int) = dao.getVideosByCategoryId(categoryId)
 
 }
