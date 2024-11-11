@@ -1112,4 +1112,6 @@
     <string name="other_block">Other Block</string>
 
     <string name="title_video">Video Feature</string>
+    <string name="family_members">Family Members</string>
+    <string name="no_family_member_registered">No family member registered</string>
 </resources>
