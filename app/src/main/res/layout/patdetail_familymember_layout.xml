@@ -55,12 +55,14 @@
                     android:textAppearance="@style/patdetail_header1" />
 
                 <ImageButton
-                    android:id="@+id/ib_fam_member"
+                    android:id="@+id/imgBtn_add_fam_member"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:background="null"
+                    android:layout_centerInParent="true"
+                    android:paddingStart="5dp"
+                    android:paddingVertical="5dp"
+                    android:background="@null"
                     app:tint="@color/grayIcon"
                     android:src="@drawable/ic_baseline_add_24_green" />
 
@@ -76,6 +78,7 @@
                 android:background="@color/notifi_divider_color" />
 
             <TextView
+                android:id="@+id/tv_noFamilyMember"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/divider"
@@ -86,8 +89,16 @@
                 android:text="@string/no_family_member_registered"
                 android:textAppearance="@style/caption"
                 android:textColor="@color/hint_text_color"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:visibility="visible"/>
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_familyMember"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/divider"
+                android:visibility="gone"
+                tools:listitem="@layout/list_item_family_member"/>
 
 
         </RelativeLayout>

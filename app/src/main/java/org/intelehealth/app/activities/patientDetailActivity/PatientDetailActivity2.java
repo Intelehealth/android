@@ -65,6 +65,7 @@ import android.os.Bundle;
 import android.os.LocaleList;
 import android.util.DisplayMetrics;
 
+import org.intelehealth.app.models.FamilyMemberRes;
 import org.intelehealth.app.utilities.CustomLog;
 
 import android.util.Log;
@@ -303,6 +304,13 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             finish();
         });
 
+        // Family Member Registration
+        loadFamilyMembers();
+
+        binding.familyMemberCard.imgBtnAddFamMember.setOnClickListener(v -> {
+            addFamilyMember();
+        });
+
         cancelbtn.setOnClickListener(v -> {
             Intent i = new Intent(PatientDetailActivity2.this, HomeScreenActivity_New.class);
             startActivity(i);
@@ -390,6 +398,74 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 getOnBackPressedDispatcher().onBackPressed();
             }
         });
+    }
+
+    // Family Member
+    private void loadFamilyMembers() {
+        String houseHoldValue = "";
+        try {
+            houseHoldValue = patientsDAO.getHouseHoldValue(patientDTO.getUuid());
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+        if (!houseHoldValue.equalsIgnoreCase("")) {
+            //Fetch all patient UUID from houseHoldValue
+            try {
+                List<FamilyMemberRes> listPatientNames = new ArrayList<>();
+                List<String> patientUUIDs = new ArrayList<>(patientsDAO.getPatientUUIDs(houseHoldValue));
+                Log.e("patientUUIDs", "" + patientUUIDs);
+
+                for (int i = 0; i < patientUUIDs.size(); i++) {
+                    if (!patientUUIDs.get(i).equals(patientDTO.getUuid())) {
+                        listPatientNames.addAll(patientsDAO.getPatientName(patientUUIDs.get(i)));
+                    }
+                }
+
+                //  Logger.logD("List", listPatientNames.get(0).getOpenMRSID());
+                if (listPatientNames.size() > 0) {
+                    binding.familyMemberCard.tvNoFamilyMember.setVisibility(View.GONE);
+                    binding.familyMemberCard.rvFamilyMember.setVisibility(View.VISIBLE);
+
+                    FamilyMemberAdapter familyMemberAdapter = new FamilyMemberAdapter(listPatientNames, this);
+                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+                    binding.familyMemberCard.rvFamilyMember.setLayoutManager(linearLayoutManager);
+                    binding.familyMemberCard.rvFamilyMember.setAdapter(familyMemberAdapter);
+                }
+                else {
+                    binding.familyMemberCard.tvNoFamilyMember.setVisibility(View.VISIBLE);
+                    binding.familyMemberCard.rvFamilyMember.setVisibility(View.GONE);
+                }
+
+            } catch (DAOException e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+            }
+        }
+    }
+
+    private void addFamilyMember() {
+        String houseHoldValue = "";
+        try {
+            houseHoldValue = patientsDAO.getHouseHoldValue(patientDTO.getUuid());
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+        Log.e(TAG, "householdNo: " + houseHoldValue);
+
+        sessionManager.setHouseholdUuid(houseHoldValue);
+     //   PatientRegistrationActivity.startPatientRegistration(this, patientDTO.getUuid(), PatientRegStage.PERSONAL);
+
+        Intent intent = new Intent(PatientDetailActivity2.this, PatientRegistrationActivity.class);
+        intent.putExtra("privacy", "Accept");
+        intent.putExtra("newMember", "newMemberYes");
+        intent.putExtra("address1", patientDTO.getAddress1());
+
+        /*i.putExtra("postalCode", patientDTO.getPostal_code());
+        i.putExtra("blockSurvey", patientDTO.getBlockSurvey());
+        i.putExtra("villageSurvey", patientDTO.getVillageNameSurvey());
+        i.putExtra("relationshipStatus", patientDTO.getRelationshiphoh());*/
+
+        startActivity(intent);
     }
 
     private BroadcastReceiver mBroadcastReceiver;
