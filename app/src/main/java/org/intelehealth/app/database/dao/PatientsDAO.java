@@ -317,7 +317,10 @@ public class PatientsDAO {
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
         try {
-            Cursor idCursor = db.rawQuery("SELECT value FROM tbl_patient_attribute where patientuuid = ? AND person_attribute_type_uuid=? AND voided='0' COLLATE NOCASE", new String[]{patientuuid, "10720d1a-1471-431b-be28-285d64767093"});
+            Cursor idCursor = db.rawQuery("SELECT value FROM tbl_patient_attribute where patientuuid = ? AND person_attribute_type_uuid=? AND voided='0' COLLATE NOCASE", new String[]{
+                    patientuuid, "be8e386b-ca22-447d-82a1-b80366e5f848"});
+            // IDA HOUSEHOLD NO - be8e386b-ca22-447d-82a1-b80366e5f848 (newly created)
+            // NAS HOUSEHOLD NO - 10720d1a-1471-431b-be28-285d64767093 (already present)
 
             if (idCursor.getCount() != 0) {
                 while (idCursor.moveToNext()) {
@@ -367,9 +370,10 @@ public class PatientsDAO {
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         //db.beginTransaction();
         try {
-            Cursor cursor = db.rawQuery("SELECT openmrs_id,first_name,middle_name,last_name FROM tbl_patient where uuid = ? COLLATE NOCASE", new String[]{patientuuid});
+            Cursor cursor = db.rawQuery("SELECT uuid, openmrs_id,first_name,middle_name,last_name FROM tbl_patient where uuid = ? COLLATE NOCASE", new String[]{patientuuid});
             if (cursor.getCount() != 0) {
                 while (cursor.moveToNext()) {
+                    familyMemberRes.setPatientUUID(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
                     familyMemberRes.setOpenMRSID(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
                     familyMemberRes.setName(cursor.getString(cursor.getColumnIndexOrThrow("first_name")) + " " + cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
                     listPatientNames.add(familyMemberRes);

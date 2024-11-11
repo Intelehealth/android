@@ -24,6 +24,7 @@ import org.intelehealth.app.shared.BaseActivity
 import org.intelehealth.app.syncModule.SyncUtils
 import org.intelehealth.app.utilities.BundleKeys.Companion.PATIENT_CURRENT_STAGE
 import org.intelehealth.app.utilities.BundleKeys.Companion.PATIENT_UUID
+import org.intelehealth.app.utilities.BundleKeys.Companion.PARENT_PATIENT_UUID
 import org.intelehealth.app.utilities.DateAndTimeUtils
 import org.intelehealth.app.utilities.DialogUtils
 import org.intelehealth.app.utilities.DialogUtils.CustomDialogListener
@@ -130,6 +131,20 @@ class PatientRegistrationActivity : BaseActivity() {
             uuid = UUID.randomUUID().toString()
             createdDate = DateAndTimeUtils.getTodaysDateInRequiredFormat("dd MMMM, yyyy")
             providerUUID = SessionManager.getInstance(this@PatientRegistrationActivity).providerID
+
+            val parentPatientId = if (intent.hasExtra(PARENT_PATIENT_UUID)) intent.getStringExtra(PARENT_PATIENT_UUID)
+            else null
+
+            parentPatientId?.let {
+                patientViewModel.loadPatientDetails(parentPatientId).observe(this@PatientRegistrationActivity) {
+                    it ?: return@observe
+                    patientViewModel.handleResponse(it) { patient ->
+                        householdNumber = patient.householdNumber
+                        Log.v("Familyyy", "patreg: " + householdNumber)
+                    }
+                }
+            }
+
         }.also { patientViewModel.updatedPatient(it) }
     }
 
@@ -251,6 +266,20 @@ class PatientRegistrationActivity : BaseActivity() {
         ) {
             Intent(context, PatientRegistrationActivity::class.java).apply {
                 putExtra(PATIENT_UUID, patientId)
+                putExtra(PATIENT_CURRENT_STAGE, stage)
+            }.also { context.startActivity(it) }
+        }
+
+        @JvmStatic
+        fun startPatientRegistrationFamMeme(
+            context: Context,
+            parentPatientId: String? = null,
+            childPatientId: String? = null,
+            stage: PatientRegStage = PatientRegStage.PERSONAL
+        ) {
+            Intent(context, PatientRegistrationActivity::class.java).apply {
+                putExtra(PARENT_PATIENT_UUID, parentPatientId)
+                putExtra(PATIENT_UUID, childPatientId)
                 putExtra(PATIENT_CURRENT_STAGE, stage)
             }.also { context.startActivity(it) }
         }

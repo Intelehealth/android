@@ -111,6 +111,7 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
             address1 = binding.textInputAddress1.text?.toString()
             address2 = binding.textInputAddress2.text?.toString()
             householdNumber = binding.textInputHouseholdNumber.text?.toString()
+            Log.v("Familyyy", "hh address value: " + householdNumber)
 
             var village: String
             if (binding.llBlock.isEnabled) {
@@ -135,6 +136,7 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
             Log.d("kaveridev", "savePatient: village : " + village)
             Log.d("kaveridev", "savePatient: district : " + district)
             Log.d("kaveridev", "savePatient: district : " + district)
+            Log.d("kaveridev", "savePatient: householdno : " + householdNumber)
             Log.d("kaveridev", "savePatient: patient cityvillage : " + patient.cityvillage)
 
             patientViewModel.updatedPatient(this)
