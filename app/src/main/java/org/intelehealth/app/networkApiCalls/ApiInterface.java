@@ -7,6 +7,7 @@ import org.intelehealth.app.models.ChangePasswordParamsModel_New;
 import org.intelehealth.app.models.CheckAppUpdateRes;
 import org.intelehealth.app.models.DownloadMindMapRes;
 import org.intelehealth.app.models.ForgotPasswordApiResponseModel_New;
+import org.intelehealth.app.models.HeartbeatApiRequest;
 import org.intelehealth.app.models.Location;
 import org.intelehealth.app.models.OTPVerificationParamsModel_New;
 import org.intelehealth.app.models.ObsImageModel.ObsJsonResponse;
@@ -240,5 +241,13 @@ public interface ApiInterface {
     @GET
     Observable<PullLocationAttributesRoot> PULL_LOCATION_ATTRIBUTES(
             @Url String url
+    );
+
+    @Headers({"Accept: application/json"})
+    @POST
+    Single<Response<ResponseBody>> heartbeatApiRequest(
+            @Url String url,
+            @Header("Authorization") String authHeader,
+            @Body HeartbeatApiRequest request
     );
 }
