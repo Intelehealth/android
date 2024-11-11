@@ -455,20 +455,11 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         Log.v("Familyyy", "pat detail householdNo: " + houseHoldValue);
 
         sessionManager.setHouseholdUuid(houseHoldValue);
-      //  PatientRegistrationActivity.startPatientRegistration(this, patientDTO.getUuid(), PatientRegStage.PERSONAL);
-        PatientRegistrationActivity.startPatientRegistrationFamMeme(this, patientDTO.getUuid(), null, PatientRegStage.PERSONAL);
-
-        /*Intent intent = new Intent(PatientDetailActivity2.this, PatientRegistrationActivity.class);
-        intent.putExtra("privacy", "Accept");
-        intent.putExtra("newMember", "newMemberYes");
-        intent.putExtra("address1", patientDTO.getAddress1());
-
-        i.putExtra("postalCode", patientDTO.getPostal_code());
-        i.putExtra("blockSurvey", patientDTO.getBlockSurvey());
-        i.putExtra("villageSurvey", patientDTO.getVillageNameSurvey());
-        i.putExtra("relationshipStatus", patientDTO.getRelationshiphoh());
-
-        startActivity(intent);*/
+        PatientRegistrationActivity.startPatientRegistrationForFamilyMemberRegistration(
+                this,
+                patientDTO.getUuid(),
+                null,
+                PatientRegStage.PERSONAL);
     }
 
     private BroadcastReceiver mBroadcastReceiver;

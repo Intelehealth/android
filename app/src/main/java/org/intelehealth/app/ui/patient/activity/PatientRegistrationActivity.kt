@@ -140,6 +140,7 @@ class PatientRegistrationActivity : BaseActivity() {
                     it ?: return@observe
                     patientViewModel.handleResponse(it) { patient ->
                         householdNumber = patient.householdNumber
+                        // TODO: set village, state, block, district
                         Log.v("Familyyy", "patreg: " + householdNumber)
                     }
                 }
@@ -271,7 +272,7 @@ class PatientRegistrationActivity : BaseActivity() {
         }
 
         @JvmStatic
-        fun startPatientRegistrationFamMeme(
+        fun startPatientRegistrationForFamilyMemberRegistration(
             context: Context,
             parentPatientId: String? = null,
             childPatientId: String? = null,
