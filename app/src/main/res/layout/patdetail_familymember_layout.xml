@@ -38,9 +38,9 @@
 
                 <ImageView
                     android:id="@+id/fam_member_icon"
-                    android:layout_width="44dp"
-                    android:layout_height="44dp"
-                    android:src="@drawable/other_icon_unselected" />
+                    android:layout_width="@dimen/edittext_height_44dp"
+                    android:layout_height="@dimen/edittext_height_44dp"
+                    android:src="@drawable/group_svg_icon" />
 
                 <TextView
                     android:id="@+id/label"
@@ -64,7 +64,7 @@
                     android:paddingVertical="5dp"
                     android:background="@null"
                     app:tint="@color/grayIcon"
-                    android:src="@drawable/ic_baseline_add_24_green" />
+                    android:src="@drawable/white_add_svg_icon" />
 
             </RelativeLayout>
 

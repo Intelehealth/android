@@ -153,9 +153,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 
 import io.reactivex.Observable;
@@ -2467,7 +2469,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         if (activeStatus != null) {
             binding.setAddressActiveStatus(activeStatus.getActiveStatusPatientAddress());
             binding.setOtherActiveStatus(activeStatus.getActiveStatusPatientOther());
-            binding.setFamilyMemberActiveStatus(true);  // TODO: need to handle this/
+            binding.setFamilyMemberActiveStatus(true);  // TODO: need to handle this.
         }
     }
 }

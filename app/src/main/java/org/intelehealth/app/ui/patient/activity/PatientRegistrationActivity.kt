@@ -140,8 +140,13 @@ class PatientRegistrationActivity : BaseActivity() {
                     it ?: return@observe
                     patientViewModel.handleResponse(it) { patient ->
                         householdNumber = patient.householdNumber
-                        // TODO: set village, state, block, district
-                        Log.v("Familyyy", "patreg: " + householdNumber)
+                        cityvillage = patient.cityvillage
+                        postalcode = patient.postalcode
+                      //  address3 = patient.address3   // TODO: add block part here.
+
+                        // TODO: add postalcode, village, state, block, district, country.
+                        Log.v("Familyyy", "patreg: " + householdNumber + " :" + cityvillage + " : "
+                                + postalcode + " : " + address3)
                     }
                 }
             }
