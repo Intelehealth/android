@@ -585,6 +585,11 @@
         <item name="android:digits">@string/validation_address</item>
         <item name="android:inputType">textPostalAddress</item>
     </style>
+    <style name="AppTheme.InputBox.Address1" parent="AppTheme.InputBox">
+        <!--        <item name="android:maxLength">25</item>-->
+        <item name="android:digits">@string/validation_address_with_space</item>
+        <item name="android:inputType">textPostalAddress</item>
+    </style>
 
     <style name="AppTheme.InputBox.Phone" parent="AppTheme.InputBox">
         <item name="android:maxLength">10</item>
