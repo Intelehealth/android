@@ -1035,6 +1035,7 @@ public class PatientsDAO {
                 patientDTO.setCaste(cursor.getString(cursor.getColumnIndexOrThrow("caste")));
                 patientDTO.setCreatedDate(cursor.getString(cursor.getColumnIndexOrThrow("createdDate")));
                 patientDTO.setBlock(cursor.getString(cursor.getColumnIndexOrThrow("blockSurvey")));
+                patientDTO.setHouseholdLinkingUUIDlinking(cursor.getString(cursor.getColumnIndexOrThrow("HouseHold")));
             } while (cursor.moveToNext());
         }
         cursor.close();

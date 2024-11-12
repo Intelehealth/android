@@ -51,7 +51,7 @@ class PatientViewModel(
     fun savePatient() = executeLocalInsertUpdateQuery {
         return@executeLocalInsertUpdateQuery patientData.value?.let {
             return@let if (isEditMode) repository.updatePatient(it)
-            else repository.createNewPatient(it)
+            else repository.createNewPatient(it) // TODO: check with mithun this is creating a new record again with parent ID.
         } ?: false
     }.asLiveData()
 
