@@ -142,6 +142,8 @@ class PatientRegistrationActivity : BaseActivity() {
                         householdNumber = patient.householdNumber
                         cityvillage = patient.cityvillage
                         postalcode = patient.postalcode
+
+
                       //  address3 = patient.address3   // TODO: add block part here.
 
                         // TODO: add postalcode, village, state, block, district, country.
