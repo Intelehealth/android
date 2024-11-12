@@ -132,6 +132,8 @@ class PatientRegistrationActivity : BaseActivity() {
             createdDate = DateAndTimeUtils.getTodaysDateInRequiredFormat("dd MMMM, yyyy")
             providerUUID = SessionManager.getInstance(this@PatientRegistrationActivity).providerID
 
+            householdLinkingUUIDlinking = UUID.randomUUID().toString()
+
             val parentPatientId = if (intent.hasExtra(PARENT_PATIENT_UUID)) intent.getStringExtra(PARENT_PATIENT_UUID)
             else null
 
@@ -139,14 +141,15 @@ class PatientRegistrationActivity : BaseActivity() {
                 patientViewModel.loadPatientDetails(parentPatientId).observe(this@PatientRegistrationActivity) {
                     it ?: return@observe
                     patientViewModel.handleResponse(it) { patient ->
-                        address1 = patient.address1
+                        address1 = patient.address1 // household value
+                        householdLinkingUUIDlinking = patient.householdLinkingUUIDlinking
                         cityvillage = patient.cityvillage
                         postalcode = patient.postalcode
                         block = patient.block
 
                         // TODO: add postalcode, village, state, block, district, country.
                         Log.v("Familyyy", "patreg: " + address1 + " :" + cityvillage + " : "
-                                + postalcode + " : ")
+                                + postalcode + " : " + householdLinkingUUIDlinking)
                     }
                 }
             }

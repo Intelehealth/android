@@ -25,6 +25,7 @@ class PatientQueryBuilder : QueryBuilder() {
                     + buildPatientAttributesQuery(PatientAttributesDTO.Column.CAST.value) + " caste,"
                     + buildPatientAttributesQuery(PatientAttributesDTO.Column.CREATED_DATE.value) + " createdDate, "
                     + buildPatientAttributesQuery(PatientAttributesDTO.Column.BLOCK.value) + " blockSurvey "
+                    + buildPatientAttributesQuery(PatientAttributesDTO.Column.HOUSEHOLD_UUID_LINKING.value) + " HouseHold"
         )
             .from("tbl_patient P")
             .where("P.uuid =  '$patientId' AND P.voided  = '0' ")

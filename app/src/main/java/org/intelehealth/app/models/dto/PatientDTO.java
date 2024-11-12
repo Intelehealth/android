@@ -6,6 +6,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.UUID;
 
 public class PatientDTO implements Serializable {
 
@@ -462,6 +463,7 @@ public class PatientDTO implements Serializable {
     }
 
     private String block;
+    private String householdLinkingUUIDlinking;
 
     public String getBlock() {
         return block;
@@ -470,6 +472,15 @@ public class PatientDTO implements Serializable {
     public void setBlock(String block) {
         this.block = block;
     }
+
+    public String getHouseholdLinkingUUIDlinking() {
+        return householdLinkingUUIDlinking;
+    }
+
+    public void setHouseholdLinkingUUIDlinking(String householdLinkingUUIDlinking) {
+        this.householdLinkingUUIDlinking = householdLinkingUUIDlinking;
+    }
+
 /* public String getHouseholdNumber() {
         return householdNumber;
     }

@@ -315,8 +315,10 @@ public class PatientsDAO {
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
         try {
-            Cursor idCursor = db.rawQuery("SELECT value FROM tbl_patient_attribute where patientuuid = ? AND person_attribute_type_uuid=? AND voided='0' COLLATE NOCASE", new String[]{
+            Cursor idCursor = db.rawQuery("SELECT value FROM tbl_patient_attribute " +
+                    "where patientuuid = ? AND person_attribute_type_uuid=? AND voided='0' COLLATE NOCASE", new String[]{
                     patientuuid, "be8e386b-ca22-447d-82a1-b80366e5f848"});
+
             // IDA HOUSEHOLD NO - be8e386b-ca22-447d-82a1-b80366e5f848 (newly created)
             // NAS HOUSEHOLD NO - 10720d1a-1471-431b-be28-285d64767093 (already present)
 

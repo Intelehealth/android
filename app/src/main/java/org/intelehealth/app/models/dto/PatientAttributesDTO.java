@@ -75,7 +75,7 @@ public class PatientAttributesDTO implements Serializable {
         PROFILE_IMG_TIMESTAMP("ProfileImageTimestamp"),
         CAST("Caste"),
         CREATED_DATE("createdDate"),
-        //HOUSEHOLD_NUMBER("HouseHold"),
+        HOUSEHOLD_UUID_LINKING("HouseHold"),
         BLOCK("blockSurvey");
 
         public final String value;
