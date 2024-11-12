@@ -2456,7 +2456,8 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         if (activeStatus != null) {
             binding.setAddressActiveStatus(activeStatus.getActiveStatusPatientAddress());
             binding.setOtherActiveStatus(activeStatus.getActiveStatusPatientOther());
-            binding.setFamilyMemberActiveStatus(activeStatus.getActiveStatusPatientFamilyMemberRegistration());
+          //  binding.setFamilyMemberActiveStatus(activeStatus.getActiveStatusPatientFamilyMemberRegistration());   // TODO: Kaveri uncomment this.
+            binding.setFamilyMemberActiveStatus(true);
         }
     }
 }

@@ -139,16 +139,14 @@ class PatientRegistrationActivity : BaseActivity() {
                 patientViewModel.loadPatientDetails(parentPatientId).observe(this@PatientRegistrationActivity) {
                     it ?: return@observe
                     patientViewModel.handleResponse(it) { patient ->
-                        householdNumber = patient.householdNumber
+                        address1 = patient.address1
                         cityvillage = patient.cityvillage
                         postalcode = patient.postalcode
-
-
-                      //  address3 = patient.address3   // TODO: add block part here.
+                        block = patient.block
 
                         // TODO: add postalcode, village, state, block, district, country.
-                        Log.v("Familyyy", "patreg: " + householdNumber + " :" + cityvillage + " : "
-                                + postalcode + " : " + address3)
+                        Log.v("Familyyy", "patreg: " + address1 + " :" + cityvillage + " : "
+                                + postalcode + " : ")
                     }
                 }
             }
