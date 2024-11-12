@@ -66,6 +66,7 @@ import android.os.LocaleList;
 import android.util.DisplayMetrics;
 
 import org.intelehealth.app.models.FamilyMemberRes;
+import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.utilities.CustomLog;
 
 import android.util.Log;
@@ -171,12 +172,12 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     TextView name_txtview, openmrsID_txt, patientname, gender, patientdob, patientage, phone,
             postalcode, patientcountry, patientstate, patientdistrict, village, address1, addr2View,
             son_daughter_wife, patientoccupation, patientcaste, patienteducation, patienteconomicstatus, patientNationalID,
-            guardina_name_tv, guardian_type_tv, contact_type_tv, em_contact_name_tv, em_contact_number_tv, householdNumber, block;
+            guardina_name_tv, guardian_type_tv, contact_type_tv, em_contact_name_tv, em_contact_number_tv, householdNumber;
 
     TableRow nameTr, genderTr, dobTr, ageTr, phoneNumTr, guardianTypeTr, guardianNameTr,
             emContactNameTr, emContactTypeTr, emContactNumberTr, postalCodeTr, countryTr,
             stateTr, districtTr, villageCityTr, addressOneTr, addressTwoTr, nidTr, occupationTr, socialCategoryTr,
-            educationTr, economicCategoryTr, blockTr, householdNumberTr;
+            educationTr, economicCategoryTr, householdNumberTr;
 
     SessionManager sessionManager = null;
     //    Patient patientDTO = new Patient();
@@ -646,7 +647,6 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         guardianTypeTr = findViewById(R.id.guardian_type_table_row);
         addressOneTr = findViewById(R.id.address1_tr);
         addressTwoTr = findViewById(R.id.tr_address_2);
-        blockTr = findViewById(R.id.block_tr);
         householdNumberTr = findViewById(R.id.household_no_tr);
 
         nidTr = findViewById(R.id.nid_tr);
@@ -662,7 +662,6 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         village = findViewById(R.id.village);
         address1 = findViewById(R.id.address1);
         addr2View = findViewById(R.id.addr2View);
-        block = findViewById(R.id.block);
         householdNumber = findViewById(R.id.household_number);
 
         son_daughter_wife = findViewById(R.id.son_daughter_wife);
@@ -905,14 +904,6 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                                 null,
                                 null
                         );
-                case PatientRegConfigKeys.BLOCK -> PatientRegFieldsUtils.INSTANCE.configField(
-                        false,
-                        fields,
-                        blockTr,
-                        null,
-                        null,
-                        null
-                );
                 case PatientRegConfigKeys.HOUSEHOLD_NUMBER ->
                         PatientRegFieldsUtils.INSTANCE.configField(
                                 false,
@@ -924,6 +915,9 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                         );
             }
         }
+        /*for NAS corresponding address is not required and address 1
+             means household no value thats why disabled the corresponding address 1 field for nas*/
+        addressOneTr.setVisibility(BuildConfig.FLAVOR_client.equals("nas") ? View.GONE : View.VISIBLE);
     }
 
 
@@ -1196,7 +1190,6 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 patientDTO.setContactType(idCursor.getString(idCursor.getColumnIndexOrThrow("contact_type")));
                 patientDTO.setEmContactName(idCursor.getString(idCursor.getColumnIndexOrThrow("em_contact_name")));
                 patientDTO.setEmContactNumber(idCursor.getString(idCursor.getColumnIndexOrThrow("em_contact_num")));
-                patientDTO.setAddress3(idCursor.getString(idCursor.getColumnIndexOrThrow("address3")));
             } while (idCursor.moveToNext());
         }
         idCursor.close();
@@ -1245,8 +1238,8 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 if (name.equalsIgnoreCase("providerUUID")) {
                     patientDTO.setProviderUUID(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
-                if (name.equalsIgnoreCase("HouseHold")) {
-                    patientDTO.setHouseholdNumber(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                if (name.equalsIgnoreCase("blockSurvey")) {
+                    patientDTO.setBlock(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
 
             } while (idCursor1.moveToNext());
@@ -1905,14 +1898,8 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             em_contact_number_tv.setText(getString(R.string.not_provided));
         }
 
-        if (patientDTO.getAddress3() == null || patientDTO.getAddress3().equals("")) { //
-            block.setText(getResources().getString(R.string.no_address_added));
-        } else {
-            block.setText(patientDTO.getAddress3());
-        }
-
-        if (patientDTO.getHouseholdNumber() != null && !patientDTO.getHouseholdNumber().equals("")) {
-            householdNumber.setText(patientDTO.getHouseholdNumber());
+        if (patientDTO.getAddress1() != null && !patientDTO.getAddress1().equals("")) {
+            householdNumber.setText(patientDTO.getAddress1());
         } else {
             householdNumber.setText(getString(R.string.not_provided));
         }

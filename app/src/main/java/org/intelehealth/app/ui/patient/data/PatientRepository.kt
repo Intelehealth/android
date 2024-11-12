@@ -125,8 +125,8 @@ class PatientRepository(
             add(
                 createPatientAttribute(
                     patient.uuid,
-                    PatientAttributesDTO.Column.HOUSEHOLD_NUMBER.value,
-                    patient.householdNumber
+                    PatientAttributesDTO.Column.BLOCK.value,
+                    patient.block
                 )
             )
         }
