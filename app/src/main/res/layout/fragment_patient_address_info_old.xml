@@ -342,7 +342,7 @@
                             style="@style/AppTheme.InputBox.Name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@={patient.address3}"
+                            android:text="@={patient.block}"
                             android:hint="@string/enter_block" />
                     </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
                 </LinearLayout>
@@ -469,7 +469,7 @@
                             android:layout_height="wrap_content"
                             android:hint="@string/enter_household_number"
                             android:inputType="number"
-                            android:text="@={patient.householdNumber}" />
+                            android:text="@={patient.address1}" />
                     </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
                 </LinearLayout>
 

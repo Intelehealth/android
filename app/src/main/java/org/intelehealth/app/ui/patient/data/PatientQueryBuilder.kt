@@ -24,7 +24,7 @@ class PatientQueryBuilder : QueryBuilder() {
                     + buildPatientAttributesQuery(PatientAttributesDTO.Column.PROFILE_IMG_TIMESTAMP.value) + " profileImageTimestamp,"
                     + buildPatientAttributesQuery(PatientAttributesDTO.Column.CAST.value) + " caste,"
                     + buildPatientAttributesQuery(PatientAttributesDTO.Column.CREATED_DATE.value) + " createdDate, "
-                    + buildPatientAttributesQuery(PatientAttributesDTO.Column.HOUSEHOLD_NUMBER.value) + " HouseHold "
+                    + buildPatientAttributesQuery(PatientAttributesDTO.Column.BLOCK.value) + " blockSurvey "
         )
             .from("tbl_patient P")
             .where("P.uuid =  '$patientId' AND P.voided  = '0' ")
