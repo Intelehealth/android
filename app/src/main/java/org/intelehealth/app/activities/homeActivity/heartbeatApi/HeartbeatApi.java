@@ -38,7 +38,7 @@ public class HeartbeatApi {
         this.sessionManager = sessionManager;
     }
 
-    private void pushHeartbeatApiData() {
+    public void pushHeartbeatApiData() {
         HeartbeatApiRequest request = getApiData();
         String authHeader = "Bearer " + sessionManager.getJwtAuthToken();
         String url = "https://" + sessionManager.getServerUrl() + ":3004/api/user/createUpdateStatus";

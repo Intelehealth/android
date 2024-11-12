@@ -44,6 +44,7 @@ import android.provider.Settings;
 import android.text.Html;
 import android.util.DisplayMetrics;
 
+import org.intelehealth.app.activities.homeActivity.heartbeatApi.HeartbeatApi;
 import org.intelehealth.app.utilities.CustomLog;
 
 import android.view.LayoutInflater;
@@ -142,6 +143,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.UUID;
 import java.util.concurrent.Executors;
 
@@ -154,6 +157,7 @@ import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 import kotlin.Unit;
 import okhttp3.ResponseBody;
+import timber.log.Timber;
 
 public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils.InternetCheckUpdateInterface {
     private static final String TAG = "HomeScreenActivity";
@@ -340,6 +344,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         backPress();
         initUI();
         clickListeners();
+//        registerHeartbeatApi();
 
         //checking alerm parmission added or not
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
@@ -347,6 +352,27 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             checkAlarmAndReminderPermission();
         }
 //        getOnBackPressedDispatcher().addCallback(backPressedCallback);
+    }
+
+    private void registerHeartbeatApi() {
+        try {
+            long delay = 1;
+            long period = 1000 * 5 * 60;
+
+            Timer timer = new Timer();
+            HeartbeatApi api = new HeartbeatApi(this, sessionManager);
+
+            TimerTask minuteTask = new TimerTask() {
+                @Override
+                public void run() {
+                    api.pushHeartbeatApiData();
+                }
+            };
+
+            timer.schedule(minuteTask, delay, period);
+        } catch (Exception e) {
+            Timber.d("Timer Issue: %s", e.getMessage());
+        }
     }
 
     private void checkAlarmAndReminderPermission() {
