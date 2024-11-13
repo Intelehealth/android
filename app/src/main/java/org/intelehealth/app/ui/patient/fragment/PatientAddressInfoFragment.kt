@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
 import androidx.databinding.OnRebindCallback
-import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import com.github.ajalt.timberkt.Timber
 import com.google.gson.Gson
@@ -12,11 +11,11 @@ import org.intelehealth.app.R
 import org.intelehealth.app.activities.identificationActivity.model.DistData
 import org.intelehealth.app.activities.identificationActivity.model.StateData
 import org.intelehealth.app.databinding.FragmentPatientAddressInfoBinding
-import org.intelehealth.app.databinding.FragmentPatientOtherInfoBinding
 import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.app.ui.filter.FirstLetterUpperCaseInputFilter
 import org.intelehealth.app.utilities.ArrayAdapterUtils
 import org.intelehealth.app.utilities.LanguageUtils
+import org.intelehealth.app.utilities.PatientRegConfigKeys
 import org.intelehealth.app.utilities.PatientRegFieldsUtils
 import org.intelehealth.app.utilities.PatientRegStage
 import org.intelehealth.app.utilities.extensions.addFilter
@@ -26,6 +25,7 @@ import org.intelehealth.app.utilities.extensions.hideErrorOnTextChang
 import org.intelehealth.app.utilities.extensions.validate
 import org.intelehealth.app.utilities.extensions.validateDigit
 import org.intelehealth.app.utilities.extensions.validateDropDowb
+import org.intelehealth.config.room.entity.PatientRegistrationFields
 
 /**
  * Created by Vaghela Mithun R. on 27-06-2024 - 13:42.
@@ -74,27 +74,124 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
         Timber.d { Gson().toJson(patient) }
         binding.patient = patient
         binding.isEditMode = patientViewModel.isEditMode
-        fetchPersonalInfoConfig()
+        patientAddressInfoConfig()
     }
 
-    private fun fetchPersonalInfoConfig() {
-        patientViewModel.fetchAddressRegFields().observe(viewLifecycleOwner) {
-            binding.addressInfoConfig = PatientRegFieldsUtils.buildPatientAddressInfoConfig(it)
-            Timber.d { "Address Config => ${Gson().toJson(binding.addressInfoConfig)}" }
-            binding.addOnRebindCallback(onRebindCallback)
-        }
+    private fun patientAddressInfoConfig() {
+//        patientViewModel.fetchAddressRegFields().observe(viewLifecycleOwner) {
+        val it = getStaticPatientRegistrationFields()
+        binding.addressInfoConfig = PatientRegFieldsUtils.buildPatientAddressInfoConfig(it)
+        Timber.d { "Address Config => ${Gson().toJson(binding.addressInfoConfig)}" }
+//            binding.addOnRebindCallback(onRebindCallback)
+//        }
     }
 
-    private val onRebindCallback = object : OnRebindCallback<FragmentPatientAddressInfoBinding>() {
-        override fun onBound(binding: FragmentPatientAddressInfoBinding?) {
-            super.onBound(binding)
-            setupCountries()
-            setupStates()
-            applyFilter()
-            setInputTextChangListener()
-            setClickListener()
-        }
+    private fun getStaticPatientRegistrationFields(): List<PatientRegistrationFields> {
+        val fields: MutableList<PatientRegistrationFields> = mutableListOf()
+
+        // Postal Code
+        var currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.POSTAL_CODE,
+            isMandatory = true,
+            isEditable = true,
+            isEnabled = true
+        )
+
+        fields.add(currentField)
+
+        // Country
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.COUNTRY,
+            isMandatory = false,
+            isEditable = false,
+            isEnabled = false
+        )
+
+        fields.add(currentField)
+
+        // State
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.STATE,
+            isMandatory = true,
+            isEditable = false,
+            isEnabled = true
+        )
+
+        fields.add(currentField)
+
+        // District
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.DISTRICT,
+            isMandatory = true,
+            isEditable = false,
+            isEnabled = true
+        )
+
+        fields.add(currentField)
+
+        // City / Village
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.VILLAGE_TOWN_CITY,
+            isMandatory = true,
+            isEditable = false,
+            isEnabled = true
+        )
+
+        fields.add(currentField)
+
+        // Address 1
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.ADDRESS_1,
+            isMandatory = true,
+            isEditable = true,
+            isEnabled = true
+        )
+
+        fields.add(currentField)
+
+        // Address 2
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.ADDRESS_2,
+            isMandatory = true,
+            isEditable = true,
+            isEnabled = true
+        )
+
+        fields.add(currentField)
+        return fields
     }
+
+//    private val onRebindCallback = object : OnRebindCallback<FragmentPatientAddressInfoBinding>() {
+//        override fun onBound(binding: FragmentPatientAddressInfoBinding?) {
+//            super.onBound(binding)
+//            setupCountries()
+//            setupStates()
+//            applyFilter()
+//            setInputTextChangListener()
+//            setClickListener()
+//        }
+//    }
 
     private fun setClickListener() {
         binding.frag2BtnBack.setOnClickListener { findNavController().popBackStack() }

@@ -2,7 +2,6 @@ package org.intelehealth.app.ui.patient.fragment
 
 import android.os.Bundle
 import android.view.View
-import androidx.databinding.OnRebindCallback
 import androidx.navigation.fragment.findNavController
 import com.github.ajalt.timberkt.Timber
 import com.google.gson.Gson
@@ -12,6 +11,7 @@ import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.app.ui.filter.FirstLetterUpperCaseInputFilter
 import org.intelehealth.app.utilities.ArrayAdapterUtils
 import org.intelehealth.app.utilities.LanguageUtils
+import org.intelehealth.app.utilities.PatientRegConfigKeys
 import org.intelehealth.app.utilities.PatientRegFieldsUtils
 import org.intelehealth.app.utilities.PatientRegStage
 import org.intelehealth.app.utilities.extensions.addFilter
@@ -19,6 +19,7 @@ import org.intelehealth.app.utilities.extensions.hideError
 import org.intelehealth.app.utilities.extensions.hideErrorOnTextChang
 import org.intelehealth.app.utilities.extensions.validate
 import org.intelehealth.app.utilities.extensions.validateDropDowb
+import org.intelehealth.config.room.entity.PatientRegistrationFields
 
 /**
  * Created by Vaghela Mithun R. on 27-06-2024 - 13:42.
@@ -55,19 +56,91 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
         Timber.d { Gson().toJson(patient) }
         binding.patient = patient
         binding.isEditMode = patientViewModel.isEditMode
-        fetchPersonalInfoConfig()
+        fetchOtherInfoConfig()
     }
 
-    private fun fetchPersonalInfoConfig() {
-        patientViewModel.fetchOtherRegFields().observe(viewLifecycleOwner) {
-            binding.otherInfoConfig = PatientRegFieldsUtils.buildPatientOtherInfoConfig(it)
-            setupSocialCategory()
-            setupEducations()
-            setupEconomicCategory()
-            applyFilter()
-            setInputTextChangListener()
-            setClickListener()
-        }
+    private fun fetchOtherInfoConfig() {
+//        patientViewModel.fetchOtherRegFields().observe(viewLifecycleOwner) {
+        val it = getStaticPatientRegistrationFields()
+        binding.otherInfoConfig = PatientRegFieldsUtils.buildPatientOtherInfoConfig(it)
+        setupSocialCategory()
+        setupEducations()
+        setupEconomicCategory()
+        applyFilter()
+        setInputTextChangListener()
+        setClickListener()
+//        }
+    }
+
+    private fun getStaticPatientRegistrationFields(): List<PatientRegistrationFields> {
+        val fields: MutableList<PatientRegistrationFields> = mutableListOf()
+
+        // National Id
+        var currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.NATIONAL_ID,
+            isMandatory = false,
+            isEditable = true,
+            isEnabled = true
+        )
+
+        fields.add(currentField)
+
+        // Occupations
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.OCCUPATION,
+            isMandatory = true,
+            isEditable = true,
+            isEnabled = true
+        )
+
+        fields.add(currentField)
+
+        // Social Category
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.SOCIAL_CATEGORY,
+            isMandatory = false,
+            isEditable = false,
+            isEnabled = false
+        )
+
+        fields.add(currentField)
+
+        // Education
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.EDUCATION,
+            isMandatory = true,
+            isEditable = true,
+            isEnabled = true
+        )
+
+        fields.add(currentField)
+
+        // Economic Category
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.ECONOMIC_CATEGORY,
+            isMandatory = true,
+            isEditable = true,
+            isEnabled = true
+        )
+
+        fields.add(currentField)
+
+        return fields
     }
 
     private fun setupEconomicCategory() {
