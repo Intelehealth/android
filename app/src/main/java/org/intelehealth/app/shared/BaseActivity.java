@@ -41,7 +41,7 @@ public class BaseActivity extends LanguageActivity implements SocketManager.Noti
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         SocketManager.getInstance().setNotificationListener(this);
-        loadFeatureActiveStatus();
+//        loadFeatureActiveStatus();
     }
 
     /**
@@ -50,12 +50,13 @@ public class BaseActivity extends LanguageActivity implements SocketManager.Noti
      * the specific feature from the app
      */
     private void loadFeatureActiveStatus() {
-        FeatureActiveStatusRepository repository = new FeatureActiveStatusRepository(ConfigDatabase.getInstance(this).featureActiveStatusDao());
-        FeatureActiveStatusViewModelFactory factory = new FeatureActiveStatusViewModelFactory(repository);
-        FeatureActiveStatusViewModel featureActiveStatusViewModel = new ViewModelProvider(this, factory).get(FeatureActiveStatusViewModel.class);
-        featureActiveStatusViewModel.fetchFeaturesActiveStatus().observe(this, featureActiveStatus -> {
-            if (featureActiveStatus != null) onFeatureActiveStatusLoaded(featureActiveStatus);
-        });
+//        FeatureActiveStatusRepository repository = new FeatureActiveStatusRepository(ConfigDatabase.getInstance(this).featureActiveStatusDao());
+//        FeatureActiveStatusViewModelFactory factory = new FeatureActiveStatusViewModelFactory(repository);
+//        FeatureActiveStatusViewModel featureActiveStatusViewModel = new ViewModelProvider(this, factory).get(FeatureActiveStatusViewModel.class);
+//        featureActiveStatusViewModel.fetchFeaturesActiveStatus().observe(this, featureActiveStatus -> {
+//            if (featureActiveStatus != null) onFeatureActiveStatusLoaded(featureActiveStatus);
+//        });
+        onFeatureActiveStatusLoaded(FeatureActiveStatus.Companion.getDefaultFeatureStatus());
     }
 
     @Override

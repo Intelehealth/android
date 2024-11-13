@@ -20,6 +20,7 @@ import org.intelehealth.app.databinding.Dialog2NumbersPickerBinding
 import org.intelehealth.app.databinding.FragmentPatientOtherInfoBinding
 import org.intelehealth.app.databinding.FragmentPatientPersonalInfoBinding
 import org.intelehealth.app.databinding.FragmentPatientPersonalInfoOldDesignBinding
+import org.intelehealth.app.models.Patient
 import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.app.ui.dialog.CalendarDialog
 import org.intelehealth.app.ui.filter.FirstLetterUpperCaseInputFilter
@@ -27,6 +28,7 @@ import org.intelehealth.app.utilities.AgeUtils
 import org.intelehealth.app.utilities.ArrayAdapterUtils
 import org.intelehealth.app.utilities.DateAndTimeUtils
 import org.intelehealth.app.utilities.LanguageUtils
+import org.intelehealth.app.utilities.PatientRegConfigKeys
 import org.intelehealth.app.utilities.PatientRegFieldsUtils
 import org.intelehealth.app.utilities.PatientRegStage
 import org.intelehealth.app.utilities.SessionManager
@@ -37,6 +39,7 @@ import org.intelehealth.app.utilities.extensions.hideErrorOnTextChang
 import org.intelehealth.app.utilities.extensions.validate
 import org.intelehealth.app.utilities.extensions.validateDigit
 import org.intelehealth.app.utilities.extensions.validateDropDowb
+import org.intelehealth.config.room.entity.PatientRegistrationFields
 import org.intelehealth.core.registry.PermissionRegistry
 import org.intelehealth.core.registry.PermissionRegistry.Companion.CAMERA
 import org.intelehealth.ihutils.ui.CameraActivity
@@ -170,18 +173,181 @@ class PatientPersonalInfoFragment :
     }
 
     private fun fetchPersonalInfoConfig() {
-        patientViewModel.fetchPersonalRegFields().observe(viewLifecycleOwner) {
-            binding.personalConfig = PatientRegFieldsUtils.buildPatientPersonalInfoConfig(it)
-            setupGuardianType()
-            setupEmContactType()
-            setupDOB()
-            setupAge()
-            applyFilter()
-            setGender()
-            setClickListener()
-            setInputTextChangListener()
+//        patientViewModel.fetchPersonalRegFields().observe(viewLifecycleOwner) {
+        val it = getStaticPatientRegistrationFields()
+        binding.personalConfig = PatientRegFieldsUtils.buildPatientPersonalInfoConfig(it)
+        setupGuardianType()
+        setupEmContactType()
+        setupDOB()
+        setupAge()
+        applyFilter()
+        setGender()
+        setClickListener()
+        setInputTextChangListener()
 //            binding.addOnRebindCallback(onRebindCallback)
-        }
+//        }
+    }
+
+    // To be removed on 5.0 migration
+    private fun getStaticPatientRegistrationFields(): List<PatientRegistrationFields> {
+        val fields: MutableList<PatientRegistrationFields> = mutableListOf()
+
+        // Profile photo
+        var currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.PROFILE_PHOTO,
+            isMandatory = false,
+            isEditable = true,
+            isEnabled = true
+        )
+
+        fields.add(currentField)
+
+        // First name
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.FIRST_NAME,
+            isMandatory = true,
+            isEditable = true,
+            isEnabled = true
+        )
+
+        fields.add(currentField)
+
+        // Middle name
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.MIDDLE_NAME,
+            isMandatory = false,
+            isEditable = true,
+            isEnabled = true
+        )
+
+        fields.add(currentField)
+
+        // Last name
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.LAST_NAME,
+            isMandatory = true,
+            isEditable = true,
+            isEnabled = true
+        )
+
+        fields.add(currentField)
+
+        // Gender
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.GENDER,
+            isMandatory = true,
+            isEditable = true,
+            isEnabled = true
+        )
+
+        fields.add(currentField)
+
+        // Age
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.AGE,
+            isMandatory = true,
+            isEditable = true,
+            isEnabled = true
+        )
+
+        fields.add(currentField)
+
+        // Guardian Name
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.GUARDIAN_NAME,
+            isMandatory = false,
+            isEditable = false,
+            isEnabled = false
+        )
+
+        fields.add(currentField)
+
+        // Guardian Type
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.GUARDIAN_TYPE,
+            isMandatory = false,
+            isEditable = false,
+            isEnabled = false
+        )
+
+        fields.add(currentField)
+
+        // Phone Number
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.PHONE_NUM,
+            isMandatory = true,
+            isEditable = true,
+            isEnabled = true
+        )
+
+        fields.add(currentField)
+
+        // Emergency Contact Type
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.EM_CONTACT_TYPE,
+            isMandatory = false,
+            isEditable = false,
+            isEnabled = false
+        )
+
+        fields.add(currentField)
+
+        // Emergency Contact Name
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.EM_CONTACT_NAME,
+            isMandatory = false,
+            isEditable = false,
+            isEnabled = false
+        )
+
+        fields.add(currentField)
+
+        // Emergency Phone Number
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.EM_CONTACT_NUMBER,
+            isMandatory = false,
+            isEditable = false,
+            isEnabled = false
+        )
+
+        fields.add(currentField)
+        return fields
     }
 
 //    private val onRebindCallback =

@@ -44,4 +44,20 @@ data class FeatureActiveStatus(
 
     @SerializedName("abha_section")
     var activeStatusAbha: Boolean = true
+
+    companion object {
+        fun getDefaultFeatureStatus() = FeatureActiveStatus(
+            id = 0,
+            visitSummeryNote = true,
+            visitSummeryAttachment = true,
+            visitSummeryDoctorSpeciality = true,
+            visitSummeryPriorityVisit = true,
+            visitSummeryAppointment = true,
+            visitSummeryFacilityToVisit = true,
+            visitSummerySeverityOfCase = false,
+            visitSummeryHwFollowUp = false
+        ).apply {
+            activeStatusAbha = false
+        }
+    }
 }
