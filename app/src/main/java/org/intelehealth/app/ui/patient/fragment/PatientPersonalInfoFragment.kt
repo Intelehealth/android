@@ -257,6 +257,19 @@ class PatientPersonalInfoFragment :
 
         fields.add(currentField)
 
+        // Dob
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.DOB,
+            isMandatory = true,
+            isEditable = true,
+            isEnabled = true
+        )
+
+        fields.add(currentField)
+
         // Age
         currentField = PatientRegistrationFields(
             id = 0,

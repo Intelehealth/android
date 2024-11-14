@@ -41,7 +41,6 @@ public class BaseActivity extends LanguageActivity implements SocketManager.Noti
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         SocketManager.getInstance().setNotificationListener(this);
-//        loadFeatureActiveStatus();
     }
 
     /**
@@ -49,7 +48,7 @@ public class BaseActivity extends LanguageActivity implements SocketManager.Noti
      * like appointment = false, vital = false means as per this status we need to hide/show
      * the specific feature from the app
      */
-    private void loadFeatureActiveStatus() {
+    protected void loadFeatureActiveStatus() {
 //        FeatureActiveStatusRepository repository = new FeatureActiveStatusRepository(ConfigDatabase.getInstance(this).featureActiveStatusDao());
 //        FeatureActiveStatusViewModelFactory factory = new FeatureActiveStatusViewModelFactory(repository);
 //        FeatureActiveStatusViewModel featureActiveStatusViewModel = new ViewModelProvider(this, factory).get(FeatureActiveStatusViewModel.class);

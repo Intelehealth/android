@@ -56,6 +56,7 @@ class PatientRegistrationActivity : BaseActivity() {
         binding = ActivityPatientRegistrationBinding.inflate(layoutInflater)
         setContentView(binding.root)
 //        manageTitleVisibilityOnScrolling()
+        loadFeatureActiveStatus()
         extractAndBindUI()
         setupActionBar()
         observeCurrentPatientStage()

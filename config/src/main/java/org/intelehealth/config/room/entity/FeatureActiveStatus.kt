@@ -40,7 +40,7 @@ data class FeatureActiveStatus(
     var activeStatusPatientAddress: Boolean = true
 
     @SerializedName("patient_reg_other")
-    var activeStatusPatientOther: Boolean = false
+    var activeStatusPatientOther: Boolean = true
 
     @SerializedName("abha_section")
     var activeStatusAbha: Boolean = true
