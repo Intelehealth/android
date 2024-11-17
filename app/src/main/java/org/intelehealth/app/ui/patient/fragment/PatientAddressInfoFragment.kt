@@ -13,11 +13,13 @@ import org.intelehealth.app.activities.identificationActivity.model.StateData
 import org.intelehealth.app.databinding.FragmentPatientAddressInfoBinding
 import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.app.ui.filter.FirstLetterUpperCaseInputFilter
+import org.intelehealth.app.ui.patient.activity.PatientRegistrationActivity
 import org.intelehealth.app.utilities.ArrayAdapterUtils
 import org.intelehealth.app.utilities.LanguageUtils
 import org.intelehealth.app.utilities.PatientRegConfigKeys
 import org.intelehealth.app.utilities.PatientRegFieldsUtils
 import org.intelehealth.app.utilities.PatientRegStage
+import org.intelehealth.app.utilities.SessionManager
 import org.intelehealth.app.utilities.extensions.addFilter
 import org.intelehealth.app.utilities.extensions.hideDigitErrorOnTextChang
 import org.intelehealth.app.utilities.extensions.hideError
@@ -82,8 +84,10 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
         val it = getStaticPatientRegistrationFields()
         binding.addressInfoConfig = PatientRegFieldsUtils.buildPatientAddressInfoConfig(it)
         Timber.d { "Address Config => ${Gson().toJson(binding.addressInfoConfig)}" }
-//            binding.addOnRebindCallback(onRebindCallback)
+        binding.addOnRebindCallback(onRebindCallback)
 //        }
+
+        binding.textInputCityVillage.setText(SessionManager.getInstance(requireContext()).villageName)
     }
 
     private fun getStaticPatientRegistrationFields(): List<PatientRegistrationFields> {
@@ -108,9 +112,9 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
             groupId = "",
             name = "",
             idKey = PatientRegConfigKeys.COUNTRY,
-            isMandatory = false,
+            isMandatory = true,
             isEditable = false,
-            isEnabled = false
+            isEnabled = true
         )
 
         fields.add(currentField)
@@ -134,9 +138,9 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
             groupId = "",
             name = "",
             idKey = PatientRegConfigKeys.DISTRICT,
-            isMandatory = true,
+            isMandatory = false,
             isEditable = false,
-            isEnabled = true
+            isEnabled = false
         )
 
         fields.add(currentField)
@@ -173,8 +177,8 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
             groupId = "",
             name = "",
             idKey = PatientRegConfigKeys.ADDRESS_2,
-            isMandatory = true,
-            isEditable = true,
+            isMandatory = false,
+            isEditable = false,
             isEnabled = true
         )
 
@@ -182,16 +186,25 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
         return fields
     }
 
-//    private val onRebindCallback = object : OnRebindCallback<FragmentPatientAddressInfoBinding>() {
-//        override fun onBound(binding: FragmentPatientAddressInfoBinding?) {
-//            super.onBound(binding)
-//            setupCountries()
-//            setupStates()
-//            applyFilter()
-//            setInputTextChangListener()
-//            setClickListener()
-//        }
-//    }
+    private val onRebindCallback = object : OnRebindCallback<FragmentPatientAddressInfoBinding>() {
+        override fun onBound(binding: FragmentPatientAddressInfoBinding?) {
+            super.onBound(binding)
+            setupCountries()
+            setupStates()
+            setupVillage()
+            applyFilter()
+            setInputTextChangListener()
+            setClickListener()
+        }
+    }
+
+    private fun setupVillage() {
+        val defaultValue = SessionManager.getInstance(requireContext()).villageName
+        binding.textInputCityVillage.apply {
+            setText(defaultValue)
+            isEnabled = false
+        }
+    }
 
     private fun setClickListener() {
         binding.frag2BtnBack.setOnClickListener { findNavController().popBackStack() }
@@ -267,7 +280,11 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
                 }
             }
 
-            binding.autoCompleteState.setOnItemClickListener { adapterView, _, i, _ ->
+            val defaultValue = SessionManager.getInstance(requireContext()).stateName
+            binding.autoCompleteState.setText(defaultValue, false)
+
+            binding.autoCompleteState.isEnabled = false
+            binding.autoCompleteState.setOnItemClickListener { _, _, i, _ ->
                 binding.textInputLayState.hideError()
                 val list: List<StateData> = binding.textInputLayState.tag as List<StateData>
                 val selectedState = list[i]
@@ -352,7 +369,7 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
             } else true
 
             val bAddress2 = if (it.address2!!.isEnabled && it.address2!!.isMandatory) {
-                binding.textInputLayAddress1.validate(binding.textInputAddress1, error)
+                binding.textInputLayAddress2.validate(binding.textInputAddress2, error)
             } else true
 
 
