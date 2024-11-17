@@ -301,6 +301,7 @@
                             android:layout_height="wrap_content"
                             android:hint="@string/enter_village_town_city"
                             android:text="@{patient.villageWithoutDistrict}" />
+
                     </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
                 </LinearLayout>
 
@@ -343,7 +344,9 @@
                             android:layout_height="wrap_content"
                             android:hint="@string/enter_patient_address"
                             android:text="@{patient.address1}" />
+
                     </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -363,7 +366,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="3sp"
-                        android:text="@{ addressInfoConfig.address2.mandatory ? @string/corresponding_address_1 + ` *` : @string/corresponding_address_1}"
+                        android:text="@{ addressInfoConfig.address2.mandatory ? @string/corresponding_address_2 + ` *` : @string/corresponding_address_2}"
                         android:textAppearance="@style/blur_txtview"
                         android:textSize="@null"
                         tools:text="@string/corresponding_address_2" />
