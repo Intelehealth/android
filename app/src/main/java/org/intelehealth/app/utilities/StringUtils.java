@@ -4322,6 +4322,31 @@ public final class StringUtils {
     }
 
     /**
+     * returning string instead of setting data to textview
+     * @param context
+     * @param dob
+     * @param gender
+     * @return
+     */
+    public static String setGenderAgeLocal(Context context, String dob, String gender) {
+        String age = DateAndTimeUtils.getAge_FollowUp(dob, context);
+
+        int genderResId;
+        if (gender.equalsIgnoreCase("M")) {
+            genderResId = R.string.identification_screen_checkbox_male;
+        } else if (gender.equalsIgnoreCase("F")) {
+            genderResId = R.string.identification_screen_checkbox_female;
+        } else if (gender.equalsIgnoreCase("O")) {
+            genderResId = R.string.identification_screen_checkbox_other;
+        } else {
+            return gender + " " + age;
+        }
+
+        String localizedGender = context.getResources().getString(genderResId);
+        return  localizedGender + " " + age;
+    }
+
+    /**
      * Setting local language for Gender data.
      * @param context
      * @param genderView
