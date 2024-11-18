@@ -258,6 +258,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 patientDTO = new PatientDTO();
                 patientDTO.setUuid(intent.getStringExtra("patientUuid"));
             }
+
             privacy_value_selected = intent.getStringExtra("privacy"); //intent value from IdentificationActivity.
         }
 
@@ -641,9 +642,12 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
      */
     private void configAllFields() {
         String[] ymdData = DateAndTimeUtils.getAgeInYearMonth(patientDTO.getDateofbirth()).split(" ");
-        int mAgeYears = ymdData[0] != null && !ymdData[0].isEmpty() ? Integer.parseInt(ymdData[0]) : 0;
-        int mAgeMonths = ymdData[1] != null && !ymdData[1].isEmpty() ? Integer.parseInt(ymdData[1]) : 0;
-        int mAgeDays = ymdData[2] != null && !ymdData[2].isEmpty() ? Integer.parseInt(ymdData[2]) : 0;
+
+        if (ymdData.length > 2) {
+            int mAgeYears = ymdData[0] != null && !ymdData[0].isEmpty() ? Integer.parseInt(ymdData[0]) : 0;
+            int mAgeMonths = ymdData[1] != null && !ymdData[1].isEmpty() ? Integer.parseInt(ymdData[1]) : 0;
+            int mAgeDays = ymdData[2] != null && !ymdData[2].isEmpty() ? Integer.parseInt(ymdData[2]) : 0;
+        }
 
         for (PatientRegistrationFields fields : patientAllFields) {
             switch (fields.getIdKey()) {
@@ -671,30 +675,32 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                         null,
                         null
                 );
-                case PatientRegConfigKeys.GUARDIAN_TYPE -> {
-                    if (AgeUtils.INSTANCE.isGuardianRequired(mAgeYears, mAgeMonths, mAgeDays)) {
-                        PatientRegFieldsUtils.INSTANCE.configField(
-                                false,
-                                fields,
-                                guardianTypeTr,
-                                null,
-                                null,
-                                null
-                        );
-                    }
-                }
-                case PatientRegConfigKeys.GUARDIAN_NAME -> {
-                    if (AgeUtils.INSTANCE.isGuardianRequired(mAgeYears, mAgeMonths, mAgeDays)) {
-                        PatientRegFieldsUtils.INSTANCE.configField(
-                                false,
-                                fields,
-                                guardianNameTr,
-                                null,
-                                null,
-                                null
-                        );
-                    }
-                }
+
+                // To be uncommented in IDA 5.0 Migration
+//                case PatientRegConfigKeys.GUARDIAN_TYPE -> {
+//                    if (AgeUtils.INSTANCE.isGuardianRequired(mAgeYears, mAgeMonths, mAgeDays)) {
+//                        PatientRegFieldsUtils.INSTANCE.configField(
+//                                false,
+//                                fields,
+//                                guardianTypeTr,
+//                                null,
+//                                null,
+//                                null
+//                        );
+//                    }
+//                }
+//                case PatientRegConfigKeys.GUARDIAN_NAME -> {
+//                    if (AgeUtils.INSTANCE.isGuardianRequired(mAgeYears, mAgeMonths, mAgeDays)) {
+//                        PatientRegFieldsUtils.INSTANCE.configField(
+//                                false,
+//                                fields,
+//                                guardianNameTr,
+//                                null,
+//                                null,
+//                                null
+//                        );
+//                    }
+//                }
                 case PatientRegConfigKeys.PHONE_NUM -> PatientRegFieldsUtils.INSTANCE.configField(
                         false,
                         fields,

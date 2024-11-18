@@ -267,7 +267,7 @@ object StaticEnabledFieldsHelper {
             name = "",
             idKey = PatientRegConfigKeys.ADDRESS_2,
             isMandatory = false,
-            isEditable = false,
+            isEditable = true,
             isEnabled = true
         )
 
