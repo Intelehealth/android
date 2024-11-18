@@ -8,20 +8,15 @@ import android.view.WindowManager
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
-import androidx.databinding.OnRebindCallback
-import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import com.github.ajalt.timberkt.Timber
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.gson.Gson
 import org.intelehealth.app.R
-import org.intelehealth.app.activities.patientDetailActivity.StaticEnabledFieldsHelper
+import org.intelehealth.app.activities.patientDetailActivity.StaticPatientRegistrationEnabledFieldsHelper
 import org.intelehealth.app.app.AppConstants
 import org.intelehealth.app.databinding.Dialog2NumbersPickerBinding
-import org.intelehealth.app.databinding.FragmentPatientOtherInfoBinding
-import org.intelehealth.app.databinding.FragmentPatientPersonalInfoBinding
 import org.intelehealth.app.databinding.FragmentPatientPersonalInfoOldDesignBinding
-import org.intelehealth.app.models.Patient
 import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.app.ui.dialog.CalendarDialog
 import org.intelehealth.app.ui.filter.FirstLetterUpperCaseInputFilter
@@ -29,10 +24,8 @@ import org.intelehealth.app.utilities.AgeUtils
 import org.intelehealth.app.utilities.ArrayAdapterUtils
 import org.intelehealth.app.utilities.DateAndTimeUtils
 import org.intelehealth.app.utilities.LanguageUtils
-import org.intelehealth.app.utilities.PatientRegConfigKeys
 import org.intelehealth.app.utilities.PatientRegFieldsUtils
 import org.intelehealth.app.utilities.PatientRegStage
-import org.intelehealth.app.utilities.SessionManager
 import org.intelehealth.app.utilities.extensions.addFilter
 import org.intelehealth.app.utilities.extensions.hideDigitErrorOnTextChang
 import org.intelehealth.app.utilities.extensions.hideError
@@ -40,7 +33,6 @@ import org.intelehealth.app.utilities.extensions.hideErrorOnTextChang
 import org.intelehealth.app.utilities.extensions.validate
 import org.intelehealth.app.utilities.extensions.validateDigit
 import org.intelehealth.app.utilities.extensions.validateDropDowb
-import org.intelehealth.config.room.entity.PatientRegistrationFields
 import org.intelehealth.core.registry.PermissionRegistry
 import org.intelehealth.core.registry.PermissionRegistry.Companion.CAMERA
 import org.intelehealth.ihutils.ui.CameraActivity
@@ -191,7 +183,7 @@ class PatientPersonalInfoFragment :
 
     // To be removed on 5.0 migration
     private fun getStaticPatientRegistrationFields() =
-        StaticEnabledFieldsHelper.getEnabledPersonalInfoFields()
+        StaticPatientRegistrationEnabledFieldsHelper.getEnabledPersonalInfoFields()
 
 //    private val onRebindCallback =
 //        object : OnRebindCallback<FragmentPatientPersonalInfoOldDesignBinding>() {

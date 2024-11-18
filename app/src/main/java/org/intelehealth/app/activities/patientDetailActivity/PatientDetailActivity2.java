@@ -633,7 +633,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     }
 
     private List<PatientRegistrationFields> fetchEnabledStaticConfigFields() {
-        return StaticEnabledFieldsHelper.INSTANCE.getAllEnabledPatientInfoFields();
+        return StaticPatientRegistrationEnabledFieldsHelper.INSTANCE.getAllEnabledPatientInfoFields();
     }
 
 

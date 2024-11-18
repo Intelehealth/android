@@ -3,7 +3,7 @@ package org.intelehealth.app.activities.patientDetailActivity
 import org.intelehealth.app.utilities.PatientRegConfigKeys
 import org.intelehealth.config.room.entity.PatientRegistrationFields
 
-object StaticEnabledFieldsHelper {
+object StaticPatientRegistrationEnabledFieldsHelper {
 
     fun getEnabledPersonalInfoFields(): List<PatientRegistrationFields> {
         val fields: MutableList<PatientRegistrationFields> = mutableListOf()

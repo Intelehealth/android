@@ -6,19 +6,17 @@ import androidx.navigation.fragment.findNavController
 import com.github.ajalt.timberkt.Timber
 import com.google.gson.Gson
 import org.intelehealth.app.R
-import org.intelehealth.app.activities.patientDetailActivity.StaticEnabledFieldsHelper
+import org.intelehealth.app.activities.patientDetailActivity.StaticPatientRegistrationEnabledFieldsHelper
 import org.intelehealth.app.databinding.FragmentPatientOtherInfoBinding
 import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.app.utilities.ArrayAdapterUtils
 import org.intelehealth.app.utilities.LanguageUtils
-import org.intelehealth.app.utilities.PatientRegConfigKeys
 import org.intelehealth.app.utilities.PatientRegFieldsUtils
 import org.intelehealth.app.utilities.PatientRegStage
 import org.intelehealth.app.utilities.extensions.hideError
 import org.intelehealth.app.utilities.extensions.hideErrorOnTextChang
 import org.intelehealth.app.utilities.extensions.validate
 import org.intelehealth.app.utilities.extensions.validateDropDowb
-import org.intelehealth.config.room.entity.PatientRegistrationFields
 
 /**
  * Created by Vaghela Mithun R. on 27-06-2024 - 13:42.
@@ -86,7 +84,7 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
     }
 
     private fun getStaticPatientRegistrationFields() =
-        StaticEnabledFieldsHelper.getEnabledOtherInfoFields()
+        StaticPatientRegistrationEnabledFieldsHelper.getEnabledOtherInfoFields()
 
     private fun setupEconomicCategory() {
         val adapter = ArrayAdapterUtils.getArrayAdapter(requireContext(), R.array.economic)

@@ -10,14 +10,12 @@ import com.google.gson.Gson
 import org.intelehealth.app.R
 import org.intelehealth.app.activities.identificationActivity.model.DistData
 import org.intelehealth.app.activities.identificationActivity.model.StateData
-import org.intelehealth.app.activities.patientDetailActivity.StaticEnabledFieldsHelper
+import org.intelehealth.app.activities.patientDetailActivity.StaticPatientRegistrationEnabledFieldsHelper
 import org.intelehealth.app.databinding.FragmentPatientAddressInfoBinding
 import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.app.ui.filter.FirstLetterUpperCaseInputFilter
-import org.intelehealth.app.ui.patient.activity.PatientRegistrationActivity
 import org.intelehealth.app.utilities.ArrayAdapterUtils
 import org.intelehealth.app.utilities.LanguageUtils
-import org.intelehealth.app.utilities.PatientRegConfigKeys
 import org.intelehealth.app.utilities.PatientRegFieldsUtils
 import org.intelehealth.app.utilities.PatientRegStage
 import org.intelehealth.app.utilities.SessionManager
@@ -28,7 +26,6 @@ import org.intelehealth.app.utilities.extensions.hideErrorOnTextChang
 import org.intelehealth.app.utilities.extensions.validate
 import org.intelehealth.app.utilities.extensions.validateDigit
 import org.intelehealth.app.utilities.extensions.validateDropDowb
-import org.intelehealth.config.room.entity.PatientRegistrationFields
 
 /**
  * Created by Vaghela Mithun R. on 27-06-2024 - 13:42.
@@ -93,7 +90,7 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
 
     // To be removed on 5.0 migration
     private fun getStaticPatientRegistrationFields() =
-        StaticEnabledFieldsHelper.getEnabledAddressInfoFields()
+        StaticPatientRegistrationEnabledFieldsHelper.getEnabledAddressInfoFields()
 
     private val onRebindCallback = object : OnRebindCallback<FragmentPatientAddressInfoBinding>() {
         override fun onBound(binding: FragmentPatientAddressInfoBinding?) {
