@@ -219,9 +219,10 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         binding = ActivityPatientDetail2Binding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         sessionManager = new SessionManager(this);
+        loadFeatureActiveStatus();
+
         String language = sessionManager.getAppLanguage();
         context = PatientDetailActivity2.this;
-
         networkUtils = new NetworkUtils(this, this);
 
         //config viewmodel initialization
