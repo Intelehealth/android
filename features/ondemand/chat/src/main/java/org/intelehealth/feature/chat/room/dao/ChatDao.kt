@@ -1,5 +1,6 @@
 package org.intelehealth.feature.chat.room.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -18,17 +19,20 @@ interface ChatDao {
     @Query("SELECT * FROM tbl_chat_message")
     fun getAll(): Flow<List<ChatMessage>>
 
+    @Query("SELECT * FROM tbl_chat_message where room_id =:roomId")
+    fun getChatRoomMessages(roomId:String): LiveData<List<ChatMessage>>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(messages: List<ChatMessage>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addMessage(message: ChatMessage)
 
-    @Query("UPDATE tbl_chat_message SET messageStatus= :status where messageId =:messageId")
-    suspend fun changeMessageStatus(messageId: Int, status: String)
+    @Query("UPDATE tbl_chat_message SET message_status= :status where message_id =:messageId")
+    suspend fun changeMessageStatus(messageId: Int, status: Int)
 
-    @Query("UPDATE tbl_chat_message SET messageStatus= :status where messageId IN (:messageIds)")
-    suspend fun changeMessageStatus(messageIds: List<Int>, status: String)
+    @Query("UPDATE tbl_chat_message SET message_status= :status where message_id IN (:messageIds)")
+    suspend fun changeMessageStatus(messageIds: List<Int>, status: Int)
 
     @Query("DELETE FROM tbl_chat_message")
     suspend fun deleteAll()

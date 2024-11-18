@@ -8,10 +8,8 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.CountDownTimer
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.animation.Animation
@@ -31,7 +29,6 @@ import androidx.transition.TransitionManager
 import androidx.work.WorkInfo
 import com.github.ajalt.timberkt.Timber
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
-import org.intelehealth.DynamicModuleDownloadingActivity
 import org.intelehealth.app.BuildConfig
 import org.intelehealth.app.R
 import org.intelehealth.app.activities.IntroActivity.IntroScreensActivity_New
@@ -53,8 +50,6 @@ import org.intelehealth.core.ui.viewholder.BaseViewHolder
 import org.intelehealth.core.utils.extensions.showToast
 import org.intelehealth.fcm.utils.FcmRemoteConfig.getRemoteConfig
 import org.intelehealth.fcm.utils.FcmTokenGenerator.getDeviceToken
-import org.intelehealth.installer.downloader.DynamicModuleDownloadManager
-import org.intelehealth.installer.helper.DownloadProgressNotificationHelper
 
 /**
  * Created by Vaghela Mithun R. on 15-04-2024 - 11:28.
@@ -319,7 +314,7 @@ class SplashActivity : LanguageActivity(), BaseViewHolder.ViewHolderClickListene
             finish()
         } else {
             Logger.logD(TAG, "Starting home")
-            val intent = Intent(this, DynamicModuleDownloadingActivity::class.java)
+            val intent = Intent(this, HomeScreenActivity_New::class.java)
 //            intent.putExtra("from", "splash")
 //            intent.putExtra("username", "")
 //            intent.putExtra("password", "")

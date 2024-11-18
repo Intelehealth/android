@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="downloading">Downloading %1$s\%</string>
+    <string name="downloaded">Downloaded</string>
+    <string name="installing">Installing…</string>
+    <string name="installed">Installed</string>
+    <string name="failed">Failed</string>
+    <string name="close_popup_window">Close</string>
+    <string name="retry_popup_window">Retry</string>
+</resources>

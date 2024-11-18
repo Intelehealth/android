@@ -1,9 +1,13 @@
 package org.intelehealth.feature.chat.model
 
+import android.os.Parcelable
+import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 import org.intelehealth.core.utils.utility.DateTimeUtils
 
 /**
@@ -11,40 +15,71 @@ import org.intelehealth.core.utils.utility.DateTimeUtils
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
+@Parcelize
 @Entity(tableName = "tbl_chat_message")
 data class ChatMessage(
-    @PrimaryKey
-    @SerializedName("id")
-    var messageId: Int = 0,
-    @SerializedName("fromUser")
-    val senderId: String = "",
-    @SerializedName("toUser")
-    val receiverId: String = "",
-    val senderName: String = "",
-    val receiverName: String = "",
-    @SerializedName("message")
-    val message: String = "",
-    var messageStatus: Int = 0,
-    var hwName: String? = null,
-    @SerializedName("isRead")
-    var isRead: Boolean = false,
-    @SerializedName("createdAt")
-    var createdAt: String? = null,
-    @SerializedName("patientId")
-    var roomId: String? = null,
-    @SerializedName("patientName")
-    var roomName: String? = null,
-    val hwPic: String? = null,
-    val patientPic: String? = null,
-    var visitId: String? = null,
-    @SerializedName("updatedAt")
-    var updatedAt: String? = null,
-    @SerializedName("type")
-    var type: String? = null
-) : ItemHeader {
+    @SerializedName("id") @ColumnInfo(name = "message_id") @PrimaryKey var messageId: Int = 0,
 
-    var layoutType = 0
-    var loading = false
+    @SerializedName("fromUser") @ColumnInfo(name = "sender_id")
+    // Either doctorId or HW id
+    var senderId: String = "",
+
+    @SerializedName("hwName") @ColumnInfo(name = "sender_name")
+    // Either doctor name or HW name
+    val senderName: String = "",
+
+    @SerializedName("hwPic") @ColumnInfo(name = "sender_dp")
+    // Either HW or doctor profile picture
+    val senderDp: String = "",
+
+    @SerializedName("toUser") @ColumnInfo(name = "receiver_id")
+    // Either doctorId or HW id
+    var receiverId: String = "",
+
+    @ColumnInfo(name = "receiver_name")
+    // Either doctor name or HW name
+    val receiverName: String = "",
+
+    @ColumnInfo(name = "receiver_dp")
+    // Either HW or doctor profile picture
+    val receiverDp: String = "",
+
+    @SerializedName("visitId") @ColumnInfo(name = "room_id")
+    // visitId should be consider as roomId
+    var roomId: String? = null,
+
+    @SerializedName("patientName") @ColumnInfo(name = "room_name")
+    // Patient name is a room name
+    var roomName: String? = null,
+
+    @SerializedName("patientPic") @ColumnInfo(name = "room_icon")
+    // Patient profile picture is a room icon
+    val roomIcon: String? = null,
+
+    var message: String = "",
+
+    @ColumnInfo(name = "message_status")
+    /** Status is value of Enum class named MessageStatus
+     * READ(3),
+     * DELIVERED(2),
+     * SENT(1),
+     * SENDING(0)
+     * FAIL(-1)
+     */
+    var messageStatus: Int = 0,
+
+    @SerializedName("isRead") @Ignore var isRead: Boolean = false,
+
+    @ColumnInfo(name = "patient_id") @SerializedName("patientId") var patientId: String? = null,
+
+    @ColumnInfo(name = "open_mrs_id") var openMrsId: String? = null,
+
+    @SerializedName("type") var type: String? = null,
+
+    @SerializedName("createdAt") @ColumnInfo(name = "created_at") var createdAt: String? = null,
+
+    @SerializedName("updatedAt") @ColumnInfo(name = "updated_at") var updatedAt: String? = null
+) : ItemHeader, Parcelable {
 
     override fun createdDate(): String {
         return createdAt?.let { return@let DateTimeUtils.getCurrentDateWithDBFormat() }!!

@@ -59,8 +59,6 @@
     <string name="cancel_lbl">रद्द करना</string>
     <string name="max_doc_size_toast">अधिकतम दस्तावेज़ आकार 512 KB है</string>
     <string name="choose_documents">दस्तावेज़ चुनें</string>
-    <string name="read">पढ़ लिया</string>
-    <string name="sent">भेजा</string>
     <string name="max_5_image">आप प्रति एक मामले में अधिकतम 5 छवियाँ भेज सकते हैं</string>
     <string name="max_2_image">आप प्रति एक मामले में अधिकतम 2 छवियाँ भेज सकते हैं</string>
     <string name="select">चयन करें</string>
@@ -76,8 +74,6 @@
     <!--  New  -->
 
     <string name="flip_camera">फ्लिप कैमरा</string>
-    <string name="msg_delivered">वितरित</string>
-    <string name="sending">भेजा जा रहा है</string>
     <string name="incoming_voice_call">इनकमिंग वॉयस कॉल</string>
     <string name="incoming_call">इनकमिंग कॉल</string>
     <string name="doctor_profile_picture">डॉक्टर प्रोफ़ाइल चित्र</string>

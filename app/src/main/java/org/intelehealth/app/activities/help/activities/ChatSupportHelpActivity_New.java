@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.activities.help.adapter.ChatSupportAdapter_New;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.ui2.utils.CheckInternetAvailability;
 import org.intelehealth.app.utilities.SessionManager;
@@ -52,8 +51,8 @@ public class ChatSupportHelpActivity_New extends BaseActivity {
         RecyclerView rvChatSupport = findViewById(R.id.rv_chatting);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         rvChatSupport.setLayoutManager(layoutManager);
-        ChatSupportAdapter_New chatSupportAdapter_new = new ChatSupportAdapter_New(this);
-        rvChatSupport.setAdapter(chatSupportAdapter_new);
+//        ChatSupportAdapter_New chatSupportAdapter_new = new ChatSupportAdapter_New(this);
+//        rvChatSupport.setAdapter(chatSupportAdapter_new);
     }
 
     @Override

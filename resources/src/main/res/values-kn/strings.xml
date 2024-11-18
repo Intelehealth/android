@@ -52,10 +52,6 @@
     <string name="cancel_lbl">ರದ್ದು ಮಾಡು/ಇಲ್ಲವಾಗಿಸು</string>
     <string name="max_doc_size_toast">ಗರಿಷ್ಠ ಡಾಕ್ ಗಾತ್ರ 512 ಕೆಬಿ</string>
     <string name="choose_documents">ಡಾಕ್ಯುಮೆಂಟ್‌ಗಳನ್ನು/ದಾಖಲೆಗಳುನ್ನು ಆಯ್ಕೆಮಾಡಿ</string>
-    <string name="read">ಓದಿದೆ</string>
-    <string name="sent">ಕಳುಹಿಸಲಾಗಿದೆ</string>
-    <string name="msg_delivered">ವಿತರಿಸಲಾಗಿದೆ</string>
-    <string name="sending">ಕಳುಹಿಸಲಾಗುತ್ತಿದೆ</string>
     <string name="max_5_image">ಒಂದು ಪ್ರಕರಣಕ್ಕೆ ನೀವು ಕಳುಹಿಸಬಹುದಾದ ಗರಿಷ್ಠ 5 ಚಿತ್ರಗಳು</string>
     <string name="max_2_image">ಒಂದು ಪ್ರಕರಣಕ್ಕೆ ನೀವು ಕಳುಹಿಸಬಹುದಾದ ಗರಿಷ್ಠ 2 ಚಿತ್ರಗಳು</string>
     <string name="select">ಆಯ್ಕೆ ಮಾಡಿ</string>

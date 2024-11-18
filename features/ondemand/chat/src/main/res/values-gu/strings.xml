@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="send_message">Send Message</string>
+    <string name="read">વાંચો</string>
+    <string name="sent">મોકલી આપેલું છે</string>
+    <string name="msg_delivered">વિતરણ થઈ ચૂક્યું છે.</string>
+    <string name="sending">મોકલવામાં આવી રહ્યું છે.</string>
+</resources>

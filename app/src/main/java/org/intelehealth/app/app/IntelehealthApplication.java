@@ -28,11 +28,13 @@ import org.intelehealth.config.Config;
 import org.intelehealth.core.socket.SocketManager;
 import org.intelehealth.core.utils.utility.DateTimeResource;
 
+import dagger.hilt.android.HiltAndroidApp;
 import io.reactivex.plugins.RxJavaPlugins;
 import okhttp3.Dispatcher;
 import okhttp3.OkHttpClient;
 
 //Extend Application class with MultiDexApplication for multidex support
+@HiltAndroidApp
 public class IntelehealthApplication extends SplitCompatApplication implements DefaultLifecycleObserver {
 
     private static final String TAG = IntelehealthApplication.class.getSimpleName();

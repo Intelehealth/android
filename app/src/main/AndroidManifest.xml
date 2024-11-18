@@ -49,9 +49,9 @@
         android:usesCleartextTraffic="true"
         tools:ignore="UnusedAttribute, LockedOrientationActivity"
         tools:replace="allowBackup">
-        <activity
-            android:name=".activities.onboarding.CommonWebviewActivity"
-            android:exported="false" />
+<!--        <activity-->
+<!--            android:name=".activities.onboarding.CommonWebviewActivity"-->
+<!--            android:exported="false" />-->
         <activity
             android:name=".activities.onboarding.PersonalConsentActivity"
             android:exported="false"
@@ -69,15 +69,6 @@
             android:name=".ayu.visit.VisitCreationActivity"
             android:exported="false"
             android:theme="@style/AppThemeMaterialNew" />
-        <activity
-            android:name=".activities.chatHelp.ChatHelpActivity_New"
-            android:exported="true"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
         <activity
             android:name=".ui2.calendarviewcustom.CalendarViewDemoActivity"
             android:exported="true"
@@ -200,9 +191,9 @@
             android:windowSoftInputMode="adjustPan" />
 
         <activity
-            android:name="org.intelehealth.DynamicModuleDownloadingActivity"
+            android:name="org.intelehealth.installer.activity.DynamicModuleDownloadingActivity"
             android:exported="true"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:theme="@style/AppThemeMaterialNew"
             android:windowSoftInputMode="adjustPan">
             <!--            <intent-filter>-->
             <!--                <action android:name="android.intent.action.MAIN" />-->

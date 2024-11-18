@@ -1,7 +1,7 @@
 package org.intelehealth.feature.chat.di
 
 import android.content.Context
-import org.intelehealth.feature.chat.room.WebRtcDatabase
+import org.intelehealth.feature.chat.room.ChatDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -10,16 +10,15 @@ import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
 
-@InstallIn(SingletonComponent::class)
 @Module
+@InstallIn(SingletonComponent::class)
 class DatabaseModule {
 
     @Singleton
     @Provides
-    fun provideDatabase(@ApplicationContext context: Context) = WebRtcDatabase.getInstance(context)
+    fun provideDatabase(@ApplicationContext context: Context) = ChatDatabase.getInstance(context)
 
     @Singleton
     @Provides
-    fun provideChatDao(appDatabase: WebRtcDatabase) = appDatabase.chatDao()
-
+    fun provideChatDao(appDatabase: ChatDatabase) = appDatabase.chatDao()
 }

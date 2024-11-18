@@ -1,6 +1,7 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    id("kotlin-kapt")
 }
 apply("${rootProject.projectDir}/whitelabel.gradle")
 apply("${rootProject.projectDir}/variants.gradle")
@@ -27,6 +28,11 @@ android {
     }
     kotlinOptions {
         jvmTarget = "1.8"
+    }
+    buildFeatures {
+        buildConfig = true
+        viewBinding = true
+        dataBinding = true
     }
 }
 

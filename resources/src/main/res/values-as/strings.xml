@@ -52,10 +52,6 @@
     <string name="cancel_lbl">বাতিল কৰক</string>
     <string name="max_doc_size_toast">সৰ্বোচ্চ doc আকাৰ 512 KB</string>
     <string name="choose_documents">documents সমূহ নিৰ্ব্বাচন কৰক</string>
-    <string name="read">পঢ়া</string>
-    <string name="sent">send(প্ৰেৰণ কৰা)</string>
-    <string name="msg_delivered">delivered (বিলি কৰা হ’ল)</string>
-    <string name="sending">পঠিয়াইছে</string>
     <string name="max_5_image">প্ৰতিটো ক্ষেত্ৰতে আপুনি পঠিয়াব পৰা সৰ্বাধিক ৫ টা ছবি</string>
     <string name="max_2_image">প্ৰতিটো ক্ষেত্ৰতে আপুনি পঠিয়াব পৰা সৰ্বাধিক ২ টা ছবি</string>
     <string name="select">চয়ন কৰা</string>

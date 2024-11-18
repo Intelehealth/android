@@ -8,7 +8,7 @@ import org.intelehealth.core.utils.helper.PreferenceHelper.Companion.AUTH_TOKEN
 import java.io.IOException
 
 
-class AuthInterceptor(private val preferenceHelper: PreferenceHelper) : Interceptor {
+class AuthInterceptor (private val preferenceHelper: PreferenceHelper) : Interceptor {
     private val token: String? = preferenceHelper.get(AUTH_TOKEN)
 
     @Throws(IOException::class)

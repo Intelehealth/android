@@ -15,7 +15,7 @@ import org.intelehealth.feature.chat.model.ItemHeader
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  */
-open class DayHeaderAdapter(context: Context, list: MutableList<ItemHeader>) :
+abstract class DayHeaderAdapter(context: Context, list: MutableList<ItemHeader>) :
     BaseRecyclerViewAdapter<ItemHeader>(context, list) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {

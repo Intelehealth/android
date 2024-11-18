@@ -985,11 +985,11 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         super.onFeatureActiveStatusLoaded(activeStatus);
         if (mNavigationView != null) {
             String moduleName = getString(R.string.module_video);
-            boolean hasInstalled = manager.isModuleDownloaded(moduleName);
-            boolean callLogVisibility = activeStatus.getVideoSection() && hasInstalled;
+//            boolean hasInstalled = manager.isModuleDownloaded(moduleName);
+//            boolean callLogVisibility = activeStatus.getVideoSection() && hasInstalled;
 
-            System.out.println(DynamicModuleDownloadManagerKt.TAG + "=>callLogVisibility=>" + callLogVisibility);
-            mNavigationView.getMenu().findItem(R.id.menu_view_call_log).setVisible(callLogVisibility);
+//            System.out.println(DynamicModuleDownloadManagerKt.TAG + "=>callLogVisibility=>" + callLogVisibility);
+            mNavigationView.getMenu().findItem(R.id.menu_view_call_log).setVisible(activeStatus.getVideoSection());
         }
     }
 

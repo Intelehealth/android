@@ -54,10 +54,6 @@
     <string name="cancel_lbl">يلغي</string>
     <string name="max_doc_size_toast">الحد الأقصى لحجم المستند هو 512 كيلو بايت</string>
     <string name="choose_documents">اختر المستندات</string>
-    <string name="read">قرأ</string>
-    <string name="sent">مرسل</string>
-    <string name="msg_delivered">تم التوصيل</string>
-    <string name="sending">إرسال</string>
     <string name="max_5_image">الحد الأقصى 5 صور يمكنك إرسالها لكل حالة</string>
     <string name="max_2_image">الحد الأقصى 2 صور يمكنك إرسالها لكل حالة</string>
     <string name="select">يختار</string>

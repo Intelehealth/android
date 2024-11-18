@@ -52,10 +52,6 @@
     <string name="cancel_lbl">বাতিল করুন</string>
     <string name="max_doc_size_toast">ডক সাইজ সর্বোচ্চ 512 KB</string>
     <string name="choose_documents">নথি নির্বাচন করুন</string>
-    <string name="read">পড়ুন</string>
-    <string name="sent">পাঠানো হয়েছে</string>
-    <string name="msg_delivered">বিতরণ করা হয়েছে</string>
-    <string name="sending">পাঠানো হচ্ছে</string>
     <string name="max_5_image">প্রতি একটি ক্ষেত্রে সর্বোচ্চ 5টি ছবি পাঠাতে পারবেন</string>
     <string name="max_2_image">প্রতি একটি ক্ষেত্রে সর্বাধিক 2টি ছবি পাঠাতে পারবেন</string>
     <string name="select">নির্বাচন করুন</string>

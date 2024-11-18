@@ -19,7 +19,6 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 
-import org.intelehealth.DynamicModuleDownloadingActivity;
 import org.intelehealth.app.utilities.CustomLog;
 import android.util.Patterns;
 import android.view.KeyEvent;
@@ -586,11 +585,11 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
                                                     }
                                                     CustomLog.i(TAG, "onPostExecute: Parse init");
                                                     sessionManager.setIsLoggedIn(true);
-                                                    Intent intent = new Intent(SetupActivityNew.this, DynamicModuleDownloadingActivity.class);
+//                                                    Intent intent = new Intent(SetupActivityNew.this, DynamicModuleDownloadingActivity.class);
 
-//                                                    Intent intent = new Intent(SetupActivityNew.this, HomeScreenActivity_New.class);
-//                                                    intent.putExtra("setup", true);
-//                                                    intent.putExtra("firstLogin", "firstLogin");
+                                                    Intent intent = new Intent(SetupActivityNew.this, HomeScreenActivity_New.class);
+                                                    intent.putExtra("setup", true);
+                                                    intent.putExtra("firstLogin", "firstLogin");
 
                                                     //  if (r2.isChecked()) {
                                                /* if (!sessionManager.getLicenseKey().isEmpty()) {

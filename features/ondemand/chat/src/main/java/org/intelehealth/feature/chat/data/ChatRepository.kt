@@ -11,21 +11,31 @@ import javax.inject.Inject
  * Mob   : +919727206702
  **/
 class ChatRepository @Inject constructor(
-    private val chatDao: ChatDao,
-    private val dataSource: ChatDataSource
+    private val chatDao: ChatDao, private val dataSource: ChatDataSource
 ) {
 
     suspend fun addMessage(message: ChatMessage) = chatDao.addMessage(message)
 
     suspend fun addMessages(messages: List<ChatMessage>) = chatDao.insertAll(messages)
 
-    fun getAllMessages() = chatDao.getAll()
+    fun getChatRoomMessages(roomId: String) = chatDao.getChatRoomMessages(roomId)
 
     suspend fun changeMessageStatus(messageId: Int, messageStatus: MessageStatus) =
-        chatDao.changeMessageStatus(messageId, messageStatus.name)
+        chatDao.changeMessageStatus(messageId, messageStatus.value)
 
     suspend fun changeMessageStatus(messageIds: List<Int>, messageStatus: MessageStatus) =
-        chatDao.changeMessageStatus(messageIds, messageStatus.name)
+        chatDao.changeMessageStatus(messageIds, messageStatus.value)
 
     suspend fun sendMessage(message: ChatMessage) = dataSource.sendMessage(message)
+
+    suspend fun getMessages(
+        from: String, to: String, patientId: String
+    ) = dataSource.getMessages(from, to, patientId)
+
+    suspend fun saveMessages(messages: List<ChatMessage>?): List<ChatMessage> {
+        return messages?.let {
+            chatDao.insertAll(it)
+            messages
+        } ?: emptyList()
+    }
 }

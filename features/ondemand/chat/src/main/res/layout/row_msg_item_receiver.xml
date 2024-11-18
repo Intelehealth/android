@@ -1,93 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <variable
             name="chatMessage"
-            type="org.intelehealth.klivekit.chat.model.ChatMessage" />
+            type="org.intelehealth.feature.chat.model.ChatMessage" />
     </data>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="@dimen/std_8dp"
         android:orientation="vertical">
 
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/imgProfilePic"
+            android:layout_width="@dimen/std_48dp"
+            android:layout_height="@dimen/std_48dp"
+            android:background="@color/colorAccent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent" />
+
+        <View
+            android:id="@+id/viewBackground"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/chat_left_bg"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/imgProfilePic"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.8" />
+
         <TextView
-            android:id="@+id/name_tv"
-            android:layout_width="wrap_content"
+            android:id="@+id/tvReceiverName"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dip"
-            android:layout_marginLeft="8dip"
+            android:layout_marginStart="@dimen/std_8dp"
             android:gravity="center_vertical"
-            android:maxLines="4"
+            android:maxLines="1"
             android:padding="8dip"
-            android:text="DOCTOR 1"
+            android:text="@{chatMessage.senderName}"
             android:textColor="@color/gray_7"
             android:textSize="13sp"
             android:textStyle="bold"
-            android:visibility="gone" />
+            app:layout_constraintEnd_toEndOf="@id/viewBackground"
+            app:layout_constraintStart_toStartOf="@id/viewBackground"
+            app:layout_constraintTop_toTopOf="@id/viewBackground"
+            tools:text="Sender name" />
 
         <TextView
-            android:id="@+id/text_tv"
-            android:layout_width="wrap_content"
+            android:id="@+id/tvMessage"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="36dip"
-            android:layout_marginRight="36dip"
-            android:background="@drawable/chat_left_bg"
+            android:layout_marginStart="@dimen/std_8dp"
             android:gravity="center_vertical"
-            android:maxLines="4"
-            android:minHeight="36dip"
-            android:padding="16dip"
+            android:paddingHorizontal="@dimen/std_8dp"
             android:text="@{chatMessage.message}"
             android:textColor="@color/gray_7"
             android:textSize="13sp"
+            app:layout_constraintEnd_toEndOf="@id/viewBackground"
+            app:layout_constraintStart_toStartOf="@id/viewBackground"
+            app:layout_constraintTop_toBottomOf="@id/tvReceiverName"
+            app:layout_constraintBottom_toBottomOf="@id/viewBackground"
+            android:layout_marginBottom="@dimen/std_8dp"
             tools:text="@string/dummy_text" />
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <ImageView
-                android:id="@+id/image_iv"
-                android:layout_width="124dip"
-                android:layout_height="124dip"
-                android:background="@drawable/chat_left_bg"
-                android:padding="8dip"
-                android:scaleType="centerCrop"
-                android:src="@drawable/img_doctor_ioc" />
-
-            <RelativeLayout
-                android:id="@+id/rl_loader"
-                android:layout_width="124dip"
-                android:layout_height="124dip"
-                android:alpha="0.9"
-                android:background="@drawable/chat_left_bg"
-                android:visibility="gone">
-
-                <ProgressBar
-                    android:id="@+id/progressBar2"
-                    style="?android:attr/progressBarStyleSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true" />
-            </RelativeLayout>
-        </RelativeLayout>
-
         <TextView
-            android:id="@+id/time_tv"
+            android:id="@+id/tvMessageTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/std_8dp"
             android:gravity="center_vertical"
-            android:maxLines="4"
-            android:paddingTop="8dip"
-            android:paddingBottom="8dip"
+            android:maxLines="1"
+            android:paddingVertical="@dimen/std_8dp"
             android:text="@{chatMessage.messageTime}"
             android:textColor="@color/gray_3"
             android:textSize="10sp"
+            app:layout_constraintEnd_toEndOf="@id/viewBackground"
+            app:layout_constraintTop_toTopOf="@id/tvReceiverName"
+            app:layout_constraintBottom_toBottomOf="@id/tvReceiverName"
             tools:ignore="SmallSp"
             tools:text="4.31 PM" />
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

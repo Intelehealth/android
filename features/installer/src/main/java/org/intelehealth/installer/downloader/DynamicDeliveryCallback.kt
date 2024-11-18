@@ -8,6 +8,7 @@ package org.intelehealth.installer.downloader
 interface DynamicDeliveryCallback {
     fun onDownloading(percentage: Int)
     fun onDownloadCompleted()
+    fun onInstalling()
     fun onInstallSuccess()
     fun onFailed(errorMessage: String)
 }

@@ -30,7 +30,13 @@ import android.os.Bundle;
 import android.os.LocaleList;
 import android.text.Html;
 import android.util.DisplayMetrics;
+
+import org.intelehealth.app.database.dao.RTCConnectionDAO;
+import org.intelehealth.app.models.dto.EncounterDTO;
+import org.intelehealth.app.models.dto.RTCConnectionDTO;
+import org.intelehealth.app.ui2.utils.CheckInternetAvailability;
 import org.intelehealth.app.utilities.CustomLog;
+
 import android.util.TypedValue;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
@@ -43,6 +49,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -86,6 +93,12 @@ import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.VisitUtils;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.config.room.entity.FeatureActiveStatus;
+import org.intelehealth.features.ondemand.mediator.listener.ChatRoomMediator;
+import org.intelehealth.features.ondemand.mediator.model.ChatRoomConfig;
+import org.intelehealth.features.ondemand.mediator.utils.OnDemandIntentUtils;
+import org.intelehealth.installer.popup.DownloadPopupWindow;
+import org.intelehealth.installer.popup.LeftAnchorPopupWindow;
+import org.intelehealth.installer.utils.DynamicModules;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -200,7 +213,7 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
         clsDoctorDetails = gson.fromJson(drDetails, ClsDoctorDetails.class);
 
         if (clsDoctorDetails != null) {
-            CustomLog.e("TAG","TEST VISIT: " + clsDoctorDetails.toString());
+            CustomLog.e("TAG", "TEST VISIT: " + clsDoctorDetails.toString());
             dr_MobileNo = "+91" + clsDoctorDetails.getPhoneNumber();
             dr_WhatsappNo = "+91" + clsDoctorDetails.getWhatsapp();
         }
@@ -908,26 +921,45 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
     }
 
     public void startTextChat(View view) {
-//        if (!CheckInternetAvailability.isNetworkAvailable(this)) {
-//            Toast.makeText(this, getString(R.string.not_connected_txt), Toast.LENGTH_SHORT).show();
-//            return;
+        if (!CheckInternetAvailability.isNetworkAvailable(this)) {
+            Toast.makeText(this, getString(R.string.not_connected_txt), Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        DownloadPopupWindow downloadPopupWindow = new LeftAnchorPopupWindow(this, view, this::openChatRoom);
+        downloadPopupWindow.startDownloading(DynamicModules.MODULE_CHAT);
+//        if (manager.isModuleDownloaded(DynamicModules.MODULE_CHAT)) {
+//            openChatRoom();
+//        } else {
+//            manager.downloadDynamicModule(DynamicModules.MODULE_CHAT);
 //        }
-//        EncounterDAO encounterDAO = new EncounterDAO();
-//        EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUID(visitID);
-//        RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
-//        RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(visitID);
-//        RtcArgs args = new RtcArgs();
-//        if (rtcConnectionDTO != null) {
 //            args.setDoctorUuid(rtcConnectionDTO.getConnectionInfo());
 //            args.setPatientId(patientUuid);
 //            args.setPatientName(patientName);
 //            args.setVisitId(visitID);
 //            args.setNurseId(encounterDTO.getProvideruuid());
 //            IDAChatActivity.startChatActivity(VisitDetailsActivity.this, args);
-//        } else {
+    }
+
+    private void openChatRoom() {
+        RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
+        RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(visitID);
+
+        if (rtcConnectionDTO != null) {
+            ChatRoomConfig roomConfig = new ChatRoomConfig(
+                    patientName,
+                    patientUuid,
+                    sessionManager.getChwname(),
+                    visitID,
+                    sessionManager.getProviderID(),
+                    rtcConnectionDTO.getConnectionInfo(),
+                    openmrsID
+            );
+            OnDemandIntentUtils.openChatRoom(this, roomConfig);
+        } else {
 //            //chatIntent.putExtra("toUuid", ""); // assigned doctor uuid
-//            Toast.makeText(this, getResources().getString(R.string.wait_for_the_doctor_message), Toast.LENGTH_SHORT).show();
-//        }
+            Toast.makeText(this, getResources().getString(R.string.wait_for_the_doctor_message), Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void startVideoChat(View view) {
@@ -1093,5 +1125,31 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
         String baseurl = BuildConfig.SERVER_URL + ":3004";
 
         new AppointmentUtils().cancelAppointmentRequestOnVisitEnd(visitUUID, appointmentID, reason, providerID, baseurl);
+    }
+
+    @Override
+    public void onDownloading(int percentage) {
+        super.onDownloading(percentage);
+    }
+
+    @Override
+    public void onDownloadCompleted() {
+        super.onDownloadCompleted();
+    }
+
+    @Override
+    public void onInstalling() {
+        super.onInstalling();
+    }
+
+    @Override
+    public void onInstallSuccess() {
+        super.onInstallSuccess();
+        openChatRoom();
+    }
+
+    @Override
+    public void onFailed(@NonNull String errorMessage) {
+        super.onFailed(errorMessage);
     }
 }

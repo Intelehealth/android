@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:width="@dimen/std_16dp"
+        android:height="@dimen/std_16dp"
+        android:gravity="bottom">
+        <rotate
+            android:fromDegrees="45"
+            android:pivotX="0%"
+            android:pivotY="100%"
+            android:toDegrees="45">
+            <shape android:shape="rectangle">
+                <size
+                    android:width="@dimen/std_16dp"
+                    android:height="@dimen/std_16dp" />
+                <solid android:color="@color/white" />
+            </shape>
+        </rotate>
+    </item>
+    <item
+        android:width="@dimen/std_16dp"
+        android:height="@dimen/std_16dp"
+        android:gravity="bottom">
+        <rotate
+            android:fromDegrees="45"
+            android:pivotX="0%"
+            android:pivotY="100%"
+            android:toDegrees="45">
+            <shape android:shape="rectangle">
+                <size
+                    android:width="@dimen/std_16dp"
+                    android:height="@dimen/std_16dp" />
+                <solid android:color="@color/colorAccentLightCard" />
+            </shape>
+        </rotate>
+    </item>
+    <item android:start="@dimen/std_8dp">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/white" />
+            <corners
+                android:bottomLeftRadius="0dp"
+                android:bottomRightRadius="@dimen/std_8dp"
+                android:radius="@dimen/std_8dp"
+                android:topLeftRadius="@dimen/std_8dp"
+                android:topRightRadius="@dimen/std_8dp" />
+        </shape>
+    </item>
+    <item android:start="@dimen/std_8dp">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/colorAccentLightCard" />
+
+            <corners
+                android:bottomLeftRadius="0dp"
+                android:bottomRightRadius="@dimen/std_8dp"
+                android:radius="@dimen/std_8dp"
+                android:topLeftRadius="@dimen/std_8dp"
+                android:topRightRadius="@dimen/std_8dp" />
+        </shape>
+    </item>
+
+</layer-list>

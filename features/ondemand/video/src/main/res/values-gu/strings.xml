@@ -54,10 +54,6 @@
     <string name="cancel_lbl">કાઢી નાખવુ</string>
     <string name="max_doc_size_toast">અધિકતમ ડોક્યુમેન્ટ સાઇઝ 512KB છે.</string>
     <string name="choose_documents">ડોક્યુમેન્ટ પસંદ કરો.</string>
-    <string name="read">વાંચો</string>
-    <string name="sent">મોકલી આપેલું છે</string>
-    <string name="msg_delivered">વિતરણ થઈ ચૂક્યું છે.</string>
-    <string name="sending">મોકલવામાં આવી રહ્યું છે.</string>
     <string name="max_5_image">વધુ વધુમાં 5 ફોટો તમે એક કેસમાં મોકલી શકો છો.</string>
     <string name="max_2_image">વધુ વધુમાં 2 ફોટો તમે એક કેસમાં મોકલી શકો છો.</string>
     <string name="select">પસંદ કરો</string>

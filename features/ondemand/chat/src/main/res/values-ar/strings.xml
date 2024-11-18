@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="send_message">Send Message</string>
+    <string name="read">قرأ</string>
+    <string name="sent">مرسل</string>
+    <string name="msg_delivered">تم التوصيل</string>
+    <string name="sending">إرسال</string>
+</resources>

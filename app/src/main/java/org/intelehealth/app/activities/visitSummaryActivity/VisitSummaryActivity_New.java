@@ -22,6 +22,7 @@ import static org.intelehealth.app.utilities.UuidDictionary.SEVERITY;
 import static org.intelehealth.app.utilities.UuidDictionary.SPECIALITY;
 import static org.intelehealth.app.utilities.UuidDictionary.VISIT_UPLOAD_TIME;
 import static org.intelehealth.app.utilities.VisitUtils.endVisit;
+import static org.intelehealth.installer.activity.DynamicModuleDownloadingActivity.MODULE_DOWNLOAD_STATUS;
 
 import android.Manifest;
 import android.animation.ObjectAnimator;
@@ -65,7 +66,12 @@ import android.text.Html;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
+
+import org.intelehealth.app.database.dao.RTCConnectionDAO;
+import org.intelehealth.app.models.dto.RTCConnectionDTO;
+import org.intelehealth.app.ui2.utils.CheckInternetAvailability;
 import org.intelehealth.app.utilities.CustomLog;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -184,7 +190,13 @@ import org.intelehealth.config.room.entity.PatientVital;
 import org.intelehealth.config.room.entity.Specialization;
 import org.intelehealth.config.utility.PatientVitalConfigKeys;
 import org.intelehealth.config.utility.ResUtils;
+import org.intelehealth.features.ondemand.mediator.model.ChatRoomConfig;
+import org.intelehealth.features.ondemand.mediator.utils.OnDemandIntentUtils;
 import org.intelehealth.ihutils.ui.CameraActivity;
+import org.intelehealth.installer.activity.DynamicModuleDownloadingActivity;
+import org.intelehealth.installer.popup.DownloadPopupWindow;
+import org.intelehealth.installer.popup.LeftAnchorPopupWindow;
+import org.intelehealth.installer.utils.DynamicModules;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -376,10 +388,16 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     private String selectedFollowupDate, selectedFollowupTime;
 
     public void startTextChat(View view) {
-//        if (!CheckInternetAvailability.isNetworkAvailable(this)) {
-//            Toast.makeText(this, getString(R.string.not_connected_txt), Toast.LENGTH_SHORT).show();
-//            return;
-//        }
+        if (!CheckInternetAvailability.isNetworkAvailable(this)) {
+            Toast.makeText(this, getString(R.string.not_connected_txt), Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+
+        startForDownloadResult.launch(DynamicModuleDownloadingActivity.getDownloadActivityIntent(this, DynamicModules.MODULE_CHAT));
+
+//        DownloadPopupWindow downloadPopupWindow = new LeftAnchorPopupWindow(this, view, this::openChatRoom);
+//        downloadPopupWindow.startDownloading(DynamicModules.MODULE_CHAT);
 //
 //        EncounterDAO encounterDAO = new EncounterDAO();
 //        EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUID(visitUUID);
@@ -397,6 +415,39 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 //            //chatIntent.putExtra("toUuid", ""); // assigned doctor uuid
 //            Toast.makeText(this, getResources().getString(R.string.wait_for_the_doctor_message), Toast.LENGTH_SHORT).show();
 //        }
+    }
+
+    private final ActivityResultLauncher<Intent> startForDownloadResult = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(), result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    Intent intent = result.getData();
+                    if (intent == null) return;
+                    if (intent.hasExtra(MODULE_DOWNLOAD_STATUS) && intent.getBooleanExtra(MODULE_DOWNLOAD_STATUS, false)) {
+                        openChatRoom();
+                    }
+                }
+            });
+
+    private void openChatRoom() {
+        RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
+        RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(visitUUID);
+
+        if (rtcConnectionDTO != null) {
+            ChatRoomConfig roomConfig = new ChatRoomConfig(
+                    patientName,
+                    patientUuid,
+                    sessionManager.getChwname(),
+                    visitUUID,
+                    sessionManager.getProviderID(),
+                    rtcConnectionDTO.getConnectionInfo(),
+                    patient.getOpenmrs_id()
+
+            );
+            OnDemandIntentUtils.openChatRoom(this, roomConfig);
+        } else {
+//            //chatIntent.putExtra("toUuid", ""); // assigned doctor uuid
+            Toast.makeText(this, getResources().getString(R.string.wait_for_the_doctor_message), Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -426,6 +477,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     public void startVideoChat(View view) {
         Toast.makeText(this, getString(R.string.video_call_req_sent), Toast.LENGTH_SHORT).show();
     }
+
     private FeatureActiveStatus mFeatureActiveStatus;
 
     @Override
@@ -513,7 +565,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         patientVitalViewModel.getAllEnabledLiveFields()
                 .observe(this, it -> {
                             mPatientVitalList = it;
-                            CustomLog.v(TAG,new Gson().toJson(mPatientVitalList));
+                            CustomLog.v(TAG, new Gson().toJson(mPatientVitalList));
                             updateUI();
                         }
                 );
@@ -531,7 +583,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
         mBloodGroupLinearLayout.setVisibility(View.GONE);
         for (PatientVital patientVital : mPatientVitalList) {
-            CustomLog.v(TAG,patientVital.getName() + "\t" + patientVital.getVitalKey());
+            CustomLog.v(TAG, patientVital.getName() + "\t" + patientVital.getVitalKey());
 
             if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.HEIGHT)) {
                 mHeightLinearLayout.setVisibility(View.VISIBLE);
@@ -615,7 +667,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         SpecializationRepository repository = new SpecializationRepository(db.specializationDao());
         viewModel = new ViewModelProvider(this, new SpecializationViewModelFactory(repository)).get(SpecializationViewModel.class);
         viewModel.fetchSpecialization().observe(this, specializations -> {
-           CustomLog.d(TAG,new Gson().toJson(specializations));
+            CustomLog.d(TAG, new Gson().toJson(specializations));
             setupSpecializationDataSpinner(specializations);
             setFacilityToVisitSpinner();
             setSeveritySpinner();
@@ -688,7 +740,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 hasPrescription = new EncounterDAO().isPrescriptionReceived(visitUuid);
                 Timber.tag(TAG).d("has prescription main::%s", hasPrescription);
             } catch (DAOException e) {
-                CustomLog.e(TAG,e.getMessage());
+                CustomLog.e(TAG, e.getMessage());
                 throw new RuntimeException(e);
             }
 
@@ -756,7 +808,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 isPrescriptionReceived = new EncounterDAO().isPrescriptionReceived(visitUUID);
             } catch (DAOException e) {
                 e.printStackTrace();
-                CustomLog.e(TAG,e.getMessage());
+                CustomLog.e(TAG, e.getMessage());
             }
             boolean isAllowForEdit = !isVisitSpecialityExists; //&& !isCompletedExitedSurvey && isPrescriptionReceived;
             // Edit btn visibility based on user coming from Visit Details screen - Start
@@ -852,7 +904,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         }
         btn_bottom_printshare.setVisibility(View.GONE);
         btn_bottom_vs.setVisibility(View.VISIBLE);
-        CustomLog.d(TAG,"has prescription::%s", hasPrescription);
+        CustomLog.d(TAG, "has prescription::%s", hasPrescription);
         updateUIState();
 
         //here we changing the appointment button behavior
@@ -1078,7 +1130,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 profileImage = imagesDAO.getPatientProfileChangeTime(patientUuid);
             } catch (DAOException e) {
                 FirebaseCrashlytics.getInstance().recordException(e);
-                CustomLog.e(TAG,e.getMessage());
+                CustomLog.e(TAG, e.getMessage());
             }
         }
 
@@ -1207,7 +1259,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
         } catch (JSONException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
-            CustomLog.e(TAG,e.getMessage());
+            CustomLog.e(TAG, e.getMessage());
         }
         // temperature - end
 
@@ -1245,7 +1297,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 }
             } catch (DAOException e) {
                 e.printStackTrace();
-                CustomLog.e(TAG,e.getMessage());
+                CustomLog.e(TAG, e.getMessage());
             }
             rowListItem = new ArrayList<>();
 
@@ -1308,7 +1360,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 emergencyUuid = encounterDAO.getEmergencyEncounters(visitUuid, encounterDAO.getEncounterTypeUuid("EMERGENCY"));
             } catch (DAOException e) {
                 FirebaseCrashlytics.getInstance().recordException(e);
-                CustomLog.e(TAG,e.getMessage());
+                CustomLog.e(TAG, e.getMessage());
             }
 
             if (!emergencyUuid.isEmpty() || !emergencyUuid.equalsIgnoreCase("")) {
@@ -1328,7 +1380,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                     encounterDAO.setEmergency(visitUuid, isChecked);
                 } catch (DAOException e) {
                     FirebaseCrashlytics.getInstance().recordException(e);
-                    CustomLog.e(TAG,e.getMessage());
+                    CustomLog.e(TAG, e.getMessage());
                 }
             }
         });
@@ -1453,7 +1505,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                                 imagesDAO.deleteConceptImages(encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_PE);
                             } catch (DAOException e1) {
                                 FirebaseCrashlytics.getInstance().recordException(e1);
-                                CustomLog.e(TAG,e1.getMessage());
+                                CustomLog.e(TAG, e1.getMessage());
                             }
                         }
 
@@ -1601,7 +1653,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                                 imagesDAO.deleteConceptImages(encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_PE);
                             } catch (DAOException e1) {
                                 FirebaseCrashlytics.getInstance().recordException(e1);
-                                CustomLog.e(TAG,e1.getMessage());
+                                CustomLog.e(TAG, e1.getMessage());
                             }
                         }
                         Intent intent1 = new Intent(VisitSummaryActivity_New.this, VisitCreationActivity.class);
@@ -2207,7 +2259,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 }
             } catch (ParseException e) {
                 e.printStackTrace();
-                CustomLog.e(TAG,e.getMessage());
+                CustomLog.e(TAG, e.getMessage());
             }
         }
     }
@@ -2372,7 +2424,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
         } catch (JSONException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
-            CustomLog.e(TAG,e.getMessage());
+            CustomLog.e(TAG, e.getMessage());
         }
     }
 

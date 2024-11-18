@@ -60,10 +60,6 @@
     <string name="cancel_lbl">ବାତିଲ</string>
     <string name="max_doc_size_toast">ମାକ୍ସ ଡକ ସାଇଜ 512KB</string>
     <string name="choose_documents">ଦସ୍ତାବିଜ୍ ଚୟନ</string>
-    <string name="read">ପଢ଼</string>
-    <string name="sent">ପଠା</string>
-    <string name="msg_delivered">ଦିଆଗଲା</string>
-    <string name="sending">ପଠାଯାଉଛି ବା ପଠାଇବା</string>
     <string name="max_5_image">ଗୋଟେ case ପାଇଁ ଅତି ବେଶିରେ 5 ଟି ଛବି ତୁମେ ପଠାଇ ପାର</string>
     <string name="max_2_image">ଅତି ବେଶୀରେ ଗୋଟେ case ପାଇଁ ତୁମେ 2ଟି ଛବି ପଠାଇ ପାର</string>
     <string name="select">ଚୟନ କରିବା</string>

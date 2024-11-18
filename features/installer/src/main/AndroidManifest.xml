@@ -7,10 +7,5 @@
         android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC"
         android:minSdkVersion="34" />
 
-    <application>
-        <service
-            android:name=".service.FeatureDownloadService"
-            android:exported="false"
-            android:foregroundServiceType="dataSync" />
-    </application>
+    <application/>
 </manifest>

@@ -20,12 +20,14 @@ import org.intelehealth.feature.chat.model.ChatMessage
 import org.intelehealth.feature.chat.model.MessageStatus
 import org.json.JSONArray
 import javax.inject.Inject
+import javax.inject.Singleton
 
 /**
  * Created by Vaghela Mithun R. on 08-06-2023 - 18:47.
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
+@Singleton
 class ChatSocket @Inject constructor(private val socketManager: SocketManager) {
     var messageListener: MessageListener? = null
     var conversationListener: ConversationListener? = null

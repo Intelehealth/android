@@ -34,12 +34,12 @@ import java.util.UUID;
 public class BaseActivity extends LanguageActivity implements DynamicDeliveryCallback {
     private static final String TAG = "BaseActivity";
     private FeatureActiveStatus featureActiveStatus;
-    protected DynamicModuleDownloadManager manager;
+//    protected DynamicModuleDownloadManager manager;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        manager = DynamicModuleDownloadManager.getInstance(this);
+//        manager = DynamicModuleDownloadManager.getInstance(this);
 //        SocketManager.getInstance().setNotificationListener(this);
         loadFeatureActiveStatus();
     }
@@ -106,13 +106,13 @@ public class BaseActivity extends LanguageActivity implements DynamicDeliveryCal
 
     @Override
     protected void onResume() {
-        manager.registerListener(this);
+//        manager.registerListener(this);
         super.onResume();
     }
 
     @Override
     protected void onPause() {
-        manager.unregisterListener();
+//        manager.unregisterListener();
         super.onPause();
     }
 
@@ -133,6 +133,11 @@ public class BaseActivity extends LanguageActivity implements DynamicDeliveryCal
 
     @Override
     public void onFailed(@NonNull String errorMessage) {
+
+    }
+
+    @Override
+    public void onInstalling() {
 
     }
 }

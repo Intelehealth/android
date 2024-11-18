@@ -1,16 +1,20 @@
 package org.intelehealth.feature.chat
 
-import org.intelehealth.klivekit.chat.listener.ConnectionListener
-import org.intelehealth.klivekit.chat.listener.EventCallback
-import org.intelehealth.klivekit.chat.model.ChatMessage
-import org.intelehealth.klivekit.chat.socket.ChatSocket
+import org.intelehealth.feature.chat.listener.ConnectionListener
+import org.intelehealth.feature.chat.listener.EventCallback
+import org.intelehealth.feature.chat.model.ChatMessage
+import org.intelehealth.feature.chat.socket.ChatSocket
+import javax.inject.Inject
+import javax.inject.Singleton
+
 
 /**
  * Created by Vaghela Mithun R. on 08-07-2023 - 12:00.
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-class ChatClient(
+@Singleton
+class ChatClient @Inject constructor(
     private val chatSocket: ChatSocket,
     messageHandler: MessageHandler
 ) : ConnectionListener {

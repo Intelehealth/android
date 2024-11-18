@@ -1,24 +1,26 @@
 package org.intelehealth.feature.chat
 
-import org.intelehealth.klivekit.data.PreferenceHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import org.intelehealth.klivekit.chat.data.ChatRepository
-import org.intelehealth.klivekit.chat.listener.ConversationListener
-import org.intelehealth.klivekit.chat.listener.MessageListener
-import org.intelehealth.klivekit.chat.model.ChatMessage
-import org.intelehealth.klivekit.chat.model.MessageStatus
+import org.intelehealth.core.utils.helper.PreferenceHelper
+import org.intelehealth.feature.chat.data.ChatRepository
+import org.intelehealth.feature.chat.listener.ConversationListener
+import org.intelehealth.feature.chat.listener.MessageListener
+import org.intelehealth.feature.chat.model.ChatMessage
+import org.intelehealth.feature.chat.model.MessageStatus
 import javax.inject.Inject
+import javax.inject.Singleton
 
 /**
  * Created by Vaghela Mithun R. on 03-07-2023 - 16:21.
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
+@Singleton
 class MessageHandler @Inject constructor(
     private val chatRepository: ChatRepository,
     private val preferenceHelper: PreferenceHelper

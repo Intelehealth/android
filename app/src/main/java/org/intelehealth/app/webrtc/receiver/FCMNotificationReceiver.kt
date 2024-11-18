@@ -22,7 +22,7 @@ import org.intelehealth.fcm.FcmBroadcastReceiver
 import org.intelehealth.fcm.FcmNotification
 import org.intelehealth.features.ondemand.mediator.VIDEO_CALL_IMPL_CLASS
 import org.intelehealth.features.ondemand.mediator.createInstance
-import org.intelehealth.features.ondemand.mediator.listener.VideoCallListener
+import org.intelehealth.features.ondemand.mediator.listener.VideoCallMediator
 import org.intelehealth.installer.downloader.DynamicModuleDownloadManager
 
 /**
@@ -41,8 +41,8 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
             if (data.containsKey("type") && data["type"].equals("video_call")) {
                 // check video feature available
                 checkVideoActiveStatus(context) {
-                    val videoCallListener = createInstance<VideoCallListener>(VIDEO_CALL_IMPL_CLASS)
-                    videoCallListener?.onIncomingCall(context, data)
+                    val videoCallMediator = createInstance<VideoCallMediator>(VIDEO_CALL_IMPL_CLASS)
+                    videoCallMediator?.onIncomingCall(context, data)
                 }
             } else {
                 if (data.isNotEmpty() && notification == null) {

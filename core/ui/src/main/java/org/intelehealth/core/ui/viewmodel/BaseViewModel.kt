@@ -10,8 +10,10 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.onStart
 import org.intelehealth.core.network.helper.NetworkHelper
+import org.intelehealth.core.network.service.ServiceResponse
 import org.intelehealth.core.utils.helper.PreferenceHelper
 import org.intelehealth.core.network.state.Result
+import timber.log.Timber
 
 open class BaseViewModel(
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
@@ -33,6 +35,8 @@ open class BaseViewModel(
     @JvmField
     var errorDataResult: LiveData<Throwable> = errorResult
 
+    var dataConnectionStatus = MutableLiveData<Boolean>(true)
+
 
     fun <L> executeLocalQuery(
         queryCall: () -> L?
@@ -45,6 +49,25 @@ open class BaseViewModel(
         emit(Result.Loading<L>("Please wait..."))
     }.flowOn(dispatcher)
 
+    fun <T> executeNetworkCall(
+        networkCall: suspend () -> ServiceResponse<T>
+    ) = flow {
+        if (isInternetAvailable()) {
+            val response = networkCall()
+            if (response.status == 200) {
+                Timber.d("Api success")
+                val result = Result.Success(response.data, "Success")
+                result.message = response.message
+                emit(result)
+            } else {
+                Timber.e("Api error ${response.message}")
+                emit(Result.Error(response.message))
+            }
+        } else dataConnectionStatus.postValue(false)
+    }.onStart {
+        emit(Result.Loading("Please wait..."))
+    }.flowOn(dispatcher)
+
     fun executeLocalInsertUpdateQuery(
         queryCall: () -> Boolean
     ) = flow {
@@ -54,6 +77,31 @@ open class BaseViewModel(
     }.onStart {
         emit(Result.Loading<Boolean>("Please wait..."))
     }.flowOn(dispatcher)
+
+    fun <L, T> catchNetworkData(
+        localCall: () -> LiveData<L>?, networkCall: suspend () -> ServiceResponse<T>, saveDataCall: suspend (T?) -> L
+    ) = flow {
+        val data = localCall()
+        data?.value?.let {
+            emit(Result.Success(it, "Success"))
+        } ?: if (isInternetAvailable()) {
+            val response = networkCall()
+            if (response.status == 200) {
+                Timber.d("Api success")
+                val data = saveDataCall(response.data)
+                val result = Result.Success(data, "Success")
+                result.message = response.message
+                emit(result)
+            } else {
+                Timber.e("Api error ${response.message}")
+                emit(Result.Error(response.message))
+            }
+        } else dataConnectionStatus.postValue(false)
+    }.onStart {
+        emit(Result.Loading("Please wait..."))
+    }.flowOn(dispatcher)
+
+    fun isInternetAvailable(): Boolean = networkHelper?.isNetworkConnected() ?: false
 
     /**
      * Handle response here in base with loading and error message

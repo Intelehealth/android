@@ -56,10 +56,6 @@
     <string name="cancel_lbl">Отменить</string>
     <string name="max_doc_size_toast">Максимальный размер документа - 512 КБ</string>
     <string name="choose_documents">Выберите документы</string>
-    <string name="read">Прочитать</string>
-    <string name="sent">Отправлено</string>
-    <string name="msg_delivered">Доставлено</string>
-    <string name="sending">Отправка</string>
     <string name="max_5_image">Максимум 5 изображений, которые вы можете отправить в одном случае</string>
     <string name="max_2_image">Максимум 2 изображений, которые вы можете отправить в одном случае</string>
     <string name="select">Выберите</string>
