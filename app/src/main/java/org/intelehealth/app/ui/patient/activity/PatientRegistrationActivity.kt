@@ -14,6 +14,8 @@ import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import androidx.core.content.IntentCompat
 import androidx.core.view.isVisible
+import androidx.fragment.app.FragmentManager
+import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.github.ajalt.timberkt.Timber
 import com.google.gson.Gson
@@ -43,6 +45,7 @@ import java.util.UUID
  * Mob   : +919727206702
  **/
 class PatientRegistrationActivity : BaseActivity() {
+    private lateinit var navController: NavController
     private lateinit var binding: ActivityPatientRegistrationBinding
     private val patientViewModel by lazy {
         return@lazy PatientViewModelFactory.create(this, this)
@@ -113,7 +116,7 @@ class PatientRegistrationActivity : BaseActivity() {
     private fun navigateToStage(stage: PatientRegStage) {
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.navHostPatientReg) as NavHostFragment
-        val navController = navHostFragment.navController
+          navController = navHostFragment.navController
         val navGraph =
             navController.navInflater.inflate(R.navigation.navigation_patient_registration)
         val startDestination = when (stage) {
@@ -182,22 +185,6 @@ class PatientRegistrationActivity : BaseActivity() {
         return true
     }
 
-//    private fun manageTitleVisibilityOnScrolling() {
-//        binding.appBarLayoutPatient.addOnOffsetChangedListener(object : OnOffsetChangedListener {
-//            var scrollRange = -1;
-//            override fun onOffsetChanged(appBarLayout: AppBarLayout?, verticalOffset: Int) {
-//                if (scrollRange == -1) {
-//                    scrollRange = appBarLayout?.totalScrollRange ?: -1
-//                }
-//
-//                binding.collapsingToolbar.title = if (scrollRange + verticalOffset == 0) {
-//                    resources.getString(R.string.add_new_patient)
-//                } else ""
-//            }
-//        })
-//    }
-
-
     private fun changeIconStatus(stage: PatientRegStage) {
         if (stage == PatientRegStage.PERSONAL) {
             binding.patientTab.tvIndicatorPatientPersonal.isSelected = true
@@ -224,9 +211,13 @@ class PatientRegistrationActivity : BaseActivity() {
                 binding.patientTab.root.isVisible = true
                 binding.addressActiveStatus = it.activeStatusPatientAddress
                 binding.otherActiveStatus = it.activeStatusPatientOther
+                removeOrNavigateBack(R.id.fragmentPatientAddressInfo)
+                patientViewModel.updatePatientStage(PatientRegStage.PERSONAL)
             }
         }
     }
+
+
 
     override fun onResume() {
         super.onResume()
@@ -238,6 +229,17 @@ class PatientRegistrationActivity : BaseActivity() {
         networkUtil.unregisterNetworkReceiver()
     }
 
+   private fun removeOrNavigateBack(fragmentId: Int) {
+        // Check if the current destination is the fragment we want to remove
+        if (navController.currentDestination?.id == fragmentId) {
+            // The fragment is currently displayed, so pop to the previous destination
+            navController.popBackStack()
+        } else {
+            // Pop up to the specified fragment, removing any fragments above it
+            navController.popBackStack(fragmentId, inclusive = true)
+        }
+    }
+
     private val networkStatusListener = InternetCheckUpdateInterface {
         if (::actionRefresh.isInitialized) actionRefresh.isEnabled = it
     }
@@ -247,7 +249,7 @@ class PatientRegistrationActivity : BaseActivity() {
         fun startPatientRegistration(
             context: Context,
             patientId: String? = null,
-            stage: PatientRegStage = PatientRegStage.PERSONAL
+            stage: PatientRegStage = PatientRegStage.PERSONAL,
         ) {
             Intent(context, PatientRegistrationActivity::class.java).apply {
                 putExtra(PATIENT_UUID, patientId)

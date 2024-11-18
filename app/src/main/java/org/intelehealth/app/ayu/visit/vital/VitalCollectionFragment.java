@@ -4,13 +4,16 @@ import static org.intelehealth.app.ayu.visit.common.VisitUtils.convertCtoF;
 import static org.intelehealth.app.ayu.visit.common.VisitUtils.convertFtoC;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
+
 import org.intelehealth.app.utilities.CustomLog;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,10 +29,12 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LifecycleOwnerKt;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.codeglo.coyamore.data.PreferenceHelper;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
@@ -104,6 +109,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
     private CardView mHeightCardView, mWeightCardView, mBMICardView, mSBPCardView, mDBPCardView, mPulseCardView, mTemperatureCardView, mSpo2CardView, mRespiratoryCardView, mBloodGroupCardView;
 
     private List<PatientVital> mPatientVitalList;
+    private VitalPreference vitalPref;
 
     public VitalCollectionFragment() {
         // Required empty public constructor
@@ -159,6 +165,12 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (SessionManager.getInstance(getContext()).getVitalPreference() != null) {
+            vitalPref = SessionManager.getInstance(getContext()).getVitalPreference();
+        } else {
+            vitalPref = new VitalPreference();
+        }
+
 
     }
 
@@ -317,7 +329,39 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
             }
         });
 
+        setDataIfExist();
+
         return mRootView;
+    }
+
+
+    private void setDataIfExist() {
+        vitalPref = SessionManager.getInstance(getContext()).getVitalPreference();
+        if (vitalPref != null) {
+            mHeightEditText.setText(vitalPref.getHeight());
+            mWeightEditText.setText(vitalPref.getWeight());
+            mBMITextView.setText(vitalPref.getBmi());
+            mBpSysEditText.setText(vitalPref.getBpSystolic());
+            mBpSysEditText.setText(vitalPref.getBpSystolic());
+            mBpDiaEditText.setText(vitalPref.getBpDiastolic());
+            mTemperatureEditText.setText(vitalPref.getTemperature());
+            mSpo2EditText.setText(vitalPref.getSpO2());
+            mRespEditText.setText(vitalPref.getRespiratoryRate());
+            mBloodGroupErrorTextView.setText(vitalPref.getRespiratoryRate());
+        }
+    }
+
+    private void updatePreference() {
+        VitalPreference vitalPref = new VitalPreference();
+        vitalPref.setHeight(mHeightEditText.getText().toString());
+        vitalPref.setWeight(mWeightEditText.getText().toString());
+        vitalPref.setBmi(mBMITextView.getText().toString());
+        vitalPref.setBpDiastolic(mBpDiaEditText.getText().toString());
+        vitalPref.setBpSystolic(mBpSysEditText.getText().toString());
+        vitalPref.setTemperature(mTemperatureEditText.getText().toString());
+        vitalPref.setSpO2(mSpo2EditText.getText().toString());
+        vitalPref.setRespiratoryRate(mRespEditText.getText().toString());
+        SessionManager.getInstance(getContext()).saveVitalPreference(vitalPref);
     }
 
 
@@ -329,13 +373,21 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         PatientVitalViewModelFactory factory = new PatientVitalViewModelFactory(repository);
         PatientVitalViewModel patientVitalViewModel = new ViewModelProvider(this, factory).get(PatientVitalViewModel.class);
         //requireActivity();
-        patientVitalViewModel.getAllEnabledLiveFields()
+        /*patientVitalViewModel.getAllEnabledLiveFields()
                 .observe(requireActivity(), it -> {
                             mPatientVitalList = it;
                             //Timber.tag(TAG).v(new Gson().toJson(mPatientVitalList));
                             updateUI();
                         }
-                );
+                );*/
+        CoroutineProvider.usePatientVitalScope(
+                LifecycleOwnerKt.getLifecycleScope(this),
+                patientVitalViewModel,
+                data -> {
+                    mPatientVitalList = (List<PatientVital>) data;
+                    updateUI();
+                }
+        );
     }
 
     private void updateUI() {
@@ -355,7 +407,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
             bmiLinearLayout.setVisibility(View.VISIBLE);*/
 
         for (PatientVital patientVital : mPatientVitalList) {
-            CustomLog.v(TAG,patientVital.getName() + "\t" + patientVital.getVitalKey());
+            CustomLog.v(TAG, patientVital.getName() + "\t" + patientVital.getVitalKey());
 
             if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.HEIGHT)) {
                 mHeightCardView.setVisibility(View.VISIBLE);
@@ -443,20 +495,23 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
 
         @Override
         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+            updatePreference();
         }
 
         @Override
         public void afterTextChanged(Editable editable) {
+
             String val = editable.toString().trim();
             if (val.equals(".")) {
                 editText.setText("");
                 return;
             }
             boolean isValid = isValidaForm();
+            updatePreference();
             setDisabledSubmit(!isValid);
         }
     }
+
 
     private boolean isValidaForm() {
         boolean isValid = true;
@@ -876,77 +931,6 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         }
     }
 
-    private ArrayAdapter<String> mHeightArrayAdapter;
-
-    /*private void showHeightListing() {
-        // add a list
-        final String[] data = new String[mHeightMasterList.size() + 1];
-        data[0] = getResources().getString(R.string.select_height);
-        for (int i = 1; i < data.length; i++) {
-            data[i] = String.valueOf(mHeightMasterList.get(i - 1)) + " " + getResources().getString(R.string.cm);
-        }
-
-        mHeightArrayAdapter = new ArrayAdapter<String>(getActivity(),
-                R.layout.simple_spinner_item_1, data);
-        mHeightArrayAdapter.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
-
-        mHeightSpinner.setAdapter(mHeightArrayAdapter);
-        mHeightSpinner.setPopupBackgroundDrawable(getActivity().getDrawable(R.drawable.popup_menu_background));
-        mHeightSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int which, long l) {
-                if (which != 0) {
-                    heightvalue = data[which].split(" ")[0];
-                    calculateBMI();
-                    mHeightErrorTextView.setVisibility(View.GONE);
-                    mHeightSpinner.setBackgroundResource(R.drawable.edittext_border);
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-
-    }*/
-
-    private ArrayAdapter<String> mWeightArrayAdapter;
-
-    /*private void showWeightListing() {
-
-        // add a list
-        final String[] data = new String[mWeightMasterList.size() + 1];
-        data[0] = getResources().getString(R.string.select_weight);
-        for (int i = 1; i < data.length; i++) {
-            data[i] = String.valueOf(mWeightMasterList.get(i - 1)) + " " + getResources().getString(R.string.kg);
-        }
-        mWeightArrayAdapter = new ArrayAdapter<String>(getActivity(),
-                R.layout.simple_spinner_item_1, data);
-        mWeightArrayAdapter.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
-
-        mWeightSpinner.setAdapter(mWeightArrayAdapter);
-        mWeightSpinner.setPopupBackgroundDrawable(getActivity().getDrawable(R.drawable.popup_menu_background));
-
-        mWeightSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int which, long l) {
-                if (which != 0) {
-                    weightvalue = data[which].split(" ")[0];
-                    calculateBMI();
-                    mWeightErrorTextView.setVisibility(View.GONE);
-                    mWeightSpinner.setBackgroundResource(R.drawable.edittext_border);
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-
-
-    }*/
 
     @Override
     public void onResume() {
