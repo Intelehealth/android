@@ -64,12 +64,9 @@
         tools:ignore="UnusedAttribute, LockedOrientationActivity"
         tools:replace="allowBackup">
         <activity
-            android:name=".activities.prescription.thermalprinter.TextPrintESCActivityOLDK"
-            android:exported="false" />
-        <activity
-            android:name=".activities.prescription.thermalprinter.TextPrintESCActivityOLD"
-            android:exported="false"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:name=".activities.householdSurvey.HouseholdSurveyActivity"
+            android:exported="true"
+            android:theme="@style/AppThemeMaterialNew"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".activities.prescription.thermalprinter.TextPrintESCActivity"
@@ -501,6 +498,7 @@
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="org.intelehealth.nas.fileprovider"

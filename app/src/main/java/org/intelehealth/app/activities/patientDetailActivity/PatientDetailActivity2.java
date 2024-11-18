@@ -65,6 +65,7 @@ import android.os.Bundle;
 import android.os.LocaleList;
 import android.util.DisplayMetrics;
 
+import org.intelehealth.app.activities.householdSurvey.HouseholdSurveyActivity;
 import org.intelehealth.app.utilities.CustomLog;
 
 import android.util.Log;
@@ -388,6 +389,14 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             @Override
             public void onClick(View view) {
                 getOnBackPressedDispatcher().onBackPressed();
+            }
+        });
+
+        binding.tvHouseholdSurvey.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent1 = new Intent(PatientDetailActivity2.this, HouseholdSurveyActivity.class);
+                startActivity(intent1);
             }
         });
     }
@@ -833,14 +842,14 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                                 null,
                                 null
                         );
-                case PatientRegConfigKeys.BLOCK -> PatientRegFieldsUtils.INSTANCE.configField(
+              /*  case PatientRegConfigKeys.BLOCK -> PatientRegFieldsUtils.INSTANCE.configField(
                         false,
                         fields,
                         blockTr,
                         null,
                         null,
                         null
-                );
+                );*/
                 case PatientRegConfigKeys.HOUSEHOLD_NUMBER ->
                         PatientRegFieldsUtils.INSTANCE.configField(
                                 false,

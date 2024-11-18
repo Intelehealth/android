@@ -311,9 +311,25 @@
                         </LinearLayout>
 
                     </androidx.cardview.widget.CardView>
-
+                    <Button
+                        android:id="@+id/tv_household_survey"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_marginStart="@dimen/margin_24"
+                        android:layout_marginEnd="@dimen/margin_24"
+                        android:layout_marginBottom="@dimen/margin_24"
+                        android:layout_marginTop="@dimen/margin_20dp"
+                        android:background="@drawable/ui2_common_primary_bg"
+                        android:paddingStart="@dimen/margin_30"
+                        android:paddingEnd="@dimen/margin_14"
+                        android:backgroundTint="@color/orange3"
+                        android:text="Household Survey"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/txtsize_patdetail_16sp" />
 
                 </LinearLayout>
+
 
 
             </RelativeLayout>

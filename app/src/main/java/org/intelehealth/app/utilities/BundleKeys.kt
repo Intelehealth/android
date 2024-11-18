@@ -25,6 +25,6 @@ class BundleKeys {
         const val ENCOUNTER_UUID_VITALS = "encounterUuidVitals"
         const val VALUE = "value"
         const val FLOAT_AGE_YEAR_MONTH = "float_ageYear_Month"
-
+        const val HOUSEHOLD_CURRENT_STAGE = "household_current_stage"
     }
 }
