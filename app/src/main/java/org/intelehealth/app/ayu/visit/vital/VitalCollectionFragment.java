@@ -10,7 +10,10 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
+
+import org.intelehealth.app.activities.visit.staticEnabledFields.VitalsEnabledFieldsHelper;
 import org.intelehealth.app.utilities.CustomLog;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -329,13 +332,16 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         PatientVitalViewModelFactory factory = new PatientVitalViewModelFactory(repository);
         PatientVitalViewModel patientVitalViewModel = new ViewModelProvider(this, factory).get(PatientVitalViewModel.class);
         //requireActivity();
-        patientVitalViewModel.getAllEnabledLiveFields()
-                .observe(requireActivity(), it -> {
-                            mPatientVitalList = it;
-                            //Timber.tag(TAG).v(new Gson().toJson(mPatientVitalList));
-                            updateUI();
-                        }
-                );
+//        patientVitalViewModel.getAllEnabledLiveFields().observe(requireActivity(), it -> {
+        mPatientVitalList = getStaticVitalsEnabledFields();
+        //Timber.tag(TAG).v(new Gson().toJson(mPatientVitalList));
+        updateUI();
+//                }
+//        );
+    }
+
+    private List<PatientVital> getStaticVitalsEnabledFields() {
+        return VitalsEnabledFieldsHelper.INSTANCE.getStaticVitalsEnabledFields();
     }
 
     private void updateUI() {
@@ -355,7 +361,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
             bmiLinearLayout.setVisibility(View.VISIBLE);*/
 
         for (PatientVital patientVital : mPatientVitalList) {
-            CustomLog.v(TAG,patientVital.getName() + "\t" + patientVital.getVitalKey());
+            CustomLog.v(TAG, patientVital.getName() + "\t" + patientVital.getVitalKey());
 
             if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.HEIGHT)) {
                 mHeightCardView.setVisibility(View.VISIBLE);

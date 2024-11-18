@@ -11,7 +11,9 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+
 import org.intelehealth.app.utilities.CustomLog;
+
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
@@ -245,7 +247,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         super.onFeatureActiveStatusLoaded(activeStatus);
         featureActiveStatus = activeStatus;
         if (featureActiveStatus != null && !featureActiveStatus.getVitalSection()) {
-            CustomLog.d(TAG,"featureActiveStatus first screen=>%s", featureActiveStatus.getVitalSection());
+            CustomLog.d(TAG, "featureActiveStatus first screen=>%s", featureActiveStatus.getVitalSection());
             mStep1ProgressBar.setVisibility(View.GONE);
             mCurrentStep = STEP_2_VISIT_REASON;
             totalScreen = 3;
@@ -263,6 +265,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_visit_creation);
+
         getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.white));
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
 
@@ -371,6 +374,8 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         bundle.putString("patientUuid", patientUuid);
         bundle.putString("visitUuid", visitUuid);
         bundle.putString("encounterUuidVitals", encounterVitals);
+
+        loadFeatureActiveStatus();
     }
 
     public boolean isEditTriggerFromVisitSummary() {

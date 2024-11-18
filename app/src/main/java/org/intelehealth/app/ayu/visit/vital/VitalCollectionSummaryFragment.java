@@ -20,6 +20,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.activities.visit.staticEnabledFields.VitalsEnabledFieldsHelper;
 import org.intelehealth.app.ayu.visit.VisitCreationActionListener;
 import org.intelehealth.app.ayu.visit.VisitCreationActivity;
 import org.intelehealth.app.ayu.visit.common.VisitUtils;
@@ -88,13 +89,16 @@ public class VitalCollectionSummaryFragment extends Fragment {
         PatientVitalViewModelFactory factory = new PatientVitalViewModelFactory(repository);
         PatientVitalViewModel patientVitalViewModel = new ViewModelProvider(this, factory).get(PatientVitalViewModel.class);
         //requireActivity();
-        patientVitalViewModel.getAllEnabledLiveFields()
-                .observe(requireActivity(), it -> {
-                            mPatientVitalList = it;
-                            //Timber.tag(TAG).v(new Gson().toJson(mPatientVitalList));
-                            updateUI();
-                        }
-                );
+//        patientVitalViewModel.getAllEnabledLiveFields().observe(requireActivity(), it -> {
+        mPatientVitalList = getStaticVitalsEnabledFields();
+        //Timber.tag(TAG).v(new Gson().toJson(mPatientVitalList));
+        updateUI();
+//                }
+//        );
+    }
+
+    private List<PatientVital> getStaticVitalsEnabledFields() {
+        return VitalsEnabledFieldsHelper.INSTANCE.getStaticVitalsEnabledFields();
     }
 
     private void updateUI() {
@@ -109,7 +113,7 @@ public class VitalCollectionSummaryFragment extends Fragment {
 
         mBloodGroupLinearLayout.setVisibility(View.GONE);
         for (PatientVital patientVital : mPatientVitalList) {
-            CustomLog.v(TAG,patientVital.getName() + "\t" + patientVital.getVitalKey());
+            CustomLog.v(TAG, patientVital.getName() + "\t" + patientVital.getVitalKey());
 
             if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.HEIGHT)) {
                 mHeightLinearLayout.setVisibility(View.VISIBLE);
