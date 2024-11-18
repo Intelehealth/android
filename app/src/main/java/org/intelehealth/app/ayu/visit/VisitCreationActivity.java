@@ -411,8 +411,6 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                         commit();
                 break;
             case STEP_2_VISIT_REASON:
-
-
                 //loadChiefComplainNodeForSelectedNames(mSelectedComplainList);
                 //mStep2ProgressBar.setProgress(40);
                 setTitle(STEP_2_VISIT_REASON_QUESTION);
