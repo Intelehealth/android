@@ -2464,4 +2464,22 @@
         <item>स्वयं</item>
         <item>परिवार</item>
     </string-array>
+
+    <string-array name="occupation">
+        <item>Select</item>
+        <item>Salaried Government Job</item>
+        <item>Salaried Private Job</item>
+        <item>Petty Business or Shop Owner</item>
+        <item>Technician or Craftsman or Other Skilled Work (Driver, Mason, etc.)</item>
+        <item>Agricultural Farmer</item>
+        <item>Tenant Farmer or Agricultural Daily Wage Worker</item>
+        <item>Daily Wage Worker (Unskilled Worker)</item>
+        <item>Household Worker</item>
+        <item>Student</item>
+        <item>Unemployed</item>
+        <item>Retired (With Pension)</item>
+        <item>Retired (Without Pension)</item>
+        <item>Not Applicable</item>
+    </string-array>
+
 </resources>

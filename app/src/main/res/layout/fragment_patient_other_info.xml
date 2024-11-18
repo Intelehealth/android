@@ -100,7 +100,7 @@
                 app:hintEnabled="false">
 
                 <AutoCompleteTextView
-                    android:id="@+id/textInputOccupation"
+                    android:id="@+id/autoCompleteOccupation"
                     style="@style/AppTheme.InputBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

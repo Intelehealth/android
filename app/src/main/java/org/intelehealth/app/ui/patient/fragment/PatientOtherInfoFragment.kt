@@ -8,13 +8,11 @@ import com.google.gson.Gson
 import org.intelehealth.app.R
 import org.intelehealth.app.databinding.FragmentPatientOtherInfoBinding
 import org.intelehealth.app.models.dto.PatientDTO
-import org.intelehealth.app.ui.filter.FirstLetterUpperCaseInputFilter
 import org.intelehealth.app.utilities.ArrayAdapterUtils
 import org.intelehealth.app.utilities.LanguageUtils
 import org.intelehealth.app.utilities.PatientRegConfigKeys
 import org.intelehealth.app.utilities.PatientRegFieldsUtils
 import org.intelehealth.app.utilities.PatientRegStage
-import org.intelehealth.app.utilities.extensions.addFilter
 import org.intelehealth.app.utilities.extensions.hideError
 import org.intelehealth.app.utilities.extensions.hideErrorOnTextChang
 import org.intelehealth.app.utilities.extensions.validate
@@ -49,6 +47,19 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
         }
     }
 
+    private fun setupOccupations() {
+        val adapter = ArrayAdapterUtils.getArrayAdapter(requireContext(), R.array.occupation)
+        binding.autoCompleteOccupation.setAdapter(adapter)
+        if (patient.occupation != null && patient.occupation.isNotEmpty()) {
+            binding.autoCompleteOccupation.setText(patient.occupation, false)
+        }
+        binding.autoCompleteOccupation.setOnItemClickListener { _, _, i, _ ->
+            binding.textInputLayOccupation.hideError()
+            LanguageUtils.getSpecificLocalResource(requireContext(), "en").apply {
+                patient.occupation = this.getStringArray(R.array.occupation)[i]
+            }
+        }
+    }
 
     override fun onPatientDataLoaded(patient: PatientDTO) {
         super.onPatientDataLoaded(patient)
@@ -65,6 +76,7 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
         binding.otherInfoConfig = PatientRegFieldsUtils.buildPatientOtherInfoConfig(it)
         setupSocialCategory()
         setupEducations()
+        setupOccupations()
         setupEconomicCategory()
         applyFilter()
         setInputTextChangListener()
@@ -167,7 +179,6 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
     private fun savePatient() {
         patient.apply {
             nationalID = binding.textInputNationalId.text?.toString()
-            occupation = binding.textInputOccupation.text?.toString()
             patientViewModel.updatedPatient(this)
             patientViewModel.savePatient().observe(viewLifecycleOwner) {
                 it ?: return@observe
@@ -187,12 +198,11 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
 
     private fun applyFilter() {
 //        binding.textInputNationalId.addFilter(FirstLetterUpperCaseInputFilter())
-        binding.textInputOccupation.addFilter(FirstLetterUpperCaseInputFilter())
+//        binding.textInputOccupation.addFilter(FirstLetterUpperCaseInputFilter())
     }
 
     private fun setInputTextChangListener() {
         binding.textInputLayNationalId.hideErrorOnTextChang(binding.textInputNationalId)
-        binding.textInputLayOccupation.hideErrorOnTextChang(binding.textInputOccupation)
     }
 
     private fun setupEducations() {
@@ -217,8 +227,11 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
                 binding.textInputLayNationalId.validate(binding.textInputNationalId, error)
             } else true
 
-            val bOccuptions = if (it.occuptions!!.isEnabled && it.occuptions!!.isMandatory) {
-                binding.textInputLayOccupation.validate(binding.textInputOccupation, error)
+            val bOccupations = if (it.occuptions!!.isEnabled && it.occuptions!!.isMandatory) {
+                binding.textInputLayOccupation.validateDropDowb(
+                    binding.autoCompleteOccupation,
+                    error
+                )
             } else true
 
 
@@ -246,8 +259,8 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
                 } else true
 
 
-            if (bOccuptions.and(bSocialCategory).and(bEducation)
-                    .and(bEconomic).and(bNationalId).and(bOccuptions)
+            if (bOccupations.and(bSocialCategory).and(bEducation)
+                    .and(bEconomic).and(bNationalId).and(bOccupations)
             ) block.invoke()
         }
     }
