@@ -612,7 +612,7 @@ public class TodaysMyAppointmentsFragment extends Fragment {
     private void getSlots() {
         String serverUrl = BuildConfig.SERVER_URL + ":3004";
 
-        ApiClientAppointment.getInstance(serverUrl).getApi().getSlotsAll(DateAndTimeUtils.getCurrentDateInDDMMYYYYFormat(), DateAndTimeUtils.getCurrentDateInDDMMYYYYFormat(), new SessionManager(getActivity()).getLocationUuid()).enqueue(new Callback<AppointmentListingResponse>() {
+        ApiClientAppointment.getInstance(serverUrl).getApi().getSlotsAll(DateAndTimeUtils.getCurrentDateInDDMMYYYYFormat(), DateAndTimeUtils.getCurrentDateInDDMMYYYYFormat(), new SessionManager(getActivity()).getCurrentLocationUuid()).enqueue(new Callback<AppointmentListingResponse>() {
             @Override
             public void onResponse(Call<AppointmentListingResponse> call, retrofit2.Response<AppointmentListingResponse> response) {
                 if (response.body() == null) return;

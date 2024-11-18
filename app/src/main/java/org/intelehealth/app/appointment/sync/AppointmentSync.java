@@ -2,6 +2,7 @@ package org.intelehealth.app.appointment.sync;
 
 import android.content.Context;
 import android.content.Intent;
+
 import org.intelehealth.app.utilities.CustomLog;
 
 import com.github.ajalt.timberkt.Timber;
@@ -38,7 +39,7 @@ public class AppointmentSync {
         Timber.tag(TAG).d("URL =>%s", BuildConfig.SERVER_URL);
         Timber.tag(TAG).d("Session URL =>%s", sessionManager.getServerUrl());
         ApiClientAppointment.getInstance(baseurl).getApi()
-                .getSlotsAll(selectedStartDate, selectedEndDate, new SessionManager(context).getLocationUuid())
+                .getSlotsAll(selectedStartDate, selectedEndDate, new SessionManager(context).getCurrentLocationUuid())
 
                 .enqueue(new Callback<AppointmentListingResponse>() {
                     @Override
@@ -85,7 +86,7 @@ public class AppointmentSync {
                     public void onFailure(Call<AppointmentListingResponse> call, Throwable t) {
                         CustomLog.v(TAG, t.getMessage());
                         //log out operation if response code is 401
-                        new NavigationUtils().logoutOperation(context,t);
+                        new NavigationUtils().logoutOperation(context, t);
                     }
                 });
 

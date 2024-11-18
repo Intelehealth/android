@@ -717,7 +717,7 @@ public class ScheduleAppointmentActivity_New extends BaseActivity implements Net
         request.setPatientName(patientName);
         request.setPatientId(patientUuid);
         request.setOpenMrsId(openMrsId);
-        request.setLocationUuid(new SessionManager(ScheduleAppointmentActivity_New.this).getLocationUuid());
+        request.setLocationUuid(new SessionManager(ScheduleAppointmentActivity_New.this).getCurrentLocationUuid());
         request.setHwUUID(new SessionManager(ScheduleAppointmentActivity_New.this).getProviderID()); // user id / healthworker id
         Gson gson = new Gson();
         AppointmentDAO appointmentDAO = new AppointmentDAO();

@@ -508,7 +508,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         visitDTO.setPatientuuid(patientDTO.getUuid());
         visitDTO.setStartdate(thisDate);
         visitDTO.setVisitTypeUuid(UuidDictionary.VISIT_TELEMEDICINE);
-        visitDTO.setLocationuuid(sessionManager.getLocationUuid());
+        visitDTO.setLocationuuid(sessionManager.getCurrentLocationUuid());
         visitDTO.setSyncd(false);
         visitDTO.setCreatoruuid(sessionManager.getCreatorID());//static
         VisitsDAO visitsDAO = new VisitsDAO();

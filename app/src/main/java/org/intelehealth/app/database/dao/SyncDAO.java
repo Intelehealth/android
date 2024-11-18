@@ -130,8 +130,7 @@ public class SyncDAO {
         String encoded = sessionManager.getEncoded();
         String oldDate = sessionManager.getPullExcutedTime();
         String url = sessionManager.getServerUrl() + "/EMR-Middleware/webapi/pull/pulldata/" +
-                sessionManager.getCurrentLocationUuid() + "/" + sessionManager.getPullExcutedTime();
-//                + "/" + pageNo + "/" + AppConstants.PAGE_LIMIT;
+                sessionManager.getCurrentLocationUuid() + "/" + sessionManager.getPullExcutedTime() + "/" + pageNo + "/" + AppConstants.PAGE_LIMIT;
         ;
 //        String url =  sessionManager.getServerUrl() + "/pulldata/" + sessionManager.getLocationUuid() + "/" + sessionManager.getPullExcutedTime();
         Call<ResponseDTO> middleWarePullResponseCall = AppConstants.apiInterface.RESPONSE_DTO_CALL(url, "Basic " + encoded);
@@ -255,8 +254,8 @@ public class SyncDAO {
         String encoded = sessionManager.getEncoded();
         String oldDate = sessionManager.getPullExcutedTime();
         String url = sessionManager.getServerUrl() + "/EMR-Middleware/webapi/pull/pulldata/"
-                + sessionManager.getCurrentLocationUuid() + "/" + sessionManager.getPullExcutedTime();
-//                + "/" + pageNo + "/" + AppConstants.PAGE_LIMIT;
+                + sessionManager.getCurrentLocationUuid() + "/" + sessionManager.getPullExcutedTime() + "/" + pageNo + "/" + AppConstants.PAGE_LIMIT;
+
 //        String url =  sessionManager.getServerUrl() + "/pulldata/" + sessionManager.getLocationUuid() + "/" + sessionManager.getPullExcutedTime();
         Call<ResponseDTO> middleWarePullResponseCall = AppConstants.apiInterface.RESPONSE_DTO_CALL(url, "Basic " + encoded);
         Logger.logD("Start pull request", "Started");
@@ -400,7 +399,8 @@ public class SyncDAO {
         sessionManager = new SessionManager(context);
         String encoded = sessionManager.getEncoded();
         String oldDate = sessionManager.getPullExcutedTime();
-        String url = sessionManager.getServerUrl() + "/EMR-Middleware/webapi/pull/pulldata/" + sessionManager.getCurrentLocationUuid() + "/" + sessionManager.getPullExcutedTime()
+        String url = sessionManager.getServerUrl() + "/EMR-Middleware/webapi/pull/pulldata/"
+                + sessionManager.getCurrentLocationUuid() + "/" + sessionManager.getPullExcutedTime()
                 + "/" + pageNo + "/" + AppConstants.PAGE_LIMIT;
         ;
 //        String url =  sessionManager.getServerUrl() + "/pulldata/" + sessionManager.getLocationUuid() + "/" + sessionManager.getPullExcutedTime();
@@ -553,6 +553,7 @@ public class SyncDAO {
         String encoded = sessionManager.getEncoded();
         Gson gson = new Gson();
         CustomLog.d(TAG, "pushDataApi: encoded : " + encoded);
+        String pushRequestCall = gson.toJson(pushRequestApiCall);
         Logger.logD(TAG, "push request model" + gson.toJson(pushRequestApiCall));
         CustomLog.e(TAG, "push request model" + gson.toJson(pushRequestApiCall));
         String url = sessionManager.getServerUrl() + "/EMR-Middleware/webapi/push/pushdata";

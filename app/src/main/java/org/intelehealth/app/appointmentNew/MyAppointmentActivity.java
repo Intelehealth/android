@@ -91,7 +91,7 @@ public class MyAppointmentActivity extends BaseActivity implements UpdateAppoint
         ApiClientAppointment.getInstance(baseurl).getApi()
                 .getSlotsAll(DateAndTimeUtils.getCurrentDateInDDMMYYYYFormat(),
                         DateAndTimeUtils.getOneMonthAheadDateInDDMMYYYYFormat(),
-                        new SessionManager(this).getLocationUuid())
+                        new SessionManager(this).getCurrentLocationUuid())
 
                 .enqueue(new Callback<AppointmentListingResponse>() {
                     @Override
