@@ -91,7 +91,7 @@
 
             <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
                 android:id="@+id/textInputLayOccupation"
-                style="@style/AppTheme.OutlineInputBox"
+                style="@style/AppTheme.OutlineInputBox.DropDown"
                 config="@{otherInfoConfig.occuptions}"
                 editMode="@{isEditMode}"
                 android:layout_width="match_parent"
@@ -99,13 +99,13 @@
                 android:layout_marginTop="@dimen/margin_4"
                 app:hintEnabled="false">
 
-                <com.google.android.material.textfield.TextInputEditText
+                <AutoCompleteTextView
                     android:id="@+id/textInputOccupation"
-                    style="@style/AppTheme.InputBox.Address"
+                    style="@style/AppTheme.InputBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/enter_occupation_txt"
-                    android:text="@{patient.occupation}" />
+                    android:hint="@string/select_occupation_txt"
+                    android:inputType="none" />
             </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
         </LinearLayout>
 
