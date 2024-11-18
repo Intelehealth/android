@@ -344,7 +344,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         backPress();
         initUI();
         clickListeners();
-//        registerHeartbeatApi();
+        registerHeartbeatApi();
 
         //checking alerm parmission added or not
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
