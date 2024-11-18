@@ -857,24 +857,24 @@
 
     <string-array name="education">
         <item>Select</item>
-        <item>Illiterate</item>
-        <item>Pre-Primary</item>
-        <item>Primary</item>
-        <item>Secondary</item>
-        <item>Higher Secondary</item>
-        <item>Graduate</item>
-        <item>Masters &amp; Higher</item>
+        <item>Cannot read or write</item>
+        <item>Can read and write</item>
+        <item>Primary education (Till Class 5)</item>
+        <item>Middle school (6th - 8th)</item>
+        <item>Passed secondary school (Class 10th boards)</item>
+        <item>Passed senior secondary school (Class 12th boards)</item>
+        <item>Graduation and above</item>
     </string-array>
 
     <string-array name="education_en">
         <item>Select</item>
-        <item>Illiterate</item>
-        <item>Pre-Primary</item>
-        <item>Primary</item>
-        <item>Secondary</item>
-        <item>Higher Secondary</item>
-        <item>Graduate</item>
-        <item>Masters &amp; Higher</item>
+        <item>Cannot read or write</item>
+        <item>Can read and write</item>
+        <item>Primary education (Till Class 5)</item>
+        <item>Middle school (6th - 8th)</item>
+        <item>Passed secondary school (Class 10th boards)</item>
+        <item>Passed senior secondary school (Class 12th boards)</item>
+        <item>Graduation and above</item>
     </string-array>
 
     <string-array name="education_te">
