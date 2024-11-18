@@ -64,7 +64,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.LocaleList;
 import android.util.DisplayMetrics;
+
 import org.intelehealth.app.utilities.CustomLog;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -467,7 +469,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             encounterDAO.createEncountersToDB(encounterDTO);
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
-            CustomLog.e(TAG,e.getMessage());
+            CustomLog.e(TAG, e.getMessage());
         }
 
         InteleHealthDatabaseHelper mDatabaseHelper = new InteleHealthDatabaseHelper(PatientDetailActivity2.this);
@@ -513,7 +515,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             visitsDAO.insertPatientToDB(visitDTO);
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
-            CustomLog.e(TAG,e.getMessage());
+            CustomLog.e(TAG, e.getMessage());
         }
 
         // visitUuid = String.valueOf(visitLong);
@@ -617,13 +619,21 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
      * fetching reg config from local db
      */
     private void fetchAllConfig() {
-        regFieldViewModel.fetchEnabledAllRegFields()
-                .observe(this, it -> {
-                            patientAllFields = it;
-                            configAllFields();
-                        }
-                );
+        patientAllFields = fetchEnabledStaticConfigFields();
+        configAllFields();
+
+//        regFieldViewModel.fetchEnabledAllRegFields()
+//                .observe(this, it -> {
+//                            patientAllFields = it;
+//                            configAllFields();
+//                        }
+//                );
     }
+
+    private List<PatientRegistrationFields> fetchEnabledStaticConfigFields() {
+        return StaticEnabledFieldsHelper.INSTANCE.getAllEnabledPatientInfoFields();
+    }
+
 
     /**
      * changing fields status based on config data
@@ -866,7 +876,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                     isCompletedExitedSurvey = new EncounterDAO().isCompletedExitedSurvey(visit_id);
                 } catch (DAOException e) {
                     e.printStackTrace();
-                    CustomLog.e(TAG,e.getMessage());
+                    CustomLog.e(TAG, e.getMessage());
                 }
                 if (!isCompletedExitedSurvey) {
 
@@ -911,7 +921,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
-                                CustomLog.e(TAG,e.getMessage());
+                                CustomLog.e(TAG, e.getMessage());
                             }
                         } else {
                             needToShowCoreValue = true;
@@ -1009,7 +1019,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
                             } catch (ParseException e) {
                                 FirebaseCrashlytics.getInstance().recordException(e);
-                                CustomLog.e(TAG,e.getMessage());
+                                CustomLog.e(TAG, e.getMessage());
                             }
                         }
                     }
@@ -1115,7 +1125,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                     name = patientsDAO.getAttributesName(idCursor1.getString(idCursor1.getColumnIndexOrThrow("person_attribute_type_uuid")));
                 } catch (DAOException e) {
                     FirebaseCrashlytics.getInstance().recordException(e);
-                    CustomLog.e(TAG,e.getMessage());
+                    CustomLog.e(TAG, e.getMessage());
                 }
 
                 if (name.equalsIgnoreCase("caste")) {
@@ -1187,7 +1197,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 */
         } catch (JSONException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
-            CustomLog.e(TAG,e.getMessage());
+            CustomLog.e(TAG, e.getMessage());
 //            Issue #627
 //            added the catch exception to check the config and throwing back to setup activity
             Toast.makeText(getApplicationContext(), "JsonException" + e, Toast.LENGTH_LONG).show();
@@ -1210,7 +1220,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             profileImage = imagesDAO.getPatientProfileChangeTime(patientDTO.getUuid());
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
-            CustomLog.e(TAG,e.getMessage());
+            CustomLog.e(TAG, e.getMessage());
         }
 
         if (patientDTO.getPatientPhoto() == null || patientDTO.getPatientPhoto().equalsIgnoreCase("")) {
@@ -1884,7 +1894,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                             updated = patientsDAO.updatePatientPhoto(patientDTO.getUuid(), AppConstants.IMAGE_PATH + patientDTO.getUuid() + ".jpg");
                         } catch (DAOException e) {
                             FirebaseCrashlytics.getInstance().recordException(e);
-                            CustomLog.e(TAG,e.getMessage());
+                            CustomLog.e(TAG, e.getMessage());
                         }
                         if (updated) {
                             RequestBuilder<Drawable> requestBuilder = Glide.with(PatientDetailActivity2.this)
@@ -1905,7 +1915,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                                     patientDTO.getUuid() + ".jpg", patientDTO.getUuid());
                         } catch (DAOException e) {
                             FirebaseCrashlytics.getInstance().recordException(e);
-                            CustomLog.e(TAG,e.getMessage());
+                            CustomLog.e(TAG, e.getMessage());
                         }
                     }
                 });
@@ -1936,7 +1946,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 setTitle(openmrsID_txt.getText());
             } catch (DAOException e) {
                 FirebaseCrashlytics.getInstance().recordException(e);
-                CustomLog.e(TAG,e.getMessage());
+                CustomLog.e(TAG, e.getMessage());
             }
         }
 
@@ -1962,7 +1972,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                     syncAnimator.cancel();
                     recreate();
                 } catch (Exception e) {
-                    CustomLog.d(TAG,e.getMessage());
+                    CustomLog.d(TAG, e.getMessage());
                 }
             }
         };
@@ -1998,7 +2008,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             networkUtils.unregisterNetworkReceiver();
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
-            CustomLog.d(TAG,e.getMessage());
+            CustomLog.d(TAG, e.getMessage());
         }
     }
 

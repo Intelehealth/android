@@ -10,6 +10,7 @@ import com.google.gson.Gson
 import org.intelehealth.app.R
 import org.intelehealth.app.activities.identificationActivity.model.DistData
 import org.intelehealth.app.activities.identificationActivity.model.StateData
+import org.intelehealth.app.activities.patientDetailActivity.StaticEnabledFieldsHelper
 import org.intelehealth.app.databinding.FragmentPatientAddressInfoBinding
 import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.app.ui.filter.FirstLetterUpperCaseInputFilter
@@ -90,101 +91,9 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
         binding.textInputCityVillage.setText(SessionManager.getInstance(requireContext()).villageName)
     }
 
-    private fun getStaticPatientRegistrationFields(): List<PatientRegistrationFields> {
-        val fields: MutableList<PatientRegistrationFields> = mutableListOf()
-
-        // Postal Code
-        var currentField = PatientRegistrationFields(
-            id = 0,
-            groupId = "",
-            name = "",
-            idKey = PatientRegConfigKeys.POSTAL_CODE,
-            isMandatory = true,
-            isEditable = true,
-            isEnabled = true
-        )
-
-        fields.add(currentField)
-
-        // Country
-        currentField = PatientRegistrationFields(
-            id = 0,
-            groupId = "",
-            name = "",
-            idKey = PatientRegConfigKeys.COUNTRY,
-            isMandatory = true,
-            isEditable = false,
-            isEnabled = true
-        )
-
-        fields.add(currentField)
-
-        // State
-        currentField = PatientRegistrationFields(
-            id = 0,
-            groupId = "",
-            name = "",
-            idKey = PatientRegConfigKeys.STATE,
-            isMandatory = true,
-            isEditable = false,
-            isEnabled = true
-        )
-
-        fields.add(currentField)
-
-        // District
-        currentField = PatientRegistrationFields(
-            id = 0,
-            groupId = "",
-            name = "",
-            idKey = PatientRegConfigKeys.DISTRICT,
-            isMandatory = false,
-            isEditable = false,
-            isEnabled = false
-        )
-
-        fields.add(currentField)
-
-        // City / Village
-        currentField = PatientRegistrationFields(
-            id = 0,
-            groupId = "",
-            name = "",
-            idKey = PatientRegConfigKeys.VILLAGE_TOWN_CITY,
-            isMandatory = true,
-            isEditable = false,
-            isEnabled = true
-        )
-
-        fields.add(currentField)
-
-        // Address 1
-        currentField = PatientRegistrationFields(
-            id = 0,
-            groupId = "",
-            name = "",
-            idKey = PatientRegConfigKeys.ADDRESS_1,
-            isMandatory = true,
-            isEditable = true,
-            isEnabled = true
-        )
-
-        fields.add(currentField)
-
-        // Address 2
-        currentField = PatientRegistrationFields(
-            id = 0,
-            groupId = "",
-            name = "",
-            idKey = PatientRegConfigKeys.ADDRESS_2,
-            isMandatory = false,
-            isEditable = false,
-            isEnabled = true
-        )
-
-        fields.add(currentField)
-        return fields
-    }
+    // To be removed on 5.0 migration
+    private fun getStaticPatientRegistrationFields() =
+        StaticEnabledFieldsHelper.getEnabledAddressInfoFields()
 
     private val onRebindCallback = object : OnRebindCallback<FragmentPatientAddressInfoBinding>() {
         override fun onBound(binding: FragmentPatientAddressInfoBinding?) {
