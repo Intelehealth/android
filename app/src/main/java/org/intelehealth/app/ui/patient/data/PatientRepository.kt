@@ -66,13 +66,13 @@ class PatientRepository(
                     patient.phonenumber
                 )
             )
-            add(
-                createPatientAttribute(
-                    patient.uuid,
-                    PatientAttributesDTO.Column.SWD.value,
-                    patient.son_dau_wife
-                )
-            )
+//            add(
+//                createPatientAttribute(
+//                    patient.uuid,
+//                    PatientAttributesDTO.Column.SWD.value,
+//                    patient.son_dau_wife
+//                )
+//            )
             add(
                 createPatientAttribute(
                     patient.uuid,
@@ -87,13 +87,13 @@ class PatientRepository(
                     patient.occupation
                 )
             )
-            add(
-                createPatientAttribute(
-                    patient.uuid,
-                    PatientAttributesDTO.Column.CAST.value,
-                    patient.caste
-                )
-            )
+//            add(
+//                createPatientAttribute(
+//                    patient.uuid,
+//                    PatientAttributesDTO.Column.CAST.value,
+//                    patient.caste
+//                )
+//            )
             add(
                 createPatientAttribute(
                     patient.uuid,

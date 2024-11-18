@@ -127,11 +127,11 @@ public class PatientsDAO {
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
             values.put("patient_photo", patientDTO.getPatientPhoto());
 
-            values.put("guardian_type", patientDTO.getGuardianType());
-            values.put("guardian_name", patientDTO.getGuardianName());
-            values.put("contact_type", patientDTO.getContactType());
-            values.put("em_contact_name", patientDTO.getEmContactName());
-            values.put("em_contact_num", patientDTO.getEmContactNumber());
+//            values.put("guardian_type", patientDTO.getGuardianType());
+//            values.put("guardian_name", patientDTO.getGuardianName());
+//            values.put("contact_type", patientDTO.getContactType());
+//            values.put("em_contact_name", patientDTO.getEmContactName());
+//            values.put("em_contact_num", patientDTO.getEmContactNumber());
 
             values.put("dead", patientDTO.getDead());
             values.put("sync", false);
@@ -180,11 +180,11 @@ public class PatientsDAO {
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
             values.put("patient_photo", patientDTO.getPatientPhoto());
 
-            values.put("guardian_type", patientDTO.getGuardianType());
-            values.put("guardian_name", patientDTO.getGuardianName());
-            values.put("contact_type", patientDTO.getContactType());
-            values.put("em_contact_name", patientDTO.getEmContactName());
-            values.put("em_contact_num", patientDTO.getEmContactNumber());
+//            values.put("guardian_type", patientDTO.getGuardianType());
+//            values.put("guardian_name", patientDTO.getGuardianName());
+//            values.put("contact_type", patientDTO.getContactType());
+//            values.put("em_contact_name", patientDTO.getEmContactName());
+//            values.put("em_contact_num", patientDTO.getEmContactNumber());
 
             values.put("dead", false);
             values.put("sync", false);
