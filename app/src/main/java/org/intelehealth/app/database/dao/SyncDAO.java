@@ -278,39 +278,39 @@ public class SyncDAO {
                         CustomLog.e(TAG, e.getMessage());
                     }
                     if (sync) {
-//                        int nextPageNo = response.body().getData().getPageNo();
-//                        int totalCount = response.body().getData().getTotalCount();
+                        int nextPageNo = response.body().getData().getPageNo();
+                        int totalCount = response.body().getData().getTotalCount();
                         int percentage = 0; // this should be only in initialSync....
 
-//                        if (nextPageNo != -1) {
-//                            percentage = (int) Math.round(nextPageNo * AppConstants.PAGE_LIMIT * 100.0 / totalCount);
-//                            Logger.logD(PULL_ISSUE, "percentage: " + percentage);
-//                            setProgress(percentage);
-//                            pullData(context, fromActivity, nextPageNo);
-//                            return;
-//                        } else {
-                        percentage = 100;
-                        sessionManager.setPullExcutedTime(sessionManager.isPulled());
-                        Logger.logD(PULL_ISSUE, "percentage page -1: " + percentage);
-                        setProgress(percentage);
-                        Intent broadcast = new Intent();
-                        broadcast.putExtra("JOB", AppConstants.SYNC_PULL_DATA_DONE);
-                        broadcast.setAction(AppConstants.SYNC_NOTIFY_INTENT_ACTION);
-                        broadcast.setPackage(IntelehealthApplication.getAppContext().getPackageName());
-                        context.sendBroadcast(broadcast);
-                        sessionManager.setLastSyncDateTime(AppConstants.dateAndTimeUtils.getcurrentDateTime(sessionManager.getAppLanguage()));
-                        if (fromActivity.equalsIgnoreCase("home")) {
-                            //Toast.makeText(context, context.getResources().getString(R.string.successfully_synced), Toast.LENGTH_LONG).show();
-                        } else if (fromActivity.equalsIgnoreCase("visitSummary")) {
-                            //Toast.makeText(context, context.getResources().getString(R.string.visit_uploaded_successfully), Toast.LENGTH_LONG).show();
-                        } else if (fromActivity.equalsIgnoreCase("downloadPrescription")) {
+                        if (nextPageNo != -1) {
+                            percentage = (int) Math.round(nextPageNo * AppConstants.PAGE_LIMIT * 100.0 / totalCount);
+                            Logger.logD(PULL_ISSUE, "percentage: " + percentage);
+                            setProgress(percentage);
+                            pullData(context, fromActivity, nextPageNo);
+                            return;
+                        } else {
+                            percentage = 100;
+                            sessionManager.setPullExcutedTime(sessionManager.isPulled());
+                            Logger.logD(PULL_ISSUE, "percentage page -1: " + percentage);
+                            setProgress(percentage);
+                            Intent broadcast = new Intent();
+                            broadcast.putExtra("JOB", AppConstants.SYNC_PULL_DATA_DONE);
+                            broadcast.setAction(AppConstants.SYNC_NOTIFY_INTENT_ACTION);
+                            broadcast.setPackage(IntelehealthApplication.getAppContext().getPackageName());
+                            context.sendBroadcast(broadcast);
+                            sessionManager.setLastSyncDateTime(AppConstants.dateAndTimeUtils.getcurrentDateTime(sessionManager.getAppLanguage()));
+                            if (fromActivity.equalsIgnoreCase("home")) {
+                                //Toast.makeText(context, context.getResources().getString(R.string.successfully_synced), Toast.LENGTH_LONG).show();
+                            } else if (fromActivity.equalsIgnoreCase("visitSummary")) {
+                                //Toast.makeText(context, context.getResources().getString(R.string.visit_uploaded_successfully), Toast.LENGTH_LONG).show();
+                            } else if (fromActivity.equalsIgnoreCase("downloadPrescription")) {
 //                            AppConstants.notificationUtils.DownloadDone(context.getString(R.string.download_from_doctor), context.getString(R.string.prescription_downloaded), 3, context);
 //                            Toast.makeText(context, context.getString(R.string.prescription_downloaded), Toast.LENGTH_LONG).show();
-                        }
+                            }
 //                        else {
 //                            Toast.makeText(context, context.getString(R.string.successfully_synced), Toast.LENGTH_LONG).show();
 //                        }
-//                        }
+                        }
                     } else {
 //                        AppConstants.notificationUtils.DownloadDone(context.getString(R.string.sync), context.getString(R.string.failed_synced), 1, IntelehealthApplication.getAppContext());
 
@@ -400,8 +400,8 @@ public class SyncDAO {
         sessionManager = new SessionManager(context);
         String encoded = sessionManager.getEncoded();
         String oldDate = sessionManager.getPullExcutedTime();
-        String url = sessionManager.getServerUrl() + "/EMR-Middleware/webapi/pull/pulldata/" + sessionManager.getCurrentLocationUuid() + "/" + sessionManager.getPullExcutedTime();
-//                + "/" + pageNo + "/" + AppConstants.PAGE_LIMIT;
+        String url = sessionManager.getServerUrl() + "/EMR-Middleware/webapi/pull/pulldata/" + sessionManager.getCurrentLocationUuid() + "/" + sessionManager.getPullExcutedTime()
+                + "/" + pageNo + "/" + AppConstants.PAGE_LIMIT;
         ;
 //        String url =  sessionManager.getServerUrl() + "/pulldata/" + sessionManager.getLocationUuid() + "/" + sessionManager.getPullExcutedTime();
         Logger.logD(PULL_ISSUE, url);
