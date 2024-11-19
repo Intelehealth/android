@@ -59,7 +59,7 @@
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/textInputNationalId"
-                    style="@style/AppTheme.InputBox.Address"
+                    style="@style/AppTheme.InputBox.NationalId"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/enter_national_ID"

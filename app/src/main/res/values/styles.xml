@@ -576,10 +576,14 @@
         <item name="android:inputType">textCapWords</item>
     </style>
 
-    <style name="AppTheme.InputBox.Address" parent="AppTheme.InputBox">
+    <style name="AppTheme.InputBox.NationalId" parent="AppTheme.InputBox">
         <!--        <item name="android:maxLength">25</item>-->
         <item name="android:digits">@string/validation_address</item>
-        <item name="android:inputType">textPostalAddress</item>
+        <item name="android:inputType">text</item>
+    </style>
+
+    <style name="AppTheme.InputBox.Address" parent="AppTheme.InputBox">
+
     </style>
 
     <style name="AppTheme.InputBox.Phone" parent="AppTheme.InputBox">

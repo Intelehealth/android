@@ -13,6 +13,7 @@ import org.intelehealth.app.activities.identificationActivity.model.StateData
 import org.intelehealth.app.activities.patientDetailActivity.StaticPatientRegistrationEnabledFieldsHelper
 import org.intelehealth.app.databinding.FragmentPatientAddressInfoBinding
 import org.intelehealth.app.models.dto.PatientDTO
+import org.intelehealth.app.ui.filter.CorrespondingAddressInputFilter
 import org.intelehealth.app.ui.filter.FirstLetterUpperCaseInputFilter
 import org.intelehealth.app.utilities.ArrayAdapterUtils
 import org.intelehealth.app.utilities.LanguageUtils
@@ -161,7 +162,10 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
 
     private fun applyFilter() {
         binding.textInputCityVillage.addFilter(FirstLetterUpperCaseInputFilter())
-        binding.textInputAddress1.addFilter(FirstLetterUpperCaseInputFilter())
+        binding.textInputAddress1.apply {
+            addFilter(FirstLetterUpperCaseInputFilter())
+            addFilter(CorrespondingAddressInputFilter())
+        }
         binding.textInputAddress2.addFilter(FirstLetterUpperCaseInputFilter())
     }
 
@@ -230,9 +234,7 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
             val bPostalCode = if (it.postalCode!!.isEnabled && it.postalCode!!.isMandatory) {
                 binding.textInputLayPostalCode.validate(binding.textInputPostalCode, error).and(
                     binding.textInputLayPostalCode.validateDigit(
-                        binding.textInputPostalCode,
-                        R.string.postal_code_6_dig_invalid_txt,
-                        6
+                        binding.textInputPostalCode, R.string.postal_code_6_dig_invalid_txt, 6
                     )
                 )
 
@@ -241,31 +243,26 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
 
             val bCountry = if (it.country!!.isEnabled && it.country!!.isMandatory) {
                 binding.textInputLayCountry.validateDropDowb(
-                    binding.autoCompleteCountry,
-                    error
+                    binding.autoCompleteCountry, error
                 )
             } else true
 
             val bState = if (it.state!!.isEnabled && it.state!!.isMandatory) {
                 binding.textInputLayState.validateDropDowb(
-                    binding.autoCompleteState,
-                    error
+                    binding.autoCompleteState, error
                 )
             } else true
 
             val bDistrict = if (it.district!!.isEnabled && it.district!!.isMandatory) {
                 binding.textInputLayDistrict.validateDropDowb(
-                    binding.autoCompleteState,
-                    error
+                    binding.autoCompleteState, error
                 )
             } else true
 
             val bCityVillage = if (it.cityVillage!!.isEnabled && it.cityVillage!!.isMandatory) {
                 binding.textInputLayCityVillage.validate(binding.textInputCityVillage, error).and(
                     binding.textInputLayCityVillage.validateDigit(
-                        binding.textInputCityVillage,
-                        R.string.error_field_valid_village_required,
-                        3
+                        binding.textInputCityVillage, R.string.error_field_valid_village_required, 3
                     )
                 )
             } else true
