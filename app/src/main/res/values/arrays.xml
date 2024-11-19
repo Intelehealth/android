@@ -1100,6 +1100,7 @@
     </string-array>
 
     <string-array name="economic">
+        <item>Select</item>
         <item>APL</item>
         <item>BPL</item>
     </string-array>

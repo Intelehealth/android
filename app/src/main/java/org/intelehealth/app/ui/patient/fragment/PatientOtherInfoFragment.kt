@@ -93,7 +93,7 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
             binding.autoCompleteEconomicCategory.setText(patient.economic, false)
         }
         binding.autoCompleteEconomicCategory.setOnItemClickListener { _, _, i, _ ->
-            binding.textInputLayEducation.hideError()
+            binding.textInputLayEconomicCategory.hideError()
             LanguageUtils.getSpecificLocalResource(requireContext(), "en").apply {
                 patient.economic = this.getStringArray(R.array.economic)[i]
             }

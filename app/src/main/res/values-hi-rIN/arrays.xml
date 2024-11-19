@@ -265,6 +265,7 @@
     </string-array>
 
     <string-array name="economic">
+        <item>चयन करें</item>
         <item>गरीबी रेखा से ऊपर</item>
         <item>गरीबी रेखा से नीचे</item>
     </string-array>
