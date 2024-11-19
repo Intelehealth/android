@@ -127,6 +127,7 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
             else village
             address1 = binding.textInputAddress1.text?.toString()
             address2 = binding.textInputAddress2.text?.toString()
+            stateprovince = SessionManager.getInstance(requireContext()).stateName
             patientViewModel.updatedPatient(this)
             if (patientViewModel.isEditMode) {
                 saveAndNavigateToDetails()
