@@ -1762,7 +1762,9 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             patientoccupation.setText(getString(R.string.not_provided));
         }
 
-        if (AgeUtils.INSTANCE.isGuardianRequired(mAgeYears, mAgeMonths, mAgeDays) && mAgeYears > -1) {
+        boolean isGuardianActivated = StaticPatientRegistrationEnabledFieldsHelper.INSTANCE.isGuardianActivated();
+
+        if (isGuardianActivated && AgeUtils.INSTANCE.isGuardianRequired(mAgeYears, mAgeMonths, mAgeDays) && mAgeYears > -1) {
             guardianNameTr.setVisibility(View.VISIBLE);
             guardianTypeTr.setVisibility(View.VISIBLE);
 

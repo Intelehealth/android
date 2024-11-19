@@ -353,4 +353,14 @@ object StaticPatientRegistrationEnabledFieldsHelper {
             it.addAll(getEnabledOtherInfoFields())
         }
     }
+
+    fun isGuardianActivated(): Boolean {
+        val field = StaticPatientRegistrationEnabledFieldsHelper.getAllEnabledPatientInfoFields()
+        field.forEach {
+            if (it.idKey == PatientRegConfigKeys.GUARDIAN_TYPE) {
+                return it.isEnabled
+            }
+        }
+        return false
+    }
 }
