@@ -856,7 +856,6 @@
     </string-array>
 
     <string-array name="education">
-        <item>Select</item>
         <item>Cannot read or write</item>
         <item>Can read and write</item>
         <item>Primary education (Till Class 5)</item>
@@ -1100,7 +1099,6 @@
     </string-array>
 
     <string-array name="economic">
-        <item>Select</item>
         <item>APL</item>
         <item>BPL</item>
     </string-array>
@@ -2467,7 +2465,6 @@
     </string-array>
 
     <string-array name="occupation">
-        <item>Select</item>
         <item>Salaried Government Job</item>
         <item>Salaried Private Job</item>
         <item>Petty Business or Shop Owner</item>
