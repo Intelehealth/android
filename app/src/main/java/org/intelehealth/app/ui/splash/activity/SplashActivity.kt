@@ -10,6 +10,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.animation.Animation
@@ -25,9 +26,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.transition.Slide
 import androidx.transition.Transition
 import androidx.transition.TransitionManager
-import androidx.work.WorkInfo
-import com.github.ajalt.timberkt.Timber
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import com.google.gson.Gson
 import org.intelehealth.app.BuildConfig
 import org.intelehealth.app.R
 import org.intelehealth.app.activities.IntroActivity.IntroScreensActivity_New
@@ -44,11 +44,12 @@ import org.intelehealth.app.utilities.DialogUtils
 import org.intelehealth.app.utilities.DialogUtils.CustomDialogListener
 import org.intelehealth.app.utilities.Logger
 import org.intelehealth.config.room.entity.ActiveLanguage
-import org.intelehealth.config.worker.ConfigSyncWorker
 import org.intelehealth.core.shared.ui.viewholder.BaseViewHolder
 import org.intelehealth.fcm.utils.FcmRemoteConfig.getRemoteConfig
 import org.intelehealth.fcm.utils.FcmTokenGenerator.getDeviceToken
 import org.intelehealth.klivekit.utils.extensions.showToast
+import timber.log.Timber
+
 
 /**
  * Created by Vaghela Mithun R. on 15-04-2024 - 11:28.
@@ -64,12 +65,10 @@ class SplashActivity : LanguageActivity(), BaseViewHolder.ViewHolderClickListene
         super.onCreate(savedInstanceState)
         binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        handleFcmCall()
 
+        handleFcmCall()
         handleButtonClickListener()
         initLanguageList()
-        nextActivity()
-
         binding.tvTitle.isVisible = BuildConfig.FLAVOR_client != "bmgf"
     }
 
@@ -165,25 +164,45 @@ class SplashActivity : LanguageActivity(), BaseViewHolder.ViewHolderClickListene
         Uri.parse(url)
     )
 
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == GROUP_PERMISSION_REQUEST) {
+            var allGranted = grantResults.isNotEmpty()
+            for (grantResult in grantResults) {
+                if (grantResult != PackageManager.PERMISSION_GRANTED) {
+                    allGranted = false
+                    break
+                }
+            }
+            if (allGranted) {
+                nextActivity()
+            } else {
+                Timber.e("%s%s", "onRequestPermissionsResult: ", Gson().toJson(permissions))
+            }
+        }
+    }
+
     private fun checkPerm() {
         if (checkAndRequestPermissions()) {
             val handler = Handler(Looper.getMainLooper())
             if (sessionManager.isMigration) {
                 handler.postDelayed({
-                    //Do something after 100ms
-                    //                        nextActivity();
-                }, 2000)
+                    nextActivity()
+                }, 1000)
             } else {
                 handler.postDelayed({
-                    //Do something after 100ms
                     val smoothUpgrade = SmoothUpgrade(this)
-                    val smoothupgrade = smoothUpgrade.checkingDatabase()
-//                    if (smoothupgrade) {
-                    //                            nextActivity();
-//                    }
-                }, 2000)
+                    if (smoothUpgrade.checkingDatabase()) {
+                        nextActivity()
+                    } else {
+                        nextActivity()
+                    }
+                }, 1000)
             }
-            loadConfig()
         }
     }
 
@@ -244,7 +263,6 @@ class SplashActivity : LanguageActivity(), BaseViewHolder.ViewHolderClickListene
         if (writeExternalStoragePermission != PackageManager.PERMISSION_GRANTED) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 listPermissionsNeeded.add(Manifest.permission.READ_MEDIA_IMAGES)
-                listPermissionsNeeded.add(Manifest.permission.MANAGE_EXTERNAL_STORAGE)
             } else {
                 listPermissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE)
                 listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -253,7 +271,7 @@ class SplashActivity : LanguageActivity(), BaseViewHolder.ViewHolderClickListene
         if (phoneStatePermission != PackageManager.PERMISSION_GRANTED) {
             listPermissionsNeeded.add(Manifest.permission.READ_PHONE_STATE)
         }
-        if (!listPermissionsNeeded.isEmpty()) {
+        if (listPermissionsNeeded.isNotEmpty()) {
             ActivityCompat.requestPermissions(
                 this,
                 listPermissionsNeeded.toTypedArray(),
@@ -261,10 +279,10 @@ class SplashActivity : LanguageActivity(), BaseViewHolder.ViewHolderClickListene
             )
             return false
         }
-
 //        checkOverlayPermission();
         return true
     }
+
 
     @SuppressLint("SwitchIntDef")
     private fun fingerPrintAuthenticate() {
