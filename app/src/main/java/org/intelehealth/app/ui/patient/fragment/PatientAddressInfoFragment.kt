@@ -166,7 +166,10 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
             addFilter(FirstLetterUpperCaseInputFilter())
             addFilter(CorrespondingAddressInputFilter())
         }
-        binding.textInputAddress2.addFilter(FirstLetterUpperCaseInputFilter())
+        binding.textInputAddress2.apply {
+            addFilter(FirstLetterUpperCaseInputFilter())
+            addFilter(CorrespondingAddressInputFilter())
+        }
     }
 
     private fun setInputTextChangListener() {
