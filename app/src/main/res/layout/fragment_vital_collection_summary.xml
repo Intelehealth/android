@@ -467,6 +467,82 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/ll_haemoglobin_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_8"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+                    <ImageView
+                        android:layout_width="6dip"
+                        android:layout_height="6dip"
+                        android:layout_marginEnd="@dimen/padding_5"
+                        android:src="@drawable/ic_baseline_lens_24" />
+
+                    <TextView
+                        android:id="@+id/tv_haemoglobin_label"
+                        style="@style/label_misc_txt_14sp_dark_1"
+                        android:layout_width="0dip"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/toolbar"
+                        android:layout_centerVertical="true"
+                        android:layout_weight="1"
+                        android:lineSpacingExtra="1sp"
+                        android:text="@string/haemoglobin" />
+
+                    <TextView
+                        android:id="@+id/tv_haemoglobin"
+                        style="@style/label_misc_txt_14sp_dark"
+                        android:layout_width="0dip"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/toolbar"
+                        android:layout_centerVertical="true"
+                        android:layout_weight="1"
+                        android:lineSpacingExtra="1sp"
+                        android:text="@string/no_information" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_sugar_random_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_8"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+                    <ImageView
+                        android:layout_width="6dip"
+                        android:layout_height="6dip"
+                        android:layout_marginEnd="@dimen/padding_5"
+                        android:src="@drawable/ic_baseline_lens_24" />
+
+                    <TextView
+                        android:id="@+id/tv_sugar_random_label"
+                        style="@style/label_misc_txt_14sp_dark_1"
+                        android:layout_width="0dip"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/toolbar"
+                        android:layout_centerVertical="true"
+                        android:layout_weight="1"
+                        android:lineSpacingExtra="1sp"
+                        android:text="@string/sugar_random" />
+
+                    <TextView
+                        android:id="@+id/tv_sugar_random"
+                        style="@style/label_misc_txt_14sp_dark"
+                        android:layout_width="0dip"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/toolbar"
+                        android:layout_centerVertical="true"
+                        android:layout_weight="1"
+                        android:lineSpacingExtra="1sp"
+                        android:text="@string/no_information" />
+                </LinearLayout>
+
+                <LinearLayout
                     android:id="@+id/ll_blood_group_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -503,6 +579,7 @@
                         android:lineSpacingExtra="1sp"
                         android:text="@string/no_information" />
                 </LinearLayout>
+
             </LinearLayout>
         </LinearLayout>
 

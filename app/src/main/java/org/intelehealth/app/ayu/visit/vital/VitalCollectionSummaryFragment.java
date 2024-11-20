@@ -53,7 +53,7 @@ public class VitalCollectionSummaryFragment extends Fragment {
     private VitalsObject mVitalsObject;
     private boolean mIsEditMode = false;
     private List<PatientVital> mPatientVitalList;
-    private LinearLayout mHeightLinearLayout, mWeightLinearLayout, mBMILinearLayout, mBPLinearLayout, mPulseLinearLayout, mTemperatureLinearLayout, mSpo2LinearLayout, mRespiratoryRateLinearLayout, mBloodGroupLinearLayout;
+    private LinearLayout mHeightLinearLayout, mWeightLinearLayout, mBMILinearLayout, mBPLinearLayout, mPulseLinearLayout, mTemperatureLinearLayout, mSpo2LinearLayout, mRespiratoryRateLinearLayout, mHaemoglobinLinearLayout, mSugarRandomLinearLayout, mBloodGroupLinearLayout;
 
     public VitalCollectionSummaryFragment() {
         // Required empty public constructor
@@ -110,6 +110,8 @@ public class VitalCollectionSummaryFragment extends Fragment {
         mTemperatureLinearLayout.setVisibility(View.GONE);
         mSpo2LinearLayout.setVisibility(View.GONE);
         mRespiratoryRateLinearLayout.setVisibility(View.GONE);
+        mHaemoglobinLinearLayout.setVisibility(View.GONE);
+        mSugarRandomLinearLayout.setVisibility(View.GONE);
 
         mBloodGroupLinearLayout.setVisibility(View.GONE);
         for (PatientVital patientVital : mPatientVitalList) {
@@ -140,7 +142,10 @@ public class VitalCollectionSummaryFragment extends Fragment {
 
             } else if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.BLOOD_TYPE)) {
                 mBloodGroupLinearLayout.setVisibility(View.VISIBLE);
-
+            } else if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.HAEMOGLOBIN)) {
+                mHaemoglobinLinearLayout.setVisibility(View.VISIBLE);
+            } else if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.SUGAR_RANDOM)) {
+                mSugarRandomLinearLayout.setVisibility(View.VISIBLE);
             }
         }
     }
@@ -161,7 +166,8 @@ public class VitalCollectionSummaryFragment extends Fragment {
         mSpo2LinearLayout = view.findViewById(R.id.ll_spo2_container);
         mRespiratoryRateLinearLayout = view.findViewById(R.id.ll_respiratory_rate_container);
         mBloodGroupLinearLayout = view.findViewById(R.id.ll_blood_group_container);
-
+        mHaemoglobinLinearLayout = view.findViewById(R.id.ll_haemoglobin_container);
+        mSugarRandomLinearLayout = view.findViewById(R.id.ll_sugar_random_container);
 
         if (mVitalsObject != null) {
             if (mVitalsObject.getHeight() != null && !mVitalsObject.getHeight().isEmpty() && !mVitalsObject.getHeight().equalsIgnoreCase("0"))
@@ -215,6 +221,18 @@ public class VitalCollectionSummaryFragment extends Fragment {
                 ((TextView) view.findViewById(R.id.tv_respiratory_rate)).setText(mVitalsObject.getResp() + " " + getResources().getString(R.string.breaths_min));
             else
                 ((TextView) view.findViewById(R.id.tv_respiratory_rate)).setText(getString(R.string.ui2_no_information));
+
+            if (mVitalsObject.getHaemoglobin() != null && !mVitalsObject.getHaemoglobin().isEmpty()) {
+                ((TextView) view.findViewById(R.id.tv_haemoglobin)).setText(mVitalsObject.getHaemoglobin());
+            } else {
+                ((TextView) view.findViewById(R.id.tv_haemoglobin)).setText(mVitalsObject.getSugarRandom());
+            }
+
+            if (mVitalsObject.getSugarRandom() != null && !mVitalsObject.getSugarRandom().isEmpty()) {
+                ((TextView) view.findViewById(R.id.tv_sugar_random)).setText(mVitalsObject.getSugarRandom());
+            } else {
+                ((TextView) view.findViewById(R.id.tv_sugar_random)).setText(mVitalsObject.getSugarRandom());
+            }
         }
         view.findViewById(R.id.btn_submit).setOnClickListener(new View.OnClickListener() {
             @Override
