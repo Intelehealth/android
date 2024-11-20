@@ -619,7 +619,7 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
                                                                     .build()
                                                             );
 
-                                                            SQLiteDatabase sqLiteDatabase = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+                                                            SQLiteDatabase sqLiteDatabase = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
                                                             //SQLiteDatabase read_db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
 
                                                             sqLiteDatabase.beginTransaction();

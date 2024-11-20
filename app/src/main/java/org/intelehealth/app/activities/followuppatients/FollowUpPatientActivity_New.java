@@ -130,7 +130,7 @@ public class FollowUpPatientActivity_New extends BaseActivity {
             getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
         }
         sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
-        db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
 
         // changing status bar color
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);

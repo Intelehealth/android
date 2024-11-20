@@ -660,7 +660,7 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
 
     private void initForPastVisit() {
         mPastVisitDataList.clear();
-        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         String visitSelection = "uuid != ? and patientuuid = ? and enddate IS NOT NULL and enddate != ''";
         String[] visitArgs = {visitID, patientUuid};
         String[] visitColumns = {"uuid", "startdate", "enddate"};
@@ -972,7 +972,7 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
                 "date_of_birth", "address1", "address2", "city_village", "state_province",
                 "postal_code", "country", "phone_number", "gender", "sdw",
                 "patient_photo"};
-        SQLiteDatabase db = db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         Cursor idCursor = db.query("tbl_patient", patientColumns, patientSelection, patientArgs, null, null, null);
         if (idCursor.moveToFirst()) {
             do {

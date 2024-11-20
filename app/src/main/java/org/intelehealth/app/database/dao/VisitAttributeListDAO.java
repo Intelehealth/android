@@ -94,7 +94,7 @@ public class VisitAttributeListDAO {
 
         if (VISITUUID != null) {
             CustomLog.d("specc", "spec_fun: " + VISITUUID);
-            SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+            SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
             //db.beginTransaction();
 
             Cursor cursor = db.rawQuery("SELECT value FROM tbl_visit_attribute WHERE visit_uuid = ? and " +
@@ -136,7 +136,7 @@ public class VisitAttributeListDAO {
         CustomLog.d("SPINNER", "SPINNER_Selected_visituuid_logs: " + visitUuid);
         CustomLog.d("SPINNER", "SPINNER_Selected_value_logs: " + value);
 
-        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         ContentValues values = new ContentValues();
         try {

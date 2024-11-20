@@ -130,7 +130,7 @@ public class AppointmentDetailsActivity extends BaseActivity implements NetworkU
         super.onCreate(savedInstanceState);
         setLocale(AppointmentDetailsActivity.this);
         setContentView(R.layout.activity_appointment_details_ui2);
-        db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         sessionManager = new SessionManager(this);
         context = AppointmentDetailsActivity.this;
         appointmentDAO = new AppointmentDAO();
@@ -1017,7 +1017,7 @@ public class AppointmentDetailsActivity extends BaseActivity implements NetworkU
         CustomLog.d(TAG, "fetchPrescriptionReceivedTime:visitUUID :" + visitUUID);
         String modifiedDate = "";
 
-        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
 
         if (visitUUID != null) {
@@ -1080,7 +1080,7 @@ public class AppointmentDetailsActivity extends BaseActivity implements NetworkU
         String patientSelection = "uuid = ?";
         String[] patientArgs = {patientUuid};
         String[] patientColumns = {"uuid", "openmrs_id", "first_name", "middle_name", "last_name", "gender", "date_of_birth", "address1", "address2", "city_village", "state_province", "postal_code", "country", "phone_number", "gender", "sdw", "patient_photo"};
-        SQLiteDatabase db = db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         Cursor idCursor = db.query("tbl_patient", patientColumns, patientSelection, patientArgs, null, null, null);
         if (idCursor.moveToFirst()) {
             do {

@@ -84,7 +84,7 @@ public class ProviderAttributeLIstDAO {
 
     public List<String> getAllValues() {
         List<String> listDTOArrayList = new ArrayList<>();
-        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         //db.beginTransaction();
         String selectionArgs[] = {"ed1715f5-93e2-404e-b3c9-2a2d9600f062", "0"};
         Cursor idCursor = db.rawQuery("SELECT * FROM tbl_dr_speciality WHERE " +
@@ -110,7 +110,7 @@ public class ProviderAttributeLIstDAO {
 
     public List<Uuid_Value> getSpeciality_Uuid_Value() {
         List<Uuid_Value> listDTOArrayList = new ArrayList<>();
-        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         String selectionArgs[] = {"ed1715f5-93e2-404e-b3c9-2a2d9600f062", "0"};
         Cursor idCursor = db.rawQuery("SELECT * FROM tbl_dr_speciality WHERE " +

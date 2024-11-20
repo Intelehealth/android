@@ -479,7 +479,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         getWindow().setStatusBarColor(Color.WHITE);
 
-        //db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        //db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
 
         initUI();
         networkUtils = new NetworkUtils(this, this);
@@ -2974,7 +2974,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     }
 
     private void visitUploadBlock() {
-        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         CustomLog.d("visitUUID", "upload_click: " + visitUUID);
 
         isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
@@ -5164,7 +5164,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         String patientSelection = "uuid = ?";
         String[] patientArgs = {patientUuid};
         String[] patientColumns = {"uuid", "openmrs_id", "first_name", "middle_name", "last_name", "gender", "date_of_birth", "address1", "address2", "city_village", "state_province", "postal_code", "country", "phone_number", "gender", "sdw", "patient_photo"};
-        SQLiteDatabase db = db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         Cursor idCursor = db.query("tbl_patient", patientColumns, patientSelection, patientArgs, null, null, null);
         if (idCursor.moveToFirst()) {
             do {

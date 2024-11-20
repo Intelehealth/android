@@ -167,7 +167,7 @@ public class TodaysMyAppointmentsFragment extends Fragment {
             requireActivity().getResources().updateConfiguration(config, getActivity().getResources().getDisplayMetrics());
         }
         sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
-        db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
 
         //initialize all the views
         rvUpcomingApp = view.findViewById(R.id.rv_upcoming_appointments);
@@ -547,7 +547,7 @@ public class TodaysMyAppointmentsFragment extends Fragment {
     }
 
     private String getPatientProfile(String patientUuid) {
-        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
 
         String imagePath = "";
 

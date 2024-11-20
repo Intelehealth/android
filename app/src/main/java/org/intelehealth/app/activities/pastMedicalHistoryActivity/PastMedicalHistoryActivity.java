@@ -130,7 +130,7 @@ public class PastMedicalHistoryActivity extends BaseActivity implements Question
         }
         sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
 
-        localdb = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        localdb = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         filePath = new File(AppConstants.IMAGE_PATH);
 //        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 //        e = sharedPreferences.edit();
@@ -564,7 +564,7 @@ public class PastMedicalHistoryActivity extends BaseActivity implements Question
 
     private String getPastMedicalVisitData() {
         String result = "";
-        db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         // String[] columns = {"value"};
         String[] columns = {"value", " conceptuuid"};
         try {

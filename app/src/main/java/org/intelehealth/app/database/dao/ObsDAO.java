@@ -87,7 +87,7 @@ public class ObsDAO {
     public boolean insertObs(ObsDTO obsDTO) throws DAOException {
         boolean isUpdated = true;
         long insertedCount = 0;
-        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         ContentValues values = new ContentValues();
 
@@ -118,7 +118,7 @@ public class ObsDAO {
 
 
     public boolean updateObs(ObsDTO obsDTO) {
-        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         int updatedCount = 0;
         ContentValues values = new ContentValues();
@@ -159,7 +159,7 @@ public class ObsDAO {
     public boolean insertObsToDb(List<ObsDTO> obsDTO) throws DAOException {
         boolean isUpdated = true;
         long insertedCount = 0;
-        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         ContentValues values = new ContentValues();
 
@@ -192,7 +192,7 @@ public class ObsDAO {
 
     public List<ObsDTO> obsDTOList(String encounteruuid) {
         List<ObsDTO> obsDTOList = new ArrayList<>();
-        db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         //take All obs except image obs
         Cursor idCursor = db.rawQuery("SELECT * FROM tbl_obs where encounteruuid = ? AND (conceptuuid != ? AND conceptuuid != ?) AND voided='0' AND sync='false'", new String[]{encounteruuid, UuidDictionary.COMPLEX_IMAGE_AD, UuidDictionary.COMPLEX_IMAGE_PE});
         ObsDTO obsDTO = new ObsDTO();
@@ -218,7 +218,7 @@ public class ObsDAO {
 
     public List<String> getImageStrings(String conceptuuid, String encounterUuidAdultIntials) {
         List<String> rawStrings = new ArrayList<>();
-        db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         Cursor idCursor = db.rawQuery("SELECT uuid FROM tbl_obs where conceptuuid = ? AND encounteruuid = ? AND voided='0'", new String[]{conceptuuid, encounterUuidAdultIntials});
         if (idCursor.getCount() != 0) {
             while (idCursor.moveToNext()) {
@@ -233,7 +233,7 @@ public class ObsDAO {
 
     public String getObsuuid(String encounterUuid, String conceptUuid) throws DAOException {
         String obsuuid = null;
-        db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         Cursor obsCursoursor = db.rawQuery("Select uuid from tbl_obs where conceptuuid=? and encounteruuid=? and voided='0' order by created_date,obsservermodifieddate desc limit 1 ", new String[]{conceptUuid, encounterUuid});
         try {
             if (obsCursoursor.getCount() != 0) {
@@ -256,7 +256,7 @@ public class ObsDAO {
     public List<PrescDataModel> fetchAllObsPrescData(String encounterVisitNote, String CONCEPTUUID, String sync) {
         List<PrescDataModel> prescDataModelList = new ArrayList<>();
 
-        db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         Cursor obsCursoursor = db.rawQuery("Select * from tbl_obs where conceptuuid=? and encounteruuid=? and sync=? and voided =?", new String[]{CONCEPTUUID, encounterVisitNote, sync, "0"});
         try {
             if (obsCursoursor.getCount() != 0) {
@@ -284,7 +284,7 @@ public class ObsDAO {
     public boolean insertPrescObs(ObsDTO obsDTO) throws DAOException {
         boolean isUpdated = true;
         long insertedCount = 0;
-        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         ContentValues values = new ContentValues();
 
@@ -321,7 +321,7 @@ public class ObsDAO {
     public static String getFollowupDataForVisitUUID(String visitUUID) {
         String result = null;
 
-        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         //db.beginTransaction();
 
         if (visitUUID != null) {
@@ -352,7 +352,7 @@ public class ObsDAO {
         String visitnote = "";
         EncounterDAO encounterDAO = new EncounterDAO();
 
-        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
 //        db.beginTransaction();
 
         String encounterIDSelection = "visituuid = ? ";
@@ -395,7 +395,7 @@ public class ObsDAO {
         String visitnote = "";
         EncounterDAO encounterDAO = new EncounterDAO();
 
-        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
 //        db.beginTransaction();
 
         String encounterIDSelection = "visituuid = ? ";

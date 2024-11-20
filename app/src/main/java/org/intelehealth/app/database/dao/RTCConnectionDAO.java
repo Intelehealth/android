@@ -23,7 +23,7 @@ public class RTCConnectionDAO {
     public boolean insert(RTCConnectionDTO connectionDTO) throws DAOException {
         if (getByVisitUUID(connectionDTO.getVisitUUID()) != null) return false;
         boolean isInserted = true;
-        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         try {
             ContentValues values = new ContentValues();
@@ -47,7 +47,7 @@ public class RTCConnectionDAO {
 
     public RTCConnectionDTO getByVisitUUID(String visitUUID) {
 
-        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         String query = new QueryBuilder()
                 .select(" * ")
                 .from(" tbl_rtc_connection_log ")

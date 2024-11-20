@@ -116,7 +116,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
         }
         sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
 
-        localdb = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        localdb = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         filePath = new File(AppConstants.IMAGE_PATH);
 
         Intent intent = this.getIntent(); // The intent was passed to the activity
@@ -286,7 +286,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
 
     private String getFamilyHistoryVisitData() {
         String result = "";
-        db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
 
         String[] columns = {"value", " conceptuuid"};
 

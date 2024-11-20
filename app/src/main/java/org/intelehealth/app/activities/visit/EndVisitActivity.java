@@ -82,7 +82,7 @@ public class EndVisitActivity extends BaseActivity implements NetworkUtils.Inter
         setContentView(R.layout.activity_end_visit);
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         getWindow().setStatusBarColor(Color.WHITE);
-        db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         networkUtils = new NetworkUtils(this, this);
 
         handleBackPress();

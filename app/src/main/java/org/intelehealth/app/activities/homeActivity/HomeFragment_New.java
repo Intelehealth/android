@@ -208,7 +208,7 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
 
     private int getThisMonthsNotEndedVisits() {
         List<PrescriptionModel> arrayList = new ArrayList<>();
-        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         int count = 0;
         Cursor cursor = db.rawQuery("SELECT p.uuid, v.uuid as visitUUID, p.patient_photo, p.first_name, p.last_name, v.startdate " + "FROM tbl_patient p, tbl_visit v WHERE p.uuid = v.patientuuid and (v.sync = 1 OR v.sync = 'TRUE' OR v.sync = 'true') AND " + "v.voided = 0 AND " + "STRFTIME('%Y',date(substr(v.startdate, 1, 4)||'-'||substr(v.startdate, 6, 2)||'-'||substr(v.startdate, 9,2))) = STRFTIME('%Y',DATE('now')) AND " + "STRFTIME('%m',date(substr(v.startdate, 1, 4)||'-'||substr(v.startdate, 6, 2)||'-'||substr(v.startdate, 9,2))) = STRFTIME('%m',DATE('now')) AND " + "v.enddate IS NULL", new String[]{});

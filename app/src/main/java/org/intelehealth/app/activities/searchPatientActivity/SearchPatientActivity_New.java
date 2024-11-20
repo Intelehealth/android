@@ -387,7 +387,7 @@ public class SearchPatientActivity_New extends BaseActivity {
     }
 
     private List<PatientDTO> fetchDataforTags(List<PatientDTO> patientDTOList) {
-        db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
 
         /**
          * 1. Check first if visit is present for this patient or not if yes than do other code logic.

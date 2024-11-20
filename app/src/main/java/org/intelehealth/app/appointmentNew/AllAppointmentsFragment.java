@@ -911,7 +911,7 @@ public class AllAppointmentsFragment extends Fragment {
 
     private String getPatientProfile(String patientUuid) {
         CustomLog.d(TAG, "getPatientProfile: patientUuid : " + patientUuid);
-        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         String imagePath = "";
         Cursor idCursor = db.rawQuery("SELECT * FROM tbl_patient where uuid = ? ",
                 new String[]{patientUuid});

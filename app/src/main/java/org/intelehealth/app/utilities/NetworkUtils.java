@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkInfo;
+
 import org.intelehealth.app.utilities.CustomLog;
 
 import androidx.core.content.ContextCompat;
@@ -33,12 +34,7 @@ public class NetworkUtils {
             if (!isReceiverRegistered) {
                 IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
                 receiver = new NetworkChangeReceiver();
-                ContextCompat.registerReceiver(
-                        context,
-                        receiver,
-                        filter,
-                        ContextCompat.RECEIVER_NOT_EXPORTED
-                );
+                ContextCompat.registerReceiver(context, receiver, filter, ContextCompat.RECEIVER_NOT_EXPORTED);
                 isReceiverRegistered = true;
             }
         } else {

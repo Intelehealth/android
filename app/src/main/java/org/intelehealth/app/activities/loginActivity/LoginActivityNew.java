@@ -412,7 +412,7 @@ public class LoginActivityNew extends AppCompatActivity {
 
                                         }
                                     }
-                                    SQLiteDatabase sqLiteDatabase = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+                                    SQLiteDatabase sqLiteDatabase = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
                                     //SQLiteDatabase read_db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
 
                                     sqLiteDatabase.beginTransaction();

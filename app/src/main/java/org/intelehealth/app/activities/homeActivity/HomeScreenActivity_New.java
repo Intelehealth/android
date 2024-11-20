@@ -1176,7 +1176,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
     }
 
     private void clearDatabase() {
-        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         db.delete("tbl_appointments", null, null);
         db.delete("tbl_encounter", null, null);

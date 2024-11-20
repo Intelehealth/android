@@ -155,7 +155,7 @@ public class PatientSurveyActivity_New extends BaseActivity implements NetworkUt
     private void initUI() {
         setTitle(R.string.title_activity_login);
         sessionManager = new SessionManager(this);
-        db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         context = getApplicationContext();
 
         mComments = findViewById(R.id.editText_exit_survey);

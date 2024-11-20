@@ -1088,7 +1088,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
 
     public void loadSavedDateForEditFromDB() {
 
-        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         String[] columns = {"value", " conceptuuid"};
         String visitSelection = "encounteruuid = ? and voided!='1'";
         String[] visitArgs = {encounterVitals};

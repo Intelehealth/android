@@ -78,7 +78,7 @@ public class ProviderDAO {
 
     public List<String> getProvidersList() throws DAOException {
         List<String> providersList = new ArrayList<>();
-        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         //db.beginTransaction();
         try {
             String query = "select distinct a.uuid,a.given_name,a.family_name from tbl_provider a, tbl_encounter b , tbl_visit c where a.uuid=b.provider_uuid and b.visituuid=c.uuid";
@@ -104,7 +104,7 @@ public class ProviderDAO {
 
     public List<String> getProvidersUuidList() throws DAOException {
         List<String> providersList = new ArrayList<>();
-        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         try {
             String query = "select distinct a.uuid,a.given_name,a.family_name from tbl_provider a, tbl_encounter b , tbl_visit c where a.uuid=b.provider_uuid and b.visituuid=c.uuid";
@@ -131,7 +131,7 @@ public class ProviderDAO {
     public String getProviderGiven_Lastname(String uuid) throws DAOException {
         String fullname = "";
         String givenname = "", familyname = "";
-        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         try {
             String query = "select * from tbl_provider where uuid = ?";
@@ -161,7 +161,7 @@ public class ProviderDAO {
     }
 
     public ProviderDTO getLoginUserDetails(String uuid) throws DAOException {
-        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         ProviderDTO providerDTO = null;
         //if db in transaction then return null
         if (db.inTransaction()) return null;
@@ -202,7 +202,7 @@ public class ProviderDAO {
     }
 
     public ProviderDTO getProviderInfo(String uuid) throws DAOException {
-        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         ProviderDTO providerDTO = null;
 
         db.beginTransaction();
@@ -242,7 +242,7 @@ public class ProviderDAO {
 
 
     public boolean updateProfileDetails(ProviderDTO provider) {
-        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
 
         int updatedCount = 0;
@@ -277,7 +277,7 @@ public class ProviderDAO {
 
     public boolean updateProviderProfileSync(String uuid, String synced) throws DAOException {
         boolean isUpdated = true;
-        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         ContentValues values = new ContentValues();
         String whereclause = "uuid=?";
@@ -303,7 +303,7 @@ public class ProviderDAO {
     public List<ProviderDTO> unsyncedProviderDetails(String uuid) throws DAOException {
         CustomLog.d(TAG, "unsyncedProviderDetails: uuid : " + uuid);
         List<ProviderDTO> providerDTOList = new ArrayList<>();
-        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         try {
             Cursor idCursor = db.rawQuery("SELECT * FROM tbl_provider where  uuid=? AND (sync = ? OR sync=?) COLLATE NOCASE", new String[]{uuid, "0", "false"});
@@ -343,7 +343,7 @@ public class ProviderDAO {
 
         boolean isUpdated = false;
         long isupdate = 0;
-        SQLiteDatabase localdb = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase localdb = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         localdb.beginTransaction();
         ContentValues contentValues = new ContentValues();
         String whereclause = "uuid = ?";

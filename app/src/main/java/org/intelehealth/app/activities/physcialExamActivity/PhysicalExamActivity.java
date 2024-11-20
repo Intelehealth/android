@@ -131,7 +131,7 @@ public class PhysicalExamActivity extends BaseActivity implements QuestionsAdapt
 
         baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
 
-        localdb = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        localdb = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         sessionManager = new SessionManager(this);
         MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
         // AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this,R.style.AlertDialogStyle);

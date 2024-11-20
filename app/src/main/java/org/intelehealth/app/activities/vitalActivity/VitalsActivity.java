@@ -474,7 +474,7 @@ public class VitalsActivity extends AppCompatActivity {
 
     public void loadPrevious() {
 
-        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         String[] columns = {"value", " conceptuuid"};
         String visitSelection = "encounteruuid = ? and voided!='1'";
         String[] visitArgs = {encounterVitals};

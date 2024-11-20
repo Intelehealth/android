@@ -87,7 +87,7 @@ public class TodaysMyAppointmentsFragmentNew extends Fragment {
             requireActivity().getResources().updateConfiguration(config, getActivity().getResources().getDisplayMetrics());
         }
         sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
-        db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
 
         rvUpcomingApp = view.findViewById(R.id.rv_upcoming_appointments);
         rvCancelledApp = view.findViewById(R.id.rv_cancelled_appointments);
@@ -354,7 +354,7 @@ public class TodaysMyAppointmentsFragmentNew extends Fragment {
     private void getDataForCompletedAppointments(List<AppointmentInfo> appointmentsDaoList) {
         rvCompletedApp.setVisibility(View.VISIBLE);
         noDataFoundForCompleted.setVisibility(View.GONE);
-        db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
 
         //check if visit is present or not
         for (int i = 0; i < appointmentsDaoList.size(); i++) {
@@ -390,7 +390,7 @@ public class TodaysMyAppointmentsFragmentNew extends Fragment {
 
     private String getPatientProfile(String patientUuid) {
         CustomLog.d(TAG, "getPatientProfile: patientUuid : " + patientUuid);
-        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
 
         String imagePath = "";
 

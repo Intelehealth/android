@@ -247,7 +247,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
     }
 
     private void initUI() {
-        db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
 
         filter_framelayout = findViewById(R.id.filter_framelayout);
         filter = findViewById(R.id.filter);
@@ -878,7 +878,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         String visitIDorderBy = "startdate";
         String visitIDSelection = "uuid = ?";
         String[] visitIDArgs = {visitID};
-        db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         final Cursor visitIDCursor = db.query("tbl_visit", columnsToReturn, visitIDSelection, visitIDArgs, null, null, visitIDorderBy);
         visitIDCursor.moveToLast();
         String startDateTime = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("startdate"));
@@ -2158,7 +2158,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         String visitIDorderBy = "startdate";
         String visitIDSelection = "uuid = ?";
         String[] visitIDArgs = {visitID};
-        db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         final Cursor visitIDCursor = db.query("tbl_visit", columnsToReturn, visitIDSelection, visitIDArgs, null, null, visitIDorderBy);
         visitIDCursor.moveToLast();
         String startDateTime = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("startdate"));
@@ -2823,7 +2823,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         String patientSelection = "uuid = ?";
         String[] patientArgs = {patientUuid};
         String[] patientColumns = {"uuid", "openmrs_id", "first_name", "middle_name", "last_name", "gender", "date_of_birth", "address1", "address2", "city_village", "state_province", "postal_code", "country", "phone_number", "gender", "sdw", "patient_photo"};
-        SQLiteDatabase db = db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         Cursor idCursor = db.query("tbl_patient", patientColumns, patientSelection, patientArgs, null, null, null);
         if (idCursor.moveToFirst()) {
             do {

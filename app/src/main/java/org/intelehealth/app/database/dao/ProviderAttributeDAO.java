@@ -12,7 +12,7 @@ import org.intelehealth.app.utilities.exception.DAOException;
 public class ProviderAttributeDAO {
 
     public boolean createProviderAttribute(ProviderAttributeDTO providerAttributeDTO) throws DAOException {
-        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         ContentValues contentValues = new ContentValues();
         boolean isInserted = true;
 

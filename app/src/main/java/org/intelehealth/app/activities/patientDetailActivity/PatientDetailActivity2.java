@@ -239,7 +239,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
         }
 
-        //db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        //db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         filter = new IntentFilter("OpenmrsID");
         reMyreceive = new Myreceiver();
 
@@ -859,7 +859,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             return;
         }
         mCurrentVisitDataList.clear();
-        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         String visitSelection = "patientuuid = ?";
         String[] visitArgs = {patientDTO.getUuid()};
         String[] visitColumns = {"uuid", "startdate", "enddate"};
@@ -2183,7 +2183,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
     private void initForPastVisit() {
         mPastVisitDataList.clear();
-        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         String visitSelection = "patientuuid = ? and enddate IS NOT NULL and enddate != ''";
         String[] visitArgs = {patientDTO.getUuid()};
         String[] visitColumns = {"uuid", "startdate", "enddate"};
