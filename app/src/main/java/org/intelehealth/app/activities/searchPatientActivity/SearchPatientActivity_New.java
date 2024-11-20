@@ -291,6 +291,7 @@ public class SearchPatientActivity_New extends BaseActivity {
         patientDTOList = PatientsDAO.getAllPatientsFromDB(limit, start);   // fetch first 15 records and dont skip any records ie. start = 0 for 2nd itertion skip first 15records.
         CustomLog.d(TAG, "queryAllPatients: " + patientDTOList.size());
         commonLoadingDialog = new DialogUtils().showCommonLoadingDialog(this, getString(R.string.loading), "");
+        commonLoadingDialog.setCancelable(false);
 
         if (!patientDTOList.isEmpty()) { // ie. the entered text is present in db
 
@@ -414,6 +415,8 @@ public class SearchPatientActivity_New extends BaseActivity {
          * handling searching operation in background thread
          */
         commonLoadingDialog = new DialogUtils().showCommonLoadingDialog(this, getString(R.string.loading), "");
+        commonLoadingDialog.setCancelable(false);
+
         compositeDisposable.add(getQueryPatientsObs(query) // fetches all the list of patients.
                 .concatMap(new Function<List<PatientDTO>, ObservableSource<List<PatientDTO>>>() {
                     @Override
@@ -552,7 +555,9 @@ public class SearchPatientActivity_New extends BaseActivity {
 
                     patientDTOList.get(i).setGenderAgeString(setGenderAgeLocal(SearchPatientActivity_New.this, patientDTOList.get(i).getDateofbirth(), patientDTOList.get(i).getGender()));
 
-                    String profileImage = "";
+                    //removed patient image loading from here
+                    //and moved to sync dao
+                    /*String profileImage = "";
                     try {
                         profileImage = imagesDAO.getPatientProfileChangeTime(patientDTOList.get(i).getUuid());
                     } catch (DAOException e) {
@@ -571,7 +576,7 @@ public class SearchPatientActivity_New extends BaseActivity {
                         if (NetworkConnection.isOnline(this)) {
                             profilePicDownloaded(patientDTOList.get(i));
                         }
-                    }
+                    }*/
                 } else {
                     /**
                      * no visit for this patient.
