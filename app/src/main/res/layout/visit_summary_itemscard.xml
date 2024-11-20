@@ -134,7 +134,8 @@
                         android:shrinkColumns="1">
 
                         <!--height-->
-                        <LinearLayout android:id="@+id/ll_height_container"
+                        <LinearLayout
+                            android:id="@+id/ll_height_container"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:orientation="horizontal"
@@ -165,7 +166,8 @@
                         </LinearLayout>
 
                         <!--weight-->
-                        <LinearLayout android:id="@+id/ll_weight_container"
+                        <LinearLayout
+                            android:id="@+id/ll_weight_container"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_marginTop="@dimen/margin_4"
@@ -197,7 +199,8 @@
                         </LinearLayout>
 
                         <!--BMI-->
-                        <LinearLayout android:id="@+id/ll_bmi"
+                        <LinearLayout
+                            android:id="@+id/ll_bmi"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_marginTop="@dimen/margin_4"
@@ -229,7 +232,8 @@
                         </LinearLayout>
 
                         <!--BP-->
-                        <LinearLayout android:id="@+id/ll_bp_container"
+                        <LinearLayout
+                            android:id="@+id/ll_bp_container"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_marginTop="@dimen/margin_4"
@@ -261,7 +265,8 @@
                         </LinearLayout>
 
                         <!--Pulse-->
-                        <LinearLayout android:id="@+id/ll_pulse_container"
+                        <LinearLayout
+                            android:id="@+id/ll_pulse_container"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_marginTop="@dimen/margin_4"
@@ -293,7 +298,8 @@
                         </LinearLayout>
 
                         <!--Temperature(F)-->
-                        <LinearLayout android:id="@+id/ll_temperature_container"
+                        <LinearLayout
+                            android:id="@+id/ll_temperature_container"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_marginTop="@dimen/margin_4"
@@ -344,7 +350,8 @@
 
 
                         <!--SpO2-->
-                        <LinearLayout android:id="@+id/ll_spo2_container"
+                        <LinearLayout
+                            android:id="@+id/ll_spo2_container"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_marginTop="@dimen/margin_4"
@@ -377,7 +384,8 @@
 
 
                         <!--Respiratory Rate-->
-                        <LinearLayout android:id="@+id/ll_respiratory_rate_container"
+                        <LinearLayout
+                            android:id="@+id/ll_respiratory_rate_container"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_marginTop="@dimen/margin_4"
@@ -409,8 +417,77 @@
                                 android:textSize="@dimen/find_patient_hint_size" />
                         </LinearLayout>
 
+                        <!--Haemoglobin-->
+                        <LinearLayout
+                            android:id="@+id/ll_haemoglobin_container"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="@dimen/margin_4"
+                            android:orientation="horizontal"
+                            android:weightSum="2">
+
+                            <TextView
+                                android:id="@+id/textView_haemoglobin"
+                                android:layout_width="0dip"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="2dp"
+                                android:layout_marginEnd="@dimen/margin_5"
+                                android:layout_weight="1"
+                                android:drawableStart="@drawable/bullet_gray"
+                                android:drawablePadding="5dp"
+                                android:text="@string/haemoglobin"
+                                android:textAppearance="@style/caption"
+                                android:textColor="@color/hint_text_color"
+                                android:textSize="@dimen/find_patient_hint_size" />
+
+                            <TextView
+                                android:id="@+id/textView_haemoglobin_value"
+                                android:layout_width="0dip"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/no_information"
+                                android:textAppearance="@style/caption"
+                                android:textColor="@color/textview_color"
+                                android:textSize="@dimen/find_patient_hint_size" />
+                        </LinearLayout>
+
+                        <!--Sugar Random-->
+                        <LinearLayout
+                            android:id="@+id/ll_sugar_random_container"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="@dimen/margin_4"
+                            android:orientation="horizontal"
+                            android:weightSum="2">
+
+                            <TextView
+                                android:id="@+id/textView_sugar_random"
+                                android:layout_width="0dip"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="2dp"
+                                android:layout_marginEnd="@dimen/margin_5"
+                                android:layout_weight="1"
+                                android:drawableStart="@drawable/bullet_gray"
+                                android:drawablePadding="5dp"
+                                android:text="@string/sugar_random"
+                                android:textAppearance="@style/caption"
+                                android:textColor="@color/hint_text_color"
+                                android:textSize="@dimen/find_patient_hint_size" />
+
+                            <TextView
+                                android:id="@+id/textView_sugar_random_value"
+                                android:layout_width="0dip"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/no_information"
+                                android:textAppearance="@style/caption"
+                                android:textColor="@color/textview_color"
+                                android:textSize="@dimen/find_patient_hint_size" />
+                        </LinearLayout>
+
                         <!--Blood group-->
-                        <LinearLayout android:id="@+id/ll_blood_group_container"
+                        <LinearLayout
+                            android:id="@+id/ll_blood_group_container"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_marginTop="@dimen/margin_4"

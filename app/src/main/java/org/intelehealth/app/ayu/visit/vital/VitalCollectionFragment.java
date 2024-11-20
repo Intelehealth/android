@@ -1908,7 +1908,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                 }
             }
 
-            patientVital = (PatientVital) mHaemoglobinText.getTag();
+            patientVital = (PatientVital) mHaemoglobinCardView.getTag();
             if ((patientVital != null && patientVital.isMandatory()) || (patientVital != null && !results.getHaemoglobin().isEmpty())) {
                 obsDTO = new ObsDTO();
                 obsDTO.setConceptuuid(patientVital.getUuid());
@@ -1922,7 +1922,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                 }
             }
 
-            patientVital = (PatientVital) mSugarRandomText.getTag();
+            patientVital = (PatientVital) mSugarRandomCardView.getTag();
             if ((patientVital != null && patientVital.isMandatory()) || (patientVital != null && !results.getSugarRandom().isEmpty())) {
                 obsDTO = new ObsDTO();
                 obsDTO.setConceptuuid(patientVital.getUuid());

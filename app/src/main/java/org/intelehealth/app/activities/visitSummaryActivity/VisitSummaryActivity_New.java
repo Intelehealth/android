@@ -276,6 +276,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     ObsDTO temperature = new ObsDTO();
     ObsDTO spO2 = new ObsDTO();
     ObsDTO mBloodGroupObsDTO = new ObsDTO();
+    ObsDTO haemoglobinDTO = new ObsDTO();
+    ObsDTO sugarRandomDTO = new ObsDTO();
     ObsDTO resp = new ObsDTO();
 
     String diagnosisReturned = "";
@@ -329,6 +331,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
     TextView respiratory;
     TextView respiratoryText;
+    TextView haemoglobin, sugarRandom;
     TextView tempfaren;
     TextView tempcel;
     String medHistory;
@@ -1195,6 +1198,25 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 mBloodGroupTextView.setText(VisitUtils.getBloodPressureEnStringFromCode(mBloodGroupObsDTO.getValue()));
         } else mBloodGroupTextView.setText(getResources().getString(R.string.no_information));
 
+        if (haemoglobinDTO.getValue() != null) {
+            if (haemoglobinDTO.getValue().trim().isEmpty() || haemoglobinDTO.getValue().trim().equals("null")) {
+                haemoglobin.setText(getResources().getString(R.string.no_information));
+            } else {
+                haemoglobin.setText(haemoglobinDTO.getValue());
+            }
+        } else {
+            haemoglobin.setText(getResources().getString(R.string.no_information));
+        }
+
+        if (sugarRandomDTO.getValue() != null) {
+            if (sugarRandomDTO.getValue().trim().isEmpty() || sugarRandomDTO.getValue().trim().equals("null")) {
+                sugarRandom.setText(getResources().getString(R.string.no_information));
+            } else {
+                sugarRandom.setText(sugarRandomDTO.getValue());
+            }
+        } else {
+            sugarRandom.setText(getResources().getString(R.string.no_information));
+        }
 
         // temperature - start
         try {
@@ -2611,6 +2633,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         spO2View = findViewById(R.id.textView_pulseox_value);
         mBloodGroupTextView = findViewById(R.id.textView_blood_group);
         respiratory = findViewById(R.id.textView_respiratory_value);
+        haemoglobin = findViewById(R.id.textView_haemoglobin_value);
+        sugarRandom = findViewById(R.id.textView_sugar_random_value);
         respiratoryText = findViewById(R.id.textView_respiratory);
         bmiView = findViewById(R.id.textView_bmi_value);
         // vitals ids - end
@@ -3439,6 +3463,14 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             case UuidDictionary.BLOOD_GROUP: //BLOOD_GROUP
             {
                 mBloodGroupObsDTO.setValue(value);
+                break;
+            }
+            case UuidDictionary.HAEMOGLOBIN: {
+                haemoglobinDTO.setValue(value);
+                break;
+            }
+            case UuidDictionary.SUGAR_LEVEL_RANDOM: {
+                sugarRandomDTO.setValue(value);
                 break;
             }
             case UuidDictionary.TELEMEDICINE_DIAGNOSIS: {
