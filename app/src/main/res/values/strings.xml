@@ -212,6 +212,8 @@
     <string name="bpsys_error">Systolic pressure should be in between %1$s and %2$s</string>
     <string name="bpdia_error">Diastolic pressure should be in between %1$s and %2$s</string>
     <string name="resp_error">Respiratory rate should be in between %1$s and %2$s</string>
+    <string name="haemoglobin_error">Haemoglobin should be in between %1$s and %2$s</string>
+    <string name="sugar_random_error">Sugar Random should be in between %1$s and %2$s</string>
     <string name="temp_error">Temperature should be in between %1$s and %2$s</string>
 
     <string name="not_provided">Not provided</string>
@@ -1146,5 +1148,7 @@
     <string name="confirm_switch_location">You are currently logged into the \'%1$s\' village. Are you sure that you wish to switch to the \'%2$s\' village?</string>
     <string name="start_sevika_visit">Start Sevika Visit</string>
     <string name="start_doctor_visit">Start Doctor Visit</string>
+    <string name="haemoglobin">Haemoglobin</string>
+    <string name="sugar_random">Sugar Random</string>
 
 </resources>

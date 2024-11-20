@@ -51,7 +51,6 @@ import org.intelehealth.app.database.dao.ObsDAO;
 import org.intelehealth.app.models.VitalsObject;
 import org.intelehealth.app.models.dto.ObsDTO;
 import org.intelehealth.app.utilities.ConfigUtils;
-import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.DecimalDigitsInputFilter;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.UuidDictionary;
@@ -67,8 +66,6 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import timber.log.Timber;
 
 public class VitalCollectionFragment extends Fragment implements View.OnClickListener {
     private static final String TAG = VitalCollectionFragment.class.getSimpleName();
@@ -87,8 +84,8 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
     private EditText mHeightEditText, mWeightEditText;
     private TextView mBMITextView, mBmiStatusTextView;
     //private LinearLayout mBMILinearLayout;
-    TextView mHeightErrorTextView, mWeightErrorTextView, mPulseErrorTextView, mSpo2ErrorTextView, mRespErrorTextView, mBpSysErrorTextView, mBpDiaErrorTextView, mTemperatureErrorTextView, mBloodGroupErrorTextView;
-    EditText mPulseEditText, mBpSysEditText, mBpDiaEditText, mTemperatureEditText, mSpo2EditText, mRespEditText;
+    TextView mHeightErrorTextView, mWeightErrorTextView, mPulseErrorTextView, mSpo2ErrorTextView, mRespErrorTextView, mBpSysErrorTextView, mBpDiaErrorTextView, mTemperatureErrorTextView, mBloodGroupErrorTextView, mHaemoglobinErrorTextView, mSugarRandomErrorTextView;
+    EditText mPulseEditText, mBpSysEditText, mBpDiaEditText, mTemperatureEditText, mSpo2EditText, mRespEditText, mHaemoglobinText, mSugarRandomText;
     private Button mSubmitButton;
 
     private String heightvalue = "";
@@ -104,7 +101,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
     private TextView mBloodGroupTextView;
     private AlertDialog mBloodGroupAlertDialog;
     private View mRootView;
-    private CardView mHeightCardView, mWeightCardView, mBMICardView, mSBPCardView, mDBPCardView, mPulseCardView, mTemperatureCardView, mSpo2CardView, mRespiratoryCardView, mBloodGroupCardView;
+    private CardView mHeightCardView, mWeightCardView, mBMICardView, mSBPCardView, mDBPCardView, mPulseCardView, mTemperatureCardView, mSpo2CardView, mRespiratoryCardView, mBloodGroupCardView, mHaemoglobinCardView, mSugarRandomCardView;
 
     private List<PatientVital> mPatientVitalList;
 
@@ -198,21 +195,21 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         mRespEditText = mRootView.findViewById(R.id.etv_respiratory_rate);
         mTemperatureEditText = mRootView.findViewById(R.id.etv_temperature);
         mTemperatureEditText.setFilters(new InputFilter[]{new DecimalDigitsInputFilter(3, 0)});
+        mHaemoglobinText = mRootView.findViewById(R.id.etv_haemoglobin_rate);
+        mSugarRandomText = mRootView.findViewById(R.id.etv_sugar_random_rate);
+
         // errors
         mHeightErrorTextView = mRootView.findViewById(R.id.tv_height_error);
         mWeightErrorTextView = mRootView.findViewById(R.id.tv_weight_error);
-
         mBpSysErrorTextView = mRootView.findViewById(R.id.etv_bp_sys_error);
         mBpDiaErrorTextView = mRootView.findViewById(R.id.etv_bp_dia_error);
-
         mSpo2ErrorTextView = mRootView.findViewById(R.id.etv_spo2_error);
-
         mPulseErrorTextView = mRootView.findViewById(R.id.etv_pulse_error);
-
         mRespErrorTextView = mRootView.findViewById(R.id.etv_respiratory_rate_error);
-
         mTemperatureErrorTextView = mRootView.findViewById(R.id.etv_temperature_error);
         mBloodGroupErrorTextView = mRootView.findViewById(R.id.tv_blood_group_error);
+        mHaemoglobinErrorTextView = mRootView.findViewById(R.id.etv_haemoglobin_error);
+        mSugarRandomErrorTextView = mRootView.findViewById(R.id.etv_sugar_random_error);
 
         mHeightErrorTextView.setVisibility(View.GONE);
         mWeightErrorTextView.setVisibility(View.GONE);
@@ -223,16 +220,19 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         mRespErrorTextView.setVisibility(View.GONE);
         mTemperatureErrorTextView.setVisibility(View.GONE);
         mBloodGroupErrorTextView.setVisibility(View.GONE);
+        mHaemoglobinErrorTextView.setVisibility(View.GONE);
+        mSugarRandomErrorTextView.setVisibility(View.GONE);
 
         mHeightEditText.addTextChangedListener(new MyTextWatcher(mHeightEditText));
         mWeightEditText.addTextChangedListener(new MyTextWatcher(mWeightEditText));
-
         mBpSysEditText.addTextChangedListener(new MyTextWatcher(mBpSysEditText));
         mBpDiaEditText.addTextChangedListener(new MyTextWatcher(mBpDiaEditText));
         mSpo2EditText.addTextChangedListener(new MyTextWatcher(mSpo2EditText));
         mPulseEditText.addTextChangedListener(new MyTextWatcher(mPulseEditText));
         mRespEditText.addTextChangedListener(new MyTextWatcher(mRespEditText));
         mTemperatureEditText.addTextChangedListener(new MyTextWatcher(mTemperatureEditText));
+        mHaemoglobinText.addTextChangedListener(new MyTextWatcher(mHaemoglobinText));
+        mSugarRandomText.addTextChangedListener(new MyTextWatcher(mSugarRandomText));
 
         mSubmitButton = mRootView.findViewById(R.id.btn_submit);
         mSubmitButton.setOnClickListener(this);
@@ -240,23 +240,16 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         mHeightCardView = mRootView.findViewById(R.id.ll_height_container);
 
         mWeightCardView = mRootView.findViewById(R.id.ll_weight_container);
-
         mBMICardView = mRootView.findViewById(R.id.ll_bmi);
-
         mSBPCardView = mRootView.findViewById(R.id.ll_sbp_container);
-
         mDBPCardView = mRootView.findViewById(R.id.ll_dbp_container);
-
         mPulseCardView = mRootView.findViewById(R.id.ll_pulse_container);
-
         mTemperatureCardView = mRootView.findViewById(R.id.ll_temperature_container);
-
         mSpo2CardView = mRootView.findViewById(R.id.ll_spo2_container);
-
         mRespiratoryCardView = mRootView.findViewById(R.id.ll_respiratory_rate_container);
-
         mBloodGroupCardView = mRootView.findViewById(R.id.ll_blood_group_container);
-
+        mHaemoglobinCardView = mRootView.findViewById(R.id.ll_haemoglobin_container);
+        mSugarRandomCardView = mRootView.findViewById(R.id.ll_sugar_random_container);
 
         //showHeightListing();
 
@@ -355,6 +348,8 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         mSpo2CardView.setVisibility(View.GONE);
         mRespiratoryCardView.setVisibility(View.GONE);
         mBloodGroupCardView.setVisibility(View.GONE);
+        mSugarRandomCardView.setVisibility(View.GONE);
+        mHaemoglobinCardView.setVisibility(View.GONE);
         /*if (float_ageYear_Month <= 19)
             bmiLinearLayout.setVisibility(View.GONE);
         else
@@ -408,6 +403,14 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                 mBloodGroupCardView.setVisibility(View.VISIBLE);
                 mBloodGroupCardView.setTag(patientVital);
                 appendMandatorySing(patientVital.isMandatory(), mRootView.findViewById(R.id.tv_blood_group_lbl));
+            } else if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.HAEMOGLOBIN)) {
+                mHaemoglobinCardView.setVisibility(View.VISIBLE);
+                mHaemoglobinCardView.setTag(patientVital);
+                appendMandatorySing(patientVital.isMandatory(), mRootView.findViewById(R.id.tv_haemoglobin_lbl));
+            } else if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.SUGAR_RANDOM)) {
+                mSugarRandomCardView.setVisibility(View.VISIBLE);
+                mSugarRandomCardView.setTag(patientVital);
+                appendMandatorySing(patientVital.isMandatory(), mRootView.findViewById(R.id.tv_sugar_random_lbl));
             }
         }
         LinearLayout otherBlockLinearLayout = mRootView.findViewById(R.id.ll_other_info_block_container);
@@ -836,6 +839,52 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         // }
 
 
+        String haemoglobin = mHaemoglobinText.getText().toString().trim();
+        if (haemoglobin.isEmpty()) {
+            if (mHaemoglobinCardView.getTag() != null && ((PatientVital) mHaemoglobinCardView.getTag()).isMandatory()) {
+                mHaemoglobinErrorTextView.setText(getString(R.string.error_field_required));
+                mHaemoglobinErrorTextView.setVisibility(View.VISIBLE);
+                mHaemoglobinText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                return false;
+            } else {
+                mHaemoglobinErrorTextView.setVisibility(View.GONE);
+                mHaemoglobinText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+            }
+        } else {
+            if ((Double.parseDouble(haemoglobin) > Double.parseDouble(AppConstants.MAXIMUM_HAEMOGLOBIN)) || (Double.parseDouble(haemoglobin) < Double.parseDouble(AppConstants.MINIMUM_HAEMOGLOBIN))) {
+                mHaemoglobinErrorTextView.setText(getString(R.string.haemoglobin_error, AppConstants.MINIMUM_HAEMOGLOBIN, AppConstants.MAXIMUM_HAEMOGLOBIN));
+                mHaemoglobinErrorTextView.setVisibility(View.VISIBLE);
+                mHaemoglobinText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                return false;
+            } else {
+                mHaemoglobinErrorTextView.setVisibility(View.GONE);
+                mHaemoglobinText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+            }
+        }
+
+        String sugarRandom = mSugarRandomText.getText().toString().trim();
+        if (sugarRandom.isEmpty()) {
+            if (mSugarRandomCardView.getTag() != null && ((PatientVital) mSugarRandomCardView.getTag()).isMandatory() && sugarRandom.isEmpty()) {
+                mSugarRandomErrorTextView.setText(getString(R.string.error_field_required));
+                mSugarRandomErrorTextView.setVisibility(View.VISIBLE);
+                mSugarRandomText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                return false;
+            } else {
+                mSugarRandomErrorTextView.setVisibility(View.GONE);
+                mSugarRandomText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+            }
+        } else {
+            if ((Double.parseDouble(sugarRandom) > Double.parseDouble(AppConstants.MAXIMUM_SUGAR)) || (Double.parseDouble(sugarRandom) < Double.parseDouble(AppConstants.MINIMUM_SUGAR))) {
+                mSugarRandomErrorTextView.setText(getString(R.string.sugar_random_error, AppConstants.MINIMUM_SUGAR, AppConstants.MAXIMUM_SUGAR));
+                mSugarRandomErrorTextView.setVisibility(View.VISIBLE);
+                mSugarRandomText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                return false;
+            } else {
+                mSugarRandomErrorTextView.setVisibility(View.GONE);
+                mSugarRandomText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+            }
+        }
+
         String bloodGroup = mBloodGroupTextView.getText().toString().trim();
 
         if (mBloodGroupCardView.getTag() != null && ((PatientVital) mBloodGroupCardView.getTag()).isMandatory() && bloodGroup.isEmpty()) {
@@ -998,13 +1047,23 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                     mTemperatureEditText.setText(mTemperatureEditText.getText().toString().replace(".", ""));
                 }
             }
+
             if (results.getSpo2() != null && !results.getSpo2().isEmpty())
                 mSpo2EditText.setText(results.getSpo2());
+
             if (results.getBloodGroup() != null && !results.getBloodGroup().isEmpty())
                 mBloodGroupTextView.setText(VisitUtils.getBloodPressureEnStringFromCode(results.getBloodGroup()));
 
             if (results.getResp() != null && !results.getResp().isEmpty())
                 mRespEditText.setText(results.getResp());
+
+            if (results.getHaemoglobin() != null && !results.getHaemoglobin().isEmpty()) {
+                mHaemoglobinText.setText(results.getHaemoglobin());
+            }
+
+            if (results.getSugarRandom() != null && !results.getSugarRandom().isEmpty()) {
+                mSugarRandomText.setText(results.getSugarRandom());
+            }
 
         }
     }
@@ -1165,6 +1224,15 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                     mBloodGroupTextView.setTag(value);
                 }
                 break;
+            case UuidDictionary.HAEMOGLOBIN:
+                if (value != null && !value.isEmpty()) {
+                    mHaemoglobinText.setText(value);
+                }
+                break;
+            case UuidDictionary.SUGAR_LEVEL_RANDOM:
+                if (value != null && !value.isEmpty()) {
+                    mSugarRandomText.setText(value);
+                }
             default:
                 break;
 
@@ -1503,8 +1571,8 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
             } else {
                 results.setBmi("");
             }
-
-
+            results.setHaemoglobin(mHaemoglobinText.getText().toString());
+            results.setSugarRandom(mSugarRandomText.getText().toString());
         } catch (NumberFormatException e) {
             //Snackbar.make(findViewById(R.id.cl_table), R.string.error_non_decimal_no_added, Snackbar.LENGTH_LONG).setAction("Action", null).show();
         }
@@ -1639,6 +1707,29 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
 
                     obsDAO.updateObs(obsDTO);
                 }
+
+                patientVital = (PatientVital) mHaemoglobinText.getTag();
+                if ((patientVital != null) && patientVital.isMandatory() || !results.getHaemoglobin().isEmpty()) {
+                    obsDTO = new ObsDTO();
+                    obsDTO.setConceptuuid(UuidDictionary.HAEMOGLOBIN);
+                    obsDTO.setEncounteruuid(encounterVitals);
+                    obsDTO.setCreator(sessionManager.getCreatorID());
+                    obsDTO.setValue(results.getHaemoglobin());
+                    obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, patientVital.getUuid()));
+                    obsDAO.updateObs(obsDTO);
+                }
+
+                patientVital = (PatientVital) mSugarRandomText.getTag();
+                if ((patientVital != null) && patientVital.isMandatory() || !results.getSugarRandom().isEmpty()) {
+                    obsDTO = new ObsDTO();
+                    obsDTO.setConceptuuid(UuidDictionary.SUGAR_LEVEL_RANDOM);
+                    obsDTO.setEncounteruuid(encounterVitals);
+                    obsDTO.setCreator(sessionManager.getCreatorID());
+                    obsDTO.setValue(results.getSugarRandom());
+                    obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, patientVital.getUuid()));
+                    obsDAO.updateObs(obsDTO);
+                }
+
                 //making flag to false in the encounter table so it will sync again
                 EncounterDAO encounterDAO = new EncounterDAO();
                 try {
@@ -1816,6 +1907,35 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                     FirebaseCrashlytics.getInstance().recordException(e);
                 }
             }
+
+            patientVital = (PatientVital) mHaemoglobinText.getTag();
+            if ((patientVital != null && patientVital.isMandatory()) || (patientVital != null && !results.getHaemoglobin().isEmpty())) {
+                obsDTO = new ObsDTO();
+                obsDTO.setConceptuuid(patientVital.getUuid());
+                obsDTO.setEncounteruuid(encounterVitals);
+                obsDTO.setCreator(sessionManager.getCreatorID());
+                obsDTO.setValue(results.getHaemoglobin());
+                try {
+                    obsDAO.insertObs(obsDTO);
+                } catch (DAOException e) {
+                    FirebaseCrashlytics.getInstance().recordException(e);
+                }
+            }
+
+            patientVital = (PatientVital) mSugarRandomText.getTag();
+            if ((patientVital != null && patientVital.isMandatory()) || (patientVital != null && !results.getSugarRandom().isEmpty())) {
+                obsDTO = new ObsDTO();
+                obsDTO.setConceptuuid(patientVital.getUuid());
+                obsDTO.setEncounteruuid(encounterVitals);
+                obsDTO.setCreator(sessionManager.getCreatorID());
+                obsDTO.setValue(results.getSugarRandom());
+                try {
+                    obsDAO.insertObs(obsDTO);
+                } catch (DAOException e) {
+                    FirebaseCrashlytics.getInstance().recordException(e);
+                }
+            }
+
         }
         return true;
     }

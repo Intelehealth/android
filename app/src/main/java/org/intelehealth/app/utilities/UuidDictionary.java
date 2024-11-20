@@ -23,6 +23,9 @@ public class UuidDictionary {
     public static final String RHK_FAMILY_HISTORY_BLURB = "d63ae965-47fb-40e8-8f08-1f46a8a60b2b";
     public static final String FOLLOW_UP_VISIT = "e8caffd6-5d22-41c4-8d6a-bc31a44d0c86";
     public static final String REFERRED_SPECIALIST = "605b6f15-8f7a-4c45-b06d-14165f6974be";
+    public static final String HAEMOGLOBIN = "33b241d6-3e9d-443e-9572-f38ecb1e752a";
+    public static final String SUGAR_LEVEL_RANDOM = "95cf1d31-21dc-4fae-96fd-d1dd9455914f";
+
     //m added
     public static final String EMERGENCY = "ca5f5dc3-4f0b-4097-9cae-5cf2eb44a09c";
 
@@ -82,9 +85,6 @@ public class UuidDictionary {
     public static final String FOLLOWUP_ENCOUNTER_ID = "b4fcf4dd-7f9c-4c0e-b874-2113963291f0";
     public static final String HW_FOLLOWUP_CONCEPT_ID = "596c7f50-ec12-4ad8-b92a-7491ad80341b";
     public static final String VISIT_UPLOAD_TIME = "e76eee5e-9d73-4d07-8f30-16b77e626ccf";
-
-
-
 
 
 }

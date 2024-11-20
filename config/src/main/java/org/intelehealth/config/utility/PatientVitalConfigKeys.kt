@@ -8,7 +8,7 @@ package org.intelehealth.config.utility
  * Patient vital config keys
  */
 class PatientVitalConfigKeys {
-    companion object{
+    companion object {
         const val WEIGHT = "weight_kg"
         const val HEIGHT = "height_cm"
         const val BMI = "bmi"
@@ -19,5 +19,7 @@ class PatientVitalConfigKeys {
         const val SPO2 = "spo2"
         const val RESPIRATORY_RATE = "respiratory_rate"
         const val BLOOD_TYPE = "blood_group"
+        const val HAEMOGLOBIN = "haemoglobin"
+        const val SUGAR_RANDOM = "sugar_random"
     }
 }

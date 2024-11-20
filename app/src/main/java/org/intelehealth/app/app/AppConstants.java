@@ -72,34 +72,39 @@ public class AppConstants {
         }
     }
 
-    public static final String MAXIMUM_HEIGHT = "252";
+    public static final String MAXIMUM_HEIGHT = "272";
     public static final String MINIMUM_HEIGHT = "40";
 
-    public static final String MAXIMUM_WEIGHT = "149";
+    public static final String MAXIMUM_WEIGHT = "500";
     public static final String MINIMUM_WEIGHT = "1";
 
     public static int APP_VERSION_CODE = 26;
 
-    public static final String MAXIMUM_BP_SYS = "250";
-    public static final String MINIMUM_BP_SYS = "50";
+    public static final String MAXIMUM_BP_SYS = "220";
+    public static final String MINIMUM_BP_SYS = "70";
 
-    public static final String MAXIMUM_BP_DSYS = "150";
-    public static final String MINIMUM_BP_DSYS = "30";
+    public static final String MAXIMUM_BP_DSYS = "120";
+    public static final String MINIMUM_BP_DSYS = "50";
 
-    public static final String MAXIMUM_PULSE = "240";
+    public static final String MAXIMUM_PULSE = "200";
     public static final String MINIMUM_PULSE = "30";
 
     public static final String MAXIMUM_TEMPERATURE_CELSIUS = "43";
     public static final String MINIMUM_TEMPERATURE_CELSIUS = "25";
-    public static final String MINIMUM_TEMPERATURE_FARHENIT = "89.6";
-    public static final String MAXIMUM_TEMPERATURE_FARHENIT = "109";
+    public static final String MINIMUM_TEMPERATURE_FARHENIT = "95";
+    public static final String MAXIMUM_TEMPERATURE_FARHENIT = "104";
 
     public static final String MAXIMUM_SPO2 = "100";
-    public static final String MINIMUM_SPO2 = "70";
+    public static final String MINIMUM_SPO2 = "85";
 
-    public static final String MAXIMUM_RESPIRATORY = "80";
+    public static final String MAXIMUM_RESPIRATORY = "30";
     public static final String MINIMUM_RESPIRATORY = "10";
 
+    public static final String MAXIMUM_HAEMOGLOBIN = "17";
+    public static final String MINIMUM_HAEMOGLOBIN = "5";
+
+    public static final String MAXIMUM_SUGAR = "500";
+    public static final String MINIMUM_SUGAR = "60";
 
     //functions constants
 

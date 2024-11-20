@@ -13,6 +13,8 @@ public class VitalsObject {
     private String spo2;
     private String resp;
     private String bloodGroup;
+    private String haemoglobin;
+    private String sugarRandom;
 
     public String getPatientUuid() {
         return patientUuid;
@@ -100,5 +102,21 @@ public class VitalsObject {
 
     public void setBloodGroup(String bloodGroup) {
         this.bloodGroup = bloodGroup;
+    }
+
+    public String getHaemoglobin() {
+        return haemoglobin;
+    }
+
+    public void setHaemoglobin(String haemoglobin) {
+        this.haemoglobin = haemoglobin;
+    }
+
+    public String getSugarRandom() {
+        return sugarRandom;
+    }
+
+    public void setSugarRandom(String sugarRandom) {
+        this.sugarRandom = sugarRandom;
     }
 }

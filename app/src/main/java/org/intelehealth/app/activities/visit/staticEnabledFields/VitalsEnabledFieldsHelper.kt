@@ -99,6 +99,24 @@ object VitalsEnabledFieldsHelper {
         )
         fields.add(currentField)
 
+        // Haemoglobin
+        currentField = PatientVital(
+            name = "",
+            vitalKey = PatientVitalConfigKeys.HAEMOGLOBIN,
+            uuid = UuidDictionary.HAEMOGLOBIN,
+            isMandatory = true
+        )
+        fields.add(currentField)
+
+        // Sugar Random
+        currentField = PatientVital(
+            name = "",
+            vitalKey = PatientVitalConfigKeys.SUGAR_RANDOM,
+            uuid = UuidDictionary.SUGAR_LEVEL_RANDOM,
+            isMandatory = true
+        )
+        fields.add(currentField)
+
         return fields
     }
 }
