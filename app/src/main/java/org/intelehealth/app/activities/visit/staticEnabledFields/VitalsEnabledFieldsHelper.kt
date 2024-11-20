@@ -1,5 +1,6 @@
 package org.intelehealth.app.activities.visit.staticEnabledFields
 
+import org.intelehealth.app.utilities.UuidDictionary
 import org.intelehealth.config.room.entity.PatientVital
 import org.intelehealth.config.utility.PatientVitalConfigKeys
 
@@ -12,7 +13,7 @@ object VitalsEnabledFieldsHelper {
         var currentField = PatientVital(
             name = "",
             vitalKey = PatientVitalConfigKeys.HEIGHT,
-            uuid = "",
+            uuid = UuidDictionary.HEIGHT,
             isMandatory = true
         )
         fields.add(currentField)
@@ -21,7 +22,7 @@ object VitalsEnabledFieldsHelper {
         currentField = PatientVital(
             name = "",
             vitalKey = PatientVitalConfigKeys.WEIGHT,
-            uuid = "",
+            uuid = UuidDictionary.WEIGHT,
             isMandatory = true
         )
         fields.add(currentField)
@@ -39,7 +40,7 @@ object VitalsEnabledFieldsHelper {
         currentField = PatientVital(
             name = "",
             vitalKey = PatientVitalConfigKeys.SBP,
-            uuid = "",
+            uuid = UuidDictionary.SYSTOLIC_BP,
             isMandatory = true
         )
         fields.add(currentField)
@@ -48,7 +49,7 @@ object VitalsEnabledFieldsHelper {
         currentField = PatientVital(
             name = "",
             vitalKey = PatientVitalConfigKeys.DBP,
-            uuid = "",
+            uuid = UuidDictionary.DIASTOLIC_BP,
             isMandatory = true
         )
         fields.add(currentField)
@@ -57,7 +58,7 @@ object VitalsEnabledFieldsHelper {
         currentField = PatientVital(
             name = "",
             vitalKey = PatientVitalConfigKeys.PULSE,
-            uuid = "",
+            uuid = UuidDictionary.PULSE,
             isMandatory = true
         )
         fields.add(currentField)
@@ -66,7 +67,7 @@ object VitalsEnabledFieldsHelper {
         currentField = PatientVital(
             name = "",
             vitalKey = PatientVitalConfigKeys.TEMPERATURE,
-            uuid = "",
+            uuid = UuidDictionary.TEMPERATURE,
             isMandatory = true
         )
         fields.add(currentField)
@@ -75,7 +76,7 @@ object VitalsEnabledFieldsHelper {
         currentField = PatientVital(
             name = "",
             vitalKey = PatientVitalConfigKeys.SPO2,
-            uuid = "",
+            uuid = UuidDictionary.SPO2,
             isMandatory = true
         )
         fields.add(currentField)
@@ -84,7 +85,7 @@ object VitalsEnabledFieldsHelper {
         currentField = PatientVital(
             name = "",
             vitalKey = PatientVitalConfigKeys.RESPIRATORY_RATE,
-            uuid = "",
+            uuid = UuidDictionary.RESPIRATORY,
             isMandatory = true
         )
         fields.add(currentField)
@@ -93,7 +94,7 @@ object VitalsEnabledFieldsHelper {
         currentField = PatientVital(
             name = "",
             vitalKey = PatientVitalConfigKeys.BLOOD_TYPE,
-            uuid = "",
+            uuid = UuidDictionary.BLOOD_GROUP,
             isMandatory = true
         )
         fields.add(currentField)
