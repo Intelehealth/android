@@ -66,6 +66,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 
+import org.intelehealth.app.activities.visit.staticEnabledFields.SpecializationsEnabledFieldsHelper;
 import org.intelehealth.app.activities.visit.staticEnabledFields.VitalsEnabledFieldsHelper;
 import org.intelehealth.app.utilities.CustomLog;
 
@@ -75,6 +76,7 @@ import android.view.WindowManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -469,9 +471,6 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         super.onCreate(savedInstanceState);
 
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_visit_summary_new);
-
-        setupSpecialization();
-
         context = VisitSummaryActivity_New.this;
 
 
@@ -501,6 +500,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         loadFeatureActiveStatus();
         setupVitalConfig();
         setViewsData();
+        setupSpecialization();
     }
 
     private List<PatientVital> mPatientVitalList;
@@ -624,19 +624,19 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     }
 
     private void setupSpecialization() {
-        ConfigDatabase db = ConfigDatabase.getInstance(getApplicationContext());
-        SpecializationRepository repository = new SpecializationRepository(db.specializationDao());
-        viewModel = new ViewModelProvider(this, new SpecializationViewModelFactory(repository)).get(SpecializationViewModel.class);
-        viewModel.fetchSpecialization().observe(this, specializations -> {
-            CustomLog.d(TAG, new Gson().toJson(specializations));
-            setupSpecializationDataSpinner(specializations);
-            setFacilityToVisitSpinner();
-            setSeveritySpinner();
-            String followupValue = fetchValueFromLocalDb(visitUUID);
-            if (!TextUtils.isEmpty(followupValue)) {
-                mBinding.tvViewFollowUpDateTime.setText(followupValue);
-            }
-        });
+//        ConfigDatabase db = ConfigDatabase.getInstance(getApplicationContext());
+//        SpecializationRepository repository = new SpecializationRepository(db.specializationDao());
+//        viewModel = new ViewModelProvider(this, new SpecializationViewModelFactory(repository)).get(SpecializationViewModel.class);
+//        viewModel.fetchSpecialization().observe(this, specializations -> {
+        List<Specialization> specializations = SpecializationsEnabledFieldsHelper.INSTANCE.getSpecializations();
+        setupSpecializationDataSpinner(specializations);
+//        setFacilityToVisitSpinner();
+//        setSeveritySpinner();
+        String followupValue = fetchValueFromLocalDb(visitUUID);
+        if (!TextUtils.isEmpty(followupValue)) {
+            mBinding.tvViewFollowUpDateTime.setText(followupValue);
+        }
+//        });
     }
 
     private void fetchingIntent() {
@@ -2008,12 +2008,17 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         CustomLog.d("specc", "spec: " + visitUuid);
         String special_value = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, SPECIALITY);
         //Hashmap to List<String> add all value
-        SpecializationArrayAdapter stringArrayAdapter = new SpecializationArrayAdapter(this, specializations);
-        speciality_spinner.setAdapter(stringArrayAdapter);
+        specializations.add(0, new Specialization("select_specialization_text", getString(R.string.select_specialization_text)));
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.speciality_values));
+//        SpecializationArrayAdapter stringArrayAdapter = new SpecializationArrayAdapter(this, specializations);
+        speciality_spinner.setAdapter(adapter);
+        speciality_spinner.setSelection(1);
+        speciality_spinner.setEnabled(false);
+        speciality_selected = "General Physician";
+
         //  if(getResources().getConfiguration().locale.getLanguage().equalsIgnoreCase("en")) {
 //        if (items != null) {
-        specializations.add(0, new Specialization("select_specialization_text",
-                getString(R.string.select_specialization_text)));
+
 //            stringArrayAdapter = new SpecializationArrayAdapter(this, specializations);
 //            speciality_spinner.setAdapter(stringArrayAdapter);
 //        } else {
@@ -2021,37 +2026,38 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 //            speciality_spinner.setAdapter(stringArrayAdapter);
 //        }
 
-        if (special_value != null) {
-            int spinner_position = stringArrayAdapter.getPosition(special_value);
-            speciality_spinner.setSelection(spinner_position);
-            Specialization sp = stringArrayAdapter.getItem(spinner_position);
-            String displayValue = ResUtils.getStringResourceByName(this, sp.getSKey());
-            vd_special_value.setText(" " + Node.bullet + "  " + displayValue);
-            speciality_selected = special_value;
-        }
 
-        speciality_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if (i != 0) {
-                    CustomLog.d("SPINNER", "SPINNER_Selected: " + adapterView.getItemAtPosition(i).toString());
-                    Specialization specialization = (Specialization) view.getTag(R.id.speciality_spinner);
-                    speciality_selected = specialization.getName();
-                    String value = ResUtils.getStringResourceByName(VisitSummaryActivity_New.this, specialization.getSKey());
-                    vd_special_value.setText(" " + Node.bullet + "  " + value);
-                    CustomLog.d("SPINNER", "SPINNER_Selected_final: " + speciality_selected);
-                    CustomLog.d("ResUtils", "SPINNER_Selected_final: " + value);
-                } else {
-                    speciality_selected = "";
-                }
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
+//        if (special_value != null) {
+//            int spinner_position = stringArrayAdapter.getPosition(special_value);
+//            speciality_spinner.setSelection(spinner_position);
+//            Specialization sp = stringArrayAdapter.getItem(spinner_position);
+//            String displayValue = ResUtils.getStringResourceByName(this, sp.getSKey());
+//            vd_special_value.setText(" " + Node.bullet + "  " + displayValue);
+//            speciality_selected = special_value;
+//        }
+//
+//        speciality_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+//                if (i != 0) {
+//                    CustomLog.d("SPINNER", "SPINNER_Selected: " + adapterView.getItemAtPosition(i).toString());
+//                    Specialization specialization = (Specialization) view.getTag(R.id.speciality_spinner);
+//                    speciality_selected = specialization.getName();
+//                    String value = ResUtils.getStringResourceByName(VisitSummaryActivity_New.this, specialization.getSKey());
+//                    vd_special_value.setText(" " + Node.bullet + "  " + value);
+//                    CustomLog.d("SPINNER", "SPINNER_Selected_final: " + speciality_selected);
+//                    CustomLog.d("ResUtils", "SPINNER_Selected_final: " + value);
+//                } else {
+//                    speciality_selected = "";
+//                }
+//
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> adapterView) {
+//
+//            }
+//        });
     }
 
     private List<FacilityToVisitModel> getFacilityList() {
@@ -2979,10 +2985,10 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
         isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
         if (speciality_selected != null && !speciality_selected.isEmpty()) {
-            viewModel.fetchSpecializationByName(speciality_selected).observe(this, specialization -> {
-                String value = ResUtils.getStringResourceByName(VisitSummaryActivity_New.this, specialization.getSKey());
-                vd_special_value.setText(" " + Node.bullet + "  " + value);
-            });
+//            viewModel.fetchSpecializationByName(speciality_selected).observe(this, specialization -> {
+//                String value = ResUtils.getStringResourceByName(VisitSummaryActivity_New.this, specialization.getSKey());
+//                vd_special_value.setText(" " + Node.bullet + "  " + value);
+//            });
 
             VisitAttributeListDAO visitAttributeListDAO = new VisitAttributeListDAO();
 

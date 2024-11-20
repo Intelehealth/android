@@ -53,7 +53,7 @@ data class FeatureActiveStatus(
             visitSummeryDoctorSpeciality = true,
             visitSummeryPriorityVisit = true,
             visitSummeryAppointment = true,
-            visitSummeryFacilityToVisit = true,
+            visitSummeryFacilityToVisit = false,
             visitSummerySeverityOfCase = false,
             visitSummeryHwFollowUp = false
         ).apply {
