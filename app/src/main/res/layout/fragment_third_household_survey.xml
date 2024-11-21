@@ -100,11 +100,10 @@
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/loadSheddingHoursTextView"
-                            style="@style/AppTheme.InputBox.Name"
+                            style="@style/AppTheme.InputBox.Phone"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="@string/hint_enter_hours"
-                            android:inputType="number" />
+                            android:hint="@string/hint_enter_hours" />
                     </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
                     >
 
@@ -128,11 +127,11 @@
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/loadSheddingDaysPerWeekTextView"
-                            style="@style/AppTheme.InputBox.Name"
+                            style="@style/AppTheme.InputBox.Phone"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/hint_days_per_week"
-                            android:inputType="number" />
+                 />
                     </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
                     >
                 </LinearLayout>
@@ -154,9 +153,9 @@
                     android:id="@+id/running_water_text_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:text="@string/is_there_running_water_available_in_the_house"
                     android:textAppearance="@style/blur_txtview"
-                    android:textSize="@null"
-                    android:text="@string/is_there_running_water_available_in_the_house" />
+                    android:textSize="@null" />
 
                 <RadioGroup
                     android:id="@+id/running_water_radio_group"
@@ -174,10 +173,10 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/radio_buttons_between_margin"
                         android:paddingStart="@dimen/radio_buttons_padding_start_end"
-                        app:useMaterialThemeColors="false"
                         android:paddingEnd="@dimen/radio_buttons_padding_start_end"
                         android:text="@string/yes"
-                        app:layout_constraintStart_toStartOf="parent" />
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:useMaterialThemeColors="false" />
 
                     <com.google.android.material.radiobutton.MaterialRadioButton
                         android:id="@+id/running_water_no_checkbox"
@@ -185,10 +184,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:paddingStart="@dimen/radio_buttons_padding_start_end"
-                        app:useMaterialThemeColors="false"
                         android:paddingEnd="@dimen/radio_buttons_padding_start_end"
                         android:text="@string/no"
-                        app:layout_constraintEnd_toEndOf="parent" />
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:useMaterialThemeColors="false" />
 
                 </RadioGroup>
 
@@ -206,9 +205,9 @@
                         android:id="@+id/primary_source_of_water_text_view"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:text="@string/what_is_the_primary_source_of_water_for_the_household"
                         android:textAppearance="@style/blur_txtview"
                         android:textSize="@null"
-                        android:text="@string/what_is_the_primary_source_of_water_for_the_household"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/running_water_radio_group" />
 
@@ -320,12 +319,11 @@
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/textInputOtherSourcesOfWater"
+                                style="@style/AppTheme.InputBox.Name"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/lato_regular"
-                                style="@style/AppTheme.InputBox.Name"
-                                android:hint="@string/enter_value"
-                                android:inputType="text"
+                                android:hint="@string/enter_other_water_sources"
                                 android:maxLines="1"
                                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -372,37 +370,38 @@
                             app:useMaterialThemeColors="false" />
 
                     </RadioGroup>
+
                     <TextView
                         android:id="@+id/lblDistanceNumber"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/form_fields_common_margin_top"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/primary_source_of_water_checkbox_linear_layout"
                         android:lineSpacingExtra="3sp"
                         android:text="@string/how_far_is_the_water_source_from_the_house"
                         android:textAppearance="@style/blur_txtview"
-                        android:textSize="@null" />
+                        android:textSize="@null"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/primary_source_of_water_checkbox_linear_layout" />
+
                     <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
                         android:id="@+id/textInputLayWaterSourceDistance"
                         style="@style/AppTheme.OutlineInputBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:layout_constraintEnd_toEndOf="parent"
                         app:hintEnabled="false"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/lblDistanceNumber"
                         tools:visibility="visible">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/textInputWaterSourceDistance"
+                            style="@style/AppTheme.InputBox.Phone"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            style="@style/AppTheme.InputBox.Name"
                             android:fontFamily="@font/lato_regular"
                             android:hint="@string/enter_value"
-                            android:inputType="number"
                             android:maxLines="1"
                             app:layout_constraintTop_toTopOf="parent" />
 
@@ -439,11 +438,10 @@
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/textInputWaterSupplyAvailability"
-                            style="@style/AppTheme.InputBox.Name"
+                            style="@style/AppTheme.InputBox.Phone"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="@string/enter_value"
-                            android:inputType="number" />
+                            android:hint="@string/enter_value" />
                     </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
 
                     <TextView
@@ -466,11 +464,10 @@
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/textInputWaterSupplyAvailabilityDaysPerWeek"
-                            style="@style/AppTheme.InputBox.Name"
+                            style="@style/AppTheme.InputBox.Phone"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="@string/enter_value"
-                            android:inputType="number" />
+                            android:hint="@string/enter_value" />
                     </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
                 </LinearLayout>
 

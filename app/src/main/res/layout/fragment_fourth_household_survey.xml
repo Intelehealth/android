@@ -109,10 +109,9 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/textInputCultivatedLandOwnedByHousehold"
                         android:layout_width="match_parent"
-                        style="@style/AppTheme.InputBox.Name"
+                        style="@style/AppTheme.InputBox.Phone"
                         android:layout_height="wrap_content"
                         android:hint="@string/enter_value"
-                        android:inputType="number"
                         android:maxLines="1"
                         app:layout_constraintTop_toTopOf="parent" />
 

@@ -1377,5 +1377,6 @@
     <string name="title_other_lighting_source">Other lighting source</string>
     <string name="hint_other_water_purification">Enter other method</string>
     <string name="title_other_water_purification">Other water purification method</string>
+    <string name="enter_other_water_sources">Enter other water sources</string>
 
     </resources>

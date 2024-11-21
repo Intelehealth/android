@@ -64,7 +64,6 @@
 
             <TextView
                 android:id="@+id/food_prepared_in_the_past_twenty_four_hours_text_view"
-                style="@style/HouseholdSurveyTexts"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/form_fields_common_margin_top"
