@@ -1140,6 +1140,11 @@ public class PatientsDAO {
                 patientDTO.setProfileTimestamp(cursor.getString(cursor.getColumnIndexOrThrow("profileImageTimestamp")));
                 patientDTO.setCaste(cursor.getString(cursor.getColumnIndexOrThrow("caste")));
                 patientDTO.setCreatedDate(cursor.getString(cursor.getColumnIndexOrThrow("createdDate")));
+
+                patientDTO.setTmhCaseNumber(cursor.getString(cursor.getColumnIndexOrThrow("tmhCaseNumber")));
+                patientDTO.setRequestId(cursor.getString(cursor.getColumnIndexOrThrow("requestId")));
+                patientDTO.setDiscipline(cursor.getString(cursor.getColumnIndexOrThrow("discipline")));
+                patientDTO.setDepartment(cursor.getString(cursor.getColumnIndexOrThrow("department")));
             } while (cursor.moveToNext());
         }
         cursor.close();

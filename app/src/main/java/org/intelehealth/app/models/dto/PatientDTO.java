@@ -91,6 +91,43 @@ public class PatientDTO implements Serializable {
 
     private String patientImageFromImageDao;
 
+    private String tmhCaseNumber;
+    private String requestId;
+    private String discipline;
+    private String department;
+
+    public String getTmhCaseNumber() {
+        return tmhCaseNumber;
+    }
+
+    public void setTmhCaseNumber(String tmhCaseNumber) {
+        this.tmhCaseNumber = tmhCaseNumber;
+    }
+
+    public String getRequestId() {
+        return requestId;
+    }
+
+    public void setRequestId(String requestId) {
+        this.requestId = requestId;
+    }
+
+    public String getDiscipline() {
+        return discipline;
+    }
+
+    public void setDiscipline(String discipline) {
+        this.discipline = discipline;
+    }
+
+    public String getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(String department) {
+        this.department = department;
+    }
+
     public String getPatientImageFromDownload() {
         return patientImageFromDownload;
     }
