@@ -1,6 +1,7 @@
 package org.intelehealth.app.database.dao;
 
 import android.content.Intent;
+
 import org.intelehealth.app.utilities.CustomLog;
 
 import com.github.ajalt.timberkt.Timber;
@@ -45,7 +46,6 @@ public class ImagesPushDAO {
         Gson gson = new Gson();
         UrlModifiers urlModifiers = new UrlModifiers();
         ImagesDAO imagesDAO = new ImagesDAO();
-        String url = urlModifiers.setPatientProfileImageUrl();
         List<PatientProfile> patientProfiles = new ArrayList<>();
         try {
             patientProfiles = imagesDAO.getPatientProfileUnsyncedImages();
@@ -55,6 +55,7 @@ public class ImagesPushDAO {
 
         // CustomLog.d(TAG, "patientProfileImagesPush: getBase64EncodedImage "+ patientProfile.getBase64EncodedImage());
         for (PatientProfile p : patientProfiles) {
+            String url = urlModifiers.setPatientProfileImageUrl(p.getPerson());
             Single<ResponseBody> personProfilePicUpload = AppConstants.apiInterface.PERSON_PROFILE_PIC_UPLOAD(url, "Basic " + encoded, p);
             personProfilePicUpload.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -107,7 +108,7 @@ public class ImagesPushDAO {
             File file = null;
             file = new File(AppConstants.IMAGE_PATH + p.getUuid() + ".jpg");
             CustomLog.e(TAG, "File size:" + file.length());
-            RequestBody requestFile = RequestBody.create(file,MediaType.parse("application/json"));
+            RequestBody requestFile = RequestBody.create(file, MediaType.parse("application/json"));
             // MultipartBody.Part is used to send also the actual file name
             MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(), requestFile);
 
@@ -141,7 +142,7 @@ public class ImagesPushDAO {
         sessionManager.setPushSyncFinished(true);
         //sometimes syncing happening while logout
         //added the checking to prevent any broadcaster receiver event while logout
-        if(!sessionManager.isLogout()){
+        if (!sessionManager.isLogout()) {
             IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
                     .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_OBS_IMAGE_PUSH_DONE));
         }
@@ -229,7 +230,7 @@ public class ImagesPushDAO {
         sessionManager.setPullSyncFinished(true);
         //sometimes syncing happening while logout
         //added the checking to prevent any broadcaster receiver event while logout
-        if(!sessionManager.isLogout()){
+        if (!sessionManager.isLogout()) {
             IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
                     .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_PATIENT_PROFILE_IMAGE_PUSH_DONE));
         }
