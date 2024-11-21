@@ -282,7 +282,7 @@ public class SyncDAO {
                         int percentage = 0; // this should be only in initialSync....
 
                         if (nextPageNo != -1) {
-                            percentage = (int) Math.round(nextPageNo * AppConstants.PAGE_LIMIT * 100.0 / totalCount);
+                            percentage = (int) Math.round(nextPageNo * 100.0 / totalCount);
                             Logger.logD(PULL_ISSUE, "percentage: " + percentage);
                             setProgress(percentage);
                             pullData(context, fromActivity, nextPageNo);

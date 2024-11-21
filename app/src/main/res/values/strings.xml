@@ -1149,6 +1149,6 @@
     <string name="start_sevika_visit">Start Sevika Visit</string>
     <string name="start_doctor_visit">Start Doctor Visit</string>
     <string name="haemoglobin">Haemoglobin</string>
-    <string name="sugar_random">Sugar Random</string>
+    <string name="sugar_random">Sugar Level - Random</string>
 
 </resources>
