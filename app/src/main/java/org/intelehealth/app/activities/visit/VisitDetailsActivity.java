@@ -11,9 +11,11 @@ import static org.intelehealth.app.database.dao.VisitsDAO.fetchVisitModifiedDate
 import static org.intelehealth.app.database.dao.VisitsDAO.isVisitNotEnded;
 import static org.intelehealth.app.utilities.DateAndTimeUtils.timeAgoFormat;
 import static org.intelehealth.app.utilities.StringUtils.setGenderAgeLocal;
+import static org.intelehealth.installer.activity.DynamicModuleDownloadingActivity.MODULE_DOWNLOAD_STATUS;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -32,7 +34,6 @@ import android.text.Html;
 import android.util.DisplayMetrics;
 
 import org.intelehealth.app.database.dao.RTCConnectionDAO;
-import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.RTCConnectionDTO;
 import org.intelehealth.app.ui2.utils.CheckInternetAvailability;
 import org.intelehealth.app.utilities.CustomLog;
@@ -49,6 +50,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -93,9 +96,9 @@ import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.VisitUtils;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.config.room.entity.FeatureActiveStatus;
-import org.intelehealth.features.ondemand.mediator.listener.ChatRoomMediator;
 import org.intelehealth.features.ondemand.mediator.model.ChatRoomConfig;
 import org.intelehealth.features.ondemand.mediator.utils.OnDemandIntentUtils;
+import org.intelehealth.installer.activity.DynamicModuleDownloadingActivity;
 import org.intelehealth.installer.popup.DownloadPopupWindow;
 import org.intelehealth.installer.popup.LeftAnchorPopupWindow;
 import org.intelehealth.installer.utils.DynamicModules;
@@ -926,40 +929,33 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
             return;
         }
 
-        DownloadPopupWindow downloadPopupWindow = new LeftAnchorPopupWindow(this, view, this::openChatRoom);
-        downloadPopupWindow.startDownloading(DynamicModules.MODULE_CHAT);
-//        if (manager.isModuleDownloaded(DynamicModules.MODULE_CHAT)) {
-//            openChatRoom();
-//        } else {
-//            manager.downloadDynamicModule(DynamicModules.MODULE_CHAT);
-//        }
-//            args.setDoctorUuid(rtcConnectionDTO.getConnectionInfo());
-//            args.setPatientId(patientUuid);
-//            args.setPatientName(patientName);
-//            args.setVisitId(visitID);
-//            args.setNurseId(encounterDTO.getProvideruuid());
-//            IDAChatActivity.startChatActivity(VisitDetailsActivity.this, args);
+        if (!manager.isModuleDownloaded(DynamicModules.MODULE_CHAT)) {
+            startForDownloadResult.launch(DynamicModuleDownloadingActivity.getDownloadActivityIntent(this, DynamicModules.MODULE_CHAT));
+        } else openChatRoom();
     }
 
-    private void openChatRoom() {
-        RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
-        RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(visitID);
+    private final ActivityResultLauncher<Intent> startForDownloadResult = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(), result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    Intent intent = result.getData();
+                    if (intent == null) return;
+                    if (intent.hasExtra(MODULE_DOWNLOAD_STATUS) && intent.getBooleanExtra(MODULE_DOWNLOAD_STATUS, false)) {
+                        openChatRoom();
+                    }
+                }
+            });
 
-        if (rtcConnectionDTO != null) {
-            ChatRoomConfig roomConfig = new ChatRoomConfig(
-                    patientName,
-                    patientUuid,
-                    sessionManager.getChwname(),
-                    visitID,
-                    sessionManager.getProviderID(),
-                    rtcConnectionDTO.getConnectionInfo(),
-                    openmrsID
-            );
-            OnDemandIntentUtils.openChatRoom(this, roomConfig);
-        } else {
-//            //chatIntent.putExtra("toUuid", ""); // assigned doctor uuid
-            Toast.makeText(this, getResources().getString(R.string.wait_for_the_doctor_message), Toast.LENGTH_SHORT).show();
-        }
+    private void openChatRoom() {
+        ChatRoomConfig roomConfig = new ChatRoomConfig(
+                patientName,
+                patientUuid,
+                sessionManager.getChwname(),
+                visitID,
+                sessionManager.getProviderID(),
+                "",
+                openmrsID
+        );
+        OnDemandIntentUtils.openChatRoom(this, roomConfig);
     }
 
     public void startVideoChat(View view) {

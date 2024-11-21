@@ -10,4 +10,6 @@ import org.intelehealth.features.ondemand.mediator.model.ChatRoomConfig
  **/
 interface ChatRoomMediator {
     fun openChatRoom(context: Context, chatRoomConfig: ChatRoomConfig)
+
+    fun initiateChatClient(context: Context)
 }

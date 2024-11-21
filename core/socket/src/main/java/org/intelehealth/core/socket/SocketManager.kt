@@ -77,6 +77,7 @@ open class SocketManager @Inject constructor() {
             EVENT_ALL_USER -> {
                 json?.let { array -> parseAndSaveToLocal(JSONArray(array)); }
             }
+
             else -> {
                 if (isCallTimeUp && event == EVENT_CALL_CANCEL_BY_DR) return@Listener
                 invokeListeners(event, it)
@@ -181,7 +182,7 @@ open class SocketManager @Inject constructor() {
 
         @JvmStatic
         var instance = socketManager ?: synchronized(this) {
-            socketManager ?: SocketManager()
+            socketManager ?: SocketManager().also { socketManager = it }
         }
 
         const val EVENT_IP_ADDRESS = "ipaddr"

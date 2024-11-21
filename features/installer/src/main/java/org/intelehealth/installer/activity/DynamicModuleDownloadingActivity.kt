@@ -76,27 +76,28 @@ class DynamicModuleDownloadingActivity : AppCompatActivity(), DynamicDeliveryCal
     }
 
     override fun onDownloading(percentage: Int) {
+        println("DynamicModuleDownloadingActivity => DOWNLOADING percentage => $percentage")
         binding.progressDownloading.progress = percentage
-        binding.txtDownloadStatus.text = getString(R.string.downloading, percentage.toString())
+        binding.txtDownloadStatus.text = getString(R.string.module_downloading, "${percentage}%")
     }
 
     override fun onDownloadCompleted() {
-        binding.txtDownloadStatus.text = getString(R.string.downloaded)
+        binding.txtDownloadStatus.text = getString(R.string.module_downloaded)
     }
 
     override fun onInstalling() {
-        binding.txtDownloadStatus.text = getString(R.string.installing)
+        binding.txtDownloadStatus.text = getString(R.string.module_installing)
         binding.progressDownloading.isVisible = true
     }
 
     override fun onInstallSuccess() {
-        binding.txtDownloadStatus.text = getString(R.string.installed)
+        binding.txtDownloadStatus.text = getString(R.string.module_installed)
         finishWithResult(true)
     }
 
     override fun onFailed(errorMessage: String) {
         binding.downloadErrorGroup.isVisible = true
-        binding.txtDownloadStatus.text = getString(R.string.failed)
+        binding.txtDownloadStatus.text = getString(R.string.module_failed)
         binding.txtErrorMsg.text = errorMessage
     }
 

@@ -78,8 +78,12 @@ public class NetworkUtils {
     }
 
     public void unregisterNetworkReceiver() {
-        if (receiver != null) {
-            context.unregisterReceiver(receiver);
+        try {
+            if (receiver != null) {
+                context.unregisterReceiver(receiver);
+            }
+        } catch (IllegalArgumentException e) {
+            CustomLog.e("NetworkUtils", "BroadcastReceiver: not registered=>" + e.getMessage(), e);
         }
     }
 

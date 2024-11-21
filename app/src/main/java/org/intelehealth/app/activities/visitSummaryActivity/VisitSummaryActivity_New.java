@@ -194,6 +194,7 @@ import org.intelehealth.features.ondemand.mediator.model.ChatRoomConfig;
 import org.intelehealth.features.ondemand.mediator.utils.OnDemandIntentUtils;
 import org.intelehealth.ihutils.ui.CameraActivity;
 import org.intelehealth.installer.activity.DynamicModuleDownloadingActivity;
+import org.intelehealth.installer.downloader.DynamicModuleDownloadManager;
 import org.intelehealth.installer.popup.DownloadPopupWindow;
 import org.intelehealth.installer.popup.LeftAnchorPopupWindow;
 import org.intelehealth.installer.utils.DynamicModules;
@@ -393,8 +394,10 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             return;
         }
 
+        if (!manager.isModuleDownloaded(DynamicModules.MODULE_CHAT)) {
+            startForDownloadResult.launch(DynamicModuleDownloadingActivity.getDownloadActivityIntent(this, DynamicModules.MODULE_CHAT));
+        } else openChatRoom();
 
-        startForDownloadResult.launch(DynamicModuleDownloadingActivity.getDownloadActivityIntent(this, DynamicModules.MODULE_CHAT));
 
 //        DownloadPopupWindow downloadPopupWindow = new LeftAnchorPopupWindow(this, view, this::openChatRoom);
 //        downloadPopupWindow.startDownloading(DynamicModules.MODULE_CHAT);
@@ -429,25 +432,23 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             });
 
     private void openChatRoom() {
-        RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
-        RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(visitUUID);
 
-        if (rtcConnectionDTO != null) {
-            ChatRoomConfig roomConfig = new ChatRoomConfig(
-                    patientName,
-                    patientUuid,
-                    sessionManager.getChwname(),
-                    visitUUID,
-                    sessionManager.getProviderID(),
-                    rtcConnectionDTO.getConnectionInfo(),
-                    patient.getOpenmrs_id()
+//        if (rtcConnectionDTO != null) { 8c34c82c-e29b-4a71-89be-3f0ace705aa6
+        ChatRoomConfig roomConfig = new ChatRoomConfig(
+                patientName,
+                patientUuid,
+                sessionManager.getChwname(),
+                visitUUID,
+                sessionManager.getProviderID(),
+                "",
+                patient.getOpenmrs_id()
 
-            );
-            OnDemandIntentUtils.openChatRoom(this, roomConfig);
-        } else {
+        );
+        OnDemandIntentUtils.openChatRoom(this, roomConfig);
+//        } else {
 //            //chatIntent.putExtra("toUuid", ""); // assigned doctor uuid
-            Toast.makeText(this, getResources().getString(R.string.wait_for_the_doctor_message), Toast.LENGTH_SHORT).show();
-        }
+//            Toast.makeText(this, getResources().getString(R.string.wait_for_the_doctor_message), Toast.LENGTH_SHORT).show();
+//        }
     }
 
     @Override

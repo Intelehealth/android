@@ -27,6 +27,9 @@ import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.config.Config;
 import org.intelehealth.core.socket.SocketManager;
 import org.intelehealth.core.utils.utility.DateTimeResource;
+import org.intelehealth.features.ondemand.mediator.utils.OnDemandIntentUtils;
+import org.intelehealth.installer.downloader.DynamicModuleDownloadManager;
+import org.intelehealth.installer.utils.DynamicModules;
 
 import dagger.hilt.android.HiltAndroidApp;
 import io.reactivex.plugins.RxJavaPlugins;
@@ -164,14 +167,18 @@ public class IntelehealthApplication extends SplitCompatApplication implements D
     public void initSocketConnection() {
         DateTimeResource.build(this);
         CustomLog.d(TAG, "initSocketConnection: ");
-//        if (sessionManager.getProviderID() != null && !sessionManager.getProviderID().isEmpty()) {
+        if (sessionManager.getProviderID() != null && !sessionManager.getProviderID().isEmpty()) {
 //            Manager.getInstance().setBaseUrl(BuildConfig.SERVER_URL);
-//            String socketUrl = BuildConfig.SERVER_URL + ":3004" + "?userId="
-//                    + sessionManager.getProviderID()
-//                    + "&name=" + sessionManager.getChwname();
-//            if (!socketManager.isConnected()) socketManager.connect(socketUrl);
-//            initRtcConfig();
-//        }
+            String socketUrl = BuildConfig.SERVER_URL + ":3004" + "?userId="
+                    + sessionManager.getProviderID()
+                    + "&name=" + sessionManager.getChwname();
+            if (!socketManager.isConnected()) socketManager.connect(socketUrl);
+        }
+
+        DynamicModuleDownloadManager manager = DynamicModuleDownloadManager.getInstance(this);
+        if (manager.isModuleDownloaded(DynamicModules.MODULE_CHAT)) {
+            OnDemandIntentUtils.initiateChatClient(this);
+        }
     }
 
     private void initRtcConfig() {

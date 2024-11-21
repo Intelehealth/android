@@ -13,6 +13,7 @@ import org.intelehealth.core.network.helper.NetworkHelper
 import org.intelehealth.core.network.service.ServiceResponse
 import org.intelehealth.core.utils.helper.PreferenceHelper
 import org.intelehealth.core.network.state.Result
+import retrofit2.Response
 import timber.log.Timber
 
 open class BaseViewModel(
@@ -50,18 +51,20 @@ open class BaseViewModel(
     }.flowOn(dispatcher)
 
     fun <T> executeNetworkCall(
-        networkCall: suspend () -> ServiceResponse<T>
+        networkCall: suspend () -> Response<out ServiceResponse<T>>
     ) = flow {
         if (isInternetAvailable()) {
+            com.github.ajalt.timberkt.Timber.d { "network call started" }
             val response = networkCall()
-            if (response.status == 200) {
+            com.github.ajalt.timberkt.Timber.d { "response.status => ${response.code()}" }
+            if (response.code() == 200) {
                 Timber.d("Api success")
-                val result = Result.Success(response.data, "Success")
-                result.message = response.message
+                val result = Result.Success(response.body()?.data, "Success")
+                result.message = response.body()?.message
                 emit(result)
             } else {
-                Timber.e("Api error ${response.message}")
-                emit(Result.Error(response.message))
+                Timber.e("Api error ${response.body()?.message}")
+                emit(Result.Error(response.body()?.message))
             }
         } else dataConnectionStatus.postValue(false)
     }.onStart {
@@ -79,29 +82,28 @@ open class BaseViewModel(
     }.flowOn(dispatcher)
 
     fun <L, T> catchNetworkData(
-        localCall: () -> LiveData<L>?, networkCall: suspend () -> ServiceResponse<T>, saveDataCall: suspend (T?) -> L
+        networkCall: suspend () -> Response<out ServiceResponse<T>>, saveDataCall: suspend (T?) -> L
     ) = flow {
-        val data = localCall()
-        data?.value?.let {
-            emit(Result.Success(it, "Success"))
-        } ?: if (isInternetAvailable()) {
+        com.github.ajalt.timberkt.Timber.d { "catchNetworkData" }
+        if (isInternetAvailable()) {
+            com.github.ajalt.timberkt.Timber.d { "catchNetworkData api calling" }
             val response = networkCall()
-            if (response.status == 200) {
+            if (response.code() == 200) {
                 Timber.d("Api success")
-                val data = saveDataCall(response.data)
-                val result = Result.Success(data, "Success")
-                result.message = response.message
+                val savedData = saveDataCall(response.body()?.data)
+                val result = Result.Success(savedData, "Success")
+                result.message = response.body()?.message
                 emit(result)
             } else {
-                Timber.e("Api error ${response.message}")
-                emit(Result.Error(response.message))
+                Timber.e("Api error ${response.body()?.message}")
+                emit(Result.Error(response.body()?.message))
             }
         } else dataConnectionStatus.postValue(false)
     }.onStart {
         emit(Result.Loading("Please wait..."))
     }.flowOn(dispatcher)
 
-    fun isInternetAvailable(): Boolean = networkHelper?.isNetworkConnected() ?: false
+    fun isInternetAvailable(): Boolean = true //networkHelper?.isNetworkConnected() ?: false
 
     /**
      * Handle response here in base with loading and error message

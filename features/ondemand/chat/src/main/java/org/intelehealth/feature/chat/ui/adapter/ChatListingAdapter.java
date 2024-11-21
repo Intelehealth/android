@@ -16,7 +16,7 @@
 //import androidx.recyclerview.widget.RecyclerView;
 //
 //import org.intelehealth.feature.chat.R;
-//import org.intelehealth.feature.chat.model.ChatMessage;
+//import org.intelehealth.feature.chat.room.entity.ChatMessage;
 //import org.intelehealth.feature.chat.model.ItemHeader;
 //import org.intelehealth.feature.chat.model.MessageStatus;
 //

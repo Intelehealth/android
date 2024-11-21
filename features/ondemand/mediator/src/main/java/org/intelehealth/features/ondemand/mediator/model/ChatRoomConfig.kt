@@ -15,6 +15,6 @@ data class ChatRoomConfig(
     val hwName: String = "",
     val visitId: String = "",
     val fromId: String = "",
-    val toId: String = "",
+    var toId: String = "",
     val openMrsId: String = ""
 ) : Parcelable

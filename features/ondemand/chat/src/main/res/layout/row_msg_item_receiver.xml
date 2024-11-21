@@ -7,7 +7,7 @@
 
         <variable
             name="chatMessage"
-            type="org.intelehealth.feature.chat.model.ChatMessage" />
+            type="org.intelehealth.feature.chat.room.entity.ChatMessage" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -18,11 +18,12 @@
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/imgProfilePic"
-            android:layout_width="@dimen/std_48dp"
-            android:layout_height="@dimen/std_48dp"
+            android:layout_width="@dimen/std_24dp"
+            android:layout_height="@dimen/std_24dp"
             android:background="@color/colorAccent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            android:visibility="gone"
             app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent" />
 
         <View
@@ -33,7 +34,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/imgProfilePic"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_percent="0.8" />
+            app:layout_constraintWidth_percent="0.7" />
 
         <TextView
             android:id="@+id/tvReceiverName"

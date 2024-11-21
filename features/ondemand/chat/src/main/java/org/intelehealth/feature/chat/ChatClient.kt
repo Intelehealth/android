@@ -1,11 +1,10 @@
 package org.intelehealth.feature.chat
 
+import android.content.Context
 import org.intelehealth.feature.chat.listener.ConnectionListener
 import org.intelehealth.feature.chat.listener.EventCallback
-import org.intelehealth.feature.chat.model.ChatMessage
+import org.intelehealth.feature.chat.room.entity.ChatMessage
 import org.intelehealth.feature.chat.socket.ChatSocket
-import javax.inject.Inject
-import javax.inject.Singleton
 
 
 /**
@@ -13,16 +12,20 @@ import javax.inject.Singleton
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-@Singleton
-class ChatClient @Inject constructor(
-    private val chatSocket: ChatSocket,
-    messageHandler: MessageHandler
+
+class ChatClient(
+    private val chatSocket: ChatSocket, private val messageHandler: MessageHandler
 ) : ConnectionListener {
 
     init {
         chatSocket.messageListener = messageHandler
         chatSocket.conversationListener = messageHandler
         chatSocket.connectionListener = this
+    }
+
+    fun updateActiveChatRoomDetails(loginUserId: String, activeRoomId: String) {
+        messageHandler.activeRoomId = activeRoomId
+        messageHandler.loginUserId = loginUserId
     }
 
     fun connect(socketUrl: String) = chatSocket.connect(socketUrl)
@@ -34,8 +37,7 @@ class ChatClient @Inject constructor(
 
     fun ackMessageAsRead(messageId: Int) = chatSocket.ackMessageRead(messageId)
 
-    fun ackConversationRead(senderId: String, receiverId: String) =
-        chatSocket.ackConversationRead(senderId, receiverId)
+    fun ackConversationRead(senderId: String, receiverId: String) = chatSocket.ackConversationRead(senderId, receiverId)
 
     override fun onConnected() {
 
@@ -43,5 +45,21 @@ class ChatClient @Inject constructor(
 
     override fun onDisconnected() {
 
+    }
+
+    companion object {
+        @Volatile
+        private var INSTANCE: ChatClient? = null
+
+        @JvmStatic
+        fun getInstance(context: Context): ChatClient = INSTANCE ?: synchronized(this) {
+            INSTANCE ?: buildChatClient(context).also {
+                INSTANCE = it
+            }
+        }
+
+        private fun buildChatClient(context: Context): ChatClient {
+            return ChatClient(ChatSocket.getInstance(), MessageHandler.getInstance(context))
+        }
     }
 }

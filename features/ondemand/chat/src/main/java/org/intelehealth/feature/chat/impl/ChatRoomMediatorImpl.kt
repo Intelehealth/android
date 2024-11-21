@@ -1,6 +1,7 @@
 package org.intelehealth.feature.chat.impl
 
 import android.content.Context
+import org.intelehealth.feature.chat.ChatClient
 import org.intelehealth.feature.chat.ui.activity.ChatRoomActivity
 import org.intelehealth.features.ondemand.mediator.listener.ChatRoomMediator
 import org.intelehealth.features.ondemand.mediator.model.ChatRoomConfig
@@ -13,5 +14,9 @@ import org.intelehealth.features.ondemand.mediator.model.ChatRoomConfig
 class ChatRoomMediatorImpl : ChatRoomMediator {
     override fun openChatRoom(context: Context, chatRoomConfig: ChatRoomConfig) {
         ChatRoomActivity.startChatRoomActivity(context, chatRoomConfig)
+    }
+
+    override fun initiateChatClient(context: Context) {
+        ChatClient.getInstance(context)
     }
 }

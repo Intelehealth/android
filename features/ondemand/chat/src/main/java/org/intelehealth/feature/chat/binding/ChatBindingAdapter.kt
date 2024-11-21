@@ -49,7 +49,7 @@ fun setMessageStatusIcon(textView: TextView, messageStatus: Int) {
         }
     }
     val index = textView.tag as Int
-    textView.isVisible = index == 0
+//    textView.isVisible = index == 0
     textView.text = textView.context.getText(statusLbl)
     textView.setCompoundDrawablesWithIntrinsicBounds(drawable, 0, 0, 0)
 }

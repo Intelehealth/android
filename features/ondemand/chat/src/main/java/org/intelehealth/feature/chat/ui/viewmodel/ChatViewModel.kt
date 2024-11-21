@@ -1,101 +1,98 @@
 package org.intelehealth.feature.chat.ui.viewmodel
 
-import android.content.BroadcastReceiver
 import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
-import io.socket.emitter.Emitter
+import com.github.ajalt.timberkt.Timber
 import kotlinx.coroutines.launch
 import org.intelehealth.core.network.state.Result
 import org.intelehealth.core.ui.viewmodel.BaseViewModel
+import org.intelehealth.core.utils.utility.DateTimeUtils
 import org.intelehealth.feature.chat.ChatClient
 import org.intelehealth.feature.chat.data.ChatRepository
-import org.intelehealth.feature.chat.model.ChatMessage
+import org.intelehealth.feature.chat.room.entity.ChatMessage
 import org.intelehealth.feature.chat.model.MessageStatus
 import org.intelehealth.features.ondemand.mediator.model.ChatRoomConfig
-import javax.inject.Inject
 
 /**
  * Created by Vaghela Mithun R. on 18-07-2023 - 23:43.
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-@HiltViewModel
-class ChatViewModel @Inject constructor(
-    private val chatClient: ChatClient, private val repository: ChatRepository
+
+class ChatViewModel(
+    context: Context,
+    private val chatClient: ChatClient = ChatClient.getInstance(context),
+    private val repository: ChatRepository
 ) : BaseViewModel() {
 
     lateinit var roomConfig: ChatRoomConfig
 
-    private val fileUploadBroadcastReceiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context?, intent: Intent?) {
-
+    fun updateActiveChatRoomDetails() {
+        if (::roomConfig.isInitialized) {
+            chatClient.updateActiveChatRoomDetails(roomConfig.fromId, roomConfig.visitId)
         }
     }
 
-    private fun emitter(event: String) = Emitter.Listener {
-
-    }
-
-    fun registerReceivers(context: Context) {
-        IntentFilter().apply {
-//            addAction(AwsS3Utils.ACTION_FILE_UPLOAD_DONE)
-            ContextCompat.registerReceiver(
-                context, fileUploadBroadcastReceiver, this, ContextCompat.RECEIVER_NOT_EXPORTED
-            )
-        }
-    }
-
-    fun unregisterBroadcast(context: Context) {
-        context.unregisterReceiver(fileUploadBroadcastReceiver)
-    }
-
-    fun sendMessage(text: String) {
+    fun sendMessage(text: String, messageId: Int) {
         viewModelScope.launch {
             var status = MessageStatus.SENDING
+            val message = roomConfig.let {
+                return@let ChatMessage(
+                    messageId = messageId,
+                    senderId = it.fromId,
+                    receiverId = it.toId,
+                    roomId = it.visitId,
+                    message = text,
+                    senderName = it.hwName,
+                    roomName = it.patientName,
+                    openMrsId = it.openMrsId,
+                    patientId = it.patientId,
+                    messageStatus = status.value,
+                    type = "text",
+                    createdAt = DateTimeUtils.getCurrentDateWithDBFormat(),
+                    updatedAt = DateTimeUtils.getCurrentDateWithDBFormat()
+                )
+            }
+            repository.addMessage(message)
+            Timber.d { "sendMessage started" }
             executeNetworkCall {
-
-                val message = roomConfig.let {
-                    return@let ChatMessage(
-                        senderId = it.fromId,
-                        receiverId = it.toId,
-                        roomId = it.visitId,
-                        message = text,
-                        senderName = it.hwName,
-                        roomName = it.patientName,
-                        openMrsId = it.openMrsId,
-                        patientId = it.patientId,
-                        messageStatus = status.value
-                    )
-                } ?: ChatMessage()
-                repository.addMessage(message)
+                Timber.d { "sendMessage executeNetworkCall" }
                 repository.sendMessage(message)
             }.collect {
+                Timber.e { "Send Message status => ${it.status}" }
                 status = when (it.status) {
                     Result.State.FAIL, Result.State.ERROR -> MessageStatus.FAIL
                     Result.State.SUCCESS -> MessageStatus.SENT
                     else -> MessageStatus.FAIL
                 }
-                it.data?.get(0)?.messageId?.let { it1 -> repository.changeMessageStatus(it1, status) }
+                Timber.e { "it.data => ${it.data?.toJson()}" }
+                it.data?.messageId?.let { it1 ->
+                    if (it1 == messageId) repository.changeMessageStatus(messageId, status)
+                    else repository.updateMessageIdAndStatus(it1, status.value, message.message)
+                    Timber.e { "updating local message " }
+                }
             }
         }
     }
 
+    fun ackMessageRead(messageId: Int) = executeNetworkCall {
+        repository.ackMessageRead(messageId)
+    }
+
     fun loadConversation() = catchNetworkData({
-        getChatRoomMessages(roomConfig.visitId)
-    }, {
-        val patientId = roomConfig.patientId ?: ""
+        val patientId = roomConfig.patientId
+        clearChatRoom()
         repository.getMessages(roomConfig.fromId, roomConfig.toId, patientId)
     }, { messages -> repository.saveMessages(messages) }).asLiveData()
 
-    private fun getChatRoomMessages(roomId: String) = repository.getChatRoomMessages(roomId)
+    fun getChatRoomMessages() = repository.getChatRoomMessages(roomConfig.visitId)
+
+    private fun clearChatRoom() {
+        viewModelScope.launch { repository.clearChatRoom(roomConfig.visitId) }
+    }
 
     fun connect(url: String) {
         if (chatClient.isConnected().not()) chatClient.connect(url)
     }
-
 }

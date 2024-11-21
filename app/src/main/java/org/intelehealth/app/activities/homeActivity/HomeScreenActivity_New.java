@@ -13,9 +13,11 @@ import static org.intelehealth.app.utilities.StringUtils.en__ru_dob;
 import static org.intelehealth.app.utilities.StringUtils.en__ta_dob;
 import static org.intelehealth.app.utilities.StringUtils.en__te_dob;
 import static org.intelehealth.app.utilities.StringUtils.getFullMonthName;
+import static org.intelehealth.installer.activity.DynamicModuleDownloadingActivity.MODULE_DOWNLOAD_STATUS;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlarmManager;
 import android.app.Dialog;
@@ -126,8 +128,10 @@ import org.intelehealth.core.utils.helper.PreferenceHelper;
 import org.intelehealth.fcm.utils.FcmTokenGenerator;
 import org.intelehealth.fcm.utils.NotificationBroadCast;
 import org.intelehealth.features.ondemand.mediator.utils.OnDemandIntentUtils;
+import org.intelehealth.installer.activity.DynamicModuleDownloadingActivity;
 import org.intelehealth.installer.downloader.DynamicModuleDownloadManager;
 import org.intelehealth.installer.downloader.DynamicModuleDownloadManagerKt;
+import org.intelehealth.installer.utils.DynamicModules;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -652,6 +656,20 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
 
             }
         });
+
+        //bottom nav
+        bottomNav = findViewById(R.id.bottom_nav_home);
+        bottomNav.setOnItemSelectedListener(navigationItemSelectedListener);
+        bottomNav.setItemIconTintList(null);
+        bottomNav.getMenu().findItem(R.id.bottom_nav_home_menu).setChecked(true);
+        tvAppVersion.setText("Dynamic: Version Name " + BuildConfig.VERSION_NAME + " Code " + BuildConfig.VERSION_CODE);
+
+
+        setLocale(HomeScreenActivity_New.this);
+
+    }
+
+    private void syncData() {
         if (sessionManager.isFirstTimeLaunched()) {
             showRefreshDialog();
             SyncDAO.getSyncProgress_LiveData().observe(this, syncLiveData);
@@ -663,16 +681,6 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             saveToken();
 //            requestPermission();
         }
-        //bottom nav
-        bottomNav = findViewById(R.id.bottom_nav_home);
-        bottomNav.setOnItemSelectedListener(navigationItemSelectedListener);
-        bottomNav.setItemIconTintList(null);
-        bottomNav.getMenu().findItem(R.id.bottom_nav_home_menu).setChecked(true);
-        tvAppVersion.setText("Dynamic: Version Name " + BuildConfig.VERSION_NAME + " Code " + BuildConfig.VERSION_CODE);
-
-
-        setLocale(HomeScreenActivity_New.this);
-
     }
 
     /**
@@ -983,15 +991,34 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
     @Override
     protected void onFeatureActiveStatusLoaded(FeatureActiveStatus activeStatus) {
         super.onFeatureActiveStatusLoaded(activeStatus);
-        if (mNavigationView != null) {
-            String moduleName = getString(R.string.module_video);
-//            boolean hasInstalled = manager.isModuleDownloaded(moduleName);
-//            boolean callLogVisibility = activeStatus.getVideoSection() && hasInstalled;
-
-//            System.out.println(DynamicModuleDownloadManagerKt.TAG + "=>callLogVisibility=>" + callLogVisibility);
-            mNavigationView.getMenu().findItem(R.id.menu_view_call_log).setVisible(activeStatus.getVideoSection());
-        }
+        if (!manager.isModuleDownloaded(DynamicModules.MODULE_VIDEO) && activeStatus.getVideoSection()) {
+            startForDownloadResult.launch(DynamicModuleDownloadingActivity.getDownloadActivityIntent(this, DynamicModules.MODULE_VIDEO));
+        } else if (!activeStatus.getVideoSection() && manager.isModuleDownloaded(DynamicModules.MODULE_VIDEO)) {
+            ArrayList<String> list = new ArrayList<>();
+            list.add(DynamicModules.MODULE_VIDEO);
+            manager.requestUninstall(list);
+            updateUIForInternetAvailability(false);
+        } else
+            updateCallLogMenuVisibility(manager.isModuleDownloaded(DynamicModules.MODULE_VIDEO) && activeStatus.getVideoSection());
     }
+
+    private void updateCallLogMenuVisibility(boolean visibility) {
+        if (mNavigationView != null) {
+            mNavigationView.getMenu().findItem(R.id.menu_view_call_log).setVisible(visibility);
+        }
+        syncData();
+    }
+
+    private final ActivityResultLauncher<Intent> startForDownloadResult = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(), result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    Intent intent = result.getData();
+                    if (intent == null) return;
+                    if (intent.hasExtra(MODULE_DOWNLOAD_STATUS) && intent.getBooleanExtra(MODULE_DOWNLOAD_STATUS, false)) {
+                        updateUIForInternetAvailability(true);
+                    }
+                }
+            });
 
     public void selectDrawerItem(MenuItem menuItem) {
         Fragment fragment = null;

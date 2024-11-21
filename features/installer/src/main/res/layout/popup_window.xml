@@ -62,7 +62,7 @@
             android:id="@+id/btnClosePopup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/close_popup_window"
+            android:text="@string/module_close_popup_window"
             android:textColor="@color/red"
             android:backgroundTint="@color/transparent"
             app:layout_constraintEnd_toEndOf="parent"

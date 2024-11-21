@@ -34,12 +34,12 @@ import java.util.UUID;
 public class BaseActivity extends LanguageActivity implements DynamicDeliveryCallback {
     private static final String TAG = "BaseActivity";
     private FeatureActiveStatus featureActiveStatus;
-//    protected DynamicModuleDownloadManager manager;
+    protected DynamicModuleDownloadManager manager;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        manager = DynamicModuleDownloadManager.getInstance(this);
+        manager = DynamicModuleDownloadManager.getInstance(this);
 //        SocketManager.getInstance().setNotificationListener(this);
         loadFeatureActiveStatus();
     }

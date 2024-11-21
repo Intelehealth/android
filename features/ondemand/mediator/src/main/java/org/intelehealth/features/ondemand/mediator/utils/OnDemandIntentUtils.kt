@@ -22,6 +22,12 @@ object OnDemandIntentUtils {
     }
 
     @JvmStatic
+    fun initiateChatClient(context: Context) {
+        val listener = createInstance<ChatRoomMediator>(CHAT_ROOM_IMPL_CLASS)
+        listener?.initiateChatClient(context)
+    }
+
+    @JvmStatic
     fun startCallLog(context: Context?) {
         val listener = createInstance<VideoCallMediator>(VIDEO_CALL_IMPL_CLASS)
         listener?.startCallLogActivity(context)

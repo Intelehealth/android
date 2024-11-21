@@ -43,14 +43,14 @@ class IDACallLogActivity : CoreCallLogActivity(), BaseViewHolder.ViewHolderClick
     }
 
     override fun setupActionBar() {
-        setSupportActionBar(binding.callLogAppBar.toolbar)
+        setSupportActionBar(binding.toolbar)
         super.setupActionBar()
         supportActionBar?.let {
             it.setHomeButtonEnabled(true)
             it.setDisplayHomeAsUpEnabled(true)
             it.title = getString(R.string.call_logs)
         }
-        binding.callLogAppBar.toolbar.setNavigationOnClickListener { finishAfterTransition() }
+        binding.toolbar.setNavigationOnClickListener { finishAfterTransition() }
     }
 
     override fun onViewHolderViewClicked(view: View?, position: Int) {

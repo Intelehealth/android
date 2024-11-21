@@ -16,19 +16,17 @@ import org.intelehealth.feature.chat.listener.ConnectionListener
 import org.intelehealth.feature.chat.listener.ConversationListener
 import org.intelehealth.feature.chat.listener.EventCallback
 import org.intelehealth.feature.chat.listener.MessageListener
-import org.intelehealth.feature.chat.model.ChatMessage
+import org.intelehealth.feature.chat.room.entity.ChatMessage
 import org.intelehealth.feature.chat.model.MessageStatus
 import org.json.JSONArray
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * Created by Vaghela Mithun R. on 08-06-2023 - 18:47.
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-@Singleton
-class ChatSocket @Inject constructor(private val socketManager: SocketManager) {
+
+class ChatSocket(private val socketManager: SocketManager) {
     var messageListener: MessageListener? = null
     var conversationListener: ConversationListener? = null
     var connectionListener: ConnectionListener? = null
@@ -104,9 +102,7 @@ class ChatSocket @Inject constructor(private val socketManager: SocketManager) {
 
     private fun onMessageReceived(it: Array<Any>?) {
         it?.let {
-            val jsonObject = JSONArray(gson.toJson(it[0]))
-                .getJSONObject(0)
-                .getJSONObject("nameValuePairs")
+            val jsonObject = JSONArray(gson.toJson(it[0])).getJSONObject(0).getJSONObject("nameValuePairs")
 
             val message = gson.fromJson(jsonObject.toString(), ChatMessage::class.java)
             message.messageStatus = MessageStatus.RECEIVED.value
@@ -138,9 +134,7 @@ class ChatSocket @Inject constructor(private val socketManager: SocketManager) {
     }
 
     fun ackConversationRead(
-        senderId: String,
-        receiverId: String,
-        callback: EventCallback<Any>? = null
+        senderId: String, receiverId: String, callback: EventCallback<Any>? = null
     ) {
         eventCallbackMap[EVENT_CHAT_READ_ACK_SUCCESS] = callback
         HashMap<String, String>().apply {
@@ -155,5 +149,15 @@ class ChatSocket @Inject constructor(private val socketManager: SocketManager) {
         const val SENDER_ID = "senderId"
         const val RECEIVER_ID = "receiverId"
         const val MESSAGE_ID = "messageId"
+
+        @Volatile
+        private var INSTANCE: ChatSocket? = null
+
+        @JvmStatic
+        fun getInstance(): ChatSocket = INSTANCE ?: synchronized(this) {
+            INSTANCE ?: ChatSocket(SocketManager.instance).also {
+                INSTANCE = it
+            }
+        }
     }
 }

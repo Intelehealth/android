@@ -12,11 +12,12 @@ import org.intelehealth.core.ui.viewholder.BaseViewHolder
  * Mob   : +919727206702
  **/
 abstract class BaseRecyclerViewHolderAdapter<I, VH : ViewHolder>(
-    protected val context: Context,
-    protected var items: MutableList<I>
+    protected val context: Context, protected var items: MutableList<I>
 ) : RecyclerView.Adapter<VH>() {
     protected val inflater: LayoutInflater = LayoutInflater.from(context)
     var viewHolderClickListener: BaseViewHolder.ViewHolderClickListener? = null
+
+    override fun getItemId(position: Int): Long = position.toLong()
 
     override fun getItemCount(): Int = items.size
 

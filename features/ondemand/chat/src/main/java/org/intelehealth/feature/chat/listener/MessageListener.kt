@@ -1,6 +1,6 @@
 package org.intelehealth.feature.chat.listener
 
-import org.intelehealth.feature.chat.model.ChatMessage
+import org.intelehealth.feature.chat.room.entity.ChatMessage
 
 
 /**

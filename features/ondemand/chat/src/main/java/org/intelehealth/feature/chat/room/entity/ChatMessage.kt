@@ -1,4 +1,4 @@
-package org.intelehealth.feature.chat.model
+package org.intelehealth.feature.chat.room.entity
 
 import android.os.Parcelable
 import androidx.room.ColumnInfo
@@ -9,6 +9,7 @@ import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 import org.intelehealth.core.utils.utility.DateTimeUtils
+import org.intelehealth.feature.chat.model.ItemHeader
 
 /**
  * Created by Vaghela Mithun R. on 03-07-2023 - 15:32.
@@ -24,25 +25,25 @@ data class ChatMessage(
     // Either doctorId or HW id
     var senderId: String = "",
 
-    @SerializedName("hwName") @ColumnInfo(name = "sender_name")
+    @ColumnInfo(name = "sender_name")
     // Either doctor name or HW name
-    val senderName: String = "",
+    var senderName: String? = null,
 
     @SerializedName("hwPic") @ColumnInfo(name = "sender_dp")
     // Either HW or doctor profile picture
-    val senderDp: String = "",
+    var senderDp: String? = null,
 
     @SerializedName("toUser") @ColumnInfo(name = "receiver_id")
     // Either doctorId or HW id
     var receiverId: String = "",
 
-    @ColumnInfo(name = "receiver_name")
+    @SerializedName("hwName") @ColumnInfo(name = "receiver_name")
     // Either doctor name or HW name
-    val receiverName: String = "",
+    var receiverName: String? = null,
 
     @ColumnInfo(name = "receiver_dp")
     // Either HW or doctor profile picture
-    val receiverDp: String = "",
+    var receiverDp: String? = null,
 
     @SerializedName("visitId") @ColumnInfo(name = "room_id")
     // visitId should be consider as roomId
@@ -54,7 +55,7 @@ data class ChatMessage(
 
     @SerializedName("patientPic") @ColumnInfo(name = "room_icon")
     // Patient profile picture is a room icon
-    val roomIcon: String? = null,
+    var roomIcon: String? = null,
 
     var message: String = "",
 
@@ -82,7 +83,7 @@ data class ChatMessage(
 ) : ItemHeader, Parcelable {
 
     override fun createdDate(): String {
-        return createdAt?.let { return@let DateTimeUtils.getCurrentDateWithDBFormat() }!!
+        return createdAt ?: DateTimeUtils.getCurrentDateWithDBFormat()
     }
 
     fun getMessageTime(): String? {

@@ -5,8 +5,9 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
-import org.intelehealth.feature.chat.model.ChatMessage
+import org.intelehealth.feature.chat.room.entity.ChatMessage
 
 
 /**
@@ -20,7 +21,7 @@ interface ChatDao {
     fun getAll(): Flow<List<ChatMessage>>
 
     @Query("SELECT * FROM tbl_chat_message where room_id =:roomId")
-    fun getChatRoomMessages(roomId:String): LiveData<List<ChatMessage>>
+    fun getChatRoomMessages(roomId: String): LiveData<List<ChatMessage>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(messages: List<ChatMessage>)
@@ -31,9 +32,18 @@ interface ChatDao {
     @Query("UPDATE tbl_chat_message SET message_status= :status where message_id =:messageId")
     suspend fun changeMessageStatus(messageId: Int, status: Int)
 
+    @Update
+    suspend fun updateMessage(message: ChatMessage)
+
+    @Query("UPDATE tbl_chat_message SET message_status= :status, message_id =:messageId " + "where message =:message")
+    suspend fun updateMessageIdAndStatus(messageId: Int, status: Int, message: String)
+
     @Query("UPDATE tbl_chat_message SET message_status= :status where message_id IN (:messageIds)")
     suspend fun changeMessageStatus(messageIds: List<Int>, status: Int)
 
     @Query("DELETE FROM tbl_chat_message")
     suspend fun deleteAll()
+
+    @Query("DELETE FROM tbl_chat_message WHERE room_id =:roomId")
+    suspend fun clearChatRoom(roomId: String)
 }

@@ -1,7 +1,7 @@
 package org.intelehealth.feature.chat.ui.adapter.viewholder
 
 import org.intelehealth.feature.chat.databinding.RowMsgItemReceiverBinding
-import org.intelehealth.feature.chat.model.ChatMessage
+import org.intelehealth.feature.chat.room.entity.ChatMessage
 
 
 /**
