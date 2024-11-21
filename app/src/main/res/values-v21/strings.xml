@@ -187,5 +187,7 @@
     <string name="_main_connected_fail">connect fail</string>
     <string name="_main_disconnect">" disconnected"</string>
     <string name="prescription_printing">The prescription is being printed</string>
+    <string name="family_members">Family Members</string>
+    <string name="no_family_member_registered">No family member registered</string>
 
 </resources>

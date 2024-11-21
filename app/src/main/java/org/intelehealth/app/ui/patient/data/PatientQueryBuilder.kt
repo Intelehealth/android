@@ -11,7 +11,7 @@ import org.intelehealth.app.shared.builder.QueryBuilder
 class PatientQueryBuilder : QueryBuilder() {
     fun buildPatientDetailsQuery(patientId: String): String {
         return select(
-            " P.uuid, P.openmrs_id, P.first_name, P.middle_name, P.last_name, P.gender, P.date_of_birth, P.address1, P.address2, " +
+            "P.uuid, P.openmrs_id, P.first_name, P.middle_name, P.last_name, P.gender, P.date_of_birth, P.address1, P.address2, " +
                     "P.city_village, P.state_province, P.postal_code, P.country,P.phone_number, P.patient_photo, P.guardian_name, P.guardian_type," +
                     "P.contact_type,P.em_contact_name,P.em_contact_num,P.address3,"
                     + buildPatientAttributesQuery(PatientAttributesDTO.Column.TELEPHONE.value) + " telephone,"
@@ -24,7 +24,8 @@ class PatientQueryBuilder : QueryBuilder() {
                     + buildPatientAttributesQuery(PatientAttributesDTO.Column.PROFILE_IMG_TIMESTAMP.value) + " profileImageTimestamp,"
                     + buildPatientAttributesQuery(PatientAttributesDTO.Column.CAST.value) + " caste,"
                     + buildPatientAttributesQuery(PatientAttributesDTO.Column.CREATED_DATE.value) + " createdDate, "
-                    + buildPatientAttributesQuery(PatientAttributesDTO.Column.HOUSEHOLD_NUMBER.value) + " HouseHold "
+                    + buildPatientAttributesQuery(PatientAttributesDTO.Column.BLOCK.value) + " blockSurvey, "
+                    + buildPatientAttributesQuery(PatientAttributesDTO.Column.HOUSEHOLD_UUID_LINKING.value) + " HouseHold"
         )
             .from("tbl_patient P")
             .where("P.uuid =  '$patientId' AND P.voided  = '0' ")

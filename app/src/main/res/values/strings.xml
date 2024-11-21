@@ -1380,3 +1380,6 @@
     <string name="enter_other_water_sources">Enter other water sources</string>
 
     </resources>
+    <string name="family_members">Family Members</string>
+    <string name="no_family_member_registered">No family member registered</string>
+</resources>

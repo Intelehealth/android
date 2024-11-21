@@ -48,6 +48,11 @@ data class FeatureActiveStatus(
     @SerializedName("patient_reg_other")
     var activeStatusPatientOther: Boolean = true
 
+    @SerializedName("patient_family_member_registration")
+    var activeStatusPatientFamilyMemberRegistration: Boolean = true
+
+    // TODO: add this when Zeeshan completes this task of config for family memeber.
+
     @SerializedName("abha_section")
     var activeStatusAbha: Boolean = true
 }

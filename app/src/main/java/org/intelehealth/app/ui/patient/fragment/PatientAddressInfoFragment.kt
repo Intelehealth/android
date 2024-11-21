@@ -5,11 +5,13 @@ import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.databinding.OnRebindCallback
 import androidx.navigation.fragment.findNavController
 import com.github.ajalt.timberkt.Timber
 import com.github.ajalt.timberkt.Timber.tag
 import com.google.gson.Gson
+import org.intelehealth.app.BuildConfig
 import org.intelehealth.app.R
 import org.intelehealth.app.activities.identificationActivity.model.Block
 import org.intelehealth.app.activities.identificationActivity.model.DistData
@@ -108,18 +110,23 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
             /* val village = binding.textInputCityVillage.text?.toString()
              cityvillage = if (district.isNullOrEmpty().not()) "${district}:$village"
              else village*/
-            address1 = binding.textInputAddress1.text?.toString()
             address2 = binding.textInputAddress2.text?.toString()
-            householdNumber = binding.textInputHouseholdNumber.text?.toString()
+            //householdNumber = binding.textInputHouseholdNumber.text?.toString()
+
+            if (BuildConfig.FLAVOR_client == "nas") {
+                address1 = binding.textInputHouseholdNumber.text?.toString()
+            } else {
+                address1 = binding.textInputAddress1.text?.toString()
+            }
 
             var village: String
             if (binding.llBlock.isEnabled) {
                 if (binding.autoCompleteBlock.text.contains("Other", ignoreCase = true)) {
-                    address3 = binding.textInputOtherBlock.text.toString()
+                    block = binding.textInputOtherBlock.text.toString()
                     village = binding.textInputCityVillage.text?.toString().toString()
                 } else {
                     village = binding.autoCompleteVillageDropdown.text.toString()
-                    address3 = binding.autoCompleteBlock.text.toString()
+                    block = binding.autoCompleteBlock.text.toString()
                 }
             } else {
                 village = binding.textInputCityVillage.text.toString()
@@ -127,7 +134,7 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
             cityvillage = if (district.isNullOrEmpty().not()) "${district}:$village"
             else village
 
-            Log.d("kaveridev", "savePatient: address3 : " + address3)
+            Log.d("kaveridev", "savePatient: address3 : " + block)
             Log.d(
                 "kaveridev",
                 "savePatient: viewsele : " + binding.autoCompleteBlock.text.toString()
@@ -135,6 +142,7 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
             Log.d("kaveridev", "savePatient: village : " + village)
             Log.d("kaveridev", "savePatient: district : " + district)
             Log.d("kaveridev", "savePatient: district : " + district)
+            Log.d("kaveridev", "savePatient: householdno : " + address1)
             Log.d("kaveridev", "savePatient: patient cityvillage : " + patient.cityvillage)
 
             patientViewModel.updatedPatient(this)
@@ -381,13 +389,13 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
             binding.autoCompleteBlock.setAdapter(adapter)
             binding.textInputLayBlock.tag = districtData.blocks
 
-            if (patient.address3 != null && patient.address3.isNotEmpty()) {
-                val selected = LanguageUtils.getBlock(districtData, patient.address3)
+            if (patient.block != null && patient.block.isNotEmpty()) {
+                val selected = LanguageUtils.getBlock(districtData, patient.block)
                 if (selected == null) {
                     val selected = LanguageUtils.getBlock(districtData, "Other Block")
                     Log.d("kaveridev", "setupBlocks: selected : " + selected)
                     binding.autoCompleteBlock.setText(selected.toString(), false)
-                    binding.textInputOtherBlock.setText(patient.address3)
+                    binding.textInputOtherBlock.setText(patient.block)
                     enableOtherBlock()
                     isOtherBlockSelected = true;
                 } else {
@@ -413,11 +421,11 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
                     binding.textInputLayOtherBlock.visibility = View.VISIBLE
                     enableOtherBlock()
                     binding.textInputCityVillage.setText("")
-                    patient.address3 = binding.textInputOtherBlock.text.toString()
+                    patient.block = binding.textInputOtherBlock.text.toString()
                     isOtherBlockSelected = true;
                 } else {
                     disableOtherBlock()
-                    patient.address3 = blocksList[i].name
+                    patient.block = blocksList[i].name
                     binding.textInputCityVillage.setText("")
                     isOtherBlockSelected = false;
                 }
@@ -474,6 +482,16 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
     private val onRebindCallback = object : OnRebindCallback<FragmentPatientAddressInfoBinding>() {
         override fun onBound(binding: FragmentPatientAddressInfoBinding?) {
             super.onBound(binding)
+            /*for NAS corresponding address is not required and address 1
+             means household no value thats why disabled the corresponding address 1 field for nas*/
+
+            if (BuildConfig.FLAVOR_client == "nas"){
+                binding?.addressInfoConfig?.address1?.isEnabled = false
+                binding?.llAddress1?.visibility = View.GONE
+            } else{
+                binding?.addressInfoConfig?.address1?.isEnabled = true
+                binding?.llAddress1?.visibility = View.VISIBLE
+            }
 
             observeBlockAndVillageChange()
             //  resetAdaptersAndFieldData();
@@ -537,7 +555,7 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
     }
 
     private fun manageBlockVisibility(isBlockEnabled: Boolean) {
-        val address3 = patient.address3;
+        val address3 = patient.block;
         if (isBlockEnabled) {
             binding.llBlock.visibility = View.VISIBLE
             binding.llBlock.isEnabled = true
@@ -559,7 +577,7 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
     private fun setOtherBlockData() {
         //if (binding.autoCompleteBlock.text.contains("Other", ignoreCase = true)) {
         if (isOtherBlockSelected()) {
-            patient.address3 = binding.textInputOtherBlock.text.toString()
+            patient.block = binding.textInputOtherBlock.text.toString()
             //patient.cityvillage = binding.textInputCityVillage.text.toString()
         }
         //}
@@ -567,7 +585,7 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
 
     private fun isOtherBlockSelected1() =
         binding.autoCompleteBlock.text.contains("Other", ignoreCase = true) ||
-                (patient.address3 != null && patient.address3.isNotEmpty() && patient.address3.contains(
+                (patient.block != null && patient.block.isNotEmpty() && patient.block.contains(
                     "Other",
                     ignoreCase = true
                 ))

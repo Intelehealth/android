@@ -384,7 +384,7 @@
                                 android:layout_height="wrap_content"
                                 android:hint="@string/enter_block"
                                 android:inputType="text"
-                                android:text="@={patient.address3}" />
+                                android:text="@={patient.block}" />
                         </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
                     </LinearLayout>
 
@@ -471,7 +471,7 @@
                             android:hint="@string/enter_household_number"
                             android:inputType="number"
                             android:maxLength="50"
-                            android:text="@={patient.householdNumber}" />
+                            android:text="@={patient.address1}" />
                     </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
                 </LinearLayout>
                 <LinearLayout

@@ -718,4 +718,6 @@
     <string name="surveyDialogTitle">यशस्वीरित्या सेव्ह झाले</string>
     <string name="surveyDialogMessage">सर्वे यशस्वीरित्या जोडला गेला</string>
 
+    <string name="family_members">Family Members</string>
+    <string name="no_family_member_registered">No family member registered</string>
 </resources>

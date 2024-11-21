@@ -14,6 +14,7 @@ class BundleKeys {
         const val DESCRIPTION = "description"
         const val CHANNEL_ID = "channel_id"
         const val PATIENT_UUID = "patientUuid"
+        const val PARENT_PATIENT_UUID = "parentPatientUuid"
         const val PATIENT_ID = "patientId"
         const val VISIT_UUI = "visitUuid"
         const val GENDER = "gender"

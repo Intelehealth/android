@@ -135,7 +135,6 @@ public class PatientsDAO {
             values.put("contact_type", patientDTO.getContactType());
             values.put("em_contact_name", patientDTO.getEmContactName());
             values.put("em_contact_num", patientDTO.getEmContactNumber());
-            values.put("address3", patientDTO.getAddress3());
 
             values.put("dead", patientDTO.getDead());
             values.put("sync", false);
@@ -192,7 +191,6 @@ public class PatientsDAO {
 
             values.put("dead", false);
             values.put("sync", false);
-            values.put("address3", patientDTO.getAddress3());
 
             insertPatientAttributes(patientDTO.getPatientAttributesDTOList(), db);
             Logger.logD("pulldata", "datadumper" + values);
@@ -317,7 +315,12 @@ public class PatientsDAO {
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
         try {
-            Cursor idCursor = db.rawQuery("SELECT value FROM tbl_patient_attribute where patientuuid = ? AND person_attribute_type_uuid=? AND voided='0' COLLATE NOCASE", new String[]{patientuuid, "10720d1a-1471-431b-be28-285d64767093"});
+            Cursor idCursor = db.rawQuery("SELECT value FROM tbl_patient_attribute " +
+                    "where patientuuid = ? AND person_attribute_type_uuid=? AND voided='0' COLLATE NOCASE", new String[]{
+                    patientuuid, "be8e386b-ca22-447d-82a1-b80366e5f848"});
+
+            // IDA HOUSEHOLD NO - be8e386b-ca22-447d-82a1-b80366e5f848 (newly created)
+            // NAS HOUSEHOLD NO - 10720d1a-1471-431b-be28-285d64767093 (already present)
 
             if (idCursor.getCount() != 0) {
                 while (idCursor.moveToNext()) {
@@ -367,9 +370,10 @@ public class PatientsDAO {
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         //db.beginTransaction();
         try {
-            Cursor cursor = db.rawQuery("SELECT openmrs_id,first_name,middle_name,last_name FROM tbl_patient where uuid = ? COLLATE NOCASE", new String[]{patientuuid});
+            Cursor cursor = db.rawQuery("SELECT uuid, openmrs_id,first_name,middle_name,last_name FROM tbl_patient where uuid = ? COLLATE NOCASE", new String[]{patientuuid});
             if (cursor.getCount() != 0) {
                 while (cursor.moveToNext()) {
+                    familyMemberRes.setPatientUUID(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
                     familyMemberRes.setOpenMRSID(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
                     familyMemberRes.setName(cursor.getString(cursor.getColumnIndexOrThrow("first_name")) + " " + cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
                     listPatientNames.add(familyMemberRes);
@@ -700,7 +704,7 @@ public class PatientsDAO {
         if (patientUUID_List.size() != 0) {
             for (int i = 0; i < patientUUID_List.size(); i++) {
                 final Cursor searchCursor = db.rawQuery("SELECT * FROM " + table +
-                        " WHERE first_name LIKE " + "'%" + search + "%' OR middle_name LIKE '%" + search + "%' OR uuid = ? " +
+                        " WHERE first_name LIKE " + "'%" + search + "%' OR middle_name LIKE '%" + search + "%' OR address1 LIKE '%" + search + "%' OR uuid = ? " +
                         "OR last_name LIKE '%" + search + "%' OR (first_name || middle_name) " +
                         "LIKE '%" + search + "%' OR (middle_name || last_name) LIKE '%" + search + "%' OR " +
                         "(first_name || last_name) LIKE '%" + search + "%'" +
@@ -736,7 +740,7 @@ public class PatientsDAO {
                 }
             }
         } else { // no mobile number was added in search text.
-            final Cursor searchCursor = db.rawQuery("SELECT * FROM " + table + " WHERE first_name LIKE " + "'%" + search + "%' " +
+            final Cursor searchCursor = db.rawQuery("SELECT * FROM " + table + " WHERE first_name LIKE " + "'%" + search + "%' OR address1 LIKE '%" + search + "%' " +
                     "OR middle_name LIKE '%" + search + "%' OR last_name LIKE '%" + search + "%' OR " +
                     "(first_name || middle_name) LIKE '%" + search + "%' OR (middle_name || last_name) " +
                     "LIKE '%" + search + "%' OR (first_name || last_name) LIKE '%" + search + "%'" +
@@ -1018,7 +1022,6 @@ public class PatientsDAO {
                 patientDTO.setContactType(cursor.getString(cursor.getColumnIndexOrThrow("contact_type")));
                 patientDTO.setEmContactName(cursor.getString(cursor.getColumnIndexOrThrow("em_contact_name")));
                 patientDTO.setEmContactNumber(cursor.getString(cursor.getColumnIndexOrThrow("em_contact_num")));
-                patientDTO.setAddress3(cursor.getString(cursor.getColumnIndexOrThrow("address3")));
 
                 // Attributes
                 patientDTO.setPhonenumber(cursor.getString(cursor.getColumnIndexOrThrow("telephone")));
@@ -1031,7 +1034,8 @@ public class PatientsDAO {
                 patientDTO.setProfileTimestamp(cursor.getString(cursor.getColumnIndexOrThrow("profileImageTimestamp")));
                 patientDTO.setCaste(cursor.getString(cursor.getColumnIndexOrThrow("caste")));
                 patientDTO.setCreatedDate(cursor.getString(cursor.getColumnIndexOrThrow("createdDate")));
-                patientDTO.setHouseholdNumber(cursor.getString(cursor.getColumnIndexOrThrow("HouseHold")));
+                patientDTO.setBlock(cursor.getString(cursor.getColumnIndexOrThrow("blockSurvey")));
+                patientDTO.setHouseholdLinkingUUIDlinking(cursor.getString(cursor.getColumnIndexOrThrow("HouseHold")));
             } while (cursor.moveToNext());
         }
         cursor.close();
