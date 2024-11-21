@@ -25,14 +25,14 @@ public class UrlModifiers {
     public String patientProfileImageUrl(String patientUuid) {
         String provider = "personimage/" + patientUuid;
 
-        String BASE_URL = BuildConfig.SERVER_URL + "/openmrs/ws/rest/v1/";
+        String BASE_URL = BuildConfig.SERVER_URL + "openmrs/ws/rest/v1/";
         return BASE_URL + provider;
     }
 
-    public String setPatientProfileImageUrl() {
-        String provider = "personimage";
+    public String setPatientProfileImageUrl(String patientUuid) {
+        String provider = "personimage" + patientUuid;
 
-        String BASE_URL = BuildConfig.SERVER_URL + "/openmrs/ws/rest/v1/";
+        String BASE_URL = BuildConfig.SERVER_URL + "openmrs/ws/rest/v1/";
         return BASE_URL + provider;
     }
 
@@ -40,21 +40,21 @@ public class UrlModifiers {
     public String obsImageUrl(String obsUuid) {
         String provider = "obs/" + obsUuid + "/value";
 
-        String BASE_URL = BuildConfig.SERVER_URL + "/openmrs/ws/rest/v1/";
+        String BASE_URL = BuildConfig.SERVER_URL + "openmrs/ws/rest/v1/";
         return BASE_URL + provider;
     }
 
     public String obsImageDeleteUrl(String obsUuid) {
         String provider = "obs/" + obsUuid;
 
-        String BASE_URL = BuildConfig.SERVER_URL + "/openmrs/ws/rest/v1/";
+        String BASE_URL = BuildConfig.SERVER_URL + "openmrs/ws/rest/v1/";
         return BASE_URL + provider;
     }
 
     public String setObsImageUrl() {
         String provider = "obs";
 
-        String BASE_URL = BuildConfig.SERVER_URL + "/openmrs/ws/rest/v1/";
+        String BASE_URL = BuildConfig.SERVER_URL + "openmrs/ws/rest/v1/";
         return BASE_URL + provider;
     }
 
@@ -63,12 +63,12 @@ public class UrlModifiers {
      */
     public String setwhatsappPresciptionUrl() {
         //https://uiux.intelehealth.org/intelehealth/index.html#/i/7d
-        String BASE_URL = BuildConfig.SERVER_URL + "/intelehealth/index.html";
+        String BASE_URL = BuildConfig.SERVER_URL + "intelehealth/index.html";
         return BASE_URL;
     }
 
     public String setDeletePrescItemUrl(String obsUuid) {
-        String BASE_URL = BuildConfig.SERVER_URL + "/openmrs/ws/rest/v1/";
+        String BASE_URL = BuildConfig.SERVER_URL + "openmrs/ws/rest/v1/";
         String endpoint = "obs/" + obsUuid;
 
         return BASE_URL + endpoint;
@@ -77,25 +77,25 @@ public class UrlModifiers {
 
     //ui2.0 for provider profile upload
     public String setProviderProfileImageUrl() {
-        return BuildConfig.SERVER_URL + "/uploaddocimage";
+        return BuildConfig.SERVER_URL + "uploaddocimage";
     }
 
     //ui2.0 for provider profile download
     public String getProviderProfileImageUrl(String providerUuid) {
-        String BASE_URL = BuildConfig.SERVER_URL + "/di/";
+        String BASE_URL = BuildConfig.SERVER_URL + "di/";
         String urlFinal = BASE_URL + providerUuid + "_image.png";
         return urlFinal;
     }
 
     public String profileAgeUpdateUrl(String USER_UUID) {
         String provider = "person/" + USER_UUID;
-        String BASE_URL = BuildConfig.SERVER_URL + "/openmrs/ws/rest/v1/";
+        String BASE_URL = BuildConfig.SERVER_URL + "openmrs/ws/rest/v1/";
         return BASE_URL + provider;
     }
 
     public String getHWProfileDetails(String USER_UUID) {
         String provider = "provider?user=" + USER_UUID + "&v=custom:(uuid,person:(uuid,display,gender,age,birthdate,preferredName),attributes)";
-        String BASE_URL = BuildConfig.SERVER_URL + "/openmrs/ws/rest/v1/";
+        String BASE_URL = BuildConfig.SERVER_URL + "openmrs/ws/rest/v1/";
         return BASE_URL + provider;
     }
 }
