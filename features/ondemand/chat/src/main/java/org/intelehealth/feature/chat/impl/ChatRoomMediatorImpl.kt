@@ -1,6 +1,7 @@
 package org.intelehealth.feature.chat.impl
 
 import android.content.Context
+import com.github.ajalt.timberkt.Timber
 import org.intelehealth.feature.chat.ChatClient
 import org.intelehealth.feature.chat.ui.activity.ChatRoomActivity
 import org.intelehealth.features.ondemand.mediator.listener.ChatRoomMediator
@@ -17,6 +18,7 @@ class ChatRoomMediatorImpl : ChatRoomMediator {
     }
 
     override fun initiateChatClient(context: Context) {
+        Timber.d { "ChatClient initiate" }
         ChatClient.getInstance(context)
     }
 }

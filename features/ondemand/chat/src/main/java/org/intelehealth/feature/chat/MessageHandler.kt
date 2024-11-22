@@ -9,6 +9,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import org.intelehealth.app.app.IntelehealthApplication
 import org.intelehealth.app.database.dao.ProviderDAO
 import org.intelehealth.app.models.dto.ProviderDTO
 import org.intelehealth.app.webrtc.notification.AppNotification
@@ -21,6 +22,7 @@ import org.intelehealth.feature.chat.provider.RetrofitProvider
 import org.intelehealth.feature.chat.room.ChatDatabase
 import org.intelehealth.feature.chat.room.entity.ChatMessage
 import org.intelehealth.feature.chat.room.entity.ChatRoom
+import org.intelehealth.feature.chat.ui.activity.ChatRoomActivity
 
 /**
  * Created by Vaghela Mithun R. on 03-07-2023 - 16:21.
@@ -116,12 +118,10 @@ class MessageHandler(
     }
 
     private fun showNotification(message: ChatMessage) {
-//        val title = ProviderDAO().getProviderName(message.senderId, ProviderDTO.Columns.USER_UUID.value)
-//        AppNotification.Builder()
-//            .title(title)
-//            .body(message.message)
-//            .pendingIntent(IDAChatActivity.getPendingIntent(this, args))
-//            .send();
+        val title = ProviderDAO().getProviderName(message.senderId, ProviderDTO.Columns.USER_UUID.value)
+        val context = IntelehealthApplication.getAppContext()
+        AppNotification.Builder(context).title(title).body(message.message)
+            .pendingIntent(ChatRoomActivity.getPendingIntent(context, message.toChatConfig())).send();
     }
 
     override fun onCmdMessageReceived(messages: MutableList<ChatMessage>?) {

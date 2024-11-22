@@ -88,18 +88,6 @@ class DynamicModuleDownloadManager private constructor(context: Context) {
     fun downloadDynamicModule(moduleName: String) {
         val request = SplitInstallRequest.newBuilder().addModule(moduleName).build()
         println("${TAG}=>downloadDynamicModule=>$moduleName")
-//        initNotification()
-
-
-//        splitInstallManager.sessionStates.addOnSuccessListener {
-//            println("${TAG}=>sessionStates=>Success")
-//        }.addOnFailureListener {
-//            println("${TAG}=>sessionStates=>Failure")
-//        }.addOnCanceledListener {
-//            println("${TAG}=>sessionStates=>Canceled")
-//        }.addOnCompleteListener {
-//            println("${TAG}=>sessionStates=>Complete")
-//        }
 
         splitInstallManager.startInstall(request).addOnSuccessListener { sessionId ->
             mySessionId = sessionId
@@ -175,6 +163,10 @@ class DynamicModuleDownloadManager private constructor(context: Context) {
         splitInstallManager.deferredUninstall(modules).addOnSuccessListener {
             Log.d(TAG, "Uninstalling $modules")
             println("${TAG}=>Uninstalling $modules")
+        }.addOnCompleteListener {
+            println("${TAG}=>Uninstalling $modules completed")
+        }.addOnFailureListener {
+            println("${TAG}=>Uninstalling $modules failed due to ${it.message}")
         }
     }
 

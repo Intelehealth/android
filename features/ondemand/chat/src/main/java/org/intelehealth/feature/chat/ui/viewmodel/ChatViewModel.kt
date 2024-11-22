@@ -3,6 +3,7 @@ package org.intelehealth.feature.chat.ui.viewmodel
 import android.content.Context
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.viewModelFactory
 import com.github.ajalt.timberkt.Timber
 import kotlinx.coroutines.launch
 import org.intelehealth.core.network.state.Result
@@ -32,6 +33,10 @@ class ChatViewModel(
         if (::roomConfig.isInitialized) {
             chatClient.updateActiveChatRoomDetails(roomConfig.fromId, roomConfig.visitId)
         }
+    }
+
+    fun clearChatRoomSession() {
+        chatClient.updateActiveChatRoomDetails(null, null)
     }
 
     fun sendMessage(text: String, messageId: Int) {
@@ -76,7 +81,7 @@ class ChatViewModel(
         }
     }
 
-    fun ackMessageRead(messageId: Int) = executeNetworkCall {
+    fun ackMessageRead(messageId: Int) = viewModelScope.launch {
         repository.ackMessageRead(messageId)
     }
 

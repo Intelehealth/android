@@ -10,6 +10,7 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 import org.intelehealth.core.utils.utility.DateTimeUtils
 import org.intelehealth.feature.chat.model.ItemHeader
+import org.intelehealth.features.ondemand.mediator.model.ChatRoomConfig
 
 /**
  * Created by Vaghela Mithun R. on 03-07-2023 - 15:32.
@@ -103,6 +104,16 @@ data class ChatMessage(
     fun toJson(): String? {
         return Gson().toJson(this)
     }
+
+    fun toChatConfig() = ChatRoomConfig(
+        patientName = roomName ?: "",
+        patientId = patientId ?: "",
+        hwName = receiverName ?: "",
+        visitId = roomId ?: "",
+        fromId = receiverId,
+        toId = senderId,
+        openMrsId = openMrsId ?: ""
+    )
 
     override fun isHeader(): Boolean {
         return false

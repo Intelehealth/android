@@ -26,8 +26,10 @@ abstract class SenderMessageAdapter(context: Context, list: MutableList<ItemHead
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (getItem(position) is ChatMessage) {
             val message = getItem(position) as ChatMessage
-            if (holder is SenderViewHolder) holder.bind(message)
-            else super.onBindViewHolder(holder, position)
+            if (holder is SenderViewHolder) {
+                holder.bind(message)
+                holder.setStatusVisibility(position == getList().size - 1)
+            } else super.onBindViewHolder(holder, position)
         } else super.onBindViewHolder(holder, position)
     }
 

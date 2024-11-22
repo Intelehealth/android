@@ -23,7 +23,7 @@ class ChatClient(
         chatSocket.connectionListener = this
     }
 
-    fun updateActiveChatRoomDetails(loginUserId: String, activeRoomId: String) {
+    fun updateActiveChatRoomDetails(loginUserId: String?, activeRoomId: String?) {
         messageHandler.activeRoomId = activeRoomId
         messageHandler.loginUserId = loginUserId
     }

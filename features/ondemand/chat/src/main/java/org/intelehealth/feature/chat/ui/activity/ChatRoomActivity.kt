@@ -1,5 +1,6 @@
 package org.intelehealth.feature.chat.ui.activity
 
+import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -7,7 +8,9 @@ import androidx.core.content.IntentCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.SimpleItemAnimator
+import com.github.ajalt.timberkt.Timber
 import org.intelehealth.app.BuildConfig
+import org.intelehealth.app.utilities.NotificationUtils
 import org.intelehealth.core.utils.extensions.setupChatList
 import org.intelehealth.core.utils.extensions.showToast
 import org.intelehealth.core.utils.extensions.viewModelByFactory
@@ -24,6 +27,7 @@ import org.intelehealth.feature.chat.ui.adapter.ChatMessageAdapter
 import org.intelehealth.feature.chat.ui.viewmodel.ChatViewModel
 import org.intelehealth.features.ondemand.mediator.model.ChatRoomConfig
 import org.intelehealth.installer.activity.BaseSplitCompActivity
+import kotlin.random.Random
 
 /**
  * Created by Vaghela Mithun R. on 08-11-2024 - 12:33.
@@ -116,21 +120,14 @@ class ChatRoomActivity : BaseSplitCompActivity() {
 
     private fun loadConversation() {
         chatViewModel.getChatRoomMessages().observe(this) { value ->
-           if (value.isNotEmpty()) {
+            if (value.isNotEmpty()) {
                 chatViewModel.roomConfig.toId = getReceiverId(value[value.size - 1])
                 binding.chatContent.emptyView.isVisible = false
+                ackMessageRead(value[value.size - 1])
                 bindConversationList(value)
             } else showToast(org.intelehealth.app.R.string.wait_for_the_doctor_message)
         }
     }
-//
-//    private fun fetchServerMessages(chatMessage: ChatMessage) {
-//        isLastMessageFromRemoteUser(chatMessage) {
-//            isMessageSync = true
-//            chatViewModel.roomConfig.toId = getReceiverId(chatMessage)
-//            chatViewModel.loadConversation()
-//        }
-//    }
 
     private fun getReceiverId(chatMessage: ChatMessage): String {
         return if (chatMessage.senderId == chatViewModel.roomConfig.fromId) {
@@ -158,11 +155,17 @@ class ChatRoomActivity : BaseSplitCompActivity() {
         binding.chatContent.rvConversation.scrollToPosition(items.size)
     }
 
-//    private fun ackMessageRead(message: ChatMessage) {
-//        if (message.senderId != chatViewModel.roomConfig.fromId && message.messageId != 0) {
-//            chatViewModel.ackMessageRead(message.messageId)
-//        }
-//    }
+    private fun ackMessageRead(message: ChatMessage) {
+        if (message.senderId != chatViewModel.roomConfig.fromId) {
+            Timber.d { "ackMessageRead => ${message.toJson()}" }
+            chatViewModel.ackMessageRead(message.messageId)
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        chatViewModel.clearChatRoomSession()
+    }
 
     companion object {
         private const val EXT_CHAT_ROOM_CONFIG = "ext_chat_room_config"
@@ -171,5 +174,11 @@ class ChatRoomActivity : BaseSplitCompActivity() {
                 putExtra(EXT_CHAT_ROOM_CONFIG, chatRoomConfig)
             }.also { context.startActivity(it) }
         }
+
+        fun getPendingIntent(context: Context, chatRoomConfig: ChatRoomConfig) = PendingIntent.getActivity(
+            context, Random(Int.MAX_VALUE).nextInt(), Intent(context, ChatRoomActivity::class.java).apply {
+                putExtra(EXT_CHAT_ROOM_CONFIG, chatRoomConfig)
+            }, NotificationUtils.getPendingIntentFlag()
+        )
     }
 }

@@ -15,4 +15,8 @@ class SenderViewHolder(val binding: RowMsgItemSenderBinding) : BaseViewHolder(bi
         binding.tvMessageStatus.tag = absoluteAdapterPosition
         binding.chatMessage = chatMessage
     }
+
+    fun setStatusVisibility(visibility: Boolean) {
+        binding.statusVisibility = visibility
+    }
 }

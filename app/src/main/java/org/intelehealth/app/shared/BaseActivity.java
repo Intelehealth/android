@@ -23,7 +23,9 @@ import org.intelehealth.config.room.entity.FeatureActiveStatus;
 import org.intelehealth.core.socket.SocketManager;
 import org.intelehealth.installer.downloader.DynamicDeliveryCallback;
 import org.intelehealth.installer.downloader.DynamicModuleDownloadManager;
+import org.intelehealth.installer.utils.DynamicModules;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 /**
@@ -58,30 +60,6 @@ public class BaseActivity extends LanguageActivity implements DynamicDeliveryCal
         });
     }
 
-//    @Override
-//    public void showNotification(@NonNull ChatMessage chatMessage) {
-//        if (featureActiveStatus != null && featureActiveStatus.getChatSection()) {
-//            RtcArgs args = new RtcArgs();
-//            args.setPatientName(chatMessage.getPatientName());
-//            args.setPatientId(chatMessage.getPatientId());
-//            args.setVisitId(chatMessage.getVisitId());
-//            args.setNurseId(chatMessage.getToUser());
-//            args.setDoctorUuid(chatMessage.getFromUser());
-//            try {
-//                String title = new ProviderDAO().getProviderName(args.getDoctorUuid(), ProviderDTO.Columns.USER_UUID.value);
-//                new AppNotification.Builder(this)
-//                        .title(title)
-//                        .body(chatMessage.getMessage())
-//                        .pendingIntent(IDAChatActivity.getPendingIntent(this, args))
-//                        .send();
-//
-//                saveChatInfoLog(args.getVisitId(), args.getDoctorUuid());
-//            } catch (DAOException e) {
-//                throw new RuntimeException(e);
-//            }
-//        }
-//    }
-
     private void saveChatInfoLog(String visitId, String doctorId) throws DAOException {
         RTCConnectionDTO rtcDto = new RTCConnectionDTO();
         rtcDto.setUuid(UUID.randomUUID().toString());
@@ -90,18 +68,27 @@ public class BaseActivity extends LanguageActivity implements DynamicDeliveryCal
         new RTCConnectionDAO().insert(rtcDto);
     }
 
-//    @Override
-//    public void saveTheDoctor(@NonNull ChatMessage chatMessage) {
-//        try {
-//            saveChatInfoLog(chatMessage.getVisitId(), chatMessage.getFromUser());
-//        } catch (DAOException e) {
-//            Timber.tag(TAG).e(e.getThwStack(), "saveTheDoctor: ");
-//        }
-//    }
-
     protected void onFeatureActiveStatusLoaded(FeatureActiveStatus activeStatus) {
         featureActiveStatus = activeStatus;
         Timber.tag(TAG).d("Active feature status=>%s", new Gson().toJson(activeStatus));
+    }
+
+    protected void uninstallModule(FeatureActiveStatus activeStatus) {
+        Timber.tag(TAG).d("uninstallModule");
+        ArrayList<String> list = new ArrayList<>();
+        boolean hasVideoModule = manager.isModuleDownloaded(DynamicModules.MODULE_VIDEO);
+        boolean hasChatModule = manager.isModuleDownloaded(DynamicModules.MODULE_CHAT);
+        if (!activeStatus.getChatSection() && !activeStatus.getVideoSection()
+                && hasChatModule && hasVideoModule) {
+            list.add(DynamicModules.MODULE_VIDEO);
+            list.add(DynamicModules.MODULE_CHAT);
+        } else if (!activeStatus.getVideoSection() && hasVideoModule) {
+            list.add(DynamicModules.MODULE_VIDEO);
+        } else if (!activeStatus.getChatSection() && hasChatModule) {
+            list.add(DynamicModules.MODULE_CHAT);
+        }
+        Timber.tag(TAG).d("uninstallModule=>%s", list.toString());
+        if (!list.isEmpty()) manager.requestUninstall(list);
     }
 
     @Override

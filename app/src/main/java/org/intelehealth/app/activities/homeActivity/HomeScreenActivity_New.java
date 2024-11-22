@@ -993,13 +993,10 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         super.onFeatureActiveStatusLoaded(activeStatus);
         if (!manager.isModuleDownloaded(DynamicModules.MODULE_VIDEO) && activeStatus.getVideoSection()) {
             startForDownloadResult.launch(DynamicModuleDownloadingActivity.getDownloadActivityIntent(this, DynamicModules.MODULE_VIDEO));
-        } else if (!activeStatus.getVideoSection() && manager.isModuleDownloaded(DynamicModules.MODULE_VIDEO)) {
-            ArrayList<String> list = new ArrayList<>();
-            list.add(DynamicModules.MODULE_VIDEO);
-            manager.requestUninstall(list);
-            updateUIForInternetAvailability(false);
         } else
             updateCallLogMenuVisibility(manager.isModuleDownloaded(DynamicModules.MODULE_VIDEO) && activeStatus.getVideoSection());
+
+        uninstallModule(activeStatus);
     }
 
     private void updateCallLogMenuVisibility(boolean visibility) {

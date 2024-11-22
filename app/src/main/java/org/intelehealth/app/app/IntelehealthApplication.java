@@ -178,7 +178,7 @@ public class IntelehealthApplication extends SplitCompatApplication implements D
         DynamicModuleDownloadManager manager = DynamicModuleDownloadManager.getInstance(this);
         if (manager.isModuleDownloaded(DynamicModules.MODULE_CHAT)) {
             OnDemandIntentUtils.initiateChatClient(this);
-        }
+        } else Timber.tag(TAG).d("ChatClient not initiate");
     }
 
     private void initRtcConfig() {

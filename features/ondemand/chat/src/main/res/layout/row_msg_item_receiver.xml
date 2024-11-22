@@ -13,79 +13,78 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/std_8dp"
-        android:orientation="vertical">
+        android:paddingVertical="@dimen/std_8dp"
+        android:paddingStart="@dimen/std_8dp"
+        android:paddingEnd="@dimen/chat_message_horizontal_margin">
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/imgProfilePic"
             android:layout_width="@dimen/std_24dp"
             android:layout_height="@dimen/std_24dp"
             android:background="@color/colorAccent"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:visibility="gone"
             app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent" />
 
-        <View
-            android:id="@+id/viewBackground"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:background="@drawable/chat_left_bg"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/imgProfilePic"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_percent="0.7" />
+            app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/tvReceiverName"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/std_8dp"
-            android:gravity="center_vertical"
-            android:maxLines="1"
-            android:padding="8dip"
-            android:text="@{chatMessage.senderName}"
-            android:textColor="@color/gray_7"
-            android:textSize="13sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="@id/viewBackground"
-            app:layout_constraintStart_toStartOf="@id/viewBackground"
-            app:layout_constraintTop_toTopOf="@id/viewBackground"
-            tools:text="Sender name" />
+            <TextView
+                android:id="@+id/tvReceiverName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/std_8dp"
+                android:gravity="center_vertical"
+                android:maxLines="1"
+                android:padding="8dip"
+                android:text="@{chatMessage.senderName}"
+                android:textColor="@color/gray_7"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Sender name" />
 
-        <TextView
-            android:id="@+id/tvMessage"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/std_8dp"
-            android:gravity="center_vertical"
-            android:paddingHorizontal="@dimen/std_8dp"
-            android:text="@{chatMessage.message}"
-            android:textColor="@color/gray_7"
-            android:textSize="13sp"
-            app:layout_constraintEnd_toEndOf="@id/viewBackground"
-            app:layout_constraintStart_toStartOf="@id/viewBackground"
-            app:layout_constraintTop_toBottomOf="@id/tvReceiverName"
-            app:layout_constraintBottom_toBottomOf="@id/viewBackground"
-            android:layout_marginBottom="@dimen/std_8dp"
-            tools:text="@string/dummy_text" />
+            <TextView
+                android:id="@+id/tvMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/std_8dp"
+                android:layout_marginBottom="@dimen/std_8dp"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="@dimen/std_8dp"
+                android:paddingTop="@dimen/std_8dp"
+                android:text="@{chatMessage.message}"
+                android:textColor="@color/gray_7"
+                android:textSize="13sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvReceiverName"
+                tools:text="@string/dummy_text" />
 
-        <TextView
-            android:id="@+id/tvMessageTime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/std_8dp"
-            android:gravity="center_vertical"
-            android:maxLines="1"
-            android:paddingVertical="@dimen/std_8dp"
-            android:text="@{chatMessage.messageTime}"
-            android:textColor="@color/gray_3"
-            android:textSize="10sp"
-            app:layout_constraintEnd_toEndOf="@id/viewBackground"
-            app:layout_constraintTop_toTopOf="@id/tvReceiverName"
-            app:layout_constraintBottom_toBottomOf="@id/tvReceiverName"
-            tools:ignore="SmallSp"
-            tools:text="4.31 PM" />
-
+            <TextView
+                android:id="@+id/tvMessageTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/std_8dp"
+                android:gravity="center_vertical"
+                android:maxLines="1"
+                android:paddingVertical="@dimen/std_8dp"
+                android:text="@{chatMessage.messageTime}"
+                android:textColor="@color/gray_3"
+                android:textSize="10sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvMessage"
+                tools:ignore="SmallSp"
+                tools:text="4.31 PM" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
