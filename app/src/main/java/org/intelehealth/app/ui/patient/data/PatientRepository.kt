@@ -138,6 +138,13 @@ class PatientRepository(
                     patient.householdLinkingUUIDlinking
                 )
             )
+            add(
+                createPatientAttribute(
+                    patient.uuid,
+                    PatientAttributesDTO.Column.REPORT_DATE_OF_PATIENT_CREATED.value,
+                    patient.reportDateOfPatientCreated
+                )
+            )
         }
 
     private fun createPatientAttribute(

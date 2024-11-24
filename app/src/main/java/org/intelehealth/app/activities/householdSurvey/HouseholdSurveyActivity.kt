@@ -12,15 +12,19 @@ import androidx.navigation.fragment.NavHostFragment
 import org.intelehealth.app.R
 import org.intelehealth.app.activities.householdSurvey.factory.HouseHoldViewModelFactory
 import org.intelehealth.app.databinding.ActivityHouseholdSurveyBinding
+import org.intelehealth.app.models.HouseholdSurveyModel
+import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.app.shared.BaseActivity
 import org.intelehealth.app.syncModule.SyncUtils
 import org.intelehealth.app.utilities.BundleKeys.Companion.HOUSEHOLD_CURRENT_STAGE
 import org.intelehealth.app.utilities.BundleKeys.Companion.PATIENT_UUID
+import org.intelehealth.app.utilities.DateAndTimeUtils
 import org.intelehealth.app.utilities.DialogUtils
 import org.intelehealth.app.utilities.DialogUtils.CustomDialogListener
 import org.intelehealth.app.utilities.HouseholdSurveyStage
 import org.intelehealth.app.utilities.NetworkConnection
 import org.intelehealth.app.utilities.NetworkUtils
+import org.intelehealth.app.utilities.SessionManager
 
 class HouseholdSurveyActivity : BaseActivity() {
     private lateinit var binding: ActivityHouseholdSurveyBinding
@@ -41,11 +45,11 @@ class HouseholdSurveyActivity : BaseActivity() {
 //        manageTitleVisibilityOnScrolling()
         extractAndBindUI()
         setupActionBar()
-       // observeCurrentPatientStage()
+      //  observeCurrentPatientStage()
     }
 
-    /*private fun observeCurrentPatientStage() {
-        patientViewModel.patientStageData.observe(this) { changeIconStatus(it) }
+   /* private fun observeCurrentPatientStage() {
+        houseHoldViewModel.patientStageData.observe(this) { changeIconStatus(it) }
     }*/
 
     private fun setupActionBar() {
@@ -76,11 +80,11 @@ class HouseholdSurveyActivity : BaseActivity() {
             val patientId = if (it.hasExtra(PATIENT_UUID)) it.getStringExtra(PATIENT_UUID)
             else null
 
-        /*    patientId?.let { id ->
-                patientViewModel.isEditMode = true
-                binding.isEditMode = patientViewModel.isEditMode
+            patientId?.let { id ->
+                //houseHoldViewModel.isEditMode = true
+                binding.isEditMode = houseHoldViewModel.isEditMode
                 fetchPatientDetails(id)
-            } ?: generatePatientId()*/
+            } /*?: generatePatientId()*/
 
             val stage = if (it.hasExtra(HOUSEHOLD_CURRENT_STAGE)) {
                 IntentCompat.getSerializableExtra(
@@ -213,4 +217,28 @@ class HouseholdSurveyActivity : BaseActivity() {
             }.also { context.startActivity(it) }
         }
     }
+    private fun fetchPatientDetails(id: String) {
+        houseHoldViewModel.loadPatientDetails(id).observe(this) {
+            it ?: return@observe
+            houseHoldViewModel.handleResponse(it) { patient ->
+                houseHoldViewModel.updatedPatient(updatePatientDetails(patient))
+            }
+            //check its in observer may change frequently
+            if (it.data?.reportDateOfSurveyStarted != null && it.data!!.reportDateOfSurveyStarted.isNotEmpty()) {
+                houseHoldViewModel.isEditMode = true
+            }else{
+                houseHoldViewModel.isEditMode = false
+            }
+
+        }
+    }
+    private fun updatePatientDetails(householdSurveyModel: HouseholdSurveyModel) = householdSurveyModel.apply {
+       /* if (createdDate.isNullOrEmpty()) {
+            createdDate = DateAndTimeUtils.getTodaysDateInRequiredFormat("dd MMMM, yyyy")
+        }
+        if (providerUUID.isNullOrEmpty()) {
+            providerUUID = SessionManager.getInstance(this@HouseholdSurveyActivity).providerID
+        }*/
+    }
+
 }

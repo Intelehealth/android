@@ -131,6 +131,7 @@ class PatientRegistrationActivity : BaseActivity() {
             uuid = UUID.randomUUID().toString()
             createdDate = DateAndTimeUtils.getTodaysDateInRequiredFormat("dd MMMM, yyyy")
             providerUUID = SessionManager.getInstance(this@PatientRegistrationActivity).providerID
+            reportDateOfPatientCreated = DateAndTimeUtils.currentDateTimeFormat()
 
             householdLinkingUUIDlinking = UUID.randomUUID().toString()
 

@@ -131,6 +131,7 @@ import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.DownloadFilesUtils;
 import org.intelehealth.app.utilities.FileUtils;
+import org.intelehealth.app.utilities.HouseholdSurveyStage;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
@@ -406,8 +407,11 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         binding.tvHouseholdSurvey.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent1 = new Intent(PatientDetailActivity2.this, HouseholdSurveyActivity.class);
-                startActivity(intent1);
+                HouseholdSurveyActivity.startHouseholdSurvey(PatientDetailActivity2.this, patientDTO.getUuid(), HouseholdSurveyStage.FIRST_SCREEN);
+
+               /* Intent intent1 = new Intent(PatientDetailActivity2.this, HouseholdSurveyActivity.class);
+                intent1.putExtra("patientUuid", patientDTO.getUuid());
+                startActivity(intent1);*/
             }
         });
     }
@@ -445,8 +449,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                     LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
                     binding.familyMemberCard.rvFamilyMember.setLayoutManager(linearLayoutManager);
                     binding.familyMemberCard.rvFamilyMember.setAdapter(familyMemberAdapter);
-                }
-                else {
+                } else {
                     binding.familyMemberCard.tvNoFamilyMember.setVisibility(View.VISIBLE);
                     binding.familyMemberCard.rvFamilyMember.setVisibility(View.GONE);
                 }
@@ -719,10 +722,10 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         String[] ymdData = DateAndTimeUtils.getAgeInYearMonth(patientDTO.getDateofbirth()).split(" ");
         boolean isGuardianRequire = false;
         if (ymdData.length > 2) {
-        int mAgeYears = ymdData[0] != null && !ymdData[0].isEmpty() ? Integer.parseInt(ymdData[0]) : 0;
-        int mAgeMonths = ymdData[1] != null && !ymdData[1].isEmpty() ? Integer.parseInt(ymdData[1]) : 0;
-        int mAgeDays = ymdData[2] != null && !ymdData[2].isEmpty() ? Integer.parseInt(ymdData[2]) : 0;
-        isGuardianRequire = AgeUtils.INSTANCE.isGuardianRequired(mAgeYears, mAgeMonths, mAgeDays);
+            int mAgeYears = ymdData[0] != null && !ymdData[0].isEmpty() ? Integer.parseInt(ymdData[0]) : 0;
+            int mAgeMonths = ymdData[1] != null && !ymdData[1].isEmpty() ? Integer.parseInt(ymdData[1]) : 0;
+            int mAgeDays = ymdData[2] != null && !ymdData[2].isEmpty() ? Integer.parseInt(ymdData[2]) : 0;
+            isGuardianRequire = AgeUtils.INSTANCE.isGuardianRequired(mAgeYears, mAgeMonths, mAgeDays);
         }
 
         for (PatientRegistrationFields fields : patientAllFields) {
@@ -2469,7 +2472,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         if (activeStatus != null) {
             binding.setAddressActiveStatus(activeStatus.getActiveStatusPatientAddress());
             binding.setOtherActiveStatus(activeStatus.getActiveStatusPatientOther());
-          //  binding.setFamilyMemberActiveStatus(activeStatus.getActiveStatusPatientFamilyMemberRegistration());  // TODO: Kaveri uncomment this.
+            //  binding.setFamilyMemberActiveStatus(activeStatus.getActiveStatusPatientFamilyMemberRegistration());  // TODO: Kaveri uncomment this.
             binding.setFamilyMemberActiveStatus(true);  // TODO: Kaveri delete this line after config done from Zeeshan end.
         }
     }

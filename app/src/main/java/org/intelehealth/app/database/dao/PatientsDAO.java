@@ -7,6 +7,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import org.intelehealth.app.models.HouseholdSurveyModel;
 import org.intelehealth.app.utilities.CustomLog;
 
 
@@ -420,7 +421,7 @@ public class PatientsDAO {
     }
 
     public boolean insertPatientAttributes(List<PatientAttributesDTO> patientAttributesDTOS, SQLiteDatabase db) throws DAOException {
-        Log.d(TAG, "insertPatientAttributes:attrs kz :  "+new Gson().toJson(patientAttributesDTOS));
+        Log.d("devKZchk", "insertPatientAttributes:attrs kz :  "+new Gson().toJson(patientAttributesDTOS));
         if (patientAttributesDTOS == null) return false;
         boolean isInserted = true;
         ContentValues values = new ContentValues();
@@ -1078,6 +1079,52 @@ public class PatientsDAO {
         cursor.close();
 
         return count;
+    }
+    public boolean updatePatientSurveyInDb(String uuid, List<PatientAttributesDTO> patientAttributesDTOS) throws DAOException {
+        Log.d("devKZchk", "updatePatientSurveyInDb: kz attrs : "+new Gson().toJson(patientAttributesDTOS));
+        boolean isCreated = true;
+        long createdRecordsCount1 = 0;
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        String whereclause = "Uuid=?";
+        db.beginTransaction();
+        try {
+            Logger.logD("devKZchk", "create has to happen");
+            values.put("uuid", uuid);
+            values.put("dead", false);
+            values.put("sync", false);
+
+            insertPatientAttributes(patientAttributesDTOS, db);
+            Logger.logD("devKZchk", "datadumper" + values);
+
+            createdRecordsCount1 = db.update("tbl_patient", values, whereclause, new String[]{uuid});
+            db.setTransactionSuccessful();
+            Logger.logD("devKZchk", "created records count" + createdRecordsCount1);
+        } catch (SQLException e) {
+            isCreated = false;
+            throw new DAOException(e.getMessage(), e);
+        } finally {
+            db.endTransaction();
+        }
+        return isCreated;
+
+    }
+    public HouseholdSurveyModel retrievePatientHouseholdSurveyAttributes(Cursor cursor) {
+        Timber.tag("devkz").d("retrievePatientHouseholdSurveyAttributes");
+        HouseholdSurveyModel householdSurveyModel = new HouseholdSurveyModel();
+        if (cursor.moveToFirst()) {
+            do {
+                // Attributes
+                householdSurveyModel.setHouseStructure(cursor.getString(cursor.getColumnIndexOrThrow("HouseStructure")));
+                householdSurveyModel.setReportDateOfSurveyStarted(cursor.getString(cursor.getColumnIndexOrThrow("ResultOfVisit")));
+                householdSurveyModel.setHouseholdNumberOfSurvey(cursor.getString(cursor.getColumnIndexOrThrow("HouseholdNumber")));
+                householdSurveyModel.setNamePrimaryRespondent(cursor.getString(cursor.getColumnIndexOrThrow("NamePrimaryRespondent")));
+                //householdSurveyModel.setReportDateOfSurveyStarted(cursor.getString(cursor.getColumnIndexOrThrow("occupation")));
+            } while (cursor.moveToNext());
+        }
+        Log.d(TAG, "retrievePatientHouseholdSurveyAttributes: householdSurveyModel : "+new Gson().toJson(householdSurveyModel));
+        cursor.close();
+        return householdSurveyModel;
     }
 
 }

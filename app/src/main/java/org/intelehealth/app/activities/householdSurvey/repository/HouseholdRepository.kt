@@ -1,12 +1,14 @@
 package org.intelehealth.app.activities.householdSurvey.repository
 
 import android.database.sqlite.SQLiteOpenHelper
+import android.util.Log
 import com.github.ajalt.timberkt.Timber
 import org.intelehealth.app.app.IntelehealthApplication
 import org.intelehealth.app.database.dao.ImagesDAO
 import org.intelehealth.app.database.dao.ImagesPushDAO
 import org.intelehealth.app.database.dao.PatientsDAO
 import org.intelehealth.app.database.dao.SyncDAO
+import org.intelehealth.app.models.HouseholdSurveyModel
 import org.intelehealth.app.models.dto.PatientAttributesDTO
 import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.app.ui.patient.data.PatientQueryBuilder
@@ -15,113 +17,91 @@ import org.intelehealth.config.presenter.fields.data.RegFieldRepository
 import org.intelehealth.config.room.dao.PatientRegFieldDao
 import java.util.UUID
 
-class HouseholdRepository (
+class HouseholdRepository(
     private val patientsDao: PatientsDAO,
     private val sqlHelper: SQLiteOpenHelper,
-)  {
-    fun createNewPatient(patient: PatientDTO): Boolean {
-        bindPatientAttributes(patient).let {
-            val flag = patientsDao.insertPatientToDB(it, it.uuid)
-            val flag2 = ImagesDAO().insertPatientProfileImages(it.patientPhoto, it.uuid)
+) {
+    fun addHouseholdPatientAttributes(
+        patient: PatientDTO,
+        householdSurveyModel: HouseholdSurveyModel
+    ): Boolean {
+        Log.d("devKZchk", "addHouseholdPatientAttributes: patient uuid : "+patient.uuid)
+        bindPatientAttributes(patient, householdSurveyModel).let {
+            val flag = patientsDao.updatePatientSurveyInDb(it.uuid, it.patientAttributesDTOList)
             syncOnServer()
-            return flag && flag2
+            return flag
         }
     }
 
-    fun updatePatient(patient: PatientDTO): Boolean {
-        return bindPatientAttributes(patient).let {
-            val flag = patientsDao.updatePatientToDB(it, it.uuid)
-            val flag2 = ImagesDAO().updatePatientProfileImages(it.patientPhoto, it.uuid)
+    fun updateHouseholdPatientAttributes(
+        patient: PatientDTO,
+        householdSurveyModel: HouseholdSurveyModel
+    ): Boolean {
+        return bindPatientAttributes(patient, householdSurveyModel).let {
+            val flag = patientsDao.updatePatientSurveyInDb(it.uuid, it.patientAttributesDTOList)
             syncOnServer()
-            return@let flag && flag2
+            return flag
         }
     }
 
-    private fun bindPatientAttributes(patient: PatientDTO) = patient.apply {
-        patientAttributesDTOList = createPatientAttributes(patient)
+    private fun bindPatientAttributes(
+        patient: PatientDTO,
+        householdSurveyModel: HouseholdSurveyModel
+    ) = patient.apply {
+        patientAttributesDTOList =
+            createPatientAttributes(patient, householdSurveyModel, patient.uuid)
         syncd = false
     }
 
-    fun fetchPatient(uuid: String): PatientDTO {
+    fun fetchPatient(uuid: String): HouseholdSurveyModel {
         Timber.d { "uuid => $uuid" }
-        PatientQueryBuilder().buildPatientDetailsQuery(uuid).apply {
+        PatientQueryBuilder().buildPatientSurveyAttributesDetailsQuery(uuid).apply {
             Timber.d { "Query => $this" }
             val cursor = sqlHelper.readableDatabase.rawQuery(this, null)
-            return patientsDao.retrievePatientDetails(cursor)
+            return patientsDao.retrievePatientHouseholdSurveyAttributes(cursor)
         }
     }
 
 
-    private fun createPatientAttributes(patient: PatientDTO) = arrayListOf<PatientAttributesDTO>()
+    private fun createPatientAttributes(
+        patient: PatientDTO,
+        householdSurveyModel: HouseholdSurveyModel,
+        patientUuid: String
+    ) = arrayListOf<PatientAttributesDTO>()
         .apply {
             add(
                 createPatientAttribute(
-                    patient.uuid,
-                    PatientAttributesDTO.Column.TELEPHONE.value,
-                    patient.phonenumber
+                    patientUuid,
+                    PatientAttributesDTO.Column.REPORT_DATE_OF_SURVEY_STARTED.value,
+                    householdSurveyModel.reportDateOfSurveyStarted
                 )
             )
             add(
                 createPatientAttribute(
-                    patient.uuid,
-                    PatientAttributesDTO.Column.SWD.value,
-                    patient.son_dau_wife
+                    patientUuid,
+                    PatientAttributesDTO.Column.HOUSE_STRUCTURE.value,
+                    householdSurveyModel.houseStructure
                 )
             )
             add(
                 createPatientAttribute(
-                    patient.uuid,
-                    PatientAttributesDTO.Column.NATIONAL_ID.value,
-                    patient.nationalID
+                    patientUuid,
+                    PatientAttributesDTO.Column.RESULT_OF_VISIT.value,
+                    householdSurveyModel.resultOfVisit
                 )
             )
             add(
                 createPatientAttribute(
-                    patient.uuid,
-                    PatientAttributesDTO.Column.OCCUPATION.value,
-                    patient.occupation
+                    patientUuid,
+                    PatientAttributesDTO.Column.NAME_OF_PRIMARY_RESPONDENT.value,
+                    householdSurveyModel.namePrimaryRespondent
                 )
             )
             add(
                 createPatientAttribute(
-                    patient.uuid,
-                    PatientAttributesDTO.Column.CAST.value,
-                    patient.caste
-                )
-            )
-            add(
-                createPatientAttribute(
-                    patient.uuid,
-                    PatientAttributesDTO.Column.EDUCATION.value,
-                    patient.education
-                )
-            )
-            add(
-                createPatientAttribute(
-                    patient.uuid,
-                    PatientAttributesDTO.Column.ECONOMIC_STATUS.value,
-                    patient.economic
-                )
-            )
-            add(
-                createPatientAttribute(
-                    patient.uuid,
-                    PatientAttributesDTO.Column.CREATED_DATE.value,
-                    patient.createdDate
-                )
-            )
-            add(
-                createPatientAttribute(
-                    patient.uuid,
-                    PatientAttributesDTO.Column.PROVIDER_ID.value,
-                    patient.providerUUID
-                )
-            )
-            add(
-                createPatientAttribute(
-                    patient.uuid,
-                    PatientAttributesDTO.Column.HOUSEHOLD_NUMBER.value,
-                    patient.householdNumber
+                    patientUuid,
+                    PatientAttributesDTO.Column.HOUSEHOLD_NUMBER_OF_SURVEY.value,
+                    householdSurveyModel.householdNumberOfSurvey
                 )
             )
         }

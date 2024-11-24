@@ -480,7 +480,15 @@ public class PatientDTO implements Serializable {
     public void setHouseholdLinkingUUIDlinking(String householdLinkingUUIDlinking) {
         this.householdLinkingUUIDlinking = householdLinkingUUIDlinking;
     }
+    private String reportDateOfPatientCreated;
 
+    public String getReportDateOfPatientCreated() {
+        return reportDateOfPatientCreated;
+    }
+
+    public void setReportDateOfPatientCreated(String reportDateOfPatientCreated) {
+        this.reportDateOfPatientCreated = reportDateOfPatientCreated;
+    }
 /* public String getHouseholdNumber() {
         return householdNumber;
     }

@@ -76,9 +76,18 @@ public class PatientAttributesDTO implements Serializable {
         CAST("Caste"),
         CREATED_DATE("createdDate"),
         HOUSEHOLD_UUID_LINKING("HouseHold"),
-        BLOCK("blockSurvey");
+        BLOCK("blockSurvey"),
+
+        //household survey attributes
+        HOUSE_STRUCTURE("HouseStructure"),
+        RESULT_OF_VISIT("ResultOfVisit"),
+        NAME_OF_PRIMARY_RESPONDENT("NamePrimaryRespondent"),
+        REPORT_DATE_OF_PATIENT_CREATED("ReportDate of patient created"),
+        HOUSEHOLD_NUMBER_OF_SURVEY("HouseholdNumber"),
+        REPORT_DATE_OF_SURVEY_STARTED("ReportDate of survey started");
 
         public final String value;
+
 
         Column(String value) {
             this.value = value;
