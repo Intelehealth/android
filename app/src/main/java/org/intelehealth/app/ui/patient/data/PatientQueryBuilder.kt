@@ -35,8 +35,13 @@ class PatientQueryBuilder : QueryBuilder() {
             .build()
     }
 
-    private fun buildPatientAttributesQuery(attrName: String): String {
+   /* private fun buildPatientAttributesQuery(attrName: String): String {
         return "(SELECT value FROM tbl_patient_attribute WHERE patientuuid = P.uuid " +
-                "AND person_attribute_type_uuid = (SELECT uuid FROM tbl_patient_attribute_master WHERE name = '" + attrName + "')) "
-    }
+                "AND person_attribute_type_uuid = (SELECT uuid FROM tbl_patient_attribute_master WHERE name = '" + attrName + "') order by modified_date desc) "
+    }*/
+   private fun buildPatientAttributesQuery(attrName: String): String {
+       return "(SELECT value FROM tbl_patient_attribute WHERE patientuuid = P.uuid " +
+               "AND person_attribute_type_uuid = (SELECT uuid FROM tbl_patient_attribute_master WHERE name = '" + attrName + "')) "
+   }
+
 }

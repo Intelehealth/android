@@ -285,6 +285,7 @@
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/textInputTmhCaseNumber"
                             style="@style/AppTheme.InputBox.Address"
+                            android:inputType="numberDecimal"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/enter_tmh_case_number"
@@ -328,6 +329,7 @@
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/textInputRequestId"
                             style="@style/AppTheme.InputBox.Address"
+                            android:inputType="numberDecimal"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/enter_request_id"

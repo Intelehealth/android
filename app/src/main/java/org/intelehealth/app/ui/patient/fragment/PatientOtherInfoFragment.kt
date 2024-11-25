@@ -11,6 +11,7 @@ import org.intelehealth.app.databinding.FragmentPatientOtherInfoBinding
 import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.app.ui.filter.FirstLetterUpperCaseInputFilter
 import org.intelehealth.app.utilities.ArrayAdapterUtils
+import org.intelehealth.app.utilities.CustomLog
 import org.intelehealth.app.utilities.LanguageUtils
 import org.intelehealth.app.utilities.PatientRegFieldsUtils
 import org.intelehealth.app.utilities.PatientRegStage
@@ -95,6 +96,12 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
         patient.apply {
             nationalID = binding.textInputNationalId.text?.toString()
             occupation = binding.textInputOccupation.text?.toString()
+            tmhCaseNumber = binding.textInputTmhCaseNumber.text?.toString()
+            requestId = binding.textInputRequestId.text?.toString()
+            discipline = binding.textInputDiscipline.text?.toString()
+            department = binding.textInputDepartment.text?.toString()
+
+            CustomLog.d("PPPPPSAVE",""+Gson().toJson(this))
             patientViewModel.updatedPatient(this)
             patientViewModel.savePatient().observe(viewLifecycleOwner) {
                 it ?: return@observe
@@ -172,9 +179,42 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
                     )
                 } else true
 
+            val tmhCaseNumber =
+                if (it.tmhCaseNumber!!.isEnabled && it.tmhCaseNumber!!.isMandatory) {
+                    binding.textInputLayTmhCaseNumber.validate(
+                        binding.textInputTmhCaseNumber,
+                        error
+                    )
+                } else true
+
+            val requestId =
+                if (it.requestId!!.isEnabled && it.requestId!!.isMandatory) {
+                    binding.textInputLayRequestId.validate(
+                        binding.textInputRequestId,
+                        error
+                    )
+                } else true
+
+            val discipline =
+                if (it.discipline!!.isEnabled && it.discipline!!.isMandatory) {
+                    binding.textInputLayDiscipline.validate(
+                        binding.textInputDiscipline,
+                        error
+                    )
+                } else true
+
+            val department =
+                if (it.department!!.isEnabled && it.department!!.isMandatory) {
+                    binding.textInputLayDepartment.validate(
+                        binding.textInputDepartment,
+                        error
+                    )
+                } else true
+
 
             if (bOccuptions.and(bSocialCategory).and(bEducation)
                     .and(bEconomic).and(bNationalId).and(bOccuptions)
+                    .and(tmhCaseNumber).and(requestId).and(discipline).and(department)
             ) block.invoke()
         }
     }

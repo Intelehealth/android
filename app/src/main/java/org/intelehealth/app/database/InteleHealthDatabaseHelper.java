@@ -137,6 +137,10 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "em_contact_name TEXT," +
             "em_contact_num TEXT," +
             "modified_date TEXT," +
+            "tms_case_number TEXT," +
+            "request_id TEXT," +
+            "discipline TEXT," +
+            "department TEXT," +
             "voided TEXT DEFAULT '0'," +
             "sync TEXT DEFAULT 'false' " +
             ")";

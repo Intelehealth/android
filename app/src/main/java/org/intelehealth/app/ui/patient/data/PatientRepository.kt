@@ -122,6 +122,38 @@ class PatientRepository(
                     patient.providerUUID
                 )
             )
+
+            add(
+                createPatientAttribute(
+                    patient.uuid,
+                    PatientAttributesDTO.Column.TMH_CASE_NUMBER.value,
+                    patient.tmhCaseNumber
+                )
+            )
+
+            add(
+                createPatientAttribute(
+                    patient.uuid,
+                    PatientAttributesDTO.Column.REQUEST_ID.value,
+                    patient.requestId
+                )
+            )
+
+            add(
+                createPatientAttribute(
+                    patient.uuid,
+                    PatientAttributesDTO.Column.DISCIPLINE.value,
+                    patient.discipline
+                )
+            )
+
+            add(
+                createPatientAttribute(
+                    patient.uuid,
+                    PatientAttributesDTO.Column.DEPARTMENT.value,
+                    patient.department
+                )
+            )
         }
 
     private fun createPatientAttribute(

@@ -5,11 +5,14 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
+
 import org.intelehealth.app.utilities.CustomLog;
 
 
 import com.github.ajalt.timberkt.Timber;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -191,6 +194,11 @@ public class PatientsDAO {
             values.put("contact_type", patientDTO.getContactType());
             values.put("em_contact_name", patientDTO.getEmContactName());
             values.put("em_contact_num", patientDTO.getEmContactNumber());
+
+            values.put("tms_case_number", patientDTO.getTmhCaseNumber());
+            values.put("request_id", patientDTO.getRequestId());
+            values.put("discipline", patientDTO.getDiscipline());
+            values.put("department", patientDTO.getDepartment());
 
             values.put("dead", false);
             values.put("sync", false);
@@ -1107,6 +1115,8 @@ public class PatientsDAO {
         PatientDTO patientDTO = new PatientDTO();
         if (cursor.moveToFirst()) {
             do {
+
+                CustomLog.d("PPPPPPF",""+cursor.getString(cursor.getColumnIndexOrThrow("tmhCaseNumber")));
                 patientDTO.setUuid(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
                 patientDTO.setOpenmrsId(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
                 patientDTO.setFirstname(cursor.getString(cursor.getColumnIndexOrThrow("first_name")));
@@ -1148,6 +1158,7 @@ public class PatientsDAO {
             } while (cursor.moveToNext());
         }
         cursor.close();
+        CustomLog.d("PPPPPPPQ",""+new Gson().toJson(patientDTO));
         return patientDTO;
     }
 
