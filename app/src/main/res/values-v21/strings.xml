@@ -189,5 +189,6 @@
     <string name="prescription_printing">The prescription is being printed</string>
     <string name="family_members">Family Members</string>
     <string name="no_family_member_registered">No family member registered</string>
+    <string name="draft_survey">Draft Survey</string>
 
 </resources>

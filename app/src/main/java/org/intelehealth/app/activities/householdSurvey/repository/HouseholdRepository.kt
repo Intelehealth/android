@@ -117,13 +117,13 @@ class HouseholdRepository (
                     patient.providerUUID
                 )
             )
-            add(
+            /*add(
                 createPatientAttribute(
                     patient.uuid,
                     PatientAttributesDTO.Column.HOUSEHOLD_NUMBER.value,
                     patient.householdNumber
                 )
-            )
+            )*/ // Todo: uncomment this line when the household number is added to the patient model.
         }
 
     private fun createPatientAttribute(

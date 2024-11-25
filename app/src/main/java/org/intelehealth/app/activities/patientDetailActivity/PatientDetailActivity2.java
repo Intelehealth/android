@@ -2275,6 +2275,9 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     }
 
     private void initForPastVisit() {
+        if (patientDTO == null || patientDTO.getUuid() == null) {
+            return;
+        }
         mPastVisitDataList.clear();
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         String visitSelection = "patientuuid = ? and enddate IS NOT NULL and enddate != ''";
