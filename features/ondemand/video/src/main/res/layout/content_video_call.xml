@@ -84,7 +84,7 @@
                 android:layout_marginTop="@dimen/std_8dp"
                 android:textColor="@android:color/black"
                 android:textStyle="bold"
-                tools:text="@string/patient" />
+                tools:text="@string/video_patient" />
 
             <TextView
                 android:id="@+id/tvVideoCallDoctorName"
@@ -96,7 +96,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="@dimen/std_8dp"
                 android:textColor="@android:color/black"
-                tools:text="@string/doctor" />
+                tools:text="@string/video_doctor" />
         </RelativeLayout>
     </FrameLayout>
 
@@ -154,7 +154,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="top|start"
                 android:layout_margin="@dimen/std_8dp"
-                android:text="@string/you"
+                android:text="@string/video_you"
                 android:textColor="#fff"
                 android:translationZ="2dp"
                 android:visibility="visible"
@@ -191,7 +191,7 @@
         android:id="@+id/status_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/connecting"
+        android:text="@string/video_connecting"
         android:textColor="@android:color/white"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"

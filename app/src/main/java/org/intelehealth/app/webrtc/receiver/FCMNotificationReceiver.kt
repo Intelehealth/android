@@ -8,7 +8,9 @@ import com.google.firebase.messaging.RemoteMessage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.intelehealth.app.R
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New
 import org.intelehealth.app.models.FollowUpNotificationData
@@ -24,6 +26,7 @@ import org.intelehealth.features.ondemand.mediator.VIDEO_CALL_IMPL_CLASS
 import org.intelehealth.features.ondemand.mediator.createInstance
 import org.intelehealth.features.ondemand.mediator.listener.VideoCallMediator
 import org.intelehealth.installer.downloader.DynamicModuleDownloadManager
+import org.intelehealth.installer.utils.DynamicModules
 
 /**
  * Created by Vaghela Mithun R. on 18-09-2023 - 10:14.
@@ -75,13 +78,16 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
     private fun checkVideoActiveStatus(context: Context, block: () -> Unit) {
         // to check this module downloaded from play store
         val dynamicModuleManager = DynamicModuleDownloadManager.getInstance(context)
-        val module = context.resources.getString(R.string.module_video)
+        val module = DynamicModules.MODULE_VIDEO
         // to check activated from admin side
         val dao = ConfigDatabase.getInstance(context).featureActiveStatusDao()
         val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
         scope.launch {
             FeatureActiveStatusRepository(dao).apply {
-                if (getRecord().videoSection && dynamicModuleManager.isModuleDownloaded(module)) block.invoke()
+                val feature = async { getRecord() }.await()
+                if (feature.videoSection && dynamicModuleManager.isModuleDownloaded(module)) {
+                    block.invoke()
+                }
             }
         }
     }

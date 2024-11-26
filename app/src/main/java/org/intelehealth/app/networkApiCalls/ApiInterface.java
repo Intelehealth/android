@@ -122,7 +122,7 @@ public interface ApiInterface {
 
 
     @GET("/api/mindmap/download")
-    Observable<DownloadMindMapRes> DOWNLOAD_MIND_MAP_RES_OBSERVABLE(@Query("key") String licenseKey,@Header("Authorization") String authHeader);
+    Observable<DownloadMindMapRes> DOWNLOAD_MIND_MAP_RES_OBSERVABLE(@Query("key") String licenseKey, @Header("Authorization") String authHeader);
 
     @GET("/intelehealth/app_update.json")
     Single<CheckAppUpdateRes> checkAppUpdate();
@@ -226,4 +226,8 @@ public interface ApiInterface {
 
     @GET("/api/mindmap/notifications")
     Single<NotificationResponse> fetchAllNotifications(@Header("Authorization") String authHeader, @Query("userId") String userId, @Query("page") String page, @Query("size") String size);
+
+    @PUT("/api/mindmap/user_settings")
+    Call<String> saveToken(@Header("Authorization") String authHeader, @Path("id") String id, @Body JsonObject jsonObject);
+
 }

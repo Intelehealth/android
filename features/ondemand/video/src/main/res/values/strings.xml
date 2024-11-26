@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="content_no_logs">No Calls</string>
+    <string name="video_connecting">Connecting...</string>
+    <string name="video_doctor">Doctor Details</string>
+    <string name="video_patient">Patient</string>
+    <string name="video_you">You</string>
+    <string name="lbl_video_call">Video Call</string>
 <!--    <string name="call_logs">Call Logs</string>-->
 </resources>

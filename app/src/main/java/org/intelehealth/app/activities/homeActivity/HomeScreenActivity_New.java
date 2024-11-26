@@ -80,6 +80,7 @@ import androidx.work.WorkManager;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.github.ajalt.timberkt.Timber;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.navigation.NavigationBarView;
@@ -114,6 +115,7 @@ import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.DownloadFilesUtils;
+import org.intelehealth.app.utilities.FirebaseUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
@@ -198,7 +200,11 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
     private void saveToken() {
 //        Manager.getInstance().setBaseUrl(BuildConfig.SERVER_URL);
 //        // save fcm reg. token for chat (Video)
-//        FirebaseUtils.saveToken(this, sessionManager.getProviderID(), IntelehealthApplication.getInstance().refreshedFCMTokenID, sessionManager.getAppLanguage());
+        FirebaseUtils.INSTANCE.saveToken(this,
+                sessionManager.getProviderID(),
+                IntelehealthApplication.getInstance().refreshedFCMTokenID,
+                sessionManager.getAppLanguage()
+        );
     }
 
     @Override
@@ -314,6 +320,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         DeviceInfoUtils.saveDeviceInfo(this);
         FcmTokenGenerator.getDeviceToken(token -> {
             IntelehealthApplication.getInstance().refreshedFCMTokenID = token;
+            Timber.tag(TAG).d("onCreate: FCM Token: %s", token);
             saveToken();
             return Unit.INSTANCE;
         });

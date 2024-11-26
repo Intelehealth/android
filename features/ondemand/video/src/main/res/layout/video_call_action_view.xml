@@ -12,7 +12,7 @@
             android:id="@+id/btnCallEnd"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:contentDescription="@string/video_call"
+            android:contentDescription="@string/lbl_video_call"
             android:minWidth="@dimen/video_call_action_btn_min_size"
             android:src="@drawable/ic_call_end"
             app:backgroundTint="@color/red"

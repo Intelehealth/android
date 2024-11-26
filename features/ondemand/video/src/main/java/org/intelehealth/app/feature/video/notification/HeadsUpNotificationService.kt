@@ -273,7 +273,7 @@ class HeadsUpNotificationService : Service(), SensorEventListener {
             )
         }
 
-        val preferenceHelper = PreferenceHelper(RtcEngine.appContext)
+        val preferenceHelper = PreferenceHelper(this)
         preferenceHelper.save(PreferenceHelper.MESSAGE_BODY,Gson().toJson(messageBody))
 
         val notificationCompatBuilder =

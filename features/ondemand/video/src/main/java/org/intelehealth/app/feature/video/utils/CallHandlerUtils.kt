@@ -85,8 +85,8 @@ object CallHandlerUtils {
         callStatus = callArgs.callStatus,
         callTime = System.currentTimeMillis().toString(),
         callUrl = callArgs.url!!,
-        chatAction = RtcEngine.getConfig(context)!!.chatIntentClass,
-        callAction = RtcEngine.getConfig(context)!!.callIntentClass,
+        chatAction = "",
+        callAction = "",
         hasCallAction = false,
         hasChatAction = true
     )

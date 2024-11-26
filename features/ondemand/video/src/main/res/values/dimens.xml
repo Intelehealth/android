@@ -11,4 +11,7 @@
     <dimen name="rtc_self_view_height">152dp</dimen>
     <dimen name="std_8dp">8dp</dimen>
     <dimen name="std_24dp">24dp</dimen>
+    <dimen name="call_ic_width">16dp</dimen>
+    <dimen name="call_ic_height">12dp</dimen>
+    <dimen name="video_action_btn_min_width">36dp</dimen>
 </resources>

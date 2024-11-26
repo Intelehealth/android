@@ -5,7 +5,7 @@ import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
 
 
-class PreferenceHelper (private val context: Context) {
+class PreferenceHelper(private val context: Context) {
     private val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
     companion object {
@@ -16,6 +16,9 @@ class PreferenceHelper (private val context: Context) {
         const val MESSAGE_BODY = "message_body"
         const val IS_NOTIFICATION = "isNotification"
         const val CONFIG_VERSION = "config_version"
+        const val AUTH_BASIC: String = "AUTH_BASIC"
+        const val KEY_PREF_LOCATION_UUID = "location_uuid"
+        const val PULL_EXECUTED_TIME = "pull_executed_time"
     }
 
     fun save(key: String?, value: Any?) {

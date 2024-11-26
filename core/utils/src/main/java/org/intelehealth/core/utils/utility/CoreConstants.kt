@@ -1,5 +1,7 @@
 package org.intelehealth.core.utils.utility
 
+import org.intelehealth.core.utils.BuildConfig
+
 /**
  * Created by Vaghela Mithun R. on 12-04-2024 - 10:22.
  * Email : mithun@intelehealth.org

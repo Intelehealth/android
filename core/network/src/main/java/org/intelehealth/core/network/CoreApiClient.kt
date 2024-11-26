@@ -4,14 +4,14 @@ import okhttp3.MultipartBody
 import okhttp3.ResponseBody
 import org.intelehealth.core.network.model.Location
 import org.intelehealth.core.network.model.LoginModel
+import org.intelehealth.core.network.model.PullResponse
 import org.intelehealth.core.network.model.PushRequestApiCall
 import org.intelehealth.core.network.model.Resource
-import org.intelehealth.core.network.model.ResponseModel
 import org.intelehealth.core.network.model.Results
+import org.intelehealth.core.network.service.ServiceResponse
 import org.intelehealth.coreroomdb.entity.ObsJsonResponse
 import org.intelehealth.coreroomdb.entity.Observation
 import org.intelehealth.coreroomdb.entity.PatientProfile
-import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -20,7 +20,6 @@ import retrofit2.http.Header
 import retrofit2.http.Headers
 import retrofit2.http.Multipart
 import retrofit2.http.POST
-import retrofit2.http.PUT
 import retrofit2.http.Part
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -39,11 +38,14 @@ interface CoreApiClient {
         @Query("v") representation: String
     ): Response<Results<Location>>
 
-    //EMR-Middleware/webapi/pull/pulldata/
-    @GET
-    suspend fun pullApiDetails(
-        @Url url: String, @Header("Authorization") authHeader: String
-    ): Response<ResponseModel>
+    @GET("/EMR-Middleware/webapi/pull/pulldata/{locationId}/{lastPullExecutedTime}/{pageNo}/{pageLimit}")
+    suspend fun pullData(
+        @Header("Authorization") header: String,
+        @Path("locationId") locationId: String,
+        @Path("lastPullExecutedTime") lastPullExecutedTime: String,
+        @Path("pageNo") pageNo: Int,
+        @Path("pageLimit") pageLimit: Int
+    ): Response<ServiceResponse<PullResponse>>
 
     @GET
     suspend fun fetchLoginDetails(
@@ -58,9 +60,7 @@ interface CoreApiClient {
     @POST
     @Headers("Accept: application/json")
     suspend fun pushApiDetails(
-        @Url url: String,
-        @Header("Authorization") authHeader: String,
-        @Body pushRequestApiCall: PushRequestApiCall
+        @Url url: String, @Header("Authorization") authHeader: String, @Body pushRequestApiCall: PushRequestApiCall
     ): Response<PushRequestApiCall>
 
     @GET
@@ -70,9 +70,7 @@ interface CoreApiClient {
 
     @POST
     suspend fun uploadPersonProfilePicture(
-        @Url url: String,
-        @Header("Authorization") authHeader: String,
-        @Body patientProfile: PatientProfile
+        @Url url: String, @Header("Authorization") authHeader: String, @Body patientProfile: PatientProfile
     ): Response<ResponseBody>
 
     // Obs Image Download

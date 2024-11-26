@@ -4,6 +4,7 @@ import com.github.ajalt.timberkt.Timber
 import com.google.firebase.messaging.RemoteMessage
 import com.google.gson.Gson
 import org.intelehealth.app.app.IntelehealthApplication
+import org.intelehealth.app.utilities.FirebaseUtils
 import org.intelehealth.app.utilities.NotificationUtils
 import org.intelehealth.app.utilities.SessionManager
 import org.intelehealth.app.webrtc.receiver.FCMNotificationReceiver
@@ -20,12 +21,12 @@ class FCMMessageService : FBMessageService(FCMNotificationReceiver::class.java) 
         Timber.d { "onNewToke ---> $token" }
         // save fcm reg. token for chat (Video)
         val sessionManager = SessionManager(this)
-//        FirebaseUtils.saveToken(
-//            this,
-//            sessionManager.providerID,
-//            token,
-//            sessionManager.appLanguage
-//        )
+        FirebaseUtils.saveToken(
+            this,
+            sessionManager.providerID,
+            token,
+            sessionManager.appLanguage
+        )
     }
 
     override fun onMessageReceived(message: RemoteMessage) {

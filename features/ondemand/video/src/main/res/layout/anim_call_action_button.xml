@@ -41,7 +41,7 @@
             style="@style/TextAppearance.AppCompat.Body1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/normal_padding"
+            android:padding="@dimen/std_8dp"
             android:text="@{hint}"
             android:textStyle="bold"
             android:textColor="@color/black"

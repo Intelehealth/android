@@ -68,13 +68,13 @@
             android:launchMode="singleTask"
             android:showOnLockScreen="true"
             android:taskAffinity=""
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppThemeMaterialNew" />
 
         <activity
             android:name=".ui.activity.IDACallLogActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppThemeMaterialNew" />
 
 <!--        <activity-->
 <!--            android:name=".chat.ui.activity.ChatActivity"-->

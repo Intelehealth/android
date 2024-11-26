@@ -8,17 +8,7 @@ import org.intelehealth.coreroomdb.entity.*
  * Email: prajwalwaingankar@gmail.com
  * Mobile: +917304154312
  **/
-data class ResponseModel (
-    @SerializedName("status")
-    @Expose
-    private var status: String,
-
-    @SerializedName("data")
-    @Expose
-    private var data: Data
-)
-
-data class Data (
+data class PullResponse (
 
     @SerializedName("patientlist") @Expose
     private var patientlist: List<Patient>,
