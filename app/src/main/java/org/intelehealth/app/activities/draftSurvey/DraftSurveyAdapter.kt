@@ -33,11 +33,11 @@ class DraftSurveyAdapter(context: Context, draftList: ArrayList<DraftSurveyModel
         holder.patientNameAndOpenMrsId.text = draftList[position].patientNameAndOpenMrsId
         holder.patientOpenMrsId.text = draftList[position].patientAge
 
-        holder.item.setOnClickListener {
-           /* Intent(context, PatientDetailActivity2::class.java).also {
+       /* holder.item.setOnClickListener {
+            Intent(context, PatientDetailActivity2::class.java).also {
                 context.startActivity(it)
-            }*/     // TODO: handle this later.
-        }
+            }     // TODO: handle this later.
+        }*/
     }
 
     override fun getItemCount(): Int {
