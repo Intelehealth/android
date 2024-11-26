@@ -38,7 +38,7 @@
 
         <item
             android:id="@+id/menu_draft_survey"
-            android:icon="@drawable/ui2_ic_icon_about_us"
+            android:icon="@drawable/draft_survey_svgicon"
             android:title="@string/draft_survey"
             app:iconTint="?colorPrimary" />
 
