@@ -16,6 +16,8 @@ import android.os.Handler;
 import android.os.LocaleList;
 import android.os.StrictMode;
 import android.text.Editable;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
@@ -169,6 +171,7 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
         etPassword.addTextChangedListener(new MyTextWatcher(etPassword));
         etServer.addTextChangedListener(new MyTextWatcher(etServer));
         tipWindow = new TooltipWindow(SetupActivityNew.this);
+        setEmojiFilter();
 
         autotvLocations.setOnClickListener(v -> {
             if (isUrlValid) {
@@ -387,6 +390,24 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
         }
     }
 
+    public void setEmojiFilter() {
+        InputFilter emojiFilter = (source, start, end, dest, dstart, dend) -> {
+            String emojiRegex = "[\\uD83C-\\uDBFF\\uDC00-\\uDFFF]|[^a-zA-Z.@]";
+
+            for (int i = start; i < end; i++) {
+                String charAsString = String.valueOf(source.charAt(i));
+                if (charAsString.matches(emojiRegex)) {
+                    return "";
+                }
+            }
+            return null;
+        };
+
+        etUsername.setFilters(new InputFilter[]{emojiFilter});
+        etPassword.setFilters(new InputFilter[]{emojiFilter});
+        etServer.setFilters(new InputFilter[]{emojiFilter});
+    }
+
     private void attemptLogin() {
         // Store values at the time of the login attempt.
         String serverURL = etServer.getText().toString();
@@ -469,7 +490,7 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
 
         if (areLocationFieldsValid()) {
             //getting jwt token here
-            getJWTToken(baseUrl, userName, password, admin_password);
+//            getJWTToken(baseUrl, userName, password, admin_password);
         }
     }
 
