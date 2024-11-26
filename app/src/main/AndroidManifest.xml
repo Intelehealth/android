@@ -368,7 +368,7 @@
         <activity
             android:name=".activities.searchPatientActivity.SearchPatientActivity_New"
             android:exported="false"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:theme="@style/AppTheme.NoActionBar.v2"
             android:windowSoftInputMode="adjustNothing|adjustPan" />
         <activity
             android:name=".appointmentNew.ScheduleAppointmentActivity_New"

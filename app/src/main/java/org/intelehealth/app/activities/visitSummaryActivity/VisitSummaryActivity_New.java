@@ -2937,7 +2937,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     private void navigateToPreview() {
         Intent intent = new Intent(VisitSummaryActivity_New.this, VisitSummaryActivityPreview.class);
         Intent in = getIntent();
-        in.putExtra("IsFollowUpTypeVisit",mIsFollowUpTypeVisit);
+        in.putExtra("IsFollowUpTypeVisit", mIsFollowUpTypeVisit);
         intent.putExtras(in);
         startActivity(intent);
     }
@@ -5818,7 +5818,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                     if (!cc_tempvalues.get(i).equalsIgnoreCase("") && cc_tempvalues.get(i).contains(":"))
                         mChiefComplainList.add(cc_tempvalues.get(i).substring(0, headerchips[i].indexOf(":")));
                 }
-                for (int i = 0; i < mChiefComplainList.size() ; i++) {
+                for (int i = 0; i < mChiefComplainList.size(); i++) {
                     if (mChiefComplainList.get(i).contains("Follow up visit") || mChiefComplainList.get(i).contains("दोबारा विजिट करना (फॉलो अप विजिट)")) {
                         mIsFollowUpTypeVisit = true;
                         break;
@@ -5984,11 +5984,23 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
         uiUpdateForFollowUpVisit();
     }
-    private void uiUpdateForFollowUpVisit(){
-        findViewById(R.id.flFacilityToVisit).setVisibility(!mIsFollowUpTypeVisit ? View.VISIBLE : View.GONE);
-        findViewById(R.id.flReferralFacility).setVisibility(!mIsFollowUpTypeVisit ? View.VISIBLE : View.GONE);
-        findViewById(R.id.flSeverity).setVisibility(!mIsFollowUpTypeVisit ? View.VISIBLE : View.GONE);
-        findViewById(R.id.flCloseCaseToVisit).setVisibility(!mIsFollowUpTypeVisit ? View.VISIBLE : View.GONE);
+
+    private void uiUpdateForFollowUpVisit() {
+        View flFacilityToVisit = findViewById(R.id.flFacilityToVisit);
+        View flReferralFacility = findViewById(R.id.flReferralFacility);
+        View flSeverity = findViewById(R.id.flSeverity);
+        View flCloseCaseToVisit = findViewById(R.id.flCloseCaseToVisit);
+        if (flFacilityToVisit.getVisibility() == View.VISIBLE && mIsFollowUpTypeVisit)
+            flFacilityToVisit.setVisibility(View.GONE);
+
+        if (flReferralFacility.getVisibility() == View.VISIBLE && mIsFollowUpTypeVisit)
+            flReferralFacility.setVisibility(View.GONE);
+
+        if (flSeverity.getVisibility() == View.VISIBLE && mIsFollowUpTypeVisit)
+            flSeverity.setVisibility(View.GONE);
+
+        if (flCloseCaseToVisit.getVisibility() == View.VISIBLE && mIsFollowUpTypeVisit)
+            flCloseCaseToVisit.setVisibility(View.GONE);
     }
 
 
@@ -6088,7 +6100,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 mComplainSummaryLinearLayout.addView(view);
             }
         }
-        for (int i = 0; i < mChiefComplainList.size() ; i++) {
+        for (int i = 0; i < mChiefComplainList.size(); i++) {
             if (mChiefComplainList.get(i).contains("Follow up visit") || mChiefComplainList.get(i).contains("दोबारा विजिट करना (फॉलो अप विजिट)")) {
                 mIsFollowUpTypeVisit = true;
                 break;

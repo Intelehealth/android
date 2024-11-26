@@ -1019,13 +1019,13 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             mCurrentVisitsRecyclerView.setAdapter(pastVisitListingAdapter);
         }
         // allow now for follow-up visit even if open visit is there
-        /*if (mCurrentVisitDataList.isEmpty()) {
+        if (mCurrentVisitDataList.isEmpty()) {
             findViewById(R.id.cv_open_visits).setVisibility(View.GONE);
-            startVisitBtn.setVisibility(View.VISIBLE);
+            //startVisitBtn.setVisibility(View.VISIBLE);
         } else {
             findViewById(R.id.cv_open_visits).setVisibility(View.VISIBLE);
-            startVisitBtn.setVisibility(View.GONE);
-        }*/
+            //startVisitBtn.setVisibility(View.GONE);
+        }
         // }
     }
 
