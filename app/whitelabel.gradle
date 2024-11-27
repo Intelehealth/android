@@ -65,6 +65,14 @@ android {
             archivesBaseName = "intelehealth_unicef-" + versionName + " - " + date
         }
 
+        unfpa {
+            dimension client
+            applicationId 'org.intelehealth.unfpa'
+            versionCode 1
+            versionName '1.0'
+            archivesBaseName = "intelehealth_unfpa-" + versionName + " - " + date
+        }
+
         // This flavor used to handle different type of endpoint
         dev {
             dimension server
@@ -100,6 +108,8 @@ android {
             domain = "NAS"
         } else if (name.contains("unicef")) {
             domain = "UNICEF"
+        } else if (name.contains("unfpa")) {
+            domain = "UNFPA"
         } else {
             domain = "IDA"
         }

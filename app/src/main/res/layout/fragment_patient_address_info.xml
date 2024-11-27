@@ -338,7 +338,7 @@
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/textInputAddress1"
-                            style="@style/AppTheme.InputBox.Address"
+                            style="@style/AppTheme.InputBox.Address1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/enter_patient_address"
@@ -380,7 +380,7 @@
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/textInputAddress2"
-                            style="@style/AppTheme.InputBox.Address"
+                            style="@style/AppTheme.InputBox.Address1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/enter_patient_address"
