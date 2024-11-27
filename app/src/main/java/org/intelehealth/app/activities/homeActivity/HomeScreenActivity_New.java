@@ -998,10 +998,11 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
     @Override
     protected void onFeatureActiveStatusLoaded(FeatureActiveStatus activeStatus) {
         super.onFeatureActiveStatusLoaded(activeStatus);
-        if (!manager.isModuleDownloaded(DynamicModules.MODULE_VIDEO) && activeStatus.getVideoSection()) {
-            startForDownloadResult.launch(DynamicModuleDownloadingActivity.getDownloadActivityIntent(this, DynamicModules.MODULE_VIDEO));
-        } else
-            updateCallLogMenuVisibility(manager.isModuleDownloaded(DynamicModules.MODULE_VIDEO) && activeStatus.getVideoSection());
+//        if (!manager.isModuleDownloaded(DynamicModules.MODULE_VIDEO) && activeStatus.getVideoSection()) {
+//            startForDownloadResult.launch(DynamicModuleDownloadingActivity.getDownloadActivityIntent(this, DynamicModules.MODULE_VIDEO));
+//        } else
+
+        updateCallLogMenuVisibility(activeStatus.getVideoSection());
 
         uninstallModule(activeStatus);
     }
@@ -1019,7 +1020,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
                     Intent intent = result.getData();
                     if (intent == null) return;
                     if (intent.hasExtra(MODULE_DOWNLOAD_STATUS) && intent.getBooleanExtra(MODULE_DOWNLOAD_STATUS, false)) {
-                        updateUIForInternetAvailability(true);
+                        OnDemandIntentUtils.startCallLog(HomeScreenActivity_New.this);
                     }
                 }
             });
@@ -1047,7 +1048,11 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             startActivity(intent);
             finish();
         } else if (itemId == R.id.menu_view_call_log) {
-            OnDemandIntentUtils.startCallLog(HomeScreenActivity_New.this);
+            if (!manager.isModuleDownloaded(DynamicModules.MODULE_VIDEO) && menuItem.isVisible()) {
+                startForDownloadResult.launch(DynamicModuleDownloadingActivity.getDownloadActivityIntent(this, DynamicModules.MODULE_VIDEO));
+            } else if (manager.isModuleDownloaded(DynamicModules.MODULE_VIDEO) && menuItem.isVisible()) {
+                OnDemandIntentUtils.startCallLog(this);
+            }
         } else if (itemId == R.id.menu_about_us) {
             Intent i = new Intent(HomeScreenActivity_New.this, AboutUsActivity.class);
             startActivity(i);
