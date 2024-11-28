@@ -663,6 +663,7 @@
     <string name="slider_desc">range slider</string>
     <string name="drag_tow_capture_range_from_0_to_100">Drag tow capture range from 0 to 100</string>
     <string name="chw_id">CHW ID:</string>
+    <string name="mcc_id">MCC ID:</string>
     <string name="sync_successful">Sync successful</string>
     <string name="app_reset_successfully">App Reset Successfully</string>
     <string name="please_open_the_app_again">Please open the app again.</string>
@@ -1070,4 +1071,6 @@
     <string name="contact_your_admin">Contact your admin</string>
     <string name="sync">Refresh</string>
     <string name="sending_otp">Sending OTP...</string>
+    <string name="relapse_info">Relapse Info</string>
+    <string name="relapse">Relapse</string>
 </resources>

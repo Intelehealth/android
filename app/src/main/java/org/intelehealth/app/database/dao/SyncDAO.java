@@ -1,5 +1,8 @@
 package org.intelehealth.app.database.dao;
 
+import static org.intelehealth.app.database.dao.EncounterDAO.getStartVisitNoteEncounterByVisitUUID;
+import static org.intelehealth.app.database.dao.PatientsDAO.isVisitPresentForPatient_fetchVisitValues;
+import static org.intelehealth.app.utilities.StringUtils.setGenderAgeLocal;
 import static org.intelehealth.klivekit.data.PreferenceHelper.CONFIG_VERSION;
 
 import android.content.Context;
@@ -7,6 +10,9 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+
+import org.intelehealth.app.activities.searchPatientActivity.SearchPatientActivity_New;
+import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.utilities.CustomLog;
 
 import com.github.ajalt.timberkt.Timber;
@@ -27,10 +33,14 @@ import org.intelehealth.app.models.pushResponseApiCall.PushResponseApiCall;
 import org.intelehealth.app.services.InitialSyncIntentService;
 import org.intelehealth.app.syncModule.SyncProgress;
 import org.intelehealth.app.utilities.CustomLog;
+import org.intelehealth.app.utilities.DateAndTimeUtils;
+import org.intelehealth.app.utilities.DownloadFilesUtils;
 import org.intelehealth.app.utilities.Logger;
+import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NotificationID;
 import org.intelehealth.app.utilities.PatientsFrameJson;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.config.data.ConfigRepository;
 import org.intelehealth.config.network.response.ConfigResponse;
@@ -43,11 +53,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.observers.DisposableObserver;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 import kotlin.Unit;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -93,6 +106,9 @@ public class SyncDAO {
             providerAttributeLIstDAO.insertProvidersAttributeList
                     (responseDTO.getData().getProviderAttributeList());
             visitAttributeListDAO.insertProvidersAttributeList(responseDTO.getData().getVisitAttributeList());
+
+            //downloading images if not found
+            downloadPatientImages(responseDTO.getData().getPatientDTO());
 //           visitsDAO.insertVisitAttribToDB(responseDTO.getData().getVisitAttributeList())
 
             Logger.logD(TAG, "Pull ENCOUNTER: " + responseDTO.getData().getEncounterDTO());
@@ -111,15 +127,93 @@ public class SyncDAO {
 
     }
 
+    /**
+     * here downloading patient images while syncing
+     * to get rid of lagging and ANR
+     *
+     * @param patientDTOList
+     */
+    private void downloadPatientImages(List<PatientDTO> patientDTOList) {
+        ImagesDAO imagesDAO = new ImagesDAO();
+        for (int i = 0; i < patientDTOList.size(); i++) {
+            String profileImage = "";
+            try {
+                profileImage = imagesDAO.getPatientProfileChangeTime(patientDTOList.get(i).getUuid());
+            } catch (DAOException e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+            } finally {
+                patientDTOList.get(i).setPatientImageFromImageDao(profileImage);
+            }
+
+            if (patientDTOList.get(i).getPatientPhoto() == null || patientDTOList.get(i).getPatientPhoto().equalsIgnoreCase("")) {
+                if (NetworkConnection.isOnline(IntelehealthApplication.getAppContext())) {
+                    profilePicDownloaded(patientDTOList.get(i));
+                }
+            }
+            //3.
+            if (profileImage == null || !profileImage.equalsIgnoreCase("")) {
+                if (NetworkConnection.isOnline(IntelehealthApplication.getAppContext())) {
+                    profilePicDownloaded(patientDTOList.get(i));
+                }
+            }
+        }
+    }
+
+    public void profilePicDownloaded(PatientDTO model) {
+        UrlModifiers urlModifiers = new UrlModifiers();
+        String url = urlModifiers.patientProfileImageUrl(model.getUuid());
+        Logger.logD("TAG", "profileimage url" + url);
+        Observable<ResponseBody> profilePicDownload = AppConstants.apiInterface.PERSON_PROFILE_PIC_DOWNLOAD
+                (url, "Basic " + sessionManager.getEncoded());
+        profilePicDownload
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .subscribe(new DisposableObserver<ResponseBody>() {
+                    @Override
+                    public void onNext(ResponseBody file) {
+                        DownloadFilesUtils downloadFilesUtils = new DownloadFilesUtils();
+                        downloadFilesUtils.saveToDisk(file, model.getUuid());
+                        Logger.logD("TAG", file.toString());
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Logger.logD("TAG", e.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Logger.logD("TAG", "complete" + model.getPatientPhoto());
+                        PatientsDAO patientsDAO = new PatientsDAO();
+                        boolean updated = false;
+                        try {
+                            updated = patientsDAO.updatePatientPhoto(model.getUuid(),
+                                    AppConstants.IMAGE_PATH + model.getUuid() + ".jpg");
+                            model.setPatientImageFromDownload(AppConstants.IMAGE_PATH + model.getUuid() + ".jpg");
+                        } catch (DAOException e) {
+                            FirebaseCrashlytics.getInstance().recordException(e);
+                        }
+                        ImagesDAO imagesDAO = new ImagesDAO();
+                        boolean isImageDownloaded = false;
+                        try {
+                            isImageDownloaded = imagesDAO.insertPatientProfileImages(
+                                    AppConstants.IMAGE_PATH + model.getUuid() + ".jpg", model.getUuid());
+                        } catch (DAOException e) {
+                            FirebaseCrashlytics.getInstance().recordException(e);
+                        }
+                    }
+                });
+    }
+
     private void saveConfig(ConfigResponse response) {
-        CustomLog.d(TAG,"saveConfig");
+        CustomLog.d(TAG, "saveConfig");
         PreferenceHelper helper = new PreferenceHelper(IntelehealthApplication.getAppContext());
         int version = helper.get(CONFIG_VERSION, 0);
-        CustomLog.d(TAG,"saveConfig old version => %s", version);
+        CustomLog.d(TAG, "saveConfig old version => %s", version);
         if (version > 0 && response.getVersion() > version) {
             ConfigRepository repository = new ConfigRepository(IntelehealthApplication.getAppContext());
             repository.saveAllConfig(response, () -> Unit.INSTANCE);
-            CustomLog.d(TAG,"saveConfig new version => %s", response.getVersion());
+            CustomLog.d(TAG, "saveConfig new version => %s", response.getVersion());
         } else helper.save(CONFIG_VERSION, response.getVersion());
     }
 
@@ -159,6 +253,7 @@ public class SyncDAO {
                 Logger.logD("End Pull request", "Ended");
                 sessionManager.setLastPulledDateTime(AppConstants.dateAndTimeUtils.currentDateTimeInHome());
 
+
                 //Workmanager request is used in ForeGround sync in place of this as per Intele_safe
                 /*Intent intent = new Intent(IntelehealthApplication.getAppContext(), LastSyncIntentService.class);
                 IntelehealthApplication.getAppContext().startService(intent);*/
@@ -188,7 +283,7 @@ public class SyncDAO {
 
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
-            CustomLog.e(TAG,e.getMessage());
+            CustomLog.e(TAG, e.getMessage());
         }
         if (sync) {
             int nextPageNo = response.body().getData().getPageNo();
@@ -277,7 +372,7 @@ public class SyncDAO {
                         sync = SyncData(response.body());
                     } catch (DAOException e) {
                         FirebaseCrashlytics.getInstance().recordException(e);
-                        CustomLog.e(TAG,e.getMessage());
+                        CustomLog.e(TAG, e.getMessage());
                     }
                     if (sync) {
                         int nextPageNo = response.body().getData().getPageNo();
@@ -581,7 +676,7 @@ public class SyncDAO {
                                         CustomLog.d("SYNC", "ProvUUDI" + pushResponseApiCall.getData().getPatientlist().get(i).getUuid());
                                     } catch (DAOException e) {
                                         FirebaseCrashlytics.getInstance().recordException(e);
-                                        CustomLog.e(TAG,e.getMessage());
+                                        CustomLog.e(TAG, e.getMessage());
                                     }
                                 }
 
@@ -590,7 +685,7 @@ public class SyncDAO {
                                         visitsDAO.updateVisitSync(pushResponseApiCall.getData().getVisitlist().get(i).getUuid(), pushResponseApiCall.getData().getVisitlist().get(i).getSyncd().toString());
                                     } catch (DAOException e) {
                                         FirebaseCrashlytics.getInstance().recordException(e);
-                                        CustomLog.e(TAG,e.getMessage());
+                                        CustomLog.e(TAG, e.getMessage());
                                     }
                                 }
 
@@ -600,7 +695,7 @@ public class SyncDAO {
                                         CustomLog.d("SYNC", "Encounter Data: " + pushResponseApiCall.getData().getEncounterlist().get(i).toString());
                                     } catch (DAOException e) {
                                         FirebaseCrashlytics.getInstance().recordException(e);
-                                        CustomLog.e(TAG,e.getMessage());
+                                        CustomLog.e(TAG, e.getMessage());
                                     }
                                 }
 
@@ -611,7 +706,7 @@ public class SyncDAO {
                                         appointmentDAO.updateAppointmentSync(visitUuid, sync);
                                     } catch (DAOException exception) {
                                         FirebaseCrashlytics.getInstance().recordException(exception);
-                                        CustomLog.e(TAG,exception.getMessage());
+                                        CustomLog.e(TAG, exception.getMessage());
                                     }
                                 }
 
@@ -625,7 +720,7 @@ public class SyncDAO {
                                         } catch (DAOException e) {
                                             e.printStackTrace();
                                             FirebaseCrashlytics.getInstance().recordException(e);
-                                            CustomLog.e(TAG,e.getMessage());
+                                            CustomLog.e(TAG, e.getMessage());
                                         }
                                     }
                                 }
@@ -641,7 +736,7 @@ public class SyncDAO {
 
                             } catch (Exception e) {
                                 e.printStackTrace();
-                                CustomLog.e(TAG,e.getMessage());
+                                CustomLog.e(TAG, e.getMessage());
                             }
 
                         }

@@ -1345,8 +1345,14 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
                     userFullName = providerDTO.getFamilyName();
 
                 }
+
+                String idTitleStr = getString(R.string.chw_id);
+                if(providerDTO.getRole().toLowerCase().contains(AppConstants.MCC_USER_TYPE)){
+                    idTitleStr = getString(R.string.mcc_id);
+                }
+
                 tvUsername.setText(userFullName);
-                tvUserId.setText(getString(R.string.chw_id).concat(" ").concat(sessionManager.getChwname()));
+                tvUserId.setText(idTitleStr.concat(" ").concat(sessionManager.getChwname()));
 
                 if (providerDTO.getImagePath() != null && !providerDTO.getImagePath().isEmpty()) {
                     RequestBuilder<Drawable> requestBuilder = Glide.with(this)

@@ -89,6 +89,37 @@ public class PatientDTO implements Serializable {
 
     private String district;
 
+    private String patientImageFromImageDao;
+
+    public String getPatientImageFromDownload() {
+        return patientImageFromDownload;
+    }
+
+    public void setPatientImageFromDownload(String patientImageFromDownload) {
+        this.patientImageFromDownload = patientImageFromDownload;
+    }
+
+    private String patientImageFromDownload;
+
+    private String genderAgeString;
+
+    public String getPatientImageFromImageDao() {
+        return patientImageFromImageDao;
+    }
+
+    public void setPatientImageFromImageDao(String patientImageFromImageDao) {
+        this.patientImageFromImageDao = patientImageFromImageDao;
+    }
+
+
+    public String getGenderAgeString() {
+        return genderAgeString;
+    }
+
+    public void setGenderAgeString(String genderAgeString) {
+        this.genderAgeString = genderAgeString;
+    }
+
     public String getUuid() {
         return uuid;
     }
