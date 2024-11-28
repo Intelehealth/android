@@ -3,32 +3,29 @@ package org.intelehealth.app.activities.householdSurvey.fragments
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.RadioButton
 import androidx.navigation.fragment.findNavController
 import com.github.ajalt.timberkt.Timber
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.gson.Gson
 import org.intelehealth.app.R
-import org.intelehealth.app.app.IntelehealthApplication
-import org.intelehealth.app.database.dao.PatientsDAO
+import org.intelehealth.app.activities.householdSurvey.models.HouseholdSurveyModel
+import org.intelehealth.app.activities.householdSurvey.utilities.HouseholdSurveyConstants.Companion.AVAILABLE_ACCEPTED
+import org.intelehealth.app.activities.householdSurvey.utilities.HouseholdSurveyConstants.Companion.AVAILABLE_DEFERRED
+import org.intelehealth.app.activities.householdSurvey.utilities.HouseholdSurveyConstants.Companion.NOT_AVAILABLE_ON_SECOND_VISIT
+import org.intelehealth.app.activities.householdSurvey.utilities.HouseholdSurveyConstants.Companion.NOT_AVAILABLE_ON_SURVEY
+import org.intelehealth.app.activities.householdSurvey.utilities.HouseholdSurveyConstants.Companion.NOT_AVAILABLE_ON_THIRD_VISIT
+import org.intelehealth.app.activities.householdSurvey.utilities.HouseholdSurveyConstants.Companion.REFUSED_TO_PARTICIPATE
 import org.intelehealth.app.databinding.FragmentOneHouseholdSurveyBinding
-import org.intelehealth.app.models.HouseholdSurveyModel
 import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.app.utilities.DateAndTimeUtils
 import org.intelehealth.app.utilities.HouseholdSurveyStage
-import org.intelehealth.app.utilities.exception.DAOException
-import org.intelehealth.core.registry.PermissionRegistry
-import java.util.Calendar
 
 class FirstFragment : BaseHouseholdSurveyFragment(R.layout.fragment_one_household_survey) {
     private val TAG = "FirstFragment"
     private lateinit var binding: FragmentOneHouseholdSurveyBinding
-    var selectedDate = Calendar.getInstance().timeInMillis
-    var patientUuid: String? = null
-    var mHouseStructure: String? = null
-    var mResultVisit: String? = null
-    private val permissionRegistry by lazy {
-        PermissionRegistry(requireContext(), requireActivity().activityResultRegistry)
-    }
+    private var patientUuid: String? = null
+    private var mHouseStructure: String? = null
+    private var mResultVisit: String? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -36,8 +33,6 @@ class FirstFragment : BaseHouseholdSurveyFragment(R.layout.fragment_one_househol
         houseHoldViewModel.updatePatientStage(HouseholdSurveyStage.FIRST_SCREEN)
 
         initViews()
-        setClickListener()
-        radioButtonsClickListener();
     }
 
     private fun radioButtonsClickListener() {
@@ -52,7 +47,6 @@ class FirstFragment : BaseHouseholdSurveyFragment(R.layout.fragment_one_househol
                     mHouseStructure = "Pucca"
                 }
             }
-            Log.d(TAG, "radioButtonsClickListener: mHouseStructure : " + mHouseStructure)
         }
 
         //Result of Visit
@@ -91,15 +85,12 @@ class FirstFragment : BaseHouseholdSurveyFragment(R.layout.fragment_one_househol
         if (intent != null) {
             patientUuid = intent.getStringExtra("patientUuid")
         }
-        getPatientUuidsForHouseholdValue(patientUuid!!)
-
+        setClickListener()
+        radioButtonsClickListener();
     }
 
     private fun setClickListener() {
         binding.btnFirstFragNext.setOnClickListener {
-            /* FirstFragmentDirections.actionOneToTwo().apply {
-                 findNavController().navigate(this)
-             }*/
             savePatient()
         }
     }
@@ -112,30 +103,20 @@ class FirstFragment : BaseHouseholdSurveyFragment(R.layout.fragment_one_househol
             reportDateOfSurveyStarted = DateAndTimeUtils.currentDateTimeFormat()
             householdNumberOfSurvey = binding.textInputHouseholdNumber.text?.toString()
 
-
             houseHoldViewModel.updatedPatient(this)
             val patient = PatientDTO()
             patient.uuid = patientUuid
-            Log.d("devKZchk", "savePatient: survey patientUuid  " + patientUuid)
-
-            if (houseHoldViewModel.isEditMode) {
-                saveAndNavigateToDetails(patient, householdSurveyModel)
-                Log.d("devKZchk", "savePatient: editmode survey patientUuid  " + patientUuid)
-            } else {
-                saveAndNavigateToDetails(patient, householdSurveyModel)
-            }
+            saveAndNavigateToDetails(patient, householdSurveyModel)
         }
     }
 
-    private fun saveAndNavigateToDetails(
-        patient: PatientDTO,
-        householdSurveyModel: HouseholdSurveyModel
-    ) {
-        houseHoldViewModel.savePatient(patient, householdSurveyModel).observe(viewLifecycleOwner) {
-            it
-                ?: return@observe houseHoldViewModel.handleResponse(it) { result -> if (result) navigateToDetails() }
-        }
-    }
+  private fun saveAndNavigateToDetails(patient: PatientDTO,
+                                       householdSurveyModel: HouseholdSurveyModel) {
+      houseHoldViewModel.savePatient("firstScreen",patient,householdSurveyModel).observe(viewLifecycleOwner) {
+          it ?: return@observe
+          houseHoldViewModel.handleResponse(it) { result -> if (result) navigateToDetails() }
+      }
+  }
 
     private fun navigateToDetails() {
         FirstFragmentDirections.actionOneToTwo().apply {
@@ -143,110 +124,10 @@ class FirstFragment : BaseHouseholdSurveyFragment(R.layout.fragment_one_househol
         }
     }
 
-    private fun getPatientUuidsForHouseholdValue(patientUuid: String) {
-        val patientsDAO = PatientsDAO()
-        // Getting the household value and then getting all the Patient UUIDs listed to it so that we
-        // can insert all of this data into each of them.
-        var houseHoldValue = ""
-        try {
-            houseHoldValue = patientsDAO.getHouseHoldValue(patientUuid)
-        } catch (e: DAOException) {
-            FirebaseCrashlytics.getInstance().recordException(e)
-        }
-
-        if (houseHoldValue.isNotEmpty()) {
-            // Fetch all patient UUIDs from houseHoldValue
-            try {
-                val patientUUIDs = patientsDAO.getPatientUUIDs(houseHoldValue).toList()
-                Log.e("patientUUIDss", patientUUIDs.toString())
-                patientUUIDs.forEach { uuid ->
-                    setData(uuid)
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
-    }
-
-    private fun setData(patientUuid: String) {
-        val patientsDAO = PatientsDAO()
-
-        Log.d(TAG, "setData: kkk attr survey")
-        val db = IntelehealthApplication.inteleHealthDatabaseHelper.writableDatabase
-
-        val patientSelection1 = "patientuuid = ?"
-        val patientArgs1 = arrayOf(patientUuid)
-        val patientColumns1 = arrayOf("value", "person_attribute_type_uuid")
-        val idCursor1 = db.query(
-            "tbl_patient_attribute",
-            patientColumns1,
-            patientSelection1,
-            patientArgs1,
-            null,
-            null,
-            null
-        )
-
-        if (idCursor1.moveToFirst()) {
-            do {
-                val name = try {
-                    patientsDAO.getAttributesName(
-                        idCursor1.getString(idCursor1.getColumnIndexOrThrow("person_attribute_type_uuid"))
-                    )
-                } catch (e: DAOException) {
-                    FirebaseCrashlytics.getInstance().recordException(e)
-                    ""
-                }
-
-                when {
-                    name.equals("NamePrimaryRespondent", ignoreCase = true) -> {
-                        val value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))
-                        if (!value1.isNullOrEmpty() && !value1.equals("-", ignoreCase = true)) {
-                            //namePerson.text = value1
-                        }
-                    }
-
-                    name.equals("HouseholdNumber", ignoreCase = true) -> {
-                        val value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))
-                        if (!value1.isNullOrEmpty() && !value1.equals("-", ignoreCase = true)) {
-                            // householdNumber.text = value1
-                        }
-                    }
-
-                    /* name.equals("HouseStructure", ignoreCase = true) -> {
-                         val value1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))
-                        // mhouseStructure = value1
-                         when {
-                             value1.equals("Pucca", ignoreCase = true) -> puccaRadioButton.isChecked = true
-                             value1.equals("Kucha", ignoreCase = true) -> kuchaRadioButton.isChecked = true
-                         }
-                     }*/
-
-                    /*
-                                        name.equals("ResultOfVisit", ignoreCase = true) -> {
-                                            val result = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"))
-                                            mresultVisit = result
-                                            when {
-                                                result.equals("available and accepted", ignoreCase = true) -> availableAccepted.isChecked = true
-                                                result.equals("available and deferred", ignoreCase = true) -> availableDeferred.isChecked = true
-                                                result.equals("Not available on Survey", ignoreCase = true) -> notavailableSurvey.isChecked = true
-                                                result.equals("Not available on second visit", ignoreCase = true) -> notavailableSecondVisit.isChecked = true
-                                                result.equals("Not available on third visit", ignoreCase = true) -> notavailableThirdVisit.isChecked = true
-                                                result.equals("Refused to Participate", ignoreCase = true) -> refusedParticipate.isChecked = true
-                                            }
-                                        }
-                    */
-                }
-            } while (idCursor1.moveToNext())
-        }
-        idCursor1.close()
-    }
-
     override fun onPatientDataLoaded(householdSurveyModel: HouseholdSurveyModel) {
         super.onPatientDataLoaded(householdSurveyModel)
-        Timber.d { "onPatientDataLoaded" }
         Timber.d { Gson().toJson(householdSurveyModel) }
-        //fetchPersonalInfoConfig()
+        setDataToUI();
         Log.d(
             TAG,
             "onPatientDataLoaded: householdSurveyModel : " + Gson().toJson(householdSurveyModel)
@@ -255,5 +136,63 @@ class FirstFragment : BaseHouseholdSurveyFragment(R.layout.fragment_one_househol
         binding.isEditMode = houseHoldViewModel.isEditMode
     }
 
+    private fun setDataToUI() {
+        updateHouseStructureUI()
+        updateSurveyStatus()
+    }
+
+    private fun updateHouseStructureUI() {
+        //for house structure
+        householdSurveyModel.houseStructure?.let {
+            when {
+                it.equals("Pucca", ignoreCase = true) -> binding.rbPucca.isChecked = true
+                it.equals("Kucha", ignoreCase = true) -> binding.rbKucha.isChecked = true
+                else -> {
+                    binding.rbPucca.isChecked = false
+                    binding.rbKucha.isChecked = false
+                }
+            }
+        }
+    }
+
+    private fun updateSurveyStatus() {
+        // Check and update the radio button based on the result value
+        val result = householdSurveyModel.resultOfVisit
+        result?.let {
+            when {
+                result.equals(
+                    AVAILABLE_ACCEPTED,
+                    ignoreCase = true
+                ) -> setRadioButton(binding.rbAvailableAndAccepted)
+
+                result.equals(
+                    AVAILABLE_DEFERRED,
+                    ignoreCase = true
+                ) -> setRadioButton(binding.rbAvailableAndDeferred)
+
+                result.equals(
+                    NOT_AVAILABLE_ON_SURVEY,
+                    ignoreCase = true
+                ) -> setRadioButton(binding.rbNotAvailableForSurvey)
+
+                result.equals(NOT_AVAILABLE_ON_SECOND_VISIT, ignoreCase = true) -> setRadioButton(
+                    binding.rbNotAvailableForSecondVisit
+                )
+
+                result.equals(NOT_AVAILABLE_ON_THIRD_VISIT, ignoreCase = true) -> setRadioButton(
+                    binding.rbNotAvailableForThirdVisit
+                )
+
+                result.equals(
+                    REFUSED_TO_PARTICIPATE,
+                    ignoreCase = true
+                ) -> setRadioButton(binding.rbRefusedForVisit)
+            }
+        }
+    }
+
+    private fun setRadioButton(radioButton: RadioButton) {
+        radioButton.isChecked = true
+    }
 
 }

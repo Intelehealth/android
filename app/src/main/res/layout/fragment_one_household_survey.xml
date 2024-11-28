@@ -8,7 +8,7 @@
 
         <variable
             name="patientSurveyAttributes"
-            type="org.intelehealth.app.models.HouseholdSurveyModel" />
+            type="org.intelehealth.app.activities.householdSurvey.models.HouseholdSurveyModel" />
 
         <variable
             name="isEditMode"
@@ -63,8 +63,10 @@
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/textInputNameOfPrimaryRespondent"
-                            style="@style/AppTheme.InputBox.Name"
+                            style="@style/AppTheme.InputBox"
                             android:layout_width="match_parent"
+                            android:maxLines="1"
+                            android:inputType="text"
                             android:text="@{patientSurveyAttributes.namePrimaryRespondent}"
                             android:layout_height="wrap_content"
                             android:hint="@string/hint_name_of_primary_respondent" />
@@ -103,7 +105,10 @@
                             android:id="@+id/textInputHouseholdNumber"
                             style="@style/AppTheme.InputBox.Name"
                             android:layout_width="match_parent"
+                            android:text="@{patientSurveyAttributes.householdNumberOfSurvey}"
                             android:layout_height="wrap_content"
+                            android:maxLines="1"
+                            android:inputType="text"
                             android:hint="@string/hint_household_number" />
                     </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
                 </LinearLayout>

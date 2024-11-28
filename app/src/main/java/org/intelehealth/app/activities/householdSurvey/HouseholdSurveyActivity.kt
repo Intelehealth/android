@@ -4,6 +4,7 @@ import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
@@ -11,20 +12,17 @@ import androidx.core.content.IntentCompat
 import androidx.navigation.fragment.NavHostFragment
 import org.intelehealth.app.R
 import org.intelehealth.app.activities.householdSurvey.factory.HouseHoldViewModelFactory
+import org.intelehealth.app.activities.householdSurvey.models.HouseholdSurveyModel
 import org.intelehealth.app.databinding.ActivityHouseholdSurveyBinding
-import org.intelehealth.app.models.HouseholdSurveyModel
-import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.app.shared.BaseActivity
 import org.intelehealth.app.syncModule.SyncUtils
 import org.intelehealth.app.utilities.BundleKeys.Companion.HOUSEHOLD_CURRENT_STAGE
 import org.intelehealth.app.utilities.BundleKeys.Companion.PATIENT_UUID
-import org.intelehealth.app.utilities.DateAndTimeUtils
 import org.intelehealth.app.utilities.DialogUtils
 import org.intelehealth.app.utilities.DialogUtils.CustomDialogListener
 import org.intelehealth.app.utilities.HouseholdSurveyStage
 import org.intelehealth.app.utilities.NetworkConnection
 import org.intelehealth.app.utilities.NetworkUtils
-import org.intelehealth.app.utilities.SessionManager
 
 class HouseholdSurveyActivity : BaseActivity() {
     private lateinit var binding: ActivityHouseholdSurveyBinding
@@ -45,12 +43,13 @@ class HouseholdSurveyActivity : BaseActivity() {
 //        manageTitleVisibilityOnScrolling()
         extractAndBindUI()
         setupActionBar()
-      //  observeCurrentPatientStage()
+
+        //  observeCurrentPatientStage()
     }
 
-   /* private fun observeCurrentPatientStage() {
-        houseHoldViewModel.patientStageData.observe(this) { changeIconStatus(it) }
-    }*/
+    /* private fun observeCurrentPatientStage() {
+         houseHoldViewModel.patientStageData.observe(this) { changeIconStatus(it) }
+     }*/
 
     private fun setupActionBar() {
         setSupportActionBar(binding.toolbar)
@@ -72,7 +71,6 @@ class HouseholdSurveyActivity : BaseActivity() {
             ) { action -> if (action == CustomDialogListener.POSITIVE_CLICK) finish() }
         }
     }
-
 
 
     private fun extractAndBindUI() {
@@ -125,23 +123,23 @@ class HouseholdSurveyActivity : BaseActivity() {
         }.also { patientViewModel.updatedPatient(it) }
     }*/
 
-   /* private fun fetchPatientDetails(id: String) {
-        patientViewModel.loadPatientDetails(id).observe(this) {
-            it ?: return@observe
-            patientViewModel.handleResponse(it) { patient ->
-                patientViewModel.updatedPatient(updatePatientDetails(patient))
-            }
-        }
-    }*/
+    /* private fun fetchPatientDetails(id: String) {
+         patientViewModel.loadPatientDetails(id).observe(this) {
+             it ?: return@observe
+             patientViewModel.handleResponse(it) { patient ->
+                 patientViewModel.updatedPatient(updatePatientDetails(patient))
+             }
+         }
+     }*/
 
-   /* private fun updatePatientDetails(patient: PatientDTO) = patient.apply {
-        if (createdDate.isNullOrEmpty()) {
-            createdDate = DateAndTimeUtils.getTodaysDateInRequiredFormat("dd MMMM, yyyy")
-        }
-        if (providerUUID.isNullOrEmpty()) {
-            providerUUID = SessionManager.getInstance(this@PatientRegistrationActivity).providerID
-        }
-    }*/
+    /* private fun updatePatientDetails(patient: PatientDTO) = patient.apply {
+         if (createdDate.isNullOrEmpty()) {
+             createdDate = DateAndTimeUtils.getTodaysDateInRequiredFormat("dd MMMM, yyyy")
+         }
+         if (providerUUID.isNullOrEmpty()) {
+             providerUUID = SessionManager.getInstance(this@PatientRegistrationActivity).providerID
+         }
+     }*/
 
     /*override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_sync, menu)
@@ -197,7 +195,10 @@ class HouseholdSurveyActivity : BaseActivity() {
 
     override fun onPause() {
         super.onPause()
-        networkUtil.unregisterNetworkReceiver()
+        try {
+            networkUtil.unregisterNetworkReceiver()
+        } catch (exception: Exception) {
+        }
     }
 
     private val networkStatusListener = NetworkUtils.InternetCheckUpdateInterface {
@@ -217,6 +218,7 @@ class HouseholdSurveyActivity : BaseActivity() {
             }.also { context.startActivity(it) }
         }
     }
+
     private fun fetchPatientDetails(id: String) {
         houseHoldViewModel.loadPatientDetails(id).observe(this) {
             it ?: return@observe
@@ -226,19 +228,21 @@ class HouseholdSurveyActivity : BaseActivity() {
             //check its in observer may change frequently
             if (it.data?.reportDateOfSurveyStarted != null && it.data!!.reportDateOfSurveyStarted.isNotEmpty()) {
                 houseHoldViewModel.isEditMode = true
-            }else{
+            } else {
                 houseHoldViewModel.isEditMode = false
             }
 
         }
     }
-    private fun updatePatientDetails(householdSurveyModel: HouseholdSurveyModel) = householdSurveyModel.apply {
-       /* if (createdDate.isNullOrEmpty()) {
-            createdDate = DateAndTimeUtils.getTodaysDateInRequiredFormat("dd MMMM, yyyy")
+
+    private fun updatePatientDetails(householdSurveyModel: HouseholdSurveyModel) =
+        householdSurveyModel.apply {
+            /* if (createdDate.isNullOrEmpty()) {
+                 createdDate = DateAndTimeUtils.getTodaysDateInRequiredFormat("dd MMMM, yyyy")
+             }
+             if (providerUUID.isNullOrEmpty()) {
+                 providerUUID = SessionManager.getInstance(this@HouseholdSurveyActivity).providerID
+             }*/
         }
-        if (providerUUID.isNullOrEmpty()) {
-            providerUUID = SessionManager.getInstance(this@HouseholdSurveyActivity).providerID
-        }*/
-    }
 
 }

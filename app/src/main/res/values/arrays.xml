@@ -2464,4 +2464,65 @@
         <item>स्वयं</item>
         <item>परिवार</item>
     </string-array>
+    <string-array name="householdHeadReligion_en">
+        <item>@string/religion_hindu</item>
+        <item>@string/religion_muslim</item>
+        <item>@string/religion_christian</item>
+        <item>@string/religion_sikh</item>
+        <item>@string/religion_buddhist_neo_buddhist</item>
+        <item>@string/religion_other</item>
+        <item>@string/religion_no_religion</item>
+    </string-array>
+    <string-array name="householdHeadReligion_mr">
+        <item>@string/religion_hindu</item>
+        <item>@string/religion_muslim</item>
+        <item>@string/religion_christian</item>
+        <item>@string/religion_sikh</item>
+        <item>@string/religion_buddhist_neo_buddhist</item>
+        <item>@string/religion_other</item>
+        <item>@string/religion_no_religion</item>
+    </string-array>
+
+    <string-array name="householdHeadReligion">
+        <item>@string/religion_hindu</item>
+        <item>@string/religion_muslim</item>
+        <item>@string/religion_christian</item>
+        <item>@string/religion_sikh</item>
+        <item>@string/religion_buddhist_neo_buddhist</item>
+        <item>@string/religion_other</item>
+        <item>@string/religion_no_religion</item>
+    </string-array>
+
+    <string-array name="householdHeadCaste_en">
+        <item>@string/caste_schedule_caste</item>
+        <item>@string/caste_schedule_tribe</item>
+        <item>@string/caste_other_backward_caste</item>
+        <item>@string/caste_VJNT</item>
+        <item>@string/caste_general</item>
+        <item>@string/caste_dont_know</item>
+        <item>@string/caste_refused_to_answer</item>
+
+    </string-array>
+    <string-array name="householdHeadCaste_mr">
+        <item>@string/caste_schedule_caste</item>
+        <item>@string/caste_schedule_tribe</item>
+        <item>@string/caste_other_backward_caste</item>
+
+        <item>@string/caste_VJNT</item>
+        <item>@string/caste_general</item>
+        <item>@string/caste_dont_know</item>
+        <item>@string/caste_refused_to_answer</item>
+
+    </string-array>
+    <string-array name="householdHeadCaste">
+        <item>@string/caste_schedule_caste</item>
+        <item>@string/caste_schedule_tribe</item>
+        <item>@string/caste_other_backward_caste</item>
+
+        <item>@string/caste_VJNT</item>
+        <item>@string/caste_general</item>
+        <item>@string/caste_dont_know</item>
+        <item>@string/caste_refused_to_answer</item>
+
+    </string-array>
 </resources>

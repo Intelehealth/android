@@ -7,7 +7,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import org.intelehealth.app.models.HouseholdSurveyModel;
+import org.intelehealth.app.activities.householdSurvey.models.HouseholdSurveyModel;
 import org.intelehealth.app.utilities.CustomLog;
 
 
@@ -18,12 +18,9 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.intelehealth.app.enums.FollowupFilterTypeEnum;
 import org.intelehealth.app.models.FamilyMemberRes;
-import org.intelehealth.app.models.FollowUpModel;
 import org.intelehealth.app.models.dto.VisitDTO;
 import org.intelehealth.app.services.MyIntentService;
-import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.app.AppConstants;
@@ -346,7 +343,7 @@ public class PatientsDAO {
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
         try {
-            Cursor cursor = db.rawQuery("SELECT patientuuid FROM tbl_patient_attribute where value = ? AND sync='0' COLLATE NOCASE", new String[]{houseHoldValue});
+            Cursor cursor = db.rawQuery("SELECT patientuuid FROM tbl_patient_attribute where value = ? COLLATE NOCASE", new String[]{houseHoldValue});
 
             if (cursor.getCount() != 0) {
                 while (cursor.moveToNext()) {
@@ -478,6 +475,7 @@ public class PatientsDAO {
     }
 
     public String getUuidForAttribute(String attr) {
+        Log.d("devchk", "getUuidForAttribute: attr : "+attr);
         String attributeUuid = "";
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         Cursor cursor = db.rawQuery("SELECT uuid FROM tbl_patient_attribute_master where name = ? COLLATE NOCASE", new String[]{attr});
@@ -486,6 +484,8 @@ public class PatientsDAO {
                 attributeUuid = cursor.getString(cursor.getColumnIndexOrThrow("uuid"));
             }
         }
+        Log.d("devchk", "getUuidForAttribute: attributeUuid : "+attributeUuid);
+
         cursor.close();
 
         return attributeUuid;
@@ -1109,11 +1109,18 @@ public class PatientsDAO {
         return isCreated;
 
     }
-    public HouseholdSurveyModel retrievePatientHouseholdSurveyAttributes(Cursor cursor) {
+    public HouseholdSurveyModel retrievePatientHouseholdSurveyAttributes(String patientUuid) {
         Timber.tag("devkz").d("retrievePatientHouseholdSurveyAttributes");
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         HouseholdSurveyModel householdSurveyModel = new HouseholdSurveyModel();
+        String patientSelection1 = "patientuuid = ?";
+        String[] patientArgs1 = {patientUuid};
+        String[] patientColumns1 = {"value", "person_attribute_type_uuid"};
+        final Cursor cursor = db.query("tbl_patient_attribute", patientColumns1, patientSelection1, patientArgs1, null, null, null);
         if (cursor.moveToFirst()) {
             do {
+                Log.d(TAG, "retrievePatientHouseholdSurveyAttributes: householdSurveyModel if blk: "+new Gson().toJson(householdSurveyModel));
+
                 // Attributes
                 householdSurveyModel.setHouseStructure(cursor.getString(cursor.getColumnIndexOrThrow("HouseStructure")));
                 householdSurveyModel.setReportDateOfSurveyStarted(cursor.getString(cursor.getColumnIndexOrThrow("ResultOfVisit")));

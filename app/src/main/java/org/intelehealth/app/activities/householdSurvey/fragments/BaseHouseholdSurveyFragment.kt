@@ -5,9 +5,7 @@ import android.view.View
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import org.intelehealth.app.activities.householdSurvey.factory.HouseHoldViewModelFactory
-import org.intelehealth.app.models.HouseholdSurveyModel
-import org.intelehealth.app.models.dto.PatientAttributesDTO
-import org.intelehealth.app.models.dto.PatientDTO
+import org.intelehealth.app.activities.householdSurvey.models.HouseholdSurveyModel
 
 abstract class BaseHouseholdSurveyFragment (@LayoutRes layoutResId: Int) : Fragment(layoutResId) {
     protected var householdSurveyModel: HouseholdSurveyModel = HouseholdSurveyModel()

@@ -6,8 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
 import com.github.ajalt.timberkt.Timber
 import com.google.gson.Gson
+import org.intelehealth.app.activities.householdSurvey.models.HouseholdSurveyModel
 import org.intelehealth.app.activities.householdSurvey.repository.HouseholdRepository
-import org.intelehealth.app.models.HouseholdSurveyModel
 import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.app.utilities.HouseholdSurveyStage
 import org.intelehealth.app.utilities.PatientRegStage
@@ -39,19 +39,18 @@ class HouseHoldViewModel(
         mutableLivePatient.postValue(householdSurveyModel)
     }
 
-    fun savePatient(patientDTO: PatientDTO, householdSurveyModel: HouseholdSurveyModel) =
+    fun savePatient(fragmentIdentifier: String, patientDTO: PatientDTO, householdSurveyModel: HouseholdSurveyModel) =
         executeLocalInsertUpdateQuery {
             return@executeLocalInsertUpdateQuery patientSurveyAttributesData.value?.let {
                 Log.d("devKZchk", "savePatient: " + patientDTO.uuid)
-                return@let if (isEditMode) repository.updateHouseholdPatientAttributes(
+                return@let if (isEditMode) repository.updateHouseholdPatientAttributes(fragmentIdentifier,
                     patientDTO,
                     householdSurveyModel
                 )
-                else repository.addHouseholdPatientAttributes(
+                else repository.addHouseholdPatientAttributes(fragmentIdentifier,
                     patientDTO,
                     householdSurveyModel
                 ) // TODO: check with mithun this is creating a new record again with parent ID.
             } ?: false
         }.asLiveData()
-
 }
