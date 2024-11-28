@@ -105,6 +105,7 @@ class FourthFragment : BaseHouseholdSurveyFragment(R.layout.fragment_fourth_hous
             setupForHouseholdAntodayaCard()
             setupForHouseholdRSBYCard()
             setupForHouseholdMGNREGACard()
+
             Log.d("devchdbsave4", "savePatient: householdSurveyModel : " + householdSurveyModel)
             houseHoldViewModel.updatedPatient(this)
             val patient = PatientDTO()
@@ -133,12 +134,12 @@ class FourthFragment : BaseHouseholdSurveyFragment(R.layout.fragment_fourth_hous
     }
 
     private fun setupCultivatedLand() {
-        var cultivatedLand = "-"
+        //var cultivatedLand = "-"
+        var cultivatedLand = ""
         if (binding.cultivableLandRadioGroup.checkedRadioButtonId != -1) {
             val selectedRadioButton = binding.cultivableLandRadioGroup.findViewById<RadioButton>(
                 binding.cultivableLandRadioGroup.checkedRadioButtonId
             )
-            Log.d("devchk", "setupCultivatedLand: selectedRadioButton : "+ selectedRadioButton.text.toString())
 
             cultivatedLand = binding.textInputCultivatedLandOwnedByHousehold.text.toString()
             cultivatedLand = "${StringUtils.getValue(cultivatedLand)} " +
@@ -148,8 +149,6 @@ class FourthFragment : BaseHouseholdSurveyFragment(R.layout.fragment_fourth_hous
                         SessionManager(requireActivity()).appLanguage
                     )
         }
-
-        Log.d("devchk", "setupCultivatedLand: cultivatedLand : "+cultivatedLand)
         householdSurveyModel.householdCultivableLand = cultivatedLand
 
     }
@@ -196,11 +195,11 @@ class FourthFragment : BaseHouseholdSurveyFragment(R.layout.fragment_fourth_hous
                     }
                 }
             } else {
-               /* // If splitString doesn't have enough elements, reset all radio buttons
-                binding.hectareRadioButton.isChecked = false
-                binding.acreRadioButton.isChecked = false
-                binding.bighaRadioButton.isChecked = false
-                binding.guntaRadioButton.isChecked = false*/
+                /* // If splitString doesn't have enough elements, reset all radio buttons
+                 binding.hectareRadioButton.isChecked = false
+                 binding.acreRadioButton.isChecked = false
+                 binding.bighaRadioButton.isChecked = false
+                 binding.guntaRadioButton.isChecked = false*/
             }
 
             // If the first part of splitString is not "-", set it to the EditText
@@ -210,206 +209,338 @@ class FourthFragment : BaseHouseholdSurveyFragment(R.layout.fragment_fourth_hous
         }
     }
 
-        private fun setupAnnualHouseholdIncome() {
-            var averageAnnualHouseholdIncome = "-"
-
-            if (binding.averageAnnualHouseholdIncomeRadioGroup.checkedRadioButtonId != -1) {
-                averageAnnualHouseholdIncome = (binding.averageAnnualHouseholdIncomeRadioGroup
-                    .findViewById<RadioButton>(binding.averageAnnualHouseholdIncomeRadioGroup.checkedRadioButtonId)).text.toString()
-            }
-            householdSurveyModel.averageAnnualHouseholdIncome = averageAnnualHouseholdIncome
+    private fun setupAnnualHouseholdIncome() {
+        // var averageAnnualHouseholdIncome = "-"
+        var averageAnnualHouseholdIncome = ""
+        if (binding.averageAnnualHouseholdIncomeRadioGroup.checkedRadioButtonId != -1) {
+             averageAnnualHouseholdIncome = (binding.averageAnnualHouseholdIncomeRadioGroup
+                .findViewById<RadioButton>(binding.averageAnnualHouseholdIncomeRadioGroup.checkedRadioButtonId)).text.toString()
         }
+        householdSurveyModel.averageAnnualHouseholdIncome = averageAnnualHouseholdIncome
+
+    }
+
     private fun setDataToAnnualHouseholdIncomeUI() {
-            val value1 = householdSurveyModel.averageAnnualHouseholdIncome
-            value1?.let {
-                when (it.lowercase()) {
-                    getString(R.string.zero_thirty_thousand).lowercase() -> binding.annualHouseholdIncome0.isChecked = true
-                    getString(R.string.thirty_fifty_thousand).lowercase() -> binding.annualHouseholdIncome1.isChecked = true
-                    getString(R.string.fifty_thousand_one_lakh).lowercase() -> binding.annualHouseholdIncome2.isChecked = true
-                    getString(R.string.one_lakh_two_lakh_fifty_thousand).lowercase() -> binding.annualHouseholdIncome4.isChecked = true
-                    getString(R.string.more_than_two_lakh_fifty_thousand).lowercase() -> binding.annualHouseholdIncome4.isChecked = true
-                }
+        val value1 = householdSurveyModel.averageAnnualHouseholdIncome
+        value1?.let {
+            when (it.lowercase()) {
+                getString(R.string.zero_thirty_thousand).lowercase() -> binding.annualHouseholdIncome0.isChecked =
+                    true
+
+                getString(R.string.thirty_fifty_thousand).lowercase() -> binding.annualHouseholdIncome1.isChecked =
+                    true
+
+                getString(R.string.fifty_thousand_one_lakh).lowercase() -> binding.annualHouseholdIncome2.isChecked =
+                    true
+
+                getString(R.string.one_lakh_two_lakh_fifty_thousand).lowercase() -> binding.annualHouseholdIncome4.isChecked =
+                    true
+
+                getString(R.string.more_than_two_lakh_fifty_thousand).lowercase() -> binding.annualHouseholdIncome4.isChecked =
+                    true
+            }
         }
 
     }
+
     private fun setupMonthlyExpenditureOnFood() {
-        var monthlyFoodExpenditure = "-"
+        //var monthlyFoodExpenditure = "-"
+        var monthlyFoodExpenditure = ""
         if (binding.monthlyFoodExpenditureRadioGroup.checkedRadioButtonId != -1) {
-            monthlyFoodExpenditure = (binding.monthlyFoodExpenditureRadioGroup
+             monthlyFoodExpenditure = (binding.monthlyFoodExpenditureRadioGroup
                 .findViewById<RadioButton>(binding.monthlyFoodExpenditureRadioGroup.checkedRadioButtonId)).text.toString()
         }
-        householdSurveyModel.monthlyFoodExpenditure =monthlyFoodExpenditure
+        householdSurveyModel.monthlyFoodExpenditure = monthlyFoodExpenditure
     }
+
     private fun setDataToMonthlyExpenditureOnFoodUI() {
         val value1 = householdSurveyModel.monthlyFoodExpenditure
         value1?.let {
             when (it.lowercase()) {
-                getString(R.string.zero_fifteen_hundred).lowercase() -> binding.monthlyFoodExpense0.isChecked = true
-                getString(R.string.fifteen_twenty_five_hundred).lowercase() -> binding.monthlyFoodExpense1.isChecked = true
-                getString(R.string.twenty_five_hundred_five_thousand).lowercase() -> binding.monthlyFoodExpense2.isChecked = true
-                getString(R.string.five_ten_thousand).lowercase() -> binding.monthlyFoodExpense3.isChecked = true
-                getString(R.string.more_than_ten_thousand).lowercase() -> binding.monthlyFoodExpense4.isChecked = true
+                getString(R.string.zero_fifteen_hundred).lowercase() -> binding.monthlyFoodExpense0.isChecked =
+                    true
+
+                getString(R.string.fifteen_twenty_five_hundred).lowercase() -> binding.monthlyFoodExpense1.isChecked =
+                    true
+
+                getString(R.string.twenty_five_hundred_five_thousand).lowercase() -> binding.monthlyFoodExpense2.isChecked =
+                    true
+
+                getString(R.string.five_ten_thousand).lowercase() -> binding.monthlyFoodExpense3.isChecked =
+                    true
+
+                getString(R.string.more_than_ten_thousand).lowercase() -> binding.monthlyFoodExpense4.isChecked =
+                    true
             }
         }
     }
-    private fun setupAnnualExpenditureOnHealth() {
-        var annualHealthExpenditure = "-"
 
+    private fun setupAnnualExpenditureOnHealth() {
+        //var annualHealthExpenditure = "-"
+        var annualHealthExpenditure = ""
         if (binding.annualHealthExpenditureRadioGroup.checkedRadioButtonId != -1) {
-            annualHealthExpenditure = (binding.annualHealthExpenditureRadioGroup
+             annualHealthExpenditure = (binding.annualHealthExpenditureRadioGroup
                 .findViewById<RadioButton>(binding.annualHealthExpenditureRadioGroup.checkedRadioButtonId)).text.toString()
         }
-        householdSurveyModel.annualHealthExpenditure =annualHealthExpenditure
+        householdSurveyModel.annualHealthExpenditure = annualHealthExpenditure
     }
+
     private fun setDataToAnnualExpenditureOnHealthUI() {
         val value1 = householdSurveyModel.annualHealthExpenditure
         value1?.let {
             when (it.lowercase()) {
-                getString(R.string.zero_five_thousand).lowercase() -> binding.healthExpense0.isChecked = true
-                getString(R.string.five_thousand_one_ten_thousand).lowercase() -> binding.healthExpense1.isChecked = true
-                getString(R.string.ten_thousand_one_twenty_thousand).lowercase() -> binding.healthExpense2.isChecked = true
-                getString(R.string.twenty_thousand_one_thirty_thousand).lowercase() -> binding.healthExpense3.isChecked = true
-                getString(R.string.more_than_thirty_thousand).lowercase() -> binding.greaterThanThirtyThousandRadioButton.isChecked = true
+                getString(R.string.zero_five_thousand).lowercase() -> binding.healthExpense0.isChecked =
+                    true
+
+                getString(R.string.five_thousand_one_ten_thousand).lowercase() -> binding.healthExpense1.isChecked =
+                    true
+
+                getString(R.string.ten_thousand_one_twenty_thousand).lowercase() -> binding.healthExpense2.isChecked =
+                    true
+
+                getString(R.string.twenty_thousand_one_thirty_thousand).lowercase() -> binding.healthExpense3.isChecked =
+                    true
+
+                getString(R.string.more_than_thirty_thousand).lowercase() -> binding.greaterThanThirtyThousandRadioButton.isChecked =
+                    true
             }
         }
     }
+
     private fun setupAnnualExpenditureOnEducation() {
-        var annualEducationExpenditure = "-"
+        //var annualEducationExpenditure = "-"
+        var annualEducationExpenditure = ""
         if (binding.annualEducationExpenditureRadioGroup.checkedRadioButtonId != -1) {
             annualEducationExpenditure = (binding.annualEducationExpenditureRadioGroup
                 .findViewById<RadioButton>(binding.annualEducationExpenditureRadioGroup.checkedRadioButtonId)).text.toString()
         }
-        householdSurveyModel.annualEducationExpenditure= annualEducationExpenditure
+        householdSurveyModel.annualEducationExpenditure = annualEducationExpenditure
     }
+
     private fun setDataToAnnualExpenditureOnEducationUI() {
         val value1 = householdSurveyModel.annualEducationExpenditure
         value1?.let {
             when (it.lowercase()) {
-                getString(R.string.zero).lowercase() -> binding.annualEducationExpense0.isChecked = true
-                getString(R.string.zero_ten_thousand).lowercase() -> binding.annualEducationExpense1.isChecked = true
-                getString(R.string.ten_twenty_thousand).lowercase() -> binding.annualEducationExpense2.isChecked = true
-                getString(R.string.twenty_forty_thousand).lowercase() -> binding.annualEducationExpense3.isChecked = true
-                getString(R.string.forty_thousand_one_lakh).lowercase() -> binding.annualEducationExpense4.isChecked = true
-                getString(R.string.more_than_one_lakh).lowercase() -> binding.annualEducationExpense5.isChecked = true
+                getString(R.string.zero).lowercase() -> binding.annualEducationExpense0.isChecked =
+                    true
+
+                getString(R.string.zero_ten_thousand).lowercase() -> binding.annualEducationExpense1.isChecked =
+                    true
+
+                getString(R.string.ten_twenty_thousand).lowercase() -> binding.annualEducationExpense2.isChecked =
+                    true
+
+                getString(R.string.twenty_forty_thousand).lowercase() -> binding.annualEducationExpense3.isChecked =
+                    true
+
+                getString(R.string.forty_thousand_one_lakh).lowercase() -> binding.annualEducationExpense4.isChecked =
+                    true
+
+                getString(R.string.more_than_one_lakh).lowercase() -> binding.annualEducationExpense5.isChecked =
+                    true
             }
         }
     }
+
     private fun setupAnnualExpenditureOnClothing() {
-        var annualClothingExpenditure = "-"
+        //var annualClothingExpenditure = "-"
+        var annualClothingExpenditure = ""
         if (binding.annualClothingExpenditureRadioGroup.checkedRadioButtonId != -1) {
-            annualClothingExpenditure = (binding.annualClothingExpenditureRadioGroup
+             annualClothingExpenditure = (binding.annualClothingExpenditureRadioGroup
                 .findViewById<RadioButton>(binding.annualClothingExpenditureRadioGroup.checkedRadioButtonId)).text.toString()
         }
         householdSurveyModel.annualClothingExpenditure = annualClothingExpenditure
     }
+
     private fun setDataToAnnualExpenditureOnClothingUI() {
         val value1 = householdSurveyModel.annualClothingExpenditure
         value1?.let {
             when (it.lowercase()) {
-                getString(R.string.zero_ten_thousand).lowercase() -> binding.annualClothingExpense0.isChecked = true
-                getString(R.string.ten_twenty_thousand).lowercase() -> binding.annualClothingExpense1.isChecked = true
-                getString(R.string.twenty_forty_thousand).lowercase() -> binding.annualClothingExpense2.isChecked = true
-                getString(R.string.forty_thousand_one_lakh).lowercase() -> binding.annualClothingExpense3.isChecked = true
-                getString(R.string.more_than_one_lakh).lowercase() -> binding.annualClothingExpense4.isChecked = true
+                getString(R.string.zero_ten_thousand).lowercase() -> binding.annualClothingExpense0.isChecked =
+                    true
+
+                getString(R.string.ten_twenty_thousand).lowercase() -> binding.annualClothingExpense1.isChecked =
+                    true
+
+                getString(R.string.twenty_forty_thousand).lowercase() -> binding.annualClothingExpense2.isChecked =
+                    true
+
+                getString(R.string.forty_thousand_one_lakh).lowercase() -> binding.annualClothingExpense3.isChecked =
+                    true
+
+                getString(R.string.more_than_one_lakh).lowercase() -> binding.annualClothingExpense4.isChecked =
+                    true
             }
         }
     }
 
     private fun setupMonthlyExpenditureOnIntoxicants() {
-        var monthlyIntoxicantsExpenditure = "-"
+        // var monthlyIntoxicantsExpenditure = "-"
+        var monthlyIntoxicantsExpenditure = ""
         if (binding.monthlyIntoxicantsExpenditureRadioGroup.checkedRadioButtonId != -1) {
-            monthlyIntoxicantsExpenditure = (binding.monthlyIntoxicantsExpenditureRadioGroup
+             monthlyIntoxicantsExpenditure = (binding.monthlyIntoxicantsExpenditureRadioGroup
                 .findViewById<RadioButton>(binding.monthlyIntoxicantsExpenditureRadioGroup.checkedRadioButtonId)).text.toString()
         }
-        householdSurveyModel.monthlyIntoxicantsExpenditure =monthlyIntoxicantsExpenditure
+        householdSurveyModel.monthlyIntoxicantsExpenditure = monthlyIntoxicantsExpenditure
     }
+
     private fun setDataToMonthlyExpenditureOnIntoxicants() {
         val value1 = householdSurveyModel.monthlyIntoxicantsExpenditure
         value1?.let {
             when (it.lowercase()) {
-                getString(R.string.one_to_six_hundred).lowercase() -> binding.intoxicExpense0.isChecked = true
-                getString(R.string.six_hundred_one_thousand).lowercase() -> binding.intoxicExpense1.isChecked = true
-                getString(R.string.thousand_to_fifteen_hundred).lowercase() -> binding.intoxicExpense2.isChecked = true
-                getString(R.string.fifteen_hundred_to_twenty_five_hundred).lowercase() -> binding.intoxicExpense3.isChecked = true
-                getString(R.string.more_than_twenty_five_hundred).lowercase() -> binding.intoxicExpense4.isChecked = true
+                getString(R.string.one_to_six_hundred).lowercase() -> binding.intoxicExpense0.isChecked =
+                    true
+
+                getString(R.string.six_hundred_one_thousand).lowercase() -> binding.intoxicExpense1.isChecked =
+                    true
+
+                getString(R.string.thousand_to_fifteen_hundred).lowercase() -> binding.intoxicExpense2.isChecked =
+                    true
+
+                getString(R.string.fifteen_hundred_to_twenty_five_hundred).lowercase() -> binding.intoxicExpense3.isChecked =
+                    true
+
+                getString(R.string.more_than_twenty_five_hundred).lowercase() -> binding.intoxicExpense4.isChecked =
+                    true
             }
         }
     }
+
     private fun setupForHouseholdBPLCard() {
-        var householdBPLCardStatus = "-"
+        //var householdBPLCardStatus = "-"
+        var householdBPLCardStatus = ""
         if (binding.bplCardCouponRadioGroup.checkedRadioButtonId != -1) {
-            householdBPLCardStatus = (binding.bplCardCouponRadioGroup
+             householdBPLCardStatus = (binding.bplCardCouponRadioGroup
                 .findViewById<RadioButton>(binding.bplCardCouponRadioGroup.checkedRadioButtonId)).text.toString()
         }
-        householdSurveyModel.householdBPLCardStatus =householdBPLCardStatus
+        householdSurveyModel.householdBPLCardStatus = householdBPLCardStatus
     }
+
     private fun setDataToHouseholdBPLCardUI() {
         val value1 = householdSurveyModel.householdBPLCardStatus
         value1?.let {
             when (it.lowercase()) {
-                getString(R.string.yes_card_seen).lowercase() -> binding.bplYesCardSeen.isChecked = true
-                getString(R.string.yes_card_not_seen).lowercase() -> binding.bplYesCardNotSeen.isChecked = true
+                getString(R.string.yes_card_seen).lowercase() -> binding.bplYesCardSeen.isChecked =
+                    true
+
+                getString(R.string.yes_card_not_seen).lowercase() -> binding.bplYesCardNotSeen.isChecked =
+                    true
+
                 getString(R.string.no_card).lowercase() -> binding.bplNoCard.isChecked = true
                 getString(R.string.DO_NOT_KNOW).lowercase() -> binding.bplDoNotKnow.isChecked = true
             }
         }
     }
+
     private fun setupForHouseholdAntodayaCard() {
-        var householdAntodayaCardStatus = "-"
+        //var householdAntodayaCardStatus = "-"
+        var householdAntodayaCardStatus = ""
         if (binding.antodayaCardCouponRadioGroup.checkedRadioButtonId != -1) {
-            householdAntodayaCardStatus = (binding.antodayaCardCouponRadioGroup
+            val householdAntodayaCardStatus = (binding.antodayaCardCouponRadioGroup
                 .findViewById<RadioButton>(binding.antodayaCardCouponRadioGroup.checkedRadioButtonId)).text.toString()
         }
-        householdSurveyModel.householdAntodayaCardStatus =householdAntodayaCardStatus
+        householdSurveyModel.householdAntodayaCardStatus = householdAntodayaCardStatus
     }
+
     private fun setDataToHouseholdAntodayaCardUI() {
         val value1 = householdSurveyModel.householdAntodayaCardStatus
         value1?.let {
-                when {
-                    it.equals(getString(R.string.yes_card_seen), ignoreCase = true) -> binding.antodayaYesCardSeen.isChecked = true
-                    it.equals(getString(R.string.yes_card_not_seen), ignoreCase = true) -> binding.antodayaYesCardNotSeen.isChecked = true
-                    it.equals(getString(R.string.no_card), ignoreCase = true) -> binding.antodayaNoCard.isChecked = true
-                    it.equals(getString(R.string.DO_NOT_KNOW), ignoreCase = true) -> binding.antodayaDoNotKnow.isChecked = true
+            when {
+                it.equals(
+                    getString(R.string.yes_card_seen),
+                    ignoreCase = true
+                ) -> binding.antodayaYesCardSeen.isChecked = true
+
+                it.equals(
+                    getString(R.string.yes_card_not_seen),
+                    ignoreCase = true
+                ) -> binding.antodayaYesCardNotSeen.isChecked = true
+
+                it.equals(
+                    getString(R.string.no_card),
+                    ignoreCase = true
+                ) -> binding.antodayaNoCard.isChecked = true
+
+                it.equals(
+                    getString(R.string.DO_NOT_KNOW),
+                    ignoreCase = true
+                ) -> binding.antodayaDoNotKnow.isChecked = true
             }
         }
     }
+
     private fun setupForHouseholdRSBYCard() {
-        var householdRSBYCardStatus = "-"
+        //var householdRSBYCardStatus = "-"
+        var householdRSBYCardStatus = ""
         if (binding.rsbyCardRadioGroup.checkedRadioButtonId != -1) {
-            householdRSBYCardStatus = (binding.rsbyCardRadioGroup
+             householdRSBYCardStatus = (binding.rsbyCardRadioGroup
                 .findViewById<RadioButton>(binding.rsbyCardRadioGroup.checkedRadioButtonId)).text.toString()
         }
         householdSurveyModel.householdRSBYCardStatus = householdRSBYCardStatus
     }
+
     private fun setDataToHouseholdRSBYCardUI() {
         val value1 = householdSurveyModel.householdRSBYCardStatus
         value1?.let {
             when {
-                it.equals(getString(R.string.yes_card_seen), ignoreCase = true) -> binding.rsbyYesCardSeen.isChecked = true
-                it.equals(getString(R.string.yes_card_not_seen), ignoreCase = true) -> binding.rsbyYesCardNotSeen.isChecked = true
-                it.equals(getString(R.string.no_card), ignoreCase = true) -> binding.rsbyNoCard.isChecked = true
-                it.equals(getString(R.string.DO_NOT_KNOW), ignoreCase = true) -> binding.rsbyDoNotKnow.isChecked = true
+                it.equals(
+                    getString(R.string.yes_card_seen),
+                    ignoreCase = true
+                ) -> binding.rsbyYesCardSeen.isChecked = true
+
+                it.equals(
+                    getString(R.string.yes_card_not_seen),
+                    ignoreCase = true
+                ) -> binding.rsbyYesCardNotSeen.isChecked = true
+
+                it.equals(
+                    getString(R.string.no_card),
+                    ignoreCase = true
+                ) -> binding.rsbyNoCard.isChecked = true
+
+                it.equals(
+                    getString(R.string.DO_NOT_KNOW),
+                    ignoreCase = true
+                ) -> binding.rsbyDoNotKnow.isChecked = true
             }
         }
     }
-    private fun setupForHouseholdMGNREGACard() {
-        var householdAntodayaCardStatus = "-"
 
+    private fun setupForHouseholdMGNREGACard() {
+        //var householdAntodayaCardStatus = "-"
+        var householdAntodayaCardStatus = ""
         if (binding.mgnregaCardRadioGroup.checkedRadioButtonId != -1) {
-            householdAntodayaCardStatus = (binding.mgnregaCardRadioGroup
+             householdAntodayaCardStatus = (binding.mgnregaCardRadioGroup
                 .findViewById<RadioButton>(binding.mgnregaCardRadioGroup.checkedRadioButtonId)).text.toString()
         }
         householdSurveyModel.householdMGNREGACardStatus = householdAntodayaCardStatus
     }
+
     private fun setDataToHouseholdMGNREGACardUI() {
         val value1 = householdSurveyModel.householdMGNREGACardStatus
         value1?.let {
-                when {
-                    it.equals(getString(R.string.yes_card_seen), ignoreCase = true) -> binding.mgnregaYesCardSeen.isChecked = true
-                    it.equals(getString(R.string.yes_card_not_seen), ignoreCase = true) -> binding.mgnregaYesCardNotSeen.isChecked = true
-                    it.equals(getString(R.string.no_card), ignoreCase = true) -> binding.mgnregaNoCard.isChecked = true
-                    it.equals(getString(R.string.DO_NOT_KNOW), ignoreCase = true) -> binding.mgnregaDoNotKnow.isChecked = true
+            when {
+                it.equals(
+                    getString(R.string.yes_card_seen),
+                    ignoreCase = true
+                ) -> binding.mgnregaYesCardSeen.isChecked = true
+
+                it.equals(
+                    getString(R.string.yes_card_not_seen),
+                    ignoreCase = true
+                ) -> binding.mgnregaYesCardNotSeen.isChecked = true
+
+                it.equals(
+                    getString(R.string.no_card),
+                    ignoreCase = true
+                ) -> binding.mgnregaNoCard.isChecked = true
+
+                it.equals(
+                    getString(R.string.DO_NOT_KNOW),
+                    ignoreCase = true
+                ) -> binding.mgnregaDoNotKnow.isChecked = true
             }
         }
     }
+
 }

@@ -94,7 +94,10 @@ class ThirdFragment : BaseHouseholdSurveyFragment(R.layout.fragment_third_househ
                 }
             }
         }
-
+        binding.otherCheckboxWaterSource.setOnCheckedChangeListener { buttonView, isChecked ->
+            binding.llOtherSourcesOfWaterEdiText.visibility =
+                if (isChecked) View.VISIBLE else View.GONE
+        }
     }
 
     private fun initViews() {
@@ -211,16 +214,17 @@ class ThirdFragment : BaseHouseholdSurveyFragment(R.layout.fragment_third_househ
                 SessionManager(requireActivity()).appLanguage
             )
         }
-        Timber.tag("devchkthird")
-            .d("setupElectricityRadioButtons: electricity status : ${householdSurveyModel.householdElectricityStatus}")
+
         if (binding.rgHouseholdElectricity.checkedRadioButtonId == binding.rbElectricityYes.id) {
             householdSurveyModel.noOfHoursOfLoadSheddingPerDay =
                 binding.loadSheddingHoursTextView.text.toString().let {
-                    it.ifEmpty { "-" }
+                    it.ifEmpty { "" }
+                   // it.ifEmpty { "-" }
                 }
             householdSurveyModel.noOfDaysOfLoadSheddingPerWeek =
                 binding.loadSheddingDaysPerWeekTextView.text.toString().let {
-                    it.ifEmpty { "-" }
+                    it.ifEmpty { "" }
+                   // it.ifEmpty { "-" }
                 }
         }
 
@@ -240,8 +244,7 @@ class ThirdFragment : BaseHouseholdSurveyFragment(R.layout.fragment_third_househ
                 SessionManager(requireActivity()).appLanguage
             )
         }
-        Timber.tag("devchkthird")
-            .d("setupRunningWaterOptions: water status : ${householdSurveyModel.runningWaterStatus}")
+
         if (binding.runningWaterRadioGroup.checkedRadioButtonId == binding.runningWaterYesCheckbox.id) {
             //for yes option
 
@@ -479,7 +482,8 @@ class ThirdFragment : BaseHouseholdSurveyFragment(R.layout.fragment_third_househ
                     )
                 }
             } else {
-                "-"
+                ""
+              //  "-"
             }
         }
 

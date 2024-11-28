@@ -404,7 +404,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             }
         });
 
-        binding.tvHouseholdSurvey.setOnClickListener(new View.OnClickListener() {
+        binding.householdSurvey.tvHouseholdSurvey.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 HouseholdSurveyActivity.startHouseholdSurvey(PatientDetailActivity2.this, patientDTO.getUuid(), HouseholdSurveyStage.FIRST_SCREEN);
@@ -2472,8 +2472,8 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         if (activeStatus != null) {
             binding.setAddressActiveStatus(activeStatus.getActiveStatusPatientAddress());
             binding.setOtherActiveStatus(activeStatus.getActiveStatusPatientOther());
-            //  binding.setFamilyMemberActiveStatus(activeStatus.getActiveStatusPatientFamilyMemberRegistration());  // TODO: Kaveri uncomment this.
-            binding.setFamilyMemberActiveStatus(true);  // TODO: Kaveri delete this line after config done from Zeeshan end.
+            binding.setFamilyMemberActiveStatus(activeStatus.getActiveStatusPatientFamilyMemberRegistration());
+            binding.setHouseholdSurveyActiveStatus(activeStatus.getActiveStatusPatientHouseholdSurvey());
         }
     }
 }

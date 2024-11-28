@@ -27,7 +27,10 @@ class HouseholdRepository(
     ): Boolean {
         bindPatientAttributes(fragmentIdentifier, patient, householdSurveyModel).let {
             val flag = patientsDao.updatePatientSurveyInDb(it.uuid, it.patientAttributesDTOList)
-            syncOnServer()
+            //sync on 7th screen only as per nas 3.0
+            if (fragmentIdentifier.isNotEmpty() && fragmentIdentifier == "seventhScreen") {
+                syncOnServer()
+            }
             return flag
         }
     }
@@ -87,6 +90,7 @@ class HouseholdRepository(
 
         return householdSurveyModel
     }
+
     private fun createPatientAttribute(
         patientId: String,
         attrName: String,
@@ -581,7 +585,7 @@ class HouseholdRepository(
         }
 
         if (fragmentIdentifier.isNotEmpty() && fragmentIdentifier.equals(
-                "fifthFragment",
+                "fifthScreen",
                 ignoreCase = true
             )
         ) {
@@ -617,7 +621,7 @@ class HouseholdRepository(
         }
 
         if (fragmentIdentifier.isNotEmpty() && fragmentIdentifier.equals(
-                "sixthFragment",
+                "sixthScreen",
                 ignoreCase = true
             )
         ) {
@@ -633,7 +637,11 @@ class HouseholdRepository(
                 householdSurveyModel.foodItemsPreparedInTwentyFourHrs
             )?.let { add(it) }
         }
-        if (fragmentIdentifier.isNotEmpty() && fragmentIdentifier.equals("seventhFragment", ignoreCase = true)) {
+        if (fragmentIdentifier.isNotEmpty() && fragmentIdentifier.equals(
+                "seventhScreen",
+                ignoreCase = true
+            )
+        ) {
             createPatientAttribute(
                 patientUuid,
                 PatientAttributesDTO.Column.SUB_CENTRE_DISTANCE.value,
@@ -684,6 +692,7 @@ class HouseholdRepository(
         }
 
     }
+
     private fun updatePatientAttribute(
         patientId: String,
         attrName: String,

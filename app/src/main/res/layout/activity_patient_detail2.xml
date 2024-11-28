@@ -14,6 +14,12 @@
         <variable
             name="familyMemberActiveStatus"
             type="Boolean" />
+
+        <variable
+            name="householdSurveyActiveStatus"
+            type="Boolean" />
+
+
     </data>
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -196,7 +202,7 @@
                 <include
                     android:id="@+id/family_member_card"
                     layout="@layout/patdetail_familymember_layout"
-                    app:activeStatus="@{familyMemberActiveStatus}"/>
+                    app:activeStatus="@{familyMemberActiveStatus}" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -321,25 +327,39 @@
                         </LinearLayout>
 
                     </androidx.cardview.widget.CardView>
-                    <Button
-                        android:id="@+id/tv_household_survey"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:layout_marginStart="@dimen/margin_24"
-                        android:layout_marginEnd="@dimen/margin_24"
-                        android:layout_marginBottom="@dimen/margin_24"
-                        android:layout_marginTop="@dimen/margin_20dp"
-                        android:background="@drawable/ui2_common_primary_bg"
-                        android:paddingStart="@dimen/margin_30"
-                        android:paddingEnd="@dimen/margin_14"
-                        android:backgroundTint="@color/orange3"
-                        android:text="Household Survey"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/txtsize_patdetail_16sp" />
+
+                    <include
+                        android:id="@+id/household_survey"
+                        layout="@layout/layout_household_survey"
+                        app:activeStatus="@{householdSurveyActiveStatus}" />
+
+                    <!--
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_marginTop="@dimen/margin_20dp"
+                                            app:activeStatus="@{householdSurveyActiveStatus}"
+                                            android:layout_height="wrap_content">
+
+                                            <Button
+                                                android:id="@+id/tv_household_survey"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginStart="@dimen/margin_24"
+                                                android:layout_marginEnd="@dimen/margin_24"
+                                                android:layout_marginBottom="@dimen/margin_24"
+                                                android:background="@drawable/ui2_common_primary_bg"
+                                                android:backgroundTint="@color/orange3"
+                                                android:paddingStart="@dimen/margin_30"
+                                                android:paddingEnd="@dimen/margin_14"
+                                                android:text="Household Survey"
+                                                android:textColor="@color/white"
+                                                android:textSize="@dimen/txtsize_patdetail_16sp"
+                                              />
+                                        </LinearLayout>
+                    -->
+
 
                 </LinearLayout>
-
 
 
             </RelativeLayout>

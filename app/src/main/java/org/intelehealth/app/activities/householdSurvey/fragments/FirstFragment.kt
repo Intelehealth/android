@@ -17,8 +17,10 @@ import org.intelehealth.app.activities.householdSurvey.utilities.HouseholdSurvey
 import org.intelehealth.app.activities.householdSurvey.utilities.HouseholdSurveyConstants.Companion.REFUSED_TO_PARTICIPATE
 import org.intelehealth.app.databinding.FragmentOneHouseholdSurveyBinding
 import org.intelehealth.app.models.dto.PatientDTO
+import org.intelehealth.app.ui.filter.FirstLetterUpperCaseInputFilter
 import org.intelehealth.app.utilities.DateAndTimeUtils
 import org.intelehealth.app.utilities.HouseholdSurveyStage
+import org.intelehealth.app.utilities.extensions.addFilter
 
 class FirstFragment : BaseHouseholdSurveyFragment(R.layout.fragment_one_household_survey) {
     private val TAG = "FirstFragment"
@@ -86,7 +88,8 @@ class FirstFragment : BaseHouseholdSurveyFragment(R.layout.fragment_one_househol
             patientUuid = intent.getStringExtra("patientUuid")
         }
         setClickListener()
-        radioButtonsClickListener();
+        radioButtonsClickListener()
+        applyFilter()
     }
 
     private fun setClickListener() {
@@ -194,5 +197,7 @@ class FirstFragment : BaseHouseholdSurveyFragment(R.layout.fragment_one_househol
     private fun setRadioButton(radioButton: RadioButton) {
         radioButton.isChecked = true
     }
-
+    private fun applyFilter() {
+        binding.textInputNameOfPrimaryRespondent.addFilter(FirstLetterUpperCaseInputFilter())
+    }
 }

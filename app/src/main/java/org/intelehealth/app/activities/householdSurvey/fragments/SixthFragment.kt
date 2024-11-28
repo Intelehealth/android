@@ -3,7 +3,10 @@ package org.intelehealth.app.activities.householdSurvey.fragments
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.RadioButton
 import androidx.navigation.fragment.findNavController
+import com.github.ajalt.timberkt.Timber
+import com.google.gson.Gson
 import org.intelehealth.app.R
 import org.intelehealth.app.activities.householdSurvey.models.HouseholdSurveyModel
 import org.intelehealth.app.databinding.FragmentSixthHouseholdSurveyBinding
@@ -11,6 +14,8 @@ import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.app.ui.patient.fragment.PatientAddressInfoFragmentDirections
 import org.intelehealth.app.utilities.HouseholdSurveyStage
 import org.intelehealth.app.utilities.PatientRegStage
+import org.intelehealth.app.utilities.SessionManager
+import org.intelehealth.app.utilities.StringUtils
 import org.intelehealth.core.registry.PermissionRegistry
 import java.util.Calendar
 
@@ -47,6 +52,9 @@ class SixthFragment : BaseHouseholdSurveyFragment(R.layout.fragment_sixth_househ
 
     private fun savePatient() {
         householdSurveyModel.apply {
+            setupFamilyMemberDefeated()
+            setupForKindOfFoodPrepared()
+
             Log.d("devchdbsave6", "savePatient: householdSurveyModel : " + householdSurveyModel)
             houseHoldViewModel.updatedPatient(this)
             val patient = PatientDTO()
@@ -72,5 +80,86 @@ class SixthFragment : BaseHouseholdSurveyFragment(R.layout.fragment_sixth_househ
         SixthFragmentDirections.actionSixToSeven().apply {
             findNavController().navigate(this)
         }
+    }
+
+    private fun setupFamilyMemberDefeated() {
+       // var defeation = "-"
+        var defeation = ""
+        binding.defecationInOpenRadioGroup.checkedRadioButtonId.takeIf { it != -1 }?.let {
+            defeation = StringUtils.getPreTerm(
+                (binding.defecationInOpenRadioGroup.findViewById<RadioButton>(it)).text.toString(),
+                SessionManager(requireActivity()).appLanguage
+            )
+        }
+        householdSurveyModel.householdOpenDefecationStatus = defeation
+    }
+
+    private fun setupForKindOfFoodPrepared() {
+        householdSurveyModel.foodItemsPreparedInTwentyFourHrs = StringUtils.getSelectedCheckboxes(
+            binding.foodPreparedInThePastTwentyFourHoursLinearLayout,
+            SessionManager(requireActivity()).appLanguage,
+            context,
+            ""
+        ).takeIf { it != "[]" } ?: householdSurveyModel.mainLightingSource
+    }
+
+    private fun setDataForKindOfFoodPrepared() {
+        val value = householdSurveyModel.foodItemsPreparedInTwentyFourHrs
+        if (!value.isNullOrEmpty()) {
+            if (value.contains(requireContext().getString(R.string.starch_staple_food)))
+                binding.starchStapleFoodCheckbox.isChecked = true
+
+            if (value.contains(requireContext().getString(R.string.beans_and_peas)))
+                binding.beansAndPeasCheckbox.isChecked = true
+
+            if (value.contains(requireContext().getString(R.string.nuts_and_seeds)))
+                binding.nutsAndSeedsCheckbox.isChecked = true
+
+            if (value.contains(requireContext().getString(R.string.dairy)))
+                binding.dairyCheckbox.isChecked = true
+
+            if (value.contains(requireContext().getString(R.string.eggs)))
+                binding.eggsCheckbox.isChecked = true
+
+            if (value.contains(requireContext().getString(R.string.flesh_food)))
+                binding.fleshFoodCheckbox.isChecked = true
+
+            if (value.contains(requireContext().getString(R.string.any_vegetables)))
+                binding.anyVegetablesCheckbox.isChecked = true
+        }
+    }
+
+    private fun setDataForFamilyMemberDefeated() {
+        binding.defecationInOpenRadioGroup.checkedRadioButtonId.let { checkedId ->
+            householdSurveyModel.householdOpenDefecationStatus = if (checkedId != -1) {
+                if (checkedId == binding.defecationYesRadioButton.id) {
+                    StringUtils.getPreTerm(
+                        binding.defecationYesRadioButton.text.toString(),
+                        SessionManager(requireActivity()).appLanguage
+                    )
+                } else {
+                    StringUtils.getPreTerm(
+                        binding.defecationNoRadioButton.text.toString(),
+                        SessionManager(requireActivity()).appLanguage
+                    )
+                }
+            } else {
+                "-"
+            }
+        }
+    }
+
+    override fun onPatientDataLoaded(householdSurveyModel: HouseholdSurveyModel) {
+        super.onPatientDataLoaded(householdSurveyModel)
+        Timber.d { Gson().toJson(householdSurveyModel) }
+        setDataToUI();
+
+        binding.patientSurveyAttributes = householdSurveyModel
+        binding.isEditMode = houseHoldViewModel.isEditMode
+    }
+
+    private fun setDataToUI() {
+        setDataForFamilyMemberDefeated()
+        setDataForKindOfFoodPrepared()
     }
 }

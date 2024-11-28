@@ -15,12 +15,14 @@ import org.intelehealth.app.activities.householdSurvey.models.HouseholdSurveyMod
 import org.intelehealth.app.app.IntelehealthApplication
 import org.intelehealth.app.databinding.FragmentSecondHouseholdSurveyBinding
 import org.intelehealth.app.models.dto.PatientDTO
+import org.intelehealth.app.ui.filter.FirstLetterUpperCaseInputFilter
 import org.intelehealth.app.utilities.ArrayAdapterUtils
 import org.intelehealth.app.utilities.HouseholdSurveyStage
 import org.intelehealth.app.utilities.LanguageUtils
 import org.intelehealth.app.utilities.SessionManager
 import org.intelehealth.app.utilities.StringUtils
 import org.intelehealth.app.utilities.StringUtils.getHouseholdHeadReligion
+import org.intelehealth.app.utilities.extensions.addFilter
 import org.json.JSONArray
 import org.json.JSONException
 import java.util.Locale
@@ -59,6 +61,7 @@ class SecondFragment : BaseHouseholdSurveyFragment(R.layout.fragment_second_hous
             patientUuid = intent.getStringExtra("patientUuid")
         }
         setClickListener()
+        applyFilter()
     }
 
     override fun onPatientDataLoaded(householdSurveyModel: HouseholdSurveyModel) {
@@ -95,7 +98,7 @@ class SecondFragment : BaseHouseholdSurveyFragment(R.layout.fragment_second_hous
             SessionManager(requireActivity()).appLanguage,
             context,
             otherIncome
-        )
+        ).takeIf { it != "[]" } ?: householdSurveyModel.primarySourceOfIncome
     }
 
 
@@ -293,5 +296,9 @@ class SecondFragment : BaseHouseholdSurveyFragment(R.layout.fragment_second_hous
         }
         return -1 // Return -1 if not found
     }
-
+    private fun applyFilter() {
+        binding.textInputHeadOfHousehold.addFilter(FirstLetterUpperCaseInputFilter())
+        binding.textInpuOtherReligion.addFilter(FirstLetterUpperCaseInputFilter())
+        binding.textInputOtherSourcesOfIncome.addFilter(FirstLetterUpperCaseInputFilter())
+    }
 }

@@ -35,5 +35,9 @@ data class ConfigResponse(
     var activeStatusAbha: Boolean = true,
     val version: Int = 0,
     @SerializedName("patient_diagnostics")
-    val diagnostics: List<Diagnostics>
+    val diagnostics: List<Diagnostics>,
+    @SerializedName("patient_family_member_registration")
+    var activeStatusFamilyRegistration: Boolean = true,
+    @SerializedName("patient_household_survey")
+    var activeStatusHouseholdSurvey: Boolean = true
 )

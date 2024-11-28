@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <import type="android.view.View" />
 
         <variable
@@ -173,7 +174,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/form_fields_common_margin_top"
                         android:orientation="vertical"
-                        tools:visibility="visible">
+                        android:visibility="gone">
 
                         <TextView
                             android:id="@+id/lblOtherSourcesOfFuelLayout"
@@ -194,7 +195,7 @@
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/textInputOtherSourcesOfFuelLayout"
-                                style="@style/AppTheme.InputBox.Name"
+                                style="@style/AppTheme.InputBox"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:hint="@string/hint_other_fuel_type" />
@@ -312,7 +313,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/form_fields_common_margin_top"
                         android:orientation="vertical"
-                        tools:visibility="visible">
+                        android:visibility="gone">
 
                         <TextView
                             android:id="@+id/lblOtherSourcesOfLightingLayout"
@@ -333,7 +334,7 @@
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/textInputOtherSourcesOfLightingLayout"
-                                style="@style/AppTheme.InputBox.Name"
+                                style="@style/AppTheme.InputBox"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:hint="@string/hint_other_lighting_source" />
@@ -520,7 +521,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/form_fields_common_margin_top"
                         android:orientation="vertical"
-                        tools:visibility="visible">
+                        android:visibility="gone">
 
                         <TextView
                             android:id="@+id/lblOtherSourcesOfDrinkingWaterLayout"
@@ -541,7 +542,7 @@
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/textInputOtherSourcesDrinkingWater"
-                                style="@style/AppTheme.InputBox.Name"
+                                style="@style/AppTheme.InputBox"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:hint="@string/hint_other_lighting_source" />
@@ -679,7 +680,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/form_fields_common_margin_top"
                         android:orientation="vertical"
-                        tools:visibility="visible">
+                        android:visibility="gone">
 
                         <TextView
                             android:id="@+id/lblother_ways_of_purifying_water_edit_text"
@@ -700,7 +701,7 @@
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/inputOtherPurificationMethod"
-                                style="@style/AppTheme.InputBox.Name"
+                                style="@style/AppTheme.InputBox"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:hint="@string/hint_other_water_purification" />

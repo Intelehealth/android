@@ -67,6 +67,8 @@ class ConfigRepository(
                 activeStatusPatientAddress = config.activeStatusPatientAddress
                 activeStatusPatientOther = config.activeStatusPatientOther
                 activeStatusAbha = config.activeStatusAbha
+                activeStatusPatientFamilyMemberRegistration = config.activeStatusFamilyRegistration
+                activeStatusPatientHouseholdSurvey = config.activeStatusHouseholdSurvey
             }.also { configDb.featureActiveStatusDao().add(it) }
             onCompleted.invoke()
         }
