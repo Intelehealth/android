@@ -68,25 +68,30 @@ class LocationSurveyActivity : AppCompatActivity() {
         if (sessionManager?.stateName?.isBlank() == false) {
             binding?.autotvSelectState?.setText(sessionManager?.stateName, false)
             binding?.autotvSelectState?.isEnabled = true
+            binding?.autotvSelectDistrict?.setAdapter(getDistrictArrayAdapter())
+            binding?.autotvSelectDistrict?.isEnabled = true
         }
 
         if (sessionManager?.districtName?.isBlank() == false) {
             binding?.autotvSelectDistrict?.setText(sessionManager?.districtName, false)
             binding?.autotvSelectDistrict?.isEnabled = true
-            binding?.autotvSelectDistrict?.setAdapter(getDistrictArrayAdapter())
+            binding?.autotvSelectSanch?.setAdapter(getSanchArrayAdapter())
+            binding?.autotvSelectSanch?.isEnabled = true
         }
 
         if (sessionManager?.sanchName?.isBlank() == false) {
             binding?.autotvSelectSanch?.setText(sessionManager?.sanchName, false)
             binding?.autotvSelectSanch?.isEnabled = true
-            binding?.autotvSelectSanch?.setAdapter(getSanchArrayAdapter())
+            binding?.autotvSelectPrimaryVillage?.setAdapter(getPrimaryVillageArrayAdapter())
+            binding?.autotvSelectPrimaryVillage?.isEnabled = true
         }
 
         if (sessionManager?.currentLocationName?.isBlank() == false) {
             binding?.autotvSelectPrimaryVillage?.setText(sessionManager?.currentLocationName, false)
             binding?.autotvSelectPrimaryVillage?.isEnabled = true
-            binding?.autotvSelectPrimaryVillage?.setAdapter(getPrimaryVillageArrayAdapter())
             fetchAndSetLocationAttributes(sessionManager?.currentLocationUuid)
+            binding?.autotvSelectSecondaryVillage?.setAdapter(getSecondaryVillageArrayAdapter())
+            binding?.autotvSelectSecondaryVillage?.isEnabled = true
         }
 
         if (sessionManager?.secondaryLocationName?.isBlank() == false) {
@@ -94,8 +99,6 @@ class LocationSurveyActivity : AppCompatActivity() {
                 sessionManager?.secondaryLocationName,
                 false
             )
-            binding?.autotvSelectSecondaryVillage?.isEnabled = true
-            binding?.autotvSelectSecondaryVillage?.setAdapter(getSecondaryVillageArrayAdapter())
         }
     }
 
