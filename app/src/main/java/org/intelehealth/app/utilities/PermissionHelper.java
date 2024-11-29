@@ -32,7 +32,8 @@ public class PermissionHelper {
             Manifest.permission.ACCESS_COARSE_LOCATION,
             Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.RECORD_AUDIO,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.MODIFY_AUDIO_SETTINGS
     };
 
     private final Activity activity;
@@ -73,7 +74,20 @@ public class PermissionHelper {
     // Handle permission results
     public void handlePermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         if (requestCode == REQUEST_CODE_PERMISSIONS) {
-            boolean allGranted = true;
+            boolean allGranted = grantResults.length != 0;
+            for (int grantResult : grantResults) {
+                if (grantResult != PackageManager.PERMISSION_GRANTED) {
+                    allGranted = false;
+                    break;
+                }
+            }
+            if (allGranted) {
+                requestPermissions();
+            } else {
+                redirectToSettingsIfDenied();
+            }
+
+           /* boolean allGranted = true;
 
             for (int i = 0; i < permissions.length; i++) {
                 if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
@@ -89,7 +103,7 @@ public class PermissionHelper {
             } else {
                 Toast.makeText(activity, "Some permissions denied", Toast.LENGTH_LONG).show();
                 redirectToSettingsIfDenied();
-            }
+            }*/
         }
     }
 

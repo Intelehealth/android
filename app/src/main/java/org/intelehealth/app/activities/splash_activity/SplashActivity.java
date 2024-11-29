@@ -229,6 +229,7 @@ public class SplashActivity extends AppCompatActivity {
         int bluetoothAdminPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_ADMIN);
         int coarseLocationPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION);
         int fineLocationPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
+        int microphonePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO);
 
         List<String> listPermissionsNeeded = new ArrayList<>();
 
@@ -264,6 +265,9 @@ public class SplashActivity extends AppCompatActivity {
         }
         if (phoneStatePermission != PackageManager.PERMISSION_GRANTED) {
             listPermissionsNeeded.add(Manifest.permission.READ_PHONE_STATE);
+        }
+        if (microphonePermission != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.RECORD_AUDIO);
         }
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
             int bluetoothScanPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_SCAN);

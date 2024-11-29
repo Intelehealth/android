@@ -51,6 +51,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import org.intelehealth.app.activities.digitalStethoscope.AiStethRecordActivity;
 import org.intelehealth.app.activities.homeActivity.HomeActivity;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.ConceptAttributeListDAO;
@@ -81,7 +82,7 @@ import org.intelehealth.app.utilities.UuidDictionary;
 
 import org.intelehealth.app.utilities.exception.DAOException;
 
-public class VitalsActivity extends BaseActivity /*implements BluetoothService.OnBluetoothEventCallback*/ {
+public class VitalsActivity extends BaseActivity implements View.OnClickListener/*implements BluetoothService.OnBluetoothEventCallback*/ {
     private static final String TAG = VitalsActivity.class.getSimpleName();
     SessionManager sessionManager;
     private String patientName = "", patientFName = "", patientLName = "";
@@ -96,7 +97,7 @@ public class VitalsActivity extends BaseActivity /*implements BluetoothService.O
     String heightvalue;
     String weightvalue;
     ConfigUtils configUtils = new ConfigUtils(VitalsActivity.this);
-    private PermissionHelper permissionHelper;
+  //  private PermissionHelper permissionHelper;
 
 
     VitalsObject results = new VitalsObject();
@@ -109,6 +110,7 @@ public class VitalsActivity extends BaseActivity /*implements BluetoothService.O
             uricAcid_btn, cholesterol_btn;
  //   BluetoothService bluetoothService;
     AppCompatImageView imageView;
+    Button btnLungSoundRecord,btnHeartSoundRecord;
     TextView textView;
     AlertDialog alertDialog;
     int btnClick = 0;
@@ -151,12 +153,12 @@ public class VitalsActivity extends BaseActivity /*implements BluetoothService.O
       //  EzdxBT.authenticate(key); // Authenticate Key before starting the test.
 
         // Permision
-        permissionHelper = new PermissionHelper(this);
+      //  permissionHelper = new PermissionHelper(this);
 
         // Check and request permissions
-        if (!permissionHelper.hasAllPermissions()) {
-            permissionHelper.requestPermissions();
-        }
+//        if (!permissionHelper.hasAllPermissions()) {
+//            permissionHelper.requestPermissions();
+//        }
 
 //        Setting the title
         setTitle(getString(R.string.title_activity_vitals));
@@ -189,6 +191,13 @@ public class VitalsActivity extends BaseActivity /*implements BluetoothService.O
 //    Respiratory added by mahiti dev team
         mResp = findViewById(R.id.table_respiratory);
         mBMI.setEnabled(false);
+
+        btnLungSoundRecord = findViewById(R.id.btnLungSoundRecord);
+        btnLungSoundRecord.setOnClickListener(this);
+        btnHeartSoundRecord = findViewById(R.id.btnHeartSoundRecord);
+        btnHeartSoundRecord.setOnClickListener(this);
+
+
 
        /* bluetoothService = BluetoothService.getDefaultInstance();
         bluetoothService.setOnEventCallback(this);
@@ -2071,7 +2080,7 @@ public class VitalsActivity extends BaseActivity /*implements BluetoothService.O
     }
 
 
-    @Override
+   /* @Override
     public void onRequestPermissionsResult(int requestCode,
                                            @NonNull String[] permissions,
                                            @NonNull int[] grantResults)
@@ -2079,7 +2088,29 @@ public class VitalsActivity extends BaseActivity /*implements BluetoothService.O
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         // Delegate the permission result handling to PermissionHelper
         permissionHelper.handlePermissionsResult(requestCode, permissions, grantResults);
-    }
+    }*/
 
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.btnLungSoundRecord || v.getId() == R.id.btnHeartSoundRecord) {
+            Intent intent = new Intent(VitalsActivity.this, AiStethRecordActivity.class);
+            intent.putExtra("option", v.getId() == R.id.btnLungSoundRecord ? "Lung" : "Heart");
+
+            intent.putExtra("patientUuid", patientUuid);
+            intent.putExtra("visitUuid", visitUuid);
+            intent.putExtra("encounterUuidVitals", encounterVitals);
+            intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
+            intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
+            intent.putExtra("state", state);
+            intent.putExtra("name", patientName);
+            intent.putExtra("patientFirstName", patientFName);
+            intent.putExtra("patientLastName", patientLName);
+            intent.putExtra("gender", patientGender);
+            intent.putExtra("tag", intentTag);
+
+            startActivity(intent);
+        }
+
+    }
 }
 
