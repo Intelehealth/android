@@ -53,6 +53,7 @@ import androidx.lifecycle.ProcessLifecycleOwner;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 import com.parse.Parse;
@@ -111,6 +112,7 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
     private List<Location> mLocations = new ArrayList<>();
     private boolean isLocationSurveyCompleted = false;
     AutoCompleteTextView autotvLocations;
+    TextInputLayout autoTvTextInputLayout;
     TextInputEditText etUsername, etPassword, etAdminPassword, etServer;
     UrlModifiers urlModifiers = new UrlModifiers();
     String encoded = null;
@@ -151,6 +153,7 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
         questionIV = findViewById(R.id.setup_info_question_mark);
         customProgressDialog = new CustomProgressDialog(context);
         autotvLocations = findViewById(R.id.autotv_select_location);
+        autoTvTextInputLayout = findViewById(R.id.tl_auto_tv_location);
         btnSetup = findViewById(R.id.btn_setup);
         tvForgotPassword = findViewById(R.id.tv_forgot_password1);
         etServer = findViewById(R.id.et_server);
@@ -171,16 +174,8 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
         etServer.addTextChangedListener(new MyTextWatcher(etServer));
         tipWindow = new TooltipWindow(SetupActivityNew.this);
 
-        autotvLocations.setOnClickListener(v -> {
-            if (isUrlValid) {
-                mLocationErrorTextView.setVisibility(View.GONE);
-                Intent intent = new Intent(SetupActivityNew.this, LocationSurveyActivity.class);
-                intent.putExtra(AppConstants.INTENT_SERVER_URL, baseUrl);
-                startActivity(intent);
-            } else {
-                displayCheckUrlToast();
-            }
-        });
+        autotvLocations.setOnClickListener(v -> redirectToLocationSurveyScreen());
+        autoTvTextInputLayout.setEndIconOnClickListener(v -> redirectToLocationSurveyScreen());
 
         ImageView ivBackArrow = findViewById(R.id.iv_back_arrow);
         ivBackArrow.setOnClickListener(new View.OnClickListener() {
@@ -257,6 +252,17 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
             }
         });
 
+    }
+
+    private void redirectToLocationSurveyScreen() {
+        if (isUrlValid) {
+            mLocationErrorTextView.setVisibility(View.GONE);
+            Intent intent = new Intent(SetupActivityNew.this, LocationSurveyActivity.class);
+            intent.putExtra(AppConstants.INTENT_SERVER_URL, baseUrl);
+            startActivity(intent);
+        } else {
+            displayCheckUrlToast();
+        }
     }
 
     @Override

@@ -186,9 +186,14 @@ class LocationSurveyActivity : AppCompatActivity() {
         binding?.autotvSelectState?.onItemClickListener =
             AdapterView.OnItemClickListener { parent, _, position, _ ->
                 if (position != 0) {
+                    sessionManager?.stateName = ""
+                    sessionManager?.districtName = ""
+                    sessionManager?.sanchName = ""
+                    sessionManager?.currentLocationName = ""
+                    sessionManager?.secondaryLocationName = ""
+
                     selectedState = parent?.getItemAtPosition(position)?.toString()
                     sessionManager?.stateName = selectedState
-
                     districtArrayAdapter = getDistrictArrayAdapter()
 
                     if (districtArrayAdapter != null) {
@@ -202,15 +207,20 @@ class LocationSurveyActivity : AppCompatActivity() {
                     }
                 } else {
                     sessionManager?.stateName = ""
+                    emptySpinner("state")
                 }
+                unselectExistingRadioButtons()
             }
 
         binding?.autotvSelectDistrict?.onItemClickListener =
             AdapterView.OnItemClickListener { parent, view, position, id ->
                 if (position != 0) {
+                    sessionManager?.sanchName = ""
+                    sessionManager?.currentLocationName = ""
+                    sessionManager?.secondaryLocationName = ""
+
                     selectedDistrict = parent?.getItemAtPosition(position)?.toString()
                     sessionManager?.districtName = selectedDistrict
-
                     sanchArrayAdapter = getSanchArrayAdapter()
 
                     if (sanchArrayAdapter != null) {
@@ -226,11 +236,15 @@ class LocationSurveyActivity : AppCompatActivity() {
                     sessionManager?.districtName = ""
                     emptySpinner("district")
                 }
+                unselectExistingRadioButtons()
             }
 
         binding?.autotvSelectSanch?.onItemClickListener =
             AdapterView.OnItemClickListener { parent, _, position, _ ->
                 if (position != 0) {
+                    sessionManager?.currentLocationName = ""
+                    sessionManager?.secondaryLocationName = ""
+
                     selectedSanch = parent?.getItemAtPosition(position)?.toString()
                     sessionManager?.sanchName = selectedSanch
 
@@ -255,6 +269,7 @@ class LocationSurveyActivity : AppCompatActivity() {
         binding?.autotvSelectPrimaryVillage?.onItemClickListener =
             AdapterView.OnItemClickListener { parent, view, position, id ->
                 if (position != 0) {
+                    sessionManager?.secondaryLocationName = ""
                     selectedPrimaryVillage = parent?.getItemAtPosition(position)?.toString()
                     sessionManager?.villageName = selectedPrimaryVillage
                     sessionManager?.currentLocationName = selectedPrimaryVillage
@@ -448,6 +463,10 @@ class LocationSurveyActivity : AppCompatActivity() {
                 binding?.autotvSelectSecondaryVillage?.setAlpha(0.4f)
                 binding?.autotvSelectSecondaryVillage?.setText(resources.getString(R.string.select_secondary_village))
 
+                sessionManager?.districtName = ""
+                sessionManager?.sanchName = ""
+                sessionManager?.currentLocationName = ""
+                sessionManager?.secondaryLocationName = ""
             }
 
             "district" -> {
@@ -462,6 +481,10 @@ class LocationSurveyActivity : AppCompatActivity() {
                 binding?.autotvSelectSecondaryVillage?.setEnabled(false)
                 binding?.autotvSelectSecondaryVillage?.setAlpha(0.4f)
                 binding?.autotvSelectSecondaryVillage?.setText(resources.getString(R.string.select_secondary_village))
+
+                sessionManager?.sanchName = ""
+                sessionManager?.currentLocationName = ""
+                sessionManager?.secondaryLocationName = ""
             }
 
             "sanch" -> {
@@ -472,12 +495,17 @@ class LocationSurveyActivity : AppCompatActivity() {
                 binding?.autotvSelectSecondaryVillage?.setEnabled(false)
                 binding?.autotvSelectSecondaryVillage?.setAlpha(0.4f)
                 binding?.autotvSelectSecondaryVillage?.setText(resources.getString(R.string.select_secondary_village))
+
+                sessionManager?.currentLocationName = ""
+                sessionManager?.secondaryLocationName = ""
             }
 
             "village" -> {
                 binding?.autotvSelectSecondaryVillage?.setEnabled(false)
                 binding?.autotvSelectSecondaryVillage?.setAlpha(0.4f)
                 binding?.autotvSelectSecondaryVillage?.setText(resources.getString(R.string.select_secondary_village))
+
+                sessionManager?.secondaryLocationName = ""
             }
 
             else -> {
@@ -500,6 +528,12 @@ class LocationSurveyActivity : AppCompatActivity() {
                 binding?.autotvSelectSecondaryVillage?.setEnabled(false)
                 binding?.autotvSelectSecondaryVillage?.setAlpha(0.4f)
                 binding?.autotvSelectSecondaryVillage?.setText(resources.getString(R.string.select_secondary_village))
+
+                sessionManager?.stateName = ""
+                sessionManager?.districtName = ""
+                sessionManager?.sanchName = ""
+                sessionManager?.currentLocationName = ""
+                sessionManager?.secondaryLocationName = ""
             }
         }
     }

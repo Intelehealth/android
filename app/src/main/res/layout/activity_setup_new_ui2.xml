@@ -157,6 +157,7 @@
                     android:textSize="@dimen/common_label_text_size" />
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tl_auto_tv_location"
                     style="@style/AutocompleteviewStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
