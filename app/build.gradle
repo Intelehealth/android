@@ -176,6 +176,8 @@ dependencies {
 
     implementation "androidx.camera:camera-view:${camerax_version}"
     implementation "androidx.camera:camera-extensions:${camerax_version}"
+    
+    implementation 'com.github.squti:Android-Wave-Recorder:2.0.1'   // AiSteth - Wav file recorder and generator.
 
 }
 apply plugin: 'com.google.gms.google-services'  // Google Play services Gradle plugin

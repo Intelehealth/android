@@ -30,6 +30,7 @@ import com.healthcubed.ezdxlib.model.HCDeviceData;
 import com.healthcubed.ezdxlib.model.Status;
 import com.healthcubed.ezdxlib.model.TestName;*/
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
@@ -56,6 +57,7 @@ import org.intelehealth.app.database.dao.ConceptAttributeListDAO;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.EditTextUtils;
+import org.intelehealth.app.utilities.PermissionHelper;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -94,6 +96,7 @@ public class VitalsActivity extends BaseActivity /*implements BluetoothService.O
     String heightvalue;
     String weightvalue;
     ConfigUtils configUtils = new ConfigUtils(VitalsActivity.this);
+    private PermissionHelper permissionHelper;
 
 
     VitalsObject results = new VitalsObject();
@@ -147,6 +150,13 @@ public class VitalsActivity extends BaseActivity /*implements BluetoothService.O
         sessionManager = new SessionManager(this);
       //  EzdxBT.authenticate(key); // Authenticate Key before starting the test.
 
+        // Permision
+        permissionHelper = new PermissionHelper(this);
+
+        // Check and request permissions
+        if (!permissionHelper.hasAllPermissions()) {
+            permissionHelper.requestPermissions();
+        }
 
 //        Setting the title
         setTitle(getString(R.string.title_activity_vitals));
@@ -2059,4 +2069,17 @@ public class VitalsActivity extends BaseActivity /*implements BluetoothService.O
     private String getPrice(String price, int indexOf) {
         return price.substring(0, indexOf);
     }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions,
+                                           @NonNull int[] grantResults)
+    {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        // Delegate the permission result handling to PermissionHelper
+        permissionHelper.handlePermissionsResult(requestCode, permissions, grantResults);
+    }
+
 }
+
