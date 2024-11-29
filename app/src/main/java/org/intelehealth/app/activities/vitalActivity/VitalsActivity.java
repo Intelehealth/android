@@ -36,6 +36,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.Toolbar;
 
+import android.os.CountDownTimer;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
@@ -66,6 +69,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.concurrent.Executors;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.complaintNodeActivity.ComplaintNodeActivity;
@@ -84,6 +88,7 @@ import org.intelehealth.app.utilities.exception.DAOException;
 
 public class VitalsActivity extends BaseActivity implements View.OnClickListener/*implements BluetoothService.OnBluetoothEventCallback*/ {
     private static final String TAG = VitalsActivity.class.getSimpleName();
+    private static final long HEART_SOUND_TIMER = 40000;
     SessionManager sessionManager;
     private String patientName = "", patientFName = "", patientLName = "";
     private String patientGender = "";
@@ -99,6 +104,14 @@ public class VitalsActivity extends BaseActivity implements View.OnClickListener
     ConfigUtils configUtils = new ConfigUtils(VitalsActivity.this);
   //  private PermissionHelper permissionHelper;
 
+    // AiSteth - Stetho
+    private CountDownTimer countDownTimer;
+    private boolean isTimerRunning = false;
+    private long timeLeftInMillis = HEART_SOUND_TIMER; // 40 secs in milliseconds
+    TextView tvTimer;
+    ImageButton btnRecord;
+    MaterialAlertDialogBuilder dialog;
+    // Aisteth - end
 
     VitalsObject results = new VitalsObject();
     private String encounterAdultIntials = "", EncounterAdultInitial_LatestVisit = "";
@@ -904,6 +917,125 @@ public class VitalsActivity extends BaseActivity implements View.OnClickListener
 
         alertDialog = dialog.create();
         alertDialog.show();
+
+        Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        pb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+        pb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+
+        alertDialog.setCancelable(false);
+        alertDialog.setCanceledOnTouchOutside(false);
+        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+    }
+
+    private void startTimer() {
+
+                countDownTimer = new CountDownTimer(timeLeftInMillis, 100) {
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+                        // Update the timer text every second
+                        timeLeftInMillis = millisUntilFinished;
+
+
+
+                                updateTimerText(millisUntilFinished);
+
+
+
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        // Timer finished
+                        timeLeftInMillis = 0;
+                        isTimerRunning = false;
+
+
+                                updateTimerText(timeLeftInMillis);
+                                btnRecord.setImageResource(R.drawable.play_circle_svg);
+
+
+
+
+                    }
+                };
+
+                countDownTimer.start();
+
+
+
+
+
+    }
+
+    private void updateTimerText(long millis) {
+          //  int minutes = (int) (millis / (1000 * 60)) % 60;
+            int seconds = (int) (millis / 1000) % 60;
+
+                String timeFormatted = String.format("%02d", /*minutes,*/ seconds);
+                tvTimer.setText(timeFormatted);
+
+
+    }
+
+    private void resetTimer() {
+        timeLeftInMillis = HEART_SOUND_TIMER;
+        updateTimerText(timeLeftInMillis);
+    }
+
+    private void showRecordingDialog() {
+        // show dialog
+        dialog = new MaterialAlertDialogBuilder(this);
+        View layoutInflater = LayoutInflater.from(VitalsActivity.this)
+                .inflate(R.layout.layout_aisteth_recording, null);
+        tvTimer = layoutInflater.findViewById(R.id.tvTimer);
+        btnRecord = layoutInflater.findViewById(R.id.btnRecord);
+        dialog.setView(layoutInflater);
+
+        // Set the initial timer text
+        updateTimerText(timeLeftInMillis);
+
+        // Start button click listener
+        btnRecord.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isTimerRunning) {
+                    // Pause the timer
+                    countDownTimer.cancel();
+                    isTimerRunning = false;
+                    btnRecord.setImageResource(R.drawable.play_circle_svg);
+                    // show pause icon here.
+                } else {
+                    // Start the timer
+                    startTimer();
+                    isTimerRunning = true;
+                    btnRecord.setImageResource(R.drawable.pause_circle_svg);
+                    // show start icon here.
+                }
+            }
+        });
+
+        dialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+                    // Pause the timer
+                    countDownTimer.cancel();
+                    resetTimer();
+                    isTimerRunning = false;
+                    btnRecord.setImageResource(R.drawable.play_circle_svg);
+                    // show pause icon here.
+                
+                dialogInterface.cancel();
+              //  EzdxBT.stopCurrentTest(); // stopping the test is necessary...
+             //   Toast.makeText(VitalsActivity.this, getString(R.string.test_stopped), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        if (!isFinishing()) {
+            alertDialog = dialog.create();
+            alertDialog.show();
+        }
+
 
         Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
         pb.setTextColor(getResources().getColor((R.color.colorPrimary)));
@@ -2093,7 +2225,9 @@ public class VitalsActivity extends BaseActivity implements View.OnClickListener
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.btnLungSoundRecord || v.getId() == R.id.btnHeartSoundRecord) {
-            Intent intent = new Intent(VitalsActivity.this, AiStethRecordActivity.class);
+            showRecordingDialog();
+
+            /*Intent intent = new Intent(VitalsActivity.this, AiStethRecordActivity.class);
             intent.putExtra("option", v.getId() == R.id.btnLungSoundRecord ? "Lung" : "Heart");
 
             intent.putExtra("patientUuid", patientUuid);
@@ -2108,7 +2242,7 @@ public class VitalsActivity extends BaseActivity implements View.OnClickListener
             intent.putExtra("gender", patientGender);
             intent.putExtra("tag", intentTag);
 
-            startActivity(intent);
+            startActivity(intent);*/
         }
 
     }
