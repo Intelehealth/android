@@ -1,5 +1,7 @@
 package org.intelehealth.app.activities.householdSurvey.fragments
 
+import android.content.Context
+import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -18,12 +20,14 @@ import org.intelehealth.app.utilities.SessionManager
 import org.intelehealth.app.utilities.StringUtils
 import org.intelehealth.core.registry.PermissionRegistry
 import java.util.Calendar
+import java.util.Locale
 
 class SixthFragment : BaseHouseholdSurveyFragment(R.layout.fragment_sixth_household_survey) {
 
     private lateinit var binding: FragmentSixthHouseholdSurveyBinding
     var selectedDate = Calendar.getInstance().timeInMillis
     private var patientUuid: String? = null
+    private lateinit var updatedContext: Context
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -83,8 +87,7 @@ class SixthFragment : BaseHouseholdSurveyFragment(R.layout.fragment_sixth_househ
     }
 
     private fun setupFamilyMemberDefeated() {
-       // var defeation = "-"
-        var defeation = ""
+        var defeation = "-"
         binding.defecationInOpenRadioGroup.checkedRadioButtonId.takeIf { it != -1 }?.let {
             defeation = StringUtils.getPreTerm(
                 (binding.defecationInOpenRadioGroup.findViewById<RadioButton>(it)).text.toString(),
@@ -100,7 +103,7 @@ class SixthFragment : BaseHouseholdSurveyFragment(R.layout.fragment_sixth_househ
             SessionManager(requireActivity()).appLanguage,
             context,
             ""
-        ).takeIf { it != "[]" } ?: householdSurveyModel.mainLightingSource
+        )
     }
 
     private fun setDataForKindOfFoodPrepared() {
@@ -128,8 +131,26 @@ class SixthFragment : BaseHouseholdSurveyFragment(R.layout.fragment_sixth_househ
                 binding.anyVegetablesCheckbox.isChecked = true
         }
     }
-
     private fun setDataForFamilyMemberDefeated() {
+        val value1 = householdSurveyModel.householdOpenDefecationStatus
+        when {
+            value1 != null && value1.equals(
+                updatedContext.getString(R.string.yes),
+                ignoreCase = true
+            ) ->
+                binding.defecationYesRadioButton.isChecked = true
+
+            value1 != null && value1.equals(
+                updatedContext.getString(R.string.no),
+                ignoreCase = true
+            ) ->
+                binding.defecationNoRadioButton.isChecked = true
+        }
+
+
+    }
+
+   /* private fun setDataForFamilyMemberDefeated() {
         binding.defecationInOpenRadioGroup.checkedRadioButtonId.let { checkedId ->
             householdSurveyModel.householdOpenDefecationStatus = if (checkedId != -1) {
                 if (checkedId == binding.defecationYesRadioButton.id) {
@@ -147,7 +168,7 @@ class SixthFragment : BaseHouseholdSurveyFragment(R.layout.fragment_sixth_househ
                 "-"
             }
         }
-    }
+    }*/
 
     override fun onPatientDataLoaded(householdSurveyModel: HouseholdSurveyModel) {
         super.onPatientDataLoaded(householdSurveyModel)
@@ -159,6 +180,14 @@ class SixthFragment : BaseHouseholdSurveyFragment(R.layout.fragment_sixth_househ
     }
 
     private fun setDataToUI() {
+        updatedContext =
+            if (SessionManager(requireActivity()).appLanguage.equals("mr", ignoreCase = true)) {
+                val configuration = Configuration(requireContext().resources.configuration)
+                configuration.setLocale(Locale("en"))
+                requireContext().createConfigurationContext(configuration)
+            } else {
+                requireContext()
+            }
         setDataForFamilyMemberDefeated()
         setDataForKindOfFoodPrepared()
     }

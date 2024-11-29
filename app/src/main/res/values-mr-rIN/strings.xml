@@ -720,4 +720,5 @@
 
     <string name="family_members">Family Members</string>
     <string name="no_family_member_registered">No family member registered</string>
+    <string name="fill_required_fields">कृपया सर्व आवश्यक फील्ड भरा</string>
 </resources>

@@ -152,23 +152,16 @@ class ThirdFragment : BaseHouseholdSurveyFragment(R.layout.fragment_third_househ
     }
 
     private fun setDataToElectricityStatusOptions() {
-
         val electricityStatus = householdSurveyModel.householdElectricityStatus
         if (!electricityStatus.isNullOrEmpty()) {
             //from db
             electricityStatus.let {
                 if (it.equals(updatedContext.getString(R.string.yes), ignoreCase = true)) {
                     binding.rbElectricityYes.isChecked = true
-                    if (!householdSurveyModel.noOfHoursOfLoadSheddingPerDay.isNullOrEmpty() && !householdSurveyModel.noOfHoursOfLoadSheddingPerDay.equals(
-                            "-"
-                        )
-                    )
+                    if (!householdSurveyModel.noOfHoursOfLoadSheddingPerDay.isNullOrEmpty() && !householdSurveyModel.noOfHoursOfLoadSheddingPerDay.equals("-"))
                         binding.loadSheddingHoursTextView.setText(householdSurveyModel.noOfHoursOfLoadSheddingPerDay)
 
-                    if (!householdSurveyModel.noOfDaysOfLoadSheddingPerWeek.isNullOrEmpty() && !householdSurveyModel.noOfHoursOfLoadSheddingPerDay.equals(
-                            "-"
-                        )
-                    )
+                    if (!householdSurveyModel.noOfDaysOfLoadSheddingPerWeek.isNullOrEmpty() && !householdSurveyModel.noOfHoursOfLoadSheddingPerDay.equals("-"))
                         binding.loadSheddingDaysPerWeekTextView.setText(householdSurveyModel.noOfDaysOfLoadSheddingPerWeek)
 
                 } else if (it.equals(updatedContext.getString(R.string.no), ignoreCase = true)) {
@@ -182,7 +175,7 @@ class ThirdFragment : BaseHouseholdSurveyFragment(R.layout.fragment_third_househ
     private fun savePatient() {
         householdSurveyModel.apply {
            // waterSourceDistance = mDistanceFromWaterSource
-            namePrimaryRespondent = binding.textInputWaterSourceDistance.text?.toString()
+            waterSourceDistance = binding.textInputWaterSourceDistance.text?.toString()
 
             setupElectricityOptions()
             setupRunningWaterOptions()
@@ -218,13 +211,11 @@ class ThirdFragment : BaseHouseholdSurveyFragment(R.layout.fragment_third_househ
         if (binding.rgHouseholdElectricity.checkedRadioButtonId == binding.rbElectricityYes.id) {
             householdSurveyModel.noOfHoursOfLoadSheddingPerDay =
                 binding.loadSheddingHoursTextView.text.toString().let {
-                    it.ifEmpty { "" }
-                   // it.ifEmpty { "-" }
+                    it.ifEmpty { "-" }
                 }
             householdSurveyModel.noOfDaysOfLoadSheddingPerWeek =
                 binding.loadSheddingDaysPerWeekTextView.text.toString().let {
-                    it.ifEmpty { "" }
-                   // it.ifEmpty { "-" }
+                    it.ifEmpty { "-" }
                 }
         }
 
@@ -252,7 +243,7 @@ class ThirdFragment : BaseHouseholdSurveyFragment(R.layout.fragment_third_househ
                     .isNullOrEmpty()
             ) {
                 householdSurveyModel.waterSupplyAvailabilityHrsPerDay =
-                    binding.textInputWaterSupplyAvailabilityHrsPerDay.toString()
+                    binding.textInputWaterSupplyAvailabilityHrsPerDay.text.toString()
             } else {
                 householdSurveyModel.waterSupplyAvailabilityHrsPerDay = "-"
             }
@@ -260,10 +251,10 @@ class ThirdFragment : BaseHouseholdSurveyFragment(R.layout.fragment_third_househ
             if (!binding.textInputWaterSupplyAvailabilityDaysPerWeek.text.toString()
                     .isNullOrEmpty()
             ) {
-                householdSurveyModel.waterSupplyAvailabilityHrsPerDay =
-                    binding.textInputWaterSupplyAvailabilityDaysPerWeek.toString()
+                householdSurveyModel.waterSupplyAvailabilityDaysperWeek =
+                    binding.textInputWaterSupplyAvailabilityDaysPerWeek.text.toString()
             } else {
-                householdSurveyModel.waterSupplyAvailabilityHrsPerDay = "-"
+                householdSurveyModel.waterSupplyAvailabilityDaysperWeek = "-"
             }
 
         } else if (binding.runningWaterRadioGroup.checkedRadioButtonId == binding.runningWaterNoCheckbox.id) {
@@ -318,21 +309,11 @@ class ThirdFragment : BaseHouseholdSurveyFragment(R.layout.fragment_third_househ
                                 )
                             ) {
                                 binding.runningWaterYesCheckbox.isChecked = true
-                                if (!householdSurveyModel.waterSupplyAvailabilityHrsPerDay.isNullOrEmpty() && !householdSurveyModel.waterSupplyAvailabilityHrsPerDay.equals(
-                                        "-"
-                                    )
-                                )
-                                    binding.textInputWaterSupplyAvailabilityHrsPerDay.setText(
-                                        householdSurveyModel.waterSupplyAvailabilityHrsPerDay
-                                    )
+                                if (!householdSurveyModel.waterSupplyAvailabilityHrsPerDay.isNullOrEmpty() && !householdSurveyModel.waterSupplyAvailabilityHrsPerDay.equals("-"))
+                                    binding.textInputWaterSupplyAvailabilityHrsPerDay.setText(householdSurveyModel.waterSupplyAvailabilityHrsPerDay)
 
-                                if (!householdSurveyModel.waterSupplyAvailabilityDaysperWeek.isNullOrEmpty() && !householdSurveyModel.waterSupplyAvailabilityDaysperWeek.equals(
-                                        "-"
-                                    )
-                                )
-                                    binding.textInputWaterSupplyAvailabilityDaysPerWeek.setText(
-                                        householdSurveyModel.waterSupplyAvailabilityDaysperWeek
-                                    )
+                                if (!householdSurveyModel.waterSupplyAvailabilityDaysperWeek.isNullOrEmpty() && !householdSurveyModel.waterSupplyAvailabilityDaysperWeek.equals("-"))
+                                    binding.textInputWaterSupplyAvailabilityDaysPerWeek.setText(householdSurveyModel.waterSupplyAvailabilityDaysperWeek)
 
                             } else if (it.equals(
                                     updatedContext.getString(R.string.no),
@@ -482,8 +463,7 @@ class ThirdFragment : BaseHouseholdSurveyFragment(R.layout.fragment_third_househ
                     )
                 }
             } else {
-                ""
-              //  "-"
+               "-"
             }
         }
 

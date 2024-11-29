@@ -455,7 +455,7 @@
                     app:layout_constraintTop_toBottomOf="@id/distance_to_nearest_private_clinic_with_an_mbbs_doctor_radio_group" />
 
                 <RadioGroup
-                    android:id="@+id/distance_to_nearest_private_clinic_with_alternate_medical_practitioners_radio_group"
+                    android:id="@+id/distance_to_nearest_private_clinic_with_alternate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
@@ -515,7 +515,7 @@
                     android:text="@string/distance_to_nearest_tertiary_care_facility"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/distance_to_nearest_private_clinic_with_alternate_medical_practitioners_radio_group" />
+                    app:layout_constraintTop_toBottomOf="@id/distance_to_nearest_private_clinic_with_alternate" />
 
                 <RadioGroup
                     android:id="@+id/distance_to_nearest_tertiary_care_facility_radio_group"

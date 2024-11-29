@@ -140,10 +140,11 @@
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/textInputCultivatedLandOwnedByHousehold"
-                                style="@style/AppTheme.InputBox.Phone"
+                                style="@style/AppTheme.InputBox"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:hint="@string/enter_value"
+                                android:inputType="numberDecimal"
                                 android:maxLines="1"
                                 app:layout_constraintTop_toTopOf="parent" />
 

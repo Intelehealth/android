@@ -115,8 +115,9 @@
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/loadSheddingHoursTextView"
-                                style="@style/AppTheme.InputBox.Phone"
+                                style="@style/AppTheme.InputBox"
                                 android:layout_width="match_parent"
+                                android:inputType="numberDecimal"
                                 android:layout_height="wrap_content"
                                 android:hint="@string/hint_enter_hours" />
                         </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
@@ -142,12 +143,13 @@
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/loadSheddingDaysPerWeekTextView"
-                                style="@style/AppTheme.InputBox.Phone"
+                                style="@style/AppTheme.InputBox"
                                 android:layout_width="match_parent"
+                                android:inputType="numberDecimal"
                                 android:layout_height="wrap_content"
                                 android:hint="@string/hint_days_per_week" />
                         </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
-                        >
+
                     </LinearLayout>
 
                 </LinearLayout>
@@ -411,8 +413,9 @@
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/textInputWaterSourceDistance"
-                                style="@style/AppTheme.InputBox.Phone"
+                                style="@style/AppTheme.InputBox"
                                 android:layout_width="match_parent"
+                                android:inputType="numberDecimal"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/lato_regular"
                                 android:hint="@string/enter_value"
@@ -454,8 +457,9 @@
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/textInputWaterSupplyAvailabilityHrsPerDay"
-                            style="@style/AppTheme.InputBox.Phone"
+                            style="@style/AppTheme.InputBox"
                             android:layout_width="match_parent"
+                            android:inputType="numberDecimal"
                             android:layout_height="wrap_content"
                             android:hint="@string/enter_value" />
                     </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
@@ -480,9 +484,10 @@
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/textInputWaterSupplyAvailabilityDaysPerWeek"
-                            style="@style/AppTheme.InputBox.Phone"
+                            style="@style/AppTheme.InputBox"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:inputType="numberDecimal"
                             android:hint="@string/enter_value" />
                     </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
                 </LinearLayout>

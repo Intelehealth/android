@@ -118,7 +118,7 @@ class FifthFragment : BaseHouseholdSurveyFragment(R.layout.fragment_fifth_househ
             SessionManager(requireActivity()).appLanguage,
             context,
             otherCookingFuel
-        ).takeIf { it != "[]" } ?: householdSurveyModel.cookingFuelType
+        )
     }
 
     private fun setDataForFuelForCookingUI() {
@@ -182,7 +182,7 @@ class FifthFragment : BaseHouseholdSurveyFragment(R.layout.fragment_fifth_househ
             SessionManager(requireActivity()).appLanguage,
             context,
             otherMainLightingSource
-        ).takeIf { it != "[]" } ?: householdSurveyModel.mainLightingSource
+        )
     }
 
     private fun setDataForMainLightingSourceUI() {
@@ -247,7 +247,7 @@ class FifthFragment : BaseHouseholdSurveyFragment(R.layout.fragment_fifth_househ
             SessionManager(requireActivity()).appLanguage,
             context,
             otherDrinkingWaterSource
-        ).takeIf { it != "[]" } ?: householdSurveyModel.mainDrinkingWaterSource
+        )
     }
 
     private fun setDataForDrinkingWaterSourceUI() {
@@ -321,8 +321,7 @@ class FifthFragment : BaseHouseholdSurveyFragment(R.layout.fragment_fifth_househ
             SessionManager(requireActivity()).appLanguage,
             context,
             otherWaterPurificationSource
-        ).takeIf { it != "[]" } ?: householdSurveyModel.saferWaterProcess
-
+        )
     }
 
     private fun setDataForWaterPurification() {
@@ -391,7 +390,7 @@ class FifthFragment : BaseHouseholdSurveyFragment(R.layout.fragment_fifth_househ
             SessionManager(requireActivity()).appLanguage,
             context,
             ""
-        ).takeIf { it != "[]" } ?: householdSurveyModel.householdToiletFacility
+        )
     }
 
     private fun setDataForHouseholdToiletFacility() {

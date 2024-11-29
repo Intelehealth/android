@@ -1381,4 +1381,7 @@
 
     <string name="family_members">Family Members</string>
     <string name="no_family_member_registered">No family member registered</string>
+    <string name="fill_required_fields">please fill all required fields</string>
+    <string name="close_">Close patient registration?</string>
+
 </resources>

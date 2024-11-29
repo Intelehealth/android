@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.RadioButton
+import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.github.ajalt.timberkt.Timber
 import com.google.gson.Gson
@@ -20,6 +21,7 @@ import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.app.ui.filter.FirstLetterUpperCaseInputFilter
 import org.intelehealth.app.utilities.DateAndTimeUtils
 import org.intelehealth.app.utilities.HouseholdSurveyStage
+import org.intelehealth.app.utilities.StringUtils
 import org.intelehealth.app.utilities.extensions.addFilter
 
 class FirstFragment : BaseHouseholdSurveyFragment(R.layout.fragment_one_household_survey) {
@@ -28,6 +30,7 @@ class FirstFragment : BaseHouseholdSurveyFragment(R.layout.fragment_one_househol
     private var patientUuid: String? = null
     private var mHouseStructure: String? = null
     private var mResultVisit: String? = null
+    private val mandatoryFields = mutableListOf<View>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -90,6 +93,9 @@ class FirstFragment : BaseHouseholdSurveyFragment(R.layout.fragment_one_househol
         setClickListener()
         radioButtonsClickListener()
         applyFilter()
+        mandatoryFields.addAll(listOf(binding.lblNameOfPrimaryRespondent,
+            binding.textInputHouseholdNumber, binding.rgStructureType,  binding.rgResultOfVisit))
+
     }
 
     private fun setClickListener() {
@@ -99,6 +105,10 @@ class FirstFragment : BaseHouseholdSurveyFragment(R.layout.fragment_one_househol
     }
 
     private fun savePatient() {
+        if (!StringUtils.validateFields(mandatoryFields)) {
+            Toast.makeText(context, R.string.fill_required_fields, Toast.LENGTH_SHORT).show()
+            return
+        }
         householdSurveyModel.apply {
             houseStructure = mHouseStructure
             resultOfVisit = mResultVisit
@@ -122,8 +132,12 @@ class FirstFragment : BaseHouseholdSurveyFragment(R.layout.fragment_one_househol
   }
 
     private fun navigateToDetails() {
-        FirstFragmentDirections.actionOneToTwo().apply {
-            findNavController().navigate(this)
+        if (binding.rbRefusedForVisit.isChecked) {
+            requireActivity().finish()
+        }else{
+            FirstFragmentDirections.actionOneToTwo().apply {
+                findNavController().navigate(this)
+            }
         }
     }
 
@@ -131,10 +145,7 @@ class FirstFragment : BaseHouseholdSurveyFragment(R.layout.fragment_one_househol
         super.onPatientDataLoaded(householdSurveyModel)
         Timber.d { Gson().toJson(householdSurveyModel) }
         setDataToUI();
-        Log.d(
-            TAG,
-            "onPatientDataLoaded: householdSurveyModel : " + Gson().toJson(householdSurveyModel)
-        )
+
         binding.patientSurveyAttributes = householdSurveyModel
         binding.isEditMode = houseHoldViewModel.isEditMode
     }

@@ -1,6 +1,7 @@
 package org.intelehealth.app.activities.householdSurvey.fragments
 
 import android.content.Context
+import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
@@ -12,10 +13,12 @@ import com.github.ajalt.timberkt.Timber
 import com.google.android.datatransport.runtime.firebase.transport.LogEventDropped
 import com.google.gson.Gson
 import org.intelehealth.app.R
+import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New
 import org.intelehealth.app.activities.householdSurvey.models.HouseholdSurveyModel
 import org.intelehealth.app.databinding.FragmentSeventhHouseholdSurveyBinding
 import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.app.ui.patient.fragment.PatientAddressInfoFragmentDirections
+import org.intelehealth.app.utilities.DialogUtils
 import org.intelehealth.app.utilities.HouseholdSurveyStage
 import org.intelehealth.app.utilities.PatientRegStage
 import org.intelehealth.app.utilities.SessionManager
@@ -34,6 +37,8 @@ class SeventhFragment : BaseHouseholdSurveyFragment(R.layout.fragment_seventh_ho
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentSeventhHouseholdSurveyBinding.bind(view)
         houseHoldViewModel.updatePatientStage(HouseholdSurveyStage.SEVENTH_SCREEN)
+
+        initViews()
         setClickListener()
     }
 
@@ -86,6 +91,7 @@ class SeventhFragment : BaseHouseholdSurveyFragment(R.layout.fragment_seventh_ho
 
     private fun navigateToDetails() {
         Log.d("TAG", "navigateToDetails: message saved")
+        showSavedDialog()
         /*  SeventhFragmentDirections.actionSevenToSix().apply {
               findNavController().navigate(this)
           }*/
@@ -120,8 +126,7 @@ class SeventhFragment : BaseHouseholdSurveyFragment(R.layout.fragment_seventh_ho
     }
 
     private fun setupDistanceToSubCenter() {
-        //var distanceToSubCenter = "-"
-        var distanceToSubCenter = ""
+        var distanceToSubCenter = "-"
         if (binding.distanceToSubCentreRadioGroup.checkedRadioButtonId != -1) {
              distanceToSubCenter = (binding.distanceToSubCentreRadioGroup
                 .findViewById<RadioButton>(binding.distanceToSubCentreRadioGroup.checkedRadioButtonId)).text.toString()
@@ -153,7 +158,6 @@ class SeventhFragment : BaseHouseholdSurveyFragment(R.layout.fragment_seventh_ho
     }
 
     private fun setupDistanceToNearestPrimaryHealthCenter() {
-        //var distanceToSubCenterPrimary = "-"
         var nearestPrimaryHealthCenterDistance = "-"
         if (binding.distanceToNearestPrimaryHealthCentresRadioGroup.checkedRadioButtonId != -1) {
             nearestPrimaryHealthCenterDistance = (binding.distanceToNearestPrimaryHealthCentresRadioGroup
@@ -163,7 +167,7 @@ class SeventhFragment : BaseHouseholdSurveyFragment(R.layout.fragment_seventh_ho
     }
 
     private fun setDataToDistanceToNearestPrimaryHealthCenterUI() {
-        val value1 = householdSurveyModel.monthlyFoodExpenditure
+        val value1 = householdSurveyModel.nearestPrimaryHealthCenterDistance
         value1?.let {
             when (it) {
                 getString(R.string.within_1_km) -> binding.phc1Km.isChecked = true
@@ -177,8 +181,7 @@ class SeventhFragment : BaseHouseholdSurveyFragment(R.layout.fragment_seventh_ho
     }
 
     private fun setupDistanceToNearestCommunityHealthCentre() {
-        //var distanceToCommunityHealthCentre = "-"
-        var distanceToCommunityHealthCentre = ""
+        var distanceToCommunityHealthCentre = "-"
         if (binding.distanceToNearestCommunityHealthCentresRadioGroup.checkedRadioButtonId != -1) {
             distanceToCommunityHealthCentre =
                 (binding.distanceToNearestCommunityHealthCentresRadioGroup
@@ -201,8 +204,7 @@ class SeventhFragment : BaseHouseholdSurveyFragment(R.layout.fragment_seventh_ho
     }
 
     private fun setupDistanceToNearestDistrictHospital() {
-        //var distanceToNearestDistrictHospital = "-"
-        var distanceToNearestDistrictHospital = ""
+        var distanceToNearestDistrictHospital = "-"
         if (binding.distanceToNearestDistrictHospitalRadioGroup.checkedRadioButtonId != -1) {
              distanceToNearestDistrictHospital =
                 (binding.distanceToNearestDistrictHospitalRadioGroup
@@ -225,8 +227,7 @@ class SeventhFragment : BaseHouseholdSurveyFragment(R.layout.fragment_seventh_ho
     }
 
     private fun setupDistanceToNearestPathologicalLabDistance() {
-        //var distanceToNearestPathLab = "-"
-        var distanceToNearestPathLab = ""
+        var distanceToNearestPathLab = "-"
         if (binding.distanceToNearestPathologicalLabRadioGroup.checkedRadioButtonId != -1) {
              distanceToNearestPathLab =
                 (binding.distanceToNearestPathologicalLabRadioGroup
@@ -249,8 +250,7 @@ class SeventhFragment : BaseHouseholdSurveyFragment(R.layout.fragment_seventh_ho
     }
 
     private fun setupDistanceToNearestPrivateClinicMBBSDoctor() {
-        //var privateClinicMBBSDoctor = "-"
-        var privateClinicMBBSDoctor = ""
+        var privateClinicMBBSDoctor = "-"
         if (binding.distanceToNearestPrivateClinicWithAnMbbsDoctorRadioGroup.checkedRadioButtonId != -1) {
             privateClinicMBBSDoctor =
                 (binding.distanceToNearestPrivateClinicWithAnMbbsDoctorRadioGroup
@@ -272,12 +272,11 @@ class SeventhFragment : BaseHouseholdSurveyFragment(R.layout.fragment_seventh_ho
     }
 
     private fun setupDistanceToNearestPrivateClinicAlternateMedicine() {
-        //var privateClinicAlternateMedicine = "-"
-        var privateClinicAlternateMedicine = ""
-        if (binding.distanceToNearestPrivateClinicWithAnMbbsDoctorRadioGroup.checkedRadioButtonId != -1) {
+        var privateClinicAlternateMedicine = "-"
+        if (binding.distanceToNearestPrivateClinicWithAlternate.checkedRadioButtonId != -1) {
              privateClinicAlternateMedicine =
-                (binding.distanceToNearestPrivateClinicWithAlternateMedicalPractitionersRadioGroup
-                    .findViewById<RadioButton>(binding.distanceToNearestPrivateClinicWithAnMbbsDoctorRadioGroup.checkedRadioButtonId)).text.toString()
+                (binding.distanceToNearestPrivateClinicWithAlternate
+                    .findViewById<RadioButton>(binding.distanceToNearestPrivateClinicWithAlternate.checkedRadioButtonId)).text.toString()
         }
         householdSurveyModel.nearestPrivateClinicAlternateMedicine = privateClinicAlternateMedicine
     }
@@ -297,8 +296,7 @@ class SeventhFragment : BaseHouseholdSurveyFragment(R.layout.fragment_seventh_ho
     }
 
     private fun setupDistanceToNearestTertiaryCareFacility() {
-        //var tertiaryCareFacility = "-"
-        var tertiaryCareFacility = ""
+        var tertiaryCareFacility = "-"
         if (binding.distanceToNearestTertiaryCareFacilityRadioGroup.checkedRadioButtonId != -1) {
             tertiaryCareFacility =
                 (binding.distanceToNearestTertiaryCareFacilityRadioGroup
@@ -320,7 +318,21 @@ class SeventhFragment : BaseHouseholdSurveyFragment(R.layout.fragment_seventh_ho
                     true
             }
         }
-
-
+    }
+    private fun showSavedDialog(){
+        val dialogUtils = DialogUtils()
+        dialogUtils.showCommonDialog(
+            requireActivity(),
+            R.drawable.ui2_complete_icon,
+            getString(R.string.surveyDialogTitle),
+            getString(R.string.surveyDialogMessage),
+            true,
+            resources.getString(R.string.ok),
+            resources.getString(R.string.cancel)
+        ) {
+            val intent = Intent(requireActivity(), HomeScreenActivity_New::class.java)
+            startActivity(intent)
+            requireActivity().finish()
+        }
     }
 }

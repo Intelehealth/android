@@ -98,7 +98,7 @@ class SecondFragment : BaseHouseholdSurveyFragment(R.layout.fragment_second_hous
             SessionManager(requireActivity()).appLanguage,
             context,
             otherIncome
-        ).takeIf { it != "[]" } ?: householdSurveyModel.primarySourceOfIncome
+        )
     }
 
 

@@ -134,8 +134,7 @@ class FourthFragment : BaseHouseholdSurveyFragment(R.layout.fragment_fourth_hous
     }
 
     private fun setupCultivatedLand() {
-        //var cultivatedLand = "-"
-        var cultivatedLand = ""
+        var cultivatedLand = "-"
         if (binding.cultivableLandRadioGroup.checkedRadioButtonId != -1) {
             val selectedRadioButton = binding.cultivableLandRadioGroup.findViewById<RadioButton>(
                 binding.cultivableLandRadioGroup.checkedRadioButtonId
@@ -210,10 +209,9 @@ class FourthFragment : BaseHouseholdSurveyFragment(R.layout.fragment_fourth_hous
     }
 
     private fun setupAnnualHouseholdIncome() {
-        // var averageAnnualHouseholdIncome = "-"
-        var averageAnnualHouseholdIncome = ""
+         var averageAnnualHouseholdIncome = "-"
         if (binding.averageAnnualHouseholdIncomeRadioGroup.checkedRadioButtonId != -1) {
-             averageAnnualHouseholdIncome = (binding.averageAnnualHouseholdIncomeRadioGroup
+            averageAnnualHouseholdIncome = (binding.averageAnnualHouseholdIncomeRadioGroup
                 .findViewById<RadioButton>(binding.averageAnnualHouseholdIncomeRadioGroup.checkedRadioButtonId)).text.toString()
         }
         householdSurveyModel.averageAnnualHouseholdIncome = averageAnnualHouseholdIncome
@@ -244,10 +242,9 @@ class FourthFragment : BaseHouseholdSurveyFragment(R.layout.fragment_fourth_hous
     }
 
     private fun setupMonthlyExpenditureOnFood() {
-        //var monthlyFoodExpenditure = "-"
-        var monthlyFoodExpenditure = ""
+        var monthlyFoodExpenditure = "-"
         if (binding.monthlyFoodExpenditureRadioGroup.checkedRadioButtonId != -1) {
-             monthlyFoodExpenditure = (binding.monthlyFoodExpenditureRadioGroup
+            monthlyFoodExpenditure = (binding.monthlyFoodExpenditureRadioGroup
                 .findViewById<RadioButton>(binding.monthlyFoodExpenditureRadioGroup.checkedRadioButtonId)).text.toString()
         }
         householdSurveyModel.monthlyFoodExpenditure = monthlyFoodExpenditure
@@ -276,10 +273,9 @@ class FourthFragment : BaseHouseholdSurveyFragment(R.layout.fragment_fourth_hous
     }
 
     private fun setupAnnualExpenditureOnHealth() {
-        //var annualHealthExpenditure = "-"
-        var annualHealthExpenditure = ""
+        var annualHealthExpenditure = "-"
         if (binding.annualHealthExpenditureRadioGroup.checkedRadioButtonId != -1) {
-             annualHealthExpenditure = (binding.annualHealthExpenditureRadioGroup
+            annualHealthExpenditure = (binding.annualHealthExpenditureRadioGroup
                 .findViewById<RadioButton>(binding.annualHealthExpenditureRadioGroup.checkedRadioButtonId)).text.toString()
         }
         householdSurveyModel.annualHealthExpenditure = annualHealthExpenditure
@@ -308,8 +304,7 @@ class FourthFragment : BaseHouseholdSurveyFragment(R.layout.fragment_fourth_hous
     }
 
     private fun setupAnnualExpenditureOnEducation() {
-        //var annualEducationExpenditure = "-"
-        var annualEducationExpenditure = ""
+        var annualEducationExpenditure = "-"
         if (binding.annualEducationExpenditureRadioGroup.checkedRadioButtonId != -1) {
             annualEducationExpenditure = (binding.annualEducationExpenditureRadioGroup
                 .findViewById<RadioButton>(binding.annualEducationExpenditureRadioGroup.checkedRadioButtonId)).text.toString()
@@ -343,10 +338,9 @@ class FourthFragment : BaseHouseholdSurveyFragment(R.layout.fragment_fourth_hous
     }
 
     private fun setupAnnualExpenditureOnClothing() {
-        //var annualClothingExpenditure = "-"
-        var annualClothingExpenditure = ""
+        var annualClothingExpenditure = "-"
         if (binding.annualClothingExpenditureRadioGroup.checkedRadioButtonId != -1) {
-             annualClothingExpenditure = (binding.annualClothingExpenditureRadioGroup
+            annualClothingExpenditure = (binding.annualClothingExpenditureRadioGroup
                 .findViewById<RadioButton>(binding.annualClothingExpenditureRadioGroup.checkedRadioButtonId)).text.toString()
         }
         householdSurveyModel.annualClothingExpenditure = annualClothingExpenditure
@@ -375,10 +369,9 @@ class FourthFragment : BaseHouseholdSurveyFragment(R.layout.fragment_fourth_hous
     }
 
     private fun setupMonthlyExpenditureOnIntoxicants() {
-        // var monthlyIntoxicantsExpenditure = "-"
-        var monthlyIntoxicantsExpenditure = ""
+        var monthlyIntoxicantsExpenditure = "-"
         if (binding.monthlyIntoxicantsExpenditureRadioGroup.checkedRadioButtonId != -1) {
-             monthlyIntoxicantsExpenditure = (binding.monthlyIntoxicantsExpenditureRadioGroup
+            monthlyIntoxicantsExpenditure = (binding.monthlyIntoxicantsExpenditureRadioGroup
                 .findViewById<RadioButton>(binding.monthlyIntoxicantsExpenditureRadioGroup.checkedRadioButtonId)).text.toString()
         }
         householdSurveyModel.monthlyIntoxicantsExpenditure = monthlyIntoxicantsExpenditure
@@ -407,10 +400,9 @@ class FourthFragment : BaseHouseholdSurveyFragment(R.layout.fragment_fourth_hous
     }
 
     private fun setupForHouseholdBPLCard() {
-        //var householdBPLCardStatus = "-"
-        var householdBPLCardStatus = ""
+        var householdBPLCardStatus = "-"
         if (binding.bplCardCouponRadioGroup.checkedRadioButtonId != -1) {
-             householdBPLCardStatus = (binding.bplCardCouponRadioGroup
+            householdBPLCardStatus = (binding.bplCardCouponRadioGroup
                 .findViewById<RadioButton>(binding.bplCardCouponRadioGroup.checkedRadioButtonId)).text.toString()
         }
         householdSurveyModel.householdBPLCardStatus = householdBPLCardStatus
@@ -433,10 +425,9 @@ class FourthFragment : BaseHouseholdSurveyFragment(R.layout.fragment_fourth_hous
     }
 
     private fun setupForHouseholdAntodayaCard() {
-        //var householdAntodayaCardStatus = "-"
-        var householdAntodayaCardStatus = ""
+        var householdAntodayaCardStatus = "-"
         if (binding.antodayaCardCouponRadioGroup.checkedRadioButtonId != -1) {
-            val householdAntodayaCardStatus = (binding.antodayaCardCouponRadioGroup
+            householdAntodayaCardStatus = (binding.antodayaCardCouponRadioGroup
                 .findViewById<RadioButton>(binding.antodayaCardCouponRadioGroup.checkedRadioButtonId)).text.toString()
         }
         householdSurveyModel.householdAntodayaCardStatus = householdAntodayaCardStatus
@@ -470,10 +461,9 @@ class FourthFragment : BaseHouseholdSurveyFragment(R.layout.fragment_fourth_hous
     }
 
     private fun setupForHouseholdRSBYCard() {
-        //var householdRSBYCardStatus = "-"
-        var householdRSBYCardStatus = ""
+        var householdRSBYCardStatus = "-"
         if (binding.rsbyCardRadioGroup.checkedRadioButtonId != -1) {
-             householdRSBYCardStatus = (binding.rsbyCardRadioGroup
+            householdRSBYCardStatus = (binding.rsbyCardRadioGroup
                 .findViewById<RadioButton>(binding.rsbyCardRadioGroup.checkedRadioButtonId)).text.toString()
         }
         householdSurveyModel.householdRSBYCardStatus = householdRSBYCardStatus
@@ -507,10 +497,9 @@ class FourthFragment : BaseHouseholdSurveyFragment(R.layout.fragment_fourth_hous
     }
 
     private fun setupForHouseholdMGNREGACard() {
-        //var householdAntodayaCardStatus = "-"
-        var householdAntodayaCardStatus = ""
+        var householdAntodayaCardStatus = "-"
         if (binding.mgnregaCardRadioGroup.checkedRadioButtonId != -1) {
-             householdAntodayaCardStatus = (binding.mgnregaCardRadioGroup
+            householdAntodayaCardStatus = (binding.mgnregaCardRadioGroup
                 .findViewById<RadioButton>(binding.mgnregaCardRadioGroup.checkedRadioButtonId)).text.toString()
         }
         householdSurveyModel.householdMGNREGACardStatus = householdAntodayaCardStatus

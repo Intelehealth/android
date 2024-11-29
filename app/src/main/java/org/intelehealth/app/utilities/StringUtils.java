@@ -25,7 +25,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ListAdapter;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -5020,4 +5022,20 @@ public final class StringUtils {
 
         return text;
     }
+    public static boolean validateFields(List<View> mandatoryFields) {
+        boolean result = true;
+        for (View mandatoryField : mandatoryFields) {
+            if (mandatoryField instanceof EditText) {
+                if (TextUtils.isEmpty(((EditText) mandatoryField).getText())) {
+                    result = false;
+                }
+            } else if (mandatoryField instanceof RadioGroup) {
+                result = ((RadioGroup) mandatoryField).getCheckedRadioButtonId() != -1;
+            } else if (mandatoryField instanceof Spinner) {
+                result = ((Spinner) mandatoryField).getSelectedItemPosition() != 0;
+            }
+        }
+        return result;
+    }
+
 }

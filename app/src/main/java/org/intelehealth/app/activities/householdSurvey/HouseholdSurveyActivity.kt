@@ -53,9 +53,9 @@ class HouseholdSurveyActivity : BaseActivity() {
 
     private fun setupActionBar() {
         setSupportActionBar(binding.toolbar)
-//        binding.toolbar.setNavigationOnClickListener {
-//            handleBackPressed()
-//        }
+        binding.toolbar.setNavigationOnClickListener {
+            finish()
+        }
     }
 
     private fun handleBackPressed() {
