@@ -25,6 +25,7 @@ import org.intelehealth.app.models.locationAttributes.pull.PullLocationAttribute
 import org.intelehealth.app.models.statewise_location.Setup_LocationModel
 import org.intelehealth.app.networkApiCalls.ApiClient
 import org.intelehealth.app.networkApiCalls.ApiInterface
+import org.intelehealth.app.utilities.LocationValidationUtils
 import org.intelehealth.app.utilities.SessionManager
 import org.intelehealth.app.utilities.exception.DAOException
 
@@ -539,7 +540,19 @@ class LocationSurveyActivity : AppCompatActivity() {
         }
 
         binding?.btnSave?.setOnClickListener {
-            storeSurveyDataAndGoBack()
+            storeSurveyData()
+
+            sessionManager?.let {
+                if (LocationValidationUtils.areLocationFieldsValid(it)) {
+                    finish()
+                } else {
+                    Toast.makeText(
+                        this@LocationSurveyActivity,
+                        getString(R.string.please_select_all_the_required_fields),
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
         }
     }
 
@@ -549,9 +562,10 @@ class LocationSurveyActivity : AppCompatActivity() {
     }
 
     private fun storeSurveyData() {
-        val subCentreDistance: String? = binding?.cbScDistance?.checkedChipId?.let { chipId ->
-            binding?.cbScDistance?.findViewById<Chip>(chipId)?.text?.toString()
-        }
+        val subCentreDistance: String? =
+            binding?.cbScDistance?.checkedChipId?.let { chipId ->
+                binding?.cbScDistance?.findViewById<Chip>(chipId)?.text?.toString()
+            }
 
         sessionManager?.subCentreDistance = subCentreDistance
 
@@ -595,7 +609,8 @@ class LocationSurveyActivity : AppCompatActivity() {
                 binding?.cbPcDistance?.findViewById<Chip>(chipId)?.text?.toString()
             }
 
-        sessionManager?.privateClinicWithMbbsDoctorDistance = privateClinicWithMbbsDoctorDistance
+        sessionManager?.privateClinicWithMbbsDoctorDistance =
+            privateClinicWithMbbsDoctorDistance
 
         val privateClinicWithAlternateMedicalRadioGroup: String? =
             binding?.cbPcamDistance?.checkedChipId?.let { chipId ->

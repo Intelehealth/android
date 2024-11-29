@@ -77,6 +77,7 @@ import org.intelehealth.app.utilities.AdminPassword;
 import org.intelehealth.app.utilities.Base64Utils;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.DownloadMindMaps;
+import org.intelehealth.app.utilities.LocationValidationUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
@@ -349,6 +350,7 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
             if (this.editText.getId() == R.id.et_server) {
                 isLocationSurveyCompleted = false;
+                isUrlValid = false;
             }
         }
 
@@ -1047,67 +1049,7 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
     }
 
     private boolean areLocationFieldsValid() {
-//        if (checkIfLocationValueEmpty(sessionManager.getStateName())) {
-//            return false;
-//        }
-//
-//        if (checkIfLocationValueEmpty(sessionManager.getDistrictName())) {
-//            return false;
-//        }
-//
-//        if (checkIfLocationValueEmpty(sessionManager.getSanchName())) {
-//            return false;
-//        }
-//
-//        if (checkIfLocationValueEmpty(sessionManager.getCurrentLocationName())) {
-//            return false;
-//        }
-//
-//        if (checkIfLocationValueEmpty(sessionManager.getSecondaryLocationName())) {
-//            return false;
-//        }
-//
-//        if (checkIfLocationValueEmpty(sessionManager.getSubCentreDistance())) {
-//            return false;
-//        }
-//
-//        if (checkIfLocationValueEmpty(sessionManager.getPrimaryHealthCentreDistance())) {
-//            return false;
-//        }
-//
-//        if (checkIfLocationValueEmpty(sessionManager.getCommunityHealthCentreDistance())) {
-//            return false;
-//        }
-//
-//        if (checkIfLocationValueEmpty(sessionManager.getDistrictHospitalDistance())) {
-//            return false;
-//        }
-//
-//        if (checkIfLocationValueEmpty(sessionManager.getMedicalStoreDistance())) {
-//            return false;
-//        }
-//
-//        if (checkIfLocationValueEmpty(sessionManager.getPathologicalLabDistance())) {
-//            return false;
-//        }
-//
-//        if (checkIfLocationValueEmpty(sessionManager.getPrivateClinicWithMbbsDoctorDistance())) {
-//            return false;
-//        }
-//
-//        if (checkIfLocationValueEmpty(sessionManager.getPrivateClinicWithAlternateDoctorDistance())) {
-//            return false;
-//        }
-//
-//        if (checkIfLocationValueEmpty(sessionManager.getJalJeevanYojanaScheme())) {
-//            return false;
-//        }
-
-        return true;
-    }
-
-    private boolean checkIfLocationValueEmpty(String value) {
-        return value == null || value.isEmpty();
+        return LocationValidationUtils.INSTANCE.areLocationFieldsValid(sessionManager);
     }
 
     private LocationAttributeRequest getLocationAttributeRequestBody() {
