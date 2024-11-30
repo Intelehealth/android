@@ -963,7 +963,7 @@ public class VitalsActivity extends BaseActivity implements View.OnClickListener
     }
 
     private void startTimer() {
-        countDownTimer = new CountDownTimer(timeLeftInMillis, 100) {
+        countDownTimer = new CountDownTimer(timeLeftInMillis, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
                 // Update the timer text every second
@@ -1004,6 +1004,26 @@ public class VitalsActivity extends BaseActivity implements View.OnClickListener
         updateTimerText(timeLeftInMillis);
     }
 
+    private void initiateRecording() {
+        updateTimerText(HEART_SOUND_TIMER);
+        if (isTimerRunning) {
+            // Pause the timer
+            stopRecording();
+            countDownTimer.cancel();
+            isTimerRunning = false;
+            btnRecord.setImageResource(R.drawable.play_circle_svg);
+            // show pause icon here.
+        } else {
+            // Start the timer
+            //  activateBluetoothSco();
+            startRecording();
+            startTimer();
+            isTimerRunning = true;
+            btnRecord.setImageResource(R.drawable.pause_circle_svg);
+            // show start icon here.
+        }
+    }
+
     private void showRecordingDialog() {
         // show dialog
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
@@ -1014,10 +1034,13 @@ public class VitalsActivity extends BaseActivity implements View.OnClickListener
         dialog.setView(layoutInflater);
 
         // Set the initial timer text
-        updateTimerText(timeLeftInMillis);
+      //  updateTimerText(timeLeftInMillis);
+
+        initiateRecording();    // start with the recording flow.
+
 
         // Start button click listener
-        btnRecord.setOnClickListener(new View.OnClickListener() {
+        /*btnRecord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (isTimerRunning) {
@@ -1037,7 +1060,7 @@ public class VitalsActivity extends BaseActivity implements View.OnClickListener
                     // show start icon here.
                 }
             }
-        });
+        });*/
 
         dialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
@@ -1047,7 +1070,8 @@ public class VitalsActivity extends BaseActivity implements View.OnClickListener
                 if (countDownTimer != null)
                     countDownTimer.cancel();
                 resetTimer();
-                stopRecording();
+              //  stopRecording();
+                forceStopRecording();   // Forceful cancel so wont save the recording.
                 isTimerRunning = false;
                 btnRecord.setImageResource(R.drawable.play_circle_svg);
                 // show pause icon here.
@@ -1062,9 +1086,9 @@ public class VitalsActivity extends BaseActivity implements View.OnClickListener
         }
 
 
-        Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-        pb.setTextColor(getResources().getColor((R.color.colorPrimary)));
-        pb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+        Button cancelBtn = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+        cancelBtn.setTextColor(getResources().getColor((R.color.colorPrimaryLight)));
+        cancelBtn.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
 
         alertDialog.setCancelable(false);
         alertDialog.setCanceledOnTouchOutside(false);
@@ -2333,7 +2357,7 @@ public class VitalsActivity extends BaseActivity implements View.OnClickListener
             initFilePath();
 
             if(isBluetoothConnectedToAIH(VitalsActivity.this)) {
-                // ie. bluetooth is connected to AiSteth only...
+                // ie. bluetooth is connected to AiSteth only...now start the recording.
                 showRecordingDialog();
             }
             else {
@@ -2385,7 +2409,7 @@ public class VitalsActivity extends BaseActivity implements View.OnClickListener
 
         waveRecorder = null;
         audioManager = null;
-        
+
         initWaveRecorder();
         initAudioManager();
     }
@@ -2397,7 +2421,7 @@ public class VitalsActivity extends BaseActivity implements View.OnClickListener
     }
 
     private void startRecording() {
-        Toast.makeText(this, "Recording has started...", Toast.LENGTH_SHORT).show();
+      //  Toast.makeText(this, "Recording has started...", Toast.LENGTH_SHORT).show();
         if (audioManager == null) {
             initAudioManager();
         }
@@ -2424,8 +2448,32 @@ public class VitalsActivity extends BaseActivity implements View.OnClickListener
         waveRecorder.resumeRecording();
     }
 
+    private void forceStopRecording() {
+        Toast.makeText(this, "Recording was cancelled. This recording is not saved.", Toast.LENGTH_SHORT).show();
+        if (audioManager == null) {
+            initAudioManager();
+        }
+
+        audioManager.stopBluetoothSco();
+        audioManager.setBluetoothScoOn(false);
+
+        if (waveRecorder == null) {
+            initWaveRecorder();
+        }
+        waveRecorder.stopRecording();
+        // Delete the file
+        if (FileUtils.deleteFile(filePath)) {
+            Toast.makeText(this, "Recording deleted successfully!", Toast.LENGTH_SHORT).show();
+            Log.d(TAG, "forceStopRecording: File deleted successfully!");
+        }
+        else {
+            Toast.makeText(this, "Recording deletion failed!", Toast.LENGTH_SHORT).show();
+            Log.d(TAG, "forceStopRecording: File deletion failed!");
+            }
+    }
+
     private void stopRecording() {
-        Toast.makeText(this, "Recording has stopped.", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Recording  saved successfully!", Toast.LENGTH_SHORT).show();
         if (audioManager == null) {
             initAudioManager();
         }

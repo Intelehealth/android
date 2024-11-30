@@ -857,5 +857,6 @@
     <string name="turn_on_bluetooth">कृपया ब्लूटूथ चालू करें</string>
     <string name="no_presc_available">कोई प्रिस्क्रिप्शन उपलब्ध नहीं है</string>
     <string name="digital_stethoscope">Digital Stethoscope</string>
+    <string name="recordingStatus">Recording in progress...</string>
 
 </resources>

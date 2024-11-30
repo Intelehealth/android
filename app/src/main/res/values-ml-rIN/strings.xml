@@ -647,6 +647,7 @@
     <string name="no">ഇല്ല</string>
     <string name="type_to_search">Type to Search..</string>
     <string name="digital_stethoscope">Digital Stethoscope</string>
+    <string name="recordingStatus">Recording in progress...</string>
 
 </resources>
 

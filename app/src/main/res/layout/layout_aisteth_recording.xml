@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white"
@@ -9,13 +10,24 @@
         android:id="@+id/tvTimer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:textSize="20sp"
+        android:layout_centerInParent="true"
+        android:layout_margin="20dp"
+        android:textSize="80sp"
+        android:textColor="@color/colorPrimary"
         android:textStyle="bold"
         android:text="00" />
 
+
+    <TextView
+        android:id="@+id/tvRecordingStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/recordingStatus"
+        android:layout_below="@+id/tvTimer"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"
+        android:textStyle="italic"
+        android:textSize="16sp"/>
 
 
     <ImageButton
@@ -26,6 +38,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:src="@drawable/play_circle_svg"
+        android:visibility="gone"
         android:background="@android:color/transparent" />
 
 
