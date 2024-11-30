@@ -8,6 +8,7 @@ package org.intelehealth.app.activities.vitalActivity;
 //import static com.healthcubed.ezdxlib.model.TestName.URIC_ACID;
 
 //import static org.intelehealth.app.app.AppConstants.key;
+import static org.intelehealth.app.app.AppConstants.STETHOSCOPE_FOLDER_PATH;
 import static org.intelehealth.app.utilities.EditTextUtils.*;
 
 import android.Manifest;
@@ -29,6 +30,7 @@ import android.graphics.Typeface;
 import android.media.AudioManager;
 import android.os.Bundle;
 
+import com.github.squti.androidwaverecorder.WaveRecorder;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
@@ -50,6 +52,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.os.CountDownTimer;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.Editable;
@@ -80,6 +83,7 @@ import org.intelehealth.app.utilities.PermissionHelper;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -135,6 +139,9 @@ public class VitalsActivity extends BaseActivity implements View.OnClickListener
     private boolean isRecordingInProgress = false;
     private AudioManager audioManager = null;
     private AtomicBoolean recordingInProgress = new AtomicBoolean(false);
+    WaveRecorder waveRecorder;
+    String filePath;
+
     // Aisteth - end
 
     VitalsObject results = new VitalsObject();
@@ -1025,6 +1032,7 @@ public class VitalsActivity extends BaseActivity implements View.OnClickListener
                 if (isTimerRunning) {
                     // Pause the timer
                     stopRecording();
+                    waveRecorder.stopRecording();
                     countDownTimer.cancel();
                     isTimerRunning = false;
                     btnRecord.setImageResource(R.drawable.play_circle_svg);
@@ -1034,6 +1042,7 @@ public class VitalsActivity extends BaseActivity implements View.OnClickListener
                     // Start the timer
                   //  activateBluetoothSco();
                     startRecording();
+                    waveRecorder.startRecording();
                     startTimer();
                     isTimerRunning = true;
                     btnRecord.setImageResource(R.drawable.pause_circle_svg);
@@ -2285,16 +2294,16 @@ public class VitalsActivity extends BaseActivity implements View.OnClickListener
             Log.d("ANDROID", "Audio SCO state: " + state);
             switch (state) {
                 case AudioManager.SCO_AUDIO_STATE_CONNECTED:
-                    handleBluetoothStateChange(BluetoothState.AVAILABLE);
+                   // handleBluetoothStateChange(BluetoothState.AVAILABLE);
                     break;
                 case AudioManager.SCO_AUDIO_STATE_CONNECTING:
-                    handleBluetoothStateChange(BluetoothState.UNAVAILABLE);
+                  //  handleBluetoothStateChange(BluetoothState.UNAVAILABLE);
                     break;
                 case AudioManager.SCO_AUDIO_STATE_DISCONNECTED:
-                    handleBluetoothStateChange(BluetoothState.UNAVAILABLE);
+                 //   handleBluetoothStateChange(BluetoothState.UNAVAILABLE);   // TODO: check why this is gettin triggered even when BT is connected.
                     break;
                 case AudioManager.SCO_AUDIO_STATE_ERROR:
-                    handleBluetoothStateChange(BluetoothState.UNAVAILABLE);
+                  //  handleBluetoothStateChange(BluetoothState.UNAVAILABLE);
                     break;
             }
         }
@@ -2378,6 +2387,7 @@ public class VitalsActivity extends BaseActivity implements View.OnClickListener
 
             if (targetDevice != null) {
                 Log.i("Targeted Device Name", targetDevice.getName());
+                initWaveRecorder();
                 initAudioManager();
                 return true;
             } else {
@@ -2388,10 +2398,30 @@ public class VitalsActivity extends BaseActivity implements View.OnClickListener
 
     //activate bluetooth
    private void initBluetoothReceiver() {
-       mBluetoothScoReceiver = new mBluetoothScoReceiver();
-    IntentFilter intentFilter = new IntentFilter(AudioManager.ACTION_SCO_AUDIO_STATE_UPDATED);
-    registerReceiver(mBluetoothScoReceiver, intentFilter);
+        if (mBluetoothScoReceiver == null) {
+            mBluetoothScoReceiver = new mBluetoothScoReceiver();
+            IntentFilter intentFilter = new IntentFilter(AudioManager.ACTION_SCO_AUDIO_STATE_UPDATED);
+            registerReceiver(mBluetoothScoReceiver, intentFilter);
+        }
+
     initAudioManager();
+    initWaveRecorder();
+    }
+
+    private String generateFileName() {
+        return visitUuid + "_" + UUID.randomUUID().toString() + ".wav";
+    }
+
+    private void initWaveRecorder() {
+        String folderPath = STETHOSCOPE_FOLDER_PATH;
+       filePath = folderPath + generateFileName();
+
+        File folder = new File(folderPath);
+        if (!folder.exists())
+            folder.mkdirs();
+
+        if (waveRecorder == null)
+            waveRecorder = new WaveRecorder(filePath);
     }
 
     private void initAudioManager() {
@@ -2404,16 +2434,20 @@ public class VitalsActivity extends BaseActivity implements View.OnClickListener
         audioManager.setBluetoothScoOn(true);
         // Stop Speaker.
         audioManager.setSpeakerphoneOn(false);
-        // audioManager.startBluetoothSco();
+         audioManager.startBluetoothSco();
+        audioManager.setBluetoothScoOn(true);
     }
 
     private void startRecording() {
      //   audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        waveRecorder.startRecording();
         audioManager.startBluetoothSco();
+        audioManager.setBluetoothScoOn(true);
 }
 
 private void stopRecording() {
      //   audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+    waveRecorder.stopRecording();
         audioManager.stopBluetoothSco();
         audioManager.setBluetoothScoOn(false);
 }

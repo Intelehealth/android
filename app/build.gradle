@@ -96,6 +96,7 @@ dependencies {
     implementation files('libs/printer_library.jar') // Thermal Printer
     implementation files('libs/aisteth.aar') // AiSteth
 
+
    /* implementation 'org.pytorch:pytorch_android:1.6.0'
     implementation 'org.pytorch:pytorch_android_torchvision:1.6.0'*/    // HealthCube
 
