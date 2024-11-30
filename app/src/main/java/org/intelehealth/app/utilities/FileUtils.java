@@ -103,9 +103,8 @@ public class FileUtils {
     }
 
     public static String initFilePathForStethoscope(String visitUuid) {
-        String filename = visitUuid + "_" + TimeRecordUtils.getCurrentTimeForFileName() + ".wav";
         String folderPath = STETHOSCOPE_FOLDER_PATH;
-
+        String filename = visitUuid + "_" + TimeRecordUtils.getCurrentTimeForFileName() + ".wav";
         String filePath = folderPath + filename;
 
         File folder = new File(folderPath);

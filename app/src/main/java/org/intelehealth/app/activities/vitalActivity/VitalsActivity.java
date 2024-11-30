@@ -79,6 +79,7 @@ import org.intelehealth.app.database.dao.ConceptAttributeListDAO;
 import org.intelehealth.app.dialog.BluetoothDeviceChooseDialog;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
+import org.intelehealth.app.utilities.Base64Utils;
 import org.intelehealth.app.utilities.EditTextUtils;
 import org.intelehealth.app.utilities.PermissionHelper;
 import org.intelehealth.app.utilities.TimeRecordUtils;
@@ -2485,6 +2486,15 @@ public class VitalsActivity extends BaseActivity implements View.OnClickListener
             initWaveRecorder();
         }
         waveRecorder.stopRecording();
+
+        // After successfully completing the recording, generate a Base64 string of the final recording for saving it to the DB and send to api.
+        fetchBase64String();
+    }
+
+    private void fetchBase64String() { // Note: After uploading to the server, delete it from local db as well from teh file system.
+        String base64String = Base64Utils.convertAudioFileToBase64(filePath);
+        Log.d(TAG, "Base64 String: " + base64String);
+        // store this into local db under Vitals encounter.
     }
 
     private void initAudioManager() {

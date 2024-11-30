@@ -3,17 +3,21 @@ package org.intelehealth.app.utilities;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
+import android.util.Log;
 
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 import org.intelehealth.app.app.AppConstants;
 
 public class Base64Utils {
-    private String TAG = Base64Utils.class.getSimpleName();
+    private static String TAG = Base64Utils.class.getSimpleName();
 
     public String encoded(String USERNAME, String PASSWORD) {
         String encoded = null;
@@ -40,4 +44,28 @@ public class Base64Utils {
 
         return encodeString;
     }
+
+    public static String convertAudioFileToBase64(String filePath) {
+        File file = new File(filePath);
+        if (!file.exists()) {
+            Log.e(TAG, "File does not exist at the specified path: " + filePath);
+            return null;
+        }
+
+        try {
+            // Read the file into a byte array
+            FileInputStream fis = new FileInputStream(file);
+            byte[] fileBytes = new byte[(int) file.length()];
+            fis.read(fileBytes);
+            fis.close();
+
+            // Encode the byte array to Base64
+            return Base64.encodeToString(fileBytes, Base64.DEFAULT);
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 }
