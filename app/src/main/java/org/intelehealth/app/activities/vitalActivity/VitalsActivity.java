@@ -975,9 +975,10 @@ public class VitalsActivity extends BaseActivity implements View.OnClickListener
             @Override
             public void onFinish() {
                 // Timer finished
-                timeLeftInMillis = 0;
                 isTimerRunning = false;
-                updateTimerText(timeLeftInMillis);
+             //   timeLeftInMillis = 0;
+                resetTimer();
+              //  updateTimerText(timeLeftInMillis);
                 btnRecord.setImageResource(R.drawable.play_circle_svg);
                 stopRecording();
                 if (alertDialog != null && alertDialog.isShowing()) {
@@ -1007,6 +1008,7 @@ public class VitalsActivity extends BaseActivity implements View.OnClickListener
 
     private void initiateRecording() {
         updateTimerText(HEART_SOUND_TIMER);
+
         if (isTimerRunning) {
             // Pause the timer
             stopRecording();
@@ -1805,8 +1807,20 @@ public class VitalsActivity extends BaseActivity implements View.OnClickListener
                 obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.TOTAL_CHOLESTEROL_ID));
                 obsDAO.updateObs(obsDTO);
 
+                // Stethoscope - Start
+                // 1. Heart
+                /*obsDTO = new ObsDTO();
+                obsDTO.setConceptuuid(UuidDictionary.HEART_SOUND);
+                obsDTO.setEncounteruuid(encounterVitals);
+                obsDTO.setCreator(sessionManager.getCreatorID());
+                obsDTO.setValue(results.getSpo2());
+                obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.HEART_SOUND));
+                obsDAO.updateObs(obsDTO);*/
 
-                //making flag to false in the encounter table so it will sync again
+                // Stethoscope - End
+
+
+                //making flag to false in the encounter table so it will sync again.
                 EncounterDAO encounterDAO = new EncounterDAO();
                 try {
                     encounterDAO.updateEncounterSync("false", encounterVitals);
@@ -1841,7 +1855,8 @@ public class VitalsActivity extends BaseActivity implements View.OnClickListener
             } catch (DAOException dao) {
                 FirebaseCrashlytics.getInstance().recordException(dao);
             }
-        } else {
+        }
+        else {  // new record...
 
             obsDTO = new ObsDTO();
             obsDTO.setConceptuuid(UuidDictionary.HEIGHT);
@@ -2494,7 +2509,8 @@ public class VitalsActivity extends BaseActivity implements View.OnClickListener
     private void fetchBase64String() { // Note: After uploading to the server, delete it from local db as well from teh file system.
         String base64String = Base64Utils.convertAudioFileToBase64(filePath);
         Log.d(TAG, "Base64 String: " + base64String);
-        // store this into local db under Vitals encounter.
+        // store this into local db under Vitals encounter here.
+
     }
 
     private void initAudioManager() {
