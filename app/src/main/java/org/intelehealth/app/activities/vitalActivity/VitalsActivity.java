@@ -30,6 +30,7 @@ import android.graphics.Typeface;
 import android.media.AudioManager;
 import android.os.Bundle;
 
+import com.github.squti.androidwaverecorder.RecorderState;
 import com.github.squti.androidwaverecorder.WaveRecorder;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
@@ -80,6 +81,7 @@ import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.EditTextUtils;
 import org.intelehealth.app.utilities.PermissionHelper;
+import org.intelehealth.app.utilities.TimeRecordUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -106,6 +108,9 @@ import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.UuidDictionary;
 
 import org.intelehealth.app.utilities.exception.DAOException;
+
+import kotlin.Unit;
+import kotlin.jvm.functions.Function1;
 
 public class VitalsActivity extends BaseActivity implements View.OnClickListener/*implements BluetoothService.OnBluetoothEventCallback*/ {
     private static final String TAG = VitalsActivity.class.getSimpleName();
@@ -135,11 +140,10 @@ public class VitalsActivity extends BaseActivity implements View.OnClickListener
     private long timeLeftInMillis = HEART_SOUND_TIMER; // 40 secs in milliseconds
     TextView tvTimer;
     ImageButton btnRecord;
-    MaterialAlertDialogBuilder dialog;
     private boolean isRecordingInProgress = false;
-    private AudioManager audioManager = null;
+    private AudioManager audioManager = null;   // This is used to record voice from the BT device if connected.
     private AtomicBoolean recordingInProgress = new AtomicBoolean(false);
-    WaveRecorder waveRecorder;
+    WaveRecorder waveRecorder;  // This is jsut used to generate the .wav file from the audio recorded.
     String filePath;
 
     // Aisteth - end
@@ -959,43 +963,30 @@ public class VitalsActivity extends BaseActivity implements View.OnClickListener
     }
 
     private void startTimer() {
+        countDownTimer = new CountDownTimer(timeLeftInMillis, 100) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                // Update the timer text every second
+                timeLeftInMillis = millisUntilFinished;
+                updateTimerText(millisUntilFinished);
+            }
 
-                countDownTimer = new CountDownTimer(timeLeftInMillis, 100) {
-                    @Override
-                    public void onTick(long millisUntilFinished) {
-                        // Update the timer text every second
-                        timeLeftInMillis = millisUntilFinished;
+            @Override
+            public void onFinish() {
+                // Timer finished
+                timeLeftInMillis = 0;
+                isTimerRunning = false;
+                updateTimerText(timeLeftInMillis);
+                btnRecord.setImageResource(R.drawable.play_circle_svg);
+                stopRecording();
+                if (alertDialog != null && alertDialog.isShowing()) {
+                    alertDialog.dismiss();
+                }
 
+            }
+        };
 
-
-                                updateTimerText(millisUntilFinished);
-
-
-
-                    }
-
-                    @Override
-                    public void onFinish() {
-                        // Timer finished
-                        timeLeftInMillis = 0;
-                        isTimerRunning = false;
-
-
-                                updateTimerText(timeLeftInMillis);
-                                btnRecord.setImageResource(R.drawable.play_circle_svg);
-
-
-
-
-                    }
-                };
-
-                countDownTimer.start();
-
-
-
-
-
+        countDownTimer.start();
     }
 
     private void updateTimerText(long millis) {
@@ -1015,7 +1006,7 @@ public class VitalsActivity extends BaseActivity implements View.OnClickListener
 
     private void showRecordingDialog() {
         // show dialog
-        dialog = new MaterialAlertDialogBuilder(this);
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
         View layoutInflater = LayoutInflater.from(VitalsActivity.this)
                 .inflate(R.layout.layout_aisteth_recording, null);
         tvTimer = layoutInflater.findViewById(R.id.tvTimer);
@@ -1032,17 +1023,14 @@ public class VitalsActivity extends BaseActivity implements View.OnClickListener
                 if (isTimerRunning) {
                     // Pause the timer
                     stopRecording();
-                    waveRecorder.stopRecording();
                     countDownTimer.cancel();
                     isTimerRunning = false;
                     btnRecord.setImageResource(R.drawable.play_circle_svg);
-
                     // show pause icon here.
                 } else {
                     // Start the timer
-                  //  activateBluetoothSco();
+                    //  activateBluetoothSco();
                     startRecording();
-                    waveRecorder.startRecording();
                     startTimer();
                     isTimerRunning = true;
                     btnRecord.setImageResource(R.drawable.pause_circle_svg);
@@ -1055,12 +1043,14 @@ public class VitalsActivity extends BaseActivity implements View.OnClickListener
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 
-                    // Pause the timer
+                // Pause the timer
+                if (countDownTimer != null)
                     countDownTimer.cancel();
-                    resetTimer();
-                    isTimerRunning = false;
-                    btnRecord.setImageResource(R.drawable.play_circle_svg);
-                    // show pause icon here.
+                resetTimer();
+                stopRecording();
+                isTimerRunning = false;
+                btnRecord.setImageResource(R.drawable.play_circle_svg);
+                // show pause icon here.
 
                 dialogInterface.cancel();
             }
@@ -2260,26 +2250,7 @@ public class VitalsActivity extends BaseActivity implements View.OnClickListener
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.btnLungSoundRecord || v.getId() == R.id.btnHeartSoundRecord) {
-            if (isBluetoothPermissionGranted(VitalsActivity.this)) {
-                showRecordingDialog();
-            }
-
-            /*Intent intent = new Intent(VitalsActivity.this, AiStethRecordActivity.class);
-            intent.putExtra("option", v.getId() == R.id.btnLungSoundRecord ? "Lung" : "Heart");
-
-            intent.putExtra("patientUuid", patientUuid);
-            intent.putExtra("visitUuid", visitUuid);
-            intent.putExtra("encounterUuidVitals", encounterVitals);
-            intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
-            intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
-            intent.putExtra("state", state);
-            intent.putExtra("name", patientName);
-            intent.putExtra("patientFirstName", patientFName);
-            intent.putExtra("patientLastName", patientLName);
-            intent.putExtra("gender", patientGender);
-            intent.putExtra("tag", intentTag);
-
-            startActivity(intent);*/
+            isBluetoothPermissionGranted(VitalsActivity.this);
         }
     }
 
@@ -2356,12 +2327,14 @@ public class VitalsActivity extends BaseActivity implements View.OnClickListener
         }
         else {
             // permission is granted now register reciever.
-            if (mBluetoothScoReceiver == null) {
+            /*if (mBluetoothScoReceiver == null) {
                 initBluetoothReceiver();
-            }
-            boolean isConnected = isBluetoothConnectedToAIH(VitalsActivity.this);
-            if (isConnected) {
+            }*/ // TODO: commenting
+            initFilePath();
 
+            if(isBluetoothConnectedToAIH(VitalsActivity.this)) {
+                // ie. bluetooth is connected to AiSteth only...
+                showRecordingDialog();
             }
             else {
              //   Toast.makeText(context, "Please Grant Bluetooth Permission!", Toast.LENGTH_LONG).show();
@@ -2396,32 +2369,74 @@ public class VitalsActivity extends BaseActivity implements View.OnClickListener
         }
     }
 
+
     //activate bluetooth
-   private void initBluetoothReceiver() {
+    private void initBluetoothReceiver() {
         if (mBluetoothScoReceiver == null) {
             mBluetoothScoReceiver = new mBluetoothScoReceiver();
             IntentFilter intentFilter = new IntentFilter(AudioManager.ACTION_SCO_AUDIO_STATE_UPDATED);
             registerReceiver(mBluetoothScoReceiver, intentFilter);
         }
-
-    initAudioManager();
-    initWaveRecorder();
     }
 
-    private String generateFileName() {
-        return visitUuid + "_" + UUID.randomUUID().toString() + ".wav";
+    public void initFilePath() {
+        filePath = FileUtils.initFilePathForStethoscope(visitUuid);
+        Log.d(TAG, "initFilePath: " + filePath);
+
+        waveRecorder = null;
+        audioManager = null;
+        
+        initWaveRecorder();
+        initAudioManager();
     }
 
     private void initWaveRecorder() {
-        String folderPath = STETHOSCOPE_FOLDER_PATH;
-       filePath = folderPath + generateFileName();
-
-        File folder = new File(folderPath);
-        if (!folder.exists())
-            folder.mkdirs();
-
         if (waveRecorder == null)
             waveRecorder = new WaveRecorder(filePath);
+      //  waveRecorder.setNoiseSuppressorActive(true);
+    }
+
+    private void startRecording() {
+        Toast.makeText(this, "Recording has started...", Toast.LENGTH_SHORT).show();
+        if (audioManager == null) {
+            initAudioManager();
+        }
+        audioManager.startBluetoothSco();
+        audioManager.setBluetoothScoOn(true);
+
+        if (waveRecorder == null) {
+            initWaveRecorder();
+        }
+        waveRecorder.startRecording();
+    }
+
+    private void pauseRecording() {
+        if (waveRecorder == null) {
+            initWaveRecorder();
+        }
+        waveRecorder.pauseRecording();
+    }
+
+    private void resumeRecording() {
+        if (waveRecorder == null) {
+            initWaveRecorder();
+        }
+        waveRecorder.resumeRecording();
+    }
+
+    private void stopRecording() {
+        Toast.makeText(this, "Recording has stopped.", Toast.LENGTH_SHORT).show();
+        if (audioManager == null) {
+            initAudioManager();
+        }
+
+        audioManager.stopBluetoothSco();
+        audioManager.setBluetoothScoOn(false);
+
+        if (waveRecorder == null) {
+            initWaveRecorder();
+        }
+        waveRecorder.stopRecording();
     }
 
     private void initAudioManager() {
@@ -2429,28 +2444,14 @@ public class VitalsActivity extends BaseActivity implements View.OnClickListener
             return;
 
         audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-        // Start Bluetooth SCO.
-        audioManager.setMode(AudioManager.MODE_NORMAL);
+        audioManager.setMode(AudioManager.MODE_NORMAL); // Start Bluetooth SCO.
         audioManager.setBluetoothScoOn(true);
-        // Stop Speaker.
-        audioManager.setSpeakerphoneOn(false);
-         audioManager.startBluetoothSco();
-        audioManager.setBluetoothScoOn(true);
+        audioManager.setSpeakerphoneOn(false);  // Stop Speaker.
+        audioManager.startBluetoothSco();
+//        audioManager.setBluetoothScoOn(true);
     }
 
-    private void startRecording() {
-     //   audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-        waveRecorder.startRecording();
-        audioManager.startBluetoothSco();
-        audioManager.setBluetoothScoOn(true);
-}
 
-private void stopRecording() {
-     //   audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-    waveRecorder.stopRecording();
-        audioManager.stopBluetoothSco();
-        audioManager.setBluetoothScoOn(false);
-}
 
 }
 

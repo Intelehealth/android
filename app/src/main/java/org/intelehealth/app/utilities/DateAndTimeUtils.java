@@ -65,6 +65,12 @@ public class DateAndTimeUtils {
         return year_month;
     }
 
+    public static String getCurrentDateTimeForFileName() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd_MM_yyyy_HH_mm_ss", Locale.getDefault());
+        return dateFormat.format(new Date());
+    }
+
+
     public String currentDateTime() {
         Locale.setDefault(Locale.ENGLISH);
         DateFormat date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());

@@ -1,5 +1,7 @@
 package org.intelehealth.app.utilities;
 
+import static org.intelehealth.app.app.AppConstants.STETHOSCOPE_FOLDER_PATH;
+
 import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
@@ -98,6 +100,28 @@ public class FileUtils {
 
         return encoded;
 
+    }
+
+    public static String initFilePathForStethoscope(String visitUuid) {
+        String filename = visitUuid + "_" + TimeRecordUtils.getCurrentTimeForFileName() + ".wav";
+        String folderPath = STETHOSCOPE_FOLDER_PATH;
+
+        String filePath = folderPath + filename;
+
+        File folder = new File(folderPath);
+        if (!folder.exists())
+            folder.mkdirs();
+
+        /*File file = new File(folderPath, filename);
+        if (!file.exists()) {
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }*/
+
+        return filePath;
     }
 
 }
