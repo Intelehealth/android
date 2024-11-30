@@ -10,13 +10,23 @@ package org.intelehealth.app.activities.vitalActivity;
 //import static org.intelehealth.app.app.AppConstants.key;
 import static org.intelehealth.app.utilities.EditTextUtils.*;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.ProgressDialog;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.media.AudioManager;
 import android.os.Bundle;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -31,10 +41,13 @@ import com.healthcubed.ezdxlib.model.Status;
 import com.healthcubed.ezdxlib.model.TestName;*/
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresPermission;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -56,8 +69,10 @@ import android.widget.Toast;
 
 import org.intelehealth.app.activities.digitalStethoscope.AiStethRecordActivity;
 import org.intelehealth.app.activities.homeActivity.HomeActivity;
+import org.intelehealth.app.activities.visitSummaryActivity.BluetoothDeviceAdapter;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.ConceptAttributeListDAO;
+import org.intelehealth.app.dialog.BluetoothDeviceChooseDialog;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.EditTextUtils;
@@ -68,8 +83,10 @@ import org.json.JSONObject;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.complaintNodeActivity.ComplaintNodeActivity;
@@ -89,6 +106,7 @@ import org.intelehealth.app.utilities.exception.DAOException;
 public class VitalsActivity extends BaseActivity implements View.OnClickListener/*implements BluetoothService.OnBluetoothEventCallback*/ {
     private static final String TAG = VitalsActivity.class.getSimpleName();
     private static final long HEART_SOUND_TIMER = 40000;
+    private static BluetoothState bluetoothState;
     SessionManager sessionManager;
     private String patientName = "", patientFName = "", patientLName = "";
     private String patientGender = "";
@@ -104,13 +122,19 @@ public class VitalsActivity extends BaseActivity implements View.OnClickListener
     ConfigUtils configUtils = new ConfigUtils(VitalsActivity.this);
   //  private PermissionHelper permissionHelper;
 
+
     // AiSteth - Stetho
+    private BroadcastReceiver mBluetoothScoReceiver;
+    private BluetoothAdapter mBluetoothAdapter;
     private CountDownTimer countDownTimer;
     private boolean isTimerRunning = false;
     private long timeLeftInMillis = HEART_SOUND_TIMER; // 40 secs in milliseconds
     TextView tvTimer;
     ImageButton btnRecord;
     MaterialAlertDialogBuilder dialog;
+    private boolean isRecordingInProgress = false;
+    private AudioManager audioManager = null;
+    private AtomicBoolean recordingInProgress = new AtomicBoolean(false);
     // Aisteth - end
 
     VitalsObject results = new VitalsObject();
@@ -1000,12 +1024,16 @@ public class VitalsActivity extends BaseActivity implements View.OnClickListener
             public void onClick(View v) {
                 if (isTimerRunning) {
                     // Pause the timer
+                    stopRecording();
                     countDownTimer.cancel();
                     isTimerRunning = false;
                     btnRecord.setImageResource(R.drawable.play_circle_svg);
+
                     // show pause icon here.
                 } else {
                     // Start the timer
+                  //  activateBluetoothSco();
+                    startRecording();
                     startTimer();
                     isTimerRunning = true;
                     btnRecord.setImageResource(R.drawable.pause_circle_svg);
@@ -1024,10 +1052,8 @@ public class VitalsActivity extends BaseActivity implements View.OnClickListener
                     isTimerRunning = false;
                     btnRecord.setImageResource(R.drawable.play_circle_svg);
                     // show pause icon here.
-                
+
                 dialogInterface.cancel();
-              //  EzdxBT.stopCurrentTest(); // stopping the test is necessary...
-             //   Toast.makeText(VitalsActivity.this, getString(R.string.test_stopped), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -2225,7 +2251,9 @@ public class VitalsActivity extends BaseActivity implements View.OnClickListener
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.btnLungSoundRecord || v.getId() == R.id.btnHeartSoundRecord) {
-            showRecordingDialog();
+            if (isBluetoothPermissionGranted(VitalsActivity.this)) {
+                showRecordingDialog();
+            }
 
             /*Intent intent = new Intent(VitalsActivity.this, AiStethRecordActivity.class);
             intent.putExtra("option", v.getId() == R.id.btnLungSoundRecord ? "Lung" : "Heart");
@@ -2244,7 +2272,151 @@ public class VitalsActivity extends BaseActivity implements View.OnClickListener
 
             startActivity(intent);*/
         }
-
     }
+
+    enum BluetoothState {
+        AVAILABLE, UNAVAILABLE
+    }
+
+    private class mBluetoothScoReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            int state = intent.getIntExtra(AudioManager.EXTRA_SCO_AUDIO_STATE, -1);
+            Log.d("ANDROID", "Audio SCO state: " + state);
+            switch (state) {
+                case AudioManager.SCO_AUDIO_STATE_CONNECTED:
+                    handleBluetoothStateChange(BluetoothState.AVAILABLE);
+                    break;
+                case AudioManager.SCO_AUDIO_STATE_CONNECTING:
+                    handleBluetoothStateChange(BluetoothState.UNAVAILABLE);
+                    break;
+                case AudioManager.SCO_AUDIO_STATE_DISCONNECTED:
+                    handleBluetoothStateChange(BluetoothState.UNAVAILABLE);
+                    break;
+                case AudioManager.SCO_AUDIO_STATE_ERROR:
+                    handleBluetoothStateChange(BluetoothState.UNAVAILABLE);
+                    break;
+            }
+        }
+    } // end
+
+    private void enableRecordBtn() {
+        btnLungSoundRecord.setEnabled(true);
+        btnRecord.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
+    }
+    private void disableRecordBtn() {
+        btnRecord.setEnabled(false);
+        btnRecord.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(org.intelehealth.klivekit.R.color.gray_4)));
+    }
+
+    public void handleBluetoothStateChange(BluetoothState state) {
+        if (bluetoothState == state) {
+            return;
+        }
+        bluetoothState = state;
+        bluetoothStateChanged(state);
+    }
+
+    private void bluetoothStateChanged(BluetoothState state) {
+        if (state == BluetoothState.AVAILABLE) {
+            enableRecordBtn();
+        } else {
+            disableRecordBtn();
+        }
+        if (BluetoothState.UNAVAILABLE == state && isTimerRunning /*recordingInProgress.get()*/) {
+            stopRecording();  // TODO: stop recording...
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        // Delegate the permission result handling to PermissionHelper
+        if (requestCode == 1300) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                isBluetoothConnectedToAIH(VitalsActivity.this);
+            } else {
+                Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private boolean isBluetoothPermissionGranted(Context context) {
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.BLUETOOTH_CONNECT}, 1300);
+        }
+        else {
+            // permission is granted now register reciever.
+            if (mBluetoothScoReceiver == null) {
+                initBluetoothReceiver();
+            }
+            boolean isConnected = isBluetoothConnectedToAIH(VitalsActivity.this);
+            if (isConnected) {
+
+            }
+            else {
+             //   Toast.makeText(context, "Please Grant Bluetooth Permission!", Toast.LENGTH_LONG).show();
+            }
+
+        }
+        return true;
+    }
+
+   // @RequiresPermission(value = "android.permission.BLUETOOTH_CONNECT")
+    private boolean isBluetoothConnectedToAIH(Context context) {
+     //   if (isBluetoothPermissionGranted(context)) {
+            mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+            Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
+            BluetoothDevice targetDevice = null;
+            for (BluetoothDevice device : pairedDevices) {
+                if ("HeartbeatRecorder".equals(device.getName()) || device.getName().startsWith("AiSteth") ||
+                        "Airdopes 170".equals(device.getName())) {
+                    targetDevice = device;
+                    break;
+                }
+            }
+
+            if (targetDevice != null) {
+                Log.i("Targeted Device Name", targetDevice.getName());
+                initAudioManager();
+                return true;
+            } else {
+                Toast.makeText(context, "Please Connect to AiSteth", Toast.LENGTH_LONG).show();
+                return false;
+        }
+    }
+
+    //activate bluetooth
+   private void initBluetoothReceiver() {
+       mBluetoothScoReceiver = new mBluetoothScoReceiver();
+    IntentFilter intentFilter = new IntentFilter(AudioManager.ACTION_SCO_AUDIO_STATE_UPDATED);
+    registerReceiver(mBluetoothScoReceiver, intentFilter);
+    initAudioManager();
+    }
+
+    private void initAudioManager() {
+        if (audioManager != null)
+            return;
+
+        audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        // Start Bluetooth SCO.
+        audioManager.setMode(AudioManager.MODE_NORMAL);
+        audioManager.setBluetoothScoOn(true);
+        // Stop Speaker.
+        audioManager.setSpeakerphoneOn(false);
+        // audioManager.startBluetoothSco();
+    }
+
+    private void startRecording() {
+     //   audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        audioManager.startBluetoothSco();
+}
+
+private void stopRecording() {
+     //   audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        audioManager.stopBluetoothSco();
+        audioManager.setBluetoothScoOn(false);
+}
+
 }
 

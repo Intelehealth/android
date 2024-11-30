@@ -1,5 +1,6 @@
 package org.intelehealth.app.activities.homeActivity;
 
+
 import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
@@ -17,8 +18,10 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.media.AudioManager;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
@@ -69,6 +72,7 @@ import org.intelehealth.app.activities.loginActivity.LoginActivity;
 import org.intelehealth.app.activities.searchPatientActivity.SearchPatientActivity;
 import org.intelehealth.app.activities.settingsActivity.SettingsActivity;
 import org.intelehealth.app.activities.todayPatientActivity.TodayPatientActivity;
+import org.intelehealth.app.activities.vitalActivity.VitalsActivity;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.appointment.AppointmentListingActivity;
@@ -644,9 +648,15 @@ public class HomeActivity extends BaseActivity /* implements BluetoothService.On
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int itemId = item.getItemId();/* case R.id.bluetooth:
+        int itemId = item.getItemId();
+        /* case R.id.bluetooth:
                 showBluetoothDeviceChooseDialog(); // Here on click, will open the Dialog that will show all the nearby Bluetooth devices...
                 return true;*/
+
+        if (itemId == R.id.bluetooth) {
+          //  showBluetoothDeviceChooseDialog();
+            return true;
+        }
         if (itemId == R.id.draftSurvey) {
             draftSurvey();
             return true;
@@ -1629,4 +1639,12 @@ public class HomeActivity extends BaseActivity /* implements BluetoothService.On
     }
 */
 
+
+
+
+
+
 }
+
+
+
