@@ -165,6 +165,9 @@ class PatientPersonalInfoFragment :
         Timber.d { "onPatientDataLoaded" }
         Timber.d { Gson().toJson(patient) }
         fetchPersonalInfoConfig()
+        patient.apply {
+            gender = gender?:"F"
+        }
         binding.patient = patient
         binding.isEditMode = patientViewModel.isEditMode
     }

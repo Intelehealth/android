@@ -8,6 +8,7 @@ import com.google.gson.Gson
 import org.intelehealth.app.activities.identificationActivity.model.Block
 import org.intelehealth.app.activities.identificationActivity.model.DistData
 import org.intelehealth.app.activities.identificationActivity.model.GramPanchayat
+import org.intelehealth.app.activities.identificationActivity.model.ProvincesAndCities
 import org.intelehealth.app.activities.identificationActivity.model.StateData
 import org.intelehealth.app.activities.identificationActivity.model.StateDistMaster
 import org.intelehealth.app.activities.identificationActivity.model.Village
@@ -21,6 +22,7 @@ import java.util.Locale
  **/
 object LanguageUtils {
     private const val STATE_DISTRICT_JSON = "state_district_tehsil.json"
+    private const val PROVINCE_AND_CITIES_JSON = "province_and_cities.json"
 
     @JvmStatic
     fun getLocalLang(): String {
@@ -46,6 +48,20 @@ object LanguageUtils {
         return Gson().fromJson(
             jsonObject.toString(),
             StateDistMaster::class.java
+        )
+    }
+
+    /**
+     * specially for Kazakhstan
+     */
+    @JvmStatic
+    fun getProvincesAndCities(): ProvincesAndCities {
+        val context = IntelehealthApplication.getAppContext()
+        val jsonObject = FileUtils.encodeJSON(context, PROVINCE_AND_CITIES_JSON)
+
+        return Gson().fromJson(
+            jsonObject.toString(),
+            ProvincesAndCities::class.java
         )
     }
 

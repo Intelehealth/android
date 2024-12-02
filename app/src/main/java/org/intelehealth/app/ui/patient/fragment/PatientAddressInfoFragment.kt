@@ -89,7 +89,8 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
         override fun onBound(binding: FragmentPatientAddressInfoBinding?) {
             super.onBound(binding)
             setupCountries()
-            setupStates()
+            //setupStates()
+            setupProvinceAndCities()
             applyFilter()
             setInputTextChangListener()
             setClickListener()
@@ -160,6 +161,32 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
             binding.textInputLayState.tag = it
             val adapter: ArrayAdapter<StateData> = ArrayAdapterUtils.getObjectArrayAdapter(
                 requireContext(), it
+            )
+            binding.autoCompleteState.setAdapter(adapter)
+            if (patient.stateprovince != null && patient.stateprovince.isNotEmpty()) {
+                val state = LanguageUtils.getState(patient.stateprovince)
+                if (state != null) {
+                    binding.autoCompleteState.setText(state.toString(), false)
+                    setupDistricts(state)
+                }
+            }
+
+            binding.autoCompleteState.setOnItemClickListener { adapterView, _, i, _ ->
+                binding.textInputLayState.hideError()
+                val list: List<StateData> = binding.textInputLayState.tag as List<StateData>
+                val selectedState = list[i]
+                patient.stateprovince = selectedState.state
+                setupDistricts(selectedState)
+            }
+        }
+
+    }
+
+    private fun setupProvinceAndCities() {
+        LanguageUtils.getProvincesAndCities().let {
+            binding.textInputLayState.tag = it
+            val adapter: ArrayAdapter<String> = ArrayAdapterUtils.getObjectArrayAdapter(
+                requireContext(), it.provinces
             )
             binding.autoCompleteState.setAdapter(adapter)
             if (patient.stateprovince != null && patient.stateprovince.isNotEmpty()) {

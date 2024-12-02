@@ -88,6 +88,15 @@ public class PatientDTO implements Serializable {
     private String profileTimestamp;
 
     private String district;
+    private String registrationAddressOfHf;
+
+    public String getRegistrationAddressOfHf() {
+        return registrationAddressOfHf;
+    }
+
+    public void setRegistrationAddressOfHf(String registrationAddressOfHf) {
+        this.registrationAddressOfHf = registrationAddressOfHf;
+    }
 
     public String getUuid() {
         return uuid;

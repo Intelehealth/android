@@ -31,6 +31,9 @@ class PatientRegConfigKeys {
         const val VILLAGE_TOWN_CITY = "a_village_town_city"
         const val ADDRESS_1 = "a_corresponding_address_1"
         const val ADDRESS_2 = "a_corresponding_address_2"
+        const val PROVINCES = "a_provinces"
+        const val CITIES = "a_cities"
+        const val REGISTRATION_ADDRESS_OF_HF = "a_registration_address_of_health_facility"
 
         //OTHERS
         const val NATIONAL_ID = "o_national_id"
