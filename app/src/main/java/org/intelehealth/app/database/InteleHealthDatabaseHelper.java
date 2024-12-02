@@ -139,6 +139,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "modified_date TEXT," +
             "tms_case_number TEXT," +
             "request_id TEXT," +
+            "relative_phone_number TEXT," +
             "discipline TEXT," +
             "department TEXT," +
             "voided TEXT DEFAULT '0'," +
@@ -152,7 +153,8 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "patientuuid TEXT," +
             "modified_date TEXT," +
             "voided TEXT DEFAULT '0'," +
-            "sync TEXT DEFAULT 'false' " +
+            "sync TEXT DEFAULT 'false'," +
+            "UNIQUE(patientuuid, person_attribute_type_uuid)"+ // added unique constraint to prevent duplicate insert of same attribute]
             ")";
 
     public static final String CREATE_VISIT_MAIN = "CREATE TABLE IF NOT EXISTS tbl_visit (" +
