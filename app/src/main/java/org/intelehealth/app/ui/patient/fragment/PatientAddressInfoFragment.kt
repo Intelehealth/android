@@ -341,7 +341,7 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
             } else true
 
             val bAddress2 = if (it.address2!!.isEnabled && it.address2!!.isMandatory) {
-                binding.textInputLayAddress1.validate(binding.textInputAddress1, error)
+                binding.textInputLayAddress2.validate(binding.textInputAddress2, error)
             } else true
 
             val bBlock = if (it.block!!.isEnabled && it.block!!.isMandatory) {
