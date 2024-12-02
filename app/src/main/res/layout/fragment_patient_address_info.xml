@@ -296,7 +296,7 @@
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/textInputCityVillage"
-                            style="@style/AppTheme.InputBox.Name"
+                            style="@style/AppTheme.InputBox.Name1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/enter_village_town_city"
