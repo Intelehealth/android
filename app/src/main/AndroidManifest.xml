@@ -63,6 +63,12 @@
         android:usesCleartextTraffic="true"
         tools:ignore="UnusedAttribute, LockedOrientationActivity"
         tools:replace="allowBackup">
+
+        <activity
+            android:name=".activities.draftSurvey.DraftSurveyActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
         <activity
             android:name=".activities.householdSurvey.HouseholdSurveyActivity"
             android:exported="true"
