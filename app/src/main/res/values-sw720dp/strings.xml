@@ -131,4 +131,5 @@
     <string name="enter_discipline">Enter Discipline</string>
     <string name="department">Department</string>
     <string name="enter_department">Enter Department</string>
+    <string name="relative_phone_number">Relative Phone Number</string>
 </resources>

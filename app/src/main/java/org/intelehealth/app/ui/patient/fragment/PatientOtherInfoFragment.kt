@@ -16,6 +16,7 @@ import org.intelehealth.app.utilities.LanguageUtils
 import org.intelehealth.app.utilities.PatientRegFieldsUtils
 import org.intelehealth.app.utilities.PatientRegStage
 import org.intelehealth.app.utilities.extensions.addFilter
+import org.intelehealth.app.utilities.extensions.hideDigitErrorOnTextChang
 import org.intelehealth.app.utilities.extensions.hideError
 import org.intelehealth.app.utilities.extensions.hideErrorOnTextChang
 import org.intelehealth.app.utilities.extensions.validate
@@ -100,8 +101,8 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
             requestId = binding.textInputRequestId.text?.toString()
             discipline = binding.textInputDiscipline.text?.toString()
             department = binding.textInputDepartment.text?.toString()
+            relativePhoneNumber = binding.textInputRelativePhoneNumber.text?.toString()
 
-            CustomLog.d("PPPPPSAVE",""+Gson().toJson(this))
             patientViewModel.updatedPatient(this)
             patientViewModel.savePatient().observe(viewLifecycleOwner) {
                 it ?: return@observe
@@ -127,6 +128,10 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
     private fun setInputTextChangListener() {
         binding.textInputLayNationalId.hideErrorOnTextChang(binding.textInputNationalId)
         binding.textInputLayOccupation.hideErrorOnTextChang(binding.textInputOccupation)
+        binding.textInputLayRelativePhoneNumber.hideDigitErrorOnTextChang(
+            binding.textInputRelativePhoneNumber,
+            10
+        )
     }
 
     private fun setupEducations() {
@@ -211,10 +216,19 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
                     )
                 } else true
 
+            /*val relativePhoneNumber =
+                if (it.relativePhoneNumber!!.isEnabled && it.relativePhoneNumber!!.isMandatory) {
+                    binding.textInputLayRelativePhone.validate(
+                        binding.textInputRelativePhone,
+                        error
+                    )
+                } else true*/
+
 
             if (bOccuptions.and(bSocialCategory).and(bEducation)
                     .and(bEconomic).and(bNationalId).and(bOccuptions)
-                    .and(tmhCaseNumber).and(requestId).and(discipline).and(department)
+                    .and(tmhCaseNumber).and(requestId).and(discipline)
+                    .and(department)/*.and(relativePhoneNumber)*/
             ) block.invoke()
         }
     }

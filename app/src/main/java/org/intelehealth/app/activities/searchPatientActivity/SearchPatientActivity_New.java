@@ -296,7 +296,7 @@ public class SearchPatientActivity_New extends BaseActivity {
         if (!patientDTOList.isEmpty()) { // ie. the entered text is present in db
 
             /**
-             * handling patient get operation in bd thread
+             * handling patient get operation in bg thread
              */
             compositeDisposable.add(fetchDataForTagObs(patientDTOList)
                     .subscribeOn(Schedulers.io())

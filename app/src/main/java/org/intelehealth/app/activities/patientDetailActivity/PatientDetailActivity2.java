@@ -64,7 +64,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.LocaleList;
 import android.util.DisplayMetrics;
+
+import org.intelehealth.app.models.dto.PatientAttributesDTO;
 import org.intelehealth.app.utilities.CustomLog;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -165,12 +168,13 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     TextView name_txtview, openmrsID_txt, patientname, gender, patientdob, patientage, phone,
             postalcode, patientcountry, patientstate, patientdistrict, village, address1, addr2View,
             son_daughter_wife, patientoccupation, patientcaste, patienteducation, patienteconomicstatus, patientNationalID,
-            guardina_name_tv, guardian_type_tv, contact_type_tv, em_contact_name_tv, em_contact_number_tv;
+            guardina_name_tv, guardian_type_tv, contact_type_tv, em_contact_name_tv, em_contact_number_tv,
+            tmh_case_number_tv, request_id_tv, relative_phone_num_tv, discipline_tv, department_tv;
 
     TableRow nameTr, genderTr, dobTr, ageTr, phoneNumTr, guardianTypeTr, guardianNameTr,
             emContactNameTr, emContactTypeTr, emContactNumberTr, postalCodeTr, countryTr,
             stateTr, districtTr, villageCityTr, addressOneTr, addressTwoTr, nidTr, occupationTr, socialCategoryTr,
-            educationTr, economicCategoryTr;
+            educationTr, economicCategoryTr, tmhCaseNumberTr,requestIdTr,relativePhnNumTr,disciplineTr,departmentTr;
 
     SessionManager sessionManager = null;
     //    Patient patientDTO = new Patient();
@@ -467,7 +471,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             encounterDAO.createEncountersToDB(encounterDTO);
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
-            CustomLog.e(TAG,e.getMessage());
+            CustomLog.e(TAG, e.getMessage());
         }
 
         InteleHealthDatabaseHelper mDatabaseHelper = new InteleHealthDatabaseHelper(PatientDetailActivity2.this);
@@ -513,7 +517,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             visitsDAO.insertPatientToDB(visitDTO);
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
-            CustomLog.e(TAG,e.getMessage());
+            CustomLog.e(TAG, e.getMessage());
         }
 
         // visitUuid = String.valueOf(visitLong);
@@ -552,6 +556,12 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         em_contact_name_tv = findViewById(R.id.em_contact_name_tv);
         em_contact_number_tv = findViewById(R.id.em_contact_number_tv);
 
+        tmh_case_number_tv = findViewById(R.id.tmh_case_number);
+        request_id_tv = findViewById(R.id.request_id);
+        relative_phone_num_tv = findViewById(R.id.relative_phn_number);
+        discipline_tv = findViewById(R.id.discipline);
+        department_tv = findViewById(R.id.department);
+
         nameTr = findViewById(R.id.name_tr);
         genderTr = findViewById(R.id.gender_tr);
         dobTr = findViewById(R.id.dob_tr);
@@ -577,6 +587,12 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         socialCategoryTr = findViewById(R.id.social_category_tr);
         educationTr = findViewById(R.id.education_tr);
         economicCategoryTr = findViewById(R.id.economic_category_tr);
+
+        tmhCaseNumberTr = findViewById(R.id.tmh_case_number_tr);
+        requestIdTr = findViewById(R.id.request_id_tr);
+        relativePhnNumTr = findViewById(R.id.relative_phone_number_tr);
+        disciplineTr = findViewById(R.id.discipline_tr);
+        departmentTr = findViewById(R.id.department_tr);
 
         postalcode = findViewById(R.id.postalcode);
         patientcountry = findViewById(R.id.country);
@@ -830,6 +846,56 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                                 null,
                                 null
                         );
+
+                case PatientRegConfigKeys.TMH_CASE_SUMMARY ->
+                        PatientRegFieldsUtils.INSTANCE.configField(
+                                false,
+                                fields,
+                                tmhCaseNumberTr,
+                                null,
+                                null,
+                                null
+                        );
+
+                case PatientRegConfigKeys.REQUEST_ID ->
+                        PatientRegFieldsUtils.INSTANCE.configField(
+                                false,
+                                fields,
+                                requestIdTr,
+                                null,
+                                null,
+                                null
+                        );
+
+                case PatientRegConfigKeys.RELATIVE_PHONE_NUM ->
+                        PatientRegFieldsUtils.INSTANCE.configField(
+                                false,
+                                fields,
+                                relativePhnNumTr,
+                                null,
+                                null,
+                                null
+                        );
+
+                case PatientRegConfigKeys.DISCIPLINE ->
+                        PatientRegFieldsUtils.INSTANCE.configField(
+                                false,
+                                fields,
+                                disciplineTr,
+                                null,
+                                null,
+                                null
+                        );
+
+                case PatientRegConfigKeys.DEPARTMENT ->
+                        PatientRegFieldsUtils.INSTANCE.configField(
+                                false,
+                                fields,
+                                departmentTr,
+                                null,
+                                null,
+                                null
+                        );
             }
         }
     }
@@ -870,7 +936,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                     isCompletedExitedSurvey = new EncounterDAO().isCompletedExitedSurvey(visit_id);
                 } catch (DAOException e) {
                     e.printStackTrace();
-                    CustomLog.e(TAG,e.getMessage());
+                    CustomLog.e(TAG, e.getMessage());
                 }
                 if (!isCompletedExitedSurvey) {
 
@@ -915,7 +981,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
-                                CustomLog.e(TAG,e.getMessage());
+                                CustomLog.e(TAG, e.getMessage());
                             }
                         } else {
                             needToShowCoreValue = true;
@@ -1013,7 +1079,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
                             } catch (ParseException e) {
                                 FirebaseCrashlytics.getInstance().recordException(e);
-                                CustomLog.e(TAG,e.getMessage());
+                                CustomLog.e(TAG, e.getMessage());
                             }
                         }
                     }
@@ -1119,7 +1185,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                     name = patientsDAO.getAttributesName(idCursor1.getString(idCursor1.getColumnIndexOrThrow("person_attribute_type_uuid")));
                 } catch (DAOException e) {
                     FirebaseCrashlytics.getInstance().recordException(e);
-                    CustomLog.e(TAG,e.getMessage());
+                    CustomLog.e(TAG, e.getMessage());
                 }
 
                 if (name.equalsIgnoreCase("caste")) {
@@ -1151,6 +1217,26 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 }
                 if (name.equalsIgnoreCase("providerUUID")) {
                     patientDTO.setProviderUUID(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+
+                if (name.equalsIgnoreCase(PatientAttributesDTO.Column.TMH_CASE_NUMBER.value)) {
+                    patientDTO.setTmhCaseNumber(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+
+                if (name.equalsIgnoreCase(PatientAttributesDTO.Column.REQUEST_ID.value)) {
+                    patientDTO.setRequestId(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+
+                if (name.equalsIgnoreCase(PatientAttributesDTO.Column.RELATIVE_PHONE_NUMBER.value)) {
+                    patientDTO.setRelativePhoneNumber(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+
+                if (name.equalsIgnoreCase(PatientAttributesDTO.Column.DISCIPLINE.value)) {
+                    patientDTO.setDiscipline(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+
+                if (name.equalsIgnoreCase(PatientAttributesDTO.Column.DEPARTMENT.value)) {
+                    patientDTO.setDepartment(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
 
             } while (idCursor1.moveToNext());
@@ -1191,7 +1277,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 */
         } catch (JSONException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
-            CustomLog.e(TAG,e.getMessage());
+            CustomLog.e(TAG, e.getMessage());
 //            Issue #627
 //            added the catch exception to check the config and throwing back to setup activity
             Toast.makeText(getApplicationContext(), "JsonException" + e, Toast.LENGTH_LONG).show();
@@ -1214,7 +1300,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             profileImage = imagesDAO.getPatientProfileChangeTime(patientDTO.getUuid());
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
-            CustomLog.e(TAG,e.getMessage());
+            CustomLog.e(TAG, e.getMessage());
         }
 
         if (patientDTO.getPatientPhoto() == null || patientDTO.getPatientPhoto().equalsIgnoreCase("")) {
@@ -1808,6 +1894,51 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         } else {
             em_contact_number_tv.setText(getString(R.string.not_provided));
         }
+
+        //tmh case number
+        if (patientDTO.getTmhCaseNumber() != null && !patientDTO.getTmhCaseNumber().
+
+                equals("")) {
+            tmh_case_number_tv.setText(patientDTO.getTmhCaseNumber());
+        } else {
+            tmh_case_number_tv.setText(getString(R.string.not_provided));
+        }
+
+        //request id
+        if (patientDTO.getRequestId() != null && !patientDTO.getRequestId().
+
+                equals("")) {
+            request_id_tv.setText(patientDTO.getRequestId());
+        } else {
+            request_id_tv.setText(getString(R.string.not_provided));
+        }
+
+        //relative phone num
+        if (patientDTO.getRelativePhoneNumber() != null && !patientDTO.getRelativePhoneNumber().
+
+                equals("")) {
+            relative_phone_num_tv.setText(patientDTO.getRelativePhoneNumber());
+        } else {
+            relative_phone_num_tv.setText(getString(R.string.not_provided));
+        }
+
+        //discipline
+        if (patientDTO.getDiscipline() != null && !patientDTO.getDiscipline().
+
+                equals("")) {
+            discipline_tv.setText(patientDTO.getDiscipline());
+        } else {
+            discipline_tv.setText(getString(R.string.not_provided));
+        }
+
+        //department
+        if (patientDTO.getDepartment() != null && !patientDTO.getDepartment().
+
+                equals("")) {
+            department_tv.setText(patientDTO.getDepartment());
+        } else {
+            department_tv.setText(getString(R.string.not_provided));
+        }
     }
 
     private String getStateTranslated(String state, String language) {
@@ -1888,7 +2019,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                             updated = patientsDAO.updatePatientPhoto(patientDTO.getUuid(), AppConstants.IMAGE_PATH + patientDTO.getUuid() + ".jpg");
                         } catch (DAOException e) {
                             FirebaseCrashlytics.getInstance().recordException(e);
-                            CustomLog.e(TAG,e.getMessage());
+                            CustomLog.e(TAG, e.getMessage());
                         }
                         if (updated) {
                             RequestBuilder<Drawable> requestBuilder = Glide.with(PatientDetailActivity2.this)
@@ -1909,7 +2040,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                                     patientDTO.getUuid() + ".jpg", patientDTO.getUuid());
                         } catch (DAOException e) {
                             FirebaseCrashlytics.getInstance().recordException(e);
-                            CustomLog.e(TAG,e.getMessage());
+                            CustomLog.e(TAG, e.getMessage());
                         }
                     }
                 });
@@ -1940,7 +2071,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 setTitle(openmrsID_txt.getText());
             } catch (DAOException e) {
                 FirebaseCrashlytics.getInstance().recordException(e);
-                CustomLog.e(TAG,e.getMessage());
+                CustomLog.e(TAG, e.getMessage());
             }
         }
 
@@ -1966,7 +2097,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                     syncAnimator.cancel();
                     recreate();
                 } catch (Exception e) {
-                    CustomLog.d(TAG,e.getMessage());
+                    CustomLog.d(TAG, e.getMessage());
                 }
             }
         };
@@ -2002,7 +2133,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             networkUtils.unregisterNetworkReceiver();
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
-            CustomLog.d(TAG,e.getMessage());
+            CustomLog.d(TAG, e.getMessage());
         }
     }
 

@@ -77,6 +77,7 @@ public class PatientAttributesDTO implements Serializable {
         CREATED_DATE("createdDate"),
         TMH_CASE_NUMBER("TMH Case Number"),
         REQUEST_ID("Request ID"),
+        RELATIVE_PHONE_NUMBER("Relative Phone Number"),
         DISCIPLINE("Discipline"),
         DEPARTMENT("Department");
 

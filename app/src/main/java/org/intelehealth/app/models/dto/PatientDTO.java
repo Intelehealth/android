@@ -93,8 +93,17 @@ public class PatientDTO implements Serializable {
 
     private String tmhCaseNumber;
     private String requestId;
+    private String relativePhoneNumber;
     private String discipline;
     private String department;
+
+    public String getRelativePhoneNumber() {
+        return relativePhoneNumber;
+    }
+
+    public void setRelativePhoneNumber(String relativePhoneNumber) {
+        this.relativePhoneNumber = relativePhoneNumber;
+    }
 
     public String getTmhCaseNumber() {
         return tmhCaseNumber;

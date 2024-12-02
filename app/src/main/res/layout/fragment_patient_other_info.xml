@@ -337,6 +337,73 @@
                     </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
                 </LinearLayout>
 
+                <!--relative phone-->
+                <LinearLayout
+                    android:id="@+id/llRelativePhoneNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/std_12dp"
+                    android:orientation="vertical"
+                    android:visibility="@{otherInfoConfig.relativePhoneNumber.enabled ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/llRequestId"
+                    tools:visibility="visible">
+
+                    <TextView
+                        android:id="@+id/tvEmContactNumber"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingExtra="3sp"
+                        android:text="@{ otherInfoConfig.relativePhoneNumber.mandatory ? @string/emergency_contact_number_non_required + ` *` : @string/emergency_contact_number_non_required}"
+                        android:textAppearance="@style/blur_txtview"
+                        android:textSize="@null"
+                        tools:text="@string/relative_phone_number" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <com.hbb20.CountryCodePicker
+                            android:id="@+id/ccpEmRelativePhoneNumber"
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/std_48dp"
+                            android:layout_marginTop="@dimen/margin_4"
+                            android:background="@drawable/input_edittext_border"
+                            android:gravity="center_vertical"
+                            app:ccp_countryPreference="us,in"
+                            app:ccp_textSize="@dimen/txtsize_patdetail_16sp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
+                            android:id="@+id/textInputLayRelativePhoneNumber"
+                            style="@style/AppTheme.OutlineInputBox"
+                            config="@{otherInfoConfig.relativePhoneNumber}"
+                            editMode="@{isEditMode}"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/std_12dp"
+                            android:hint="@{ otherInfoConfig.relativePhoneNumber.mandatory ? @string/emergency_contact_number_non_required + ` *` : @string/emergency_contact_number_non_required}"
+                            app:expandedHintEnabled="false"
+                            app:hintEnabled="false"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/ccpEmRelativePhoneNumber"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:hint="@string/emergency_contact_number_non_required">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/textInputRelativePhoneNumber"
+                                style="@style/AppTheme.InputBox.Phone"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="phone"
+                                android:cursorVisible="true"
+                                android:hint="@string/relative_phone_number" />
+                        </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </LinearLayout>
+
                 <!--discipline-->
                 <LinearLayout
                     android:id="@+id/llDiscipline"
@@ -347,7 +414,7 @@
                     android:visibility="@{otherInfoConfig.discipline.enabled ? View.VISIBLE : View.GONE}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/llRequestId"
+                    app:layout_constraintTop_toBottomOf="@id/llRelativePhoneNumber"
                     tools:visibility="visible">
 
                     <TextView
