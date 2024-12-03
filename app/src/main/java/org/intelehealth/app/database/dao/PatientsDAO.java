@@ -1115,8 +1115,6 @@ public class PatientsDAO {
         PatientDTO patientDTO = new PatientDTO();
         if (cursor.moveToFirst()) {
             do {
-
-                CustomLog.d("PPPPPPF",""+cursor.getString(cursor.getColumnIndexOrThrow("tmhCaseNumber")));
                 patientDTO.setUuid(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
                 patientDTO.setOpenmrsId(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
                 patientDTO.setFirstname(cursor.getString(cursor.getColumnIndexOrThrow("first_name")));
@@ -1154,11 +1152,11 @@ public class PatientsDAO {
                 patientDTO.setTmhCaseNumber(cursor.getString(cursor.getColumnIndexOrThrow("tmhCaseNumber")));
                 patientDTO.setRequestId(cursor.getString(cursor.getColumnIndexOrThrow("requestId")));
                 patientDTO.setDiscipline(cursor.getString(cursor.getColumnIndexOrThrow("discipline")));
+                patientDTO.setRelativePhoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("relativePhoneNumber")));
                 patientDTO.setDepartment(cursor.getString(cursor.getColumnIndexOrThrow("department")));
             } while (cursor.moveToNext());
         }
         cursor.close();
-        CustomLog.d("PPPPPPPQ",""+new Gson().toJson(patientDTO));
         return patientDTO;
     }
 
@@ -1180,7 +1178,7 @@ public class PatientsDAO {
                 + "o.value is NOT NULL GROUP BY a.patientuuid"
                 + " HAVING (value_text is NOT NULL AND LOWER(value_text) != 'no' AND value_text != '' ) ";
 
-        CustomLog.d("QUERY_COUNT",""+query);
+        CustomLog.d("QUERY_COUNT", query);
 
         final Cursor cursor = db.rawQuery(query, new String[]{UuidDictionary.FOLLOW_UP_VISIT});  //"e8caffd6-5d22-41c4-8d6a-bc31a44d0c86"
         if (cursor.moveToFirst()) {

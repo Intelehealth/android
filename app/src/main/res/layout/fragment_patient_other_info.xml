@@ -329,7 +329,7 @@
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/textInputRequestId"
                             style="@style/AppTheme.InputBox.Address"
-                            android:inputType="numberDecimal"
+                            android:inputType="text"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/enter_request_id"
@@ -355,7 +355,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="3sp"
-                        android:text="@{ otherInfoConfig.relativePhoneNumber.mandatory ? @string/emergency_contact_number_non_required + ` *` : @string/emergency_contact_number_non_required}"
+                        android:text="@{ otherInfoConfig.relativePhoneNumber.mandatory ? @string/relative_phone_number + ` *` : @string/relative_phone_number}"
                         android:textAppearance="@style/blur_txtview"
                         android:textSize="@null"
                         tools:text="@string/relative_phone_number" />
@@ -384,13 +384,13 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/std_12dp"
-                            android:hint="@{ otherInfoConfig.relativePhoneNumber.mandatory ? @string/emergency_contact_number_non_required + ` *` : @string/emergency_contact_number_non_required}"
+                            android:hint="@{ otherInfoConfig.relativePhoneNumber.mandatory ? @string/relative_phone_number + ` *` : @string/relative_phone_number}"
                             app:expandedHintEnabled="false"
                             app:hintEnabled="false"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toEndOf="@id/ccpEmRelativePhoneNumber"
                             app:layout_constraintTop_toTopOf="parent"
-                            tools:hint="@string/emergency_contact_number_non_required">
+                            tools:hint="@string/relative_phone_number">
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/textInputRelativePhoneNumber"
@@ -399,6 +399,7 @@
                                 android:layout_height="wrap_content"
                                 android:inputType="phone"
                                 android:cursorVisible="true"
+                                android:text="@{patient.relativePhoneNumber}"
                                 android:hint="@string/relative_phone_number" />
                         </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
                     </androidx.constraintlayout.widget.ConstraintLayout>

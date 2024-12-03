@@ -879,7 +879,8 @@
     <string name="tmh_case_number">TMH Case Number</string>
     <string name="enter_tmh_case_number">Enter TMH Case Number</string>
     <string name="request_id">Request ID</string>
-    <string name="discipline">Discipline</string>
+    <string name="discipline">Discipline (Specialty)</string>
+
     <string name="enter_request_id">Enter Request ID</string>
     <string name="enter_discipline">Enter Discipline</string>
     <string name="department">Department</string>

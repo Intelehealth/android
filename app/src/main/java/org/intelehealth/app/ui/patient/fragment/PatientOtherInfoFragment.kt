@@ -20,6 +20,7 @@ import org.intelehealth.app.utilities.extensions.hideDigitErrorOnTextChang
 import org.intelehealth.app.utilities.extensions.hideError
 import org.intelehealth.app.utilities.extensions.hideErrorOnTextChang
 import org.intelehealth.app.utilities.extensions.validate
+import org.intelehealth.app.utilities.extensions.validateDigit
 import org.intelehealth.app.utilities.extensions.validateDropDowb
 
 /**
@@ -216,19 +217,27 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
                     )
                 } else true
 
-            /*val relativePhoneNumber =
+            val relativePhoneNumber =
                 if (it.relativePhoneNumber!!.isEnabled && it.relativePhoneNumber!!.isMandatory) {
-                    binding.textInputLayRelativePhone.validate(
-                        binding.textInputRelativePhone,
+                    binding.textInputLayRelativePhoneNumber.validate(
+                        binding.textInputRelativePhoneNumber,
                         error
+                    ).and(
+                        binding.textInputLayRelativePhoneNumber.validateDigit(
+                            binding.textInputRelativePhoneNumber,
+                            R.string.enter_10_digits,
+                            10
+                        )
                     )
-                } else true*/
+
+
+                } else true
 
 
             if (bOccuptions.and(bSocialCategory).and(bEducation)
                     .and(bEconomic).and(bNationalId).and(bOccuptions)
                     .and(tmhCaseNumber).and(requestId).and(discipline)
-                    .and(department)/*.and(relativePhoneNumber)*/
+                    .and(department).and(relativePhoneNumber)
             ) block.invoke()
         }
     }

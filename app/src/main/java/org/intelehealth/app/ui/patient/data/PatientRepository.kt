@@ -154,6 +154,14 @@ class PatientRepository(
                     patient.department
                 )
             )
+            add(
+                createPatientAttribute(
+                    patient.uuid,
+                    PatientAttributesDTO.Column.RELATIVE_PHONE_NUMBER.value,
+                    patient.relativePhoneNumber
+                )
+            )
+
         }
 
     private fun createPatientAttribute(

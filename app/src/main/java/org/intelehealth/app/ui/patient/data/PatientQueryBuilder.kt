@@ -27,6 +27,7 @@ class PatientQueryBuilder : QueryBuilder() {
                     + buildPatientAttributesQuery(PatientAttributesDTO.Column.TMH_CASE_NUMBER.value) + " tmhCaseNumber,"
                     + buildPatientAttributesQuery(PatientAttributesDTO.Column.REQUEST_ID.value) + " requestId,"
                     + buildPatientAttributesQuery(PatientAttributesDTO.Column.DISCIPLINE.value) + " discipline,"
+                    + buildPatientAttributesQuery(PatientAttributesDTO.Column.RELATIVE_PHONE_NUMBER.value) + " relativePhoneNumber,"
                     + buildPatientAttributesQuery(PatientAttributesDTO.Column.DEPARTMENT.value) + " department "
         )
             .from("tbl_patient P")
