@@ -160,5 +160,8 @@
     <color name="stroke_gray_color">#dddddd</color>
     <color name="basic_item_bg">@android:color/white</color>
     <color name="ink_pen">#16264c</color>
+    <color name="orange3">#ff6600</color>
+    <color name="grayIcon">#7F7B92</color>
+
 
 </resources>

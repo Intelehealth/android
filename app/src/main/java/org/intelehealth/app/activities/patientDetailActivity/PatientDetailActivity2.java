@@ -65,6 +65,9 @@ import android.os.Bundle;
 import android.os.LocaleList;
 import android.util.DisplayMetrics;
 
+import org.intelehealth.app.activities.householdSurvey.HouseholdSurveyActivity;
+import org.intelehealth.app.models.FamilyMemberRes;
+import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.utilities.CustomLog;
 
 import android.util.Log;
@@ -128,6 +131,7 @@ import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.DownloadFilesUtils;
 import org.intelehealth.app.utilities.FileUtils;
+import org.intelehealth.app.utilities.HouseholdSurveyStage;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
@@ -152,9 +156,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 
 import io.reactivex.Observable;
@@ -168,12 +174,12 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     TextView name_txtview, openmrsID_txt, patientname, gender, patientdob, patientage, phone,
             postalcode, patientcountry, patientstate, patientdistrict, village, address1, addr2View,
             son_daughter_wife, patientoccupation, patientcaste, patienteducation, patienteconomicstatus, patientNationalID,
-            guardina_name_tv, guardian_type_tv, contact_type_tv, em_contact_name_tv, em_contact_number_tv, householdNumber, block;
+            guardina_name_tv, guardian_type_tv, contact_type_tv, em_contact_name_tv, em_contact_number_tv, householdNumber;
 
     TableRow nameTr, genderTr, dobTr, ageTr, phoneNumTr, guardianTypeTr, guardianNameTr,
             emContactNameTr, emContactTypeTr, emContactNumberTr, postalCodeTr, countryTr,
             stateTr, districtTr, villageCityTr, addressOneTr, addressTwoTr, nidTr, occupationTr, socialCategoryTr,
-            educationTr, economicCategoryTr, blockTr, householdNumberTr;
+            educationTr, economicCategoryTr, householdNumberTr;
 
     SessionManager sessionManager = null;
     //    Patient patientDTO = new Patient();
@@ -303,6 +309,13 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             finish();
         });
 
+        // Family Member Registration
+        loadFamilyMembers();
+
+        binding.familyMemberCard.imgBtnAddFamMember.setOnClickListener(v -> {
+            addFamilyMember();
+        });
+
         cancelbtn.setOnClickListener(v -> {
             Intent i = new Intent(PatientDetailActivity2.this, HomeScreenActivity_New.class);
             startActivity(i);
@@ -390,6 +403,78 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 getOnBackPressedDispatcher().onBackPressed();
             }
         });
+
+        binding.householdSurvey.tvHouseholdSurvey.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                HouseholdSurveyActivity.startHouseholdSurvey(PatientDetailActivity2.this, patientDTO.getUuid(), HouseholdSurveyStage.FIRST_SCREEN);
+
+               /* Intent intent1 = new Intent(PatientDetailActivity2.this, HouseholdSurveyActivity.class);
+                intent1.putExtra("patientUuid", patientDTO.getUuid());
+                startActivity(intent1);*/
+            }
+        });
+    }
+
+    // Family Member
+    private void loadFamilyMembers() {
+        String houseHoldValue = "";
+        try {
+            houseHoldValue = patientsDAO.getHouseHoldValue(patientDTO.getUuid());
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+        Log.v("Familyyy", "load fam: " + houseHoldValue);
+
+        if (!houseHoldValue.equalsIgnoreCase("")) {
+            //Fetch all patient UUID from houseHoldValue
+            try {
+                List<FamilyMemberRes> listPatientNames = new ArrayList<>();
+                List<String> patientUUIDs = new ArrayList<>(patientsDAO.getPatientUUIDs(houseHoldValue));
+                Log.e("patientUUIDs", "" + patientUUIDs);
+
+                for (int i = 0; i < patientUUIDs.size(); i++) {
+                    if (!patientUUIDs.get(i).equals(patientDTO.getUuid())) {
+                        listPatientNames.addAll(patientsDAO.getPatientName(patientUUIDs.get(i)));
+                    }
+                }
+
+                //  Logger.logD("List", listPatientNames.get(0).getOpenMRSID());
+                if (listPatientNames.size() > 0) {
+                    binding.familyMemberCard.tvNoFamilyMember.setVisibility(View.GONE);
+                    binding.familyMemberCard.rvFamilyMember.setVisibility(View.VISIBLE);
+
+                    FamilyMemberAdapter familyMemberAdapter = new FamilyMemberAdapter(listPatientNames, this);
+                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+                    binding.familyMemberCard.rvFamilyMember.setLayoutManager(linearLayoutManager);
+                    binding.familyMemberCard.rvFamilyMember.setAdapter(familyMemberAdapter);
+                } else {
+                    binding.familyMemberCard.tvNoFamilyMember.setVisibility(View.VISIBLE);
+                    binding.familyMemberCard.rvFamilyMember.setVisibility(View.GONE);
+                }
+
+            } catch (DAOException e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+            }
+        }
+    }
+
+    private void addFamilyMember() {
+        String houseHoldValue = "";
+        try {
+            houseHoldValue = patientsDAO.getHouseHoldValue(patientDTO.getUuid());
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+        Log.v("Familyyy", "pat detail householdNo: " + houseHoldValue);
+
+        sessionManager.setHouseholdUuid(houseHoldValue);
+        PatientRegistrationActivity.startPatientRegistrationForFamilyMemberRegistration(
+                this,
+                patientDTO.getUuid(),
+                null,
+                PatientRegStage.PERSONAL);
     }
 
     private BroadcastReceiver mBroadcastReceiver;
@@ -574,7 +659,6 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         guardianTypeTr = findViewById(R.id.guardian_type_table_row);
         addressOneTr = findViewById(R.id.address1_tr);
         addressTwoTr = findViewById(R.id.tr_address_2);
-        blockTr = findViewById(R.id.block_tr);
         householdNumberTr = findViewById(R.id.household_no_tr);
 
         nidTr = findViewById(R.id.nid_tr);
@@ -590,7 +674,6 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         village = findViewById(R.id.village);
         address1 = findViewById(R.id.address1);
         addr2View = findViewById(R.id.addr2View);
-        block = findViewById(R.id.block);
         householdNumber = findViewById(R.id.household_number);
 
         son_daughter_wife = findViewById(R.id.son_daughter_wife);
@@ -637,9 +720,13 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
      */
     private void configAllFields() {
         String[] ymdData = DateAndTimeUtils.getAgeInYearMonth(patientDTO.getDateofbirth()).split(" ");
-        int mAgeYears = ymdData[0] != null && !ymdData[0].isEmpty() ? Integer.parseInt(ymdData[0]) : 0;
-        int mAgeMonths = ymdData[1] != null && !ymdData[1].isEmpty() ? Integer.parseInt(ymdData[1]) : 0;
-        int mAgeDays = ymdData[2] != null && !ymdData[2].isEmpty() ? Integer.parseInt(ymdData[2]) : 0;
+        boolean isGuardianRequire = false;
+        if (ymdData.length > 2) {
+            int mAgeYears = ymdData[0] != null && !ymdData[0].isEmpty() ? Integer.parseInt(ymdData[0]) : 0;
+            int mAgeMonths = ymdData[1] != null && !ymdData[1].isEmpty() ? Integer.parseInt(ymdData[1]) : 0;
+            int mAgeDays = ymdData[2] != null && !ymdData[2].isEmpty() ? Integer.parseInt(ymdData[2]) : 0;
+            isGuardianRequire = AgeUtils.INSTANCE.isGuardianRequired(mAgeYears, mAgeMonths, mAgeDays);
+        }
 
         for (PatientRegistrationFields fields : patientAllFields) {
             switch (fields.getIdKey()) {
@@ -668,7 +755,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                         null
                 );
                 case PatientRegConfigKeys.GUARDIAN_TYPE -> {
-                    if (AgeUtils.INSTANCE.isGuardianRequired(mAgeYears, mAgeMonths, mAgeDays)) {
+                    if (isGuardianRequire) {
                         PatientRegFieldsUtils.INSTANCE.configField(
                                 false,
                                 fields,
@@ -680,7 +767,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                     }
                 }
                 case PatientRegConfigKeys.GUARDIAN_NAME -> {
-                    if (AgeUtils.INSTANCE.isGuardianRequired(mAgeYears, mAgeMonths, mAgeDays)) {
+                    if (isGuardianRequire) {
                         PatientRegFieldsUtils.INSTANCE.configField(
                                 false,
                                 fields,
@@ -833,14 +920,6 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                                 null,
                                 null
                         );
-                case PatientRegConfigKeys.BLOCK -> PatientRegFieldsUtils.INSTANCE.configField(
-                        false,
-                        fields,
-                        blockTr,
-                        null,
-                        null,
-                        null
-                );
                 case PatientRegConfigKeys.HOUSEHOLD_NUMBER ->
                         PatientRegFieldsUtils.INSTANCE.configField(
                                 false,
@@ -852,6 +931,9 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                         );
             }
         }
+        /*for NAS corresponding address is not required and address 1
+             means household no value thats why disabled the corresponding address 1 field for nas*/
+        addressOneTr.setVisibility(BuildConfig.FLAVOR_client.equals("nas") ? View.GONE : View.VISIBLE);
     }
 
 
@@ -1124,7 +1206,6 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 patientDTO.setContactType(idCursor.getString(idCursor.getColumnIndexOrThrow("contact_type")));
                 patientDTO.setEmContactName(idCursor.getString(idCursor.getColumnIndexOrThrow("em_contact_name")));
                 patientDTO.setEmContactNumber(idCursor.getString(idCursor.getColumnIndexOrThrow("em_contact_num")));
-                patientDTO.setAddress3(idCursor.getString(idCursor.getColumnIndexOrThrow("address3")));
             } while (idCursor.moveToNext());
         }
         idCursor.close();
@@ -1173,8 +1254,8 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 if (name.equalsIgnoreCase("providerUUID")) {
                     patientDTO.setProviderUUID(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
-                if (name.equalsIgnoreCase("HouseHold")) {
-                    patientDTO.setHouseholdNumber(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                if (name.equalsIgnoreCase("blockSurvey")) {
+                    patientDTO.setBlock(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
 
             } while (idCursor1.moveToNext());
@@ -1833,14 +1914,8 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             em_contact_number_tv.setText(getString(R.string.not_provided));
         }
 
-        if (patientDTO.getAddress3() == null || patientDTO.getAddress3().equals("")) { //
-            block.setText(getResources().getString(R.string.no_address_added));
-        } else {
-            block.setText(patientDTO.getAddress3());
-        }
-
-        if (patientDTO.getHouseholdNumber() != null && !patientDTO.getHouseholdNumber().equals("")) {
-            householdNumber.setText(patientDTO.getHouseholdNumber());
+        if (patientDTO.getAddress1() != null && !patientDTO.getAddress1().equals("")) {
+            householdNumber.setText(patientDTO.getAddress1());
         } else {
             householdNumber.setText(getString(R.string.not_provided));
         }
@@ -2203,6 +2278,9 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     }
 
     private void initForPastVisit() {
+        if (patientDTO == null || patientDTO.getUuid() == null) {
+            return;
+        }
         mPastVisitDataList.clear();
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         String visitSelection = "patientuuid = ? and enddate IS NOT NULL and enddate != ''";
@@ -2397,6 +2475,8 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         if (activeStatus != null) {
             binding.setAddressActiveStatus(activeStatus.getActiveStatusPatientAddress());
             binding.setOtherActiveStatus(activeStatus.getActiveStatusPatientOther());
+            binding.setFamilyMemberActiveStatus(activeStatus.getActiveStatusPatientFamilyMemberRegistration());
+            binding.setHouseholdSurveyActiveStatus(activeStatus.getActiveStatusPatientHouseholdSurvey());
         }
     }
 }

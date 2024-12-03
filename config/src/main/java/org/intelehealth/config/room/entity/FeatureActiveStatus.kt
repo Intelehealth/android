@@ -48,6 +48,12 @@ data class FeatureActiveStatus(
     @SerializedName("patient_reg_other")
     var activeStatusPatientOther: Boolean = true
 
+    @SerializedName("patient_family_member_registration")
+    var activeStatusPatientFamilyMemberRegistration: Boolean = true
+
     @SerializedName("abha_section")
     var activeStatusAbha: Boolean = true
+
+    @SerializedName("patient_household_survey")
+    var activeStatusPatientHouseholdSurvey: Boolean = true
 }

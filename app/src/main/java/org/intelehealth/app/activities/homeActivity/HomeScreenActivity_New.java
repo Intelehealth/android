@@ -42,7 +42,11 @@ import android.os.Looper;
 import android.provider.Settings;
 import android.text.Html;
 import android.util.DisplayMetrics;
+
+import org.intelehealth.app.activities.draftSurvey.DraftSurveyActivity;
+
 import org.intelehealth.app.utilities.CustomLog;
+
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -728,7 +732,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
 
     private void handleBackPress() {
         int backStackEntryCount = getSupportFragmentManager().getBackStackEntryCount();
-        CustomLog.d(TAG,"backStackEntryCount %s", backStackEntryCount);
+        CustomLog.d(TAG, "backStackEntryCount %s", backStackEntryCount);
         CustomLog.v(TAG, "backStackEntryCount - " + backStackEntryCount);
         String topFragmentTag = getTopFragmentTag();
         if (topFragmentTag.equals(TAG_HOME)) {
@@ -1015,6 +1019,9 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             startActivity(intent);
         } else if (itemId == R.id.menu_about_us) {
             Intent i = new Intent(HomeScreenActivity_New.this, AboutUsActivity.class);
+            startActivity(i);
+        } else if (itemId == R.id.menu_draft_survey) {
+            Intent i = new Intent(HomeScreenActivity_New.this, DraftSurveyActivity.class);
             startActivity(i);
         } else if (itemId == R.id.menu_logout) {
             wantToLogoutFromApp(this, getResources().getString(R.string.menu_option_logout), getResources().getString(R.string.sure_to_logout), getResources().getString(R.string.yes), getResources().getString(R.string.no));
@@ -1552,6 +1559,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         public void onChanged(Integer progress) {
             Logger.logD(SyncDAO.PULL_ISSUE, "onchanged of livedata again called up");
             if (mSyncAlertDialog != null) {
+                if (progress < 0) progress = 0;
                 syncProgressbar.setProgress(progress);
                 if (progress <= 100) {
                     progressTvStart.setText((progress) + "%");

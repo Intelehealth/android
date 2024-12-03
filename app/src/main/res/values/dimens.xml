@@ -821,6 +821,11 @@
     <dimen name="text_size_normal">16sp</dimen>
     <dimen name="text_size_small">14sp</dimen>
     <dimen name="bluetooth_dialog_height">250dp</dimen>
+    <dimen name="form_fields_common_margin_top">12dp</dimen>
+    <dimen name="radio_buttons_padding_start_end">10dp</dimen>
+    <dimen name="radio_buttons_margin_top">4dp</dimen>
+    <dimen name="radio_buttons_between_margin">30dp</dimen>
+    <dimen name="radio_group_margin_top">2dp</dimen>
 
 
 </resources>

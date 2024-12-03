@@ -497,4 +497,7 @@
     <string name="contact_your_admin">Contact your admin</string>
     <string name="sync">Refresh</string>
     <string name="sending_otp">Sending OTP...</string>
+    <string name="family_members">Family Members</string>
+    <string name="no_family_member_registered">No family member registered</string>
+    <string name="draft_survey">Draft Survey</string>
 </resources>

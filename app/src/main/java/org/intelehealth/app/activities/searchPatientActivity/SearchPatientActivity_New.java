@@ -450,6 +450,7 @@ public class SearchPatientActivity_New extends BaseActivity {
         search_hint_text.setVisibility(View.VISIBLE);
         view_nopatientfound.setVisibility(View.GONE);
         search_recycelview.setVisibility(View.VISIBLE);
+
         if (sessionManager.getPreviousSearchQuery().isEmpty() && sessionManager.getPreviousSearchQuery().equalsIgnoreCase("")) {
             search_hint_text.setVisibility(View.GONE);
             allPatientsTV.setVisibility(View.VISIBLE);
