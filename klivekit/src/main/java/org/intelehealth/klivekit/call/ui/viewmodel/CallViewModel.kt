@@ -184,7 +184,7 @@ open class CallViewModel(
     }
 
     private suspend fun collectEvents() {
-        room.state.name
+        room.metadata
         room.events.collect {
             Timber.e { "Room event: $it" }
             when (it) {

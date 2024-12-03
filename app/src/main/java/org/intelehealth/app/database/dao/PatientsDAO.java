@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 
+import com.github.ajalt.timberkt.Timber;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import java.util.ArrayList;
@@ -115,8 +116,7 @@ public class PatientsDAO {
             values.put("dead", patientDTO.getDead());
             values.put("sync", false);
             patientAttributesList = patientDTO.getPatientAttributesDTOList();
-            if (patientAttributesList != null)
-                insertPatientAttributes(patientAttributesList, db);
+            if (patientAttributesList != null) insertPatientAttributes(patientAttributesList, db);
             Logger.logD("pulldata", "datadumper" + values);
             createdRecordsCount1 = db.insert("tbl_patient", null, values);
             db.setTransactionSuccessful();
@@ -542,13 +542,16 @@ public class PatientsDAO {
         String id = "";
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         //db.beginTransaction();
+        if (patientuuid == null || patientuuid.isEmpty()) return id;
         try {
-            Cursor cursor = db.rawQuery("SELECT openmrs_id FROM tbl_patient where uuid = ? COLLATE NOCASE", new String[]{patientuuid});
+            String query = "SELECT openmrs_id FROM tbl_patient where uuid = '" + patientuuid + "' COLLATE NOCASE";
+            Timber.tag("getOpenmrsId").d("query=>%s", query);
+            Cursor cursor = db.rawQuery(query, null, null);
             if (cursor.getCount() != 0) {
                 while (cursor.moveToNext()) {
                     id = cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id"));
                 }
-            }
+            } else id = "";
             cursor.close();
             //db.setTransactionSuccessful();
         } catch (SQLException s) {
@@ -565,14 +568,12 @@ public class PatientsDAO {
     public static String fetch_gender(String patientUuid) {
         String gender = "";
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
-        Cursor cursor = db.query("tbl_patient", new String[]{"gender"}, "uuid=?",
-                new String[]{patientUuid}, null, null, null);
+        Cursor cursor = db.query("tbl_patient", new String[]{"gender"}, "uuid=?", new String[]{patientUuid}, null, null, null);
 
         if (cursor.moveToFirst()) {
             do {
                 gender = cursor.getString(cursor.getColumnIndexOrThrow("gender"));
-            }
-            while (cursor.moveToNext());
+            } while (cursor.moveToNext());
         }
         cursor.close();
 
@@ -583,8 +584,7 @@ public class PatientsDAO {
         List<PatientDTO> modelList = new ArrayList<PatientDTO>();
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         String table = "tbl_patient";
-        final Cursor searchCursor = db.rawQuery("SELECT * FROM " + table + " ORDER BY modified_date DESC limit ? offset ?",
-                new String[]{String.valueOf(limit), String.valueOf(offset)});
+        final Cursor searchCursor = db.rawQuery("SELECT * FROM " + table + " ORDER BY modified_date DESC limit ? offset ?", new String[]{String.valueOf(limit), String.valueOf(offset)});
         try {
             if (searchCursor.moveToFirst()) {
                 do {
@@ -598,8 +598,7 @@ public class PatientsDAO {
                     model.setMiddlename(searchCursor.getString(searchCursor.getColumnIndexOrThrow("middle_name")));
                     model.setUuid(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")));
                     model.setDateofbirth(searchCursor.getString(searchCursor.getColumnIndexOrThrow("date_of_birth")));
-                    model.setPhonenumber(StringUtils.mobileNumberEmpty
-                            (phoneNumber(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")))));
+                    model.setPhonenumber(StringUtils.mobileNumberEmpty(phoneNumber(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")))));
                     model.setPatientPhoto(searchCursor.getString(searchCursor.getColumnIndexOrThrow("patient_photo")));
                     modelList.add(model);
                 } while (searchCursor.moveToNext());
@@ -619,8 +618,7 @@ public class PatientsDAO {
         String table = "tbl_patient";
         List<String> patientUUID_List = new ArrayList<>();
 
-        final Cursor search_mobile_cursor = db.rawQuery("SELECT DISTINCT patientuuid FROM tbl_patient_attribute WHERE value = ?",
-                new String[]{search});
+        final Cursor search_mobile_cursor = db.rawQuery("SELECT DISTINCT patientuuid FROM tbl_patient_attribute WHERE value = ?", new String[]{search});
         /* DISTINCT will get remove the duplicate values. The duplicate value will come when you have created
          * a patient with mobile no. 12345 and patient is pushed than later you edit the mobile no to
          * 12344 or something. In this case, the local db maintains two separate rows both with value: 12344 */
@@ -628,10 +626,8 @@ public class PatientsDAO {
         try {
             if (search_mobile_cursor.moveToFirst()) {
                 do {
-                    patientUUID_List.add(search_mobile_cursor.getString
-                            (search_mobile_cursor.getColumnIndexOrThrow("patientuuid")));
-                }
-                while (search_mobile_cursor.moveToNext());
+                    patientUUID_List.add(search_mobile_cursor.getString(search_mobile_cursor.getColumnIndexOrThrow("patientuuid")));
+                } while (search_mobile_cursor.moveToNext());
             }
         } catch (Exception e) {
             FirebaseCrashlytics.getInstance().recordException(e);
@@ -639,12 +635,7 @@ public class PatientsDAO {
         Log.d("patientUUID_list", "list: " + patientUUID_List);
         if (patientUUID_List.size() != 0) {
             for (int i = 0; i < patientUUID_List.size(); i++) {
-                final Cursor searchCursor = db.rawQuery("SELECT * FROM " + table +
-                        " WHERE first_name LIKE " + "'%" + search + "%' OR middle_name LIKE '%" + search + "%' OR uuid = ? " +
-                        "OR last_name LIKE '%" + search + "%' OR (first_name || middle_name) " +
-                        "LIKE '%" + search + "%' OR (middle_name || last_name) LIKE '%" + search + "%' OR " +
-                        "(first_name || last_name) LIKE '%" + search + "%'" +
-                        "OR openmrs_id " + "LIKE '%" + search + "%' " + "ORDER BY first_name ASC", new String[]{patientUUID_List.get(i)});
+                final Cursor searchCursor = db.rawQuery("SELECT * FROM " + table + " WHERE first_name LIKE " + "'%" + search + "%' OR middle_name LIKE '%" + search + "%' OR uuid = ? " + "OR last_name LIKE '%" + search + "%' OR (first_name || middle_name) " + "LIKE '%" + search + "%' OR (middle_name || last_name) LIKE '%" + search + "%' OR " + "(first_name || last_name) LIKE '%" + search + "%'" + "OR openmrs_id " + "LIKE '%" + search + "%' " + "ORDER BY first_name ASC", new String[]{patientUUID_List.get(i)});
                 //  if(searchCursor.getCount() != -1) { //all values are present as per the search text entered...
                 try {
                     if (searchCursor.moveToFirst()) {
@@ -659,8 +650,7 @@ public class PatientsDAO {
                             model.setMiddlename(searchCursor.getString(searchCursor.getColumnIndexOrThrow("middle_name")));
                             model.setUuid(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")));
                             model.setDateofbirth(searchCursor.getString(searchCursor.getColumnIndexOrThrow("date_of_birth")));
-                            model.setPhonenumber(StringUtils.mobileNumberEmpty
-                                    (phoneNumber(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")))));
+                            model.setPhonenumber(StringUtils.mobileNumberEmpty(phoneNumber(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")))));
                             model.setPatientPhoto(searchCursor.getString(searchCursor.getColumnIndexOrThrow("patient_photo")));
                             modelList.add(model);
                         } while (searchCursor.moveToNext());
@@ -670,14 +660,7 @@ public class PatientsDAO {
                 }
             }
         } else { // no mobile number was added in search text.
-            final Cursor searchCursor = db.rawQuery("SELECT * FROM " + table + " WHERE first_name LIKE " + "'%" + search + "%' " +
-                    "OR middle_name LIKE '%" + search + "%' OR last_name LIKE '%" + search + "%' OR " +
-                    "(first_name || middle_name) LIKE '%" + search + "%' OR (middle_name || last_name) " +
-                    "LIKE '%" + search + "%' OR (first_name || last_name) LIKE '%" + search + "%'" +
-                    "OR first_name || ' ' || middle_name LIKE" + "'%" + search + "%' OR first_name || ' ' || middle_name || ' ' || last_name LIKE" + "'%" + search + "%' " +
-                    "OR middle_name || ' ' || last_name LIKE" + "'%" + search + "%'" +
-                    "OR first_name || ' ' || last_name LIKE" + "'%" + search + "%'" +
-                    " OR openmrs_id LIKE '%" + search + "%' " + "ORDER BY first_name ASC", null);
+            final Cursor searchCursor = db.rawQuery("SELECT * FROM " + table + " WHERE first_name LIKE " + "'%" + search + "%' " + "OR middle_name LIKE '%" + search + "%' OR last_name LIKE '%" + search + "%' OR " + "(first_name || middle_name) LIKE '%" + search + "%' OR (middle_name || last_name) " + "LIKE '%" + search + "%' OR (first_name || last_name) LIKE '%" + search + "%'" + "OR first_name || ' ' || middle_name LIKE" + "'%" + search + "%' OR first_name || ' ' || middle_name || ' ' || last_name LIKE" + "'%" + search + "%' " + "OR middle_name || ' ' || last_name LIKE" + "'%" + search + "%'" + "OR first_name || ' ' || last_name LIKE" + "'%" + search + "%'" + " OR openmrs_id LIKE '%" + search + "%' " + "ORDER BY first_name ASC", null);
 
             //  if(searchCursor.getCount() != -1) { //all values are present as per the search text entered...
             try {
@@ -709,8 +692,7 @@ public class PatientsDAO {
     public static String phoneNumber(String patientuuid) throws DAOException {
         String phone = null;
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
-        Cursor idCursor = db.rawQuery("SELECT value FROM tbl_patient_attribute where patientuuid = ? AND " +
-                "person_attribute_type_uuid='14d4f066-15f5-102d-96e4-000c29c2a5d7'", new String[]{patientuuid});
+        Cursor idCursor = db.rawQuery("SELECT value FROM tbl_patient_attribute where patientuuid = ? AND " + "person_attribute_type_uuid='14d4f066-15f5-102d-96e4-000c29c2a5d7'", new String[]{patientuuid});
         try {
             if (idCursor.getCount() != 0) {
                 while (idCursor.moveToNext()) {
@@ -745,8 +727,7 @@ public class PatientsDAO {
                     Log.d("TAG", "isVisitPresentForPatient_fetchVisitValues: " + sync);
                     visitDTO.setSyncd(sync);
                     Log.d("TAG", "isVisitPresentForPatient_fetchVisitValues: visit: " + visitDTO);
-                }
-                while (idCursor.moveToNext());
+                } while (idCursor.moveToNext());
             }
         } catch (SQLException e) {
 
@@ -758,8 +739,7 @@ public class PatientsDAO {
     public static String[] getPatientDobAgeGender(String patientUuid) {
         String[] result = new String[0];
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
-        final Cursor cursor = db.rawQuery("select * from tbl_patient where uuid = ? and " +
-                "(sync = 1 OR sync = 'true' OR sync = 'TRUE') and voided = 0", new String[]{patientUuid});
+        final Cursor cursor = db.rawQuery("select * from tbl_patient where uuid = ? and " + "(sync = 1 OR sync = 'true' OR sync = 'TRUE') and voided = 0", new String[]{patientUuid});
 
 
         if (cursor.moveToFirst()) {
@@ -767,8 +747,7 @@ public class PatientsDAO {
                 String gender = cursor.getString(cursor.getColumnIndexOrThrow("gender"));
                 String dob = cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth"));
                 result = new String[]{gender, dob};
-            }
-            while (cursor.moveToNext());
+            } while (cursor.moveToNext());
         }
         cursor.close();
 
@@ -778,8 +757,7 @@ public class PatientsDAO {
     public static String[] getPatientsPhoneNumber(String patientUuid) {
         String[] result = new String[0];
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
-        final Cursor cursor = db.rawQuery("select * from tbl_patient where uuid = ? and " +
-                "(sync = 1 OR sync = 'true' OR sync = 'TRUE') and voided = 0", new String[]{patientUuid});
+        final Cursor cursor = db.rawQuery("select * from tbl_patient where uuid = ? and " + "(sync = 1 OR sync = 'true' OR sync = 'TRUE') and voided = 0", new String[]{patientUuid});
 
 
         if (cursor.moveToFirst()) {
@@ -787,8 +765,7 @@ public class PatientsDAO {
                 String gender = cursor.getString(cursor.getColumnIndexOrThrow("gender"));
                 String dob = cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth"));
                 result = new String[]{gender, dob};
-            }
-            while (cursor.moveToNext());
+            } while (cursor.moveToNext());
         }
         cursor.close();
 
@@ -798,8 +775,7 @@ public class PatientsDAO {
     public static PatientDTO getPatientDetailsByUuid(String patientUuid) {
         PatientDTO patientDTO = null;
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
-        final Cursor cursor = db.rawQuery("select * from tbl_patient where uuid = ? and " +
-                "(sync = 1 OR sync = 'true' OR sync = 'TRUE') and voided = 0", new String[]{patientUuid});
+        final Cursor cursor = db.rawQuery("select * from tbl_patient where uuid = ? and " + "(sync = 1 OR sync = 'true' OR sync = 'TRUE') and voided = 0", new String[]{patientUuid});
 
 
         if (cursor.moveToFirst()) {
@@ -823,8 +799,7 @@ public class PatientsDAO {
                 patientDTO.setPatientPhoto(cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")));
 
 
-            }
-            while (cursor.moveToNext());
+            } while (cursor.moveToNext());
         }
         cursor.close();
 

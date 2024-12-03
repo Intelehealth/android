@@ -83,7 +83,7 @@ open class SocketManager @Inject constructor() {
 
     private fun emitter(event: String) = Emitter.Listener {
         val json: String? = Gson().toJson(it)
-        Timber.e { "$TAG => $event" }
+//        Timber.e { "$TAG => $event" }
         if (event == EVENT_CALL_TIME_UP) {
             isCallTimeUp = true
         }
@@ -134,11 +134,11 @@ open class SocketManager @Inject constructor() {
 
     private fun isUnknownDoctorMessage(message: ChatMessage, roomId: String): Boolean {
         val ids = roomId.split("_")
-        return ids[0].isEmpty() && ids[1].equals(message.patientId, false)
-                && ids[2].equals(message.toUser, false)
+        return ids[0].isEmpty() && ids[1].equals(message.patientId, false) && ids[2].equals(message.toUser, false)
     }
 
     private fun ackMsgReceived(jsonArray: JSONArray) {
+        Timber.d { "ackMsgReceived=>${jsonArray}" }
         if (jsonArray.length() > 0 && jsonArray.getJSONObject(0).has("nameValuePairs")) {
             val json = jsonArray.getJSONObject(0).getJSONObject("nameValuePairs").toString()
             Gson().fromJson(json, ChatMessage::class.java)?.let {
@@ -184,14 +184,14 @@ open class SocketManager @Inject constructor() {
     }
 
     private fun validValues(jsonArray: JSONArray, block: (JSONArray?) -> Unit) {
-        if (jsonArray.length() > 0 && jsonArray.getJSONObject(0).has("values"))
-            block.invoke(jsonArray.getJSONObject(0).getJSONArray("values"))
+        if (jsonArray.length() > 0 && jsonArray.getJSONObject(0).has("values")) block.invoke(
+            jsonArray.getJSONObject(0).getJSONArray("values")
+        )
         else block.invoke(null)
     }
 
     private fun validPairs(json: JSONObject, block: (JSONObject?) -> Unit) {
-        if (json.length() > 0 && json.has("nameValuePairs"))
-            block.invoke(json.getJSONObject("nameValuePairs"))
+        if (json.length() > 0 && json.has("nameValuePairs")) block.invoke(json.getJSONObject("nameValuePairs"))
         else block.invoke(null)
     }
 
@@ -238,8 +238,7 @@ open class SocketManager @Inject constructor() {
 
     fun isConnected(): Boolean = socket?.connected() ?: false
 
-    fun checkUserIsOnline(id: String) =
-        activeUsers.containsKey(id) && activeUsers.get(id)!!.isOnline()
+    fun checkUserIsOnline(id: String) = activeUsers.containsKey(id) && activeUsers.get(id)!!.isOnline()
 
     fun resetCallTimeUpFlag() {
         isCallTimeUp = false

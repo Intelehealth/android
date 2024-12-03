@@ -33,7 +33,7 @@ object LiveKitProvider {
             provideAudioPublishDefault(),
             provideVideoPublishTrack()
         ),
-        audioSwitchHandler = provideAudioSwitchHandler(context)
+        audioSwitchHandler = provideAudioSwitchHandler(context),
     )
 
     private fun provideLocalAudioTrackOptions() = LocalAudioTrackOptions(

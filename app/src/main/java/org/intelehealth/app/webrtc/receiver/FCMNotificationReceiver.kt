@@ -30,9 +30,7 @@ import org.intelehealth.klivekit.utils.extensions.fromJson
  **/
 class FCMNotificationReceiver : FcmBroadcastReceiver() {
     override fun onMessageReceived(
-        context: Context?,
-        notification: RemoteMessage.Notification?,
-        data: HashMap<String, String>
+        context: Context?, notification: RemoteMessage.Notification?, data: HashMap<String, String>
     ) {
         Timber.tag(TAG).d("onMessageReceived: ")
         val sessionManager = SessionManager(context)
@@ -47,6 +45,9 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
                     socketUrl = BuildConfig.SOCKET_URL + "?userId=" + nurseId + "&name=" + nurseName
                     PatientsDAO().getPatientName(roomId).apply {
                         patientName = get(0).name
+                        patientId = roomId
+                        patientPersonUuid = roomId
+                        patientOpenMrsId = get(0).openMRSID
                     }
                 }.also { arg ->
                     Timber.tag(TAG).d("onMessageReceived: $arg")
@@ -92,19 +93,12 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
         val notificationIntent = Intent(context, HomeScreenActivity_New::class.java)
         notificationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         val pendingIntent = PendingIntent.getActivity(
-            context,
-            0,
-            notificationIntent,
-            NotificationUtils.getPendingIntentFlag()
+            context, 0, notificationIntent, NotificationUtils.getPendingIntentFlag()
         )
 
-        FcmNotification.Builder(context)
-            .channelName("IDA4")
-            .title(messageTitle ?: "Intelehealth")
-            .content(messageBody ?: "")
-            .smallIcon(R.mipmap.ic_launcher)
-            .contentIntent(pendingIntent)
-            .build().startNotify()
+        FcmNotification.Builder(context).channelName("IDA4").title(messageTitle ?: "Intelehealth")
+            .content(messageBody ?: "").smallIcon(R.mipmap.ic_launcher).contentIntent(pendingIntent).build()
+            .startNotify()
 
 //        val channelId = "CHANNEL_ID"
 //        val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)

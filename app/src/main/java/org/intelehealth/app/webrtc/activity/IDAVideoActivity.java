@@ -7,7 +7,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
-import android.util.Log;
 import android.view.View;
 
 import androidx.activity.OnBackPressedCallback;
@@ -17,7 +16,6 @@ import androidx.core.content.ContextCompat;
 
 import com.github.ajalt.timberkt.Timber;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.gson.Gson;
 
 import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
@@ -43,7 +41,6 @@ import io.livekit.android.room.track.VideoTrack;
 public class IDAVideoActivity extends CoreVideoCallActivity implements SwipeButton.SwipeEventListener {
     public static void startVideoCallActivity(Context context, RtcArgs args) {
 
-        Log.e(TAG, "startVideoCallActivity: " + new Gson().toJson(args));
         args.setUrl(BuildConfig.LIVE_KIT_URL);
         args.setCallType(CallType.VIDEO);
         args.setSocketUrl(BuildConfig.SOCKET_URL + "?userId=" + args.getNurseId() + "&name=" + args.getNurseName());
