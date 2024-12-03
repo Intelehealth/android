@@ -129,6 +129,11 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
     private fun setInputTextChangListener() {
         binding.textInputLayNationalId.hideErrorOnTextChang(binding.textInputNationalId)
         binding.textInputLayOccupation.hideErrorOnTextChang(binding.textInputOccupation)
+
+        binding.textInputLayTmhCaseNumber.hideErrorOnTextChang(binding.textInputTmhCaseNumber)
+        binding.textInputLayRequestId.hideErrorOnTextChang(binding.textInputRequestId)
+        binding.textInputLayDiscipline.hideErrorOnTextChang(binding.textInputDiscipline)
+        binding.textInputLayDepartment.hideErrorOnTextChang(binding.textInputDepartment)
         binding.textInputLayRelativePhoneNumber.hideDigitErrorOnTextChang(
             binding.textInputRelativePhoneNumber,
             10
