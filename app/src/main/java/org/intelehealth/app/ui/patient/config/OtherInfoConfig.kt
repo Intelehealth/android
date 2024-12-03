@@ -13,4 +13,9 @@ class OtherInfoConfig {
     var socialCategory: PatientRegistrationFields? = null
     var education: PatientRegistrationFields? = null
     var economicCategory: PatientRegistrationFields? = null
+    var inn: PatientRegistrationFields? = null
+    var codeOfHealthyFacility: PatientRegistrationFields? = null
+    var healthFacilityName: PatientRegistrationFields? = null
+    var codeOfDepartment: PatientRegistrationFields? = null
+    var department: PatientRegistrationFields? = null
 }

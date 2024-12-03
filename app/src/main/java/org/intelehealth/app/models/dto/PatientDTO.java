@@ -88,7 +88,61 @@ public class PatientDTO implements Serializable {
     private String profileTimestamp;
 
     private String district;
+    private String city;
     private String registrationAddressOfHf;
+    private String inn;
+    private String codeOfHealthyFacility;
+    private String healthFacilityName;
+    private String codeOfDepartment;
+    private String department;
+
+    public String getInn() {
+        return inn;
+    }
+
+    public void setInn(String inn) {
+        this.inn = inn;
+    }
+
+    public String getCodeOfHealthyFacility() {
+        return codeOfHealthyFacility;
+    }
+
+    public void setCodeOfHealthyFacility(String codeOfHealthyFacility) {
+        this.codeOfHealthyFacility = codeOfHealthyFacility;
+    }
+
+    public String getHealthFacilityName() {
+        return healthFacilityName;
+    }
+
+    public void setHealthFacilityName(String healthFacilityName) {
+        this.healthFacilityName = healthFacilityName;
+    }
+
+    public String getCodeOfDepartment() {
+        return codeOfDepartment;
+    }
+
+    public void setCodeOfDepartment(String codeOfDepartment) {
+        this.codeOfDepartment = codeOfDepartment;
+    }
+
+    public String getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(String department) {
+        this.department = department;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
 
     public String getRegistrationAddressOfHf() {
         return registrationAddressOfHf;

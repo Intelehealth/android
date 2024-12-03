@@ -74,7 +74,15 @@ public class PatientAttributesDTO implements Serializable {
         NATIONAL_ID("NationalID"),
         PROFILE_IMG_TIMESTAMP("ProfileImageTimestamp"),
         CAST("Caste"),
-        CREATED_DATE("createdDate");
+        CREATED_DATE("createdDate"),
+        PROVINCES("Provinces"),
+        CITIES("Cities"),
+        REGISTRATION_ADDRESS_OF_HF("Registration address of health facility"),
+        INN("INN"),
+        CODE_OF_HEALTH_FACILITY("Code of the Health Facility"),
+        HEALTH_FACILITY_NAME("Health facility name"),
+        CODE_OF_DEPARTMENT("Code of the Department"),
+        DEPARTMENT("Department");
 
         public final String value;
 

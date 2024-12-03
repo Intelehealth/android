@@ -41,5 +41,11 @@ class PatientRegConfigKeys {
         const val SOCIAL_CATEGORY = "o_social_category"
         const val EDUCATION = "o_education"
         const val ECONOMIC_CATEGORY = "o_economic_category"
+
+        const val INN = "o_inn"
+        const val CODE_OF_HEALTHY_FACILITY = "o_code_of_the_health_facility"
+        const val HEALTH_FACILITY_NAME = "o_health_facility_name"
+        const val CODE_OF_DEPARTMENT = "o_code_of_the_department"
+        const val DEPARTMENT = "o_department"
     }
 }

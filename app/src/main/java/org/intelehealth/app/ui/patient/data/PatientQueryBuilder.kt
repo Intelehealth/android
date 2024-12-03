@@ -23,7 +23,16 @@ class PatientQueryBuilder : QueryBuilder() {
                     + buildPatientAttributesQuery(PatientAttributesDTO.Column.NATIONAL_ID.value) + " nationalId,"
                     + buildPatientAttributesQuery(PatientAttributesDTO.Column.PROFILE_IMG_TIMESTAMP.value) + " profileImageTimestamp,"
                     + buildPatientAttributesQuery(PatientAttributesDTO.Column.CAST.value) + " caste,"
-                    + buildPatientAttributesQuery(PatientAttributesDTO.Column.CREATED_DATE.value) + " createdDate "
+                    + buildPatientAttributesQuery(PatientAttributesDTO.Column.CREATED_DATE.value) + " createdDate,"
+
+                    + buildPatientAttributesQuery(PatientAttributesDTO.Column.PROVINCES.value) + " provinces,"
+                    + buildPatientAttributesQuery(PatientAttributesDTO.Column.CITIES.value) + " cities,"
+                    + buildPatientAttributesQuery(PatientAttributesDTO.Column.REGISTRATION_ADDRESS_OF_HF.value) + " registrationAddressOfHf,"
+                    + buildPatientAttributesQuery(PatientAttributesDTO.Column.INN.value) + " inn,"
+                    + buildPatientAttributesQuery(PatientAttributesDTO.Column.CODE_OF_HEALTH_FACILITY.value) + " codeOfHealthFacility,"
+                    + buildPatientAttributesQuery(PatientAttributesDTO.Column.HEALTH_FACILITY_NAME.value) + " healthFacilityName,"
+                    + buildPatientAttributesQuery(PatientAttributesDTO.Column.CODE_OF_DEPARTMENT.value) + " codeOfDepartment,"
+                    + buildPatientAttributesQuery(PatientAttributesDTO.Column.DEPARTMENT.value) + " department "
         )
             .from("tbl_patient P")
             .where("P.uuid =  '$patientId' AND P.voided  = '0' ")

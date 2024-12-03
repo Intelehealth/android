@@ -63,6 +63,7 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
             binding.otherInfoConfig = PatientRegFieldsUtils.buildPatientOtherInfoConfig(it)
             setupSocialCategory()
             setupEducations()
+            setupHealthFacility()
             setupEconomicCategory()
             applyFilter()
             setInputTextChangListener()
@@ -95,6 +96,11 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
         patient.apply {
             nationalID = binding.textInputNationalId.text?.toString()
             occupation = binding.textInputOccupation.text?.toString()
+            inn = binding.textInputInn.text?.toString()
+            codeOfHealthyFacility = binding.textInputCodeOfHealthyFacility.text?.toString()
+            codeOfDepartment = binding.textInputCodeOfDepartment.text?.toString()
+            department = binding.textInputDepartment.text?.toString()
+
             patientViewModel.updatedPatient(this)
             patientViewModel.savePatient().observe(viewLifecycleOwner) {
                 it ?: return@observe
@@ -120,6 +126,10 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
     private fun setInputTextChangListener() {
         binding.textInputLayNationalId.hideErrorOnTextChang(binding.textInputNationalId)
         binding.textInputLayOccupation.hideErrorOnTextChang(binding.textInputOccupation)
+        binding.textInputLayInn.hideErrorOnTextChang(binding.textInputInn)
+        binding.textInputLayCodeOfHealthyFacility.hideErrorOnTextChang(binding.textInputCodeOfHealthyFacility)
+        binding.textInputLayCodeOfDepartment.hideErrorOnTextChang(binding.textInputCodeOfDepartment)
+        binding.textInputLayDepartment.hideErrorOnTextChang(binding.textInputDepartment)
     }
 
     private fun setupEducations() {
@@ -136,6 +146,20 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
         }
     }
 
+    private fun setupHealthFacility() {
+        val adapter = ArrayAdapterUtils.getArrayAdapter(requireContext(), R.array.health_facility_name)
+        binding.autoCompleteHealthFacilityName.setAdapter(adapter)
+        if (patient.healthFacilityName != null && patient.healthFacilityName.isNotEmpty()) {
+            binding.autoCompleteHealthFacilityName.setText(patient.healthFacilityName, false)
+        }
+        binding.autoCompleteHealthFacilityName.setOnItemClickListener { _, _, i, _ ->
+            binding.textInputLayHealthFacilityName.hideError()
+            LanguageUtils.getSpecificLocalResource(requireContext(), "en").apply {
+                patient.healthFacilityName = this.getStringArray(R.array.health_facility_name)[i]
+            }
+        }
+    }
+
     private fun validateForm(block: () -> Unit) {
         Timber.d { "Final patient =>${Gson().toJson(patient)}" }
         val error = R.string.this_field_is_mandatory
@@ -147,6 +171,30 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
             val bOccuptions = if (it.occuptions!!.isEnabled && it.occuptions!!.isMandatory) {
                 binding.textInputLayOccupation.validate(binding.textInputOccupation, error)
             } else true
+
+            val bInn = if (it.inn!!.isEnabled && it.inn!!.isMandatory) {
+                binding.textInputLayInn.validate(binding.textInputInn, error)
+            } else true
+
+            val bCodeOfHealthyFacility = if (it.codeOfHealthyFacility!!.isEnabled && it.codeOfHealthyFacility!!.isMandatory) {
+                binding.textInputLayCodeOfHealthyFacility.validate(binding.textInputCodeOfHealthyFacility, error)
+            } else true
+
+            val bCodeOfDepartment = if (it.codeOfDepartment!!.isEnabled && it.codeOfDepartment!!.isMandatory) {
+                binding.textInputLayCodeOfDepartment.validate(binding.textInputCodeOfDepartment, error)
+            } else true
+
+            val bDepartment = if (it.department!!.isEnabled && it.department!!.isMandatory) {
+                binding.textInputLayDepartment.validate(binding.textInputDepartment, error)
+            } else true
+
+            val healthFacilityName =
+                if (it.healthFacilityName!!.isEnabled && it.healthFacilityName!!.isMandatory) {
+                    binding.textInputLayHealthFacilityName.validateDropDowb(
+                        binding.autoCompleteHealthFacilityName,
+                        error
+                    )
+                } else true
 
 
             val bSocialCategory =
@@ -175,6 +223,9 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
 
             if (bOccuptions.and(bSocialCategory).and(bEducation)
                     .and(bEconomic).and(bNationalId).and(bOccuptions)
+                    .and(bInn).and(bCodeOfHealthyFacility)
+                    .and(healthFacilityName).and(bCodeOfDepartment)
+                    .and(bDepartment)
             ) block.invoke()
         }
     }

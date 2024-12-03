@@ -36,9 +36,20 @@ object LanguageUtils {
     }
 
     @JvmStatic
+    fun getProvince(province: String): String? {
+        return getProvincesAndCities().provinces.find { it == province }
+    }
+
+    @JvmStatic
+    fun getCity(city: String): String? {
+        return getProvincesAndCities().cities.find { it == city }
+    }
+
+    @JvmStatic
     fun getStateList(): List<StateData>? {
         return parseStatesJson().stateDataList
     }
+
 
     @JvmStatic
     fun parseStatesJson(): StateDistMaster {

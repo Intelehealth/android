@@ -10,6 +10,7 @@ import com.github.ajalt.timberkt.Timber
 import com.google.gson.Gson
 import org.intelehealth.app.R
 import org.intelehealth.app.activities.identificationActivity.model.DistData
+import org.intelehealth.app.activities.identificationActivity.model.ProvincesAndCities
 import org.intelehealth.app.activities.identificationActivity.model.StateData
 import org.intelehealth.app.databinding.FragmentPatientAddressInfoBinding
 import org.intelehealth.app.databinding.FragmentPatientOtherInfoBinding
@@ -112,6 +113,8 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
             else village
             address1 = binding.textInputAddress1.text?.toString()
             address2 = binding.textInputAddress2.text?.toString()
+            registrationAddressOfHf = binding.textInputRegistrationAddressOfHf.text?.toString()
+
             patientViewModel.updatedPatient(this)
             if (patientViewModel.isEditMode) {
                 saveAndNavigateToDetails()
@@ -153,6 +156,8 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
         binding.textInputLayCityVillage.hideErrorOnTextChang(binding.textInputCityVillage)
         binding.textInputLayAddress1.hideErrorOnTextChang(binding.textInputAddress1)
         binding.textInputLayAddress2.hideErrorOnTextChang(binding.textInputAddress2)
+        binding.textInputLayRegistrationAddressOfHf.hideErrorOnTextChang(binding.textInputRegistrationAddressOfHf)
+
         binding.textInputLayPostalCode.hideDigitErrorOnTextChang(binding.textInputPostalCode, 6)
     }
 
@@ -184,25 +189,46 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
 
     private fun setupProvinceAndCities() {
         LanguageUtils.getProvincesAndCities().let {
-            binding.textInputLayState.tag = it
+            //province
+            binding.textInputLayProvince.tag = it
             val adapter: ArrayAdapter<String> = ArrayAdapterUtils.getObjectArrayAdapter(
                 requireContext(), it.provinces
             )
-            binding.autoCompleteState.setAdapter(adapter)
+            binding.autoCompleteProvince.setAdapter(adapter)
+
             if (patient.stateprovince != null && patient.stateprovince.isNotEmpty()) {
-                val state = LanguageUtils.getState(patient.stateprovince)
-                if (state != null) {
-                    binding.autoCompleteState.setText(state.toString(), false)
-                    setupDistricts(state)
+                val province = LanguageUtils.getProvince(patient.stateprovince)
+                if (province != null) {
+                    binding.autoCompleteProvince.setText(province.toString(), false)
                 }
             }
 
-            binding.autoCompleteState.setOnItemClickListener { adapterView, _, i, _ ->
-                binding.textInputLayState.hideError()
-                val list: List<StateData> = binding.textInputLayState.tag as List<StateData>
-                val selectedState = list[i]
-                patient.stateprovince = selectedState.state
-                setupDistricts(selectedState)
+            binding.autoCompleteProvince.setOnItemClickListener { adapterView, _, i, _ ->
+                binding.textInputLayProvince.hideError()
+                val provincesAndCities: ProvincesAndCities =
+                    binding.textInputLayProvince.tag as ProvincesAndCities
+                patient.stateprovince = provincesAndCities.provinces[i]
+            }
+
+            //cities
+            binding.textInputLayCity.tag = it
+            val cityAdapter: ArrayAdapter<String> = ArrayAdapterUtils.getObjectArrayAdapter(
+                requireContext(), it.cities
+            )
+            binding.autoCompleteCity.setAdapter(cityAdapter)
+
+            if (patient.city != null && patient.city.isNotEmpty()) {
+                val province = LanguageUtils.getCity(patient.city)
+                if (province != null) {
+                    binding.autoCompleteCity.setText(province.toString(), false)
+                }
+            }
+
+            binding.autoCompleteCity.setOnItemClickListener { adapterView, _, i, _ ->
+                binding.textInputLayCity.hideError()
+                val provincesAndCities: ProvincesAndCities =
+                    binding.textInputLayCity.tag as ProvincesAndCities
+                patient.city = provincesAndCities.cities[i]
             }
         }
 
@@ -276,6 +302,28 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
                 )
             } else true
 
+            val bProvince = if (it.province!!.isEnabled && it.province!!.isMandatory) {
+                binding.textInputLayProvince.validateDropDowb(
+                    binding.autoCompleteProvince,
+                    error
+                )
+            } else true
+
+            val bCity = if (it.city!!.isEnabled && it.city!!.isMandatory) {
+                binding.textInputLayCity.validateDropDowb(
+                    binding.autoCompleteCity,
+                    error
+                )
+            } else true
+
+            val bRelativeAddressOfHf =
+                if (it.registrationAddressOfHf!!.isEnabled && it.registrationAddressOfHf!!.isMandatory) {
+                    binding.textInputLayRegistrationAddressOfHf.validate(
+                        binding.textInputRegistrationAddressOfHf,
+                        R.string.error_field_required,
+                    )
+                } else true
+
 
             val bAddress1 = if (it.address1!!.isEnabled && it.address1!!.isMandatory) {
                 binding.textInputLayAddress1.validate(binding.textInputAddress1, error)
@@ -287,7 +335,8 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
 
 
             if (bPostalCode.and(bCountry).and(bState).and(bDistrict).and(bCityVillage)
-                    .and(bAddress1).and(bAddress2)
+                    .and(bAddress1).and(bAddress2).and(bProvince).and(bCity)
+                    .and(bRelativeAddressOfHf)
             ) block.invoke()
         }
     }

@@ -158,6 +158,12 @@ object PatientRegFieldsUtils {
                     PatientRegConfigKeys.SOCIAL_CATEGORY -> socialCategory = it
                     PatientRegConfigKeys.EDUCATION -> education = it
                     PatientRegConfigKeys.ECONOMIC_CATEGORY -> economicCategory = it
+
+                    PatientRegConfigKeys.INN -> inn = it
+                    PatientRegConfigKeys.CODE_OF_HEALTHY_FACILITY -> codeOfHealthyFacility = it
+                    PatientRegConfigKeys.HEALTH_FACILITY_NAME -> healthFacilityName = it
+                    PatientRegConfigKeys.CODE_OF_DEPARTMENT -> codeOfDepartment = it
+                    PatientRegConfigKeys.DEPARTMENT -> department = it
                 }
             }
         }
