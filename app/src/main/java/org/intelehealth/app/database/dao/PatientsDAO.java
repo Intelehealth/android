@@ -1029,7 +1029,7 @@ public class PatientsDAO {
                 patientDTO.setCity(cursor.getString(cursor.getColumnIndexOrThrow("cities")));
                 patientDTO.setRegistrationAddressOfHf(cursor.getString(cursor.getColumnIndexOrThrow("registrationAddressOfHf")));
                 patientDTO.setInn(cursor.getString(cursor.getColumnIndexOrThrow("inn")));
-                patientDTO.setCodeOfHealthyFacility(cursor.getString(cursor.getColumnIndexOrThrow("codeOfHealthFacility")));
+                patientDTO.setCodeOfHealthFacility(cursor.getString(cursor.getColumnIndexOrThrow("codeOfHealthFacility")));
                 patientDTO.setHealthFacilityName(cursor.getString(cursor.getColumnIndexOrThrow("healthFacilityName")));
                 patientDTO.setCodeOfDepartment(cursor.getString(cursor.getColumnIndexOrThrow("codeOfDepartment")));
                 patientDTO.setDepartment(cursor.getString(cursor.getColumnIndexOrThrow("department")));

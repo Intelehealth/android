@@ -159,7 +159,7 @@ class PatientRepository(
                 createPatientAttribute(
                     patient.uuid,
                     PatientAttributesDTO.Column.CODE_OF_HEALTH_FACILITY.value,
-                    patient.codeOfHealthyFacility
+                    patient.codeOfHealthFacility
                 )
             )
 

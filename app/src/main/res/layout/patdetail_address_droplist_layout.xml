@@ -192,7 +192,7 @@
                             android:textSize="@dimen/find_patient_hint_size" />
                     </TableRow>
 
-                    <!--Date of birth-->
+                    <!--State-->
                     <TableRow
                         android:id="@+id/state_tr"
                         android:layout_width="match_parent"
@@ -226,7 +226,108 @@
                             android:textSize="@dimen/find_patient_hint_size" />
                     </TableRow>
 
-                    <!--Age-->
+                    <!--Province-->
+                    <TableRow
+                        android:id="@+id/province_tr"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:visibility="gone"
+                        tools:visibility="visible"
+                        android:layout_marginTop="@dimen/margin_4"
+                        android:layout_weight="2">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="2dp"
+                            android:layout_marginEnd="@dimen/margin_5"
+                            android:layout_weight="1"
+                            android:drawableStart="@drawable/bullet_gray"
+                            android:text="@string/province"
+                            android:drawablePadding="5dp"
+                            android:textAppearance="@style/caption"
+                            android:textColor="@color/hint_text_color"
+                            android:textSize="@dimen/find_patient_hint_size" />
+
+                        <TextView
+                            android:id="@+id/province"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Kyrgyzstan"
+                            android:textAppearance="@style/caption"
+                            android:textColor="@color/textview_color"
+                            android:textSize="@dimen/find_patient_hint_size" />
+                    </TableRow>
+
+                    <!--City-->
+                    <TableRow
+                        android:id="@+id/city_tr"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:visibility="gone"
+                        tools:visibility="visible"
+                        android:layout_marginTop="@dimen/margin_4"
+                        android:layout_weight="2">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="2dp"
+                            android:layout_marginEnd="@dimen/margin_5"
+                            android:layout_weight="1"
+                            android:drawableStart="@drawable/bullet_gray"
+                            android:text="@string/city"
+                            android:drawablePadding="5dp"
+                            android:textAppearance="@style/caption"
+                            android:textColor="@color/hint_text_color"
+                            android:textSize="@dimen/find_patient_hint_size" />
+
+                        <TextView
+                            android:id="@+id/city"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Test"
+                            android:textAppearance="@style/caption"
+                            android:textColor="@color/textview_color"
+                            android:textSize="@dimen/find_patient_hint_size" />
+                    </TableRow>
+
+                    <!--Registration address of health facility-->
+                    <TableRow
+                        android:id="@+id/registrationAddressOfHf_tr"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:visibility="gone"
+                        tools:visibility="visible"
+                        android:layout_marginTop="@dimen/margin_4"
+                        android:layout_weight="2">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="2dp"
+                            android:layout_marginEnd="@dimen/margin_5"
+                            android:layout_weight="1"
+                            android:drawableStart="@drawable/bullet_gray"
+                            android:text="@string/registration_address_of_health_facility"
+                            android:drawablePadding="5dp"
+                            android:textAppearance="@style/caption"
+                            android:textColor="@color/hint_text_color"
+                            android:textSize="@dimen/find_patient_hint_size" />
+
+                        <TextView
+                            android:id="@+id/registrationAddressOfHf"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Nashik"
+                            android:textAppearance="@style/caption"
+                            android:textColor="@color/textview_color"
+                            android:textSize="@dimen/find_patient_hint_size" />
+                    </TableRow>
+
                     <TableRow
                         android:id="@+id/district_tr"
                         android:layout_width="match_parent"

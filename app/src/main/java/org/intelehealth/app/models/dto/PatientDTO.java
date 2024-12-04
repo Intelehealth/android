@@ -88,13 +88,24 @@ public class PatientDTO implements Serializable {
     private String profileTimestamp;
 
     private String district;
+
+    //for unfpa
+    private String province;
     private String city;
     private String registrationAddressOfHf;
     private String inn;
-    private String codeOfHealthyFacility;
+    private String codeOfHealthFacility;
     private String healthFacilityName;
     private String codeOfDepartment;
     private String department;
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
 
     public String getInn() {
         return inn;
@@ -104,12 +115,12 @@ public class PatientDTO implements Serializable {
         this.inn = inn;
     }
 
-    public String getCodeOfHealthyFacility() {
-        return codeOfHealthyFacility;
+    public String getCodeOfHealthFacility() {
+        return codeOfHealthFacility;
     }
 
-    public void setCodeOfHealthyFacility(String codeOfHealthyFacility) {
-        this.codeOfHealthyFacility = codeOfHealthyFacility;
+    public void setCodeOfHealthFacility(String codeOfHealthFacility) {
+        this.codeOfHealthFacility = codeOfHealthFacility;
     }
 
     public String getHealthFacilityName() {
