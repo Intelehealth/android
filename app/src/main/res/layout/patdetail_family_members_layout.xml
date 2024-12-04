@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <import type="android.view.View"/>
+    </data>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="24dp"
+    android:layout_below="@+id/other_card"
+    android:layout_marginTop="@dimen/margin_20"
+    android:layout_marginEnd="24dp"
+    app:cardCornerRadius="@dimen/margin_8"
+    app:cardElevation="@dimen/margin_5">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_12"
+        android:layout_marginTop="@dimen/margin_12"
+        android:layout_marginEnd="@dimen/margin_12"
+        android:layout_marginBottom="@dimen/margin_16">
+
+
+        <RelativeLayout
+            android:id="@+id/relative_others_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/personal_info_icon"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:src="@drawable/add_family_member" />
+
+            <TextView
+                android:id="@+id/label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/margin_8"
+                android:layout_toEndOf="@+id/personal_info_icon"
+                android:gravity="center_vertical"
+                android:lineSpacingExtra="3sp"
+                android:text="@string/family_members"
+                android:textAppearance="@style/patdetail_header1" />
+
+            <ImageView android:id="@+id/iv_add_family_member"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_baseline_add_24_green"
+                app:tint="@color/black_overlay" />
+
+        </RelativeLayout>
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/relative_others_header"
+            android:layout_marginTop="@dimen/margin_12"
+            android:layout_marginBottom="@dimen/fu_card_margin_updown"
+            android:background="@color/notifi_divider_color" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_family_members"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/divider"
+            android:scrollbars="vertical"
+            android:visibility="visible"/>
+
+        <LinearLayout
+            android:id="@+id/ll_empty_family"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@+id/divider"
+            android:gravity="start"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="@dimen/padding_15"
+            android:visibility="gone">
+
+            <View
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/ic_dot"
+                android:layout_marginEnd="@dimen/padding_10" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="14sp"
+                android:text="No family member registered"
+                android:textColor="#757575"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </LinearLayout>
+
+
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>
+</layout>

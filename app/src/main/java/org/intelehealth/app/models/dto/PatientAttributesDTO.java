@@ -72,6 +72,8 @@ public class PatientAttributesDTO implements Serializable {
         OCCUPATION("occupation"),
         SWD("Son/wife/daughter"),
         NATIONAL_ID("NationalID"),
+
+        HOUSEHOLD_ID("householdID"),
         PROFILE_IMG_TIMESTAMP("ProfileImageTimestamp"),
         CAST("Caste"),
         CREATED_DATE("createdDate");

@@ -7,6 +7,14 @@
     android:orientation="horizontal"
     android:weightSum="1">
 
+    <View
+        android:layout_width="8dp"
+        android:layout_height="8dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="@dimen/padding_15"
+        android:background="@drawable/ic_dot"
+        android:layout_marginEnd="@dimen/padding_10" />
+
     <TextView
         android:id="@+id/tv_openMRSID"
         android:layout_width="0dp"
@@ -16,10 +24,11 @@
         android:fontFamily="@font/lato_bold"
         android:includeFontPadding="false"
         android:lines="1"
-        android:paddingStart="15dp"
+        android:paddingStart="@dimen/padding_5"
         android:paddingTop="5dp"
         android:paddingEnd="10dp"
         android:paddingBottom="5dp"
+        android:textColor="@color/deepBlue3"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textSize="@dimen/card_content_sub_text_size"
         tools:text="5MTY8-8" />

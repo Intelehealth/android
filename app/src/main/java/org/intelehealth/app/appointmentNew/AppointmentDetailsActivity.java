@@ -75,6 +75,7 @@ import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.ui.patient.activity.PatientRegistrationActivity;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.NetworkUtils;
+import org.intelehealth.app.utilities.PatientRegSource;
 import org.intelehealth.app.utilities.PatientRegStage;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
@@ -1149,7 +1150,7 @@ public class AppointmentDetailsActivity extends BaseActivity implements NetworkU
         }
         idCursor1.close();
 
-        PatientRegistrationActivity.startPatientRegistration(this, patientDTO.getUuid(), PatientRegStage.PERSONAL);
+        PatientRegistrationActivity.startPatientRegistration(this, patientDTO.getUuid(), PatientRegStage.PERSONAL, PatientRegSource.OTHER);
 //        Intent intent2 = new Intent(this, IdentificationActivity_New.class);
 //        intent2.putExtra("patientUuid", patientDTO.getUuid());
 //        intent2.putExtra("ScreenEdit", "personal_edit");

@@ -65,6 +65,7 @@ import android.os.Bundle;
 import android.os.LocaleList;
 import android.util.DisplayMetrics;
 
+import org.intelehealth.app.models.FamilyMemberRes;
 import org.intelehealth.app.utilities.CustomLog;
 
 import android.view.LayoutInflater;
@@ -132,6 +133,7 @@ import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.PatientRegConfigKeys;
 import org.intelehealth.app.utilities.PatientRegFieldsUtils;
+import org.intelehealth.app.utilities.PatientRegSource;
 import org.intelehealth.app.utilities.PatientRegStage;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
@@ -201,6 +203,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     String phistory = "";
     String fhistory = "";
     LinearLayout previousVisitsList;
+    LinearLayout llEmptyFamilyMember;
     String visitValue;
     private String encounterVitals = "";
     private String encounterAdultIntials = "";
@@ -212,6 +215,10 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
     List<PatientRegistrationFields> patientAllFields;
     private ActivityPatientDetail2Binding binding;
+
+    private RecyclerView rvFamilyMembers;
+    private FamilyMemberAdapter familyMemberAdapter;
+    private List<FamilyMemberRes> familyMemberList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -229,6 +236,12 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         RegFieldRepository repository = new RegFieldRepository(ConfigDatabase.getInstance(this).patientRegFieldDao());
         RegFieldViewModelFactory factory = new RegFieldViewModelFactory(repository);
         regFieldViewModel = new ViewModelProvider(this, factory).get(RegFieldViewModel.class);
+
+        rvFamilyMembers = findViewById(R.id.rv_family_members);
+        ImageView ivAddFamilyMember = findViewById(R.id.iv_add_family_member);
+
+        llEmptyFamilyMember = findViewById(R.id.ll_empty_family);
+        familyMemberList = new ArrayList<>();
 
         //In case of crash still the org should hold the current lang fix.
         if (!language.equalsIgnoreCase("")) {
@@ -266,7 +279,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
 
         personal_edit.setOnClickListener(v -> {
-            PatientRegistrationActivity.startPatientRegistration(this, patientDTO.getUuid(), PatientRegStage.PERSONAL);
+            PatientRegistrationActivity.startPatientRegistration(this, patientDTO.getUuid(), PatientRegStage.PERSONAL, PatientRegSource.OTHER);
 //            Intent intent2 = new Intent(PatientDetailActivity2.this, IdentificationActivity_New.class);
 //            intent2.putExtra("patientUuid", patientDTO.getUuid());
 //            intent2.putExtra("ScreenEdit", "personal_edit");
@@ -279,7 +292,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         });
 
         address_edit.setOnClickListener(v -> {
-            PatientRegistrationActivity.startPatientRegistration(this, patientDTO.getUuid(), PatientRegStage.ADDRESS);
+            PatientRegistrationActivity.startPatientRegistration(this, patientDTO.getUuid(), PatientRegStage.ADDRESS, PatientRegSource.OTHER);
 //            Intent intent2 = new Intent(PatientDetailActivity2.this, IdentificationActivity_New.class);
 //            intent2.putExtra("patientUuid", patientDTO.getUuid());
 //            intent2.putExtra("ScreenEdit", "address_edit");
@@ -292,7 +305,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         });
 
         others_edit.setOnClickListener(v -> {
-            PatientRegistrationActivity.startPatientRegistration(this, patientDTO.getUuid(), PatientRegStage.OTHER);
+            PatientRegistrationActivity.startPatientRegistration(this, patientDTO.getUuid(), PatientRegStage.OTHER, PatientRegSource.OTHER);
 //            Intent intent2 = new Intent(PatientDetailActivity2.this, IdentificationActivity_New.class);
 //            intent2.putExtra("patientUuid", patientDTO.getUuid());
 //            intent2.putExtra("ScreenEdit", "others_edit");
@@ -391,6 +404,37 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 getOnBackPressedDispatcher().onBackPressed();
             }
         });
+
+
+        ivAddFamilyMember.setOnClickListener(view -> {
+            PatientRegistrationActivity.startPatientRegistration(this, patientDTO.getUuid(), PatientRegStage.PERSONAL, PatientRegSource.HOUSEHOLD);
+            finish();
+        });
+
+        populateFamilyMembers();
+    }
+
+    private void populateFamilyMembers() {
+        try {
+            List<String> ids = patientsDAO.getFamilyMemberIDS(patientDTO.getUuid());
+            familyMemberList = patientsDAO.getFamilyMembers(ids);
+            familyMemberAdapter = new FamilyMemberAdapter(familyMemberList, this);
+            rvFamilyMembers.setLayoutManager(new LinearLayoutManager(this));
+            rvFamilyMembers.setAdapter(familyMemberAdapter);
+            checkEmptyList();
+        } catch (DAOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void checkEmptyList() {
+        if (familyMemberList.isEmpty()) {
+            llEmptyFamilyMember.setVisibility(View.VISIBLE);
+            rvFamilyMembers.setVisibility(View.GONE);
+        } else {
+            llEmptyFamilyMember.setVisibility(View.GONE);
+            rvFamilyMembers.setVisibility(View.VISIBLE);
+        }
     }
 
     private BroadcastReceiver mBroadcastReceiver;
@@ -445,6 +489,18 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                     }
                 }
             });
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 100 && resultCode == RESULT_OK) {
+            // Get new family member data
+            FamilyMemberRes newMember = (FamilyMemberRes) data.getSerializableExtra("family_member");
+            familyMemberList.add(newMember);
+            familyMemberAdapter.notifyDataSetChanged();
+        }
+    }
 
     private void startVisit() {
         // before starting, we determine if it is new visit for a returning patient
