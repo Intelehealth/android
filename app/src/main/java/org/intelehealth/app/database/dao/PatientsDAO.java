@@ -1025,7 +1025,7 @@ public class PatientsDAO {
                 patientDTO.setCaste(cursor.getString(cursor.getColumnIndexOrThrow("caste")));
                 patientDTO.setCreatedDate(cursor.getString(cursor.getColumnIndexOrThrow("createdDate")));
 
-                patientDTO.setStateprovince(cursor.getString(cursor.getColumnIndexOrThrow("provinces")));
+                patientDTO.setProvince(cursor.getString(cursor.getColumnIndexOrThrow("provinces")));
                 patientDTO.setCity(cursor.getString(cursor.getColumnIndexOrThrow("cities")));
                 patientDTO.setRegistrationAddressOfHf(cursor.getString(cursor.getColumnIndexOrThrow("registrationAddressOfHf")));
                 patientDTO.setInn(cursor.getString(cursor.getColumnIndexOrThrow("inn")));

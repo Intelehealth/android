@@ -19,6 +19,11 @@ import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
+
+import org.intelehealth.app.BuildConfig;
+import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
+import org.intelehealth.app.activities.onboarding.PersonalConsentActivity;
+import org.intelehealth.app.utilities.AddPatientUtils;
 import org.intelehealth.app.utilities.CustomLog;
 import android.view.ContextThemeWrapper;
 import android.view.KeyEvent;
@@ -131,10 +136,7 @@ public class SearchPatientActivity_New extends BaseActivity {
         addPatientTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(SearchPatientActivity_New.this, PrivacyPolicyActivity_New.class);
-                intent.putExtra("intentType", "navigateFurther");
-                intent.putExtra("add_patient", "add_patient");
-                startActivity(intent);
+                AddPatientUtils.navigate(SearchPatientActivity_New.this);
                 finish();
             }
         });

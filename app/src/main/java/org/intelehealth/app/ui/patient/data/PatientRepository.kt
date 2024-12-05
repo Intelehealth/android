@@ -128,7 +128,7 @@ class PatientRepository(
                 createPatientAttribute(
                     patient.uuid,
                     PatientAttributesDTO.Column.PROVINCES.value,
-                    patient.stateprovince
+                    patient.province
                 )
             )
             add(

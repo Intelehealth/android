@@ -494,11 +494,15 @@ public class PatientDTO implements Serializable {
     }
 
     private String splitVillageAndDistrict(int index) {
-        if (cityvillage != null && !cityvillage.isEmpty() && cityvillage.contains(":")) {
-            return cityvillage.split(":")[index];
+        try {
+            if (cityvillage != null && !cityvillage.isEmpty() && cityvillage.contains(":")) {
+                return cityvillage.split(":")[index];
+            }
+            if (index == 1) return cityvillage;
+            else return null;
+        } catch (Exception e) {
+            return null;
         }
-        if (index == 1) return cityvillage;
-        else return null;
     }
 
     @Override

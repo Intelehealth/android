@@ -14,6 +14,10 @@ import android.os.Bundle;
 import android.os.LocaleList;
 import android.text.Html;
 import android.util.DisplayMetrics;
+
+import org.intelehealth.app.BuildConfig;
+import org.intelehealth.app.activities.onboarding.PersonalConsentActivity;
+import org.intelehealth.app.utilities.AddPatientUtils;
 import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -130,10 +134,7 @@ public class VisitPendingFragment extends Fragment {
         addPatientTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), PrivacyPolicyActivity_New.class);
-                intent.putExtra("intentType", "navigateFurther");
-                intent.putExtra("add_patient", "add_patient");
-                startActivity(intent);
+                AddPatientUtils.navigate(getActivity());
                 getActivity().finish();
             }
         });

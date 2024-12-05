@@ -256,7 +256,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/std_12dp"
                     android:orientation="vertical"
-                    android:visibility="@{otherInfoConfig.economicCategory.enabled ? View.VISIBLE : View.GONE}"
+                    android:visibility="@{otherInfoConfig.inn.enabled ? View.VISIBLE : View.GONE}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/llEconomicCategory"

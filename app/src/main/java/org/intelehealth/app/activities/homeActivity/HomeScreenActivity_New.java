@@ -43,6 +43,8 @@ import android.provider.Settings;
 import android.text.Html;
 import android.util.DisplayMetrics;
 
+import org.intelehealth.app.activities.onboarding.PersonalConsentActivity;
+import org.intelehealth.app.utilities.AddPatientUtils;
 import org.intelehealth.app.utilities.CustomLog;
 
 import android.view.LayoutInflater;
@@ -1317,10 +1319,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
                     loadFragment(fragment, TAG_HELP);
                     return true;
                 case R.id.bottom_nav_add_patient:
-                    Intent intent = new Intent(HomeScreenActivity_New.this, PrivacyPolicyActivity_New.class);
-                    intent.putExtra("intentType", "navigateFurther");
-                    intent.putExtra("add_patient", "add_patient");
-                    startActivity(intent);
+                    AddPatientUtils.navigate(HomeScreenActivity_New.this);
                     return false;
             }
 

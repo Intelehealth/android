@@ -188,7 +188,7 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
                 binding.textInputLayDepartment.validate(binding.textInputDepartment, error)
             } else true
 
-            val healthFacilityName =
+            val bHealthFacilityName =
                 if (it.healthFacilityName!!.isEnabled && it.healthFacilityName!!.isMandatory) {
                     binding.textInputLayHealthFacilityName.validateDropDowb(
                         binding.autoCompleteHealthFacilityName,
@@ -224,7 +224,7 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
             if (bOccuptions.and(bSocialCategory).and(bEducation)
                     .and(bEconomic).and(bNationalId).and(bOccuptions)
                     .and(bInn).and(bCodeOfHealthyFacility)
-                    .and(healthFacilityName).and(bCodeOfDepartment)
+                    .and(bHealthFacilityName).and(bCodeOfDepartment)
                     .and(bDepartment)
             ) block.invoke()
         }

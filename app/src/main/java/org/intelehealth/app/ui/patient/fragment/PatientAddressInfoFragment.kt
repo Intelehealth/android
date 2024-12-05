@@ -1,13 +1,17 @@
 package org.intelehealth.app.ui.patient.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
 import androidx.databinding.OnRebindCallback
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavDirections
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.github.ajalt.timberkt.Timber
 import com.google.gson.Gson
+import kotlinx.coroutines.launch
 import org.intelehealth.app.R
 import org.intelehealth.app.activities.identificationActivity.model.DistData
 import org.intelehealth.app.activities.identificationActivity.model.ProvincesAndCities
@@ -16,6 +20,7 @@ import org.intelehealth.app.databinding.FragmentPatientAddressInfoBinding
 import org.intelehealth.app.databinding.FragmentPatientOtherInfoBinding
 import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.app.ui.filter.FirstLetterUpperCaseInputFilter
+import org.intelehealth.app.ui.patient.activity.PatientRegistrationActivity
 import org.intelehealth.app.utilities.ArrayAdapterUtils
 import org.intelehealth.app.utilities.LanguageUtils
 import org.intelehealth.app.utilities.PatientRegFieldsUtils
@@ -90,7 +95,7 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
         override fun onBound(binding: FragmentPatientAddressInfoBinding?) {
             super.onBound(binding)
             setupCountries()
-            //setupStates()
+            setupStates()
             setupProvinceAndCities()
             applyFilter()
             setInputTextChangListener()
@@ -196,8 +201,8 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
             )
             binding.autoCompleteProvince.setAdapter(adapter)
 
-            if (patient.stateprovince != null && patient.stateprovince.isNotEmpty()) {
-                val province = LanguageUtils.getProvince(patient.stateprovince)
+            if (patient.province != null && patient.province.isNotEmpty()) {
+                val province = LanguageUtils.getProvince(patient.province)
                 if (province != null) {
                     binding.autoCompleteProvince.setText(province.toString(), false)
                 }
@@ -207,7 +212,7 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
                 binding.textInputLayProvince.hideError()
                 val provincesAndCities: ProvincesAndCities =
                     binding.textInputLayProvince.tag as ProvincesAndCities
-                patient.stateprovince = provincesAndCities.provinces[i]
+                patient.province = provincesAndCities.provinces[i]
             }
 
             //cities
@@ -218,9 +223,9 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
             binding.autoCompleteCity.setAdapter(cityAdapter)
 
             if (patient.city != null && patient.city.isNotEmpty()) {
-                val province = LanguageUtils.getCity(patient.city)
-                if (province != null) {
-                    binding.autoCompleteCity.setText(province.toString(), false)
+                val city = LanguageUtils.getCity(patient.city)
+                if (city != null) {
+                    binding.autoCompleteCity.setText(city.toString(), false)
                 }
             }
 
