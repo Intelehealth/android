@@ -49,9 +49,9 @@
         android:usesCleartextTraffic="true"
         tools:ignore="UnusedAttribute, LockedOrientationActivity"
         tools:replace="allowBackup">
-        <activity
-            android:name=".activities.onboarding.CommonWebviewActivity"
-            android:exported="false" />
+<!--        <activity-->
+<!--            android:name=".activities.onboarding.CommonWebviewActivity"-->
+<!--            android:exported="false" />-->
         <activity
             android:name=".activities.onboarding.PersonalConsentActivity"
             android:exported="false"
@@ -69,15 +69,6 @@
             android:name=".ayu.visit.VisitCreationActivity"
             android:exported="false"
             android:theme="@style/AppThemeMaterialNew" />
-        <activity
-            android:name=".activities.chatHelp.ChatHelpActivity_New"
-            android:exported="true"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
         <activity
             android:name=".ui2.calendarviewcustom.CalendarViewDemoActivity"
             android:exported="true"
@@ -164,15 +155,6 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".activities.identificationActivity.IdentificationActivity_New"
-            android:exported="false"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustResize">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
             android:name=".appointmentNew.AppointmentDetailsActivity"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
@@ -207,6 +189,18 @@
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
+
+        <activity
+            android:name="org.intelehealth.installer.activity.DynamicModuleDownloadingActivity"
+            android:exported="true"
+            android:theme="@style/AppThemeMaterialNew"
+            android:windowSoftInputMode="adjustPan">
+            <!--            <intent-filter>-->
+            <!--                <action android:name="android.intent.action.MAIN" />-->
+
+            <!--                <category android:name="android.intent.category.LAUNCHER" />-->
+            <!--            </intent-filter>-->
+        </activity>
         <activity
             android:name=".ui.splash.activity.SplashActivity"
             android:exported="true"
@@ -375,26 +369,26 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-        <activity
-            android:name=".webrtc.activity.IDAChatActivity"
-            android:exported="true"
-            android:theme="@style/AppThemeMaterialNew"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name=".webrtc.activity.IDAVideoActivity"
-            android:excludeFromRecents="true"
-            android:exported="true"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:showOnLockScreen="true"
-            android:taskAffinity=""
-            android:theme="@style/AppThemeMaterialNew"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name=".webrtc.activity.IDACallLogActivity"
-            android:exported="true"
-            android:theme="@style/AppThemeMaterialNew"
-            android:windowSoftInputMode="adjustPan" />
+        <!--        <activity-->
+        <!--            android:name=".webrtc.activity.IDAChatActivity"-->
+        <!--            android:exported="true"-->
+        <!--            android:theme="@style/AppThemeMaterialNew"-->
+        <!--            android:windowSoftInputMode="adjustPan" />-->
+        <!--        <activity-->
+        <!--            android:name=".webrtc.activity.IDAVideoActivity"-->
+        <!--            android:excludeFromRecents="true"-->
+        <!--            android:exported="true"-->
+        <!--            android:launchMode="singleTask"-->
+        <!--            android:screenOrientation="portrait"-->
+        <!--            android:showOnLockScreen="true"-->
+        <!--            android:taskAffinity=""-->
+        <!--            android:theme="@style/AppThemeMaterialNew"-->
+        <!--            android:windowSoftInputMode="adjustPan" />-->
+        <!--        <activity-->
+        <!--            android:name=".webrtc.activity.IDACallLogActivity"-->
+        <!--            android:exported="true"-->
+        <!--            android:theme="@style/AppThemeMaterialNew"-->
+        <!--            android:windowSoftInputMode="adjustPan" />-->
 
         <service
             android:name=".utilities.OpenMRSAccountAuthenticatorService"
@@ -445,7 +439,7 @@
             </intent-filter>
         </receiver>
 
-        <receiver android:name=".notificationScheduler.ScheduleNotificationReceiver"/>
+        <receiver android:name=".notificationScheduler.ScheduleNotificationReceiver" />
 
         <meta-data
             android:name="firebase_crashlytics_collection_enabled"

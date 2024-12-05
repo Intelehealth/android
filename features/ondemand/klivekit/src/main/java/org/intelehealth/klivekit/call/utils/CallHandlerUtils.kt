@@ -6,8 +6,6 @@ import android.hardware.Sensor
 import android.hardware.SensorManager
 import android.media.AudioManager
 import android.media.MediaPlayer
-import android.os.Build
-import androidx.core.content.ContextCompat
 import com.github.ajalt.timberkt.Timber
 import org.intelehealth.klivekit.room.WebRtcDatabase
 import org.intelehealth.klivekit.R
@@ -22,7 +20,6 @@ import org.intelehealth.klivekit.data.PreferenceHelper
 import org.intelehealth.klivekit.model.RtcArgs
 import org.intelehealth.klivekit.socket.SocketManager
 import org.intelehealth.klivekit.utils.RTC_ARGS
-import kotlin.system.exitProcess
 
 /**
  * Created by Vaghela Mithun R. on 8/28/2021.
@@ -106,7 +103,7 @@ object CallHandlerUtils {
         context.sendBroadcast(Intent(context, CallReceiver::class.java).apply {
             putExtra(RTC_ARGS, messageBody)
             setPackage("org.intelehealth.app")
-            action = IntentUtils.getCallReceiverAction(context)
+            action = CallIntentUtils.getCallReceiverAction(context)
         })
     }
 
@@ -143,7 +140,7 @@ object CallHandlerUtils {
         context.sendBroadcast(Intent(context, CallReceiver::class.java).apply {
             putExtra(RTC_ARGS, messageBody)
             setPackage("org.intelehealth.app")
-            action = IntentUtils.getCallReceiverAction(context)
+            action = CallIntentUtils.getCallReceiverAction(context)
         })
     }
 
@@ -152,8 +149,8 @@ object CallHandlerUtils {
         context.sendBroadcast(Intent(context, CallReceiver::class.java).apply {
 //            messageBody.callStatus = CALL_FINISHED
             putExtra(RTC_ARGS, messageBody)
+            action = CallIntentUtils.getCallReceiverAction(context)
             setPackage("org.intelehealth.app")
-            action = IntentUtils.getCallReceiverAction(context)
         })
     }
 
@@ -168,8 +165,8 @@ object CallHandlerUtils {
 //        messageBody.callStatus = CALL_TIMED_OUT
         context.sendBroadcast(Intent(context, CallReceiver::class.java).apply {
             putExtra(RTC_ARGS, messageBody)
+            action = CallIntentUtils.getCallReceiverAction(context)
             setPackage("org.intelehealth.app")
-            action = IntentUtils.getCallReceiverAction(context)
         })
     }
 
@@ -183,7 +180,7 @@ object CallHandlerUtils {
         context.sendBroadcast(Intent(context, CallReceiver::class.java).apply {
             putExtra(RTC_ARGS, messageBody)
             setPackage("org.intelehealth.app")
-            action = IntentUtils.getCallReceiverAction(context)
+            action = CallIntentUtils.getCallReceiverAction(context)
         })
     }
 

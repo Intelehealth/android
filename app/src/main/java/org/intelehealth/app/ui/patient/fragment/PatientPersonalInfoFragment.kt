@@ -8,8 +8,6 @@ import android.view.WindowManager
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
-import androidx.databinding.OnRebindCallback
-import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import com.github.ajalt.timberkt.Timber
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -17,8 +15,6 @@ import com.google.gson.Gson
 import org.intelehealth.app.R
 import org.intelehealth.app.app.AppConstants
 import org.intelehealth.app.databinding.Dialog2NumbersPickerBinding
-import org.intelehealth.app.databinding.FragmentPatientOtherInfoBinding
-import org.intelehealth.app.databinding.FragmentPatientPersonalInfoBinding
 import org.intelehealth.app.databinding.FragmentPatientPersonalInfoOldDesignBinding
 import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.app.ui.dialog.CalendarDialog
@@ -29,7 +25,6 @@ import org.intelehealth.app.utilities.DateAndTimeUtils
 import org.intelehealth.app.utilities.LanguageUtils
 import org.intelehealth.app.utilities.PatientRegFieldsUtils
 import org.intelehealth.app.utilities.PatientRegStage
-import org.intelehealth.app.utilities.SessionManager
 import org.intelehealth.app.utilities.extensions.addFilter
 import org.intelehealth.app.utilities.extensions.hideDigitErrorOnTextChang
 import org.intelehealth.app.utilities.extensions.hideError
@@ -37,10 +32,10 @@ import org.intelehealth.app.utilities.extensions.hideErrorOnTextChang
 import org.intelehealth.app.utilities.extensions.validate
 import org.intelehealth.app.utilities.extensions.validateDigit
 import org.intelehealth.app.utilities.extensions.validateDropDowb
-import org.intelehealth.core.registry.PermissionRegistry
-import org.intelehealth.core.registry.PermissionRegistry.Companion.CAMERA
+import org.intelehealth.core.utils.registry.PermissionRegistry
+import org.intelehealth.core.utils.registry.PermissionRegistry.Companion.CAMERA
+import org.intelehealth.core.utils.utility.DateTimeUtils
 import org.intelehealth.ihutils.ui.CameraActivity
-import org.intelehealth.klivekit.utils.DateTimeUtils
 import org.joda.time.LocalDate
 import org.joda.time.Period
 import org.joda.time.PeriodType
@@ -54,12 +49,13 @@ import java.util.TimeZone
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-class PatientPersonalInfoFragment :
-    BasePatientFragment(R.layout.fragment_patient_personal_info_old_design) {
+class PatientPersonalInfoFragment : BasePatientFragment(R.layout.fragment_patient_personal_info_old_design) {
     private lateinit var binding: FragmentPatientPersonalInfoOldDesignBinding
     var selectedDate = Calendar.getInstance().timeInMillis
     private val permissionRegistry by lazy {
-        PermissionRegistry(requireContext(), requireActivity().activityResultRegistry)
+        org.intelehealth.core.utils.registry.PermissionRegistry(
+            requireContext(), requireActivity().activityResultRegistry
+        )
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -119,10 +115,7 @@ class PatientPersonalInfoFragment :
 
     private fun bindAgeValue(year: Int, month: Int, days: Int) {
         DateAndTimeUtils.formatAgeInYearsMonthsDate(
-            context,
-            year,
-            month,
-            days
+            context, year, month, days
         ).apply { binding.textInputETAge.setText(this) }
 
         updateGuardianVisibility(year, month, days)
@@ -151,8 +144,7 @@ class PatientPersonalInfoFragment :
     private fun bindDobValue(calendar: Calendar) {
         selectedDate = calendar.timeInMillis
         val sdf = DateTimeUtils.getSimpleDateFormat(
-            DateTimeUtils.MMM_DD_YYYY_FORMAT,
-            TimeZone.getDefault()
+            DateTimeUtils.MMM_DD_YYYY_FORMAT, TimeZone.getDefault()
         )
         val formattedDate = sdf.format(calendar.time)
         binding.textInputETDob.setText(formattedDate)
@@ -170,7 +162,8 @@ class PatientPersonalInfoFragment :
     }
 
     private fun fetchPersonalInfoConfig() {
-        patientViewModel.fetchPersonalRegFields().observe(viewLifecycleOwner) {
+        patientViewModel.fetchPersonalRegFields()
+        patientViewModel.personalSectionFieldsLiveData.observe(viewLifecycleOwner) {
             binding.personalConfig = PatientRegFieldsUtils.buildPatientPersonalInfoConfig(it)
             setupGuardianType()
             setupEmContactType()
@@ -180,7 +173,6 @@ class PatientPersonalInfoFragment :
             setGender()
             setClickListener()
             setInputTextChangListener()
-//            binding.addOnRebindCallback(onRebindCallback)
         }
     }
 
@@ -305,8 +297,7 @@ class PatientPersonalInfoFragment :
             parseDob(it, DateTimeUtils.YYYY_MM_DD_HYPHEN)
 
             DateTimeUtils.formatToLocalDate(
-                Date(selectedDate),
-                DateTimeUtils.MMM_DD_YYYY_FORMAT
+                Date(selectedDate), DateTimeUtils.MMM_DD_YYYY_FORMAT
             ).apply { binding.textInputETDob.setText(this) }
         }
 
@@ -324,21 +315,16 @@ class PatientPersonalInfoFragment :
     private fun getAgePeriod(): Period {
         val pastCalendar = Calendar.getInstance().apply { timeInMillis = selectedDate }
         val birthdate = LocalDate(
-            pastCalendar[Calendar.YEAR],
-            pastCalendar[Calendar.MONTH] + 1,
-            pastCalendar[Calendar.DAY_OF_MONTH]
+            pastCalendar[Calendar.YEAR], pastCalendar[Calendar.MONTH] + 1, pastCalendar[Calendar.DAY_OF_MONTH]
         ) //Birth date
         val now = LocalDate() //Today's date
         return Period(birthdate, now, PeriodType.yearMonthDay())
     }
 
     private fun showDatePickerDialog(selectedDate: Long) {
-        CalendarDialog.Builder()
-            .maxDate(Calendar.getInstance().timeInMillis)
-            .selectedDate(selectedDate)
-            .format(DateTimeUtils.MMM_DD_YYYY_FORMAT)
-            .listener(dateListener)
-            .build().show(childFragmentManager, CalendarDialog.TAG)
+        CalendarDialog.Builder().maxDate(Calendar.getInstance().timeInMillis).selectedDate(selectedDate)
+            .format(DateTimeUtils.MMM_DD_YYYY_FORMAT).listener(dateListener).build()
+            .show(childFragmentManager, CalendarDialog.TAG)
     }
 
     private val dateListener = object : CalendarDialog.OnDatePickListener {
@@ -381,12 +367,10 @@ class PatientPersonalInfoFragment :
         binding.textInputLayGuardianName.hideErrorOnTextChang(binding.textInputETGuardianName)
         binding.textInputLayECName.hideErrorOnTextChang(binding.textInputETECName)
         binding.textInputLayPhoneNumber.hideDigitErrorOnTextChang(
-            binding.textInputETPhoneNumber,
-            10
+            binding.textInputETPhoneNumber, 10
         )
         binding.textInputLayEMPhoneNumber.hideDigitErrorOnTextChang(
-            binding.textInputETEMPhoneNumber,
-            10
+            binding.textInputETEMPhoneNumber, 10
         )
     }
 
@@ -456,9 +440,7 @@ class PatientPersonalInfoFragment :
             val bPhone = if (it.phone!!.isEnabled && it.phone!!.isMandatory) {
                 binding.textInputLayPhoneNumber.validate(binding.textInputETPhoneNumber, error).and(
                     binding.textInputLayPhoneNumber.validateDigit(
-                        binding.textInputETPhoneNumber,
-                        R.string.enter_10_digits,
-                        10
+                        binding.textInputETPhoneNumber, R.string.enter_10_digits, 10
                     )
                 )
 
@@ -466,60 +448,49 @@ class PatientPersonalInfoFragment :
 
             val bGuardianType = if (it.guardianType!!.isEnabled && it.guardianType!!.isMandatory) {
                 binding.textInputLayGuardianType.validateDropDowb(
-                    binding.autoCompleteGuardianType,
-                    error
+                    binding.autoCompleteGuardianType, error
                 )
             } else true
 
             val bGName = if (it.guardianName!!.isEnabled && it.guardianName!!.isMandatory) {
                 binding.textInputLayGuardianName.validate(
-                    binding.textInputETGuardianName,
-                    error
+                    binding.textInputETGuardianName, error
                 )
             } else true
 
-            val bEmName =
-                if (it.emergencyContactName!!.isEnabled && it.emergencyContactName!!.isMandatory) {
-                    binding.textInputLayECName.validate(binding.textInputETECName, error)
-                } else true
+            val bEmName = if (it.emergencyContactName!!.isEnabled && it.emergencyContactName!!.isMandatory) {
+                binding.textInputLayECName.validate(binding.textInputETECName, error)
+            } else true
 
-            val bEmPhone =
-                if (it.emergencyContactNumber!!.isEnabled && it.emergencyContactNumber!!.isMandatory) {
-                    Timber.d { "Emergency validation" }
-                    binding.textInputLayEMPhoneNumber.validate(
-                        binding.textInputETEMPhoneNumber,
-                        error
-                    ).and(
-                        binding.textInputLayEMPhoneNumber.validateDigit(
-                            binding.textInputETEMPhoneNumber,
-                            R.string.enter_10_digits,
-                            10
-                        )
-                    ).and(binding.textInputETPhoneNumber.text?.let { phone ->
-                        val valid =
-                            phone.toString() != binding.textInputETEMPhoneNumber.text.toString()
-                        if (!valid) {
-                            binding.textInputLayEMPhoneNumber.error = getString(
-                                R.string.phone_number_and_emergency_number_can_not_be_the_same
-                            )
-                        }
-                        valid
-                    } ?: false)
-
-
-                } else true
-
-            val bEmContactType =
-                if (it.emergencyContactType!!.isEnabled && it.emergencyContactType!!.isMandatory) {
-                    binding.textInputLayEmContactType.validateDropDowb(
-                        binding.autoCompleteEmContactType,
-                        error
+            val bEmPhone = if (it.emergencyContactNumber!!.isEnabled && it.emergencyContactNumber!!.isMandatory) {
+                Timber.d { "Emergency validation" }
+                binding.textInputLayEMPhoneNumber.validate(
+                    binding.textInputETEMPhoneNumber, error
+                ).and(
+                    binding.textInputLayEMPhoneNumber.validateDigit(
+                        binding.textInputETEMPhoneNumber, R.string.enter_10_digits, 10
                     )
-                } else true
+                ).and(binding.textInputETPhoneNumber.text?.let { phone ->
+                    val valid = phone.toString() != binding.textInputETEMPhoneNumber.text.toString()
+                    if (!valid) {
+                        binding.textInputLayEMPhoneNumber.error = getString(
+                            R.string.phone_number_and_emergency_number_can_not_be_the_same
+                        )
+                    }
+                    valid
+                } ?: false)
 
-            if (bProfile.and(bFName).and(bMName).and(bLName).and(bGender)
-                    .and(bDob).and(bAge).and(bPhone).and(bGName).and(bGuardianType)
-                    .and(bEmName).and(bEmPhone).and(bEmContactType)
+
+            } else true
+
+            val bEmContactType = if (it.emergencyContactType!!.isEnabled && it.emergencyContactType!!.isMandatory) {
+                binding.textInputLayEmContactType.validateDropDowb(
+                    binding.autoCompleteEmContactType, error
+                )
+            } else true
+
+            if (bProfile.and(bFName).and(bMName).and(bLName).and(bGender).and(bDob).and(bAge).and(bPhone).and(bGName)
+                    .and(bGuardianType).and(bEmName).and(bEmPhone).and(bEmContactType)
             ) block.invoke()
         }
     }

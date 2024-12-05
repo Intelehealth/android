@@ -61,9 +61,9 @@ class ConfigSyncWorker(
                 workManager.getWorkInfoByIdFlow(configWorkRequest.id).collect {
                     Log.d(
                         "ConfigSyncWorker",
-                        "startConfigSyncWorker: ${Gson().toJson(it.outputData)}"
+                        "startConfigSyncWorker: ${Gson().toJson(it?.outputData)}"
                     )
-                    onResult(it.state.name)
+                    onResult(it?.state?.name!!)
                 }
             }
         }

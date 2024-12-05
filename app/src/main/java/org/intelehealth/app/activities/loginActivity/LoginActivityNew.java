@@ -26,7 +26,6 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
-import androidx.core.view.GravityCompat;
 
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
@@ -55,7 +54,7 @@ import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.authJWT_API.AuthJWTBody;
 import org.intelehealth.app.utilities.authJWT_API.AuthJWTResponse;
 import org.intelehealth.app.widget.materialprogressbar.CustomProgressDialog;
-import org.intelehealth.klivekit.data.PreferenceHelper;
+import org.intelehealth.core.utils.helper.PreferenceHelper;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -600,7 +599,6 @@ public class LoginActivityNew extends AppCompatActivity {
 
                         sessionManager.setJwtAuthToken(authJWTResponse.getToken());
                         preferenceHelper.save(PreferenceHelper.AUTH_TOKEN,authJWTResponse.getToken());
-
                         UserLoginTask(username, password);
                     }
 

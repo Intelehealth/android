@@ -40,6 +40,7 @@ public class AppConstants {
 
     public static final long FOLLOW_UP_SCHEDULE_ONE_DURATION = 5;
     public static final long FOLLOW_UP_SCHEDULE_TWO_DURATION = 24;
+    public static final String SAVE_FCM_TOKEN_URL = BuildConfig.SOCKET_URL + "/api/mindmap/user_settings";
 
     //App vitals constants
 

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="send_message">Send Message</string>
+    <string name="read">Read</string>
+    <string name="sent">Sent</string>
+    <string name="msg_delivered">Delivered</string>
+    <string name="sending">Sending</string>
+    <string name="fail">Fail</string>
+    <string name="no_room_found">Chat room not found</string>
+</resources>

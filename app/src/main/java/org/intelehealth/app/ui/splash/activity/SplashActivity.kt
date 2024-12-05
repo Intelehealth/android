@@ -14,6 +14,7 @@ import android.view.Gravity
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import androidx.annotation.RequiresApi
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
 import androidx.biometric.BiometricPrompt.PromptInfo
@@ -45,10 +46,10 @@ import org.intelehealth.app.utilities.DialogUtils.CustomDialogListener
 import org.intelehealth.app.utilities.Logger
 import org.intelehealth.config.room.entity.ActiveLanguage
 import org.intelehealth.config.worker.ConfigSyncWorker
-import org.intelehealth.core.shared.ui.viewholder.BaseViewHolder
+import org.intelehealth.core.ui.viewholder.BaseViewHolder
+import org.intelehealth.core.utils.extensions.showToast
 import org.intelehealth.fcm.utils.FcmRemoteConfig.getRemoteConfig
 import org.intelehealth.fcm.utils.FcmTokenGenerator.getDeviceToken
-import org.intelehealth.klivekit.utils.extensions.showToast
 
 /**
  * Created by Vaghela Mithun R. on 15-04-2024 - 11:28.
@@ -60,6 +61,7 @@ class SplashActivity : LanguageActivity(), BaseViewHolder.ViewHolderClickListene
     private lateinit var binding: ActivitySplashBinding
     private lateinit var adapter: LanguageAdapter
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySplashBinding.inflate(layoutInflater)
@@ -71,6 +73,8 @@ class SplashActivity : LanguageActivity(), BaseViewHolder.ViewHolderClickListene
         initLanguageList()
 
         binding.tvTitle.isVisible = BuildConfig.FLAVOR_client != "bmgf"
+
+//        DynamicModuleDownloadManager.getInstance(this).showDownloadingNotification()
     }
 
     private fun loadConfig() {
@@ -97,8 +101,7 @@ class SplashActivity : LanguageActivity(), BaseViewHolder.ViewHolderClickListene
         val action = getString(R.string.retry_again)
         val cancel = getString(R.string.cancel)
         DialogUtils().showCommonDialog(
-            this, R.drawable.close_patient_svg, title,
-            message, false, action, cancel
+            this, R.drawable.close_patient_svg, title, message, false, action, cancel
         ) {
             if (it == CustomDialogListener.NEGATIVE_CLICK) finish()
             else if (it == CustomDialogListener.POSITIVE_CLICK) loadConfig()
@@ -146,8 +149,7 @@ class SplashActivity : LanguageActivity(), BaseViewHolder.ViewHolderClickListene
             val title = getString(R.string.new_update_available)
             val action = getString(R.string.update)
             DialogUtils().showCommonDialog(
-                this, R.drawable.close_patient_svg, title,
-                message, true, action, ""
+                this, R.drawable.close_patient_svg, title, message, true, action, ""
             ) {
                 try {
                     startActivity(getAppIntent(AppConstants.getAppMarketUrl(this@SplashActivity)))
@@ -161,8 +163,7 @@ class SplashActivity : LanguageActivity(), BaseViewHolder.ViewHolderClickListene
     }
 
     private fun getAppIntent(url: String) = Intent(
-        Intent.ACTION_VIEW,
-        Uri.parse(url)
+        Intent.ACTION_VIEW, Uri.parse(url)
     )
 
     private fun checkPerm() {
@@ -212,28 +213,24 @@ class SplashActivity : LanguageActivity(), BaseViewHolder.ViewHolderClickListene
     private fun checkAndRequestPermissions(): Boolean {
         val listPermissionsNeeded: MutableList<String> = ArrayList()
         val cameraPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
-        val getAccountPermission =
-            ContextCompat.checkSelfPermission(this, Manifest.permission.GET_ACCOUNTS)
+        val getAccountPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.GET_ACCOUNTS)
         var writeExternalStoragePermission =
             ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             writeExternalStoragePermission =
                 ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES)
-            val notificationPermission =
-                ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+            val notificationPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
             if (notificationPermission != PackageManager.PERMISSION_GRANTED) {
                 listPermissionsNeeded.add(Manifest.permission.POST_NOTIFICATIONS)
             }
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            val fullScreenIntent =
-                ContextCompat.checkSelfPermission(this, Manifest.permission.USE_FULL_SCREEN_INTENT)
+            val fullScreenIntent = ContextCompat.checkSelfPermission(this, Manifest.permission.USE_FULL_SCREEN_INTENT)
             if (fullScreenIntent != PackageManager.PERMISSION_GRANTED) {
                 listPermissionsNeeded.add(Manifest.permission.USE_FULL_SCREEN_INTENT)
             }
         }
-        val phoneStatePermission =
-            ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE)
+        val phoneStatePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE)
         if (cameraPermission != PackageManager.PERMISSION_GRANTED) {
             listPermissionsNeeded.add(Manifest.permission.CAMERA)
         }
@@ -254,9 +251,7 @@ class SplashActivity : LanguageActivity(), BaseViewHolder.ViewHolderClickListene
         }
         if (!listPermissionsNeeded.isEmpty()) {
             ActivityCompat.requestPermissions(
-                this,
-                listPermissionsNeeded.toTypedArray(),
-                GROUP_PERMISSION_REQUEST
+                this, listPermissionsNeeded.toTypedArray(), GROUP_PERMISSION_REQUEST
             )
             return false
         }
@@ -286,26 +281,24 @@ class SplashActivity : LanguageActivity(), BaseViewHolder.ViewHolderClickListene
 
     private fun authenticateFingerprint() {
         val executor = ContextCompat.getMainExecutor(this)
-        BiometricPrompt(this, executor,
-            object : BiometricPrompt.AuthenticationCallback() {
-                override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
-                    super.onAuthenticationError(errorCode, errString)
-                    showToast(resources.getString(R.string.login_failed))
-                }
+        BiometricPrompt(this, executor, object : BiometricPrompt.AuthenticationCallback() {
+            override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
+                super.onAuthenticationError(errorCode, errString)
+                showToast(resources.getString(R.string.login_failed))
+            }
 
-                override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
-                    super.onAuthenticationSucceeded(result)
-                    showToast(resources.getString(R.string.login_successfully))
-                    navigateToNextActivity()
-                }
+            override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
+                super.onAuthenticationSucceeded(result)
+                showToast(resources.getString(R.string.login_successfully))
+                navigateToNextActivity()
+            }
 
-                override fun onAuthenticationFailed() {
-                    super.onAuthenticationFailed()
-                    showToast(resources.getString(R.string.login_failed))
-                }
-            }).apply {
-            PromptInfo.Builder()
-                .setTitle(resources.getString(R.string.intelehealth_login))
+            override fun onAuthenticationFailed() {
+                super.onAuthenticationFailed()
+                showToast(resources.getString(R.string.login_failed))
+            }
+        }).apply {
+            PromptInfo.Builder().setTitle(resources.getString(R.string.intelehealth_login))
                 .setSubtitle(resources.getString(R.string.touch_fingerprint))
                 .setNegativeButtonText(resources.getString(R.string.cancel))
                 .setAllowedAuthenticators(BiometricManager.Authenticators.BIOMETRIC_WEAK)
@@ -324,9 +317,9 @@ class SplashActivity : LanguageActivity(), BaseViewHolder.ViewHolderClickListene
         } else {
             Logger.logD(TAG, "Starting home")
             val intent = Intent(this, HomeScreenActivity_New::class.java)
-            intent.putExtra("from", "splash")
-            intent.putExtra("username", "")
-            intent.putExtra("password", "")
+//            intent.putExtra("from", "splash")
+//            intent.putExtra("username", "")
+//            intent.putExtra("password", "")
             startActivity(intent)
             finish()
         }

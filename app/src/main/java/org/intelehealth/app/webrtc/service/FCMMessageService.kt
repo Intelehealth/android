@@ -4,11 +4,11 @@ import com.github.ajalt.timberkt.Timber
 import com.google.firebase.messaging.RemoteMessage
 import com.google.gson.Gson
 import org.intelehealth.app.app.IntelehealthApplication
+import org.intelehealth.app.utilities.FirebaseUtils
 import org.intelehealth.app.utilities.NotificationUtils
 import org.intelehealth.app.utilities.SessionManager
 import org.intelehealth.app.webrtc.receiver.FCMNotificationReceiver
 import org.intelehealth.fcm.FBMessageService
-import org.intelehealth.klivekit.utils.FirebaseUtils
 
 /**
  * Created by Vaghela Mithun R. on 18-09-2023 - 10:16.
@@ -30,7 +30,8 @@ class FCMMessageService : FBMessageService(FCMNotificationReceiver::class.java) 
     }
 
     override fun onMessageReceived(message: RemoteMessage) {
-        val sessionManager = SessionManager(IntelehealthApplication.getAppContext())
+        val sessionManager =
+            SessionManager(IntelehealthApplication.getAppContext())
         val startHour = 21 // 9:00 PM
         val startMinute = 0
         val endHour = 6 // 6:00 AM

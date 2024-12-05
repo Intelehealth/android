@@ -5,7 +5,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.provider.Settings;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -14,9 +13,9 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.lifecycle.DefaultLifecycleObserver;
 import androidx.lifecycle.ProcessLifecycleOwner;
 import androidx.multidex.MultiDex;
-import androidx.multidex.MultiDexApplication;
 
 import com.github.ajalt.timberkt.Timber;
+import com.google.android.play.core.splitcompat.SplitCompatApplication;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.parse.Parse;
 
@@ -25,27 +24,28 @@ import org.intelehealth.app.R;
 import org.intelehealth.app.database.InteleHealthDatabaseHelper;
 import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.SessionManager;
-import org.intelehealth.app.webrtc.activity.IDACallLogActivity;
-import org.intelehealth.app.webrtc.activity.IDAChatActivity;
-import org.intelehealth.app.webrtc.activity.IDAVideoActivity;
 import org.intelehealth.config.Config;
-import org.intelehealth.klivekit.RtcEngine;
-import org.intelehealth.klivekit.socket.SocketManager;
-import org.intelehealth.klivekit.utils.DateTimeResource;
-import org.intelehealth.klivekit.utils.Manager;
+import org.intelehealth.core.socket.SocketManager;
+import org.intelehealth.core.utils.utility.DateTimeResource;
+import org.intelehealth.features.ondemand.mediator.utils.OnDemandIntentUtils;
+import org.intelehealth.installer.downloader.DynamicModuleDownloadManager;
+import org.intelehealth.installer.utils.DynamicModules;
 
+import dagger.hilt.android.HiltAndroidApp;
 import io.reactivex.plugins.RxJavaPlugins;
 import okhttp3.Dispatcher;
 import okhttp3.OkHttpClient;
 
 //Extend Application class with MultiDexApplication for multidex support
-public class IntelehealthApplication extends MultiDexApplication implements DefaultLifecycleObserver {
+@HiltAndroidApp
+public class IntelehealthApplication extends SplitCompatApplication implements DefaultLifecycleObserver {
 
     private static final String TAG = IntelehealthApplication.class.getSimpleName();
     private static Context mContext;
     private static String androidId;
     private Activity currentActivity;
     SessionManager sessionManager;
+
 
     public static Context getAppContext() {
         return mContext;
@@ -78,6 +78,7 @@ public class IntelehealthApplication extends MultiDexApplication implements Defa
     public void onCreate() {
         super.onCreate();
         new Config.Builder(BuildConfig.SERVER_URL + ":4004");
+//        new CoreConfig.Builder(BuildConfig.SERVER_URL + ":3004");   // TODO: here instead we can use SOCKET_URL to get the port as well.
         sIntelehealthApplication = this;
         inteleHealthDatabaseHelper = InteleHealthDatabaseHelper.getInstance(sIntelehealthApplication);
         //For Vector Drawables Backward Compatibility(<API 21)
@@ -167,25 +168,29 @@ public class IntelehealthApplication extends MultiDexApplication implements Defa
         DateTimeResource.build(this);
         CustomLog.d(TAG, "initSocketConnection: ");
         if (sessionManager.getProviderID() != null && !sessionManager.getProviderID().isEmpty()) {
-            Manager.getInstance().setBaseUrl(BuildConfig.SERVER_URL);
+//            Manager.getInstance().setBaseUrl(BuildConfig.SERVER_URL);
             String socketUrl = BuildConfig.SERVER_URL + ":3004" + "?userId="
                     + sessionManager.getProviderID()
                     + "&name=" + sessionManager.getChwname();
             if (!socketManager.isConnected()) socketManager.connect(socketUrl);
-            initRtcConfig();
         }
+
+        DynamicModuleDownloadManager manager = DynamicModuleDownloadManager.getInstance(this);
+        if (manager.isModuleDownloaded(DynamicModules.MODULE_CHAT)) {
+            OnDemandIntentUtils.initiateChatClient(this);
+        } else Timber.tag(TAG).d("ChatClient not initiate");
     }
 
     private void initRtcConfig() {
-        new RtcEngine.Builder()
-                .callUrl(BuildConfig.LIVE_KIT_URL)
-                .socketUrl(BuildConfig.SOCKET_URL + "?userId="
-                        + sessionManager.getProviderID()
-                        + "&name=" + sessionManager.getChwname())
-                .callIntentClass(IDAVideoActivity.class)
-                .chatIntentClass(IDAChatActivity.class)
-                .callLogIntentClass(IDACallLogActivity.class)
-                .build().saveConfig(this);
+//        new RtcEngine.Builder()
+//                .callUrl(BuildConfig.LIVE_KIT_URL)
+//                .socketUrl(BuildConfig.SOCKET_URL + "?userId="
+//                        + sessionManager.getProviderID()
+//                        + "&name=" + sessionManager.getChwname())
+//                .callIntentClass(IDAVideoActivity.class)
+//                .chatIntentClass(IDAChatActivity.class)
+//                .callLogIntentClass(IDACallLogActivity.class)
+//                .build().saveConfig(this);
     }
 
     @Override

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Black overlay stroke start -->
+    <item
+        android:width="@dimen/std_16dp"
+        android:height="@dimen/std_16dp"
+        android:gravity="bottom|end">
+        <rotate
+            android:fromDegrees="45"
+            android:pivotX="110%"
+            android:pivotY="0%"
+            android:toDegrees="45">
+            <shape android:shape="rectangle">
+                <size
+                    android:width="@dimen/std_16dp"
+                    android:height="@dimen/std_16dp" />
+                <solid android:color="@color/colorBlackTransparent_0_0_0" />
+            </shape>
+        </rotate>
+    </item>
+    <item android:bottom="@dimen/std_16dp">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/colorBlackTransparent_0_0_0" />
+            <corners
+                android:bottomLeftRadius="@dimen/std_8dp"
+                android:topLeftRadius="@dimen/std_8dp"
+                android:topRightRadius="@dimen/std_8dp" />
+        </shape>
+    </item>
+    <!-- Black overlay stroke end -->
+
+    <item
+        android:width="@dimen/std_16dp"
+        android:height="@dimen/std_16dp"
+        android:bottom="1dp"
+        android:gravity="bottom|end">
+        <rotate
+            android:fromDegrees="45"
+            android:pivotX="110%"
+            android:pivotY="0%"
+            android:toDegrees="45">
+            <shape android:shape="rectangle">
+                <size
+                    android:width="@dimen/std_16dp"
+                    android:height="@dimen/std_16dp" />
+                <solid android:color="@color/white" />
+            </shape>
+        </rotate>
+    </item>
+    <item
+        android:bottom="17dp"
+        android:end="1dp"
+        android:start="1dp">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/white" />
+            <corners
+                android:bottomLeftRadius="@dimen/std_8dp"
+                android:topLeftRadius="@dimen/std_8dp"
+                android:topRightRadius="@dimen/std_8dp" />
+        </shape>
+    </item>
+
+</layer-list>

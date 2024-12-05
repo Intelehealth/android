@@ -13,9 +13,11 @@ import static org.intelehealth.app.utilities.StringUtils.en__ru_dob;
 import static org.intelehealth.app.utilities.StringUtils.en__ta_dob;
 import static org.intelehealth.app.utilities.StringUtils.en__te_dob;
 import static org.intelehealth.app.utilities.StringUtils.getFullMonthName;
+import static org.intelehealth.installer.activity.DynamicModuleDownloadingActivity.MODULE_DOWNLOAD_STATUS;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlarmManager;
 import android.app.Dialog;
@@ -107,14 +109,13 @@ import org.intelehealth.app.models.CheckAppUpdateRes;
 import org.intelehealth.app.models.dto.ProviderAttributeDTO;
 import org.intelehealth.app.models.dto.ProviderDTO;
 import org.intelehealth.app.profile.MyProfileActivity;
-import org.intelehealth.app.services.MyIntentService;
 import org.intelehealth.app.services.firebase_services.DeviceInfoUtils;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
-import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.DownloadFilesUtils;
+import org.intelehealth.app.utilities.FirebaseUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
@@ -124,13 +125,15 @@ import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.TooltipWindow;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.exception.DAOException;
-import org.intelehealth.app.webrtc.activity.IDACallLogActivity;
 import org.intelehealth.config.room.entity.FeatureActiveStatus;
+import org.intelehealth.core.utils.helper.PreferenceHelper;
 import org.intelehealth.fcm.utils.FcmTokenGenerator;
 import org.intelehealth.fcm.utils.NotificationBroadCast;
-import org.intelehealth.klivekit.data.PreferenceHelper;
-import org.intelehealth.klivekit.utils.FirebaseUtils;
-import org.intelehealth.klivekit.utils.Manager;
+import org.intelehealth.features.ondemand.mediator.utils.OnDemandIntentUtils;
+import org.intelehealth.installer.activity.DynamicModuleDownloadingActivity;
+import org.intelehealth.installer.downloader.DynamicModuleDownloadManager;
+import org.intelehealth.installer.downloader.DynamicModuleDownloadManagerKt;
+import org.intelehealth.installer.utils.DynamicModules;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -195,9 +198,13 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
 
 
     private void saveToken() {
-        Manager.getInstance().setBaseUrl(BuildConfig.SERVER_URL);
-        // save fcm reg. token for chat (Video)
-        FirebaseUtils.saveToken(this, sessionManager.getProviderID(), IntelehealthApplication.getInstance().refreshedFCMTokenID, sessionManager.getAppLanguage());
+//        Manager.getInstance().setBaseUrl(BuildConfig.SERVER_URL);
+//        // save fcm reg. token for chat (Video)
+        FirebaseUtils.INSTANCE.saveToken(this,
+                sessionManager.getProviderID(),
+                IntelehealthApplication.getInstance().refreshedFCMTokenID,
+                sessionManager.getAppLanguage()
+        );
     }
 
     @Override
@@ -313,6 +320,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         DeviceInfoUtils.saveDeviceInfo(this);
         FcmTokenGenerator.getDeviceToken(token -> {
             IntelehealthApplication.getInstance().refreshedFCMTokenID = token;
+            Timber.tag(TAG).d("onCreate: FCM Token: %s", token);
             saveToken();
             return Unit.INSTANCE;
         });
@@ -655,6 +663,20 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
 
             }
         });
+
+        //bottom nav
+        bottomNav = findViewById(R.id.bottom_nav_home);
+        bottomNav.setOnItemSelectedListener(navigationItemSelectedListener);
+        bottomNav.setItemIconTintList(null);
+        bottomNav.getMenu().findItem(R.id.bottom_nav_home_menu).setChecked(true);
+        tvAppVersion.setText("Dynamic: Version Name " + BuildConfig.VERSION_NAME + " Code " + BuildConfig.VERSION_CODE);
+
+
+        setLocale(HomeScreenActivity_New.this);
+
+    }
+
+    private void syncData() {
         if (sessionManager.isFirstTimeLaunched()) {
             showRefreshDialog();
             SyncDAO.getSyncProgress_LiveData().observe(this, syncLiveData);
@@ -666,15 +688,6 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             saveToken();
 //            requestPermission();
         }
-        //bottom nav
-        bottomNav = findViewById(R.id.bottom_nav_home);
-        bottomNav.setOnItemSelectedListener(navigationItemSelectedListener);
-        bottomNav.setItemIconTintList(null);
-        bottomNav.getMenu().findItem(R.id.bottom_nav_home_menu).setChecked(true);
-        tvAppVersion.setText(getString(R.string.app_version_string, "4.0 - Beta"));
-
-        setLocale(HomeScreenActivity_New.this);
-
     }
 
     /**
@@ -985,10 +998,32 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
     @Override
     protected void onFeatureActiveStatusLoaded(FeatureActiveStatus activeStatus) {
         super.onFeatureActiveStatusLoaded(activeStatus);
-        if (mNavigationView != null) {
-            mNavigationView.getMenu().findItem(R.id.menu_view_call_log).setVisible(activeStatus.getVideoSection());
-        }
+//        if (!manager.isModuleDownloaded(DynamicModules.MODULE_VIDEO) && activeStatus.getVideoSection()) {
+//            startForDownloadResult.launch(DynamicModuleDownloadingActivity.getDownloadActivityIntent(this, DynamicModules.MODULE_VIDEO));
+//        } else
+
+        updateCallLogMenuVisibility(activeStatus.getVideoSection());
+
+        uninstallModule(activeStatus);
     }
+
+    private void updateCallLogMenuVisibility(boolean visibility) {
+        if (mNavigationView != null) {
+            mNavigationView.getMenu().findItem(R.id.menu_view_call_log).setVisible(visibility);
+        }
+        syncData();
+    }
+
+    private final ActivityResultLauncher<Intent> startForDownloadResult = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(), result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    Intent intent = result.getData();
+                    if (intent == null) return;
+                    if (intent.hasExtra(MODULE_DOWNLOAD_STATUS) && intent.getBooleanExtra(MODULE_DOWNLOAD_STATUS, false)) {
+                        OnDemandIntentUtils.startCallLog(HomeScreenActivity_New.this);
+                    }
+                }
+            });
 
     public void selectDrawerItem(MenuItem menuItem) {
         Fragment fragment = null;
@@ -1013,8 +1048,11 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             startActivity(intent);
             finish();
         } else if (itemId == R.id.menu_view_call_log) {
-            Intent intent = new Intent(HomeScreenActivity_New.this, IDACallLogActivity.class);
-            startActivity(intent);
+            if (!manager.isModuleDownloaded(DynamicModules.MODULE_VIDEO) && menuItem.isVisible()) {
+                startForDownloadResult.launch(DynamicModuleDownloadingActivity.getDownloadActivityIntent(this, DynamicModules.MODULE_VIDEO));
+            } else if (manager.isModuleDownloaded(DynamicModules.MODULE_VIDEO) && menuItem.isVisible()) {
+                OnDemandIntentUtils.startCallLog(this);
+            }
         } else if (itemId == R.id.menu_about_us) {
             Intent i = new Intent(HomeScreenActivity_New.this, AboutUsActivity.class);
             startActivity(i);

@@ -1,12 +1,15 @@
 plugins {
     id("com.android.dynamic-feature")
     id("org.jetbrains.kotlin.android")
-    id("kotlin-kapt")
     id("dagger.hilt.android.plugin")
     id("kotlin-parcelize")
+    id("kotlin-kapt")
 }
+apply("${rootProject.projectDir}/whitelabel.gradle")
+//apply("${rootProject.projectDir}/variants.gradle")
+
 android {
-    namespace = "org.intelehealth.video"
+    namespace = "org.intelehealth.app.feature.video"
     compileSdk = 34
 
     defaultConfig {
@@ -17,7 +20,8 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+//            isDebuggable = true
+//            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
 
@@ -26,12 +30,22 @@ android {
         dataBinding = true
         buildConfig = true
     }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+    kotlinOptions {
+        jvmTarget = "17"
+    }
 }
 
 dependencies {
-    implementation(project(":app"))
-    implementation(project(":common"))
+//    implementation(project(":core"))
+//    implementation(project(":core:socket"))
     implementation("androidx.core:core-ktx:1.13.1")
+    implementation(project(":app"))
+    implementation(project(":features:ondemand:mediator"))
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
@@ -39,8 +53,8 @@ dependencies {
     api("androidx.core:core-ktx:1.13.1")
     api("androidx.appcompat:appcompat:1.7.0")
     api("com.google.android.material:material:1.12.0")
-    api("androidx.activity:activity-ktx:1.9.2")
-    api("androidx.fragment:fragment-ktx:1.8.3")
+    api("androidx.activity:activity-ktx:1.9.3")
+    api("androidx.fragment:fragment-ktx:1.8.4")
     // WebRtc
     api("io.livekit:livekit-android:1.5.2")
     api("com.google.protobuf:protobuf-javalite:3.23.3")
@@ -55,8 +69,8 @@ dependencies {
     api("androidx.preference:preference-ktx:1.2.1")
 
     // Coroutines for execute concurrent tasks
-    api("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
-    api("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
+//    api("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+//    api("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
 
     // Timber logging
     api("com.github.ajalt:timberkt:1.5.1")
@@ -90,7 +104,7 @@ dependencies {
     api("com.squareup.retrofit2:converter-gson:2.9.0")
     api("com.squareup.okhttp3:logging-interceptor:4.10.0")
 
-    val hiltVersion = "2.47"
+    val hiltVersion = "2.49"
     api("com.google.dagger:hilt-android:$hiltVersion")
     annotationProcessor("com.google.dagger:hilt-compiler:$hiltVersion")
     kapt("com.google.dagger:hilt-compiler:$hiltVersion")

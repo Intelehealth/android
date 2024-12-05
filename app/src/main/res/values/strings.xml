@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">Intelehealth</string>
+
     //Generic
     <string name="tag_optional">optional</string>
     <string name="generic_ok">OK</string>
@@ -734,8 +734,6 @@
     <string name="please_enter_the_value"> Please enter the value </string>
     <string name="max_doc_size_toast">Max doc size is 512 KB</string>
     <string name="choose_documents">Choose Documents</string>
-    <string name="read">Read</string>
-    <string name="sent">Sent</string>
     <string name="pending_since">Pending since</string>
     <string name="max_5_image">Maximum 5 Images you can send per one case</string>
     <string name="max_2_image">Maximum 2 Images you can send per one case</string>
@@ -1074,5 +1072,7 @@
     <string name="lbl_clear_all">Clear All</string>
     <string name="sync">Refresh</string>
     <string name="sending_otp">Sending OTP...</string>
-    <string name="title_video">Video Feature</string>
+    <string name="title_chat">Chat</string>
+    <string name="title_dynamicfeature">Dynamic Test Module</string>
+
 </resources>

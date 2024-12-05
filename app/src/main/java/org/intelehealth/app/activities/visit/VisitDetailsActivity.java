@@ -11,9 +11,11 @@ import static org.intelehealth.app.database.dao.VisitsDAO.fetchVisitModifiedDate
 import static org.intelehealth.app.database.dao.VisitsDAO.isVisitNotEnded;
 import static org.intelehealth.app.utilities.DateAndTimeUtils.timeAgoFormat;
 import static org.intelehealth.app.utilities.StringUtils.setGenderAgeLocal;
+import static org.intelehealth.installer.activity.DynamicModuleDownloadingActivity.MODULE_DOWNLOAD_STATUS;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -30,7 +32,12 @@ import android.os.Bundle;
 import android.os.LocaleList;
 import android.text.Html;
 import android.util.DisplayMetrics;
+
+import org.intelehealth.app.database.dao.RTCConnectionDAO;
+import org.intelehealth.app.models.dto.RTCConnectionDTO;
+import org.intelehealth.app.ui2.utils.CheckInternetAvailability;
 import org.intelehealth.app.utilities.CustomLog;
+
 import android.util.TypedValue;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
@@ -43,6 +50,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -50,7 +60,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.github.ajalt.timberkt.Timber;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
@@ -67,20 +76,15 @@ import org.intelehealth.app.ayu.visit.model.VisitSummaryData;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.database.dao.ProviderDAO;
-import org.intelehealth.app.database.dao.RTCConnectionDAO;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.models.ClsDoctorDetails;
 import org.intelehealth.app.models.PrescriptionModel;
-import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.models.dto.ProviderDTO;
-import org.intelehealth.app.models.dto.RTCConnectionDTO;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.ui.patient.activity.PatientRegistrationActivity;
-import org.intelehealth.app.ui2.utils.CheckInternetAvailability;
 import org.intelehealth.app.utilities.AppointmentUtils;
-import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.NetworkConnection;
@@ -91,9 +95,13 @@ import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.VisitUtils;
 import org.intelehealth.app.utilities.exception.DAOException;
-import org.intelehealth.app.webrtc.activity.IDAChatActivity;
 import org.intelehealth.config.room.entity.FeatureActiveStatus;
-import org.intelehealth.klivekit.model.RtcArgs;
+import org.intelehealth.features.ondemand.mediator.model.ChatRoomConfig;
+import org.intelehealth.features.ondemand.mediator.utils.OnDemandIntentUtils;
+import org.intelehealth.installer.activity.DynamicModuleDownloadingActivity;
+import org.intelehealth.installer.popup.DownloadPopupWindow;
+import org.intelehealth.installer.popup.LeftAnchorPopupWindow;
+import org.intelehealth.installer.utils.DynamicModules;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -208,7 +216,7 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
         clsDoctorDetails = gson.fromJson(drDetails, ClsDoctorDetails.class);
 
         if (clsDoctorDetails != null) {
-            CustomLog.e("TAG","TEST VISIT: " + clsDoctorDetails.toString());
+            CustomLog.e("TAG", "TEST VISIT: " + clsDoctorDetails.toString());
             dr_MobileNo = "+91" + clsDoctorDetails.getPhoneNumber();
             dr_WhatsappNo = "+91" + clsDoctorDetails.getWhatsapp();
         }
@@ -920,22 +928,34 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
             Toast.makeText(this, getString(R.string.not_connected_txt), Toast.LENGTH_SHORT).show();
             return;
         }
-        EncounterDAO encounterDAO = new EncounterDAO();
-        EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUID(visitID);
-        RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
-        RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(visitID);
-        RtcArgs args = new RtcArgs();
-        if (rtcConnectionDTO != null) {
-            args.setDoctorUuid(rtcConnectionDTO.getConnectionInfo());
-            args.setPatientId(patientUuid);
-            args.setPatientName(patientName);
-            args.setVisitId(visitID);
-            args.setNurseId(encounterDTO.getProvideruuid());
-            IDAChatActivity.startChatActivity(VisitDetailsActivity.this, args);
-        } else {
-            //chatIntent.putExtra("toUuid", ""); // assigned doctor uuid
-            Toast.makeText(this, getResources().getString(R.string.wait_for_the_doctor_message), Toast.LENGTH_SHORT).show();
-        }
+
+        if (!manager.isModuleDownloaded(DynamicModules.MODULE_CHAT)) {
+            startForDownloadResult.launch(DynamicModuleDownloadingActivity.getDownloadActivityIntent(this, DynamicModules.MODULE_CHAT));
+        } else openChatRoom();
+    }
+
+    private final ActivityResultLauncher<Intent> startForDownloadResult = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(), result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    Intent intent = result.getData();
+                    if (intent == null) return;
+                    if (intent.hasExtra(MODULE_DOWNLOAD_STATUS) && intent.getBooleanExtra(MODULE_DOWNLOAD_STATUS, false)) {
+                        openChatRoom();
+                    }
+                }
+            });
+
+    private void openChatRoom() {
+        ChatRoomConfig roomConfig = new ChatRoomConfig(
+                patientName,
+                patientUuid,
+                sessionManager.getChwname(),
+                visitID,
+                sessionManager.getProviderID(),
+                "",
+                openmrsID
+        );
+        OnDemandIntentUtils.openChatRoom(this, roomConfig);
     }
 
     public void startVideoChat(View view) {
@@ -1101,5 +1121,31 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
         String baseurl = BuildConfig.SERVER_URL + ":3004";
 
         new AppointmentUtils().cancelAppointmentRequestOnVisitEnd(visitUUID, appointmentID, reason, providerID, baseurl);
+    }
+
+    @Override
+    public void onDownloading(int percentage) {
+        super.onDownloading(percentage);
+    }
+
+    @Override
+    public void onDownloadCompleted() {
+        super.onDownloadCompleted();
+    }
+
+    @Override
+    public void onInstalling() {
+        super.onInstalling();
+    }
+
+    @Override
+    public void onInstallSuccess() {
+        super.onInstallSuccess();
+        openChatRoom();
+    }
+
+    @Override
+    public void onFailed(@NonNull String errorMessage) {
+        super.onFailed(errorMessage);
     }
 }

@@ -15,17 +15,17 @@ import org.intelehealth.app.models.dto.ProviderDTO;
 import org.intelehealth.app.models.dto.RTCConnectionDTO;
 import org.intelehealth.app.ui.language.activity.LanguageActivity;
 import org.intelehealth.app.utilities.exception.DAOException;
-import org.intelehealth.app.webrtc.activity.IDAChatActivity;
-import org.intelehealth.app.webrtc.notification.AppNotification;
 import org.intelehealth.config.presenter.feature.data.FeatureActiveStatusRepository;
 import org.intelehealth.config.presenter.feature.factory.FeatureActiveStatusViewModelFactory;
 import org.intelehealth.config.presenter.feature.viewmodel.FeatureActiveStatusViewModel;
 import org.intelehealth.config.room.ConfigDatabase;
 import org.intelehealth.config.room.entity.FeatureActiveStatus;
-import org.intelehealth.klivekit.model.ChatMessage;
-import org.intelehealth.klivekit.model.RtcArgs;
-import org.intelehealth.klivekit.socket.SocketManager;
+import org.intelehealth.core.socket.SocketManager;
+import org.intelehealth.installer.downloader.DynamicDeliveryCallback;
+import org.intelehealth.installer.downloader.DynamicModuleDownloadManager;
+import org.intelehealth.installer.utils.DynamicModules;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 /**
@@ -33,14 +33,16 @@ import java.util.UUID;
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-public class BaseActivity extends LanguageActivity implements SocketManager.NotificationListener {
+public class BaseActivity extends LanguageActivity implements DynamicDeliveryCallback {
     private static final String TAG = "BaseActivity";
     private FeatureActiveStatus featureActiveStatus;
+    protected DynamicModuleDownloadManager manager;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        SocketManager.getInstance().setNotificationListener(this);
+        manager = DynamicModuleDownloadManager.getInstance(this);
+//        SocketManager.getInstance().setNotificationListener(this);
         loadFeatureActiveStatus();
     }
 
@@ -58,30 +60,6 @@ public class BaseActivity extends LanguageActivity implements SocketManager.Noti
         });
     }
 
-    @Override
-    public void showNotification(@NonNull ChatMessage chatMessage) {
-        if (featureActiveStatus != null && featureActiveStatus.getChatSection()) {
-            RtcArgs args = new RtcArgs();
-            args.setPatientName(chatMessage.getPatientName());
-            args.setPatientId(chatMessage.getPatientId());
-            args.setVisitId(chatMessage.getVisitId());
-            args.setNurseId(chatMessage.getToUser());
-            args.setDoctorUuid(chatMessage.getFromUser());
-            try {
-                String title = new ProviderDAO().getProviderName(args.getDoctorUuid(), ProviderDTO.Columns.USER_UUID.value);
-                new AppNotification.Builder(this)
-                        .title(title)
-                        .body(chatMessage.getMessage())
-                        .pendingIntent(IDAChatActivity.getPendingIntent(this, args))
-                        .send();
-
-                saveChatInfoLog(args.getVisitId(), args.getDoctorUuid());
-            } catch (DAOException e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }
-
     private void saveChatInfoLog(String visitId, String doctorId) throws DAOException {
         RTCConnectionDTO rtcDto = new RTCConnectionDTO();
         rtcDto.setUuid(UUID.randomUUID().toString());
@@ -90,17 +68,63 @@ public class BaseActivity extends LanguageActivity implements SocketManager.Noti
         new RTCConnectionDAO().insert(rtcDto);
     }
 
-    @Override
-    public void saveTheDoctor(@NonNull ChatMessage chatMessage) {
-        try {
-            saveChatInfoLog(chatMessage.getVisitId(), chatMessage.getFromUser());
-        } catch (DAOException e) {
-            Timber.tag(TAG).e(e.getThwStack(), "saveTheDoctor: ");
-        }
-    }
-
     protected void onFeatureActiveStatusLoaded(FeatureActiveStatus activeStatus) {
         featureActiveStatus = activeStatus;
         Timber.tag(TAG).d("Active feature status=>%s", new Gson().toJson(activeStatus));
+    }
+
+    protected void uninstallModule(FeatureActiveStatus activeStatus) {
+        Timber.tag(TAG).d("uninstallModule");
+        ArrayList<String> list = new ArrayList<>();
+        boolean hasVideoModule = manager.isModuleDownloaded(DynamicModules.MODULE_VIDEO);
+        boolean hasChatModule = manager.isModuleDownloaded(DynamicModules.MODULE_CHAT);
+        if (!activeStatus.getChatSection() && !activeStatus.getVideoSection()
+                && hasChatModule && hasVideoModule) {
+            list.add(DynamicModules.MODULE_VIDEO);
+            list.add(DynamicModules.MODULE_CHAT);
+        } else if (!activeStatus.getVideoSection() && hasVideoModule) {
+            list.add(DynamicModules.MODULE_VIDEO);
+        } else if (!activeStatus.getChatSection() && hasChatModule) {
+            list.add(DynamicModules.MODULE_CHAT);
+        }
+        Timber.tag(TAG).d("uninstallModule=>%s", list.toString());
+        if (!list.isEmpty()) manager.requestUninstall(list);
+    }
+
+    @Override
+    protected void onResume() {
+//        manager.registerListener(this);
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+//        manager.unregisterListener();
+        super.onPause();
+    }
+
+    @Override
+    public void onDownloading(int percentage) {
+
+    }
+
+    @Override
+    public void onDownloadCompleted() {
+
+    }
+
+    @Override
+    public void onInstallSuccess() {
+
+    }
+
+    @Override
+    public void onFailed(@NonNull String errorMessage) {
+
+    }
+
+    @Override
+    public void onInstalling() {
+
     }
 }
