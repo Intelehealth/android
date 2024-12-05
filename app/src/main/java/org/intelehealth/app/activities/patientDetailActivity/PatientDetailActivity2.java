@@ -1541,7 +1541,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
         // setting district and city
 
-        String district = null;
+        String district = patientDTO.getDistrict();
         String city_village = patientDTO.getCityvillage();
         if (patientDTO.getCityvillage() != null && patientDTO.getCityvillage().length() > 0) {
             String[] district_city = patientDTO.getCityvillage().trim().split(":");
