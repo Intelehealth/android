@@ -1385,4 +1385,28 @@
     <string name="close_">Close patient registration?</string>
 
     <string name="draft_survey">Draft Survey</string>
+    <string name="no_of_m_km">No. of M/KM</string>
+
+        <!--Roster-->
+    <string name="txt_hedingRosters">Rosters</string>
+    <string name="txt_heading_pregnancy_outcome_roster">Pregnancy Outcome Roster</string>
+    <string name="txt_what_is_your_relationship_with_head_of_household">What is your relationship with Head of Household*</string>
+    <string name="txt_what_is_your_maritual_status">What is your Maritual Status</string>
+    <string name="txt_phone_ownership">Phone Ownership*</string>
+    <string name="txt_bp_checked">BP checked</string>
+    <string name="txt_sugar_checked">Sugar Checked</string>
+    <string name="txt_hb_test">HB test</string>
+    <string name="hint_drop_down_select">Select</string>
+    <string name="other_relation">Other</string>
+    <string name="what_is_your_marital_status">What is your marital status?*</string>
+    <string name="what_is_your_education_status">What is your education status?*</string>
+    <string name="nas_occupation">Occupation*</string>
+    <string name="txt_when_was_the_last_time_you_got_your_bp_checked">When was the last time you got your BP checked?*</string>
+    <string name="txt_when_was_the_last_time_you_got_your_sugar_level_checked">When was the last time you got your sugar level checked?*</string>
+    <string name="txt_when_was_the_last_time_you_got_your_hb_level_tested">When was the last time you got your HB level tested?*</string>
+    <string name="txt_bmi_height_and_weight_checked">BMI (Height and weight) checked?*</string>
+    <string name="close_roster_questionnaire">Close roster questionnaire?</string>
+    <string name="sure_you_want_close_close_roster">Are you sure you want to close the roster questionnaire?</string>
+    <string name="update_roster">Update Roster</string>
+    <string name="roster">Roster</string>
 </resources>

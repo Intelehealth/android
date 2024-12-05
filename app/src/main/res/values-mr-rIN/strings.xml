@@ -722,4 +722,12 @@
     <string name="no_family_member_registered">No family member registered</string>
     <string name="fill_required_fields">कृपया सर्व आवश्यक फील्ड भरा</string>
     <string name="draft_survey">Draft Survey</string>
+    <string name="what_is_your_education_status">तुमची शिक्षणाची स्थिती काय आहे?*</string>
+    <string name="what_is_your_marital_status">तुमची वैवाहिक स्थिती काय आहे?*</string>
+    <string name="nas_occupation">व्यवसाय*</string>
+    <string name="txt_when_was_the_last_time_you_got_your_bp_checked">तुमची बीपी शेवटची कधी तपासली होती?*</string>
+    <string name="txt_when_was_the_last_time_you_got_your_sugar_level_checked">तुम्ही तुमची साखर पातळी शेवटच्या वेळी कधी तपासली होती?*</string>
+    <string name="txt_when_was_the_last_time_you_got_your_hb_level_tested">तुमची एचबी पातळीची शेवटची चाचणी कधी झाली?*</string>
+    <string name="txt_bmi_height_and_weight_checked">BMI (उंची आणि वजन) तपासले*</string>
+
 </resources>
