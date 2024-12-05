@@ -45,7 +45,6 @@ import java.util.UUID
  * Mob   : +919727206702
  **/
 class PatientRegistrationActivity : BaseActivity() {
-    private lateinit var navController: NavController
     private lateinit var binding: ActivityPatientRegistrationBinding
     private val patientViewModel by lazy {
         return@lazy PatientViewModelFactory.create(this, this)
@@ -116,7 +115,7 @@ class PatientRegistrationActivity : BaseActivity() {
     private fun navigateToStage(stage: PatientRegStage) {
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.navHostPatientReg) as NavHostFragment
-          navController = navHostFragment.navController
+        val navController = navHostFragment.navController
         val navGraph =
             navController.navInflater.inflate(R.navigation.navigation_patient_registration)
         val startDestination = when (stage) {
@@ -211,13 +210,9 @@ class PatientRegistrationActivity : BaseActivity() {
                 binding.patientTab.root.isVisible = true
                 binding.addressActiveStatus = it.activeStatusPatientAddress
                 binding.otherActiveStatus = it.activeStatusPatientOther
-                removeOrNavigateBack(R.id.fragmentPatientAddressInfo)
-                patientViewModel.updatePatientStage(PatientRegStage.PERSONAL)
             }
         }
     }
-
-
 
     override fun onResume() {
         super.onResume()
@@ -227,17 +222,6 @@ class PatientRegistrationActivity : BaseActivity() {
     override fun onPause() {
         super.onPause()
         networkUtil.unregisterNetworkReceiver()
-    }
-
-   private fun removeOrNavigateBack(fragmentId: Int) {
-        // Check if the current destination is the fragment we want to remove
-        if (navController.currentDestination?.id == fragmentId) {
-            // The fragment is currently displayed, so pop to the previous destination
-            navController.popBackStack()
-        } else {
-            // Pop up to the specified fragment, removing any fragments above it
-            navController.popBackStack(fragmentId, inclusive = true)
-        }
     }
 
     private val networkStatusListener = InternetCheckUpdateInterface {
