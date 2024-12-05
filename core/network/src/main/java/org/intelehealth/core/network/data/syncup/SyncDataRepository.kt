@@ -11,7 +11,25 @@ import org.intelehealth.coreroomdb.IHDatabase
 class SyncDataRepository(private val ihDb: IHDatabase, private val dataSource: SyncDataSource) {
     suspend fun pullData(pageNo: Int, pageLimit: Int = 50) = dataSource.pullData(pageNo, pageLimit)
 
-    suspend fun saveData(pullResponse: PullResponse) {
-
+    suspend fun saveData(pullResponse: PullResponse, onSaved: suspend (Int, Int) -> Unit) {
+        if (pullResponse.patientlist.isNotEmpty()) ihDb.patientDao().insert(pullResponse.patientlist)
+        if (pullResponse.patientAttributeTypeListMaster.isNotEmpty()) ihDb.patientAttrMasterDao()
+            .insert(pullResponse.patientAttributeTypeListMaster)
+        if (pullResponse.patientAttributesList.isNotEmpty()) ihDb.patientAttrDao()
+            .insert(pullResponse.patientAttributesList)
+        if (pullResponse.visitlist.isNotEmpty()) ihDb.visitDao().insert(pullResponse.visitlist)
+        if (pullResponse.encounterlist.isNotEmpty()) ihDb.encounterDao().insert(pullResponse.encounterlist)
+        if (pullResponse.obslist.isNotEmpty()) ihDb.observationDao().insert(pullResponse.obslist)
+        if (pullResponse.locationlist.isNotEmpty()) ihDb.patientLocationDao().insert(pullResponse.locationlist)
+        if (pullResponse.providerlist.isNotEmpty()) ihDb.providerDao().insert(pullResponse.providerlist)
+        if (pullResponse.providerAttributeTypeList.isNotEmpty()) ihDb.providerAttributeDao()
+            .insert(pullResponse.providerAttributeTypeList)
+        if (pullResponse.providerAttributeList.isNotEmpty()) ihDb.providerAttributeDao()
+            .insert(pullResponse.providerAttributeList)
+        if (pullResponse.visitAttributeTypeList.isNotEmpty()) ihDb.visitAttributeDao()
+            .insert(pullResponse.visitAttributeTypeList)
+        if (pullResponse.visitAttributeList.isNotEmpty()) ihDb.visitAttributeDao()
+            .insert(pullResponse.visitAttributeList)
+        onSaved(pullResponse.totalCount, pullResponse.pageNo)
     }
 }

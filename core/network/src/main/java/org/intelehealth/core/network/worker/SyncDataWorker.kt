@@ -8,7 +8,7 @@ import kotlinx.coroutines.withContext
 import org.intelehealth.core.network.data.syncup.SyncDataRepository
 import org.intelehealth.core.network.data.syncup.SyncDataSource
 import org.intelehealth.core.network.provider.CoreApiClientProvider
-import org.intelehealth.core.network.state.Result
+import org.intelehealth.core.network.state.Result.State
 import org.intelehealth.core.utils.helper.PreferenceHelper
 import org.intelehealth.coreroomdb.IHDatabase
 
@@ -34,15 +34,18 @@ class SyncDataWorker(
     }
 
     private suspend fun pullData(pageNo: Int) {
-        repository.pullData(1).collect {
+        repository.pullData(pageNo).collect {
             when (it.status) {
-                org.intelehealth.core.network.state.Result.State.SUCCESS -> it.data?.data?.let { data ->
-                    repository.saveData(data)
+                State.SUCCESS -> it.data?.data?.let { data ->
+                    repository.saveData(data) { totalCount, page ->
+                        if (totalCount > page) withContext(Dispatchers.IO) { pullData(page + 1) }
+                        else Result.success()
+                    }
                 }
 
-                org.intelehealth.core.network.state.Result.State.FAIL -> Result.failure()
-                org.intelehealth.core.network.state.Result.State.ERROR -> Result.failure()
-                org.intelehealth.core.network.state.Result.State.LOADING -> Result.failure()
+                State.FAIL -> Result.failure()
+                State.ERROR -> Result.failure()
+                State.LOADING -> Result.failure()
             }
         }
     }

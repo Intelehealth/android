@@ -1,4 +1,5 @@
 package org.intelehealth.core.network.model
+
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import org.intelehealth.coreroomdb.entity.*
@@ -8,53 +9,38 @@ import org.intelehealth.coreroomdb.entity.*
  * Email: prajwalwaingankar@gmail.com
  * Mobile: +917304154312
  **/
-data class PullResponse (
+data class PullResponse(
 
-    @SerializedName("patientlist") @Expose
-    private var patientlist: List<Patient>,
+    @SerializedName("patientlist") @Expose var patientlist: List<Patient>,
 
-    @SerializedName("pullexecutedtime") @Expose
-    private var pullexecutedtime: String,
+    @SerializedName("pullexecutedtime") @Expose var pullexecutedtime: String,
 
-    @SerializedName("patientAttributeTypeListMaster") @Expose
-    private var patientAttributeTypeListMaster: List<PatientAttributeTypeMaster>,
+    @SerializedName("patientAttributeTypeListMaster") @Expose var patientAttributeTypeListMaster: List<PatientAttributeTypeMaster>,
 
-    @SerializedName("patientAttributesList") @Expose
-    private var patientAttributesList: List<PatientAttribute>,
+    @SerializedName("patientAttributesList") @Expose var patientAttributesList: List<PatientAttribute>,
 
-    @SerializedName("visitlist") @Expose
-    private var visitlist: List<Visit>,
+    @SerializedName("visitlist") @Expose var visitlist: List<Visit>,
 
-    @SerializedName("encounterlist") @Expose
-    private var encounterlist: List<Encounter>,
+    @SerializedName("encounterlist") @Expose var encounterlist: List<Encounter>,
 
-    @SerializedName("obslist") @Expose
-    private var obslist: List<Observation>,
+    @SerializedName("obslist") @Expose var obslist: List<Observation>,
 
-    @SerializedName("locationlist") @Expose
-    private var locationlist: List<PatientLocation>,
+    @SerializedName("locationlist") @Expose var locationlist: List<PatientLocation>,
 
-    @SerializedName("providerlist") @Expose
-    private var providerlist: List<Provider>,
+    @SerializedName("providerlist") @Expose var providerlist: List<Provider>,
 
-    @SerializedName("providerAttributeTypeList") @Expose
-    private var providerAttributeTypeList: List<Object>,
+    @SerializedName("providerAttributeTypeList") @Expose var providerAttributeTypeList: List<ProviderAttribute>,
 
-    @SerializedName("providerAttributeList") @Expose
-    private var providerAttributeList: List<ProviderAttribute>,
+    @SerializedName("providerAttributeList") @Expose var providerAttributeList: List<ProviderAttribute>,
 
-    @SerializedName("visitAttributeTypeList") @Expose
-    private var visitAttributeTypeList: List<VisitAttribute>,
+    @SerializedName("visitAttributeTypeList") @Expose var visitAttributeTypeList: List<VisitAttribute>,
 
-    @SerializedName("visitAttributeList") @Expose
-    private var visitAttributeList: List<VisitAttribute>,
+    @SerializedName("visitAttributeList") @Expose var visitAttributeList: List<VisitAttribute>,
 
-    @SerializedName("pageNo") @Expose
-    private var pageNo: Int,
+    @SerializedName("pageNo") @Expose var pageNo: Int,
 
-    @SerializedName("totalCount") @Expose
-    private var totalCount: Int,
+    @SerializedName("totalCount") @Expose var totalCount: Int,
 
     /*@SerializedName("propertyContents") @Expose
-    private var propertyContents: ConfigResponse*/
+     var propertyContents: ConfigResponse*/
 )

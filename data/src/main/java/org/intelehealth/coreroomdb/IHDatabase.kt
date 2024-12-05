@@ -31,6 +31,14 @@ abstract class IHDatabase: RoomDatabase() {
     abstract fun mediaRecordDao(): MediaRecordDao
     abstract fun observationDao(): ObservationDao
     abstract fun patientDao(): PatientDao
+    abstract fun patientAttrMasterDao(): PatientAttributeTypeMasterDao
+    abstract fun patientAttrDao(): PatientAttributeDao
+    abstract fun patientLocationDao(): PatientLocationDao
+    abstract fun providerDao(): ProviderDao
+    abstract fun providerAttributeDao(): ProviderAttributeDao
+    abstract fun visitDao(): VisitDao
+    abstract fun visitAttributeDao(): VisitAttributeDao
+
 
     companion object {
         @Volatile
