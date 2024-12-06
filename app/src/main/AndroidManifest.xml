@@ -63,12 +63,15 @@
         android:usesCleartextTraffic="true"
         tools:ignore="UnusedAttribute, LockedOrientationActivity"
         tools:replace="allowBackup">
-
+        <activity
+            android:name=".ui.rosterquestionnaire.activity.RosterQuestionnaireMainActivity"
+            android:exported="true"
+            android:theme="@style/AppThemeMaterialNew"
+            android:windowSoftInputMode="adjustPan"  />
         <activity
             android:name=".activities.draftSurvey.DraftSurveyActivity"
             android:exported="false"
-            android:theme="@style/AppTheme.NoActionBar"
-            />
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.householdSurvey.HouseholdSurveyActivity"
             android:exported="true"

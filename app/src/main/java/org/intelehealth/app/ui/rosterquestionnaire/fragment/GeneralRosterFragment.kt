@@ -4,28 +4,37 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import org.intelehealth.app.R
 import org.intelehealth.app.databinding.FragmentGeneralRosterBinding
+import org.intelehealth.app.ui.patient.fragment.PatientPersonalInfoFragmentDirections
+import org.intelehealth.app.ui.rosterquestionnaire.utilities.RosterQuestionnaireStage
 import org.intelehealth.app.utilities.ArrayAdapterUtils
 import org.intelehealth.app.utilities.LanguageUtils
+import org.intelehealth.app.utilities.PatientRegStage
 import org.intelehealth.app.utilities.extensions.hideError
 import org.intelehealth.app.utilities.extensions.validate
 import org.intelehealth.app.utilities.extensions.validateDropDowb
 
-class GeneralRosterFragment : Fragment(R.layout.fragment_general_roster) {
-    private val TAG = "GeneralRosterFragment"
+class GeneralRosterFragment : BaseRosterFragment(R.layout.fragment_general_roster) {
     private lateinit var binding: FragmentGeneralRosterBinding
     private var patientUuid: String? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentGeneralRosterBinding.bind(view)
+        rosterViewModel.updateRosterStage(RosterQuestionnaireStage.GENERAL_ROSTER)
 
         initViews()
-
+        clickListeners()
     }
 
+
     private fun initViews() {
+        val intent = requireActivity().intent
+        if (intent != null) {
+            patientUuid = intent.getStringExtra("patientUuid")
+        }
         setupRelationDropdown()
         setupMaritalStatusDropdown()
         setupEducationStatusDropdown()
@@ -34,6 +43,7 @@ class GeneralRosterFragment : Fragment(R.layout.fragment_general_roster) {
         setupBpCheckedDropdown()
         setupSugarCheckedDropdown()
         setupBmiCheckedDropdown()
+        setupHbCheckedDropdown()
     }
 
     private fun setupRelationDropdown() {
@@ -166,6 +176,17 @@ class GeneralRosterFragment : Fragment(R.layout.fragment_general_roster) {
         }
     }
 
+    private fun setupHbCheckedDropdown() {
+        val adapter = ArrayAdapterUtils.getArrayAdapter(requireContext(), R.array.hb)
+        binding.autoCompleteHbCheckedLastTime.setAdapter(adapter)
+        binding.autoCompleteHbCheckedLastTime.setOnItemClickListener { _, _, i, _ ->
+            binding.textInputLayHbCheckedLastTime.hideError()
+            LanguageUtils.getSpecificLocalResource(requireContext(), "en").apply {
+
+            }
+        }
+    }
+
     private fun validateForm(block: () -> Unit) {
         val error = R.string.this_field_is_mandatory
         val relation = binding.textInputLayRelation.validateDropDowb(
@@ -188,6 +209,7 @@ class GeneralRosterFragment : Fragment(R.layout.fragment_general_roster) {
                     error
                 )
             }
+
             else -> {
                 // If "Other" is not selected, check if the dropdown is not empty
                 binding.textInputLayOccupation.validateDropDowb(
@@ -219,5 +241,18 @@ class GeneralRosterFragment : Fragment(R.layout.fragment_general_roster) {
                 .and(lastTimeBpChecked).and(lastTimeSugarChecked).and(lastTimeHbChecked)
         ) block.invoke()
     }
-
+    private fun clickListeners() {
+        binding.frag2BtnNext.setOnClickListener {
+            //for now only UI is there hence navigated directly
+            navigateToDetails()
+        }
+        binding.frag2BtnBack.setOnClickListener {
+           //add navigation here
+        }
+    }
+    private fun navigateToDetails() {
+        GeneralRosterFragmentDirections.navigationGeneralToPregnancyRoster().apply {
+            findNavController().navigate(this)
+        }
+    }
 }

@@ -328,11 +328,6 @@
 
                     </androidx.cardview.widget.CardView>
 
-                    <include
-                        android:id="@+id/household_survey"
-                        layout="@layout/layout_household_survey"
-                        app:activeStatus="@{householdSurveyActiveStatus}" />
-
                     <!--
                                         <LinearLayout
                                             android:layout_width="match_parent"
@@ -372,9 +367,13 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:visibility="visible">
-
+            <include
+                android:id="@+id/household_survey"
+                layout="@layout/layout_household_survey"
+                app:activeStatus="@{householdSurveyActiveStatus}" />
             <Button
                 android:id="@+id/startVisitBtn"
+                android:layout_below="@+id/household_survey"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"

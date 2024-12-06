@@ -2,7 +2,6 @@ package org.intelehealth.app.ui.patient.fragment
 
 import android.os.Bundle
 import android.view.View
-import androidx.databinding.OnRebindCallback
 import androidx.navigation.fragment.findNavController
 import com.github.ajalt.timberkt.Timber
 import com.google.gson.Gson
@@ -10,6 +9,8 @@ import org.intelehealth.app.R
 import org.intelehealth.app.databinding.FragmentPatientOtherInfoBinding
 import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.app.ui.filter.FirstLetterUpperCaseInputFilter
+import org.intelehealth.app.ui.rosterquestionnaire.activity.RosterQuestionnaireMainActivity.Companion.startRosterQuestionnaire
+import org.intelehealth.app.ui.rosterquestionnaire.utilities.RosterQuestionnaireStage
 import org.intelehealth.app.utilities.ArrayAdapterUtils
 import org.intelehealth.app.utilities.LanguageUtils
 import org.intelehealth.app.utilities.PatientRegFieldsUtils
@@ -104,11 +105,24 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
     }
 
     private fun navigateToDetails() {
-        PatientOtherInfoFragmentDirections.navigationOtherToDetails(
-            patient.uuid, "searchPatient", "false"
-        ).also {
-            findNavController().navigate(it)
+        //For roster- if roster module enabled then redirect user to Roster screen otherwise on patient details screen
+        //for now adding roster config hardcoded for testing
+        val rosterConfig = true
+        if (rosterConfig) {
+            startRosterQuestionnaire(
+                requireActivity(),
+                patient.uuid,
+                RosterQuestionnaireStage.GENERAL_ROSTER
+            )
             requireActivity().finish()
+
+        } else {
+            PatientOtherInfoFragmentDirections.navigationOtherToDetails(
+                patient.uuid, "searchPatient", "false"
+            ).also {
+                findNavController().navigate(it)
+                requireActivity().finish()
+            }
         }
     }
 

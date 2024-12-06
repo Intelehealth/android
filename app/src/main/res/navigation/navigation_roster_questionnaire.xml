@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_patient_registration">
+
+    <fragment
+        android:id="@+id/fragmentGeneralRoster"
+        android:name="org.intelehealth.app.ui.rosterquestionnaire.fragment.GeneralRosterFragment"
+        tools:layout="@layout/fragment_general_roster">
+        <action
+            android:id="@+id/navigationGeneralToPregnancyRoster"
+            app:destination="@id/fragmentPregnancyRoster" />
+        <action
+            android:id="@+id/navigationGeneralToHealthService"
+            app:destination="@id/fragmentHealthService" />
+        <action
+            android:id="@+id/navigationGeneralToDetails"
+            app:destination="@id/activityPatientDetails" />
+      <!--  <action
+            android:id="@+id/navigationGeneralToOther"
+            app:destination="@id/activityPatientDetails" />-->
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentPregnancyRoster"
+        android:name="org.intelehealth.app.ui.rosterquestionnaire.fragment.PregnancyRosterFragment"
+        tools:layout="@layout/fragment_pregnancy_roster">
+        <action
+            android:id="@+id/navigationPregnancyToHealthService"
+            app:destination="@id/fragmentHealthService" />
+        <action
+            android:id="@+id/navigationPregnancyToDetails"
+            app:destination="@id/activityPatientDetails" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentHealthService"
+        android:name="org.intelehealth.app.ui.rosterquestionnaire.fragment.HealthServiceRosterFragment"
+        tools:layout="@layout/fragment_health_service_roster">
+
+        <action
+            android:id="@+id/navigationHealthServiceToDetails"
+            app:destination="@id/activityPatientDetails" />
+    </fragment>
+
+    <activity
+        android:id="@+id/activityPatientDetails"
+        android:name="org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity2"
+        tools:layout="@layout/activity_patient_detail2">
+        <argument
+            android:name="patientUuid"
+            app:argType="string"
+            app:nullable="true" />
+
+        <argument
+            android:name="tag"
+            app:argType="string"
+            app:nullable="true" />
+
+        <argument
+            android:name="privacy"
+            app:argType="string"
+            app:nullable="true" />
+
+    </activity>
+
+</navigation>

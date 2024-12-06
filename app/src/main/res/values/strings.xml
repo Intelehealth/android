@@ -1409,4 +1409,9 @@
     <string name="sure_you_want_close_close_roster">Are you sure you want to close the roster questionnaire?</string>
     <string name="update_roster">Update Roster</string>
     <string name="roster">Roster</string>
+    <string name="general_roster">General</string>
+    <string name="pregnancy_roster">Pregnancy</string>
+    <string name="health_service_roster">Health Service</string>
+    <string name="general_to_pregnancy_roster">General to Pregnancy roster</string>
+    <string name="pregnancy_to_health_service_roster">Pregnancy to Health service</string>
 </resources>
