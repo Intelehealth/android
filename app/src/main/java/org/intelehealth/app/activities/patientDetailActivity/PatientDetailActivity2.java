@@ -68,8 +68,6 @@ import android.util.DisplayMetrics;
 import org.intelehealth.app.activities.householdSurvey.HouseholdSurveyActivity;
 import org.intelehealth.app.models.FamilyMemberRes;
 import org.intelehealth.app.BuildConfig;
-import org.intelehealth.app.ui.rosterquestionnaire.activity.RosterQuestionnaireMainActivity;
-import org.intelehealth.app.ui.rosterquestionnaire.utilities.RosterQuestionnaireStage;
 import org.intelehealth.app.utilities.CustomLog;
 
 import android.util.Log;
@@ -158,11 +156,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
-import java.util.Set;
 import java.util.UUID;
 
 import io.reactivex.Observable;

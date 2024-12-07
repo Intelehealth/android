@@ -64,7 +64,7 @@
         tools:ignore="UnusedAttribute, LockedOrientationActivity"
         tools:replace="allowBackup">
         <activity
-            android:name=".ui.rosterquestionnaire.activity.RosterQuestionnaireMainActivity"
+            android:name=".ui.rosterquestionnaire.ui.RosterQuestionnaireMainActivity"
             android:exported="true"
             android:theme="@style/AppThemeMaterialNew"
             android:windowSoftInputMode="adjustPan"  />

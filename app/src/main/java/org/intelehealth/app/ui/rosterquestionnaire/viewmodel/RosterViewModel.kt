@@ -2,15 +2,17 @@ package org.intelehealth.app.ui.rosterquestionnaire.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import org.intelehealth.app.ui.rosterquestionnaire.data.RosterRepository
+import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
+import org.intelehealth.app.ui.rosterquestionnaire.repository.RosterRepositoryImp
 import org.intelehealth.app.ui.rosterquestionnaire.model.RosterModel
 import org.intelehealth.app.ui.rosterquestionnaire.utilities.RosterQuestionnaireStage
-import org.intelehealth.app.utilities.PatientRegStage
-import org.intelehealth.core.shared.ui.viewmodel.BaseViewModel
+import javax.inject.Inject
 
-class RosterViewModel (
-    private val repository: RosterRepository
-) : BaseViewModel() {
+@HiltViewModel
+class RosterViewModel @Inject constructor(
+    private val rosterRepository: RosterRepositoryImp
+) : ViewModel() {
 
     private var mutableLivePatient = MutableLiveData<RosterModel>()
     val rosterAttributesData: LiveData<RosterModel> get() = mutableLivePatient

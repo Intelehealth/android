@@ -1,4 +1,4 @@
-package org.intelehealth.app.ui.rosterquestionnaire.activity
+package org.intelehealth.app.ui.rosterquestionnaire.ui
 
 import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
@@ -10,28 +10,29 @@ import android.view.MenuItem
 import android.view.View
 import android.view.animation.LinearInterpolator
 import android.widget.ImageView
+import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.core.content.IntentCompat
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
+import dagger.hilt.android.AndroidEntryPoint
 import org.intelehealth.app.R
 import org.intelehealth.app.databinding.ActivityRosterQuestionnaireMainBinding
 import org.intelehealth.app.shared.BaseActivity
 import org.intelehealth.app.syncModule.SyncUtils
-import org.intelehealth.app.ui.rosterquestionnaire.factory.RosterViewModelFactory
 import org.intelehealth.app.ui.rosterquestionnaire.utilities.RosterQuestionnaireStage
+import org.intelehealth.app.ui.rosterquestionnaire.viewmodel.RosterViewModel
 import org.intelehealth.app.utilities.BundleKeys.Companion.PATIENT_UUID
 import org.intelehealth.app.utilities.BundleKeys.Companion.ROSTER_CURRENT_STAGE
 import org.intelehealth.app.utilities.DialogUtils
 import org.intelehealth.app.utilities.DialogUtils.CustomDialogListener
 import org.intelehealth.app.utilities.NetworkConnection
 import org.intelehealth.app.utilities.NetworkUtils
-import org.intelehealth.app.utilities.PatientRegStage
 
+@AndroidEntryPoint
 class RosterQuestionnaireMainActivity : BaseActivity() {
     private lateinit var binding: ActivityRosterQuestionnaireMainBinding
-    private val rosterViewModel by lazy {
-        return@lazy RosterViewModelFactory.create(this, this)
-    }
+    private lateinit var rosterViewModel: RosterViewModel
 
     private lateinit var syncAnimator: ObjectAnimator
     private lateinit var actionRefresh: ImageView
@@ -41,6 +42,7 @@ class RosterQuestionnaireMainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        rosterViewModel = ViewModelProvider.create(this)[RosterViewModel::class]
         binding = ActivityRosterQuestionnaireMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 //        manageTitleVisibilityOnScrolling()
@@ -81,7 +83,7 @@ class RosterQuestionnaireMainActivity : BaseActivity() {
             val patientId = if (it.hasExtra(PATIENT_UUID)) it.getStringExtra(PATIENT_UUID)
             else null
 
-            patientId?.let { id ->
+            patientId?.let {
                 //rosterViewModel.isEditMode = true
                 binding.isEditMode = rosterViewModel.isEditMode
                 //fetchPatientDetails(id)
@@ -122,7 +124,7 @@ class RosterQuestionnaireMainActivity : BaseActivity() {
         super.onPause()
         try {
             networkUtil.unregisterNetworkReceiver()
-        } catch (exception: Exception) {
+        } catch (_: Exception) {
         }
     }
 
@@ -145,21 +147,25 @@ class RosterQuestionnaireMainActivity : BaseActivity() {
     }
 
     private fun changeIconStatus(stage: RosterQuestionnaireStage) {
-        if (stage == RosterQuestionnaireStage.GENERAL_ROSTER) {
-            binding.patientTab.tvIndicatorGeneralRoster.isSelected = true
-        } else if (stage == RosterQuestionnaireStage.PREGNANCY_ROSTER) {
-            binding.patientTab.tvIndicatorGeneralRoster.isActivated = true
-            binding.patientTab.tvIndicatorPregnancyRoster.isSelected = true
-        } else if (stage == RosterQuestionnaireStage.HEALTH_SERVICE) {
-            binding.patientTab.tvIndicatorGeneralRoster.isActivated = true
-            binding.patientTab.tvIndicatorPregnancyRoster.isActivated = true
-            binding.patientTab.tvIndicatorHealthService.isSelected = true
+        when (stage) {
+            RosterQuestionnaireStage.GENERAL_ROSTER -> {
+                binding.patientTab.tvIndicatorGeneralRoster.isSelected = true
+            }
+            RosterQuestionnaireStage.PREGNANCY_ROSTER -> {
+                binding.patientTab.tvIndicatorGeneralRoster.isActivated = true
+                binding.patientTab.tvIndicatorPregnancyRoster.isSelected = true
+            }
+            RosterQuestionnaireStage.HEALTH_SERVICE -> {
+                binding.patientTab.tvIndicatorGeneralRoster.isActivated = true
+                binding.patientTab.tvIndicatorPregnancyRoster.isActivated = true
+                binding.patientTab.tvIndicatorHealthService.isSelected = true
+            }
         }
     }  override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_sync, menu)
         menu?.findItem(R.id.action_sync)?.actionView?.let {
             actionRefresh = it.findViewById(R.id.refresh)
-            ObjectAnimator.ofFloat<View>(actionRefresh, View.ROTATION, 0f, 359f).apply {
+            ObjectAnimator.ofFloat(actionRefresh, View.ROTATION, 0f, 359f).apply {
                 repeatCount = ValueAnimator.INFINITE
                 interpolator = LinearInterpolator()
                 duration = 1200

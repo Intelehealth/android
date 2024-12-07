@@ -21,6 +21,8 @@ buildscript {
         classpath "org.jetbrains.kotlin:kotlin-serialization:1.9.10"
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:2.8.1"
         classpath 'com.google.dagger:hilt-android-gradle-plugin:2.47'
+        classpath "com.google.dagger:hilt-android-gradle-plugin:2.47" // Use the latest version
+
     }
 }
 

@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/fragmentGeneralRoster"
-        android:name="org.intelehealth.app.ui.rosterquestionnaire.fragment.GeneralRosterFragment"
+        android:name="org.intelehealth.app.ui.rosterquestionnaire.ui.GeneralRosterFragment"
         tools:layout="@layout/fragment_general_roster">
         <action
             android:id="@+id/navigationGeneralToPregnancyRoster"
@@ -23,7 +23,7 @@
     </fragment>
     <fragment
         android:id="@+id/fragmentPregnancyRoster"
-        android:name="org.intelehealth.app.ui.rosterquestionnaire.fragment.PregnancyRosterFragment"
+        android:name="org.intelehealth.app.ui.rosterquestionnaire.ui.PregnancyRosterFragment"
         tools:layout="@layout/fragment_pregnancy_roster">
         <action
             android:id="@+id/navigationPregnancyToHealthService"
@@ -34,7 +34,7 @@
     </fragment>
     <fragment
         android:id="@+id/fragmentHealthService"
-        android:name="org.intelehealth.app.ui.rosterquestionnaire.fragment.HealthServiceRosterFragment"
+        android:name="org.intelehealth.app.ui.rosterquestionnaire.ui.HealthServiceRosterFragment"
         tools:layout="@layout/fragment_health_service_roster">
 
         <action

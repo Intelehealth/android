@@ -1,4 +1,6 @@
 package org.intelehealth.app.ui.rosterquestionnaire.model
 
-class RosterModel {
+import javax.inject.Inject
+
+class RosterModel @Inject constructor(){
 }

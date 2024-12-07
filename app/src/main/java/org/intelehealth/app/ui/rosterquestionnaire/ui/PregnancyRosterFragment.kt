@@ -1,13 +1,19 @@
-package org.intelehealth.app.ui.rosterquestionnaire.fragment
+package org.intelehealth.app.ui.rosterquestionnaire.ui
 
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.Fragment
+import androidx.activity.viewModels
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import dagger.hilt.android.AndroidEntryPoint
 import org.intelehealth.app.R
 import org.intelehealth.app.databinding.FragmentPregnancyRosterBinding
-import org.intelehealth.app.ui.rosterquestionnaire.utilities.RosterQuestionnaireStage
 
+import org.intelehealth.app.ui.rosterquestionnaire.utilities.RosterQuestionnaireStage
+import org.intelehealth.app.ui.rosterquestionnaire.viewmodel.RosterViewModel
+
+@AndroidEntryPoint
 class PregnancyRosterFragment : BaseRosterFragment(R.layout.fragment_pregnancy_roster) {
     private lateinit var binding: FragmentPregnancyRosterBinding
     private var patientUuid: String? = null
@@ -15,6 +21,7 @@ class PregnancyRosterFragment : BaseRosterFragment(R.layout.fragment_pregnancy_r
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentPregnancyRosterBinding.bind(view)
+        rosterViewModel = ViewModelProvider.create(requireActivity())[RosterViewModel::class]
         rosterViewModel.updateRosterStage(RosterQuestionnaireStage.PREGNANCY_ROSTER)
 
         initViews()

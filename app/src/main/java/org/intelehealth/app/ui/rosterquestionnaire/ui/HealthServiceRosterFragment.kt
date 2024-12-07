@@ -1,20 +1,26 @@
-package org.intelehealth.app.ui.rosterquestionnaire.fragment
+package org.intelehealth.app.ui.rosterquestionnaire.ui
 
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import dagger.hilt.android.AndroidEntryPoint
 import org.intelehealth.app.R
 import org.intelehealth.app.databinding.FragmentHealthServiceRosterBinding
-import org.intelehealth.app.ui.rosterquestionnaire.utilities.RosterQuestionnaireStage
 
+import org.intelehealth.app.ui.rosterquestionnaire.utilities.RosterQuestionnaireStage
+import org.intelehealth.app.ui.rosterquestionnaire.viewmodel.RosterViewModel
+
+@AndroidEntryPoint
 class HealthServiceRosterFragment : BaseRosterFragment(R.layout.fragment_health_service_roster) {
     private lateinit var binding: FragmentHealthServiceRosterBinding
     private var patientUuid: String? = null
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentHealthServiceRosterBinding.bind(view)
+        rosterViewModel = ViewModelProvider.create(requireActivity())[RosterViewModel::class]
         rosterViewModel.updateRosterStage(RosterQuestionnaireStage.HEALTH_SERVICE)
 
         initViews()

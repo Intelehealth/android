@@ -63,7 +63,7 @@
     </activity>
     <activity
         android:id="@+id/activityRosterQuestionnaire"
-        android:name="org.intelehealth.app.ui.rosterquestionnaire.activity.RosterQuestionnaireMainActivity"
+        android:name="org.intelehealth.app.ui.rosterquestionnaire.ui.RosterQuestionnaireMainActivity"
         tools:layout="@layout/activity_roster_questionnaire_main">
         <argument
             android:name="patientUuid"
