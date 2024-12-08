@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+
 import org.intelehealth.app.utilities.CustomLog;
 
 
@@ -184,8 +185,6 @@ public class ProviderDAO {
                     providerDTO.setImagePath(cursor.getString(cursor.getColumnIndexOrThrow("imagePath")));
                     providerDTO.setMiddle_name(cursor.getString(cursor.getColumnIndexOrThrow("middle_name")));
                     providerDTO.setCountryCode(cursor.getString(cursor.getColumnIndexOrThrow("countryCode")));
-
-
                 }
             }
             cursor.close();

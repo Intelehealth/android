@@ -307,57 +307,57 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
             }
         });
 
-        TextView prescriptionCountTextView = view.findViewById(R.id.textview_received_no);
-        Executors.newSingleThreadExecutor().execute(() -> {
-            int pendingCountTotalVisits = new VisitsDAO().getVisitCountsByStatus(false);
-            int countReceivedPrescription = new VisitsDAO().getVisitCountsByStatus(true);
-//            int pendingCountTotalVisits = getCurrentMonthsVisits(false);
-//            int countReceivedPrescription = getCurrentMonthsVisits(true);
-
-            int total = pendingCountTotalVisits + countReceivedPrescription;
-
-            if (isAdded()) {
-                activity.runOnUiThread(() -> {
-                    String prescCountText = countReceivedPrescription + " " + activity.getString(R.string.out_of) + " " + total + " " + activity.getString(R.string.received).toLowerCase();
-                    if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                        prescCountText = total + " मे से " + countReceivedPrescription + " प्राप्त हुये";
-                    }
-                    prescriptionCountTextView.setText(prescCountText);
-                });
-            }
-        });
+//        TextView prescriptionCountTextView = view.findViewById(R.id.textview_received_no);
+//        Executors.newSingleThreadExecutor().execute(() -> {
+//            int pendingCountTotalVisits = new VisitsDAO().getVisitCountsByStatus(false);
+//            int countReceivedPrescription = new VisitsDAO().getVisitCountsByStatus(true);
+////            int pendingCountTotalVisits = getCurrentMonthsVisits(false);
+////            int countReceivedPrescription = getCurrentMonthsVisits(true);
+//
+//            int total = pendingCountTotalVisits + countReceivedPrescription;
+//
+//            if (isAdded()) {
+//                activity.runOnUiThread(() -> {
+//                    String prescCountText = countReceivedPrescription + " " + activity.getString(R.string.out_of) + " " + total + " " + activity.getString(R.string.received).toLowerCase();
+//                    if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+//                        prescCountText = total + " मे से " + countReceivedPrescription + " प्राप्त हुये";
+//                    }
+//                    prescriptionCountTextView.setText(prescCountText);
+//                });
+//            }
+//        });
 
         //  int countPendingCloseVisits = getThisMonthsNotEndedVisits();    // error: IDA: 1337 - fetching wrong data.
-        TextView countPendingCloseVisitsTextView = view.findViewById(R.id.textview_close_visit_no);
-        new Thread(() -> {
-            int countPendingCloseVisits = recentNotEndedVisits().size() + olderNotEndedVisits().size();    // IDA: 1337 - fetching wrong data.
-            if (isAdded()) {
-                activity.runOnUiThread(() -> countPendingCloseVisitsTextView.setText(activity.getResources().getQuantityString(R.plurals.open_no_of_visit, countPendingCloseVisits, countPendingCloseVisits)));
-
-            }
-        }).start();
+//        TextView countPendingCloseVisitsTextView = view.findViewById(R.id.textview_close_visit_no);
+//        new Thread(() -> {
+//            int countPendingCloseVisits = recentNotEndedVisits().size() + olderNotEndedVisits().size();    // IDA: 1337 - fetching wrong data.
+//            if (isAdded()) {
+//                activity.runOnUiThread(() -> countPendingCloseVisitsTextView.setText(activity.getResources().getQuantityString(R.plurals.open_no_of_visit, countPendingCloseVisits, countPendingCloseVisits)));
+//
+//            }
+//        }).start();
 
         // getChildFragmentManager().addFragmentOnAttachListener(fragmentAttachListener); // listener is not working
-        Executors.newSingleThreadExecutor().execute(() -> {
-            countStrPendingFollowupVisits();
-
-            if (isAdded()) {
-                activity.runOnUiThread(() -> {
-                    StringBuilder followupCount = new StringBuilder()
-                            .append(todaysCount)
-                            .append(" ")
-                            .append(getActivity().getString(R.string.today))
-                            .append("\n")
-                            .append(tomorrowsCount)
-                            .append(" ")
-                            .append(getActivity().getString(R.string.tomorrow));
-
-                    mCountPendingFollowupVisitsTextView.setText(
-                            followupCount
-                    );
-                });
-            }
-        });
+//        Executors.newSingleThreadExecutor().execute(() -> {
+//            countStrPendingFollowupVisits();
+//
+//            if (isAdded()) {
+//                activity.runOnUiThread(() -> {
+//                    StringBuilder followupCount = new StringBuilder()
+//                            .append(todaysCount)
+//                            .append(" ")
+//                            .append(getActivity().getString(R.string.today))
+//                            .append("\n")
+//                            .append(tomorrowsCount)
+//                            .append(" ")
+//                            .append(getActivity().getString(R.string.tomorrow));
+//
+//                    mCountPendingFollowupVisitsTextView.setText(
+//                            followupCount
+//                    );
+//                });
+//            }
+//        });
         getUpcomingAppointments();
     }
 

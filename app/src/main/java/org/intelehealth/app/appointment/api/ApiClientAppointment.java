@@ -28,7 +28,7 @@ public class ApiClientAppointment {
         client.writeTimeout(45, TimeUnit.SECONDS);
 
         Retrofit.Builder builder = new Retrofit.Builder()
-                .baseUrl(baseUrl)
+                .baseUrl(baseUrl + "/")
                 .addConverterFactory(GsonConverterFactory.create());
         Retrofit retrofit = builder.client(client.build()).build();
         mApi = retrofit.create(Api.class);

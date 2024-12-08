@@ -22,6 +22,8 @@ import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NotificationUtils;
 import org.intelehealth.app.utilities.SessionManager;
 
+import timber.log.Timber;
+
 public class SyncUtils {
 
 
@@ -32,11 +34,11 @@ public class SyncUtils {
      *
      * @param fromActivity
      */
-    public void initialSync(String fromActivity,Context context) {
-
+    public void initialSync(String fromActivity, Context context) {
+        Timber.d("Thread: %s", Thread.currentThread().getName());
         SyncDAO syncDAO = new SyncDAO();
         Logger.logD(TAG, "Pull Started");
-        syncDAO.pullDataBackgroundService(IntelehealthApplication.getAppContext(), fromActivity,0);
+        syncDAO.pullDataBackgroundService(IntelehealthApplication.getAppContext(), fromActivity, 0);
         Logger.logD(TAG, "Pull ended");
         // sync data
         AppointmentSync.getAppointments(context);
@@ -60,7 +62,7 @@ public class SyncUtils {
         ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
         SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
         syncDAO.pushDataApi();
-        syncDAO.pullData_Background(IntelehealthApplication.getAppContext(),0); //only this new function duplicate
+        syncDAO.pullData_Background(IntelehealthApplication.getAppContext(), 0); //only this new function duplicate
         imagesPushDAO.loggedInUserProfileImagesPush();
         /*
          * Looper.getMainLooper is used in background sync since the sync_background()
@@ -74,7 +76,7 @@ public class SyncUtils {
             public void run() {
                 //sometimes syncing happening while logout
                 //added the checking to prevent appointment api call
-                if(!sessionManager.isLogout()){
+                if (!sessionManager.isLogout()) {
                     AppointmentSync.getAppointments(IntelehealthApplication.getAppContext());
                 }
                 Logger.logD(TAG, "Background Image Push Started");
@@ -110,7 +112,7 @@ public class SyncUtils {
             @Override
             public void run() {
                 Logger.logD(TAG, "Pull Started");
-                syncDAO.pullData(IntelehealthApplication.getAppContext(), fromActivity,0);
+                syncDAO.pullData(IntelehealthApplication.getAppContext(), fromActivity, 0);
                 AppointmentSync.getAppointments(IntelehealthApplication.getAppContext());
                 Logger.logD(TAG, "Pull ended");
             }

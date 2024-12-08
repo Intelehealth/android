@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+
 import org.intelehealth.app.utilities.CustomLog;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
@@ -48,7 +49,7 @@ public class VisitsDAO {
             db.setTransactionSuccessful();
         } catch (SQLException e) {
             isInserted = false;
-            CustomLog.e(TAG,e.getMessage());
+            CustomLog.e(TAG, e.getMessage());
             throw new DAOException(e.getMessage(), e);
         } finally {
             db.endTransaction();
@@ -74,7 +75,7 @@ public class VisitsDAO {
             createdRecordsCount = db.insertWithOnConflict("tbl_visit", null, values, SQLiteDatabase.CONFLICT_REPLACE);
         } catch (SQLException e) {
             isCreated = false;
-            CustomLog.e(TAG,e.getMessage());
+            CustomLog.e(TAG, e.getMessage());
             throw new DAOException(e.getMessage(), e);
         } finally {
         }
@@ -111,7 +112,7 @@ public class VisitsDAO {
             Logger.logD("created records", "created records count" + createdRecordsCount1);
         } catch (SQLException e) {
             isCreated = false;
-            CustomLog.e(TAG,e.getMessage());
+            CustomLog.e(TAG, e.getMessage());
             throw new DAOException(e.getMessage(), e);
         } finally {
             db.endTransaction();
@@ -139,7 +140,7 @@ public class VisitsDAO {
             Logger.logD("created records", "created records count" + createdRecordsCount);
         } catch (SQLException e) {
             isCreated = false;
-            CustomLog.e(TAG,e.getMessage());
+            CustomLog.e(TAG, e.getMessage());
             throw new DAOException(e.getMessage(), e);
         } finally {
             db.endTransaction();
@@ -458,7 +459,7 @@ public class VisitsDAO {
 
         } catch (SQLiteException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
-            CustomLog.e(TAG,e.getMessage());
+            CustomLog.e(TAG, e.getMessage());
             throw new DAOException(e);
         } finally {
             //db.setTransactionSuccessful();
@@ -535,7 +536,7 @@ public class VisitsDAO {
                 try {
                     model.setHasPrescription(new EncounterDAO().isPrescriptionReceived(model.getVisitUuid()));
                 } catch (DAOException e) {
-                    CustomLog.e(TAG,e.getMessage());
+                    CustomLog.e(TAG, e.getMessage());
                     throw new RuntimeException(e);
                 }
                 arrayList.add(model);
@@ -584,7 +585,7 @@ public class VisitsDAO {
                 try {
                     model.setHasPrescription(new EncounterDAO().isPrescriptionReceived(model.getVisitUuid()));
                 } catch (DAOException e) {
-                    CustomLog.e(TAG,e.getMessage());
+                    CustomLog.e(TAG, e.getMessage());
                     throw new RuntimeException(e);
                 }
                 arrayList.add(model);
@@ -633,7 +634,7 @@ public class VisitsDAO {
                 try {
                     model.setHasPrescription(new EncounterDAO().isPrescriptionReceived(model.getVisitUuid()));
                 } catch (DAOException e) {
-                    CustomLog.e(TAG,e.getMessage());
+                    CustomLog.e(TAG, e.getMessage());
                     throw new RuntimeException(e);
                 }
                 //
@@ -686,7 +687,7 @@ public class VisitsDAO {
                 try {
                     model.setHasPrescription(new EncounterDAO().isPrescriptionReceived(model.getVisitUuid()));
                 } catch (DAOException e) {
-                    CustomLog.e(TAG,e.getMessage());
+                    CustomLog.e(TAG, e.getMessage());
                     throw new RuntimeException(e);
                 }
                 arrayList.add(model);
@@ -735,7 +736,7 @@ public class VisitsDAO {
                 try {
                     model.setHasPrescription(new EncounterDAO().isPrescriptionReceived(model.getVisitUuid()));
                 } catch (DAOException e) {
-                    CustomLog.e(TAG,e.getMessage());
+                    CustomLog.e(TAG, e.getMessage());
                     throw new RuntimeException(e);
                 }
                 arrayList.add(model);
@@ -817,7 +818,7 @@ public class VisitsDAO {
                     isCompletedExitedSurvey = new EncounterDAO().isCompletedExitedSurvey(visitID);
                     isPrescriptionReceived = new EncounterDAO().isPrescriptionReceived(visitID);
                 } catch (DAOException e) {
-                    CustomLog.e(TAG,e.getMessage());
+                    CustomLog.e(TAG, e.getMessage());
                     e.printStackTrace();
                 }
                 if (!isCompletedExitedSurvey && isPrescriptionReceived) {
@@ -827,7 +828,7 @@ public class VisitsDAO {
                         emergencyUuid = encounterDAO.getEmergencyEncounters(visitID, encounterDAO.getEncounterTypeUuid("EMERGENCY"));
                     } catch (DAOException e) {
                         FirebaseCrashlytics.getInstance().recordException(e);
-                        CustomLog.e(TAG,e.getMessage());
+                        CustomLog.e(TAG, e.getMessage());
                         emergencyUuid = "";
                     }
 
@@ -887,7 +888,7 @@ public class VisitsDAO {
                         CustomLog.v("obsservermodifieddate", "obsservermodifieddate: " + modifiedDate);
                     } catch (Exception e) {
                         e.printStackTrace();
-                        CustomLog.e(TAG,e.getMessage());
+                        CustomLog.e(TAG, e.getMessage());
                     }
                 } while (cursor.moveToNext());
             }
@@ -1013,7 +1014,7 @@ public class VisitsDAO {
                     isPrescriptionReceived = new EncounterDAO().isPrescriptionReceived(visitID);
                 } catch (DAOException e) {
                     e.printStackTrace();
-                    CustomLog.e(TAG,e.getMessage());
+                    CustomLog.e(TAG, e.getMessage());
                 }
 
                 if (!isCompletedExitedSurvey && !isPrescriptionReceived) {  //
@@ -1049,14 +1050,14 @@ public class VisitsDAO {
     //sometimes app crash cause of db lock
     //that's why added the retry mechanism whenever db will be lock
     int getVisitCount = 0;
+
     public int getVisitCountsByStatus(boolean isForReceivedPrescription) {
         int count = 0;
         //we are retrying db operation for 5 times
-        if(getVisitCount > 5) return 0;
+        if (getVisitCount > 5) return 0;
 
-        try{
+        try {
             SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
-            db.beginTransaction();
             Cursor cursor = null;
             if (isForReceivedPrescription)
                 cursor = db.rawQuery("select p.patient_photo, p.first_name, p.last_name, p.openmrs_id, p.date_of_birth, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid,"
@@ -1088,7 +1089,7 @@ public class VisitsDAO {
                         isPrescriptionReceived = new EncounterDAO().isPrescriptionReceived(visitID);
                     } catch (DAOException e) {
                         e.printStackTrace();
-                        CustomLog.e(TAG,e.getMessage());
+                        CustomLog.e(TAG, e.getMessage());
                     }
                     //TODO: need more improvement in main query, this condition can be done by join query
                     if (isForReceivedPrescription) {
@@ -1109,23 +1110,20 @@ public class VisitsDAO {
             }
 
             cursor.close();
-            db.setTransactionSuccessful();
-            db.endTransaction();
 
             //resetting count after successful db operation
             getVisitCount = 0;
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             //if db is locked then retrying to execute db operation
-            try{
+            try {
                 Thread.sleep(2000);
                 getVisitCount++;
                 getVisitCountsByStatus(isForReceivedPrescription);
-            }catch (Exception ex){
+            } catch (Exception ex) {
                 FirebaseCrashlytics.getInstance().recordException(ex);
-                CustomLog.e(TAG,ex.getMessage());
+                CustomLog.e(TAG, ex.getMessage());
             }
-            CustomLog.e(TAG,e.getMessage());
+            CustomLog.e(TAG, e.getMessage());
         }
 
         return count;

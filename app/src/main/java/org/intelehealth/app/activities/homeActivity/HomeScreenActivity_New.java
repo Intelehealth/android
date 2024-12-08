@@ -691,7 +691,9 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             showRefreshDialog();
             SyncDAO.getSyncProgress_LiveData().observe(this, syncLiveData);
             showRefreshInProgressDialog();
-            Executors.newSingleThreadExecutor().execute(() -> syncUtils.initialSync("home", this));
+            Executors.newSingleThreadExecutor().execute(() -> {
+                syncUtils.initialSync("home", this);
+            });
         } else {
             // if initial setup done then we can directly set the periodic background sync job
             WorkManager.getInstance(this).enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);

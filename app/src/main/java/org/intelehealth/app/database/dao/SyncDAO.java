@@ -88,8 +88,7 @@ public class SyncDAO {
             obsDAO.insertObsTemp(responseDTO.getData().getObsDTO());
             locationDAO.insertLocations(responseDTO.getData().getLocationDTO());
             providerDAO.insertProviders(responseDTO.getData().getProviderlist());
-            providerAttributeLIstDAO.insertProvidersAttributeList
-                    (responseDTO.getData().getProviderAttributeList());
+            providerAttributeLIstDAO.insertProvidersAttributeList(responseDTO.getData().getProviderAttributeList());
             visitAttributeListDAO.insertProvidersAttributeList(responseDTO.getData().getVisitAttributeList());
 //           visitsDAO.insertVisitAttribToDB(responseDTO.getData().getVisitAttributeList())
 
