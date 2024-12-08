@@ -30,7 +30,7 @@ public class UrlModifiers {
     }
 
     public String setPatientProfileImageUrl(String patientUuid) {
-        String provider = "personimage" + patientUuid;
+        String provider = "personimage/" + patientUuid;
 
         String BASE_URL = BuildConfig.SERVER_URL + "openmrs/ws/rest/v1/";
         return BASE_URL + provider;
