@@ -106,7 +106,7 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
     }
 
     private fun setupVillage() {
-        val defaultValue = SessionManager.getInstance(requireContext()).villageName
+        val defaultValue = SessionManager.getInstance(requireContext()).currentLocationName
         binding.textInputCityVillage.apply {
             setText(defaultValue)
             isEnabled = false

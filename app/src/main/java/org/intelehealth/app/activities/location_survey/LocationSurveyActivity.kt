@@ -321,7 +321,7 @@ class LocationSurveyActivity : AppCompatActivity() {
                         selectedState,
                         selectedDistrict,
                         selectedSanch,
-                        selectedPrimaryVillage
+                        selectedSecondaryVillage
                     )
 
                     sessionManager?.secondaryLocationName = selectedSecondaryVillage

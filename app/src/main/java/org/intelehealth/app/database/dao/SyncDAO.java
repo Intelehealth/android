@@ -398,6 +398,7 @@ public class SyncDAO {
         sessionManager = new SessionManager(context);
         String encoded = sessionManager.getEncoded();
         String oldDate = sessionManager.getPullExcutedTime();
+
         String url = sessionManager.getServerUrl() + "/EMR-Middleware/webapi/pull/pulldata/"
                 + sessionManager.getCurrentLocationUuid() + "/" + sessionManager.getPullExcutedTime()
                 + "/" + pageNo + "/" + AppConstants.PAGE_LIMIT;

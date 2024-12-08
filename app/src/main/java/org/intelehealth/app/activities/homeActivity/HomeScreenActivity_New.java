@@ -688,6 +688,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             }
         });
         if (sessionManager.isFirstTimeLaunched()) {
+            sessionManager.setPullExcutedTime("2006-08-22 22:21:48 ");
             showRefreshDialog();
             SyncDAO.getSyncProgress_LiveData().observe(this, syncLiveData);
             showRefreshInProgressDialog();
@@ -1160,7 +1161,8 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         sessionManager.setSecondaryLocationUuid(sessionManager.getCurrentLocationUuid());
         sessionManager.setCurrentLocationName(villageName.getValue());
         sessionManager.setCurrentLocationUuid(villageName.getKey());
-        sessionManager.setPullExcutedTime("2006-08-22 22:21:48 ");
+        sessionManager.setFirstTimeSyncExecute(true);
+        sessionManager.setFirstTimeLaunched(true);
 
         clearDatabase();
         progress.dismiss();
