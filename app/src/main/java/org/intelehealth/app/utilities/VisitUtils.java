@@ -3,8 +3,15 @@ package org.intelehealth.app.utilities;
 import android.content.Context;
 import android.content.Intent;
 
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
+
 import org.intelehealth.app.R;
+import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.activities.patientSurveyActivity.PatientSurveyActivity_New;
+import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.database.dao.VisitsDAO;
+import org.intelehealth.app.syncModule.SyncUtils;
+import org.intelehealth.app.utilities.exception.DAOException;
 
 public class VisitUtils {
     public static void endVisit(Context activityContext, String visitUUID, String patientUuid,
@@ -78,6 +85,26 @@ public class VisitUtils {
                 }
             });
 
+        }
+    }
+
+    public static void endVisitAndRedirectToHomeScreen(Context activityContext, String visitUuid, String patientUuid) {
+        VisitsDAO visitsDAO = new VisitsDAO();
+        try {
+            visitsDAO.updateVisitEnddate(visitUuid, AppConstants.dateAndTimeUtils.currentDateTime());
+            NotificationSchedulerUtils.cancelNotification(visitUuid + "-" + AppConstants.FOLLOW_UP_SCHEDULE_ONE_DURATION);
+            NotificationSchedulerUtils.cancelNotification(visitUuid + "-" + AppConstants.FOLLOW_UP_SCHEDULE_TWO_DURATION);
+
+            if (NetworkConnection.isOnline(activityContext)) {
+                new SyncUtils().syncForeground("survey");
+            }
+
+            SessionManager.getInstance(activityContext).removeVisitSummary(patientUuid, visitUuid);
+            Intent i = new Intent(activityContext, HomeScreenActivity_New.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            activityContext.startActivity(i);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
         }
     }
 }

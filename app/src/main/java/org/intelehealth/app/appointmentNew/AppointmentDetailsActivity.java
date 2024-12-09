@@ -26,7 +26,9 @@ import android.os.Bundle;
 import android.os.LocaleList;
 import android.text.Html;
 import android.util.DisplayMetrics;
+
 import org.intelehealth.app.utilities.CustomLog;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -265,7 +267,7 @@ public class AppointmentDetailsActivity extends BaseActivity implements NetworkU
                     .asDrawable().sizeMultiplier(0.3f);
             Glide.with(this).load(patient_photo_path).thumbnail(requestBuilder).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(ivProfileImage);
         } else {
-            ivProfileImage.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.avatar1));
+            ivProfileImage.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.avatar1));
         }
 
         // common data setting
@@ -322,8 +324,8 @@ public class AppointmentDetailsActivity extends BaseActivity implements NetworkU
                         chief_complaint_value = chief_complaint_value.replaceAll("<b>", "");
                         chief_complaint_value = chief_complaint_value.replaceAll("</b>", "");
                         chief_complaint_value = chief_complaint_value.trim();
-                        while (chief_complaint_value.endsWith(",")){
-                            chief_complaint_value = chief_complaint_value.substring(0, chief_complaint_value.length()-1).trim();
+                        while (chief_complaint_value.endsWith(",")) {
+                            chief_complaint_value = chief_complaint_value.substring(0, chief_complaint_value.length() - 1).trim();
                         }
                     }
                 }
@@ -394,7 +396,7 @@ public class AppointmentDetailsActivity extends BaseActivity implements NetworkU
             stateAppointmentStarted.setVisibility(View.VISIBLE);
             tvAppointmentTime.setVisibility(View.GONE);
             stateAppointmentPrescription.setVisibility(View.VISIBLE);
-            tvPrescStatus.setTextColor(ContextCompat.getColor(this,R.color.colorPrimary2));
+            tvPrescStatus.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary2));
         }
 
 
@@ -428,7 +430,7 @@ public class AppointmentDetailsActivity extends BaseActivity implements NetworkU
             tvAppointmentTime.setVisibility(View.GONE);
             stateAppointmentPrescription.setVisibility(View.VISIBLE);
             layoutPrescButtons.setVisibility(View.GONE);
-            tvPrescStatus.setTextColor(ContextCompat.getColor(this,R.color.colorPrimary1));
+            tvPrescStatus.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary1));
 //            ivPrescription.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.ui2_ic_prescription_green));
             fabHelp.setVisibility(View.GONE);
             tvPrescStatus.setText(getResources().getString(R.string.received) + " " + prescription_received_time);
@@ -456,7 +458,8 @@ public class AppointmentDetailsActivity extends BaseActivity implements NetworkU
             if (pres.getVisitUuid() != null) {
                 layoutEndVisit.setVisibility(View.VISIBLE);
                 btnEndVisit.setOnClickListener(v -> {
-                    VisitUtils.endVisit(AppointmentDetailsActivity.this, visitID, patientUuid, followupDate, vitalsUUID, adultInitialUUID, "state", patientName, "AppointmentDetailsActivity");
+//                    VisitUtils.endVisit(AppointmentDetailsActivity.this, visitID, patientUuid, followupDate, vitalsUUID, adultInitialUUID, "state", patientName, "AppointmentDetailsActivity");
+                    VisitUtils.endVisitAndRedirectToHomeScreen(AppointmentDetailsActivity.this, visitID, patientUuid);
                 });
             } else {
                 layoutEndVisit.setVisibility(View.GONE);
@@ -484,7 +487,7 @@ public class AppointmentDetailsActivity extends BaseActivity implements NetworkU
                     layoutPrescButtons.setVisibility(View.GONE); // show remind btn for presc to be given as its more than days.
                 }
                 tvPrescStatus.setText(getResources().getString(R.string.pending_since) + " " + modifiedDate.replace("ago", ""));
-                tvPrescStatus.setTextColor(ContextCompat.getColor(this,R.color.red));
+                tvPrescStatus.setTextColor(ContextCompat.getColor(this, R.color.red));
             }
         }
         // presc block - end
@@ -535,7 +538,7 @@ public class AppointmentDetailsActivity extends BaseActivity implements NetworkU
             stateAppointmentStarted.setVisibility(View.VISIBLE);
             tvAppointmentTime.setVisibility(View.GONE);
             stateAppointmentPrescription.setVisibility(View.VISIBLE);
-            tvPrescStatus.setTextColor(ContextCompat.getColor(context,R.color.colorPrimary2));
+            tvPrescStatus.setTextColor(ContextCompat.getColor(context, R.color.colorPrimary2));
         }
 
         //if appointment is cancelled
@@ -729,7 +732,7 @@ public class AppointmentDetailsActivity extends BaseActivity implements NetworkU
         Button noButton = convertView.findViewById(R.id.button_no_appointment);
         Button yesButton = convertView.findViewById(R.id.btn_yes_appointment);
 
-        icon.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.ui2_ic_book_app_red));
+        icon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ui2_ic_book_app_red));
 
         dialog_title.setText(title);
         tvInfo.setText(Html.fromHtml(subTitle));
@@ -804,7 +807,7 @@ public class AppointmentDetailsActivity extends BaseActivity implements NetworkU
         Button noButton = convertView.findViewById(R.id.button_no_appointment);
         Button yesButton = convertView.findViewById(R.id.btn_yes_appointment);
 
-        icon.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.ui2_ic_book_app_red));
+        icon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ui2_ic_book_app_red));
 
         dialog_title.setText(title);
         tvInfo.setText(Html.fromHtml(subTitle));
@@ -868,23 +871,23 @@ public class AppointmentDetailsActivity extends BaseActivity implements NetworkU
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if (checkedId == R.id.rb_no_doctor) {
-                    rb1.setButtonDrawable(ContextCompat.getDrawable(context,R.drawable.ui2_ic_selected_green));
-                    rb2.setButtonDrawable(ContextCompat.getDrawable(context,R.drawable.ui2_ic_circle));
-                    rb3.setButtonDrawable(ContextCompat.getDrawable(context,R.drawable.ui2_ic_circle));
+                    rb1.setButtonDrawable(ContextCompat.getDrawable(context, R.drawable.ui2_ic_selected_green));
+                    rb2.setButtonDrawable(ContextCompat.getDrawable(context, R.drawable.ui2_ic_circle));
+                    rb3.setButtonDrawable(ContextCompat.getDrawable(context, R.drawable.ui2_ic_circle));
                     reasonEtv.setVisibility(View.GONE);
                     reasonEtv.setText(getString(R.string.doctor_is_not_available));
                     mEngReason = "Doctor is not available";
                 } else if (checkedId == R.id.rb_no_patient) {
-                    rb2.setButtonDrawable(ContextCompat.getDrawable(context,R.drawable.ui2_ic_selected_green));
-                    rb1.setButtonDrawable(ContextCompat.getDrawable(context,R.drawable.ui2_ic_circle));
-                    rb3.setButtonDrawable(ContextCompat.getDrawable(context,R.drawable.ui2_ic_circle));
+                    rb2.setButtonDrawable(ContextCompat.getDrawable(context, R.drawable.ui2_ic_selected_green));
+                    rb1.setButtonDrawable(ContextCompat.getDrawable(context, R.drawable.ui2_ic_circle));
+                    rb3.setButtonDrawable(ContextCompat.getDrawable(context, R.drawable.ui2_ic_circle));
                     reasonEtv.setVisibility(View.GONE);
                     reasonEtv.setText(getString(R.string.patient_is_not_available));
                     mEngReason = "Patient is not available";
                 } else if (checkedId == R.id.rb_other_ask) {
-                    rb3.setButtonDrawable(ContextCompat.getDrawable(context,R.drawable.ui2_ic_selected_green));
-                    rb2.setButtonDrawable(ContextCompat.getDrawable(context,R.drawable.ui2_ic_circle));
-                    rb1.setButtonDrawable(ContextCompat.getDrawable(context,R.drawable.ui2_ic_circle));
+                    rb3.setButtonDrawable(ContextCompat.getDrawable(context, R.drawable.ui2_ic_selected_green));
+                    rb2.setButtonDrawable(ContextCompat.getDrawable(context, R.drawable.ui2_ic_circle));
+                    rb1.setButtonDrawable(ContextCompat.getDrawable(context, R.drawable.ui2_ic_circle));
                     reasonEtv.setText("");
                     reasonEtv.setVisibility(View.VISIBLE);
                 }
@@ -965,23 +968,23 @@ public class AppointmentDetailsActivity extends BaseActivity implements NetworkU
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if (checkedId == R.id.rb_no_doctor) {
-                    rb1.setButtonDrawable(ContextCompat.getDrawable(context,R.drawable.ui2_ic_selected_green));
-                    rb2.setButtonDrawable(ContextCompat.getDrawable(context,R.drawable.ui2_ic_circle));
-                    rb3.setButtonDrawable(ContextCompat.getDrawable(context,R.drawable.ui2_ic_circle));
+                    rb1.setButtonDrawable(ContextCompat.getDrawable(context, R.drawable.ui2_ic_selected_green));
+                    rb2.setButtonDrawable(ContextCompat.getDrawable(context, R.drawable.ui2_ic_circle));
+                    rb3.setButtonDrawable(ContextCompat.getDrawable(context, R.drawable.ui2_ic_circle));
                     reasonEtv.setVisibility(View.GONE);
                     reasonEtv.setText(getString(R.string.doctor_is_not_available));
                     mEngReason = "Doctor is not available";
                 } else if (checkedId == R.id.rb_no_patient) {
-                    rb2.setButtonDrawable(ContextCompat.getDrawable(context,R.drawable.ui2_ic_selected_green));
-                    rb1.setButtonDrawable(ContextCompat.getDrawable(context,R.drawable.ui2_ic_circle));
-                    rb3.setButtonDrawable(ContextCompat.getDrawable(context,R.drawable.ui2_ic_circle));
+                    rb2.setButtonDrawable(ContextCompat.getDrawable(context, R.drawable.ui2_ic_selected_green));
+                    rb1.setButtonDrawable(ContextCompat.getDrawable(context, R.drawable.ui2_ic_circle));
+                    rb3.setButtonDrawable(ContextCompat.getDrawable(context, R.drawable.ui2_ic_circle));
                     reasonEtv.setVisibility(View.GONE);
                     reasonEtv.setText(getString(R.string.patient_is_not_available));
                     mEngReason = "Patient is not available";
                 } else if (checkedId == R.id.rb_other_ask) {
-                    rb3.setButtonDrawable(ContextCompat.getDrawable(context,R.drawable.ui2_ic_selected_green));
-                    rb2.setButtonDrawable(ContextCompat.getDrawable(context,R.drawable.ui2_ic_circle));
-                    rb1.setButtonDrawable(ContextCompat.getDrawable(context,R.drawable.ui2_ic_circle));
+                    rb3.setButtonDrawable(ContextCompat.getDrawable(context, R.drawable.ui2_ic_selected_green));
+                    rb2.setButtonDrawable(ContextCompat.getDrawable(context, R.drawable.ui2_ic_circle));
+                    rb1.setButtonDrawable(ContextCompat.getDrawable(context, R.drawable.ui2_ic_circle));
                     reasonEtv.setText("");
                     reasonEtv.setVisibility(View.VISIBLE);
                 }
@@ -1048,10 +1051,10 @@ public class AppointmentDetailsActivity extends BaseActivity implements NetworkU
     @Override
     public void updateUIForInternetAvailability(boolean isInternetAvailable) {
         if (isInternetAvailable) {
-            ivIsInternet.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.ui2_ic_internet_available));
+            ivIsInternet.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ui2_ic_internet_available));
 
         } else {
-            ivIsInternet.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.ui2_ic_no_internet));
+            ivIsInternet.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ui2_ic_no_internet));
 
         }
     }

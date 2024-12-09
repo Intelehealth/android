@@ -30,7 +30,9 @@ import android.os.Bundle;
 import android.os.LocaleList;
 import android.text.Html;
 import android.util.DisplayMetrics;
+
 import org.intelehealth.app.utilities.CustomLog;
+
 import android.util.TypedValue;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
@@ -209,7 +211,7 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
         clsDoctorDetails = gson.fromJson(drDetails, ClsDoctorDetails.class);
 
         if (clsDoctorDetails != null) {
-            CustomLog.e("TAG","TEST VISIT: " + clsDoctorDetails.toString());
+            CustomLog.e("TAG", "TEST VISIT: " + clsDoctorDetails.toString());
             dr_MobileNo = "+91" + clsDoctorDetails.getPhoneNumber();
             dr_WhatsappNo = "+91" + clsDoctorDetails.getWhatsapp();
         }
@@ -1090,7 +1092,8 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
     }
 
     private void triggerEndVisit() {
-        VisitUtils.endVisit(VisitDetailsActivity.this, visitID, patientUuid, followupDate, vitalsUUID, adultInitialUUID, "state", patientName, "VisitDetailsActivity");
+//        VisitUtils.endVisit(VisitDetailsActivity.this, visitID, patientUuid, followupDate, vitalsUUID, adultInitialUUID, "state", patientName, "VisitDetailsActivity");
+        VisitUtils.endVisitAndRedirectToHomeScreen(VisitDetailsActivity.this, visitID, patientUuid);
     }
 
     private void cancelAppointment(String visitUUID) {

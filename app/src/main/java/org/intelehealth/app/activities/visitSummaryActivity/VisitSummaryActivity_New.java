@@ -2230,7 +2230,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         String vitalsUUID = fetchEncounterUuidForEncounterVitals(visitUUID);
         String adultInitialUUID = fetchEncounterUuidForEncounterAdultInitials(visitUUID);
 
-        endVisit(context, visitUUID, patient.getUuid(), followUpDate, vitalsUUID, adultInitialUUID, "state", patient.getFirst_name() + " " + patient.getLast_name().substring(0, 1), "VisitDetailsActivity");
+//        endVisit(context, visitUUID, patient.getUuid(), followUpDate, vitalsUUID, adultInitialUUID, "state", patient.getFirst_name() + " " + patient.getLast_name().substring(0, 1), "VisitDetailsActivity");
+        org.intelehealth.app.utilities.VisitUtils.endVisitAndRedirectToHomeScreen(context, visitUUID, patient.getUuid());
     }
 
     // permission code - start

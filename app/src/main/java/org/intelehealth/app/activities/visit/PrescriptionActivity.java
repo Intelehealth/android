@@ -119,6 +119,7 @@ import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.UuidDictionary;
+import org.intelehealth.app.utilities.VisitUtils;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.config.room.entity.FeatureActiveStatus;
 import org.json.JSONException;
@@ -555,7 +556,8 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 //        String vitalsUUID = fetchEncounterUuidForEncounterVitals(visitID);
 //        String adultInitialUUID = fetchEncounterUuidForEncounterAdultInitials(visitID);
 
-        endVisit(this, visitID, patient.getUuid(), followUpDate, vitalsUUID, adultInitialUUID, "state", patient.getFirst_name() + " " + patient.getLast_name().substring(0, 1), PrescriptionActivity.class.getSimpleName());
+//        endVisit(this, visitID, patient.getUuid(), followUpDate, vitalsUUID, adultInitialUUID, "state", patient.getFirst_name() + " " + patient.getLast_name().substring(0, 1), PrescriptionActivity.class.getSimpleName());
+        VisitUtils.endVisitAndRedirectToHomeScreen(this, visitID, patient.getUuid());
     }
 
     // permission code - start

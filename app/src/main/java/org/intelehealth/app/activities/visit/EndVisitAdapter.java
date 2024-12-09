@@ -11,7 +11,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+
 import org.intelehealth.app.utilities.CustomLog;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -153,7 +155,7 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
                         .skipMemoryCache(true)
                         .into(holder.profile_image);
             } else {
-                holder.profile_image.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.avatar1));
+                holder.profile_image.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.avatar1));
             }
             // photo - end
 
@@ -252,17 +254,19 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
         String vitalsUUID = fetchEncounterUuidForEncounterVitals(model.getVisitUuid());
         String adultInitialUUID = fetchEncounterUuidForEncounterAdultInitials(model.getVisitUuid());
 
-        VisitUtils.endVisit(
-                context,
-                model.getVisitUuid(),
-                model.getPatientUuid(),
-                model.getFollowup_date(),
-                vitalsUUID,
-                adultInitialUUID,
-                "state",
-                model.getFirst_name() + " " + model.getLast_name().substring(0, 1),
-                "VisitDetailsActivity"
-        );
+//        VisitUtils.endVisit(
+//                context,
+//                model.getVisitUuid(),
+//                model.getPatientUuid(),
+//                model.getFollowup_date(),
+//                vitalsUUID,
+//                adultInitialUUID,
+//                "state",
+//                model.getFirst_name() + " " + model.getLast_name().substring(0, 1),
+//                "VisitDetailsActivity"
+//        );
+
+        VisitUtils.endVisitAndRedirectToHomeScreen(context, model.getVisitUuid(), model.getPatientUuid());
     }
 
     private void cancelAppointment(PrescriptionModel model) {
