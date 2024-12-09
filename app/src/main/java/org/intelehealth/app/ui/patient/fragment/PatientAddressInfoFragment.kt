@@ -130,7 +130,7 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
             address2 = binding.textInputAddress2.text?.toString()
             stateprovince = SessionManager.getInstance(requireContext()).stateName
             patientViewModel.updatedPatient(this)
-            if (patientViewModel.isEditMode) {
+            /*if (patientViewModel.isEditMode) {
                 saveAndNavigateToDetails()
             } else {
                 if (patientViewModel.activeStatusOtherSection.not()) {
@@ -140,7 +140,7 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
                         findNavController().navigate(this)
                     }
                 }
-            }
+            }*/
         }
     }
 
@@ -152,12 +152,12 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
     }
 
     private fun navigateToDetails() {
-        PatientAddressInfoFragmentDirections.navigationAddressToDetails(
+        /*PatientAddressInfoFragmentDirections.navigationAddressToDetails(
             patient.uuid, "searchPatient", "false"
         ).apply {
             findNavController().navigate(this)
             requireActivity().finish()
-        }
+        }*/
     }
 
     private fun applyFilter() {

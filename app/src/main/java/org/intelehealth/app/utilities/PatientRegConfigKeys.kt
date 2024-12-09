@@ -38,5 +38,13 @@ class PatientRegConfigKeys {
         const val SOCIAL_CATEGORY = "o_social_category"
         const val EDUCATION = "o_education"
         const val ECONOMIC_CATEGORY = "o_economic_category"
+
+        // GENERAL
+        const val AYUSHMAN_CARD = "general_ayushman_card"
+        const val MGNREGA_CARD = "general_mgnrega_card"
+        const val BANK_ACCOUNT = "general_bank_account"
+        const val PHONE_OWNERSHIP = "general_phone_ownership"
+        const val FAMILY_WHATSAPP = "general_family_whatsapp"
+        const val MARITAL_STATUS = "general_marital_status"
     }
 }

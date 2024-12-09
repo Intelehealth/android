@@ -6,6 +6,7 @@ import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.TextView
 import com.hbb20.CountryCodePicker
+import org.intelehealth.app.ui.baseline_survey.config.GeneralBaselineConfig
 import org.intelehealth.app.ui.patient.config.AddressInfoConfig
 import org.intelehealth.app.ui.patient.config.OtherInfoConfig
 import org.intelehealth.app.ui.patient.config.PersonalInfoConfig
@@ -155,6 +156,23 @@ object PatientRegFieldsUtils {
                     PatientRegConfigKeys.SOCIAL_CATEGORY -> socialCategory = it
                     PatientRegConfigKeys.EDUCATION -> education = it
                     PatientRegConfigKeys.ECONOMIC_CATEGORY -> economicCategory = it
+                }
+            }
+        }
+    }
+
+
+    @JvmStatic
+    fun buildPatientGeneralBaselineConfig(patientRegistrationFields: List<PatientRegistrationFields>): GeneralBaselineConfig {
+        return GeneralBaselineConfig().apply {
+            patientRegistrationFields.forEach {
+                when (it.idKey) {
+                    PatientRegConfigKeys.AYUSHMAN_CARD -> ayushmanCard = it
+                    PatientRegConfigKeys.MGNREGA_CARD -> mgnrega = it
+                    PatientRegConfigKeys.BANK_ACCOUNT -> bankAccount = it
+                    PatientRegConfigKeys.PHONE_OWNERSHIP -> phoneOwnership = it
+                    PatientRegConfigKeys.FAMILY_WHATSAPP -> familyWhatsapp = it
+                    PatientRegConfigKeys.MARITAL_STATUS -> maritalStatus = it
                 }
             }
         }

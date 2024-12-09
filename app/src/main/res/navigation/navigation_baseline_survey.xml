@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_baseline_survey">
+
+    <fragment
+        android:id="@+id/fragmentBaselineGeneral"
+        android:name="org.intelehealth.app.ui.baseline_survey.fragments.BaselineGeneralFragment"
+        tools:layout="@layout/fragment_baseline_survey_general">
+        <action
+            android:id="@+id/navigationGeneralToMedical"
+            app:destination="@id/fragmentBaselineMedical" />
+        <action
+            android:id="@+id/navigationGeneralToOther"
+            app:destination="@id/fragmentBaselineOther" />
+        <action
+            android:id="@+id/navigationGeneralToDetails"
+            app:destination="@id/activityPatientDetails" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentBaselineMedical"
+        android:name="org.intelehealth.app.ui.baseline_survey.fragments.BaselineMedicalFragment"
+        tools:layout="@layout/fragment_baseline_survey_medical">
+        <action
+            android:id="@+id/navigationMedicalToGeneral"
+            app:destination="@id/fragmentBaselineGeneral" />
+        <action
+            android:id="@+id/navigationMedicalToOther"
+            app:destination="@id/fragmentBaselineOther" />
+        <action
+            android:id="@+id/navigationMedicalToDetails"
+            app:destination="@id/activityPatientDetails" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentBaselineOther"
+        android:name="org.intelehealth.app.ui.baseline_survey.fragments.BaselineOtherFragment"
+        tools:layout="@layout/fragment_baseline_survey_other">
+        <action
+            android:id="@+id/navigationOtherToMedical"
+            app:destination="@id/fragmentBaselineMedical" />
+        <action
+            android:id="@+id/navigationOtherToPatientDetails"
+            app:destination="@id/activityPatientDetails" />
+    </fragment>
+
+    <activity
+        android:id="@+id/activityPatientDetails"
+        android:name="org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity2"
+        tools:layout="@layout/activity_patient_detail2">
+        <argument
+            android:name="patientUuid"
+            app:argType="string"
+            app:nullable="true" />
+
+        <argument
+            android:name="tag"
+            app:argType="string"
+            app:nullable="true" />
+
+        <argument
+            android:name="privacy"
+            app:argType="string"
+            app:nullable="true" />
+
+    </activity>
+</navigation>

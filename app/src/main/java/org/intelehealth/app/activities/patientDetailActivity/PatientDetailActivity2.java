@@ -66,6 +66,9 @@ import android.os.LocaleList;
 import android.util.DisplayMetrics;
 
 import org.intelehealth.app.models.FamilyMemberRes;
+import org.intelehealth.app.ui.baseline_survey.activity.BaselineSurveyActivity;
+import org.intelehealth.app.utilities.BaselineSurveySource;
+import org.intelehealth.app.utilities.BaselineSurveyStage;
 import org.intelehealth.app.utilities.CustomLog;
 
 import android.view.LayoutInflater;
@@ -239,6 +242,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
         rvFamilyMembers = findViewById(R.id.rv_family_members);
         ImageView ivAddFamilyMember = findViewById(R.id.iv_add_family_member);
+        ImageView ivAddBaselineSurvey = findViewById(R.id.iv_add_baseline_survey);
 
         llEmptyFamilyMember = findViewById(R.id.ll_empty_family);
         familyMemberList = new ArrayList<>();
@@ -408,6 +412,11 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
         ivAddFamilyMember.setOnClickListener(view -> {
             PatientRegistrationActivity.startPatientRegistration(this, patientDTO.getUuid(), PatientRegStage.PERSONAL, PatientRegSource.HOUSEHOLD);
+            finish();
+        });
+
+        ivAddBaselineSurvey.setOnClickListener(view -> {
+            BaselineSurveyActivity.startBaselineSurvey(this, patientDTO.getUuid(), BaselineSurveyStage.GENERAL, BaselineSurveySource.PATIENT_DETAIL);
             finish();
         });
 

@@ -213,7 +213,7 @@ class PatientPersonalInfoFragment :
             emContactNumber = binding.ccpEmContactPhone.fullNumberWithPlus
 
             patientViewModel.updatedPatient(this)
-            if (patientViewModel.isEditMode) {
+            /*if (patientViewModel.isEditMode) {
                 saveAndNavigateToDetails()
             } else {
                 if (patientViewModel.activeStatusAddressSection) {
@@ -225,7 +225,7 @@ class PatientPersonalInfoFragment :
                         findNavController().navigate(this)
                     }
                 } else saveAndNavigateToDetails()
-            }
+            }*/
         }
     }
 
@@ -237,12 +237,12 @@ class PatientPersonalInfoFragment :
     }
 
     private fun navigateToDetails() {
-        PatientPersonalInfoFragmentDirections.navigationPersonalToDetails(
+        /*PatientPersonalInfoFragmentDirections.navigationPersonalToDetails(
             patient.uuid, "searchPatient", "false"
         ).apply {
             findNavController().navigate(this)
             requireActivity().finish()
-        }
+        }*/
     }
 
     private fun setGender() {

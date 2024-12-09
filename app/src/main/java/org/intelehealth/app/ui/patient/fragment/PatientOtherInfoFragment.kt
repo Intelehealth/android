@@ -119,12 +119,12 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
     }
 
     private fun navigateToDetails() {
-        PatientOtherInfoFragmentDirections.navigationOtherToDetails(
+        /*PatientOtherInfoFragmentDirections.navigationOtherToDetails(
             patient.uuid, "searchPatient", "false"
         ).also {
             findNavController().navigate(it)
             requireActivity().finish()
-        }
+        }*/
     }
 
     private fun applyFilter() {
