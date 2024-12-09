@@ -16,6 +16,7 @@ import android.os.Handler;
 import android.os.LocaleList;
 import android.os.StrictMode;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
@@ -26,6 +27,7 @@ import org.intelehealth.app.models.locationAttributes.push.LocationAttributes;
 import org.intelehealth.app.models.locationAttributes.push.LocationAttributesResponse;
 import org.intelehealth.app.utilities.CustomLog;
 
+import android.util.Log;
 import android.util.Patterns;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -33,7 +35,6 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.URLUtil;
-import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -43,13 +44,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import androidx.lifecycle.DefaultLifecycleObserver;
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.ProcessLifecycleOwner;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
@@ -58,18 +55,13 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 import com.parse.Parse;
 
-import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.forgotPasswordNew.ForgotPasswordActivity_New;
-import org.intelehealth.app.activities.forgotPasswordNew.ForgotPasswordOtpVerificationActivity_New;
-import org.intelehealth.app.activities.forgotPasswordNew.ResetPasswordActivity_New;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
-import org.intelehealth.app.activities.loginActivity.LoginActivityNew;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.models.DownloadMindMapRes;
 import org.intelehealth.app.models.Location;
-import org.intelehealth.app.models.Results;
 import org.intelehealth.app.models.loginModel.LoginModel;
 import org.intelehealth.app.models.loginProviderModel.LoginProviderModel;
 import org.intelehealth.app.networkApiCalls.ApiClient;
@@ -98,6 +90,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 import io.reactivex.Observable;
@@ -173,6 +166,7 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
         etPassword.addTextChangedListener(new MyTextWatcher(etPassword));
         etServer.addTextChangedListener(new MyTextWatcher(etServer));
         tipWindow = new TooltipWindow(SetupActivityNew.this);
+        restrictInputTypeForTextFields();
 
         autotvLocations.setOnClickListener(v -> redirectToLocationSurveyScreen());
         autoTvTextInputLayout.setEndIconOnClickListener(v -> redirectToLocationSurveyScreen());
@@ -369,6 +363,7 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
                     mUserNameErrorTextView.setText(getString(R.string.error_field_required));
                     etUsername.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
                 } else {
+                    updateListeners(etUsername, this, val);
                     mUserNameErrorTextView.setVisibility(View.GONE);
                     etUsername.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
                 }
@@ -385,14 +380,59 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
                 if (val.isEmpty()) {
                     serverErrorTextView.setVisibility(View.VISIBLE);
                     serverErrorTextView.setText(getString(R.string.error_field_required));
+                    isUrlValid = false;
+                    baseUrl = null;
+                    displayCheckUrlToast();
                 } else {
+                    updateListeners(etServer, this, val);
+                    baseUrl = val;
+                    isUrlValid = true;
                     serverErrorTextView.setVisibility(View.GONE);
                 }
 
-                mHandler.removeCallbacksAndMessages(null);
-                mHandler.postDelayed(userStoppedTyping, 1500);
+//                mHandler.removeCallbacksAndMessages(null);
+//                mHandler.postDelayed(userStoppedTyping, 1500);
             }
         }
+    }
+
+    public void updateListeners(TextInputEditText tiet, TextWatcher tw, String val) {
+        int prevPosition = tiet.getSelectionStart();
+        int newPosition = Math.min(prevPosition, val.length());
+        tiet.removeTextChangedListener(tw);
+        tiet.setText(val);
+        tiet.setSelection(newPosition);
+        tiet.addTextChangedListener(tw);
+    }
+
+    public void restrictInputTypeForTextFields() {
+        InputFilter serverFilter = (source, start, end, dest, dstart, dend) -> {
+            String serverRegex = "[\\uD83C-\\uDBFF\\uDC00-\\uDFFF]|[^a-zA-Z.@]";
+
+            for (int i = start; i < end; i++) {
+                String charAsString = String.valueOf(source.charAt(i));
+                if (charAsString.matches(serverRegex)) {
+                    return "";
+                }
+            }
+            return null;
+        };
+        etServer.setFilters(new InputFilter[]{serverFilter});
+
+        InputFilter restrictEmojiFilter = (source, start, end, dest, dstart, dend) -> {
+            String restrictEmojiRegex = "[\\uD83C-\\uDBFF\\uDC00-\\uDFFF]";
+
+            for (int i = start; i < end; i++) {
+                String charAsString = String.valueOf(source.charAt(i));
+                if (charAsString.matches(restrictEmojiRegex)) {
+                    return "";
+                }
+            }
+            return null;
+        };
+
+        etUsername.setFilters(new InputFilter[]{restrictEmojiFilter});
+        etPassword.setFilters(new InputFilter[]{restrictEmojiFilter});
     }
 
     private void attemptLogin() {
@@ -543,7 +583,11 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
                     @Override
                     public void onError(Throwable e) {
                         cpd.dismiss();
-                        showErrorDialog();
+                        if(Objects.requireNonNull(e.getMessage()).contains("Unable to resolve host")){
+                            showServerErrorDialog();
+                        } else {
+                            showErrorDialog();
+                        }
                     }
 
                     @Override
@@ -784,6 +828,21 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
 
             }
         });
+    }
+
+    private void showServerErrorDialog() {
+        DialogUtils dialogUtils = new DialogUtils();
+        dialogUtils.showCommonDialog(
+                SetupActivityNew.this,
+                R.drawable.ui2_ic_warning_internet,
+                getResources().getString(R.string.error_login_title),
+                getString(R.string.error_incorrect_server_url),
+                true,
+                getResources().getString(R.string.ok),
+                getResources().getString(R.string.cancel),
+                action -> {
+
+                });
     }
 
     private List<String> getLocationStringList(List<Location> locationList) {

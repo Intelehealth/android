@@ -8,3 +8,7 @@ package org.intelehealth.app.utilities
 enum class PatientRegStage {
     PERSONAL, ADDRESS, OTHER
 }
+
+enum class PatientRegSource {
+    HOUSEHOLD, OTHER
+}

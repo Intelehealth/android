@@ -89,6 +89,16 @@ public class PatientDTO implements Serializable {
 
     private String district;
 
+    private String householdID;
+
+    public String getHouseholdID() {
+        return householdID;
+    }
+
+    public void setHouseholdID(String householdID) {
+        this.householdID = householdID;
+    }
+
     public String getUuid() {
         return uuid;
     }

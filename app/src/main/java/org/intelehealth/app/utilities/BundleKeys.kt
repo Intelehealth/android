@@ -9,6 +9,7 @@ class BundleKeys {
         const val FROM_EDIT = "from_edit"
         //const val PATIENT_UUID = "patient_uuid"
         const val PATIENT_CURRENT_STAGE = "patient_current_stage"
+        const val PATIENT_CURRENT_SOURCE = "patient_current_source"
         //schedule notification keys
         const val TITLE = "title"
         const val DESCRIPTION = "description"

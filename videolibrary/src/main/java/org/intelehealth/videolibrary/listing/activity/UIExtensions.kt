@@ -1,4 +1,5 @@
 package org.intelehealth.videolibrary.listing.activity
+//@file:JvmName("UIExtensions")
 
 import android.app.Activity
 import android.text.InputFilter
@@ -75,3 +76,17 @@ fun hideKeyboard(activity: Activity) {
     }
     imm.hideSoftInputFromWindow(view.windowToken, 0)
 }
+
+/*fun TextInputEditText.setEmojiAndValidationFilter() {
+    val emojiFilter = InputFilter { source, start, end, dest, dstart, dend ->
+        val emojiRegex = "[\\uD83C-\\uDBFF\\uDC00-\\uDFFF]|[^a-zA-Z.@]"
+        for (i in start until end) {
+            val charAsString = source[i].toString()
+            if (charAsString.matches(Regex(emojiRegex))) {
+                return@InputFilter ""
+            }
+        }
+        null
+    }
+    this.filters = arrayOf(emojiFilter)
+}*/

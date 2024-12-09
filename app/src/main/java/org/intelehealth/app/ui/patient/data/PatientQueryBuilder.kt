@@ -21,6 +21,7 @@ class PatientQueryBuilder : QueryBuilder() {
                     + buildPatientAttributesQuery(PatientAttributesDTO.Column.OCCUPATION.value) + " occupation,"
                     + buildPatientAttributesQuery(PatientAttributesDTO.Column.SWD.value) + " sdw,"
                     + buildPatientAttributesQuery(PatientAttributesDTO.Column.NATIONAL_ID.value) + " nationalId,"
+                    + buildPatientAttributesQuery(PatientAttributesDTO.Column.HOUSEHOLD_ID.value) + " householdID,"
                     + buildPatientAttributesQuery(PatientAttributesDTO.Column.PROFILE_IMG_TIMESTAMP.value) + " profileImageTimestamp,"
                     + buildPatientAttributesQuery(PatientAttributesDTO.Column.CAST.value) + " caste,"
                     + buildPatientAttributesQuery(PatientAttributesDTO.Column.CREATED_DATE.value) + " createdDate "

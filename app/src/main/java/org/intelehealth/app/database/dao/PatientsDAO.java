@@ -384,6 +384,63 @@ public class PatientsDAO {
         return listPatientNames;
     }
 
+    public List<String> getFamilyMemberIDS(String patientuuid) throws DAOException {
+        List<String> subMemberIdList = new ArrayList<>();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+        try {
+            Cursor cursor = db.rawQuery("SELECT patientuuid FROM tbl_patient_attribute where value = ? COLLATE NOCASE", new String[]{patientuuid});
+            if (cursor.getCount() != 0) {
+                while (cursor.moveToNext()) {
+                    String aa = cursor.getString(cursor.getColumnIndexOrThrow("patientuuid"));
+                    subMemberIdList.add(aa);
+                }
+            }
+            cursor.close();
+        } catch (SQLException s) {
+            FirebaseCrashlytics.getInstance().recordException(s);
+            CustomLog.e(TAG,s.getMessage());
+            throw new DAOException(s);
+        }
+        return subMemberIdList;
+    }
+
+    public List<FamilyMemberRes> getFamilyMembers(List<String> patientuuids) throws DAOException {
+        List<FamilyMemberRes> listPatientNames = new ArrayList<>();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+
+        StringBuilder queryBuilder = new StringBuilder("SELECT openmrs_id, first_name, middle_name, last_name FROM tbl_patient WHERE uuid IN (");
+        String[] queryArgs = new String[patientuuids.size()];
+
+        for (int i = 0; i < patientuuids.size(); i++) {
+            queryBuilder.append("?");
+            if (i < patientuuids.size() - 1) {
+                queryBuilder.append(", ");
+            }
+            queryArgs[i] = patientuuids.get(i);
+        }
+        queryBuilder.append(") COLLATE NOCASE");
+
+        try {
+            Cursor cursor = db.rawQuery(queryBuilder.toString(), queryArgs);
+            if (cursor.getCount() != 0) {
+                while (cursor.moveToNext()) {
+                    FamilyMemberRes familyMemberRes = new FamilyMemberRes();
+                    familyMemberRes.setOpenMRSID(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
+                    familyMemberRes.setName(cursor.getString(cursor.getColumnIndexOrThrow("first_name")) + " " +
+                            cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
+                    listPatientNames.add(familyMemberRes);
+                }
+            }
+            cursor.close();
+        } catch (SQLException s) {
+            FirebaseCrashlytics.getInstance().recordException(s);
+            CustomLog.e(TAG, s.getMessage());
+            throw new DAOException(s);
+        }
+        return listPatientNames;
+    }
+
+
     public String getAttributesName(String attributeuuid) throws DAOException {
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         //db.beginTransaction();

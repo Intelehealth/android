@@ -1,6 +1,7 @@
 package org.intelehealth.app.activities.patientDetailActivity;
 
 import android.content.Context;
+import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,7 +38,7 @@ public class FamilyMemberAdapter extends RecyclerView.Adapter<FamilyMemberAdapte
 
         holder.tvFamilyName.setText(listPatientNames.get(position).getName());
         holder.tvOpenMRSID.setText(listPatientNames.get(position).getOpenMRSID());
-
+        holder.tvOpenMRSID.setPaintFlags(holder.tvOpenMRSID.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
     }
 
     @Override

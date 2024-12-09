@@ -13,12 +13,17 @@ import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import androidx.core.content.IntentCompat
 import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.intelehealth.app.R
 import org.intelehealth.app.databinding.ActivityPatientRegistrationBinding
 import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.app.shared.BaseActivity
 import org.intelehealth.app.syncModule.SyncUtils
+import org.intelehealth.app.utilities.BundleKeys.Companion.PATIENT_CURRENT_SOURCE
 import org.intelehealth.app.utilities.BundleKeys.Companion.PATIENT_CURRENT_STAGE
 import org.intelehealth.app.utilities.BundleKeys.Companion.PATIENT_UUID
 import org.intelehealth.app.utilities.DateAndTimeUtils
@@ -27,6 +32,7 @@ import org.intelehealth.app.utilities.DialogUtils.CustomDialogListener
 import org.intelehealth.app.utilities.NetworkConnection
 import org.intelehealth.app.utilities.NetworkUtils
 import org.intelehealth.app.utilities.NetworkUtils.InternetCheckUpdateInterface
+import org.intelehealth.app.utilities.PatientRegSource
 import org.intelehealth.app.utilities.PatientRegStage
 import org.intelehealth.app.utilities.SessionManager
 import org.intelehealth.config.presenter.fields.factory.PatientViewModelFactory
@@ -92,10 +98,23 @@ class PatientRegistrationActivity : BaseActivity() {
             val patientId = if (it.hasExtra(PATIENT_UUID)) it.getStringExtra(PATIENT_UUID)
             else null
 
+            val source = if (it.hasExtra(PATIENT_CURRENT_SOURCE)) {
+                IntentCompat.getSerializableExtra(
+                    it, PATIENT_CURRENT_SOURCE, PatientRegSource::class.java
+                )
+            } else PatientRegStage.PERSONAL
+
             patientId?.let { id ->
-                patientViewModel.isEditMode = true
-                binding.isEditMode = patientViewModel.isEditMode
-                fetchPatientDetails(id)
+                if(source == PatientRegSource.HOUSEHOLD){
+                    lifecycleScope.launch {
+                        generatePatientIdUnderHousehold()
+                        patientViewModel.patientData.value?.householdID = id
+                    }
+                } else {
+                    patientViewModel.isEditMode = true
+                    binding.isEditMode = patientViewModel.isEditMode
+                    fetchPatientDetails(id)
+                }
             } ?: generatePatientId()
 
             val stage = if (it.hasExtra(PATIENT_CURRENT_STAGE)) {
@@ -129,6 +148,16 @@ class PatientRegistrationActivity : BaseActivity() {
             createdDate = DateAndTimeUtils.getTodaysDateInRequiredFormat("dd MMMM, yyyy")
             providerUUID = SessionManager.getInstance(this@PatientRegistrationActivity).providerID
         }.also { patientViewModel.updatedPatient(it) }
+    }
+
+    private suspend fun generatePatientIdUnderHousehold() {
+        withContext(Dispatchers.IO) {
+            PatientDTO().apply {
+                uuid = UUID.randomUUID().toString()
+                createdDate = DateAndTimeUtils.getTodaysDateInRequiredFormat("dd MMMM, yyyy")
+                providerUUID = SessionManager.getInstance(this@PatientRegistrationActivity).providerID
+            }.also { patientViewModel.updatedPatient(it) }
+        }
     }
 
     private fun fetchPatientDetails(id: String) {
@@ -245,11 +274,13 @@ class PatientRegistrationActivity : BaseActivity() {
         fun startPatientRegistration(
             context: Context,
             patientId: String? = null,
-            stage: PatientRegStage = PatientRegStage.PERSONAL
+            stage: PatientRegStage = PatientRegStage.PERSONAL,
+            source: PatientRegSource = PatientRegSource.OTHER
         ) {
             Intent(context, PatientRegistrationActivity::class.java).apply {
                 putExtra(PATIENT_UUID, patientId)
                 putExtra(PATIENT_CURRENT_STAGE, stage)
+                putExtra(PATIENT_CURRENT_SOURCE, source)
             }.also { context.startActivity(it) }
         }
     }
