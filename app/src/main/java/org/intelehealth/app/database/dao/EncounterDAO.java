@@ -514,7 +514,7 @@ public class EncounterDAO {
             // ENCOUNTER_VISIT_COMPLETE = "bd1fbfaa-f5fb-4ebd-b75c-564506fc309e"
             //ENCOUNTER_PATIENT_EXIT_SURVEY = "629a9d0b-48eb-405e-953d-a5964c88dc30"
 
-            Cursor idCursor = db.rawQuery("SELECT * FROM tbl_encounter where visituuid = ? and " + "encounter_type_uuid = ?", new String[]{visitUUID, UuidDictionary.ENCOUNTER_VISIT_COMPLETE}); // ENCOUNTER_PATIENT_EXIT_SURVEY
+            Cursor idCursor = db.rawQuery("SELECT * FROM tbl_encounter where visituuid = ? AND encounter_type_uuid = ?", new String[]{visitUUID, UuidDictionary.ENCOUNTER_VISIT_COMPLETE}); // ENCOUNTER_PATIENT_EXIT_SURVEY
             if (idCursor.getCount() > 0) {
                 return true;
             }
@@ -758,7 +758,6 @@ public class EncounterDAO {
         idCursor.close();
         return encounterDTO;
     }
-
 
     public static ArrayList<FollowUpNotificationData> getFollowUpDateListFromConceptId() throws DAOException {
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();

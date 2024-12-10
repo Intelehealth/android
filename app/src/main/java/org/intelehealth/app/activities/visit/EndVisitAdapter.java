@@ -208,19 +208,20 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
             triggerEndVisit(model);
         } else {
             DialogUtils dialogUtils = new DialogUtils();
-            dialogUtils.showCommonDialog(
-                    context,
-                    R.drawable.dialog_close_visit_icon,
-                    context.getResources().getString(R.string.confirm_end_visit_reason),
-                    context.getResources().getString(R.string.confirm_end_visit_reason_message),
-                    false,
-                    context.getResources().getString(R.string.confirm),
-                    context.getResources().getString(R.string.cancel),
-                    action -> {
-                        if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
-                            checkIfAppointmentExistsForVisit(model);
-                        }
-                    });
+            dialogUtils.displayPrescriptionNotReceivedDialog(context);
+//            dialogUtils.showCommonDialog(
+//                    context,
+//                    R.drawable.dialog_close_visit_icon,
+//                    context.getResources().getString(R.string.confirm_end_visit_reason),
+//                    context.getResources().getString(R.string.confirm_end_visit_reason_message),
+//                    false,
+//                    context.getResources().getString(R.string.confirm),
+//                    context.getResources().getString(R.string.cancel),
+//                    action -> {
+//                        if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
+//                            checkIfAppointmentExistsForVisit(model);
+//                        }
+//                    });
         }
     }
 
@@ -253,20 +254,17 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
     private void triggerEndVisit(PrescriptionModel model) {
         String vitalsUUID = fetchEncounterUuidForEncounterVitals(model.getVisitUuid());
         String adultInitialUUID = fetchEncounterUuidForEncounterAdultInitials(model.getVisitUuid());
-
-//        VisitUtils.endVisit(
-//                context,
-//                model.getVisitUuid(),
-//                model.getPatientUuid(),
-//                model.getFollowup_date(),
-//                vitalsUUID,
-//                adultInitialUUID,
-//                "state",
-//                model.getFirst_name() + " " + model.getLast_name().substring(0, 1),
-//                "VisitDetailsActivity"
-//        );
-
-        VisitUtils.endVisitAndRedirectToHomeScreen(context, model.getVisitUuid(), model.getPatientUuid());
+        VisitUtils.endVisit(
+                context,
+                model.getVisitUuid(),
+                model.getPatientUuid(),
+                model.getFollowup_date(),
+                vitalsUUID,
+                adultInitialUUID,
+                "state",
+                model.getFirst_name() + " " + model.getLast_name().charAt(0),
+                "VisitDetailsActivity"
+        );
     }
 
     private void cancelAppointment(PrescriptionModel model) {

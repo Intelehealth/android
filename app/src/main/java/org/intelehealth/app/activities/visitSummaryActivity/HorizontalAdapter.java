@@ -32,6 +32,7 @@ import java.util.List;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.IntelehealthApplication;
+import org.intelehealth.app.utilities.Base64Utils;
 
 
 /**
@@ -73,6 +74,8 @@ public class HorizontalAdapter extends RecyclerView.Adapter<MyViewHolder> {
     public void onBindViewHolder(MyViewHolder holder, final int position) {
 
         if (list.get(position).exists()) {
+            String base64 = new Base64Utils().getBase64FromFileWithConversion(list.get(position).toString());
+
             RequestBuilder<Drawable> requestBuilder = Glide.with(holder.itemView.getContext())
                     .asDrawable().sizeMultiplier(0.1f);
             Glide.with(context)

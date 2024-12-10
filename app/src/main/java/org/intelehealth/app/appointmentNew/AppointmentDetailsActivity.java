@@ -457,10 +457,15 @@ public class AppointmentDetailsActivity extends BaseActivity implements NetworkU
             PrescriptionModel pres = isVisitNotEnded(visitID);
             if (pres.getVisitUuid() != null) {
                 layoutEndVisit.setVisibility(View.VISIBLE);
-                btnEndVisit.setOnClickListener(v -> {
-//                    VisitUtils.endVisit(AppointmentDetailsActivity.this, visitID, patientUuid, followupDate, vitalsUUID, adultInitialUUID, "state", patientName, "AppointmentDetailsActivity");
-                    VisitUtils.endVisitAndRedirectToHomeScreen(AppointmentDetailsActivity.this, visitID, patientUuid);
-                });
+                btnEndVisit.setOnClickListener(v -> VisitUtils.endVisit(AppointmentDetailsActivity.this,
+                        visitID,
+                        patientUuid,
+                        followupDate,
+                        vitalsUUID,
+                        adultInitialUUID,
+                        "state",
+                        patientName,
+                        "AppointmentDetailsActivity"));
             } else {
                 layoutEndVisit.setVisibility(View.GONE);
             }

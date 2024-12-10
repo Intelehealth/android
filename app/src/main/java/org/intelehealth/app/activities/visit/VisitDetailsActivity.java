@@ -592,7 +592,8 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
             endvisit_relative_block.setVisibility(View.VISIBLE);
             btn_end_visit.setOnClickListener(v -> {
                 if (!hasPrescription) {
-                    checkIfAppointmentExistsForVisit(visitID);
+                    new DialogUtils().displayPrescriptionNotReceivedDialog(this);
+//                    checkIfAppointmentExistsForVisit(visitID);
                 } else {
                     triggerEndVisit();
                 }
@@ -1092,8 +1093,7 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
     }
 
     private void triggerEndVisit() {
-//        VisitUtils.endVisit(VisitDetailsActivity.this, visitID, patientUuid, followupDate, vitalsUUID, adultInitialUUID, "state", patientName, "VisitDetailsActivity");
-        VisitUtils.endVisitAndRedirectToHomeScreen(VisitDetailsActivity.this, visitID, patientUuid);
+        VisitUtils.endVisit(VisitDetailsActivity.this, visitID, patientUuid, followupDate, vitalsUUID, adultInitialUUID, "state", patientName, "VisitDetailsActivity");
     }
 
     private void cancelAppointment(String visitUUID) {

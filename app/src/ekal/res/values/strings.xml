@@ -29,4 +29,7 @@
     <string name="setup_select_secondary_village_str">Select Secondary Village</string>
     <string name="setup_select_dropdown_village_msg">Select Village from dropdown</string>
 
+    <string name="prescription_not_received">Prescription Not Received</string>
+    <string name="please_wait_for_the_doctor_to_share_the_prescription_before_closing_the_visit">Please wait for the doctor to share the prescription before closing the visit</string>
+
 </resources>

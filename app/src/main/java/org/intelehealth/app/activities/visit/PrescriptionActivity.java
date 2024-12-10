@@ -3,6 +3,8 @@ package org.intelehealth.app.activities.visit;
 import static org.intelehealth.app.app.AppConstants.CONFIG_FILE_NAME;
 import static org.intelehealth.app.ayu.visit.common.VisitUtils.getTranslatedAssociatedSymptomQString;
 import static org.intelehealth.app.ayu.visit.common.VisitUtils.getTranslatedPatientDenies;
+import static org.intelehealth.app.database.dao.EncounterDAO.fetchEncounterUuidForEncounterAdultInitials;
+import static org.intelehealth.app.database.dao.EncounterDAO.fetchEncounterUuidForEncounterVitals;
 import static org.intelehealth.app.database.dao.EncounterDAO.getStartVisitNoteEncounterByVisitUUID;
 import static org.intelehealth.app.database.dao.ObsDAO.fetchDrDetailsFromLocalDb;
 import static org.intelehealth.app.utilities.DateAndTimeUtils.parse_DateToddMMyyyy;
@@ -503,15 +505,22 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
     private void showEndVisitConfirmationDialog() {
         if (hasPrescription) {
-            DialogUtils dialogUtils = new DialogUtils();
-            dialogUtils.showCommonDialog(this, R.drawable.dialog_close_visit_icon, getResources().getString(R.string.confirm_end_visit_reason), getResources().getString(R.string.confirm_end_visit_reason_message), false, getResources().getString(R.string.confirm), getResources().getString(R.string.cancel), action -> {
-                if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
-                    checkIfAppointmentExistsForVisit(visitID);
-                }
-            });
-        } else {
             triggerEndVisit();
+        } else {
+            DialogUtils dialogUtils = new DialogUtils();
+            dialogUtils.displayPrescriptionNotReceivedDialog(this);
         }
+
+//        if (hasPrescription) {
+//            DialogUtils dialogUtils = new DialogUtils();
+//            dialogUtils.showCommonDialog(this, R.drawable.dialog_close_visit_icon, getResources().getString(R.string.confirm_end_visit_reason), getResources().getString(R.string.confirm_end_visit_reason_message), false, getResources().getString(R.string.confirm), getResources().getString(R.string.cancel), action -> {
+//                if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
+//                    checkIfAppointmentExistsForVisit(visitID);
+//                }
+//            });
+//        } else {
+//            triggerEndVisit();
+//        }
     }
 
     private void checkIfAppointmentExistsForVisit(String visitUUID) {
@@ -553,11 +562,18 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
     private void triggerEndVisit() {
 
-//        String vitalsUUID = fetchEncounterUuidForEncounterVitals(visitID);
-//        String adultInitialUUID = fetchEncounterUuidForEncounterAdultInitials(visitID);
-
-//        endVisit(this, visitID, patient.getUuid(), followUpDate, vitalsUUID, adultInitialUUID, "state", patient.getFirst_name() + " " + patient.getLast_name().substring(0, 1), PrescriptionActivity.class.getSimpleName());
-        VisitUtils.endVisitAndRedirectToHomeScreen(this, visitID, patient.getUuid());
+        String vitalsUUID = fetchEncounterUuidForEncounterVitals(visitID);
+        String adultInitialUUID = fetchEncounterUuidForEncounterAdultInitials(visitID);
+        endVisit(
+                this,
+                visitID,
+                patient.getUuid(),
+                followUpDate,
+                vitalsUUID,
+                adultInitialUUID,
+                "state",
+                patient.getFirst_name() + " " + patient.getLast_name().substring(0, 1),
+                PrescriptionActivity.class.getSimpleName());
     }
 
     // permission code - start

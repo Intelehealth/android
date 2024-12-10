@@ -2171,11 +2171,12 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     private void showEndVisitConfirmationDialog() {
         if (!hasPrescription) {
             DialogUtils dialogUtils = new DialogUtils();
-            dialogUtils.showCommonDialog(this, R.drawable.dialog_close_visit_icon, context.getResources().getString(R.string.confirm_end_visit_reason), context.getResources().getString(R.string.confirm_end_visit_reason_message), false, context.getResources().getString(R.string.confirm), context.getResources().getString(R.string.cancel), action -> {
-                if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
-                    checkIfAppointmentExistsForVisit(visitUUID);
-                }
-            });
+            dialogUtils.displayPrescriptionNotReceivedDialog(this);
+//            dialogUtils.showCommonDialog(this, R.drawable.dialog_close_visit_icon, context.getResources().getString(R.string.confirm_end_visit_reason), context.getResources().getString(R.string.confirm_end_visit_reason_message), false, context.getResources().getString(R.string.confirm), context.getResources().getString(R.string.cancel), action -> {
+//                if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
+//                    checkIfAppointmentExistsForVisit(visitUUID);
+//                }
+//            });
         } else {
             triggerEndVisit();
         }
@@ -2230,8 +2231,17 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         String vitalsUUID = fetchEncounterUuidForEncounterVitals(visitUUID);
         String adultInitialUUID = fetchEncounterUuidForEncounterAdultInitials(visitUUID);
 
-//        endVisit(context, visitUUID, patient.getUuid(), followUpDate, vitalsUUID, adultInitialUUID, "state", patient.getFirst_name() + " " + patient.getLast_name().substring(0, 1), "VisitDetailsActivity");
-        org.intelehealth.app.utilities.VisitUtils.endVisitAndRedirectToHomeScreen(context, visitUUID, patient.getUuid());
+        endVisit(
+                context,
+                visitUUID,
+                patient.getUuid(),
+                followUpDate,
+                vitalsUUID,
+                adultInitialUUID,
+                "state",
+                patient.getFirst_name() + " " + patient.getLast_name().substring(0, 1),
+                "VisitDetailsActivity"
+        );
     }
 
     // permission code - start

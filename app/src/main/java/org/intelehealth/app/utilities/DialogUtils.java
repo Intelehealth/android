@@ -319,4 +319,25 @@ public class DialogUtils {
 
         return dialogRefreshInProgress;
     }
+
+    public void displayPrescriptionNotReceivedDialog(Context activityContext) {
+        MaterialAlertDialogBuilder builder = new DialogUtils().showErrorDialogWithTryAgainButton(
+                activityContext,
+                ContextCompat.getDrawable(activityContext, R.drawable.close_patient_svg),
+                ContextCompat.getString(activityContext, R.string.prescription_not_received),
+                ContextCompat.getString(activityContext, R.string.please_wait_for_the_doctor_to_share_the_prescription_before_closing_the_visit),
+                ContextCompat.getString(activityContext, R.string.generic_ok)
+        );
+
+        AlertDialog dialog = builder.show();
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg);
+            dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
+            int width = activityContext.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);
+            dialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
+        }
+
+        Button okButton = dialog.findViewById(R.id.positive_btn);
+        if (okButton != null) okButton.setOnClickListener(v -> dialog.dismiss());
+    }
 }

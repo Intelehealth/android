@@ -112,6 +112,8 @@ public class ImagesPushDAO {
             // MultipartBody.Part is used to send also the actual file name
             MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(), requestFile);
 
+            String jsonData = new Gson().toJson(p);
+
             Observable<ObsJsonResponse> obsJsonResponseObservable = AppConstants.apiInterface.OBS_JSON_RESPONSE_OBSERVABLE(url, "Basic " + encoded, body, p);
             obsJsonResponseObservable.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
