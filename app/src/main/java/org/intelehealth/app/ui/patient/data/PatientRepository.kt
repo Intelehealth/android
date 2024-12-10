@@ -10,6 +10,7 @@ import org.intelehealth.app.database.dao.SyncDAO
 import org.intelehealth.app.models.dto.PatientAttributesDTO
 import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.app.utilities.NetworkConnection
+import org.intelehealth.app.utilities.SessionManager
 import org.intelehealth.config.presenter.fields.data.RegFieldRepository
 import org.intelehealth.config.room.dao.PatientRegFieldDao
 import java.util.UUID
@@ -136,11 +137,15 @@ class PatientRepository(
         patientId: String,
         attrName: String,
         value: String?
-    ) = PatientAttributesDTO().apply {
-        uuid = UUID.randomUUID().toString()
-        patientuuid = patientId
-        personAttributeTypeUuid = patientsDao.getUuidForAttribute(attrName)
-        this.value = value
+    ): PatientAttributesDTO {
+        val sid = SessionManager.instance.householdUuid
+        val hid = if (sid.equals("")) { UUID.randomUUID().toString() } else { sid }
+        return PatientAttributesDTO().apply {
+            uuid = UUID.randomUUID().toString()
+            patientuuid = patientId
+            personAttributeTypeUuid = patientsDao.getUuidForAttribute(attrName)
+            this.value = if (attrName == PatientAttributesDTO.Column.HOUSEHOLD_ID.value) hid else value
+        }
     }
 
     private fun updatePatientAttribute(

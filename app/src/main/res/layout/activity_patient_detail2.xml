@@ -190,6 +190,10 @@
                     app:activeStatus="@{otherActiveStatus}" />
 
                 <include
+                    android:id="@+id/baseline_survey_card"
+                    layout="@layout/patdetail_baseline_survey_layout" />
+
+                <include
                     android:id="@+id/family_member_card"
                     layout="@layout/patdetail_family_members_layout"/>
 

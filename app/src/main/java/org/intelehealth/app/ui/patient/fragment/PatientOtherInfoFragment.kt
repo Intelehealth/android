@@ -13,6 +13,7 @@ import org.intelehealth.app.utilities.ArrayAdapterUtils
 import org.intelehealth.app.utilities.LanguageUtils
 import org.intelehealth.app.utilities.PatientRegFieldsUtils
 import org.intelehealth.app.utilities.PatientRegStage
+import org.intelehealth.app.utilities.SessionManager
 import org.intelehealth.app.utilities.extensions.hideError
 import org.intelehealth.app.utilities.extensions.hideErrorOnTextChang
 import org.intelehealth.app.utilities.extensions.validate
@@ -122,6 +123,7 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
         PatientOtherInfoFragmentDirections.navigationOtherToDetails(
             patient.uuid, "searchPatient", "false"
         ).also {
+            SessionManager.instance.householdUuid = ""
             findNavController().navigate(it)
             requireActivity().finish()
         }

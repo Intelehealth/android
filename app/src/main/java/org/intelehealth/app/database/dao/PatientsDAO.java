@@ -13,6 +13,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.intelehealth.app.enums.FollowupFilterTypeEnum;
 import org.intelehealth.app.models.FamilyMemberRes;
@@ -384,15 +385,15 @@ public class PatientsDAO {
         return listPatientNames;
     }
 
-    public List<String> getFamilyMemberIDS(String patientuuid) throws DAOException {
+    public List<String> getFamilyMemberIDS(String houseHoldValue, String patientUUID) throws DAOException {
         List<String> subMemberIdList = new ArrayList<>();
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         try {
-            Cursor cursor = db.rawQuery("SELECT patientuuid FROM tbl_patient_attribute where value = ? COLLATE NOCASE", new String[]{patientuuid});
+            Cursor cursor = db.rawQuery("SELECT patientuuid FROM tbl_patient_attribute where value = ? COLLATE NOCASE", new String[]{houseHoldValue});
             if (cursor.getCount() != 0) {
                 while (cursor.moveToNext()) {
-                    String aa = cursor.getString(cursor.getColumnIndexOrThrow("patientuuid"));
-                    subMemberIdList.add(aa);
+                    String pid = cursor.getString(cursor.getColumnIndexOrThrow("patientuuid"));
+                    if(!Objects.equals(pid, patientUUID))subMemberIdList.add(pid);
                 }
             }
             cursor.close();
