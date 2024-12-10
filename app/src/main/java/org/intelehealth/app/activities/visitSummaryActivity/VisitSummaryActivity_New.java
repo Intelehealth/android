@@ -68,6 +68,7 @@ import android.util.DisplayMetrics;
 
 import org.intelehealth.app.activities.visit.staticEnabledFields.SpecializationsEnabledFieldsHelper;
 import org.intelehealth.app.activities.visit.staticEnabledFields.VitalsEnabledFieldsHelper;
+import org.intelehealth.app.database.dao.VisitsDAO;
 import org.intelehealth.app.utilities.CustomLog;
 
 import android.view.LayoutInflater;
@@ -505,6 +506,14 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         setupVitalConfig();
         setViewsData();
         setupSpecialization();
+        checkIfVisitIsEnded();
+    }
+
+    private void checkIfVisitIsEnded() {
+        boolean isVisitEnded = VisitsDAO.isVisitEnded(visitUUID);
+        if (isVisitEnded) {
+            incomplete_act.setVisibility(View.GONE);
+        }
     }
 
     private List<PatientVital> mPatientVitalList;

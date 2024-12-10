@@ -1305,7 +1305,7 @@
             android:layout_alignParentEnd="true"
             android:layout_marginTop="@dimen/margin_45"
             android:visibility="gone"
-            tools:visibility="gone">
+            tools:visibility="visible">
 
             <include layout="@layout/notifi_filter_layout" />
 
