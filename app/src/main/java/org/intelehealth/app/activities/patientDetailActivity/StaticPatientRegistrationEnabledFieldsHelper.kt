@@ -442,4 +442,84 @@ object StaticPatientRegistrationEnabledFieldsHelper {
 
         return fields
     }
+
+    fun getEnabledMedicalBaselineFields(): List<PatientRegistrationFields> {
+        val fields: MutableList<PatientRegistrationFields> = mutableListOf()
+
+        var currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.AYUSHMAN_CARD,
+            isMandatory = false,
+            isEditable = true,
+            isEnabled = true
+        )
+
+        fields.add(currentField)
+
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.MGNREGA_CARD,
+            isMandatory = false,
+            isEditable = true,
+            isEnabled = true
+        )
+
+        fields.add(currentField)
+
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.BANK_ACCOUNT,
+            isMandatory = false,
+            isEditable = true,
+            isEnabled = true
+        )
+
+        fields.add(currentField)
+
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.PHONE_OWNERSHIP,
+            isMandatory = false,
+            isEditable = true,
+            isEnabled = true
+        )
+
+        fields.add(currentField)
+
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.FAMILY_WHATSAPP,
+            isMandatory = false,
+            isEditable = true,
+            isEnabled = true
+        )
+
+        fields.add(currentField)
+
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.MARITAL_STATUS,
+            isMandatory = false,
+            isEditable = true,
+            isEnabled = true
+        )
+
+        fields.add(currentField)
+
+
+        return fields
+    }
+
 }

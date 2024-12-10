@@ -46,5 +46,25 @@ class PatientRegConfigKeys {
         const val PHONE_OWNERSHIP = "general_phone_ownership"
         const val FAMILY_WHATSAPP = "general_family_whatsapp"
         const val MARITAL_STATUS = "general_marital_status"
+
+        // MEDICAL
+        const val HB_CHECK = "hb_check"
+        const val BP_CHECK = "bp_check"
+        const val SUGAR_CHECK = "sugar_check"
+        const val BP_VALUE = "bp_value"
+        const val DIABETES_VALUE = "diabetes_value"
+        const val ARTHRITIS_VALUE = "arthritis_value"
+        const val ANEMIA_VALUE = "anemia_value"
+        const val SUGAR_VALUE = "sugar_value"
+        const val SUGAR_REASON = "sugar_reason"
+        const val SMOKING_HISTORY = "smoking_history"
+        const val SMOKING_RATE = "smoking_rate"
+        const val SMOKING_DURATION = "smoking_duration"
+        const val SMOKING_FREQUENCY = "smoking_frequency"
+        const val CHEW_TOBACCO = "chew_tobacco"
+        const val ALCOHOL_HISTORY = "alcohol_history"
+        const val ALCOHOL_RATE = "alcohol_rate"
+        const val ALCOHOL_DURATION= "alcohol_duration"
+        const val ALCOHOL_FREQUENCY = "alcohol_frequency"
     }
 }

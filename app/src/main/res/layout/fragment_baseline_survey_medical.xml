@@ -13,6 +13,10 @@
             type="org.intelehealth.app.models.dto.PatientDTO" />
 
         <variable
+            name="medicalConfig"
+            type="org.intelehealth.app.ui.baseline_survey.config.MedicalBaselineConfig" />
+
+        <variable
             name="baselineEditMode"
             type="Boolean" />
 
@@ -32,13 +36,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="@dimen/std_16dp">
 
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
 
         <com.google.android.material.button.MaterialButton

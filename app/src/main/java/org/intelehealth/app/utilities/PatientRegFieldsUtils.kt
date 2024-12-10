@@ -7,6 +7,7 @@ import android.widget.RadioGroup
 import android.widget.TextView
 import com.hbb20.CountryCodePicker
 import org.intelehealth.app.ui.baseline_survey.config.GeneralBaselineConfig
+import org.intelehealth.app.ui.baseline_survey.config.MedicalBaselineConfig
 import org.intelehealth.app.ui.patient.config.AddressInfoConfig
 import org.intelehealth.app.ui.patient.config.OtherInfoConfig
 import org.intelehealth.app.ui.patient.config.PersonalInfoConfig
@@ -163,7 +164,7 @@ object PatientRegFieldsUtils {
 
 
     @JvmStatic
-    fun buildPatientGeneralBaselineConfig(patientRegistrationFields: List<PatientRegistrationFields>): GeneralBaselineConfig {
+    fun buildGeneralBaselineConfig(patientRegistrationFields: List<PatientRegistrationFields>): GeneralBaselineConfig {
         return GeneralBaselineConfig().apply {
             patientRegistrationFields.forEach {
                 when (it.idKey) {
@@ -173,6 +174,35 @@ object PatientRegFieldsUtils {
                     PatientRegConfigKeys.PHONE_OWNERSHIP -> phoneOwnership = it
                     PatientRegConfigKeys.FAMILY_WHATSAPP -> familyWhatsapp = it
                     PatientRegConfigKeys.MARITAL_STATUS -> maritalStatus = it
+                }
+            }
+        }
+    }
+
+
+    @JvmStatic
+    fun buildMedicalBaselineConfig(patientRegistrationFields: List<PatientRegistrationFields>): MedicalBaselineConfig {
+        return MedicalBaselineConfig().apply {
+            patientRegistrationFields.forEach {
+                when (it.idKey) {
+                    PatientRegConfigKeys.HB_CHECK -> hbCheck = it
+                    PatientRegConfigKeys.BP_CHECK -> bpCheck = it
+                    PatientRegConfigKeys.SUGAR_CHECK -> sugarCheck = it
+                    PatientRegConfigKeys.BP_VALUE -> bpValue = it
+                    PatientRegConfigKeys.DIABETES_VALUE -> diabetesValue = it
+                    PatientRegConfigKeys.ARTHRITIS_VALUE -> arthritisValue = it
+                    PatientRegConfigKeys.ANEMIA_VALUE -> anemiaValue = it
+                    PatientRegConfigKeys.SUGAR_VALUE -> sugarValue = it
+                    PatientRegConfigKeys.SUGAR_REASON -> sugarReason = it
+                    PatientRegConfigKeys.SMOKING_HISTORY -> smokingHistory = it
+                    PatientRegConfigKeys.SMOKING_RATE -> smokingRate = it
+                    PatientRegConfigKeys.SMOKING_DURATION -> smokingDuration = it
+                    PatientRegConfigKeys.SMOKING_FREQUENCY -> smokingFrequency = it
+                    PatientRegConfigKeys.CHEW_TOBACCO -> chewTobacco = it
+                    PatientRegConfigKeys.ALCOHOL_HISTORY -> alcoholHistory = it
+                    PatientRegConfigKeys.ALCOHOL_RATE -> alcoholRate = it
+                    PatientRegConfigKeys.ALCOHOL_DURATION -> alcoholDuration = it
+                    PatientRegConfigKeys.ALCOHOL_FREQUENCY -> alcoholFrequency = it
                 }
             }
         }

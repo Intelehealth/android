@@ -41,7 +41,7 @@ class BaselineGeneralFragment : BaseFragmentBaselineSurvey(R.layout.fragment_bas
 
     private fun fetchGeneralBaselineConfig() {
         val it = getStaticPatientRegistrationFields()
-        binding.generalConfig = PatientRegFieldsUtils.buildPatientGeneralBaselineConfig(it)
+        binding.generalConfig = PatientRegFieldsUtils.buildGeneralBaselineConfig(it)
         setValues()
         setClickListener()
     }

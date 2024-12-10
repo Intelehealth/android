@@ -71,6 +71,7 @@ import org.intelehealth.app.utilities.BaselineSurveySource;
 import org.intelehealth.app.utilities.BaselineSurveyStage;
 import org.intelehealth.app.utilities.CustomLog;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -411,6 +412,19 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
 
         ivAddFamilyMember.setOnClickListener(view -> {
+            String houseHoldValue = "";
+            try {
+                houseHoldValue = patientsDAO.getHouseHoldValue(patientDTO.getUuid());
+            } catch (DAOException e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+            }
+
+            if(houseHoldValue != null && !houseHoldValue.isEmpty()) {
+                sessionManager.setHouseholdUuid(houseHoldValue);
+            } else {
+                sessionManager.setHouseholdUuid("");
+            }
+
             PatientRegistrationActivity.startPatientRegistration(this, patientDTO.getUuid(), PatientRegStage.PERSONAL, PatientRegSource.HOUSEHOLD);
             finish();
         });
@@ -420,12 +434,18 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             finish();
         });
 
-        populateFamilyMembers();
+        String houseHoldValue = "";
+        try {
+            houseHoldValue = patientsDAO.getHouseHoldValue(patientDTO.getUuid());
+        } catch (DAOException e) {
+            throw new RuntimeException(e);
+        }
+        if(houseHoldValue != null && !houseHoldValue.isEmpty()) populateFamilyMembers(houseHoldValue);
     }
 
-    private void populateFamilyMembers() {
+    private void populateFamilyMembers(String hid) {
         try {
-            List<String> ids = patientsDAO.getFamilyMemberIDS(patientDTO.getUuid());
+            List<String> ids = patientsDAO.getFamilyMemberIDS(hid, patientDTO.getUuid());
             familyMemberList = patientsDAO.getFamilyMembers(ids);
             familyMemberAdapter = new FamilyMemberAdapter(familyMemberList, this);
             rvFamilyMembers.setLayoutManager(new LinearLayoutManager(this));
