@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.app.ui.patient.data.PatientRepository
+import org.intelehealth.app.utilities.BaselineSurveyStage
 import org.intelehealth.app.utilities.PatientRegStage
 import org.intelehealth.config.presenter.fields.data.RegFieldRepository
 import org.intelehealth.config.presenter.fields.viewmodel.RegFieldViewModel
@@ -29,9 +30,14 @@ class PatientViewModel(
     val patientData: LiveData<PatientDTO> get() = mutableLivePatient
     private var mutableLivePatientStage = MutableLiveData(PatientRegStage.PERSONAL)
     val patientStageData: LiveData<PatientRegStage> get() = mutableLivePatientStage
+
+    private var mutableBaselineSurveyStage = MutableLiveData(BaselineSurveyStage.GENERAL)
+    val mutableBaselineSurveyStageData: LiveData<BaselineSurveyStage> get() = mutableBaselineSurveyStage
+
     var activeStatusAddressSection = true
     var activeStatusOtherSection = true
     var isEditMode: Boolean = false
+    var baselineEditMode: Boolean = false
 
 
     fun loadPatientDetails(
@@ -47,6 +53,10 @@ class PatientViewModel(
 
     fun updatePatientStage(stage: PatientRegStage) {
         mutableLivePatientStage.postValue(stage)
+    }
+
+    fun updateBaselineStage(stage: BaselineSurveyStage) {
+        mutableBaselineSurveyStage.postValue(stage)
     }
 
     fun savePatient() = executeLocalInsertUpdateQuery {

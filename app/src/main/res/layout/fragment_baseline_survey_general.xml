@@ -1,0 +1,469 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="patient"
+            type="org.intelehealth.app.models.dto.PatientDTO" />
+
+        <variable
+            name="generalConfig"
+            type="org.intelehealth.app.ui.baseline_survey.config.GeneralBaselineConfig" />
+
+        <variable
+            name="baselineEditMode"
+            type="Boolean" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginBottom="@dimen/margin_24"
+            android:fillViewport="true"
+            app:layout_constraintBottom_toTopOf="@id/btnGeneralBaselineNext"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="@dimen/std_16dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/clAyushmanCard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/std_12dp"
+                    android:visibility="@{generalConfig.ayushmanCard.enabled ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/ayushman_card_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:lineSpacingExtra="3sp"
+                        android:text="@{ generalConfig.ayushmanCard.mandatory ? @string/ayushman_card_question + ` *` : @string/ayushman_card_question}"
+                        android:textAppearance="@style/blur_txtview"
+                        android:textSize="@null"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="@string/ayushman_card_question" />
+
+                    <com.google.android.material.button.MaterialButtonToggleGroup
+                        android:id="@+id/toggleAyushmanCard"
+                        config="@{generalConfig.ayushmanCard}"
+                        editMode="@{baselineEditMode}"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_4"
+                        android:weightSum="3"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/ayushman_card_tv"
+                        app:selectionRequired="true"
+                        app:singleSelection="true">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnAyushmanYes"
+                            style="@style/AppTheme.OutlinedButton.Icon"
+                            config="@{generalConfig.ayushmanCard}"
+                            editMode="@{baselineEditMode}"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/generic_yes" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnAyushmanNo"
+                            style="@style/AppTheme.OutlinedButton.Icon"
+                            config="@{generalConfig.ayushmanCard}"
+                            editMode="@{baselineEditMode}"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/generic_no" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnAyushmanNotSure"
+                            style="@style/AppTheme.OutlinedButton.Icon"
+                            config="@{generalConfig.ayushmanCard}"
+                            editMode="@{baselineEditMode}"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/generic_not_sure" />
+                    </com.google.android.material.button.MaterialButtonToggleGroup>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/tvAyushmanError"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_4"
+                        android:layout_marginEnd="@dimen/std_16dp"
+                        android:text="@string/this_field_is_mandatory"
+                        android:textColor="@color/red"
+                        android:visibility="gone"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/toggleAyushmanCard" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/clMgnregaCard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/std_12dp"
+                    android:visibility="@{generalConfig.mgnrega.enabled ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/clAyushmanCard">
+
+                    <TextView
+                        android:id="@+id/mgnrega_card_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:lineSpacingExtra="3sp"
+                        android:text="@{ generalConfig.mgnrega.mandatory ? @string/mgnrega_card_question + ` *` : @string/mgnrega_card_question}"
+                        android:textAppearance="@style/blur_txtview"
+                        android:textSize="@null"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="@string/mgnrega_card_question" />
+
+                    <com.google.android.material.button.MaterialButtonToggleGroup
+                        android:id="@+id/toggleMgnregaCard"
+                        config="@{generalConfig.mgnrega}"
+                        editMode="@{baselineEditMode}"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_4"
+                        android:weightSum="3"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/mgnrega_card_tv"
+                        app:selectionRequired="true"
+                        app:singleSelection="true">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnMgnregaYes"
+                            style="@style/AppTheme.OutlinedButton.Icon"
+                            config="@{generalConfig.mgnrega}"
+                            editMode="@{baselineEditMode}"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/generic_yes" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnMgnregaNo"
+                            style="@style/AppTheme.OutlinedButton.Icon"
+                            config="@{generalConfig.mgnrega}"
+                            editMode="@{baselineEditMode}"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/generic_no" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnMgnregaNotSure"
+                            style="@style/AppTheme.OutlinedButton.Icon"
+                            config="@{generalConfig.mgnrega}"
+                            editMode="@{baselineEditMode}"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/generic_not_sure" />
+                    </com.google.android.material.button.MaterialButtonToggleGroup>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/tvMgnregaError"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_4"
+                        android:layout_marginEnd="@dimen/std_16dp"
+                        android:text="@string/this_field_is_mandatory"
+                        android:textColor="@color/red"
+                        android:visibility="gone"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/toggleMgnregaCard" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/clBankAccount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/std_12dp"
+                    android:visibility="@{generalConfig.bankAccount.enabled ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/clMgnregaCard">
+
+                    <TextView
+                        android:id="@+id/bank_account_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:lineSpacingExtra="3sp"
+                        android:text="@{ generalConfig.bankAccount.mandatory ? @string/bank_account_question + ` *` : @string/bank_account_question}"
+                        android:textAppearance="@style/blur_txtview"
+                        android:textSize="@null"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="@string/bank_account_question" />
+
+                    <com.google.android.material.button.MaterialButtonToggleGroup
+                        android:id="@+id/toggleBankAccount"
+                        config="@{generalConfig.bankAccount}"
+                        editMode="@{baselineEditMode}"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_4"
+                        android:weightSum="3"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/bank_account_tv"
+                        app:selectionRequired="true"
+                        app:singleSelection="true">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnBankYes"
+                            style="@style/AppTheme.OutlinedButton.Icon"
+                            config="@{generalConfig.bankAccount}"
+                            editMode="@{baselineEditMode}"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/generic_yes" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnBankNo"
+                            style="@style/AppTheme.OutlinedButton.Icon"
+                            config="@{generalConfig.bankAccount}"
+                            editMode="@{baselineEditMode}"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/generic_no" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnBankDecline"
+                            style="@style/AppTheme.OutlinedButton.Icon"
+                            config="@{generalConfig.bankAccount}"
+                            editMode="@{baselineEditMode}"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/decline_to_answer" />
+                    </com.google.android.material.button.MaterialButtonToggleGroup>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/tvBankError"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_4"
+                        android:layout_marginEnd="@dimen/std_16dp"
+                        android:text="@string/this_field_is_mandatory"
+                        android:textColor="@color/red"
+                        android:visibility="gone"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/toggleBankAccount" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/clFamilyWhatsapp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/std_12dp"
+                    android:visibility="@{generalConfig.familyWhatsapp.enabled ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/clBankAccount">
+
+                    <TextView
+                        android:id="@+id/family_whatsapp_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:lineSpacingExtra="3sp"
+                        android:text="@{ generalConfig.familyWhatsapp.mandatory ? @string/family_whatsapp_question + ` *` : @string/family_whatsapp_question}"
+                        android:textAppearance="@style/blur_txtview"
+                        android:textSize="@null"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="@string/family_whatsapp_question" />
+
+                    <com.google.android.material.button.MaterialButtonToggleGroup
+                        android:id="@+id/toggleFamilyWhatsapp"
+                        config="@{generalConfig.familyWhatsapp}"
+                        editMode="@{baselineEditMode}"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_4"
+                        android:weightSum="3"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/family_whatsapp_tv"
+                        app:selectionRequired="true"
+                        app:singleSelection="true">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnPersonal"
+                            style="@style/AppTheme.OutlinedButton.Icon"
+                            config="@{generalConfig.familyWhatsapp}"
+                            editMode="@{baselineEditMode}"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/generic_yes_personal" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnFamilyMember"
+                            style="@style/AppTheme.OutlinedButton.Icon"
+                            config="@{generalConfig.familyWhatsapp}"
+                            editMode="@{baselineEditMode}"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/generic_yes_family" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnFamilyNo"
+                            style="@style/AppTheme.OutlinedButton.Icon"
+                            config="@{generalConfig.familyWhatsapp}"
+                            editMode="@{baselineEditMode}"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/generic_no" />
+                    </com.google.android.material.button.MaterialButtonToggleGroup>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/tvFamilyWhatsappError"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_4"
+                        android:layout_marginEnd="@dimen/std_16dp"
+                        android:text="@string/this_field_is_mandatory"
+                        android:textColor="@color/red"
+                        android:visibility="gone"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/toggleFamilyWhatsapp" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/clMaritalStatus"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/std_12dp"
+                    android:visibility="@{generalConfig.maritalStatus.enabled ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/clFamilyWhatsapp">
+
+                    <TextView
+                        android:id="@+id/marital_status_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:lineSpacingExtra="3sp"
+                        android:text="@{ generalConfig.maritalStatus.mandatory ? @string/marital_status_question + ` *` : @string/marital_status_question}"
+                        android:textAppearance="@style/blur_txtview"
+                        android:textSize="@null"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="@string/marital_status_question" />
+
+                    <com.google.android.material.button.MaterialButtonToggleGroup
+                        android:id="@+id/toggleMaritalStatus"
+                        config="@{generalConfig.maritalStatus}"
+                        editMode="@{baselineEditMode}"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_4"
+                        android:weightSum="3"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/marital_status_tv"
+                        app:selectionRequired="true"
+                        app:singleSelection="true">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnMarried"
+                            style="@style/AppTheme.OutlinedButton.Icon"
+                            config="@{generalConfig.maritalStatus}"
+                            editMode="@{baselineEditMode}"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/married" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnUnmarried"
+                            style="@style/AppTheme.OutlinedButton.Icon"
+                            config="@{generalConfig.maritalStatus}"
+                            editMode="@{baselineEditMode}"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/unmarried" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnWidowed"
+                            style="@style/AppTheme.OutlinedButton.Icon"
+                            config="@{generalConfig.maritalStatus}"
+                            editMode="@{baselineEditMode}"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/widowed" />
+                    </com.google.android.material.button.MaterialButtonToggleGroup>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/tvMaritalStatusError"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_4"
+                        android:layout_marginEnd="@dimen/std_16dp"
+                        android:text="@string/this_field_is_mandatory"
+                        android:textColor="@color/red"
+                        android:visibility="gone"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/toggleMaritalStatus" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </androidx.core.widget.NestedScrollView>
+
+        <Button
+            android:id="@+id/btnGeneralBaselineNext"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/fu_btn_size"
+            android:layout_marginStart="@dimen/margin_24"
+            android:layout_marginEnd="@dimen/margin_24"
+            android:layout_marginBottom="@dimen/std_16dp"
+            android:background="@drawable/ui2_common_primary_bg"
+            android:drawableEnd="@drawable/ui2_ic_baseline_arrow_forward_24"
+            android:paddingHorizontal="@dimen/margin_10"
+            android:text="@string/next"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

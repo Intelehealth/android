@@ -6,6 +6,13 @@
     <string name="generic_cancel">Cancel</string>
     <string name="generic_yes">Yes</string>
     <string name="generic_no">No</string>
+    <string name="generic_not_sure">Not Sure</string>
+    <string name="generic_yes_personal">Yes (Personal)</string>
+    <string name="generic_yes_family">Yes (Family Member)</string>
+    <string name="decline_to_answer">Decline to answer</string>
+    <string name="married">Married</string>
+    <string name="unmarried">Unmarried</string>
+    <string name="widowed">Widowed</string>
     <string name="generic_back">Back</string>
     <string name="generic_coming_soon">Coming Soon.....</string>
     <string name="action_print">Print</string>
@@ -650,6 +657,13 @@
     <string name="middle_name_registration">Middle Name</string>
     <string name="last_name_mandatory">Last Name</string>
     <string name="gender_mandatory">Gender</string>
+    <string name="ayushman_card_mandatory">Ayushman Card</string>
+    <string name="ayushman_card_question">Do you have an Ayushman Card?</string>
+    <string name="mgnrega_card_question">Do you have an MGNREGA Card?</string>
+    <string name="bank_account_question">Do you have a bank account?</string>
+    <string name="phone_ownership">Phone ownership</string>
+    <string name="family_whatsapp_question">Do you or any of your family member use Whatsapp?</string>
+    <string name="marital_status_question">What is your marital status?</string>
     <string name="date_of_birth_mandatory">Date of Birth</string>
     <string name="age_mandatory">Age</string>
     <string name="this_field_is_mandatory">This field is mandatory</string>
@@ -783,7 +797,9 @@
     <string name="selected_date"> Selected date</string>
     <string name="today">Today</string>
     <string name="close_patient_registration">Close patient registration?</string>
+    <string name="close_baseline_survey">Close baseline survey?</string>
     <string name="sure_you_want_close_registration">Are you sure you want to close the patient registration?</string>
+    <string name="sure_you_want_close_baseline_survey">Are you sure you want to close the baseline survey?</string>
     <string name="health">Health</string>
     <string name="training">Training</string>
     <string name="about_app">About App</string>
@@ -860,6 +876,8 @@
     <string name="personal_identification">Personal</string>
     <string name="address_identification">Address</string>
     <string name="other_identification">Other</string>
+    <string name="baseline_general">General</string>
+    <string name="baseline_medical">Medical</string>
     <string name="past_visits">Past Visits</string>
     <string name="start_visit">Start Visit</string>
     <string name="feedback">Feedback</string>
@@ -922,6 +940,7 @@
     <string name="_corresponding_address_2">Corresponding \nAddress 2</string>
     <string name="other_details">Other details</string>
     <string name="family_members">Family Members</string>
+    <string name="baseline_survey">Baseline Survey</string>
     <string name="camera">Camera</string>
     <string name="gallery">Gallery</string>
     <string name="document">Document</string>
@@ -1071,7 +1090,9 @@
     <string name="forgot_your_username">Forgot your username?</string>
     <string name="contact_your_admin">Contact your admin</string>
     <string name="address_to_other_info">Address to Other info</string>
+    <string name="medical_to_other_info">Medical to Other info</string>
     <string name="personal_to_address_info">Personal to address info</string>
+    <string name="general_to_medical_info">General to medical info</string>
     <string name="emergency_contact_number">Emergency Number</string>
     <string name="hint_drop_down_guardian_type">Select Guardian Type</string>
     <string name="hint_drop_down_contact_type">Select Contact Type</string>
