@@ -419,7 +419,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 FirebaseCrashlytics.getInstance().recordException(e);
             }
 
-            if(houseHoldValue != null && !houseHoldValue.isEmpty()) {
+            if (houseHoldValue != null && !houseHoldValue.isEmpty()) {
                 sessionManager.setHouseholdUuid(houseHoldValue);
             } else {
                 sessionManager.setHouseholdUuid("");
@@ -440,7 +440,8 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         } catch (DAOException e) {
             throw new RuntimeException(e);
         }
-        if(houseHoldValue != null && !houseHoldValue.isEmpty()) populateFamilyMembers(houseHoldValue);
+        if (houseHoldValue != null && !houseHoldValue.isEmpty())
+            populateFamilyMembers(houseHoldValue);
     }
 
     private void populateFamilyMembers(String hid) {
@@ -963,14 +964,9 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 String end_date = visitCursor.getString(visitCursor.getColumnIndexOrThrow("enddate"));
                 String visit_id = visitCursor.getString(visitCursor.getColumnIndexOrThrow("uuid"));
 
-                boolean isCompletedExitedSurvey = false;
-                try {
-                    isCompletedExitedSurvey = new EncounterDAO().isCompletedExitedSurvey(visit_id);
-                } catch (DAOException e) {
-                    e.printStackTrace();
-                    CustomLog.e(TAG, e.getMessage());
-                }
-                if (!isCompletedExitedSurvey) {
+                boolean isVisitEnded = VisitsDAO.isVisitEnded(visit_id);
+
+                if (!isVisitEnded) {
 
                     String encounterlocalAdultintial = "";
                     String encountervitalsLocal = null;
@@ -2285,13 +2281,8 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                     String end_date = visitCursor.getString(visitCursor.getColumnIndexOrThrow("enddate"));
                     String visit_id = visitCursor.getString(visitCursor.getColumnIndexOrThrow("uuid"));
 
-                    boolean isCompletedExitedSurvey = false;
-                    try {
-                        isCompletedExitedSurvey = new EncounterDAO().isCompletedExitedSurvey(visit_id);
-                    } catch (DAOException e) {
-                        e.printStackTrace();
-                    }
-                    if (isCompletedExitedSurvey) {
+                    boolean isVisitEnded = VisitsDAO.isVisitEnded(visit_id);
+                    if (isVisitEnded) {
 
                         String encounterlocalAdultintial = "";
                         String encountervitalsLocal = null;
