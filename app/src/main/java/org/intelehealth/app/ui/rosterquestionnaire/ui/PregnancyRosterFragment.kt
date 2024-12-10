@@ -2,14 +2,11 @@ package org.intelehealth.app.ui.rosterquestionnaire.ui
 
 import android.os.Bundle
 import android.view.View
-import androidx.activity.viewModels
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import org.intelehealth.app.R
 import org.intelehealth.app.databinding.FragmentPregnancyRosterBinding
-
 import org.intelehealth.app.ui.rosterquestionnaire.utilities.RosterQuestionnaireStage
 import org.intelehealth.app.ui.rosterquestionnaire.viewmodel.RosterViewModel
 

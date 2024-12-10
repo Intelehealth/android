@@ -10,7 +10,6 @@ import android.view.MenuItem
 import android.view.View
 import android.view.animation.LinearInterpolator
 import android.widget.ImageView
-import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.core.content.IntentCompat
 import androidx.lifecycle.ViewModelProvider
