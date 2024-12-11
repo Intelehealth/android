@@ -12,9 +12,6 @@ import org.intelehealth.coreroomdb.entity.Patient
  **/
 @Dao
 interface PatientDao : CoreDao<Patient> {
-    @Query("SELECT * FROM tbl_patient")
-    override fun getAll(): LiveData<List<Patient>>
-
     @Query("SELECT * FROM tbl_patient WHERE uuid = :uuid")
     fun getPatientByUuid(uuid: String): LiveData<Patient>
 
@@ -75,6 +72,6 @@ interface PatientDao : CoreDao<Patient> {
     @Query("UPDATE tbl_patient SET dead = :dead WHERE uuid = :uuid")
     suspend fun updateDeadStatus(dead: String, uuid: String)
 
-    @Query("UPDATE tbl_patient SET sync = :isSync WHERE uuid = :uuid")
+    @Query("UPDATE tbl_patient SET synced = :isSync WHERE uuid = :uuid")
     suspend fun updateSyncStatus(uuid: String, isSync: Boolean)
 }

@@ -16,16 +16,17 @@ data class Provider(
     @ColumnInfo("family_name") @SerializedName("family_name") var familyName: String? = null,
     @ColumnInfo("middle_name") @SerializedName("middle_name") var middleName: String? = null,
     @SerializedName("emailId") var emailId: String,
+    @ColumnInfo("telephone_number")
     @SerializedName("telephoneNumber") var telephoneNumber: String? = null,
-    @ColumnInfo("dateofbirth") @SerializedName("dateofbirth") var dateOfBirth: String? = null,
+    @ColumnInfo("date_of_birth") @SerializedName("dateofbirth") var dateOfBirth: String? = null,
     @SerializedName("gender") var gender: String? = null,
-    @SerializedName("imagePath") var imagePath: String,
-    @SerializedName("countryCode") var countryCode: String? = null,
+    @SerializedName("imagePath") var imagePath: String? = null,
+    @ColumnInfo("country_code") @SerializedName("countryCode") var countryCode: String? = null,
     var voided: Int? = null,
     var role: String? = null,
     var providerId: Int? = null,
-    @ColumnInfo("useruuid") @SerializedName("useruuid") var userUuid: String? = null,
+    @ColumnInfo("user_uuid") @SerializedName("useruuid") var userUuid: String? = null,
     @ColumnInfo("modified_date") @SerializedName("modified_date") val modifiedDate: String? = null,
-    var sync: Boolean = false,
+    var synced: Boolean = false,
 ) : Parcelable
 

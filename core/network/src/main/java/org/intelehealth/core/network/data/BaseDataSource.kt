@@ -41,6 +41,6 @@ abstract class BaseDataSource(
         emit(Result.Loading<T>("Please wait..."))
     }.flowOn(dispatcher)
 
-    private fun isInternetAvailable(): Boolean = networkHelper?.isNetworkConnected() ?: false
+    private fun isInternetAvailable(): Boolean = networkHelper?.isNetworkConnected() ?: true
 }
 

@@ -12,8 +12,6 @@ import org.intelehealth.coreroomdb.entity.Observation
  **/
 @Dao
 interface ObservationDao : CoreDao<Observation> {
-    @Query("SELECT * FROM tbl_obs")
-    override fun getAll(): LiveData<List<Observation>>
 
     @Query("SELECT * FROM tbl_obs WHERE uuid = :uuid")
     fun getObservationByUuid(uuid: String): LiveData<Observation>
@@ -30,7 +28,7 @@ interface ObservationDao : CoreDao<Observation> {
     @Query("UPDATE tbl_obs SET comment = :comment WHERE uuid = :uuid")
     suspend fun updateComment(uuid: String, comment: String)
 
-    @Query("UPDATE tbl_obs SET sync = :isSync WHERE uuid = :uuid")
+    @Query("UPDATE tbl_obs SET synced = :isSync WHERE uuid = :uuid")
     suspend fun updateSyncStatus(uuid: String, isSync: Boolean)
 
     @Query("UPDATE tbl_obs SET obsservermodifieddate = :obsModifiedDate WHERE uuid = :uuid")

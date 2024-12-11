@@ -19,5 +19,6 @@ data class PatientLocation(
     @SerializedName("retired") val retired: Int? = null,
     @ColumnInfo("modified_date") @SerializedName("modified_date") var modifiedDate: String? = null,
     var voided: Int = 0,
-    var sync: Boolean = false
+    @SerializedName("syncd")
+    var synced: Boolean = false
 ) : Parcelable

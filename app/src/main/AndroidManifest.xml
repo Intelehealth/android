@@ -49,9 +49,9 @@
         android:usesCleartextTraffic="true"
         tools:ignore="UnusedAttribute, LockedOrientationActivity"
         tools:replace="allowBackup">
-<!--        <activity-->
-<!--            android:name=".activities.onboarding.CommonWebviewActivity"-->
-<!--            android:exported="false" />-->
+        <!--        <activity-->
+        <!--            android:name=".activities.onboarding.CommonWebviewActivity"-->
+        <!--            android:exported="false" />-->
         <activity
             android:name=".activities.onboarding.PersonalConsentActivity"
             android:exported="false"
@@ -223,6 +223,11 @@
             <!--                <category android:name="android.intent.category.LAUNCHER" />-->
             <!--            </intent-filter>-->
         </activity>
+        <activity
+            android:name=".ui.setup.activity.SyncActivity"
+            android:exported="true"
+            android:theme="@style/AppThemeMaterialNew"
+            android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".activities.notification.view.NotificationActivity"
             android:exported="false"

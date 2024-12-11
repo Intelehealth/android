@@ -12,8 +12,6 @@ import org.intelehealth.coreroomdb.entity.Encounter
  **/
 @Dao
 interface EncounterDao : CoreDao<Encounter> {
-    @Query("SELECT * FROM tbl_encounter")
-    override fun getAll(): LiveData<List<Encounter>>
 
     @Query("SELECT * FROM tbl_encounter WHERE uuid = :uuid")
     fun getEncounterByUuid(uuid: String): LiveData<Encounter>

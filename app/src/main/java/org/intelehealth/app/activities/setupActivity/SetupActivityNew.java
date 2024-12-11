@@ -19,6 +19,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 
+import org.intelehealth.app.ui.setup.activity.SyncActivity;
 import org.intelehealth.app.utilities.CustomLog;
 
 import android.util.Patterns;
@@ -591,7 +592,7 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
                                                             sessionManager.setIsLoggedIn(true);
 //                                                    Intent intent = new Intent(SetupActivityNew.this, DynamicModuleDownloadingActivity.class);
 
-                                                            Intent intent = new Intent(SetupActivityNew.this, HomeScreenActivity_New.class);
+                                                            Intent intent = new Intent(SetupActivityNew.this, SyncActivity.class);
                                                             intent.putExtra("setup", true);
                                                             intent.putExtra("firstLogin", "firstLogin");
 

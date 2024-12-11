@@ -21,4 +21,7 @@
     <dimen name="rtc_self_view_height">152dp</dimen>
     <dimen name="std_8dp">8dp</dimen>
     <dimen name="std_24dp">24dp</dimen>
+    <dimen name="std_32dp">32dp</dimen>
+    <dimen name="inner_screen_logo_height">80dp</dimen>
+    <dimen name="inner_screen_logo_width">200dp</dimen>
 </resources>

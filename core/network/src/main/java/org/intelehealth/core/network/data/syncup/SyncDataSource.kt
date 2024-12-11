@@ -16,11 +16,10 @@ class SyncDataSource(
     private val apiClient: CoreApiClient, private val preferenceHelper: PreferenceHelper
 ) : BaseDataSource() {
     suspend fun pullData(pageNo: Int, pageLimit: Int) = getResult {
-        preferenceHelper.get<String>(AUTH_BASIC)
         apiClient.pullData(
-            preferenceHelper.get(AUTH_BASIC),
+            "Basic ${preferenceHelper.get(AUTH_BASIC, "")}",
             preferenceHelper.get(KEY_PREF_LOCATION_UUID),
-            preferenceHelper.get(PULL_EXECUTED_TIME),
+            preferenceHelper.get(PULL_EXECUTED_TIME, "2006-08-22 22:21:48 "),
             pageNo,
             pageLimit
         )

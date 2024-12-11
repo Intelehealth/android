@@ -12,8 +12,6 @@ import org.intelehealth.coreroomdb.entity.Concept
  **/
 @Dao
 interface ConceptDao : CoreDao<Concept> {
-    @Query("SELECT * FROM tbl_uuid_dictionary")
-    override fun getAll(): LiveData<List<Concept>>
 
     @Query("SELECT * FROM tbl_uuid_dictionary WHERE uuid = :uuid")
     fun getConceptByUuid(uuid: String): LiveData<Concept>

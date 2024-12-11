@@ -16,7 +16,7 @@ data class Encounter(
     @ColumnInfo("encounter_time") @SerializedName("encounter_time") var encounterTime: String? = null,
     @ColumnInfo("provider_uuid") @SerializedName("provider_uuid") var providerUuid: String? = null,
     @ColumnInfo("modified_date") @SerializedName("modified_date") var modifiedDate: String? = null,
-    @SerializedName("sync") var sync: Boolean? = null,
+    @SerializedName("syncd") var synced: Boolean = false,
     @SerializedName("voided") var voided: Int = 0,
-    @ColumnInfo("privacynotice_value") @SerializedName("privacynotice_value") var privacyNoticeValue: String? = null
+//    @ColumnInfo("privacynotice_value") @SerializedName("privacynotice_value") var privacyNoticeValue: String? = null
 ) : Parcelable

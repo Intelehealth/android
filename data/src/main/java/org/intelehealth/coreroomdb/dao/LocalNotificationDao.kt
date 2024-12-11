@@ -12,8 +12,6 @@ import org.intelehealth.coreroomdb.entity.LocalNotification
  **/
 @Dao
 interface LocalNotificationDao : CoreDao<LocalNotification> {
-    @Query("SELECT * FROM tbl_notifications")
-    override fun getAll(): LiveData<List<LocalNotification>>
 
     @Query("SELECT * FROM tbl_notifications WHERE uuid = :uuid")
     fun getNotificationByUuid(uuid: String): LiveData<LocalNotification>

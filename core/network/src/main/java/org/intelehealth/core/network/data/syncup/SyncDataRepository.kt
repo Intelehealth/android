@@ -13,23 +13,47 @@ class SyncDataRepository(private val ihDb: IHDatabase, private val dataSource: S
 
     suspend fun saveData(pullResponse: PullResponse, onSaved: suspend (Int, Int) -> Unit) {
         if (pullResponse.patientlist.isNotEmpty()) ihDb.patientDao().insert(pullResponse.patientlist)
-        if (pullResponse.patientAttributeTypeListMaster.isNotEmpty()) ihDb.patientAttrMasterDao()
-            .insert(pullResponse.patientAttributeTypeListMaster)
-        if (pullResponse.patientAttributesList.isNotEmpty()) ihDb.patientAttrDao()
-            .insert(pullResponse.patientAttributesList)
+        if (pullResponse.patientAttributeTypeListMaster.isNotEmpty() && pullResponse.pageNo == 1) {
+            pullResponse.patientAttributeTypeListMaster.map { it.synced = true }.apply {
+                ihDb.patientAttrMasterDao().insert(pullResponse.patientAttributeTypeListMaster)
+            }
+        }
+        if (pullResponse.patientAttributesList.isNotEmpty()) {
+            pullResponse.patientAttributesList.map { it.synced = true }.apply {
+                ihDb.patientAttrDao().insert(pullResponse.patientAttributesList)
+            }
+        }
         if (pullResponse.visitlist.isNotEmpty()) ihDb.visitDao().insert(pullResponse.visitlist)
         if (pullResponse.encounterlist.isNotEmpty()) ihDb.encounterDao().insert(pullResponse.encounterlist)
-        if (pullResponse.obslist.isNotEmpty()) ihDb.observationDao().insert(pullResponse.obslist)
-        if (pullResponse.locationlist.isNotEmpty()) ihDb.patientLocationDao().insert(pullResponse.locationlist)
-        if (pullResponse.providerlist.isNotEmpty()) ihDb.providerDao().insert(pullResponse.providerlist)
-        if (pullResponse.providerAttributeTypeList.isNotEmpty()) ihDb.providerAttributeDao()
-            .insert(pullResponse.providerAttributeTypeList)
-        if (pullResponse.providerAttributeList.isNotEmpty()) ihDb.providerAttributeDao()
-            .insert(pullResponse.providerAttributeList)
-        if (pullResponse.visitAttributeTypeList.isNotEmpty()) ihDb.visitAttributeDao()
-            .insert(pullResponse.visitAttributeTypeList)
-        if (pullResponse.visitAttributeList.isNotEmpty()) ihDb.visitAttributeDao()
-            .insert(pullResponse.visitAttributeList)
+        if (pullResponse.obslist.isNotEmpty()) {
+            pullResponse.obslist.map { it.synced = true }.apply {
+                ihDb.observationDao().insert(pullResponse.obslist)
+            }
+        }
+        if (pullResponse.locationlist.isNotEmpty()) {
+            pullResponse.locationlist.map { it.synced = true }.apply {
+                ihDb.patientLocationDao().insert(pullResponse.locationlist)
+            }
+        }
+        if (pullResponse.providerlist.isNotEmpty()) {
+            pullResponse.providerlist.map { it.synced = true }.apply {
+                ihDb.providerDao().insert(pullResponse.providerlist)
+            }
+        }
+//        if (pullResponse.providerAttributeTypeList.isNotEmpty()) ihDb.providerAttributeDao()
+//            .insert(pullResponse.providerAttributeTypeList)
+        if (pullResponse.providerAttributeList.isNotEmpty()){
+            pullResponse.providerAttributeList.map { it.synced = true }.apply {
+                ihDb.providerAttributeDao().insert(pullResponse.providerAttributeList)
+            }
+        }
+//        if (pullResponse.visitAttributeTypeList.isNotEmpty()) ihDb.visitAttributeDao()
+//            .insert(pullResponse.visitAttributeTypeList)
+        if (pullResponse.visitAttributeList.isNotEmpty()) {
+            pullResponse.visitAttributeList.map { it.synced = true }.apply {
+                ihDb.visitAttributeDao().insert(pullResponse.visitAttributeList)
+            }
+        }
         onSaved(pullResponse.totalCount, pullResponse.pageNo)
     }
 }

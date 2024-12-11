@@ -12,9 +12,6 @@ import org.intelehealth.coreroomdb.entity.MediaRecord
  **/
 @Dao
 interface MediaRecordDao : CoreDao<MediaRecord> {
-    @Query("SELECT * FROM tbl_image_records")
-    override fun getAll(): LiveData<List<MediaRecord>>
-
     @Query("SELECT * FROM tbl_image_records WHERE uuid = :uuid")
     fun getMediaRecordByUuid(uuid: String): LiveData<MediaRecord>
 

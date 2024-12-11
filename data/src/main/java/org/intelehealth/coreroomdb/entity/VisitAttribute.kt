@@ -13,9 +13,7 @@ import kotlinx.parcelize.Parcelize
 data class VisitAttribute(
     @PrimaryKey @SerializedName("uuid") @Expose var uuid: String = "",
 
-    @ColumnInfo("visit_uuid")
-    //  @SerializedName("visit_uuid")
-    var visitUuid: String? = null,
+    @ColumnInfo("visit_uuid") @SerializedName("visit_uuid") var visitUuid: String? = null,
 
     var value: String? = null,
 
@@ -24,9 +22,8 @@ data class VisitAttribute(
     @SerializedName("retired") @Expose var retired: Int = 0,
 
     @ColumnInfo("visit_attribute_type_uuid")
-    //  @SerializedName("visit_attribute_type_uuid")
-    var visitAttributeTypeUuid: String? = null,
+    @SerializedName("visit_attribute_type_uuid") var visitAttributeTypeUuid: String? = null,
 
-    var voided: Int = 0, var sync: Boolean = false
+    var voided: Int = 0, var synced: Boolean = false
 
 ) : Parcelable

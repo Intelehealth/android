@@ -40,6 +40,7 @@ import org.intelehealth.app.app.IntelehealthApplication
 import org.intelehealth.app.dataMigration.SmoothUpgrade
 import org.intelehealth.app.databinding.ActivitySplashBinding
 import org.intelehealth.app.ui.language.activity.LanguageActivity
+import org.intelehealth.app.ui.setup.activity.SyncActivity
 import org.intelehealth.app.ui.splash.adapter.LanguageAdapter
 import org.intelehealth.app.utilities.DialogUtils
 import org.intelehealth.app.utilities.DialogUtils.CustomDialogListener
@@ -316,7 +317,7 @@ class SplashActivity : LanguageActivity(), BaseViewHolder.ViewHolderClickListene
             finish()
         } else {
             Logger.logD(TAG, "Starting home")
-            val intent = Intent(this, HomeScreenActivity_New::class.java)
+            val intent = Intent(this, SyncActivity::class.java)
 //            intent.putExtra("from", "splash")
 //            intent.putExtra("username", "")
 //            intent.putExtra("password", "")

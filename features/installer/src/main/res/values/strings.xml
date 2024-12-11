@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="module_downloading">Downloading %1$s</string>
+    <string name="module_downloading">Downloading…</string>
     <string name="module_downloaded">Downloaded</string>
     <string name="module_installing">Installing…</string>
     <string name="module_installed">Installed</string>
     <string name="module_failed">Failed</string>
     <string name="module_close_popup_window">Close</string>
     <string name="module_retry_popup_window">Retry</string>
+    <string name="new_features">New Features\n%1$s</string>
 </resources>

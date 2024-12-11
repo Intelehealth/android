@@ -15,5 +15,5 @@ data class PatientAttributeTypeMaster(
     @SerializedName("name") var name: String? = null,
     @ColumnInfo("modified_date") @SerializedName("modified_date") var modifiedDate: String? = null,
     @SerializedName("voided") var voided: Int = 0,
-    @SerializedName("sync") var sync: Boolean = false
+    @SerializedName("syncd") var synced: Boolean = false
 ) : Parcelable

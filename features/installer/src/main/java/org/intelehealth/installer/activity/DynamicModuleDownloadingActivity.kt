@@ -3,11 +3,10 @@ package org.intelehealth.installer.activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.IntentCompat
 import androidx.core.view.isVisible
+import org.intelehealth.core.ui.activity.CircularProgressActivity
 import org.intelehealth.installer.R
-import org.intelehealth.installer.databinding.ActivityDynamicModuleDownloadingBinding
 import org.intelehealth.installer.downloader.DynamicDeliveryCallback
 import org.intelehealth.installer.downloader.DynamicModuleDownloadManager
 
@@ -16,31 +15,24 @@ import org.intelehealth.installer.downloader.DynamicModuleDownloadManager
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-class DynamicModuleDownloadingActivity : AppCompatActivity(), DynamicDeliveryCallback {
-
-    private val binding: ActivityDynamicModuleDownloadingBinding by lazy {
-        ActivityDynamicModuleDownloadingBinding.inflate(layoutInflater)
-    }
+class DynamicModuleDownloadingActivity : CircularProgressActivity(), DynamicDeliveryCallback {
 
     private val downloadManager: DynamicModuleDownloadManager by lazy {
         DynamicModuleDownloadManager.getInstance(this);
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(binding.root)
-        binding.progressDownloading.max = 100
+    override fun onViewCreated() {
         extractIntent()
-        setButtonClickListener()
     }
 
-    private fun setButtonClickListener() {
-        binding.btnClosePopup.setOnClickListener { finishWithResult(false) }
-        binding.btnRetryDownload.setOnClickListener {
-            binding.downloadErrorGroup.isVisible = false
-            onDownloading(0)
-            extractIntent()
-        }
+    override fun onRetry() {
+        binding.downloadErrorGroup.isVisible = false
+        onDownloading(0)
+        extractIntent()
+    }
+
+    override fun onClose() {
+        finishWithResult(false)
     }
 
     private fun extractIntent() {
@@ -51,7 +43,7 @@ class DynamicModuleDownloadingActivity : AppCompatActivity(), DynamicDeliveryCal
             } else if (it.hasExtra(EXT_MODULE)) {
                 val module = it.getStringExtra(EXT_MODULE)
                 module?.let { it1 ->
-                    binding.txtModuleNames.text = module
+                    progressTitle(getString(R.string.new_features, module))
                     downloadManager.downloadDynamicModule(it1)
                 }
             } else finishWithResult(false)
@@ -77,28 +69,27 @@ class DynamicModuleDownloadingActivity : AppCompatActivity(), DynamicDeliveryCal
 
     override fun onDownloading(percentage: Int) {
         println("DynamicModuleDownloadingActivity => DOWNLOADING percentage => $percentage")
-        binding.progressDownloading.progress = percentage
-        binding.txtDownloadStatus.text = getString(R.string.module_downloading, "${percentage}%")
+        onProgress(percentage)
+        progressTask(getString(R.string.module_downloading))
     }
 
     override fun onDownloadCompleted() {
-        binding.txtDownloadStatus.text = getString(R.string.module_downloaded)
+        progressTask(getString(R.string.module_downloaded))
     }
 
     override fun onInstalling() {
-        binding.txtDownloadStatus.text = getString(R.string.module_installing)
-        binding.progressDownloading.isVisible = true
+        progressTask(getString(R.string.module_installing))
     }
 
     override fun onInstallSuccess() {
-        binding.txtDownloadStatus.text = getString(R.string.module_installed)
+        progressTask(getString(R.string.module_installed))
         finishWithResult(true)
     }
 
     override fun onFailed(errorMessage: String) {
         binding.downloadErrorGroup.isVisible = true
-        binding.txtDownloadStatus.text = getString(R.string.module_failed)
-        binding.txtErrorMsg.text = errorMessage
+        progressTask(getString(R.string.module_failed))
+        errorMessage(errorMessage)
     }
 
     companion object {

@@ -12,8 +12,6 @@ import org.intelehealth.coreroomdb.entity.Appointment
  **/
 @Dao
 interface AppointmentDao : CoreDao<Appointment> {
-    @Query("SELECT * FROM tbl_appointments WHERE voided == 0")
-    override fun getAll(): LiveData<List<Appointment>>
 
     @Query("SELECT * FROM tbl_appointments WHERE uuid = :uuid AND voided == 0")
     fun getByUuid(uuid: String): LiveData<Appointment>

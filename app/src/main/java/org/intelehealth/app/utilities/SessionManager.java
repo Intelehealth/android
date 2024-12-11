@@ -10,11 +10,12 @@ import org.intelehealth.app.ayu.visit.vital.VitalPreference;
 import org.intelehealth.app.utilities.CustomLog;
 
 import org.intelehealth.app.BuildConfig;
+import org.intelehealth.core.utils.helper.PreferenceHelper;
 
 import java.util.Set;
 
 public class SessionManager {
-    private static final String VITAL_KEY ="vita_pref" ;
+    private static final String VITAL_KEY = "vita_pref";
     // Shared preferences file name
     public static SessionManager instance;
     private static final String PREF_NAME = "Intelehealth";
@@ -89,12 +90,14 @@ public class SessionManager {
     private Context _context;
     // Shared pref mode
     private int PRIVATE_MODE = 0;
+    private PreferenceHelper preferenceHelper;
 
     //UI2.0
     private static final String IS_LOGGED_IN = "IS_LOGGED_IN";
 
 
     public SessionManager(Context context) {
+        preferenceHelper = new PreferenceHelper(context);
         this._context = context;
         pref = _context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
         editor = pref.edit();
@@ -139,6 +142,7 @@ public class SessionManager {
     public void setEncoded(String encoded) {
         editor.putString(ENCODED, encoded);
         editor.commit();
+        preferenceHelper.save(PreferenceHelper.AUTH_BASIC, encoded);
     }
 
     public void setEnableAppLock(boolean isFirstTime) {
@@ -157,6 +161,7 @@ public class SessionManager {
     public void setPullExcutedTime(String pullExcutedTime) {
         editor.putString(PULL_EXECUTED_TIME, pullExcutedTime);
         editor.commit();
+        preferenceHelper.save(PreferenceHelper.PULL_EXECUTED_TIME, pullExcutedTime);
     }
 
     public String getAppLanguage() {
@@ -238,6 +243,7 @@ public class SessionManager {
     public void setLocationUuid(String locationUuid) {
         editor.putString(KEY_PREF_LOCATION_UUID, locationUuid);
         editor.commit();
+        preferenceHelper.save(PreferenceHelper.KEY_PREF_LOCATION_UUID, locationUuid);
     }
 
     public String getLocationDescription() {
@@ -635,6 +641,6 @@ public class SessionManager {
     }
 
     public String getCustomLogVersion() {
-        return pref.getString(CUSTOM_LOG_VERSION,"");
+        return pref.getString(CUSTOM_LOG_VERSION, "");
     }
 }

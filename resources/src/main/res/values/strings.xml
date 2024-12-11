@@ -82,4 +82,8 @@
     <string name="preview">Preview</string>
     <string name="save_visit_button">Save visit</string>
     <string name="visit_saving">Saving…</string>
+
+    <string name="lbl_close">Close</string>
+    <string name="lbl_retry">Retry</string>
+    <string name="progress_percentage" translatable="false">%1$d&#37;</string>
 </resources>

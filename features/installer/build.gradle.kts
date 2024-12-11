@@ -38,6 +38,7 @@ android {
 
 dependencies {
     api(project(":resources"))
+    api(project(":core:ui"))
     implementation("com.google.android.play:feature-delivery:2.1.0")
     implementation("com.google.android.play:review:2.0.2")
     implementation("androidx.core:core-ktx:1.13.1")

@@ -17,7 +17,7 @@ data class Observation(
     @ColumnInfo("encounteruuid") @SerializedName("encounteruuid") var encounterUuid: String? = null,
     @ColumnInfo("conceptuuid") @SerializedName("conceptuuid", alternate = ["concept"]) var conceptUuid: String? = null,
     @SerializedName("value") var value: String? = null,
-    @ColumnInfo("obsservermodifieddate") @SerializedName("obsservermodifieddate") var obsServerModifiedDate: String? = null,
+    @ColumnInfo("obsservermodifieddate") @SerializedName("obsServerModifiedDate") var obsServerModifiedDate: String? = null,
     @Ignore @SerializedName("obsDatetime") @Expose var obsDatetime: String = "",
     @Ignore @SerializedName("encounter") @Expose var encounter: String = "",
     @SerializedName("creator", alternate = ["person"]) var creator: String? = null,
@@ -25,7 +25,7 @@ data class Observation(
     @SerializedName("voided") var voided: Int? = null,
     @ColumnInfo("modified_date") @SerializedName("modified_date") var modifiedDate: String? = null,
     @ColumnInfo("created_date") @SerializedName("created_date") var createdDate: String? = null,
-    @SerializedName("sync") var sync: Boolean = false,
+    @SerializedName("syncd") var synced: Boolean = false,
     @ColumnInfo("concept_set_uuid") @SerializedName("conceptsetuuid") var conceptSetUuid: String? = null,
 ) : Parcelable
 

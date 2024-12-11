@@ -370,6 +370,7 @@ public class SyncDAO {
 
 
     /**
+     * First time sync with background service
      * this method for syncing data first time with background service
      * we starting background service here
      *

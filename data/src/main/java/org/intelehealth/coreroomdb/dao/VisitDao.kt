@@ -1,15 +1,17 @@
 package org.intelehealth.coreroomdb.dao
 
 import androidx.lifecycle.LiveData
+import androidx.room.Dao
 import androidx.room.Query
 import org.intelehealth.coreroomdb.entity.Visit
 
+@Dao
 interface VisitDao : CoreDao<Visit> {
 
-    @Query("SELECT * FROM tbl_visit WHERE sync = '0' OR sync = 'false'")
+    @Query("SELECT * FROM tbl_visit WHERE synced = '0' OR synced = 'false'")
     fun getUnsyncedVisits(): LiveData<List<Visit>>
 
-    @Query("UPDATE tbl_visit SET sync = :sync WHERE uuid = :visitUuid")
+    @Query("UPDATE tbl_visit SET synced = :sync WHERE uuid = :visitUuid")
     fun updateVisitSync(visitUuid: String, sync: String)
 
     @Query("UPDATE tbl_visit SET endDate = :endDate WHERE uuid = :visitUuid")
