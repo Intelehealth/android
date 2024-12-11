@@ -20,18 +20,21 @@ import org.intelehealth.app.R
 import org.intelehealth.app.databinding.ActivityRosterQuestionnaireMainBinding
 import org.intelehealth.app.shared.BaseActivity
 import org.intelehealth.app.syncModule.SyncUtils
+import org.intelehealth.app.ui.patient.activity.PatientRegistrationActivity
 import org.intelehealth.app.ui.rosterquestionnaire.utilities.RosterQuestionnaireStage
 import org.intelehealth.app.ui.rosterquestionnaire.viewmodel.RosterViewModel
+import org.intelehealth.app.utilities.BundleKeys.Companion.PATIENT_CURRENT_STAGE
 import org.intelehealth.app.utilities.BundleKeys.Companion.PATIENT_UUID
 import org.intelehealth.app.utilities.BundleKeys.Companion.ROSTER_CURRENT_STAGE
 import org.intelehealth.app.utilities.DialogUtils
 import org.intelehealth.app.utilities.DialogUtils.CustomDialogListener
 import org.intelehealth.app.utilities.NetworkConnection
 import org.intelehealth.app.utilities.NetworkUtils
+import org.intelehealth.app.utilities.PatientRegStage
 
 @AndroidEntryPoint
 class RosterQuestionnaireMainActivity : BaseActivity() {
-    private lateinit var binding: ActivityRosterQuestionnaireMainBinding
+    public lateinit var binding: ActivityRosterQuestionnaireMainBinding
     private lateinit var rosterViewModel: RosterViewModel
 
     private lateinit var syncAnimator: ObjectAnimator
@@ -144,6 +147,18 @@ class RosterQuestionnaireMainActivity : BaseActivity() {
                 putExtra(ROSTER_CURRENT_STAGE, stage)
             }.also { context.startActivity(it) }
         }
+
+        @JvmStatic
+        fun handleBackEventFromRosterToPatientReg(
+            context: Context,
+            patientId: String? = null,
+            stage: PatientRegStage = PatientRegStage.OTHER
+        ) {
+            Intent(context, PatientRegistrationActivity::class.java).apply {
+                putExtra(PATIENT_UUID, patientId)
+                putExtra(PATIENT_CURRENT_STAGE, stage)
+            }.also { context.startActivity(it) }
+        }
     }
 
     private fun changeIconStatus(stage: RosterQuestionnaireStage) {
@@ -191,5 +206,4 @@ class RosterQuestionnaireMainActivity : BaseActivity() {
         else if (item.itemId == R.id.action_cancel) handleBackPressed()
         return true
     }
-
 }

@@ -68,6 +68,8 @@ import android.util.DisplayMetrics;
 import org.intelehealth.app.activities.householdSurvey.HouseholdSurveyActivity;
 import org.intelehealth.app.models.FamilyMemberRes;
 import org.intelehealth.app.BuildConfig;
+import org.intelehealth.app.ui.rosterquestionnaire.ui.RosterQuestionnaireMainActivity;
+import org.intelehealth.app.ui.rosterquestionnaire.utilities.RosterQuestionnaireStage;
 import org.intelehealth.app.utilities.CustomLog;
 
 import android.util.Log;
@@ -402,6 +404,11 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             }
         });
 
+        setClickListeners();
+
+    }
+
+    private void setClickListeners() {
         binding.householdSurvey.tvHouseholdSurvey.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -412,6 +419,20 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 startActivity(intent1);*/
             }
         });
+
+        binding.rosterDetails.generalEdit.setOnClickListener(v -> {
+            RosterQuestionnaireMainActivity.startRosterQuestionnaire(this, patientDTO.getUuid(), RosterQuestionnaireStage.GENERAL_ROSTER);
+            finish();
+        });
+        binding.rosterDetails.pregnancyEdit.setOnClickListener(v -> {
+            RosterQuestionnaireMainActivity.startRosterQuestionnaire(this, patientDTO.getUuid(), RosterQuestionnaireStage.PREGNANCY_ROSTER);
+            finish();
+        });
+        binding.rosterDetails.healthServiceEdit.setOnClickListener(v -> {
+            RosterQuestionnaireMainActivity.startRosterQuestionnaire(this, patientDTO.getUuid(), RosterQuestionnaireStage.HEALTH_SERVICE);
+            finish();
+        });
+
     }
 
     // Family Member
@@ -425,7 +446,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
         Log.v("Familyyy", "load fam: " + houseHoldValue);
 
-        if (!houseHoldValue.equalsIgnoreCase("")) {
+        if (houseHoldValue !=null && !houseHoldValue.equalsIgnoreCase("")) {
             //Fetch all patient UUID from houseHoldValue
             try {
                 List<FamilyMemberRes> listPatientNames = new ArrayList<>();

@@ -28,6 +28,8 @@ class HealthServiceRosterFragment : BaseRosterFragment(R.layout.fragment_health_
     }
 
     private fun clickListeners() {
+        // val activityBinding = (requireActivity() as RosterQuestionnaireMainActivity).binding
+
         binding.frag2BtnNext.setOnClickListener {
             //for now only UI is there hence navigated directly
             navigateToDetails()

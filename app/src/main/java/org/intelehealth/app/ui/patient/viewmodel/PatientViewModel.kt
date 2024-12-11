@@ -32,6 +32,7 @@ class PatientViewModel(
     var activeStatusAddressSection = true
     var activeStatusOtherSection = true
     var isEditMode: Boolean = false
+    var activeStatusRosterSection = false
 
     fun loadPatientDetails(
         patientId: String

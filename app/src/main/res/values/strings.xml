@@ -1414,4 +1414,9 @@
     <string name="health_service_roster">Health Service</string>
     <string name="general_to_pregnancy_roster">General to Pregnancy roster</string>
     <string name="pregnancy_to_health_service_roster">Pregnancy to Health service</string>
+    <string name="complete_patient_details">Complete patient details</string>
+    <string name="continue_to_enter_roster">Continue to enter roster details.</string>
+    <string name="general_roster_details">General Roster</string>
+    <string name="pregnancy_roster_details">Pregnancy Roster</string>
+    <string name="health_service_roster_details">Health Service Roster</string>
 </resources>

@@ -35,6 +35,8 @@ class PregnancyRosterFragment : BaseRosterFragment(R.layout.fragment_pregnancy_r
         }    }
 
     private fun clickListeners() {
+        //val activityBinding = (requireActivity() as RosterQuestionnaireMainActivity).binding
+
         binding.frag2BtnNext.setOnClickListener {
             //for now only UI is there hence navigated directly
             navigateToDetails()

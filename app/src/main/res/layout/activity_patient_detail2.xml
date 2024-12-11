@@ -114,8 +114,9 @@
             android:layout_below="@+id/toolbar"
             android:layout_marginBottom="@dimen/margin_16">
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
+                android:orientation="vertical"
                 android:layout_height="wrap_content">
 
 
@@ -204,9 +205,14 @@
                     layout="@layout/patdetail_familymember_layout"
                     app:activeStatus="@{familyMemberActiveStatus}" />
 
+                <include
+                    android:id="@+id/roster_details"
+                    layout="@layout/layout_roster_details" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_20"
                     android:layout_below="@+id/family_member_card"
                     android:layout_alignParentBottom="true"
                     android:layout_marginBottom="@dimen/margin_10"
@@ -357,7 +363,7 @@
                 </LinearLayout>
 
 
-            </RelativeLayout>
+            </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>
 

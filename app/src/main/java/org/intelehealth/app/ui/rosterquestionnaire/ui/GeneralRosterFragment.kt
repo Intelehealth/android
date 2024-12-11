@@ -8,11 +8,14 @@ import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import org.intelehealth.app.R
 import org.intelehealth.app.databinding.FragmentGeneralRosterBinding
+import org.intelehealth.app.ui.rosterquestionnaire.ui.RosterQuestionnaireMainActivity.Companion.handleBackEventFromRosterToPatientReg
+import org.intelehealth.app.ui.rosterquestionnaire.ui.RosterQuestionnaireMainActivity.Companion.startRosterQuestionnaire
 
 import org.intelehealth.app.ui.rosterquestionnaire.utilities.RosterQuestionnaireStage
 import org.intelehealth.app.ui.rosterquestionnaire.viewmodel.RosterViewModel
 import org.intelehealth.app.utilities.ArrayAdapterUtils
 import org.intelehealth.app.utilities.LanguageUtils
+import org.intelehealth.app.utilities.PatientRegStage
 import org.intelehealth.app.utilities.extensions.hideError
 import org.intelehealth.app.utilities.extensions.validate
 import org.intelehealth.app.utilities.extensions.validateDropDowb
@@ -204,6 +207,7 @@ class GeneralRosterFragment : BaseRosterFragment(R.layout.fragment_general_roste
             binding.autoCompleteEducationStatus,
             error
         )
+
         val occupation = when {
             // If "Other" is selected, validate the "Other" occupation field
             binding.llOtherOccupationLayout.visibility == View.VISIBLE -> {
@@ -222,8 +226,8 @@ class GeneralRosterFragment : BaseRosterFragment(R.layout.fragment_general_roste
             }
         }
 
-        val phoneOwnership = binding.textInputLayOccupation.validateDropDowb(
-            binding.autoCompleteOccupation,
+        val phoneOwnership = binding.textInputLayPhoneOwnership.validateDropDowb(
+            binding.autoCompletePhoneOwnership,
             error
         )
         val lastTimeBpChecked = binding.textInputLayCheckedBpLastTime.validateDropDowb(
@@ -238,21 +242,35 @@ class GeneralRosterFragment : BaseRosterFragment(R.layout.fragment_general_roste
             binding.autoCompleteHbCheckedLastTime,
             error
         )
+        val lastTimeBmiChecked = binding.textInputLayBMICheckedLastTime.validateDropDowb(
+            binding.autoCompleteBMICheckedLastTime,
+            error
+        )
 
-
-        if (relation.and(maritalStatus).and(educationStatus).and(occupation).and(phoneOwnership)
-                .and(lastTimeBpChecked).and(lastTimeSugarChecked).and(lastTimeHbChecked)
+        if (relation.and(maritalStatus).and(educationStatus).and(occupation).and(phoneOwnership).and(lastTimeBpChecked).and(lastTimeSugarChecked).and(lastTimeHbChecked).and(lastTimeBmiChecked)
         ) block.invoke()
+      /*  if (relation.and(maritalStatus).and(educationStatus).and(occupation).and(phoneOwnership)
+                .and(lastTimeBpChecked).and(lastTimeSugarChecked).and(lastTimeHbChecked)
+        ) block.invoke()*/
     }
+
     private fun clickListeners() {
-        binding.frag2BtnNext.setOnClickListener {
-            //for now only UI is there hence navigated directly
-            navigateToDetails()
-        }
+        // val activityBinding = (requireActivity() as RosterQuestionnaireMainActivity).binding
         binding.frag2BtnBack.setOnClickListener {
-           //add navigation here
+            // Handle back button click
+            handleBackEventFromRosterToPatientReg(
+                requireActivity(),
+                patientUuid,
+
+                PatientRegStage.OTHER
+            )
+        }
+
+        binding.frag2BtnNext.setOnClickListener {
+            validateForm { navigateToDetails() }
         }
     }
+
     private fun navigateToDetails() {
         GeneralRosterFragmentDirections.navigationGeneralToPregnancyRoster().apply {
             findNavController().navigate(this)
