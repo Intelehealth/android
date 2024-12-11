@@ -13,14 +13,15 @@ import org.intelehealth.app.R
 import org.intelehealth.app.databinding.FragmentAddPregnancyOutcomeBinding
 import org.intelehealth.app.ui.dialog.CalendarDialog
 import org.intelehealth.app.ui.rosterquestionnaire.model.PregnancyOutComeViewQuestion
-import org.intelehealth.app.ui.rosterquestionnaire.ui.adapter.PregnancyMultiViewAdapter
-import org.intelehealth.app.ui.rosterquestionnaire.ui.listeners.PregnancyMultiViewListener
+import org.intelehealth.app.ui.rosterquestionnaire.ui.adapter.MultiViewAdapter
+import org.intelehealth.app.ui.rosterquestionnaire.ui.listeners.MultiViewListener
 import org.intelehealth.app.ui.rosterquestionnaire.viewmodel.RosterViewModel
+import org.intelehealth.app.utilities.SpacingItemDecoration
 
 
-class AddPregnancyOutcomeDialog : DialogFragment(), PregnancyMultiViewListener {
+class AddOutcomeDialog : DialogFragment(), MultiViewListener {
 
-    private lateinit var pregnancyAdapter: PregnancyMultiViewAdapter
+    private lateinit var pregnancyAdapter: MultiViewAdapter
     private lateinit var _binding: FragmentAddPregnancyOutcomeBinding
     private lateinit var rosterViewModel: RosterViewModel
     private var pregnancyOutcomeList: ArrayList<PregnancyOutComeViewQuestion> = arrayListOf()
@@ -40,7 +41,7 @@ class AddPregnancyOutcomeDialog : DialogFragment(), PregnancyMultiViewListener {
         alertDialog.window!!.addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND) // dim background
         val width =
             context!!.resources.getDimensionPixelSize(R.dimen.internet_dialog_width) // set width to your dialog.
-        alertDialog.window!!.setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT)
+        alertDialog.window!!.setLayout(WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT)
 
         return alertDialog
     }
@@ -62,46 +63,19 @@ class AddPregnancyOutcomeDialog : DialogFragment(), PregnancyMultiViewListener {
 
 
     private fun setAdapter() {
-        pregnancyOutcomeList.apply {
-            add(
-                PregnancyOutComeViewQuestion(
-                    layoutId = R.layout.item_spinner_view,
-                    question = "What was the outcome of your pregnancy?",
-                    spinnerItem = resources.getStringArray(R.array.outcomes).toList()
-                )
-            )
-            add(
-                PregnancyOutComeViewQuestion(
-                    layoutId = R.layout.item_spinner_view,
-                    question = "What was the year of pregnancy outcome? ((a) for pregnant ladies, mention the date when conceived (b) in case of other options mention the date of delivery/miscarriage)",
-                    spinnerItem = resources.getStringArray(R.array.outcomes).toList()
-                )
-            )
-            add(
-                PregnancyOutComeViewQuestion(
-                    layoutId = R.layout.item_date_picker_view,
-                    question = "What was the year of pregnancy outcome? ((a) for pregnant ladies, mention the date when conceived (b) in case of other options mention the date of delivery/miscarriage)",
-
-                    )
-            )
-            add(
-                PregnancyOutComeViewQuestion(
-                    layoutId = R.layout.item_spinner_view,
-                    question = "How many months did this pregnancy last?",
-                    spinnerItem = resources.getStringArray(R.array.outcomes).toList()
-                )
-            )
-        }
+        pregnancyOutcomeList.addAll(rosterViewModel.getOutcomeQuestionList())
 
         _binding.rvOutcomeQuestions.apply {
             layoutManager = LinearLayoutManager(requireContext())
-            pregnancyAdapter = PregnancyMultiViewAdapter(
+            pregnancyAdapter = MultiViewAdapter(
                 pregnancyOutcomeList,
-                this@AddPregnancyOutcomeDialog
+                this@AddOutcomeDialog
             )
             adapter = pregnancyAdapter
+            addItemDecoration(SpacingItemDecoration(16))
         }
     }
+
 
     override fun onItemClick(item: PregnancyOutComeViewQuestion, position: Int, view: View) {
         if (item.layoutId == R.layout.item_spinner_view) {

@@ -13,7 +13,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="16dp"
-            tools:context=".ui.rosterquestionnaire.ui.AddPregnancyOutcomeDialog">
+            tools:context=".ui.rosterquestionnaire.ui.AddOutcomeDialog">
 
             <TextView
                 android:id="@+id/tvHeader"
@@ -22,7 +22,8 @@
                 android:lineSpacingExtra="3sp"
                 android:text="@string/pregnancy_outcome"
                 android:textAppearance="@style/blur_txtview"
-                android:textSize="@null"
+                android:textSize="@dimen/text_18sp"
+                android:textColor="@color/black"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -46,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/margin_16"
                 android:layout_marginBottom="@dimen/std_16dp"
-                android:text="@string/generic_back"
+                android:text="@string/cancel"
                 android:textColor="@color/primary_text"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/btnSave"
