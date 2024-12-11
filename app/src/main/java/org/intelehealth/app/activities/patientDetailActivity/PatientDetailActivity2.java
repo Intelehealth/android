@@ -63,6 +63,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.LocaleList;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 
 import org.intelehealth.app.activities.householdSurvey.HouseholdSurveyActivity;
@@ -425,7 +426,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
         Log.v("Familyyy", "load fam: " + houseHoldValue);
 
-        if (!houseHoldValue.equalsIgnoreCase("")) {
+        if (!TextUtils.isEmpty(houseHoldValue)) {
             //Fetch all patient UUID from houseHoldValue
             try {
                 List<FamilyMemberRes> listPatientNames = new ArrayList<>();

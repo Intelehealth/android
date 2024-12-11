@@ -2642,4 +2642,13 @@
         <item>More than 6 months</item>
     </string-array>
 
+    <string-array name="outcomes">
+        <item>Currently married</item>
+        <item>Widowed</item>
+        <item>Divorced</item>
+        <item>Separated</item>
+        <item>Deserted</item>
+        <item>Never married</item>
+    </string-array>
+
 </resources>
