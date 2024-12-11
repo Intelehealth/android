@@ -372,7 +372,7 @@ object StaticPatientRegistrationEnabledFieldsHelper {
             groupId = "",
             name = "",
             idKey = PatientRegConfigKeys.AYUSHMAN_CARD,
-            isMandatory = false,
+            isMandatory = true,
             isEditable = true,
             isEnabled = true
         )
@@ -384,7 +384,7 @@ object StaticPatientRegistrationEnabledFieldsHelper {
             groupId = "",
             name = "",
             idKey = PatientRegConfigKeys.MGNREGA_CARD,
-            isMandatory = false,
+            isMandatory = true,
             isEditable = true,
             isEnabled = true
         )
@@ -396,7 +396,7 @@ object StaticPatientRegistrationEnabledFieldsHelper {
             groupId = "",
             name = "",
             idKey = PatientRegConfigKeys.BANK_ACCOUNT,
-            isMandatory = false,
+            isMandatory = true,
             isEditable = true,
             isEnabled = true
         )
@@ -408,7 +408,7 @@ object StaticPatientRegistrationEnabledFieldsHelper {
             groupId = "",
             name = "",
             idKey = PatientRegConfigKeys.PHONE_OWNERSHIP,
-            isMandatory = false,
+            isMandatory = true,
             isEditable = true,
             isEnabled = true
         )
@@ -420,7 +420,7 @@ object StaticPatientRegistrationEnabledFieldsHelper {
             groupId = "",
             name = "",
             idKey = PatientRegConfigKeys.FAMILY_WHATSAPP,
-            isMandatory = false,
+            isMandatory = true,
             isEditable = true,
             isEnabled = true
         )
@@ -432,6 +432,54 @@ object StaticPatientRegistrationEnabledFieldsHelper {
             groupId = "",
             name = "",
             idKey = PatientRegConfigKeys.MARITAL_STATUS,
+            isMandatory = true,
+            isEditable = true,
+            isEnabled = true
+        )
+
+        fields.add(currentField)
+
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.GENERAL_OCCUPATION,
+            isMandatory = false,
+            isEditable = true,
+            isEnabled = true
+        )
+
+        fields.add(currentField)
+
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.GENERAL_CASTE,
+            isMandatory = false,
+            isEditable = true,
+            isEnabled = true
+        )
+
+        fields.add(currentField)
+
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.GENERAL_EDUCATION,
+            isMandatory = false,
+            isEditable = true,
+            isEnabled = true
+        )
+
+        fields.add(currentField)
+
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.GENERAL_ECONOMIC_STATUS,
             isMandatory = false,
             isEditable = true,
             isEnabled = true
@@ -450,7 +498,115 @@ object StaticPatientRegistrationEnabledFieldsHelper {
             id = 0,
             groupId = "",
             name = "",
-            idKey = PatientRegConfigKeys.AYUSHMAN_CARD,
+            idKey = PatientRegConfigKeys.HB_CHECK,
+            isMandatory = true,
+            isEditable = true,
+            isEnabled = true
+        )
+
+        fields.add(currentField)
+
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.BP_CHECK,
+            isMandatory = true,
+            isEditable = true,
+            isEnabled = true
+        )
+
+        fields.add(currentField)
+
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.SUGAR_CHECK,
+            isMandatory = true,
+            isEditable = true,
+            isEnabled = true
+        )
+
+        fields.add(currentField)
+
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.BP_VALUE,
+            isMandatory = true,
+            isEditable = true,
+            isEnabled = true
+        )
+
+        fields.add(currentField)
+
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.DIABETES_VALUE,
+            isMandatory = true,
+            isEditable = true,
+            isEnabled = true
+        )
+
+        fields.add(currentField)
+
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.ARTHRITIS_VALUE,
+            isMandatory = true,
+            isEditable = true,
+            isEnabled = true
+        )
+
+        fields.add(currentField)
+
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.ANEMIA_VALUE,
+            isMandatory = true,
+            isEditable = true,
+            isEnabled = true
+        )
+
+        fields.add(currentField)
+
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.SURGERY_VALUE,
+            isMandatory = true,
+            isEditable = true,
+            isEnabled = true
+        )
+
+        fields.add(currentField)
+
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.SURGERY_REASON,
+            isMandatory = true,
+            isEditable = true,
+            isEnabled = false
+        )
+
+        fields.add(currentField)
+
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.SMOKING_HISTORY,
             isMandatory = false,
             isEditable = true,
             isEnabled = true
@@ -462,7 +618,7 @@ object StaticPatientRegistrationEnabledFieldsHelper {
             id = 0,
             groupId = "",
             name = "",
-            idKey = PatientRegConfigKeys.MGNREGA_CARD,
+            idKey = PatientRegConfigKeys.SMOKING_RATE,
             isMandatory = false,
             isEditable = true,
             isEnabled = true
@@ -474,7 +630,7 @@ object StaticPatientRegistrationEnabledFieldsHelper {
             id = 0,
             groupId = "",
             name = "",
-            idKey = PatientRegConfigKeys.BANK_ACCOUNT,
+            idKey = PatientRegConfigKeys.SMOKING_DURATION,
             isMandatory = false,
             isEditable = true,
             isEnabled = true
@@ -486,7 +642,7 @@ object StaticPatientRegistrationEnabledFieldsHelper {
             id = 0,
             groupId = "",
             name = "",
-            idKey = PatientRegConfigKeys.PHONE_OWNERSHIP,
+            idKey = PatientRegConfigKeys.SMOKING_FREQUENCY,
             isMandatory = false,
             isEditable = true,
             isEnabled = true
@@ -498,7 +654,7 @@ object StaticPatientRegistrationEnabledFieldsHelper {
             id = 0,
             groupId = "",
             name = "",
-            idKey = PatientRegConfigKeys.FAMILY_WHATSAPP,
+            idKey = PatientRegConfigKeys.CHEW_TOBACCO,
             isMandatory = false,
             isEditable = true,
             isEnabled = true
@@ -510,7 +666,7 @@ object StaticPatientRegistrationEnabledFieldsHelper {
             id = 0,
             groupId = "",
             name = "",
-            idKey = PatientRegConfigKeys.MARITAL_STATUS,
+            idKey = PatientRegConfigKeys.ALCOHOL_HISTORY,
             isMandatory = false,
             isEditable = true,
             isEnabled = true
@@ -518,6 +674,41 @@ object StaticPatientRegistrationEnabledFieldsHelper {
 
         fields.add(currentField)
 
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.ALCOHOL_RATE,
+            isMandatory = false,
+            isEditable = true,
+            isEnabled = true
+        )
+
+        fields.add(currentField)
+
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.ALCOHOL_DURATION,
+            isMandatory = false,
+            isEditable = true,
+            isEnabled = true
+        )
+
+        fields.add(currentField)
+
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.ALCOHOL_FREQUENCY,
+            isMandatory = false,
+            isEditable = true,
+            isEnabled = true
+        )
+
+        fields.add(currentField)
 
         return fields
     }

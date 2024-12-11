@@ -36,6 +36,1016 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/padding_20">
+
+                <LinearLayout
+                    android:id="@+id/llHbCheck"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/std_12dp"
+                    android:orientation="vertical"
+                    android:visibility="@{medicalConfig.hbCheck.enabled ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/llEducation">
+
+                    <TextView
+                        android:id="@+id/tv_hb_check_question"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingExtra="3sp"
+                        android:text="@{ medicalConfig.hbCheck.mandatory ? @string/hb_check_question + ` *` : @string/hb_check_question}"
+                        android:textAppearance="@style/blur_txtview"
+                        android:textSize="@null"
+                        tools:text="@string/hb_check_question" />
+
+                    <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
+                        android:id="@+id/til_hb_check_option"
+                        style="@style/AppTheme.OutlineInputBox.DropDown"
+                        config="@{medicalConfig.hbCheck}"
+                        editMode="@{baselineEditMode}"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_4"
+                        app:hintEnabled="false">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/ac_hb_check"
+                            style="@style/AppTheme.InputBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="none" />
+                    </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llBpCheck"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/std_12dp"
+                    android:orientation="vertical"
+                    android:visibility="@{medicalConfig.bpCheck.enabled ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/llEducation">
+
+                    <TextView
+                        android:id="@+id/tv_bp_check_question"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingExtra="3sp"
+                        android:text="@{ medicalConfig.bpCheck.mandatory ? @string/bp_check_question + ` *` : @string/bp_check_question}"
+                        android:textAppearance="@style/blur_txtview"
+                        android:textSize="@null"
+                        tools:text="@string/bp_check_question" />
+
+                    <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
+                        android:id="@+id/til_bp_check_option"
+                        style="@style/AppTheme.OutlineInputBox.DropDown"
+                        config="@{medicalConfig.bpCheck}"
+                        editMode="@{baselineEditMode}"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_4"
+                        app:hintEnabled="false">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/ac_bp_check"
+                            style="@style/AppTheme.InputBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="none" />
+                    </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llSugarCheck"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/std_12dp"
+                    android:orientation="vertical"
+                    android:visibility="@{medicalConfig.sugarCheck.enabled ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/llEducation">
+
+                    <TextView
+                        android:id="@+id/tv_sugar_check_question"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingExtra="3sp"
+                        android:text="@{ medicalConfig.sugarCheck.mandatory ? @string/sugar_check_question + ` *` : @string/sugar_check_question}"
+                        android:textAppearance="@style/blur_txtview"
+                        android:textSize="@null"
+                        tools:text="@string/sugar_check_question" />
+
+                    <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
+                        android:id="@+id/til_sugar_check_option"
+                        style="@style/AppTheme.OutlineInputBox.DropDown"
+                        config="@{medicalConfig.sugarCheck}"
+                        editMode="@{baselineEditMode}"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_4"
+                        app:hintEnabled="false">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/ac_sugar_check"
+                            style="@style/AppTheme.InputBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="none" />
+                    </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:lineSpacingExtra="3sp"
+                    android:layout_marginTop="@dimen/space_10dp"
+                    tools:text="Medical History"
+                    android:text="Medical History"
+                    tools:textFontWeight="700"
+                    android:textColor="@color/deepBlue3"/>
+
+                <LinearLayout
+                    android:id="@+id/llBpLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/std_12dp"
+                    android:orientation="vertical"
+                    android:visibility="@{medicalConfig.bpValue.enabled ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/llEducation">
+
+                    <TextView
+                        android:id="@+id/tv_bp_label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingExtra="3sp"
+                        android:text="@{ medicalConfig.bpValue.mandatory ? @string/bp_label + ` *` : @string/bp_label}"
+                        android:textAppearance="@style/blur_txtview"
+                        android:textSize="@null"
+                        tools:text="@string/bp_label" />
+
+                    <RadioGroup
+                        android:id="@+id/rg_bp_options"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/RadioButtonStyleSelection"
+                        config="@{medicalConfig.bpValue}"
+                        editMode="@{baselineEditMode}"
+                        android:layout_marginTop="@dimen/margin_5"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:id="@+id/radioBpYes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            config="@{medicalConfig.bpValue}"
+                            editMode="@{baselineEditMode}"
+                            android:text="@string/yes"
+                            android:layout_marginEnd="@dimen/margin_20"/>
+
+                        <RadioButton
+                            android:id="@+id/radioBpNo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            config="@{medicalConfig.bpValue}"
+                            editMode="@{baselineEditMode}"
+                            android:text="@string/no" />
+                    </RadioGroup>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llDiabetesLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/std_12dp"
+                    android:orientation="vertical"
+                    android:visibility="@{medicalConfig.diabetesValue.enabled ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/llEducation">
+
+                    <TextView
+                        android:id="@+id/tv_diabetes_label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingExtra="3sp"
+                        android:text="@{ medicalConfig.diabetesValue.mandatory ? @string/diabetes_label + ` *` : @string/diabetes_label}"
+                        android:textAppearance="@style/blur_txtview"
+                        android:textSize="@null"
+                        tools:text="@string/diabetes_label" />
+
+                    <RadioGroup
+                        android:id="@+id/rg_diabetes_options"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/RadioButtonStyleSelection"
+                        config="@{medicalConfig.diabetesValue}"
+                        editMode="@{baselineEditMode}"
+                        android:layout_marginTop="@dimen/margin_5"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:id="@+id/radioDiabetesYes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            config="@{medicalConfig.diabetesValue}"
+                            editMode="@{baselineEditMode}"
+                            android:text="@string/yes"
+                            android:layout_marginEnd="@dimen/margin_20"/>
+
+                        <RadioButton
+                            android:id="@+id/radioDiabetesNo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            config="@{medicalConfig.diabetesValue}"
+                            editMode="@{baselineEditMode}"
+                            android:text="@string/no" />
+                    </RadioGroup>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llArthritisLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/std_12dp"
+                    android:orientation="vertical"
+                    android:visibility="@{medicalConfig.arthritisValue.enabled ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/llEducation">
+
+                    <TextView
+                        android:id="@+id/tv_arthritis_label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingExtra="3sp"
+                        android:text="@{ medicalConfig.arthritisValue.mandatory ? @string/arthritis_label + ` *` : @string/arthritis_label}"
+                        android:textAppearance="@style/blur_txtview"
+                        android:textSize="@null"
+                        tools:text="@string/arthritis_label" />
+
+                    <RadioGroup
+                        android:id="@+id/rg_arthritis_options"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/RadioButtonStyleSelection"
+                        config="@{medicalConfig.arthritisValue}"
+                        editMode="@{baselineEditMode}"
+                        android:layout_marginTop="@dimen/margin_5"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:id="@+id/radioArthritisYes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            config="@{medicalConfig.arthritisValue}"
+                            editMode="@{baselineEditMode}"
+                            android:text="@string/yes"
+                            android:layout_marginEnd="@dimen/margin_20"/>
+
+                        <RadioButton
+                            android:id="@+id/radioArthritisNo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            config="@{medicalConfig.arthritisValue}"
+                            editMode="@{baselineEditMode}"
+                            android:text="@string/no" />
+                    </RadioGroup>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llAnemiaLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/std_12dp"
+                    android:orientation="vertical"
+                    android:visibility="@{medicalConfig.anemiaValue.enabled ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/llEducation">
+
+                    <TextView
+                        android:id="@+id/tv_anemia_label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingExtra="3sp"
+                        android:text="@{ medicalConfig.anemiaValue.mandatory ? @string/bp_label + ` *` : @string/bp_label}"
+                        android:textAppearance="@style/blur_txtview"
+                        android:textSize="@null"
+                        tools:text="@string/anemia_label" />
+
+                    <RadioGroup
+                        android:id="@+id/rg_anemia_options"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/RadioButtonStyleSelection"
+                        config="@{medicalConfig.anemiaValue}"
+                        editMode="@{baselineEditMode}"
+                        android:layout_marginTop="@dimen/margin_5"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:id="@+id/radioAnemiaYes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            config="@{medicalConfig.anemiaValue}"
+                            editMode="@{baselineEditMode}"
+                            android:text="@string/yes"
+                            android:layout_marginEnd="@dimen/margin_20"/>
+
+                        <RadioButton
+                            android:id="@+id/radioAnemiaNo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            config="@{medicalConfig.anemiaValue}"
+                            editMode="@{baselineEditMode}"
+                            android:text="@string/no" />
+                    </RadioGroup>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llSurgeryLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/std_12dp"
+                    android:orientation="vertical"
+                    android:visibility="@{medicalConfig.surgeryValue.enabled ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/llEducation">
+
+                    <TextView
+                        android:id="@+id/tv_surgery_label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingExtra="3sp"
+                        android:text="@{ medicalConfig.surgeryValue.mandatory ? @string/surgery_label + ` *` : @string/surgery_label}"
+                        android:textAppearance="@style/blur_txtview"
+                        android:textSize="@null"
+                        tools:text="@string/surgery_label" />
+
+                    <RadioGroup
+                        android:id="@+id/rg_surgery_options"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/RadioButtonStyleSelection"
+                        config="@{medicalConfig.surgeryValue}"
+                        editMode="@{baselineEditMode}"
+                        android:layout_marginTop="@dimen/margin_5"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:id="@+id/radioSurgeryYes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            config="@{medicalConfig.surgeryValue}"
+                            editMode="@{baselineEditMode}"
+                            android:text="@string/yes"
+                            android:layout_marginEnd="@dimen/margin_20"/>
+
+                        <RadioButton
+                            android:id="@+id/radioSurgeryNo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            config="@{medicalConfig.surgeryValue}"
+                            editMode="@{baselineEditMode}"
+                            android:text="@string/no" />
+                    </RadioGroup>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llSurgeryReasonCheck"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/std_12dp"
+                    android:orientation="vertical"
+                    android:visibility="@{medicalConfig.surgeryReason.enabled ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/llEducation">
+
+                    <TextView
+                        android:id="@+id/tv_surgery_reason_question"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingExtra="3sp"
+                        android:text="@{ medicalConfig.surgeryReason.mandatory ? @string/surgery_reason_label + ` *` : @string/surgery_reason_label}"
+                        android:textAppearance="@style/blur_txtview"
+                        android:textSize="@null"
+                        tools:text="@string/surgery_reason_label" />
+
+                    <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
+                        android:id="@+id/til_surgery_reason_option"
+                        style="@style/AppTheme.OutlineInputBox.DropDown"
+                        config="@{medicalConfig.surgeryReason}"
+                        editMode="@{baselineEditMode}"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_4"
+                        app:hintEnabled="false">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/ac_surgery_reason_check"
+                            style="@style/AppTheme.InputBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="none" />
+                    </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llSmokingHistory"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/std_12dp"
+                    android:orientation="vertical"
+                    android:visibility="@{medicalConfig.smokingHistory.enabled ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/llEducation">
+
+                    <TextView
+                        android:id="@+id/tv_smoking_history_label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingExtra="3sp"
+                        android:text="@{ medicalConfig.smokingHistory.mandatory ? @string/smoking_history_question + ` *` : @string/smoking_history_question}"
+                        android:textAppearance="@style/blur_txtview"
+                        android:textSize="@null"
+                        tools:text="@string/smoking_history_question" />
+
+                    <RadioGroup
+                        android:id="@+id/rg_smoking_history_options"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/RadioButtonStyleSelection"
+                        config="@{medicalConfig.smokingHistory}"
+                        editMode="@{baselineEditMode}"
+                        android:layout_marginTop="@dimen/margin_5"
+                        android:orientation="vertical">
+
+                        <RadioButton
+                            android:id="@+id/radioSmoker"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            config="@{medicalConfig.smokingHistory}"
+                            editMode="@{baselineEditMode}"
+                            android:text="Smoker"
+                            android:layout_marginEnd="@dimen/margin_20"/>
+
+                        <RadioButton
+                            android:id="@+id/radioNonSmoker"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            config="@{medicalConfig.smokingHistory}"
+                            editMode="@{baselineEditMode}"
+                            android:text="Non-Smoker" />
+
+                        <RadioButton
+                            android:id="@+id/radioDeclined"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            config="@{medicalConfig.smokingHistory}"
+                            editMode="@{baselineEditMode}"
+                            android:text="Declined to answer" />
+                    </RadioGroup>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llSmokingRate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/std_12dp"
+                    android:orientation="vertical"
+                    android:visibility="@{medicalConfig.smokingRate.enabled ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/llEducation">
+
+                    <TextView
+                        android:id="@+id/tv_smoking_rate_label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingExtra="3sp"
+                        android:text="@{ medicalConfig.smokingRate.mandatory ? @string/smoking_rate_label + ` *` : @string/smoking_rate_label}"
+                        android:textAppearance="@style/blur_txtview"
+                        android:textSize="@null"
+                        tools:text="@string/smoking_rate_label" />
+
+                    <RadioGroup
+                        android:id="@+id/rg_smoking_rate_options"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/RadioButtonStyleSelection"
+                        config="@{medicalConfig.smokingRate}"
+                        editMode="@{baselineEditMode}"
+                        android:layout_marginTop="@dimen/margin_5"
+                        android:orientation="vertical">
+
+                        <RadioButton
+                            android:id="@+id/radioSmokingRate1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            config="@{medicalConfig.smokingRate}"
+                            editMode="@{baselineEditMode}"
+                            android:text="less than 5 bidis / cigarettes"/>
+
+                        <RadioButton
+                            android:id="@+id/radioSmokingRate2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            config="@{medicalConfig.smokingRate}"
+                            editMode="@{baselineEditMode}"
+                            android:text="5-10 bidis / cigarettes"/>
+
+                        <RadioButton
+                            android:id="@+id/radioSmokingRate3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            config="@{medicalConfig.smokingRate}"
+                            editMode="@{baselineEditMode}"
+                            android:text="More than 10 bidis / cigarettes" />
+
+                    </RadioGroup>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llSmokingDuration"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/std_12dp"
+                    android:orientation="vertical"
+                    android:visibility="@{medicalConfig.smokingDuration.enabled ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/llEducation">
+
+                    <TextView
+                        android:id="@+id/tv_smoking_duration_label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingExtra="3sp"
+                        android:text="@{ medicalConfig.smokingDuration.mandatory ? @string/smoking_duration_question + ` *` : @string/smoking_duration_question}"
+                        android:textAppearance="@style/blur_txtview"
+                        android:textSize="@null"
+                        tools:text="@string/smoking_duration_question" />
+
+                    <RadioGroup
+                        android:id="@+id/rg_smoking_duration_options"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/RadioButtonStyleSelection"
+                        config="@{medicalConfig.smokingDuration}"
+                        editMode="@{baselineEditMode}"
+                        android:layout_marginTop="@dimen/margin_5"
+                        android:orientation="vertical">
+
+                        <RadioButton
+                            android:id="@+id/radioSmokingDuration1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            config="@{medicalConfig.smokingDuration}"
+                            editMode="@{baselineEditMode}"
+                            android:text="Less than a year"/>
+
+                        <RadioButton
+                            android:id="@+id/radioSmokingDuration2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            config="@{medicalConfig.smokingDuration}"
+                            editMode="@{baselineEditMode}"
+                            android:text="From 1 year to 5 years"/>
+
+                        <RadioButton
+                            android:id="@+id/radioSmokingDuration3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            config="@{medicalConfig.alcoholDuration}"
+                            editMode="@{baselineEditMode}"
+                            android:text="From 5 to 10 years" />
+
+                        <RadioButton
+                            android:id="@+id/radioSmokingDuration4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            config="@{medicalConfig.alcoholDuration}"
+                            editMode="@{baselineEditMode}"
+                            android:text="More than 10 years" />
+
+                    </RadioGroup>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llSmokingFrequency"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/std_12dp"
+                    android:orientation="vertical"
+                    android:visibility="@{medicalConfig.alcoholFrequency.enabled ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/llEducation">
+
+                    <TextView
+                        android:id="@+id/tv_smoking_frequency_label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingExtra="3sp"
+                        android:text="@{ medicalConfig.smokingFrequency.mandatory ? @string/smoking_frequency_label + ` *` : @string/smoking_frequency_label}"
+                        android:textAppearance="@style/blur_txtview"
+                        android:textSize="@null"
+                        tools:text="@string/smoking_frequency_label" />
+
+                    <RadioGroup
+                        android:id="@+id/rg_smoking_frequency_options"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/RadioButtonStyleSelection"
+                        config="@{medicalConfig.smokingFrequency}"
+                        editMode="@{baselineEditMode}"
+                        android:layout_marginTop="@dimen/margin_5"
+                        android:orientation="vertical">
+
+                        <RadioButton
+                            android:id="@+id/radioSmokingFrequency1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            config="@{medicalConfig.smokingFrequency}"
+                            editMode="@{baselineEditMode}"
+                            android:text="Daily"/>
+
+                        <RadioButton
+                            android:id="@+id/radioSmokingFrequency2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            config="@{medicalConfig.smokingFrequency}"
+                            editMode="@{baselineEditMode}"
+                            android:text="Once a week"/>
+
+                        <RadioButton
+                            android:id="@+id/radioSmokingFrequency3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            config="@{medicalConfig.smokingFrequency}"
+                            editMode="@{baselineEditMode}"
+                            android:text="Twice a week" />
+
+                        <RadioButton
+                            android:id="@+id/radioSmokingFrequency4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            config="@{medicalConfig.smokingFrequency}"
+                            editMode="@{baselineEditMode}"
+                            android:text="Occasionally (Once a month or less)" />
+
+                    </RadioGroup>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llChewTobacco"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/std_12dp"
+                    android:orientation="vertical"
+                    android:visibility="@{medicalConfig.chewTobacco.enabled ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/llEducation">
+
+                    <TextView
+                        android:id="@+id/tv_chew_tobacco_label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingExtra="3sp"
+                        android:text="@{ medicalConfig.chewTobacco.mandatory ? @string/chew_tobacco_question + ` *` : @string/chew_tobacco_question}"
+                        android:textAppearance="@style/blur_txtview"
+                        android:textSize="@null"
+                        tools:text="@string/chew_tobacco_question" />
+
+                    <RadioGroup
+                        android:id="@+id/rg_chew_tobacco_options"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/RadioButtonStyleSelection"
+                        config="@{medicalConfig.chewTobacco}"
+                        editMode="@{baselineEditMode}"
+                        android:layout_marginTop="@dimen/margin_5"
+                        android:orientation="vertical">
+
+                        <RadioButton
+                            android:id="@+id/radioChewYes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            config="@{medicalConfig.smokingHistory}"
+                            editMode="@{baselineEditMode}"
+                            android:text="@string/yes"/>
+
+                        <RadioButton
+                            android:id="@+id/radioChewNo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            config="@{medicalConfig.chewTobacco}"
+                            editMode="@{baselineEditMode}"
+                            android:text="@string/no"/>
+
+                        <RadioButton
+                            android:id="@+id/radioChewDeclined"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            config="@{medicalConfig.chewTobacco}"
+                            editMode="@{baselineEditMode}"
+                            android:text="@string/decline_to_answer" />
+                    </RadioGroup>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llAlcoholHistory"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/std_12dp"
+                    android:orientation="vertical"
+                    android:visibility="@{medicalConfig.alcoholHistory.enabled ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/llEducation">
+
+                    <TextView
+                        android:id="@+id/tv_alcohol_history_label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingExtra="3sp"
+                        android:text="@{ medicalConfig.alcoholHistory.mandatory ? @string/alcohol_history_question + ` *` : @string/alcohol_history_question}"
+                        android:textAppearance="@style/blur_txtview"
+                        android:textSize="@null"
+                        tools:text="@string/alcohol_history_question" />
+
+                    <RadioGroup
+                        android:id="@+id/rg_alcohol_history_options"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/RadioButtonStyleSelection"
+                        config="@{medicalConfig.alcoholHistory}"
+                        editMode="@{baselineEditMode}"
+                        android:layout_marginTop="@dimen/margin_5"
+                        android:orientation="vertical">
+
+                        <RadioButton
+                            android:id="@+id/radioAlcoholHistoryYes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            config="@{medicalConfig.alcoholHistory}"
+                            editMode="@{baselineEditMode}"
+                            android:text="@string/yes"/>
+
+                        <RadioButton
+                            android:id="@+id/radioAlcoholHistoryNo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            config="@{medicalConfig.alcoholHistory}"
+                            editMode="@{baselineEditMode}"
+                            android:text="@string/no"/>
+
+                        <RadioButton
+                            android:id="@+id/radioAlcoholHistoryDeclined"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            config="@{medicalConfig.alcoholHistory}"
+                            editMode="@{baselineEditMode}"
+                            android:text="@string/decline_to_answer" />
+                    </RadioGroup>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llAlcoholRate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/std_12dp"
+                    android:orientation="vertical"
+                    android:visibility="@{medicalConfig.alcoholRate.enabled ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/llEducation">
+
+                    <TextView
+                        android:id="@+id/tv_alcohol_rate_label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingExtra="3sp"
+                        android:text="@{ medicalConfig.alcoholRate.mandatory ? @string/alcohol_rate_label + ` *` : @string/alcohol_rate_label}"
+                        android:textAppearance="@style/blur_txtview"
+                        android:textSize="@null"
+                        tools:text="@string/alcohol_rate_label" />
+
+                    <RadioGroup
+                        android:id="@+id/rg_alcohol_rate_options"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/RadioButtonStyleSelection"
+                        config="@{medicalConfig.alcoholRate}"
+                        editMode="@{baselineEditMode}"
+                        android:layout_marginTop="@dimen/margin_5"
+                        android:orientation="vertical">
+
+                        <RadioButton
+                            android:id="@+id/radioAlcoholRate1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            config="@{medicalConfig.alcoholRate}"
+                            editMode="@{baselineEditMode}"
+                            android:text="0-50 ml"/>
+
+                        <RadioButton
+                            android:id="@+id/radioAlcoholRate2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            config="@{medicalConfig.alcoholRate}"
+                            editMode="@{baselineEditMode}"
+                            android:text="50-100 ml"/>
+
+                        <RadioButton
+                            android:id="@+id/radioAlcoholRate3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            config="@{medicalConfig.alcoholRate}"
+                            editMode="@{baselineEditMode}"
+                            android:text="100-250 ml" />
+
+                        <RadioButton
+                            android:id="@+id/radioAlcoholRate4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            config="@{medicalConfig.alcoholRate}"
+                            editMode="@{baselineEditMode}"
+                            android:text="250-500 ml" />
+
+                        <RadioButton
+                            android:id="@+id/radioAlcoholRate5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            config="@{medicalConfig.alcoholRate}"
+                            editMode="@{baselineEditMode}"
+                            android:text="More than 500 ml" />
+                    </RadioGroup>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llAlcoholDuration"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/std_12dp"
+                    android:orientation="vertical"
+                    android:visibility="@{medicalConfig.alcoholDuration.enabled ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/llEducation">
+
+                    <TextView
+                        android:id="@+id/tv_alcohol_duration_label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingExtra="3sp"
+                        android:text="@{ medicalConfig.alcoholDuration.mandatory ? @string/alcohol_rate_label + ` *` : @string/alcohol_rate_label}"
+                        android:textAppearance="@style/blur_txtview"
+                        android:textSize="@null"
+                        tools:text="@string/alcohol_rate_label" />
+
+                    <RadioGroup
+                        android:id="@+id/rg_alcohol_duration_options"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/RadioButtonStyleSelection"
+                        config="@{medicalConfig.alcoholDuration}"
+                        editMode="@{baselineEditMode}"
+                        android:layout_marginTop="@dimen/margin_5"
+                        android:orientation="vertical">
+
+                        <RadioButton
+                            android:id="@+id/radioAlcoholDuration1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            config="@{medicalConfig.alcoholDuration}"
+                            editMode="@{baselineEditMode}"
+                            android:text="Less than a year"/>
+
+                        <RadioButton
+                            android:id="@+id/radioAlcoholDuration2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            config="@{medicalConfig.alcoholDuration}"
+                            editMode="@{baselineEditMode}"
+                            android:text="From 1 year to 5 years"/>
+
+                        <RadioButton
+                            android:id="@+id/radioAlcoholDuration3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            config="@{medicalConfig.alcoholDuration}"
+                            editMode="@{baselineEditMode}"
+                            android:text="From 5 to 10 years" />
+
+                        <RadioButton
+                            android:id="@+id/radioAlcoholDuration4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            config="@{medicalConfig.alcoholDuration}"
+                            editMode="@{baselineEditMode}"
+                            android:text="More than 10 years" />
+
+                    </RadioGroup>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llAlcoholFrequency"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/std_12dp"
+                    android:orientation="vertical"
+                    android:visibility="@{medicalConfig.alcoholFrequency.enabled ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/llEducation">
+
+                    <TextView
+                        android:id="@+id/tv_alcohol_frequency_label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingExtra="3sp"
+                        android:text="@{ medicalConfig.alcoholFrequency.mandatory ? @string/alcohol_frequency_label + ` *` : @string/alcohol_frequency_label}"
+                        android:textAppearance="@style/blur_txtview"
+                        android:textSize="@null"
+                        tools:text="@string/alcohol_frequency_label" />
+
+                    <RadioGroup
+                        android:id="@+id/rg_alcohol_frequency_options"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/RadioButtonStyleSelection"
+                        config="@{medicalConfig.alcoholFrequency}"
+                        editMode="@{baselineEditMode}"
+                        android:layout_marginTop="@dimen/margin_5"
+                        android:orientation="vertical">
+
+                        <RadioButton
+                            android:id="@+id/radioAlcoholFrequency1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            config="@{medicalConfig.alcoholFrequency}"
+                            editMode="@{baselineEditMode}"
+                            android:text="Daily"/>
+
+                        <RadioButton
+                            android:id="@+id/radioAlcoholFrequency2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            config="@{medicalConfig.alcoholFrequency}"
+                            editMode="@{baselineEditMode}"
+                            android:text="Once a week"/>
+
+                        <RadioButton
+                            android:id="@+id/radioAlcoholFrequency3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            config="@{medicalConfig.alcoholFrequency}"
+                            editMode="@{baselineEditMode}"
+                            android:text="Twice a week" />
+
+                        <RadioButton
+                            android:id="@+id/radioAlcoholFrequency4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            config="@{medicalConfig.alcoholFrequency}"
+                            editMode="@{baselineEditMode}"
+                            android:text="Occasionally (Once a month or less)" />
+
+                    </RadioGroup>
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
 
         </androidx.core.widget.NestedScrollView>
 

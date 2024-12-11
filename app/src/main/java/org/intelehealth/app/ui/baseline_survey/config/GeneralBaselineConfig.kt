@@ -14,4 +14,8 @@ class GeneralBaselineConfig {
     var phoneOwnership: PatientRegistrationFields? = null
     var familyWhatsapp: PatientRegistrationFields? = null
     var maritalStatus: PatientRegistrationFields? = null
+    var occupation: PatientRegistrationFields? = null
+    var caste: PatientRegistrationFields? = null
+    var education: PatientRegistrationFields? = null
+    var economicStatus: PatientRegistrationFields? = null
 }

@@ -19,6 +19,7 @@ import org.intelehealth.app.databinding.ActivityBaselineSurveyBinding
 import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.app.shared.BaseActivity
 import org.intelehealth.app.syncModule.SyncUtils
+import org.intelehealth.app.ui.baseline_survey.factory.BaselineSurveyViewModelFactory
 import org.intelehealth.app.utilities.BaselineSurveySource
 import org.intelehealth.app.utilities.BaselineSurveyStage
 import org.intelehealth.app.utilities.BundleKeys.Companion.BASELINE_CURRENT_SOURCE
@@ -31,7 +32,6 @@ import org.intelehealth.app.utilities.NetworkConnection
 import org.intelehealth.app.utilities.NetworkUtils
 import org.intelehealth.app.utilities.NetworkUtils.InternetCheckUpdateInterface
 import org.intelehealth.app.utilities.SessionManager
-import org.intelehealth.config.presenter.fields.factory.PatientViewModelFactory
 import org.intelehealth.config.room.entity.FeatureActiveStatus
 
 
@@ -42,8 +42,8 @@ import org.intelehealth.config.room.entity.FeatureActiveStatus
  **/
 class BaselineSurveyActivity : BaseActivity() {
     private lateinit var binding: ActivityBaselineSurveyBinding
-    private val patientViewModel by lazy {
-        return@lazy PatientViewModelFactory.create(this, this)
+    private val baselineSurveyViewModel by lazy {
+        return@lazy BaselineSurveyViewModelFactory.create(this, this)
     }
 
     private lateinit var syncAnimator: ObjectAnimator
@@ -63,7 +63,7 @@ class BaselineSurveyActivity : BaseActivity() {
     }
 
     private fun observeCurrentPatientStage() {
-        patientViewModel.mutableBaselineSurveyStageData.observe(this) { changeIconStatus(it) }
+        baselineSurveyViewModel.mutableBaselineSurveyStageData.observe(this) { changeIconStatus(it) }
     }
 
     private fun setupActionBar() {
@@ -74,7 +74,7 @@ class BaselineSurveyActivity : BaseActivity() {
     }
 
     private fun handleBackPressed() {
-        if (patientViewModel.baselineEditMode) finish()
+        if (baselineSurveyViewModel.baselineEditMode) finish()
         else {
             DialogUtils.patientRegistrationDialog(
                 this,
@@ -98,7 +98,7 @@ class BaselineSurveyActivity : BaseActivity() {
             } else BaselineSurveyStage.GENERAL
 
             patientId?.let { id ->
-                patientViewModel.baselineEditMode = true
+                baselineSurveyViewModel.baselineEditMode = true
                 fetchPatientDetails(id)
             }
 
@@ -129,10 +129,10 @@ class BaselineSurveyActivity : BaseActivity() {
 
 
     private fun fetchPatientDetails(id: String) {
-        patientViewModel.loadPatientDetails(id).observe(this) {
+        baselineSurveyViewModel.loadPatientDetails(id).observe(this) {
             it ?: return@observe
-            patientViewModel.handleResponse(it) { patient ->
-                patientViewModel.updatedPatient(updatePatientDetails(patient))
+            baselineSurveyViewModel.handleResponse(it) { patient ->
+                baselineSurveyViewModel.updatedPatient(updatePatientDetails(patient))
             }
         }
     }
@@ -195,8 +195,6 @@ class BaselineSurveyActivity : BaseActivity() {
         super.onFeatureActiveStatusLoaded(activeStatus)
         if (::syncAnimator.isInitialized) syncAnimator.cancel()
         activeStatus?.let {
-            patientViewModel.activeStatusAddressSection = it.activeStatusPatientAddress
-            patientViewModel.activeStatusOtherSection = it.activeStatusPatientOther
 
             if (it.activeStatusPatientOther.not() && it.activeStatusPatientAddress.not()) {
                 binding.baselineSurveyTab.root.isVisible = false

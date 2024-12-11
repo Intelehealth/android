@@ -174,6 +174,10 @@ object PatientRegFieldsUtils {
                     PatientRegConfigKeys.PHONE_OWNERSHIP -> phoneOwnership = it
                     PatientRegConfigKeys.FAMILY_WHATSAPP -> familyWhatsapp = it
                     PatientRegConfigKeys.MARITAL_STATUS -> maritalStatus = it
+                    PatientRegConfigKeys.GENERAL_OCCUPATION -> occupation = it
+                    PatientRegConfigKeys.GENERAL_CASTE -> caste = it
+                    PatientRegConfigKeys.GENERAL_EDUCATION -> education = it
+                    PatientRegConfigKeys.GENERAL_ECONOMIC_STATUS -> economicStatus = it
                 }
             }
         }
@@ -192,8 +196,8 @@ object PatientRegFieldsUtils {
                     PatientRegConfigKeys.DIABETES_VALUE -> diabetesValue = it
                     PatientRegConfigKeys.ARTHRITIS_VALUE -> arthritisValue = it
                     PatientRegConfigKeys.ANEMIA_VALUE -> anemiaValue = it
-                    PatientRegConfigKeys.SUGAR_VALUE -> sugarValue = it
-                    PatientRegConfigKeys.SUGAR_REASON -> sugarReason = it
+                    PatientRegConfigKeys.SURGERY_VALUE -> surgeryValue = it
+                    PatientRegConfigKeys.SURGERY_REASON -> surgeryReason = it
                     PatientRegConfigKeys.SMOKING_HISTORY -> smokingHistory = it
                     PatientRegConfigKeys.SMOKING_RATE -> smokingRate = it
                     PatientRegConfigKeys.SMOKING_DURATION -> smokingDuration = it
