@@ -21,7 +21,7 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding = FragmentBaselineSurveyOtherBinding.bind(view)
-        patientViewModel.updateBaselineStage(BaselineSurveyStage.OTHER)
+        baselineSurveyViewModel.updateBaselineStage(BaselineSurveyStage.OTHER)
         super.onViewCreated(view, savedInstanceState)
     }
 
@@ -31,7 +31,7 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
         Timber.d { Gson().toJson(patient) }
         setClickListener()
         binding.patient = patient
-        binding.baselineEditMode = patientViewModel.baselineEditMode
+        binding.baselineEditMode = baselineSurveyViewModel.baselineEditMode
     }
 
     private fun setClickListener() {

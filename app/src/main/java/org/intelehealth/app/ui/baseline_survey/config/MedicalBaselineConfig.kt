@@ -15,8 +15,8 @@ class MedicalBaselineConfig {
     var diabetesValue: PatientRegistrationFields? = null
     var arthritisValue: PatientRegistrationFields? = null
     var anemiaValue: PatientRegistrationFields? = null
-    var sugarValue: PatientRegistrationFields? = null
-    var sugarReason: PatientRegistrationFields? = null
+    var surgeryValue: PatientRegistrationFields? = null
+    var surgeryReason: PatientRegistrationFields? = null
     var smokingHistory: PatientRegistrationFields? = null
     var smokingRate: PatientRegistrationFields? = null
     var smokingDuration: PatientRegistrationFields? = null

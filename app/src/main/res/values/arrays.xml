@@ -855,6 +855,50 @@
         <item>ସ୍ନାତକୋତର ଶିକ୍ଷା</item>
     </string-array>
 
+
+
+    <string-array name="hb_check">
+        <item>Within the last 6 months</item>
+    </string-array>
+
+    <string-array name="bp_check">
+        <item>Within the last 6 months</item>
+    </string-array>
+
+    <string-array name="sugar_check">
+        <item>Within the last 6 months</item>
+    </string-array>
+
+    <string-array name="surgery_reason_check">
+        <item>Hip fracture</item>
+    </string-array>
+
+    <string-array name="general_occupation">
+        <item>Engineer</item>
+    </string-array>
+
+    <string-array name="general_caste">
+        <item></item>
+    </string-array>
+
+    <string-array name="general_education">
+        <item>Masters &amp; Higher</item>
+    </string-array>
+
+    <string-array name="general_economic_status">
+        <item>Middle Class</item>
+    </string-array>
+
+    <string-array name="general_phone_ownership">
+        <item>None</item>
+        <item>Own Smartphone</item>
+        <item>Own Feature Phone</item>
+        <item>Shared Smartphone</item>
+        <item>Shared Feature Phone</item>
+    </string-array>
+
+
+
     <string-array name="education">
         <item>Cannot read or write</item>
         <item>Can read and write</item>

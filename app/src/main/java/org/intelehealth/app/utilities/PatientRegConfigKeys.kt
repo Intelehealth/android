@@ -46,6 +46,10 @@ class PatientRegConfigKeys {
         const val PHONE_OWNERSHIP = "general_phone_ownership"
         const val FAMILY_WHATSAPP = "general_family_whatsapp"
         const val MARITAL_STATUS = "general_marital_status"
+        const val GENERAL_OCCUPATION = "general_occupation"
+        const val GENERAL_CASTE = "general_caste"
+        const val GENERAL_EDUCATION = "general_education"
+        const val GENERAL_ECONOMIC_STATUS = "general_economic_status"
 
         // MEDICAL
         const val HB_CHECK = "hb_check"
@@ -55,8 +59,8 @@ class PatientRegConfigKeys {
         const val DIABETES_VALUE = "diabetes_value"
         const val ARTHRITIS_VALUE = "arthritis_value"
         const val ANEMIA_VALUE = "anemia_value"
-        const val SUGAR_VALUE = "sugar_value"
-        const val SUGAR_REASON = "sugar_reason"
+        const val SURGERY_VALUE = "surgery_value"
+        const val SURGERY_REASON = "surgery_reason"
         const val SMOKING_HISTORY = "smoking_history"
         const val SMOKING_RATE = "smoking_rate"
         const val SMOKING_DURATION = "smoking_duration"

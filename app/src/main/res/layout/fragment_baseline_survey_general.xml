@@ -41,410 +41,505 @@
                 android:layout_height="match_parent"
                 android:padding="@dimen/std_16dp">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/clAyushmanCard"
+                <LinearLayout
+                    android:id="@+id/llOccupation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/std_12dp"
-                    android:visibility="@{generalConfig.ayushmanCard.enabled ? View.VISIBLE : View.GONE}"
+                    android:orientation="vertical"
+                    android:visibility="@{generalConfig.occupation.enabled ? View.VISIBLE : View.GONE}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
                     <TextView
-                        android:id="@+id/ayushman_card_tv"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/tv_occupation_label"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
                         android:lineSpacingExtra="3sp"
-                        android:text="@{ generalConfig.ayushmanCard.mandatory ? @string/ayushman_card_question + ` *` : @string/ayushman_card_question}"
+                        android:text="@{generalConfig.occupation.mandatory ? @string/general_occupation + ` *` : @string/general_occupation}"
                         android:textAppearance="@style/blur_txtview"
                         android:textSize="@null"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:text="@string/ayushman_card_question" />
+                        tools:text="@string/general_occupation" />
 
-                    <com.google.android.material.button.MaterialButtonToggleGroup
-                        android:id="@+id/toggleAyushmanCard"
-                        config="@{generalConfig.ayushmanCard}"
+                    <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
+                        android:id="@+id/til_occupation_option"
+                        style="@style/AppTheme.OutlineInputBox.DropDown"
+                        config="@{generalConfig.occupation}"
                         editMode="@{baselineEditMode}"
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/margin_4"
-                        android:weightSum="3"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/ayushman_card_tv"
-                        app:selectionRequired="true"
-                        app:singleSelection="true">
+                        app:hintEnabled="false">
 
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/btnAyushmanYes"
-                            style="@style/AppTheme.OutlinedButton.Icon"
-                            config="@{generalConfig.ayushmanCard}"
-                            editMode="@{baselineEditMode}"
-                            android:layout_width="0dp"
+                        <AutoCompleteTextView
+                            android:id="@+id/ac_occupation"
+                            style="@style/AppTheme.InputBox"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="@string/generic_yes" />
+                            android:inputType="none" />
+                    </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
+                </LinearLayout>
 
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/btnAyushmanNo"
-                            style="@style/AppTheme.OutlinedButton.Icon"
-                            config="@{generalConfig.ayushmanCard}"
-                            editMode="@{baselineEditMode}"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="@string/generic_no" />
-
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/btnAyushmanNotSure"
-                            style="@style/AppTheme.OutlinedButton.Icon"
-                            config="@{generalConfig.ayushmanCard}"
-                            editMode="@{baselineEditMode}"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="@string/generic_not_sure" />
-                    </com.google.android.material.button.MaterialButtonToggleGroup>
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/tvAyushmanError"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/margin_4"
-                        android:layout_marginEnd="@dimen/std_16dp"
-                        android:text="@string/this_field_is_mandatory"
-                        android:textColor="@color/red"
-                        android:visibility="gone"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/toggleAyushmanCard" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/clMgnregaCard"
+                <LinearLayout
+                    android:id="@+id/llCaste"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/std_12dp"
+                    android:orientation="vertical"
+                    android:visibility="@{generalConfig.caste.enabled ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/llOccupation">
+
+                    <TextView
+                        android:id="@+id/tv_caste_label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingExtra="3sp"
+                        android:text="@{generalConfig.caste.mandatory ? @string/general_caste + ` *` : @string/general_caste}"
+                        android:textAppearance="@style/blur_txtview"
+                        android:textSize="@null"
+                        tools:text="@string/general_caste" />
+
+                    <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
+                        android:id="@+id/til_caste_option"
+                        style="@style/AppTheme.OutlineInputBox.DropDown"
+                        config="@{generalConfig.caste}"
+                        editMode="@{baselineEditMode}"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_4"
+                        app:hintEnabled="false">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/ac_caste"
+                            style="@style/AppTheme.InputBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="none" />
+                    </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llEducation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/std_12dp"
+                    android:orientation="vertical"
+                    android:visibility="@{generalConfig.education.enabled ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/llCaste">
+
+                    <TextView
+                        android:id="@+id/tv_education_label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingExtra="3sp"
+                        android:text="@{generalConfig.education.mandatory ? @string/general_education + ` *` : @string/general_education}"
+                        android:textAppearance="@style/blur_txtview"
+                        android:textSize="@null"
+                        tools:text="@string/general_education" />
+
+                    <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
+                        android:id="@+id/til_education_option"
+                        style="@style/AppTheme.OutlineInputBox.DropDown"
+                        config="@{generalConfig.education}"
+                        editMode="@{baselineEditMode}"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_4"
+                        app:hintEnabled="false">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/ac_education"
+                            style="@style/AppTheme.InputBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="none" />
+                    </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llEconomicStatus"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/std_12dp"
+                    android:orientation="vertical"
+                    android:visibility="@{generalConfig.economicStatus.enabled ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/llEducation">
+
+                    <TextView
+                        android:id="@+id/tv_economic_status_label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingExtra="3sp"
+                        android:text="@{generalConfig.economicStatus.mandatory ? @string/general_economic_status + ` *` : @string/general_occupation}"
+                        android:textAppearance="@style/blur_txtview"
+                        android:textSize="@null"
+                        tools:text="@string/general_economic_status" />
+
+                    <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
+                        android:id="@+id/til_economic_status_option"
+                        style="@style/AppTheme.OutlineInputBox.DropDown"
+                        config="@{generalConfig.economicStatus}"
+                        editMode="@{baselineEditMode}"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_4"
+                        app:hintEnabled="false">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/ac_economic_status"
+                            style="@style/AppTheme.InputBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="none" />
+                    </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llAyushmanCard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/std_12dp"
+                    android:orientation="vertical"
+                    android:visibility="@{generalConfig.ayushmanCard.enabled ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/llEconomicStatus">
+
+                    <TextView
+                        android:id="@+id/tv_AC_label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingExtra="3sp"
+                        android:text="@{generalConfig.ayushmanCard.mandatory ? @string/ayushman_card_question + ` *` : @string/ayushman_card_question}"
+                        android:textAppearance="@style/blur_txtview"
+                        android:textSize="@null"
+                        tools:text="@string/ayushman_card_question" />
+
+                    <RadioGroup
+                        android:id="@+id/rg_AC_options"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/RadioButtonStyleSelection"
+                        config="@{generalConfig.ayushmanCard}"
+                        editMode="@{baselineEditMode}"
+                        android:layout_marginTop="@dimen/margin_5"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:id="@+id/radioACYes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            config="@{generalConfig.ayushmanCard}"
+                            editMode="@{baselineEditMode}"
+                            android:text="@string/yes"
+                            android:layout_marginEnd="@dimen/margin_20"/>
+
+                        <RadioButton
+                            android:id="@+id/radioACNo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            config="@{generalConfig.ayushmanCard}"
+                            editMode="@{baselineEditMode}"
+                            android:text="@string/no"
+                            android:layout_marginEnd="@dimen/margin_20"/>
+
+                        <RadioButton
+                            android:id="@+id/radioACNotSure"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            config="@{generalConfig.ayushmanCard}"
+                            editMode="@{baselineEditMode}"
+                            android:text="@string/generic_not_sure" />
+                    </RadioGroup>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llMgnregaCard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/std_12dp"
+                    android:orientation="vertical"
                     android:visibility="@{generalConfig.mgnrega.enabled ? View.VISIBLE : View.GONE}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/clAyushmanCard">
+                    app:layout_constraintTop_toBottomOf="@id/llAyushmanCard">
 
                     <TextView
-                        android:id="@+id/mgnrega_card_tv"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/tv_MC_label"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
                         android:lineSpacingExtra="3sp"
-                        android:text="@{ generalConfig.mgnrega.mandatory ? @string/mgnrega_card_question + ` *` : @string/mgnrega_card_question}"
+                        android:text="@{generalConfig.mgnrega.mandatory ? @string/mgnrega_card_question + ` *` : @string/mgnrega_card_question}"
                         android:textAppearance="@style/blur_txtview"
                         android:textSize="@null"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
                         tools:text="@string/mgnrega_card_question" />
 
-                    <com.google.android.material.button.MaterialButtonToggleGroup
-                        android:id="@+id/toggleMgnregaCard"
+                    <RadioGroup
+                        android:id="@+id/rg_MC_options"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/RadioButtonStyleSelection"
                         config="@{generalConfig.mgnrega}"
                         editMode="@{baselineEditMode}"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/margin_4"
-                        android:weightSum="3"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/mgnrega_card_tv"
-                        app:selectionRequired="true"
-                        app:singleSelection="true">
+                        android:layout_marginTop="@dimen/margin_5"
+                        android:orientation="horizontal">
 
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/btnMgnregaYes"
-                            style="@style/AppTheme.OutlinedButton.Icon"
+                        <RadioButton
+                            android:id="@+id/radioMCYes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             config="@{generalConfig.mgnrega}"
                             editMode="@{baselineEditMode}"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="@string/generic_yes" />
+                            android:text="@string/yes"
+                            android:layout_marginEnd="@dimen/margin_20"/>
 
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/btnMgnregaNo"
-                            style="@style/AppTheme.OutlinedButton.Icon"
+                        <RadioButton
+                            android:id="@+id/radioMCNo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             config="@{generalConfig.mgnrega}"
                             editMode="@{baselineEditMode}"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="@string/generic_no" />
+                            android:text="@string/no"
+                            android:layout_marginEnd="@dimen/margin_20"/>
 
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/btnMgnregaNotSure"
-                            style="@style/AppTheme.OutlinedButton.Icon"
+                        <RadioButton
+                            android:id="@+id/radioMCNotSure"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             config="@{generalConfig.mgnrega}"
                             editMode="@{baselineEditMode}"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
                             android:text="@string/generic_not_sure" />
-                    </com.google.android.material.button.MaterialButtonToggleGroup>
+                    </RadioGroup>
 
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/tvMgnregaError"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/margin_4"
-                        android:layout_marginEnd="@dimen/std_16dp"
-                        android:text="@string/this_field_is_mandatory"
-                        android:textColor="@color/red"
-                        android:visibility="gone"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/toggleMgnregaCard" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                </LinearLayout>
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/clBankAccount"
+                <LinearLayout
+                    android:id="@+id/llBankAccount"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/std_12dp"
+                    android:orientation="vertical"
                     android:visibility="@{generalConfig.bankAccount.enabled ? View.VISIBLE : View.GONE}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/clMgnregaCard">
+                    app:layout_constraintTop_toBottomOf="@id/llMgnregaCard">
 
                     <TextView
-                        android:id="@+id/bank_account_tv"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/tv_Bank_account_label"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
                         android:lineSpacingExtra="3sp"
-                        android:text="@{ generalConfig.bankAccount.mandatory ? @string/bank_account_question + ` *` : @string/bank_account_question}"
+                        android:text="@{generalConfig.bankAccount.mandatory ? @string/bank_account_question + ` *` : @string/bank_account_question}"
                         android:textAppearance="@style/blur_txtview"
                         android:textSize="@null"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
                         tools:text="@string/bank_account_question" />
 
-                    <com.google.android.material.button.MaterialButtonToggleGroup
-                        android:id="@+id/toggleBankAccount"
+                    <RadioGroup
+                        android:id="@+id/rg_BA_options"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/RadioButtonStyleSelection"
                         config="@{generalConfig.bankAccount}"
                         editMode="@{baselineEditMode}"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/margin_4"
-                        android:weightSum="3"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/bank_account_tv"
-                        app:selectionRequired="true"
-                        app:singleSelection="true">
+                        android:layout_marginTop="@dimen/margin_5"
+                        android:orientation="vertical">
 
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/btnBankYes"
-                            style="@style/AppTheme.OutlinedButton.Icon"
+                        <RadioButton
+                            android:id="@+id/radioBAYes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             config="@{generalConfig.bankAccount}"
                             editMode="@{baselineEditMode}"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="@string/generic_yes" />
+                            android:text="@string/yes"
+                            android:layout_marginEnd="@dimen/margin_20"/>
 
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/btnBankNo"
-                            style="@style/AppTheme.OutlinedButton.Icon"
+                        <RadioButton
+                            android:id="@+id/radioBANo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             config="@{generalConfig.bankAccount}"
                             editMode="@{baselineEditMode}"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="@string/generic_no" />
+                            android:text="@string/no"
+                            android:layout_marginEnd="@dimen/margin_20"/>
 
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/btnBankDecline"
-                            style="@style/AppTheme.OutlinedButton.Icon"
+                        <RadioButton
+                            android:id="@+id/radioBANotSure"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             config="@{generalConfig.bankAccount}"
                             editMode="@{baselineEditMode}"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="@string/decline_to_answer" />
-                    </com.google.android.material.button.MaterialButtonToggleGroup>
+                            android:text="@string/generic_not_sure" />
+                    </RadioGroup>
 
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/tvBankError"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/margin_4"
-                        android:layout_marginEnd="@dimen/std_16dp"
-                        android:text="@string/this_field_is_mandatory"
-                        android:textColor="@color/red"
-                        android:visibility="gone"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/toggleBankAccount" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                </LinearLayout>
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/clFamilyWhatsapp"
+                <LinearLayout
+                    android:id="@+id/llPhoneOwnership"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/std_12dp"
+                    android:orientation="vertical"
+                    android:visibility="@{generalConfig.phoneOwnership.enabled ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/llBankAccount">
+
+                    <TextView
+                        android:id="@+id/tv_phone_ownership_label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingExtra="3sp"
+                        android:text="@{generalConfig.phoneOwnership.mandatory ? @string/phone_ownership + ` *` : @string/phone_ownership}"
+                        android:textAppearance="@style/blur_txtview"
+                        android:textSize="@null"
+                        tools:text="@string/phone_ownership" />
+
+                    <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
+                        android:id="@+id/til_phone_ownership_option"
+                        style="@style/AppTheme.OutlineInputBox.DropDown"
+                        config="@{generalConfig.phoneOwnership}"
+                        editMode="@{baselineEditMode}"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_4"
+                        app:hintEnabled="false">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/ac_phone_ownership"
+                            style="@style/AppTheme.InputBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="none" />
+                    </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llFamilyWhatsapp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/std_12dp"
+                    android:orientation="vertical"
                     android:visibility="@{generalConfig.familyWhatsapp.enabled ? View.VISIBLE : View.GONE}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/clBankAccount">
+                    app:layout_constraintTop_toBottomOf="@id/llPhoneOwnership">
 
                     <TextView
-                        android:id="@+id/family_whatsapp_tv"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/tv_family_whatsapp_label"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
                         android:lineSpacingExtra="3sp"
-                        android:text="@{ generalConfig.familyWhatsapp.mandatory ? @string/family_whatsapp_question + ` *` : @string/family_whatsapp_question}"
+                        android:text="@{generalConfig.familyWhatsapp.mandatory ? @string/family_whatsapp_question + ` *` : @string/family_whatsapp_question}"
                         android:textAppearance="@style/blur_txtview"
                         android:textSize="@null"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
                         tools:text="@string/family_whatsapp_question" />
 
-                    <com.google.android.material.button.MaterialButtonToggleGroup
-                        android:id="@+id/toggleFamilyWhatsapp"
+                    <RadioGroup
+                        android:id="@+id/rg_Bank_account_options"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/RadioButtonStyleSelection"
                         config="@{generalConfig.familyWhatsapp}"
                         editMode="@{baselineEditMode}"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/margin_4"
-                        android:weightSum="3"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/family_whatsapp_tv"
-                        app:selectionRequired="true"
-                        app:singleSelection="true">
+                        android:layout_marginTop="@dimen/margin_5"
+                        android:orientation="vertical">
 
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/btnPersonal"
-                            style="@style/AppTheme.OutlinedButton.Icon"
+                        <RadioButton
+                            android:id="@+id/radioPersonal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             config="@{generalConfig.familyWhatsapp}"
                             editMode="@{baselineEditMode}"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="@string/generic_yes_personal" />
+                            android:text="@string/generic_yes_personal"
+                            android:layout_marginEnd="@dimen/margin_20"/>
 
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/btnFamilyMember"
-                            style="@style/AppTheme.OutlinedButton.Icon"
+                        <RadioButton
+                            android:id="@+id/radioFamilyMember"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             config="@{generalConfig.familyWhatsapp}"
                             editMode="@{baselineEditMode}"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="@string/generic_yes_family" />
+                            android:text="@string/generic_yes_family"
+                            android:layout_marginEnd="@dimen/margin_20"/>
 
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/btnFamilyNo"
-                            style="@style/AppTheme.OutlinedButton.Icon"
+                        <RadioButton
+                            android:id="@+id/radioFamilyWhatsappNo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             config="@{generalConfig.familyWhatsapp}"
                             editMode="@{baselineEditMode}"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="@string/generic_no" />
-                    </com.google.android.material.button.MaterialButtonToggleGroup>
+                            android:text="@string/no" />
+                    </RadioGroup>
 
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/tvFamilyWhatsappError"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/margin_4"
-                        android:layout_marginEnd="@dimen/std_16dp"
-                        android:text="@string/this_field_is_mandatory"
-                        android:textColor="@color/red"
-                        android:visibility="gone"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/toggleFamilyWhatsapp" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                </LinearLayout>
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/clMaritalStatus"
+                <LinearLayout
+                    android:id="@+id/llMaritalStatus"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/std_12dp"
+                    android:orientation="vertical"
                     android:visibility="@{generalConfig.maritalStatus.enabled ? View.VISIBLE : View.GONE}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/clFamilyWhatsapp">
+                    app:layout_constraintTop_toBottomOf="@id/llFamilyWhatsapp">
 
                     <TextView
-                        android:id="@+id/marital_status_tv"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/tv_marital_status_label"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
                         android:lineSpacingExtra="3sp"
-                        android:text="@{ generalConfig.maritalStatus.mandatory ? @string/marital_status_question + ` *` : @string/marital_status_question}"
+                        android:text="@{generalConfig.maritalStatus.mandatory ? @string/marital_status_question + ` *` : @string/marital_status_question}"
                         android:textAppearance="@style/blur_txtview"
                         android:textSize="@null"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
                         tools:text="@string/marital_status_question" />
 
-                    <com.google.android.material.button.MaterialButtonToggleGroup
-                        android:id="@+id/toggleMaritalStatus"
+                    <RadioGroup
+                        android:id="@+id/rg_marital_status_options"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/RadioButtonStyleSelection"
                         config="@{generalConfig.maritalStatus}"
                         editMode="@{baselineEditMode}"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/margin_4"
-                        android:weightSum="3"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/marital_status_tv"
-                        app:selectionRequired="true"
-                        app:singleSelection="true">
+                        android:layout_marginTop="@dimen/margin_5"
+                        android:orientation="vertical">
 
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/btnMarried"
-                            style="@style/AppTheme.OutlinedButton.Icon"
+                        <RadioButton
+                            android:id="@+id/radioMarried"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             config="@{generalConfig.maritalStatus}"
                             editMode="@{baselineEditMode}"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="@string/married" />
+                            android:text="@string/married"
+                            android:layout_marginEnd="@dimen/margin_20"/>
 
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/btnUnmarried"
-                            style="@style/AppTheme.OutlinedButton.Icon"
+                        <RadioButton
+                            android:id="@+id/radioUnmarried"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             config="@{generalConfig.maritalStatus}"
                             editMode="@{baselineEditMode}"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="@string/unmarried" />
+                            android:text="@string/unmarried"
+                            android:layout_marginEnd="@dimen/margin_20"/>
 
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/btnWidowed"
-                            style="@style/AppTheme.OutlinedButton.Icon"
+                        <RadioButton
+                            android:id="@+id/radioWidowed"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             config="@{generalConfig.maritalStatus}"
                             editMode="@{baselineEditMode}"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
                             android:text="@string/widowed" />
-                    </com.google.android.material.button.MaterialButtonToggleGroup>
+                    </RadioGroup>
 
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/tvMaritalStatusError"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/margin_4"
-                        android:layout_marginEnd="@dimen/std_16dp"
-                        android:text="@string/this_field_is_mandatory"
-                        android:textColor="@color/red"
-                        android:visibility="gone"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/toggleMaritalStatus" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                </LinearLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
