@@ -14,6 +14,9 @@
         <action
             android:id="@+id/navigationGeneralToHealthService"
             app:destination="@id/fragmentHealthService" />
+        <action
+            android:id="@+id/navigationGeneralToDetails"
+            app:destination="@id/activityPatientDetails" />
     </fragment>
     <fragment
         android:id="@+id/fragmentPregnancyRoster"
@@ -22,6 +25,9 @@
         <action
             android:id="@+id/navigationPregnancyToHealthService"
             app:destination="@id/fragmentHealthService" />
+        <action
+            android:id="@+id/navigationPregnancyToDetails"
+            app:destination="@id/activityPatientDetails" />
     </fragment>
     <fragment
         android:id="@+id/fragmentHealthService"

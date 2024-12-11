@@ -85,7 +85,7 @@
     <string name="table_bpsys">बीपी सिस</string>
     <string name="table_bpdia">बीपी डाय</string>
     <string name="table_temp">तापमान (सी)</string>
-<!--    <string name="table_spo">एसपीओ 2 (%)</string>-->
+    <!--    <string name="table_spo">एसपीओ 2 (%)</string>-->
 
     //Patient Search Screen
     <string name="search_hint">नावानुसार रूग्ण शोधण्यासाठी टाइप करा…</string>
@@ -201,7 +201,7 @@
 
     <string name="weight_error">वजन %1$s किलोपेक्षा कमी असावे </string>
     <string name="height_error">उंची 0 ते %1$s सेमी दरम्यान असावी</string>
-<!--    <string name="spo_error">एसपीओ2 %1$s आणि %2$s दरम्यान असणे आवश्यक आहे</string>-->
+    <!--    <string name="spo_error">एसपीओ2 %1$s आणि %2$s दरम्यान असणे आवश्यक आहे</string>-->
     <string name="pulse_error">नाडी %1$s आणि %2$s दरम्यानची असावी</string>
     <string name="bpsys_error">सिस्टोलिक दबाव %1$s आणि %2$s दरम्यान असावा</string>
     <string name="bpdia_error">डायस्टोलिक दबाव %1$s आणि %2$s दरम्यान असावा</string>
@@ -310,33 +310,33 @@
     <string name="enter_10_digits">10 अंक प्रविष्ट करा</string>
     <string name="document_">"दस्तऐवज -"</string>
     <string name="gender">लिंग</string>
-<!--    <string name="are_you_head_of_the_family">आपण कुटुंब प्रमुख आहात?</string>-->
-<!--    <string name="what_is_your_occupation">काय काम करतात?*</string>-->
-<!--    <string name="do_you_have_a_bank_account">आपल्याकडे बँक खाते आहे? *</string>-->
-<!--    <string name="what_kind_of_mobile_phone_do_you_personally_own">आपल्याकडे वैयक्तिकरित्या कोणत्या प्रकारचा मोबाइल फोन आहे? *</string>-->
-<!--    <string name="do_you_or_any_of_your_family_member_use_whatsapp">आपण किंवा तुमच्या कुटुंबातील कोणी व्हॉट्सअ‍ॅप वापरत आहात? *</string>-->
-<!--    <string name="total_number_of_members_in_the_household">कुटुंबातील एकूण सदस्यांची संख्या *</string>-->
-<!--    <string name="enter_number">क्रमांक प्रविष्ट करा</string>-->
-<!--    <string name="how_many_members_usually_live_in_your_household_or_are_staying_with_you_now">सामान्यत: किती सदस्य आपल्या घरात राहतात किंवा आता आपल्याबरोबर राहत आहेत *</string>-->
-<!--    <string name="what_is_the_main_source_of_drinking_water_for_members_of_your_household">तुमच्या घरातील सदस्यांसाठी पिण्याचे मुख्य स्रोत काय आहे? *</string>-->
-<!--    <string name="what_do_you_do_to_make_drinking_water_safer">पिण्याचे पाणी अधिक सुरक्षित करण्यासाठी आपण काय करता? *</string>-->
-<!--    <string name="how_long_does_it_take_to_go_there_get_water_and_come_back_in_one_trip">तेथे जाण्यासाठी, पाणी मिळविण्यासाठी आणि एका सहलीमध्ये परत येण्यास किती वेळ लागेल? *</string>-->
-<!--    <string name="declined">उत्तर देण्यास नकार दिला</string>-->
-<!--    <string name="enter_time">वेळ प्रविष्ट करा</string>-->
-<!--    <string name="in_the_past_two_weeks_was_the_water_from_this_source_not_available_for_at_least_one_full_day">मागील दोन आठवड्यांत, या स्त्रोताचे पाणी कमीतकमी एक दिवसभर उपलब्ध नव्हते काय? *</string>-->
-<!--    <string name="what_kind_of_toilet_facility_do_members_of_your_household_usually_use">आपल्या घरातील सदस्य सहसा कोणत्या प्रकारची शौचालय सुविधा वापरतात? *</string>-->
-<!--    <string name="select_the_structure_of_house">घराची रचना निवडा *</string>-->
-<!--    <string name="how_much_hectars_of_cultivable_land_your_family_owns">आपल्या कुटुंबाची किती हेक्टर शेती योग्य आहे? *</string>-->
-<!--    <string name="enter_answer">उत्तर प्रविष्ट करा</string>-->
-<!--    <string name="enter_occupation">व्यवसाय प्रविष्ट करा</string>-->
-<!--    <string name="select">निवडा</string>-->
-<!--    <string name="Hours">तास</string>-->
-<!--    <string name="Days">दिवस</string>-->
-<!--    <string name="Weeks">आठवडे</string>-->
-<!--    <string name="Months">महिने</string>-->
-<!--    <string name="Years">वर्षे</string>-->
-<!--    <string name="image_saved">प्रतिमा यशस्वीरित्या जतन केली!</string>-->
-<!--    <string name="emergency_confirmation">आपण ही भेट तात्काळ म्हणून सेट करू इच्छिता?</string>-->
+    <!--    <string name="are_you_head_of_the_family">आपण कुटुंब प्रमुख आहात?</string>-->
+    <!--    <string name="what_is_your_occupation">काय काम करतात?*</string>-->
+    <!--    <string name="do_you_have_a_bank_account">आपल्याकडे बँक खाते आहे? *</string>-->
+    <!--    <string name="what_kind_of_mobile_phone_do_you_personally_own">आपल्याकडे वैयक्तिकरित्या कोणत्या प्रकारचा मोबाइल फोन आहे? *</string>-->
+    <!--    <string name="do_you_or_any_of_your_family_member_use_whatsapp">आपण किंवा तुमच्या कुटुंबातील कोणी व्हॉट्सअ‍ॅप वापरत आहात? *</string>-->
+    <!--    <string name="total_number_of_members_in_the_household">कुटुंबातील एकूण सदस्यांची संख्या *</string>-->
+    <!--    <string name="enter_number">क्रमांक प्रविष्ट करा</string>-->
+    <!--    <string name="how_many_members_usually_live_in_your_household_or_are_staying_with_you_now">सामान्यत: किती सदस्य आपल्या घरात राहतात किंवा आता आपल्याबरोबर राहत आहेत *</string>-->
+    <!--    <string name="what_is_the_main_source_of_drinking_water_for_members_of_your_household">तुमच्या घरातील सदस्यांसाठी पिण्याचे मुख्य स्रोत काय आहे? *</string>-->
+    <!--    <string name="what_do_you_do_to_make_drinking_water_safer">पिण्याचे पाणी अधिक सुरक्षित करण्यासाठी आपण काय करता? *</string>-->
+    <!--    <string name="how_long_does_it_take_to_go_there_get_water_and_come_back_in_one_trip">तेथे जाण्यासाठी, पाणी मिळविण्यासाठी आणि एका सहलीमध्ये परत येण्यास किती वेळ लागेल? *</string>-->
+    <!--    <string name="declined">उत्तर देण्यास नकार दिला</string>-->
+    <!--    <string name="enter_time">वेळ प्रविष्ट करा</string>-->
+    <!--    <string name="in_the_past_two_weeks_was_the_water_from_this_source_not_available_for_at_least_one_full_day">मागील दोन आठवड्यांत, या स्त्रोताचे पाणी कमीतकमी एक दिवसभर उपलब्ध नव्हते काय? *</string>-->
+    <!--    <string name="what_kind_of_toilet_facility_do_members_of_your_household_usually_use">आपल्या घरातील सदस्य सहसा कोणत्या प्रकारची शौचालय सुविधा वापरतात? *</string>-->
+    <!--    <string name="select_the_structure_of_house">घराची रचना निवडा *</string>-->
+    <!--    <string name="how_much_hectars_of_cultivable_land_your_family_owns">आपल्या कुटुंबाची किती हेक्टर शेती योग्य आहे? *</string>-->
+    <!--    <string name="enter_answer">उत्तर प्रविष्ट करा</string>-->
+    <!--    <string name="enter_occupation">व्यवसाय प्रविष्ट करा</string>-->
+    <!--    <string name="select">निवडा</string>-->
+    <!--    <string name="Hours">तास</string>-->
+    <!--    <string name="Days">दिवस</string>-->
+    <!--    <string name="Weeks">आठवडे</string>-->
+    <!--    <string name="Months">महिने</string>-->
+    <!--    <string name="Years">वर्षे</string>-->
+    <!--    <string name="image_saved">प्रतिमा यशस्वीरित्या जतन केली!</string>-->
+    <!--    <string name="emergency_confirmation">आपण ही भेट तात्काळ म्हणून सेट करू इच्छिता?</string>-->
     <string name="per_Hour">प्रती तास</string>
     <string name="per_Day">प्रती दिन</string>
     <string name="per_Week">प्रति आठवडा</string>
@@ -347,9 +347,9 @@
     <string name="something_went_wrong">काहीतरी चूक झाली. कृपया समर्थनाशी संपर्क साधा</string>
 
     //Speciality Spinner
-<!--    <string name="speciality">वैशिष्ट्य</string>-->
-<!--    <string name="select_speciality">विशेषज्ञता निवडा</string>-->
-<!--    <string name="please_select_specialization">कृपया विशेषज्ञता निवडा</string>-->
+    <!--    <string name="speciality">वैशिष्ट्य</string>-->
+    <!--    <string name="select_speciality">विशेषज्ञता निवडा</string>-->
+    <!--    <string name="please_select_specialization">कृपया विशेषज्ञता निवडा</string>-->
 
     <string name="take_photo">फोटो काधा</string>
     <string name="choose_from_gallery">गॅलरीमधून निवडा</string>
@@ -365,13 +365,13 @@
 
     // अॅप कार्यक्षमता रीसेट करा
     <string name="sync_failed">सिंक अयशस्वी! कृपया नंतर पुन्हा प्रयत्न करा.</string>
-    <string name = "app_sync"> अॅप सिंक करत आहे..</string>
+    <string name="app_sync"> अॅप सिंक करत आहे..</string>
 
 
     <string name="slot_info">स्लॉट माहिती</string>
-    <string name = "minutes_txt">मिनिटे</string>
+    <string name="minutes_txt">मिनिटे</string>
     <string name="please_upload_visit">कृपया भेटीची बुकिंग करण्यापूर्वी प्रथम भेट अपलोड करा.</string>
-    <string name = "appointment_booked_successfully">नियोजित भेट यशस्वीरित्या बुक झाली!</string>
+    <string name="appointment_booked_successfully">नियोजित भेट यशस्वीरित्या बुक झाली!</string>
     <string name="failed_to_cancel_appointment">अपॉइंटमेंट रद्द करण्यात अयशस्वी!</string>
     <string name="appointment_cancelled_success_txt">अपॉइंटमेंट यशस्वीरित्या रद्द करण्यात आली!</string>
 
@@ -386,16 +386,16 @@
     <string name="please_enter_the_reason_details">कृपया कारण तपशील प्रविष्ट करा</string>
     <string name="please_enter_reason_txt">कृपया कारण प्रविष्ट करा!</string>
 
-    <string name = "diagnosis">निदान</string>
+    <string name="diagnosis">निदान</string>
     <string name="strength">शक्ती</string>
-    <string name = "additional_instruction">अतिरिक्त सूचना</string>
-    <string name = "follow_up"> फॉलो अप</string>
+    <string name="additional_instruction">अतिरिक्त सूचना</string>
+    <string name="follow_up"> फॉलो अप</string>
     <string name="submit">सबमिट करा</string>
 
-    <string name = "prescription_pulse">पल्स(bpm)</string>
-    <string name = "prescription_wt">वजन(किलो)</string>
-    <string name = "prescription_ht">उंची(सेमी)</string>
-    <string name = "prescription_temp_c">तापमान (C): </string>
+    <string name="prescription_pulse">पल्स(bpm)</string>
+    <string name="prescription_wt">वजन(किलो)</string>
+    <string name="prescription_ht">उंची(सेमी)</string>
+    <string name="prescription_temp_c">तापमान (C): </string>
     <string name="prescription_temp_f">तापमान (F): </string>
 
     <string name="yes">होय</string>
@@ -729,5 +729,151 @@
     <string name="txt_when_was_the_last_time_you_got_your_sugar_level_checked">तुम्ही तुमची साखर पातळी शेवटच्या वेळी कधी तपासली होती?*</string>
     <string name="txt_when_was_the_last_time_you_got_your_hb_level_tested">तुमची एचबी पातळीची शेवटची चाचणी कधी झाली?*</string>
     <string name="txt_bmi_height_and_weight_checked">BMI (उंची आणि वजन) तपासले*</string>
+
+    //generate bill - NAS-70
+    <string name="generate_bill">बिल तयार करा</string>
+    <string name="confirm_tests">कृपया चाचणीची पुष्टी करा</string>
+    <string name="intelehealth_address">टेलिहेल्थ इनोव्हेशन फाऊंडेशन\n14A, श्रीजी आर्केड,\nनितीन कंपनीसमोर, पाचपाखाडी\nठाणे, 400602, महाराष्ट्र, भारत.</string>
+    <string name="consultation_charges">सल्ला शुल्क</string>
+    <string name="follow_up_charges">फॉलो-अप शुल्क</string>
+    <string name="total_amount">एकूण रक्कम</string>
+    <string name="patient_paying">रुग्ण बिल भरत आहे का?</string>
+    <string name="confirm_button">पुष्टी</string>
+    <string name="enter_reason">कारण प्रविष्ट करा</string>
+    <string name="print_button">छापा</string>
+    <string name="enter_reason_toast">बिल न भरण्याचे कारण एंटर करा.</string>
+    <string name="bill_generated_success">बिल यशस्वीरित्या व्युत्पन्न झाले!</string>
+    <string name="select_payment_information">पेमेंट माहिती निवडलेली नाही.</string>
+    <string name="download_bill">प्रथम शेअर करण्यासाठी बिल डाउनलोड करा.</string>
+    <string name="intelehealth">इंटेलहेल्थ</string>
+    <string name="receipt">पावती</string>
+    <string name="paid">दिले</string>
+    <string name="receipt_no">"पावती क्र.: "</string>
+    <string name="client_name">"क्लायंटचे नाव: "</string>
+    <string name="client_id">"क्लायंटचे ID: "</string>
+    <string name="visit_id">"भेट ID: "</string>
+    <string name="contact_no">"संपर्क क्र.: "</string>
+    <string name="client_village_name">"ग्राहक गावाचे नाव: "</string>
+    <string name="date">"दी.: "</string>
+    <string name="unpaid">न.दिले</string>
+    <string name="view_bill">बिल पहा</string>
+
+    <!-- Thermal Printers -->
+    <string name="please_connect">उपलब्ध डिव्हाइस निवडा</string>
+    <string name="disconnect">डिस्कनेक्ट करा</string>
+    <string name="connect">कनेक्ट करा</string>
+
+    <string name="paired_devices">जोडले</string>
+    <string name="tip_have_no_paired_device">कोणतेही जोडलेले डिव्हाइस नाही</string>
+    <string name="tip_have_no_found_bluetooth_device">उपकरण नाही</string>
+    <string name="search_device">शोधा</string>
+    <string name="dialog_cancel">रद्द करा</string>
+    <string name="dialog_ok">ठीक आहे</string>
+    <string name="dialog_tip">टीप</string>
+    <string name="main_pls_choose_device">कृपया एक डिव्हाइस निवडा</string>
+    <string name="dialog_back">मागे</string>
+    <string name="main_discon_click_repeatedly">डिव्हाइस डिस्कनेक्ट केले गेले आहे, वारंवार क्लिक करण्याची आवश्यकता नाही</string>
+    <string name="barcode_print">Barcode Print</string>
+    <string name="headbar_back">Back</string>
+    <string name="title_barcode">Barcode</string>
+    <string name="title_activity_barcode_print">BarcodePrintActivity</string>
+    <string name="bluetooth_notsupported_device">या डिव्हाइसवर ब्लूटूथ समर्थित नाही</string>
+    <string name="turn_on_bluetooth">कृपया ब्लूटूथ चालू करा</string>
+    <string name="no_prescription_available">कोणतेही प्रिस्क्रिप्शन उपलब्ध नाही</string>
+    <string name="_main_connected">" यश कनेक्ट करा"</string>
+    <string name="_main_connected_fail">कनेक्ट अयशस्वी</string>
+    <string name="_main_disconnect">" डिस्कनेक्ट"</string>
+    <string name="printing">छपाई...</string>
+    <string name="visit_confirmation">तुम्हाला ही भेट नक्की सुरू करायची आहे का?</string>
+    <string name="save_prescription">प्रिस्क्रिप्शन सेव्ह करा</string>
+    <string name="training_setup">ट्रैनिंग सेटअप</string>
+
+
+    <!--NAS -Household Survey-->
+    <string name="name_of_investigator">माहिती घेणार्यांचे नाव*</string>
+    <string name="village">गाव*</string>
+    <string name="block">ब्लॉक</string>
+    <string name="district">जिल्हा</string>
+    <string name="district_nashik">नाशिक</string>
+    <string name="state_Maharastra">महाराष्ट्र</string>
+
+    <string name="nas_what_kind_of_toilet_facility_do_members_of_your_household_usually_use">आपल्या कुटुंबाचे सदस्य कोणत्या प्रकारचे शौचालय वापरतात?</string>
+    <string name="what_kind_of_toilet_facility_do_members_of_your_household_usually_use">आपल्या कुटुंबाचे सदस्य कोणत्या प्रकारचे शौचालय वापरतात?</string>
+    <string name="flush_to_piped_sewer_system">पाईप केलेले गटार</string>
+    <string name="flush_to_septic_tank">सेप्टिक टँक असलेले</string>
+    <string name="flush_to_pit_latrine">पिट शौचालय</string>
+    <string name="flush_to_somewhere_else">कुठेतरी इतर</string>
+    <string name="flush_dont_know_where">माहीत नाही कुठे</string>
+    <string name="ventilated_improved_pit_biogas_latrine">हवेशीर सुधारित खड्डा (व्हीआयपी)/ बायोगॅस शौचालय</string>
+    <string name="pit_latrine_with_slab">स्लॅबसह पिट शौचालय</string>
+    <string name="pit_latrine_without_slab_open_pit">स्लॅबशिवाय खड्डा / उघडा-खड्डा शौचालय</string>
+    <string name="twin_pit_composting_toilet">टट्विण(दुहेरी) पिट/ कंपोस्टिंग टॉयलेट</string>
+    <string name="dry_toilet">कोरडे शौचालय</string>
+    <string name="communal_toilet">सार्वजनिक शौचालय</string>
+    <string name="no_facility_uses_open_space_or_field">कोणतीही सुविधा वापरत नाही / खुली जागा किंवा शेत वापरतो</string>
+
+    <string name="in_the_past_week_has_anyone_in_your_household_including_children_defecated_in_the_open_for_example_in_the_field_or_in_the_river">गेल्या आठवड्यात, तुमच्या घरातील कोणी (मुलेसुद्धा) उघड्यावर शौचास गेले होते का? उदा. नदी, शेते?</string>
+    <string name="what_kind_of_food_items_were_cooked_prepared_in_the_last_twenty_four_hours_in_your_household">आपल्या कुटुंबात, शेवटच्या 24 तासांमध्ये कोणत्या प्रकारचे खाद्य पदार्थ शिजवले / तयार केले गेले होते??</string>
+    <string name="starch_staple_food">पिष्टमय पदार्थ मुख्य अन्न</string>
+    <string name="beans_and_peas">फरसबी /बीन्स  आणि मटार</string>
+    <string name="nuts_and_seeds">सुका मेवा / दाणे / बिया</string>
+    <string name="dairy">दुधाचे पदार्थ</string>
+    <string name="eggs">अंडी</string>
+    <string name="flesh_food">मांसाहारी आहार</string>
+    <string name="any_vegetables">कोणत्याही भाज्या</string>
+
+    <string name="distance_to_nearest_medical_store">जवळच्या मेडिकल स्टोअर/औषध दुकानापर्यंतचे अंतर</string>
+    <string name="distance_to_nearest_pathological_lab">जवळच्या पॅथॉलॉजिकल लॅबपर्यंतचे अंतर</string>
+    <string name="distance_to_nearest_private_clinic_with_an_mbbs_doctor">जवळच्या खाजगी क्लिनिकपर्यंतचे अंतर (एमबीबीएस डॉक्टरसह)</string>
+    <string name="distance_to_nearest_private_clinic_with_alternate_medical_practitioners">जवळच्या खाजगी क्लिनिकमध्ये (वैकल्पिक मेडिकल प्रॅक्टिशनर्स - बीएएमएस, बीएचएमएस, आयुर्वेद इ.)</string>
+    <string name="distance_to_nearest_tertiary_care_facility">जवळच्या तृतीयक आरोग्य केंद्रांपर्यंतचे अंतर</string>
+
+    <string name="household_basic_information">Household Basic Information</string>
+    <string name="household_basic_characteristics">Household Basic Characteristics</string>
+    <string name="health_service_access_availability_utilization">Health Service Access, Availability &amp; Utilization</string>
+
+    <string name="diagnostics">निदान</string>
+    <string name="uric_acid">युरिक ऍसिड</string>
+    <string name="total_cholestrol">एकूण कोलेस्ट्रॉल</string>
+    <string name="uric_acid_calibration">यूरिक ऍसिड कॅलिब्रेशन</string>
+    <string name="total_cholesterol_calibration">एकूण कोलेस्ट्रॉल कॅलिब्रेशन</string>
+    <string name="blood_glucose_non_fasting">रक्तातील ग्लुकोज (जेवल्यानंतर)</string>
+    <string name="blood_glucose_fasting">रक्तातील ग्लुकोज (उपाशीपोटी)</string>
+    <string name="blood_glucose_post_prandial">रक्तातील ग्लुकोज (जेवल्यानंतर)</string>
+    <string name="blood_glucose_random">रक्तातील ग्लुकोज (रँडम)</string>
+    <string name="haemoglobin">हिमोग्लोबिन (mg/dL)</string>
+    <string name="household_no_survey">घर क्रमांक*</string>
+    <string name="result_of_visit">भेटीचा परिणाम*</string>
+
+
+    <!-- hints newly added in NAS 5.0 for household survey -->
+    <string name="hint_name_of_primary_respondent">माहिती देणाऱ्याचे नाव एंटर करा</string>
+    <string name="hint_household_number">घर क्रमांक एंटर करा</string>
+    <string name="hint_name_of_member_common">नाव एंटर करा</string>
+    <string name="hint_number_common">नंबर एंटर करा</string>
+    <string name="hint_number_of_smartphones">स्मार्टफोनची संख्या एंटर करा</string>
+    <string name="hint_number_of_feature_phones">फीचर फोनची संख्या एंटर करा</string>
+    <string name="hint_number_of_earning_members">कमावणाऱ्या सदस्यांची संख्या एंटर करा</string>
+    <string name="hint_other_sources_of_income">इतर उत्पन्न स्रोत प्रविष्ट करा</string>
+    <string name="hint_load_shedding_hrs_no">तासांची संख्या प्रविष्ट करा</string>
+    <string name="hint_load_shedding_per_week">दिवसांची संख्या प्रविष्ट करा</string>
+    <string name="hint_enter_hours">दिवसात किती तास एंटर करा</string>
+    <string name="hint_days_per_week">दर आठवड्याला दिवस एंटर करा</string>
+    <string name="hint_amount_of_cultivated_land">लागवडीयोग्य जमिनीचे प्रमाण</string>
+    <string name="hint_other_fuel_type">इतर इंधन प्रकार एंटर करा</string>
+    <string name="title_other_fuel_type">इतर इंधन प्रकार</string>
+    <string name="hint_other_lighting_source">इतर प्रकाश स्रोत प्रविष्ट करा</string>
+    <string name="title_other_lighting_source">इतर प्रकाश स्रोत</string>
+    <string name="hint_other_water_purification">इतर पद्धत एंटर करा</string>
+    <string name="title_other_water_purification">इतर जल शुध्दीकरण पद्धती</string>
+    <string name="enter_other_water_sources">इतर जलस्रोत प्रविष्ट करा</string>
+    <string name="hint_drop_down_select">निवडा</string>
+    <string name="txt_what_is_your_relationship_with_head_of_household"> घराच्या प्रमुखाशी तुमचे नाते काय आहे*</string>
+    <string name="txt_phone_ownership">फोन मालकी*</string>
+    <string name="general_roster">सामान्य</string>
+    <string name="pregnancy_roster">गर्भधारणा</string>
+    <string name="health_service_roster">आरोग्य सेवा</string>
+    <string name="identification_screen_prompt_household_no">घर क्रमांक</string>
+    <string name="identification_screen_prompt_other_block">Other Block</string>
 
 </resources>

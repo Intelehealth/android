@@ -39,5 +39,9 @@ data class ConfigResponse(
     @SerializedName("patient_family_member_registration")
     var activeStatusFamilyRegistration: Boolean = true,
     @SerializedName("patient_household_survey")
-    var activeStatusHouseholdSurvey: Boolean = true
+    var activeStatusHouseholdSurvey: Boolean = true,
+    @SerializedName("roster_questionnaire")
+    val rosterQuestionnaire: RosterQuestionnaireActiveStatus,
+    @SerializedName("roster_questionnaire_section")
+    val rosterQuestionnaireSection: Boolean = true
 )

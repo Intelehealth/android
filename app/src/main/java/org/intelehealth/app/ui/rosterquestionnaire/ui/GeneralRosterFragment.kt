@@ -1,6 +1,7 @@
 package org.intelehealth.app.ui.rosterquestionnaire.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
 import androidx.lifecycle.ViewModelProvider
@@ -8,6 +9,7 @@ import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import org.intelehealth.app.R
 import org.intelehealth.app.databinding.FragmentGeneralRosterBinding
+import org.intelehealth.app.ui.patient.fragment.PatientOtherInfoFragmentDirections
 import org.intelehealth.app.ui.rosterquestionnaire.ui.RosterQuestionnaireMainActivity.Companion.handleBackEventFromRosterToPatientReg
 import org.intelehealth.app.ui.rosterquestionnaire.ui.RosterQuestionnaireMainActivity.Companion.startRosterQuestionnaire
 
@@ -17,6 +19,7 @@ import org.intelehealth.app.utilities.ArrayAdapterUtils
 import org.intelehealth.app.utilities.LanguageUtils
 import org.intelehealth.app.utilities.PatientRegStage
 import org.intelehealth.app.utilities.extensions.hideError
+import org.intelehealth.app.utilities.extensions.hideErrorOnTextChang
 import org.intelehealth.app.utilities.extensions.validate
 import org.intelehealth.app.utilities.extensions.validateDropDowb
 
@@ -41,7 +44,7 @@ class GeneralRosterFragment : BaseRosterFragment(R.layout.fragment_general_roste
         if (intent != null) {
             patientUuid = intent.getStringExtra("patientUuid")
         }
-        setupRelationDropdown()
+        setupRelationDropdownNew()
         setupMaritalStatusDropdown()
         setupEducationStatusDropdown()
         setupOccupationStatusDropdown()
@@ -128,7 +131,7 @@ class GeneralRosterFragment : BaseRosterFragment(R.layout.fragment_general_roste
         binding.autoCompleteOccupation.setOnItemClickListener { parent, view, position, id ->
             binding.textInputLayOccupation.hideError()
             LanguageUtils.getSpecificLocalResource(requireContext(), "en").apply {
-                if (position == 13) {
+                if (position == 12) {
                     binding.llOtherOccupationLayout.visibility = View.VISIBLE
                 } else {
                     binding.llOtherOccupationLayout.visibility = View.GONE
@@ -144,7 +147,6 @@ class GeneralRosterFragment : BaseRosterFragment(R.layout.fragment_general_roste
         binding.autoCompletePhoneOwnership.setOnItemClickListener { _, _, i, _ ->
             binding.textInputLayPhoneOwnership.hideError()
             LanguageUtils.getSpecificLocalResource(requireContext(), "en").apply {
-
             }
         }
     }
@@ -195,10 +197,28 @@ class GeneralRosterFragment : BaseRosterFragment(R.layout.fragment_general_roste
 
     private fun validateForm(block: () -> Unit) {
         val error = R.string.this_field_is_mandatory
-        val relation = binding.textInputLayRelation.validateDropDowb(
-            binding.autoCompleteWhatIsYourRelation,
-            error
-        )
+        /* val relation = binding.textInputLayRelation.validateDropDowb(
+             binding.autoCompleteWhatIsYourRelation,
+             error
+         )*/
+        val relation = when {
+            // If "Other" is selected, validate the "Other" relation  field
+            binding.llOtherRelationLayout.visibility == View.VISIBLE -> {
+                binding.textInputLayOtherRelationLayout.validate(
+                    binding.textInpuOtherRelation,
+                    error
+                )
+            }
+
+            else -> {
+                // If "Other" is not selected, check if the dropdown is not empty
+                binding.textInputLayRelation.validateDropDowb(
+                    binding.autoCompleteWhatIsYourRelation,
+                    error
+                )
+            }
+        }
+
         val maritalStatus = binding.textInputLayMaritalStatus.validateDropDowb(
             binding.autoCompleteMaritalStatus,
             error
@@ -211,7 +231,7 @@ class GeneralRosterFragment : BaseRosterFragment(R.layout.fragment_general_roste
         val occupation = when {
             // If "Other" is selected, validate the "Other" occupation field
             binding.llOtherOccupationLayout.visibility == View.VISIBLE -> {
-                binding.textInputLayOccupation.validate(
+                binding.textInputLayOtherOccupationLayout.validate(
                     binding.textInpuOtherOccupation,
                     error
                 )
@@ -247,11 +267,13 @@ class GeneralRosterFragment : BaseRosterFragment(R.layout.fragment_general_roste
             error
         )
 
-        if (relation.and(maritalStatus).and(educationStatus).and(occupation).and(phoneOwnership).and(lastTimeBpChecked).and(lastTimeSugarChecked).and(lastTimeHbChecked).and(lastTimeBmiChecked)
-        ) block.invoke()
-      /*  if (relation.and(maritalStatus).and(educationStatus).and(occupation).and(phoneOwnership)
+        if (relation.and(maritalStatus).and(educationStatus).and(occupation).and(phoneOwnership)
                 .and(lastTimeBpChecked).and(lastTimeSugarChecked).and(lastTimeHbChecked)
-        ) block.invoke()*/
+                .and(lastTimeBmiChecked)
+        ) block.invoke()
+        /*  if (relation.and(maritalStatus).and(educationStatus).and(occupation).and(phoneOwnership)
+                  .and(lastTimeBpChecked).and(lastTimeSugarChecked).and(lastTimeHbChecked)
+          ) block.invoke()*/
     }
 
     private fun clickListeners() {
@@ -269,11 +291,38 @@ class GeneralRosterFragment : BaseRosterFragment(R.layout.fragment_general_roste
         binding.frag2BtnNext.setOnClickListener {
             validateForm { navigateToDetails() }
         }
+        binding.textInputLayOtherRelationLayout.hideErrorOnTextChang(binding.textInpuOtherRelation)
+        binding.textInputLayOtherOccupationLayout.hideErrorOnTextChang(binding.textInpuOtherOccupation)
     }
 
     private fun navigateToDetails() {
-        GeneralRosterFragmentDirections.navigationGeneralToPregnancyRoster().apply {
-            findNavController().navigate(this)
+      /*  if (rosterViewModel.isEditMode) {
+            GeneralRosterFragmentDirections.navigationGeneralToDetails(
+                patientUuid, "roster", "false"
+            ).also {
+                findNavController().navigate(it)
+                requireActivity().finish()
+            }
+        } else {*/
+            GeneralRosterFragmentDirections.navigationGeneralToPregnancyRoster().apply {
+                findNavController().navigate(this)
+            }
+       // }
+    }
+
+    private fun setupRelationDropdownNew() {
+        val adapter = ArrayAdapterUtils.getArrayAdapter(requireContext(), R.array.relationshipHoH)
+        binding.autoCompleteWhatIsYourRelation.setAdapter(adapter)
+
+        binding.autoCompleteWhatIsYourRelation.setOnItemClickListener { parent, view, position, id ->
+            binding.textInputLayRelation.hideError()
+            LanguageUtils.getSpecificLocalResource(requireContext(), "en").apply {
+                if (position == 15) {
+                    binding.llOtherRelationLayout.visibility = View.VISIBLE
+                } else {
+                    binding.llOtherRelationLayout.visibility = View.GONE
+                }
+            }
         }
     }
 }

@@ -118,8 +118,7 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
                 requireActivity().finish()
             }
         } else {
-            //val rosterConfig = patientViewModel.activeStatusRosterSection
-            val rosterConfig = true
+            val rosterConfig = patientViewModel.activeStatusRosterSection
             Log.d("TAG", "navigateToDetails: rosterConfig : " + rosterConfig)
             if (rosterConfig) {
                 showMoveToRosterDialog()
