@@ -26,7 +26,6 @@
             android:layout_height="wrap_content"
             android:contentDescription="@string/delete"
             android:paddingVertical="@dimen/margin_16"
-            android:paddingStart="@dimen/margin_16"
             android:src="@drawable/ui2_ic_dropdown"
             app:layout_constraintBottom_toBottomOf="@+id/tvTitle"
             app:layout_constraintEnd_toEndOf="parent"
@@ -59,7 +58,7 @@
             android:id="@+id/bottomDivider"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_below="@+id/relative_personal_header"
+            android:layout_below="@+id/rvOutComeItem"
             android:layout_marginTop="@dimen/fu_margin_start"
             android:layout_marginBottom="@dimen/fu_card_margin_updown"
             android:background="@color/notifi_divider_color"
@@ -85,15 +84,14 @@
                 android:layout_marginEnd="8dp"
                 android:layout_weight="1"
                 android:background="@drawable/button_background_delete"
-                android:elevation="4dp"
                 android:gravity="center"
                 android:orientation="horizontal"
                 android:padding="8dp">
 
                 <ImageView
                     android:id="@+id/deleteIcon"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
                     android:contentDescription="@string/delete"
                     android:src="@drawable/ic_delete_red_icon" />
 
@@ -114,15 +112,15 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@drawable/button_background_edit"
-                android:elevation="4dp"
+
                 android:gravity="center"
                 android:orientation="horizontal"
                 android:padding="8dp">
 
                 <ImageView
                     android:id="@+id/editIcon"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
                     android:contentDescription="@string/edit"
                     android:src="@drawable/ui2_ic_edit" />
 

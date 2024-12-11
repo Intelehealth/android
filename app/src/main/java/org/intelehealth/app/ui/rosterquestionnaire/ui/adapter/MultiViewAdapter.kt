@@ -8,12 +8,12 @@ import org.intelehealth.app.R
 import org.intelehealth.app.databinding.ItemDatePickerViewBinding
 import org.intelehealth.app.databinding.ItemSpinnerViewBinding
 import org.intelehealth.app.ui.rosterquestionnaire.model.PregnancyOutComeViewQuestion
-import org.intelehealth.app.ui.rosterquestionnaire.ui.listeners.PregnancyMultiViewListener
+import org.intelehealth.app.ui.rosterquestionnaire.ui.listeners.MultiViewListener
 import org.intelehealth.app.utilities.ArrayAdapterUtils
 
-class PregnancyMultiViewAdapter(
+class MultiViewAdapter(
     private val items: List<PregnancyOutComeViewQuestion>,
-    private val listener: PregnancyMultiViewListener,
+    private val listener: MultiViewListener,
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun getItemViewType(position: Int): Int {
@@ -54,10 +54,16 @@ class PregnancyMultiViewAdapter(
                 is ItemSpinnerViewBinding -> {
 
                     binding.tvSpinnerHeader.text = data.question
+                    if (!data.answer.isNullOrEmpty()) {
+                        binding.spinner.setText(data.answer)
+                    } else {
+                        binding.spinner.setText(binding.root.context.getText(R.string.select))
+                    }
                     val adapter = ArrayAdapterUtils.getObjectArrayAdapter(
                         binding.root.context,
                         data.spinnerItem!!
                     )
+
                     binding.spinner.setAdapter(adapter)
                     binding.spinner.setOnItemClickListener { _, _, _, id ->
                         data.answer = adapter.getItem(id.toInt())

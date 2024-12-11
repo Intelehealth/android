@@ -5,5 +5,5 @@ import androidx.annotation.ArrayRes
 data class PregnancyOutComeModel(
     val title: String,
     val pregnancyOutComeViewQuestion: List<PregnancyOutComeViewQuestion>,
-    val isOpen: Boolean = false,
+    var isOpen: Boolean = false,
 )
