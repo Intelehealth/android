@@ -6,9 +6,9 @@ import androidx.recyclerview.widget.RecyclerView
 import org.intelehealth.app.databinding.ItemChildOutcomeBinding
 import org.intelehealth.app.ui.rosterquestionnaire.model.RoasterViewQuestion
 
-class PregnancyOutComeChildAdapter(
+class HealthServiceChildAdapter(
     private val items: List<RoasterViewQuestion>,
-) : RecyclerView.Adapter<PregnancyOutComeChildAdapter.ChildViewHolder>() {
+) : RecyclerView.Adapter<HealthServiceChildAdapter.ChildViewHolder>() {
 
     inner class ChildViewHolder(private val binding: ItemChildOutcomeBinding) :
         RecyclerView.ViewHolder(binding.root) {

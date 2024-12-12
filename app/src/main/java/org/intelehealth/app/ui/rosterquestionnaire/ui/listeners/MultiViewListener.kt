@@ -1,11 +1,11 @@
 package org.intelehealth.app.ui.rosterquestionnaire.ui.listeners
 
 import android.view.View
-import org.intelehealth.app.ui.rosterquestionnaire.model.PregnancyOutComeViewQuestion
+import org.intelehealth.app.ui.rosterquestionnaire.model.RoasterViewQuestion
 
 interface MultiViewListener {
     fun onItemClick(
-        item: PregnancyOutComeViewQuestion,
+        item: RoasterViewQuestion,
         position: Int,
         view: View,
     )

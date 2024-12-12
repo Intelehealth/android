@@ -6,14 +6,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.intelehealth.app.databinding.ItemPregnancyOutcomeBinding
-import org.intelehealth.app.ui.rosterquestionnaire.model.PregnancyOutComeModel
-import org.intelehealth.app.ui.rosterquestionnaire.ui.listeners.PregnancyOutcomeClickListener
+import org.intelehealth.app.ui.rosterquestionnaire.model.HealthServiceModel
+import org.intelehealth.app.ui.rosterquestionnaire.ui.listeners.HealthServiceClickListener
 import org.intelehealth.app.utilities.SpacingItemDecoration
 
-class PregnancyOutcomeAdapter(
-    private val items: ArrayList<PregnancyOutComeModel>,
-    private val listener: PregnancyOutcomeClickListener,
-) : RecyclerView.Adapter<PregnancyOutcomeAdapter.ParentViewHolder>() {
+class HealthServiceAdapter(
+    private val items: ArrayList<HealthServiceModel>,
+    private val listener: HealthServiceClickListener,
+) : RecyclerView.Adapter<HealthServiceAdapter.ParentViewHolder>() {
 
     inner class ParentViewHolder(private val binding: ItemPregnancyOutcomeBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -40,10 +40,10 @@ class PregnancyOutcomeAdapter(
             }
         }
 
-        fun bind(item: PregnancyOutComeModel) {
+        fun bind(item: HealthServiceModel) {
             binding.tvTitle.text = item.title
             binding.rvOutComeItem.adapter =
-                PregnancyOutComeChildAdapter(item.roasterViewQuestion)
+                HealthServiceChildAdapter(item.roasterViewQuestion)
             if (item.isOpen) {
                 binding.rvOutComeItem.visibility = View.VISIBLE
                 binding.bottomDivider.visibility = View.VISIBLE

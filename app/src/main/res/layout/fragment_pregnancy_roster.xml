@@ -196,7 +196,6 @@
                             android:id="@+id/horizontal_view"
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
-                            android:layout_below="@+id/relative_personal_header"
                             android:visibility="@{viewModel.outComeLiveList.size() > 0 ? View.VISIBLE : View.GONE}"
                             app:layout_constraintTop_toBottomOf="@+id/tvAddPregnancyOutcomeHeader"
                             android:background="@color/notifi_divider_color"

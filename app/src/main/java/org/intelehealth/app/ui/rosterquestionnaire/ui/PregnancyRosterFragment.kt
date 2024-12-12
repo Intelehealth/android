@@ -9,7 +9,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import org.intelehealth.app.R
 import org.intelehealth.app.databinding.FragmentPregnancyRosterBinding
 import org.intelehealth.app.ui.rosterquestionnaire.model.PregnancyOutComeModel
-import org.intelehealth.app.ui.rosterquestionnaire.model.PregnancyOutComeViewQuestion
+import org.intelehealth.app.ui.rosterquestionnaire.model.RoasterViewQuestion
 import org.intelehealth.app.ui.rosterquestionnaire.ui.adapter.PregnancyOutcomeAdapter
 import org.intelehealth.app.ui.rosterquestionnaire.ui.listeners.PregnancyOutcomeClickListener
 import org.intelehealth.app.ui.rosterquestionnaire.utilities.RosterQuestionnaireStage
@@ -66,11 +66,10 @@ class PregnancyRosterFragment : BaseRosterFragment(R.layout.fragment_pregnancy_r
     private fun clickListeners() {
         binding.tvAddPregnancyOutcome.setOnClickListener {
             val dialog = AddOutcomeDialog()
-            dialog.show(childFragmentManager, "AddPregnancyOutcomeDialog")
+            dialog.show(childFragmentManager, AddOutcomeDialog::class.simpleName)
         }
 
         binding.frag2BtnNext.setOnClickListener {
-            //for now only UI is there hence navigated directly
             navigateToDetails()
         }
         binding.frag2BtnBack.setOnClickListener {
@@ -91,10 +90,10 @@ class PregnancyRosterFragment : BaseRosterFragment(R.layout.fragment_pregnancy_r
 
     override fun onClickEdit(view: View, position: Int, item: PregnancyOutComeModel) {
         rosterViewModel.existPregnancyOutComePosition = position
-        rosterViewModel.existingPregnancyOutComeList =
-            item.pregnancyOutComeViewQuestion as ArrayList<PregnancyOutComeViewQuestion>
+        rosterViewModel.existingRoasterQuestionList =
+            item.roasterViewQuestion as ArrayList<RoasterViewQuestion>
         val dialog = AddOutcomeDialog()
-        dialog.show(childFragmentManager, "AddPregnancyOutcomeDialog")
+        dialog.show(childFragmentManager, AddOutcomeDialog::class.simpleName)
     }
 
     override fun onClickOpen(view: View, position: Int, item: PregnancyOutComeModel) {

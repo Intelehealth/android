@@ -7,12 +7,12 @@ import androidx.viewbinding.ViewBinding
 import org.intelehealth.app.R
 import org.intelehealth.app.databinding.ItemDatePickerViewBinding
 import org.intelehealth.app.databinding.ItemSpinnerViewBinding
-import org.intelehealth.app.ui.rosterquestionnaire.model.PregnancyOutComeViewQuestion
+import org.intelehealth.app.ui.rosterquestionnaire.model.RoasterViewQuestion
 import org.intelehealth.app.ui.rosterquestionnaire.ui.listeners.MultiViewListener
 import org.intelehealth.app.utilities.ArrayAdapterUtils
 
 class MultiViewAdapter(
-    private val items: List<PregnancyOutComeViewQuestion>,
+    private val items: List<RoasterViewQuestion>,
     private val listener: MultiViewListener,
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -49,7 +49,7 @@ class MultiViewAdapter(
 
     inner class GenericViewHolder(private val binding: ViewBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(data: PregnancyOutComeViewQuestion) {
+        fun bind(data: RoasterViewQuestion) {
             when (binding) {
                 is ItemSpinnerViewBinding -> {
 
