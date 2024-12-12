@@ -1,22 +1,22 @@
 package org.intelehealth.app.ui.rosterquestionnaire.viewmodel
 
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import org.intelehealth.app.R
-import org.intelehealth.app.app.IntelehealthApplication
+import org.intelehealth.app.ui.rosterquestionnaire.model.HealthServiceModel
 import org.intelehealth.app.ui.rosterquestionnaire.model.PregnancyOutComeModel
-import org.intelehealth.app.ui.rosterquestionnaire.model.PregnancyOutComeViewQuestion
+import org.intelehealth.app.ui.rosterquestionnaire.model.RoasterViewQuestion
 import org.intelehealth.app.ui.rosterquestionnaire.repository.RosterRepositoryImp
 import org.intelehealth.app.ui.rosterquestionnaire.model.RosterModel
+import org.intelehealth.app.ui.rosterquestionnaire.usecase.AddHealthServiceUseCase
 import org.intelehealth.app.ui.rosterquestionnaire.utilities.RosterQuestionnaireStage
 import javax.inject.Inject
 
 @HiltViewModel
 class RosterViewModel @Inject constructor(
     private val rosterRepository: RosterRepositoryImp,
+    private val addHealthServiceUseCase: AddHealthServiceUseCase
 ) : ViewModel() {
 
 
@@ -31,26 +31,45 @@ class RosterViewModel @Inject constructor(
     private val _outComeLiveList = MutableLiveData<ArrayList<PregnancyOutComeModel>>(arrayListOf())
     val outComeLiveList: LiveData<ArrayList<PregnancyOutComeModel>> = _outComeLiveList
 
-    var existingPregnancyOutComeList: ArrayList<PregnancyOutComeViewQuestion>? = null
+
+    private val _healthServiceLiveList = MutableLiveData<ArrayList<HealthServiceModel>>(arrayListOf())
+    val healthServiceLiveList: LiveData<ArrayList<HealthServiceModel>> = _healthServiceLiveList
+
+    var existingRoasterQuestionList: ArrayList<RoasterViewQuestion>? = null
     var existPregnancyOutComePosition = 0
 
     fun updateRosterStage(stage: RosterQuestionnaireStage) {
         mutableLiveRosterStage.postValue(stage)
     }
 
-    fun addPregnancyOutcome(questionList: List<PregnancyOutComeViewQuestion>) {
+    fun addPregnancyOutcome(questionList: List<RoasterViewQuestion>) {
         val pregnancyOutComeModel = PregnancyOutComeModel(
             title = questionList[0].answer ?: "",
-            pregnancyOutComeViewQuestion = questionList
+            roasterViewQuestion = questionList
         )
         val list = _outComeLiveList.value ?: mutableListOf()
-        if (existingPregnancyOutComeList == null) {
+        if (existingRoasterQuestionList == null) {
             list.add(pregnancyOutComeModel)
         } else {
             list[existPregnancyOutComePosition] = pregnancyOutComeModel
-            existingPregnancyOutComeList = null
+            existingRoasterQuestionList = null
         }
         _outComeLiveList.postValue(list as ArrayList<PregnancyOutComeModel>?)
+    }
+
+    fun addHealthService(questionList: List<RoasterViewQuestion>) {
+        val healthServiceModel = HealthServiceModel(
+            title = questionList[0].answer ?: "",
+            roasterViewQuestion = questionList
+        )
+        val list = _healthServiceLiveList.value ?: mutableListOf()
+        if (existingRoasterQuestionList == null) {
+            list.add(healthServiceModel)
+        } else {
+            list[existPregnancyOutComePosition] = healthServiceModel
+            existingRoasterQuestionList = null
+        }
+        _healthServiceLiveList.postValue(list as ArrayList<HealthServiceModel>?)
     }
 
 
@@ -61,12 +80,13 @@ class RosterViewModel @Inject constructor(
 
     }
 
-    fun getOutcomeQuestionList(): ArrayList<PregnancyOutComeViewQuestion> {
-        return if (existingPregnancyOutComeList == null) {
+    fun getOutcomeQuestionList(): ArrayList<RoasterViewQuestion> {
+        return if (existingRoasterQuestionList == null) {
             rosterRepository.getOutcomeQuestionList()
         } else {
-            existingPregnancyOutComeList!!
+            existingRoasterQuestionList!!
         }
-
     }
+
+    fun getHealthServiceList(): ArrayList<RoasterViewQuestion> = addHealthServiceUseCase.getHealthServiceList(existingRoasterQuestionList)
 }

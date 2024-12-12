@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.intelehealth.app.R
-import org.intelehealth.app.databinding.FragmentAddPregnancyOutcomeBinding
+import org.intelehealth.app.databinding.DialogAddHealthServiceBinding
 import org.intelehealth.app.ui.dialog.CalendarDialog
 import org.intelehealth.app.ui.rosterquestionnaire.model.RoasterViewQuestion
 import org.intelehealth.app.ui.rosterquestionnaire.ui.adapter.MultiViewAdapter
@@ -19,16 +19,16 @@ import org.intelehealth.app.ui.rosterquestionnaire.viewmodel.RosterViewModel
 import org.intelehealth.app.utilities.SpacingItemDecoration
 
 
-class AddOutcomeDialog : DialogFragment(), MultiViewListener {
+class AddHealthServiceDialog : DialogFragment(), MultiViewListener {
 
     private lateinit var pregnancyAdapter: MultiViewAdapter
-    private lateinit var _binding: FragmentAddPregnancyOutcomeBinding
+    private lateinit var _binding: DialogAddHealthServiceBinding
     private lateinit var rosterViewModel: RosterViewModel
     private var pregnancyOutcomeList: ArrayList<RoasterViewQuestion> = arrayListOf()
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         // Inflate the binding
-        _binding = FragmentAddPregnancyOutcomeBinding.inflate(LayoutInflater.from(context))
+        _binding = DialogAddHealthServiceBinding.inflate(LayoutInflater.from(context))
         rosterViewModel = ViewModelProvider.create(requireActivity())[RosterViewModel::class]
         val builder = MaterialAlertDialogBuilder(requireContext())
         builder.setView(_binding.root)
@@ -54,7 +54,7 @@ class AddOutcomeDialog : DialogFragment(), MultiViewListener {
 
     private fun setClickListeners() {
         _binding.btnSave.setOnClickListener {
-            rosterViewModel.addPregnancyOutcome(pregnancyOutcomeList)
+            rosterViewModel.addHealthService(pregnancyOutcomeList)
             dismiss()
         }
         _binding.btnCancel.setOnClickListener { dismiss() }
@@ -64,11 +64,11 @@ class AddOutcomeDialog : DialogFragment(), MultiViewListener {
     private fun setAdapter() {
         pregnancyOutcomeList.addAll(rosterViewModel.getOutcomeQuestionList())
 
-        _binding.rvOutcomeQuestions.apply {
+        _binding.rvHealthServiceQuestions.apply {
             layoutManager = LinearLayoutManager(requireContext())
             pregnancyAdapter = MultiViewAdapter(
                 pregnancyOutcomeList,
-                this@AddOutcomeDialog
+                this@AddHealthServiceDialog
             )
             adapter = pregnancyAdapter
             addItemDecoration(SpacingItemDecoration(16))
@@ -90,6 +90,5 @@ class AddOutcomeDialog : DialogFragment(), MultiViewListener {
             }, childFragmentManager)
         }
     }
-
 
 }

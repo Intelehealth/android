@@ -1,6 +1,6 @@
 package org.intelehealth.app.ui.rosterquestionnaire.model
 
-data class PregnancyOutComeViewQuestion(
+data class RoasterViewQuestion(
     val layoutId: Int,
     val data: Any? = null,
     val question: String,
