@@ -204,24 +204,24 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
     }
 
     private void showConfirmDialog(final PrescriptionModel model) {
+        DialogUtils dialogUtils = new DialogUtils();
+
         if (model.isHasPrescription()) {
-            triggerEndVisit(model);
+            dialogUtils.showCommonDialog(
+                    context,
+                    R.drawable.dialog_close_visit_icon,
+                    context.getResources().getString(R.string.confirm_end_visit_reason),
+                    context.getResources().getString(R.string.confirm_end_visit_reason_message),
+                    false,
+                    context.getResources().getString(R.string.confirm),
+                    context.getResources().getString(R.string.cancel),
+                    action -> {
+                        if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
+                            triggerEndVisit(model);
+                        }
+                    });
         } else {
-            DialogUtils dialogUtils = new DialogUtils();
             dialogUtils.displayPrescriptionNotReceivedDialog(context);
-//            dialogUtils.showCommonDialog(
-//                    context,
-//                    R.drawable.dialog_close_visit_icon,
-//                    context.getResources().getString(R.string.confirm_end_visit_reason),
-//                    context.getResources().getString(R.string.confirm_end_visit_reason_message),
-//                    false,
-//                    context.getResources().getString(R.string.confirm),
-//                    context.getResources().getString(R.string.cancel),
-//                    action -> {
-//                        if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
-//                            checkIfAppointmentExistsForVisit(model);
-//                        }
-//                    });
         }
     }
 

@@ -2178,16 +2178,24 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     }
 
     private void showEndVisitConfirmationDialog() {
+        DialogUtils dialogUtils = new DialogUtils();
+
         if (!hasPrescription) {
-            DialogUtils dialogUtils = new DialogUtils();
             dialogUtils.displayPrescriptionNotReceivedDialog(this);
-//            dialogUtils.showCommonDialog(this, R.drawable.dialog_close_visit_icon, context.getResources().getString(R.string.confirm_end_visit_reason), context.getResources().getString(R.string.confirm_end_visit_reason_message), false, context.getResources().getString(R.string.confirm), context.getResources().getString(R.string.cancel), action -> {
-//                if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
-//                    checkIfAppointmentExistsForVisit(visitUUID);
-//                }
-//            });
         } else {
-            triggerEndVisit();
+            dialogUtils.showCommonDialog(
+                    this,
+                    R.drawable.dialog_close_visit_icon,
+                    context.getResources().getString(R.string.confirm_end_visit_reason),
+                    context.getResources().getString(R.string.confirm_end_visit_reason_message),
+                    false,
+                    context.getResources().getString(R.string.confirm),
+                    context.getResources().getString(R.string.cancel),
+                    action -> {
+                        if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
+                            triggerEndVisit();
+                        }
+                    });
         }
     }
 

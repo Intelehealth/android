@@ -31,5 +31,7 @@
 
     <string name="prescription_not_received">Prescription Not Received</string>
     <string name="please_wait_for_the_doctor_to_share_the_prescription_before_closing_the_visit">Please wait for the doctor to share the prescription before closing the visit</string>
+    <string name="confirm_end_visit_reason">End this visit?</string>
+    <string name="confirm_end_visit_reason_message">Are you sure you want to end this visit?</string>
 
 </resources>

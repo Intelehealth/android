@@ -76,6 +76,7 @@ import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.ui.patient.activity.PatientRegistrationActivity;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
+import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.PatientRegSource;
 import org.intelehealth.app.utilities.PatientRegStage;
@@ -457,15 +458,23 @@ public class AppointmentDetailsActivity extends BaseActivity implements NetworkU
             PrescriptionModel pres = isVisitNotEnded(visitID);
             if (pres.getVisitUuid() != null) {
                 layoutEndVisit.setVisibility(View.VISIBLE);
-                btnEndVisit.setOnClickListener(v -> VisitUtils.endVisit(AppointmentDetailsActivity.this,
-                        visitID,
-                        patientUuid,
-                        followupDate,
-                        vitalsUUID,
-                        adultInitialUUID,
-                        "state",
-                        patientName,
-                        "AppointmentDetailsActivity"));
+                btnEndVisit.setOnClickListener(v -> {
+                    DialogUtils dialogUtils = new DialogUtils();
+                    dialogUtils.showCommonDialog(this,
+                            R.drawable.dialog_close_visit_icon,
+                            getResources().getString(R.string.confirm_end_visit_reason),
+                            getResources().getString(R.string.confirm_end_visit_reason_message),
+                            false,
+                            getResources().getString(R.string.confirm),
+                            getResources().getString(R.string.cancel),
+                            action -> {
+                                if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
+                                    triggerEndVisit();
+                                }
+                            });
+
+
+                });
             } else {
                 layoutEndVisit.setVisibility(View.GONE);
             }
@@ -579,6 +588,18 @@ public class AppointmentDetailsActivity extends BaseActivity implements NetworkU
             }
         });
 
+    }
+
+    private void triggerEndVisit() {
+        VisitUtils.endVisit(AppointmentDetailsActivity.this,
+                visitID,
+                patientUuid,
+                followupDate,
+                vitalsUUID,
+                adultInitialUUID,
+                "state",
+                patientName,
+                "AppointmentDetailsActivity");
     }
 
     private void handleWhatsappAndCall() {

@@ -504,23 +504,24 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
     }
 
     private void showEndVisitConfirmationDialog() {
+        DialogUtils dialogUtils = new DialogUtils();
+
         if (hasPrescription) {
-            triggerEndVisit();
+            dialogUtils.showCommonDialog(this,
+                    R.drawable.dialog_close_visit_icon,
+                    getResources().getString(R.string.confirm_end_visit_reason),
+                    getResources().getString(R.string.confirm_end_visit_reason_message),
+                    false,
+                    getResources().getString(R.string.confirm),
+                    getResources().getString(R.string.cancel),
+                    action -> {
+                        if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
+                            triggerEndVisit();
+                        }
+                    });
         } else {
-            DialogUtils dialogUtils = new DialogUtils();
             dialogUtils.displayPrescriptionNotReceivedDialog(this);
         }
-
-//        if (hasPrescription) {
-//            DialogUtils dialogUtils = new DialogUtils();
-//            dialogUtils.showCommonDialog(this, R.drawable.dialog_close_visit_icon, getResources().getString(R.string.confirm_end_visit_reason), getResources().getString(R.string.confirm_end_visit_reason_message), false, getResources().getString(R.string.confirm), getResources().getString(R.string.cancel), action -> {
-//                if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
-//                    checkIfAppointmentExistsForVisit(visitID);
-//                }
-//            });
-//        } else {
-//            triggerEndVisit();
-//        }
     }
 
     private void checkIfAppointmentExistsForVisit(String visitUUID) {
