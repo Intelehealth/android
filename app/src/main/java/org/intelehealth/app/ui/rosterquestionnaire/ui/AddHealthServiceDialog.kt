@@ -24,7 +24,7 @@ class AddHealthServiceDialog : DialogFragment(), MultiViewListener {
     private lateinit var pregnancyAdapter: MultiViewAdapter
     private lateinit var _binding: DialogAddHealthServiceBinding
     private lateinit var rosterViewModel: RosterViewModel
-    private var pregnancyOutcomeList: ArrayList<RoasterViewQuestion> = arrayListOf()
+    private var healthServiceQuestionList: ArrayList<RoasterViewQuestion> = arrayListOf()
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         // Inflate the binding
@@ -54,20 +54,23 @@ class AddHealthServiceDialog : DialogFragment(), MultiViewListener {
 
     private fun setClickListeners() {
         _binding.btnSave.setOnClickListener {
-            rosterViewModel.addHealthService(pregnancyOutcomeList)
-            dismiss()
+            if (isValidList(healthServiceQuestionList)) {
+                rosterViewModel.addHealthService(healthServiceQuestionList)
+                dismiss()
+            }
+
         }
         _binding.btnCancel.setOnClickListener { dismiss() }
     }
 
 
     private fun setAdapter() {
-        pregnancyOutcomeList.addAll(rosterViewModel.getOutcomeQuestionList())
+        healthServiceQuestionList.addAll(rosterViewModel.getHealthServiceList())
 
         _binding.rvHealthServiceQuestions.apply {
             layoutManager = LinearLayoutManager(requireContext())
             pregnancyAdapter = MultiViewAdapter(
-                pregnancyOutcomeList,
+                healthServiceQuestionList,
                 this@AddHealthServiceDialog
             )
             adapter = pregnancyAdapter
@@ -75,20 +78,25 @@ class AddHealthServiceDialog : DialogFragment(), MultiViewListener {
         }
     }
 
+    private fun isValidList(healthServiceQuestionList: ArrayList<RoasterViewQuestion>): Boolean {
+        healthServiceQuestionList.forEach {
+            if (it.answer.isNullOrEmpty()) {
+                pregnancyAdapter.updateErrorMessage(true)
+                return false
+            }
+        }
+        return true
+    }
+
 
     override fun onItemClick(item: RoasterViewQuestion, position: Int, view: View) {
-        if (item.layoutId == R.layout.item_spinner_view) {
-            TODO()
-        } else if (item.layoutId == R.layout.item_date_picker_view) {
+        CalendarDialog.showDatePickerDialog(object : CalendarDialog.OnDatePickListener {
+            override fun onDatePick(day: Int, month: Int, year: Int, value: String?) {
+                item.answer = value
+                pregnancyAdapter.notifyItemChanged(position)
 
-            CalendarDialog.showDatePickerDialog(object : CalendarDialog.OnDatePickListener {
-                override fun onDatePick(day: Int, month: Int, year: Int, value: String?) {
-                    item.answer = value
-                    pregnancyAdapter.notifyItemChanged(position)
-
-                }
-            }, childFragmentManager)
-        }
+            }
+        }, childFragmentManager)
     }
 
 }

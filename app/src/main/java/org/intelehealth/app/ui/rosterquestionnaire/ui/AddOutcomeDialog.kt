@@ -40,8 +40,10 @@ class AddOutcomeDialog : DialogFragment(), MultiViewListener {
         alertDialog.window!!.setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg) // show rounded corner for the dialog
         alertDialog.window!!.addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND) // dim background
         requireContext().resources.getDimensionPixelSize(R.dimen.internet_dialog_width) // set width to your dialog.
-        alertDialog.window!!.setLayout(WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT)
-
+        alertDialog.window!!.setLayout(
+            WindowManager.LayoutParams.WRAP_CONTENT,
+            WindowManager.LayoutParams.WRAP_CONTENT
+        )
         return alertDialog
     }
 
@@ -54,10 +56,22 @@ class AddOutcomeDialog : DialogFragment(), MultiViewListener {
 
     private fun setClickListeners() {
         _binding.btnSave.setOnClickListener {
-            rosterViewModel.addPregnancyOutcome(pregnancyOutcomeList)
-            dismiss()
+            if (isValidList(pregnancyOutcomeList)) {
+                rosterViewModel.addPregnancyOutcome(pregnancyOutcomeList)
+                dismiss()
+            }
         }
         _binding.btnCancel.setOnClickListener { dismiss() }
+    }
+
+    private fun isValidList(pregnancyOutcomeList: ArrayList<RoasterViewQuestion>): Boolean {
+        pregnancyOutcomeList.forEach {
+            if (it.answer.isNullOrEmpty()) {
+                pregnancyAdapter.updateErrorMessage(true)
+                return false
+            }
+        }
+        return true
     }
 
 
@@ -77,18 +91,13 @@ class AddOutcomeDialog : DialogFragment(), MultiViewListener {
 
 
     override fun onItemClick(item: RoasterViewQuestion, position: Int, view: View) {
-        if (item.layoutId == R.layout.item_spinner_view) {
-            TODO()
-        } else if (item.layoutId == R.layout.item_date_picker_view) {
+        CalendarDialog.showDatePickerDialog(object : CalendarDialog.OnDatePickListener {
+            override fun onDatePick(day: Int, month: Int, year: Int, value: String?) {
+                item.answer = value
+                pregnancyAdapter.notifyItemChanged(position)
 
-            CalendarDialog.showDatePickerDialog(object : CalendarDialog.OnDatePickListener {
-                override fun onDatePick(day: Int, month: Int, year: Int, value: String?) {
-                    item.answer = value
-                    pregnancyAdapter.notifyItemChanged(position)
-
-                }
-            }, childFragmentManager)
-        }
+            }
+        }, childFragmentManager)
     }
 
 

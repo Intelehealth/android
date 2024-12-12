@@ -15,28 +15,31 @@ class RosterRepositoryImp @Inject constructor() : RosterRepository {
                 RoasterViewQuestion(
                     layoutId = R.layout.item_spinner_view,
                     question = "What was the outcome of your pregnancy?",
-                    spinnerItem = context.resources.getStringArray(R.array.outcomes).toList()
+                    spinnerItem = context.resources.getStringArray(R.array.outcomes).toList(),
+                    errorMessage = context.getString(R.string.this_field_is_mandatory)
                 )
             )
             add(
                 RoasterViewQuestion(
                     layoutId = R.layout.item_spinner_view,
                     question = "What was the year of pregnancy outcome? ((a) for pregnant ladies, mention the date when conceived (b) in case of other options mention the date of delivery/miscarriage)",
-                    spinnerItem = context.resources.getStringArray(R.array.outcomes).toList()
+                    spinnerItem = context.resources.getStringArray(R.array.outcomes).toList(),
+                    errorMessage = context.getString(R.string.this_field_is_mandatory)
                 )
             )
             add(
                 RoasterViewQuestion(
                     layoutId = R.layout.item_date_picker_view,
                     question = "What was the year of pregnancy outcome? ((a) for pregnant ladies, mention the date when conceived (b) in case of other options mention the date of delivery/miscarriage)",
-
-                    )
+                    errorMessage = context.getString(R.string.this_field_is_mandatory)
+                )
             )
             add(
                 RoasterViewQuestion(
                     layoutId = R.layout.item_spinner_view,
                     question = "How many months did this pregnancy last?",
-                    spinnerItem = context.resources.getStringArray(R.array.outcomes).toList()
+                    spinnerItem = context.resources.getStringArray(R.array.outcomes).toList(),
+                    errorMessage = context.getString(R.string.this_field_is_mandatory)
                 )
             )
         }
@@ -50,14 +53,16 @@ class RosterRepositoryImp @Inject constructor() : RosterRepository {
                 RoasterViewQuestion(
                     layoutId = R.layout.item_spinner_view,
                     question = "What was the outcome of your pregnancy?",
-                    spinnerItem = context.resources.getStringArray(R.array.outcomes).toList()
+                    spinnerItem = context.resources.getStringArray(R.array.outcomes).toList(),
+                    errorMessage = context.getString(R.string.this_field_is_mandatory)
                 )
             )
             add(
                 RoasterViewQuestion(
                     layoutId = R.layout.item_spinner_view,
                     question = "What was the year of pregnancy outcome? ((a) for pregnant ladies, mention the date when conceived (b) in case of other options mention the date of delivery/miscarriage)",
-                    spinnerItem = context.resources.getStringArray(R.array.outcomes).toList()
+                    spinnerItem = context.resources.getStringArray(R.array.outcomes).toList(),
+                    errorMessage = context.getString(R.string.this_field_is_mandatory)
                 )
             )
 
@@ -65,7 +70,8 @@ class RosterRepositoryImp @Inject constructor() : RosterRepository {
                 RoasterViewQuestion(
                     layoutId = R.layout.item_spinner_view,
                     question = "How many months did this pregnancy last?",
-                    spinnerItem = context.resources.getStringArray(R.array.outcomes).toList()
+                    spinnerItem = context.resources.getStringArray(R.array.outcomes).toList(),
+                    errorMessage = context.getString(R.string.this_field_is_mandatory)
                 )
             )
         }

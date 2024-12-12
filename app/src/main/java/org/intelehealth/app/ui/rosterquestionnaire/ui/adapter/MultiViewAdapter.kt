@@ -10,10 +10,14 @@ import org.intelehealth.app.databinding.ItemSpinnerViewBinding
 import org.intelehealth.app.ui.rosterquestionnaire.model.RoasterViewQuestion
 import org.intelehealth.app.ui.rosterquestionnaire.ui.listeners.MultiViewListener
 import org.intelehealth.app.utilities.ArrayAdapterUtils
+import org.intelehealth.app.utilities.extensions.hideError
+import org.intelehealth.app.utilities.extensions.showDropDownError
+import org.intelehealth.app.utilities.extensions.validate
 
 class MultiViewAdapter(
     private val items: List<RoasterViewQuestion>,
     private val listener: MultiViewListener,
+    private var isResulCheck: Boolean = false,
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun getItemViewType(position: Int): Int {
@@ -54,26 +58,41 @@ class MultiViewAdapter(
                 is ItemSpinnerViewBinding -> {
 
                     binding.tvSpinnerHeader.text = data.question
-                    if (!data.answer.isNullOrEmpty()) {
-                        binding.spinner.setText(data.answer)
-                    } else {
-                        binding.spinner.setText(binding.root.context.getText(R.string.select))
-                    }
-                    val adapter = ArrayAdapterUtils.getObjectArrayAdapter(
-                        binding.root.context,
-                        data.spinnerItem!!
-                    )
+                    binding.spinner.apply {
+                        val adapter = ArrayAdapterUtils.getObjectArrayAdapter(
+                            binding.root.context,
+                            data.spinnerItem!!
+                        )
 
-                    binding.spinner.setAdapter(adapter)
-                    binding.spinner.setOnItemClickListener { _, _, _, id ->
-                        data.answer = adapter.getItem(id.toInt())
-                    }
+                        if (adapter != this.adapter) {
+                            setAdapter(adapter)
+                        }
 
+                        if (text.toString() != data.answer) {
+                            setText(data.answer ?: binding.root.context.getString(R.string.select), false)
+                        }
+
+                        if (isResulCheck && data.answer.isNullOrEmpty()) {
+                            binding.textInputLayRelation.showDropDownError(data.answer, data.errorMessage)
+                        } else {
+                            binding.textInputLayRelation.hideError()
+                        }
+
+                        setOnItemClickListener { _, _, _, id ->
+                            data.answer = adapter.getItem(id.toInt())
+                            binding.textInputLayRelation.hideError()
+                        }
+                    }
                 }
 
                 is ItemDatePickerViewBinding -> {
                     binding.tvDatePickerQuestion.text = data.question
                     binding.textInputETDob.setText(data.answer ?: "")
+                    if (isResulCheck && data.answer.isNullOrEmpty()) {
+                        binding.textInputLayDob.validate(binding.textInputETDob, data.errorMessage)
+                    } else {
+                        binding.textInputLayDob.hideError()
+                    }
                     binding.textInputETDob.setOnClickListener {
                         listener.onItemClick(data, bindingAdapterPosition, it)
                     }
@@ -82,5 +101,11 @@ class MultiViewAdapter(
             }
         }
     }
+
+    fun updateErrorMessage(status: Boolean) {
+        isResulCheck = status
+        notifyDataSetChanged()
+    }
+
 
 }
