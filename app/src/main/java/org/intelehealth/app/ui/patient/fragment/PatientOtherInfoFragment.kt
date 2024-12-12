@@ -11,13 +11,16 @@ import org.intelehealth.app.databinding.FragmentPatientOtherInfoBinding
 import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.app.ui.filter.FirstLetterUpperCaseInputFilter
 import org.intelehealth.app.utilities.ArrayAdapterUtils
+import org.intelehealth.app.utilities.CustomLog
 import org.intelehealth.app.utilities.LanguageUtils
 import org.intelehealth.app.utilities.PatientRegFieldsUtils
 import org.intelehealth.app.utilities.PatientRegStage
 import org.intelehealth.app.utilities.extensions.addFilter
+import org.intelehealth.app.utilities.extensions.hideDigitErrorOnTextChang
 import org.intelehealth.app.utilities.extensions.hideError
 import org.intelehealth.app.utilities.extensions.hideErrorOnTextChang
 import org.intelehealth.app.utilities.extensions.validate
+import org.intelehealth.app.utilities.extensions.validateDigit
 import org.intelehealth.app.utilities.extensions.validateDropDowb
 
 /**
@@ -95,6 +98,12 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
         patient.apply {
             nationalID = binding.textInputNationalId.text?.toString()
             occupation = binding.textInputOccupation.text?.toString()
+            tmhCaseNumber = binding.textInputTmhCaseNumber.text?.toString()
+            requestId = binding.textInputRequestId.text?.toString()
+            discipline = binding.textInputDiscipline.text?.toString()
+            department = binding.textInputDepartment.text?.toString()
+            relativePhoneNumber = binding.textInputRelativePhoneNumber.text?.toString()
+
             patientViewModel.updatedPatient(this)
             patientViewModel.savePatient().observe(viewLifecycleOwner) {
                 it ?: return@observe
@@ -120,6 +129,15 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
     private fun setInputTextChangListener() {
         binding.textInputLayNationalId.hideErrorOnTextChang(binding.textInputNationalId)
         binding.textInputLayOccupation.hideErrorOnTextChang(binding.textInputOccupation)
+
+        binding.textInputLayTmhCaseNumber.hideErrorOnTextChang(binding.textInputTmhCaseNumber)
+        binding.textInputLayRequestId.hideErrorOnTextChang(binding.textInputRequestId)
+        binding.textInputLayDiscipline.hideErrorOnTextChang(binding.textInputDiscipline)
+        binding.textInputLayDepartment.hideErrorOnTextChang(binding.textInputDepartment)
+        binding.textInputLayRelativePhoneNumber.hideDigitErrorOnTextChang(
+            binding.textInputRelativePhoneNumber,
+            10
+        )
     }
 
     private fun setupEducations() {
@@ -172,9 +190,59 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
                     )
                 } else true
 
+            val tmhCaseNumber =
+                if (it.tmhCaseNumber!!.isEnabled && it.tmhCaseNumber!!.isMandatory) {
+                    binding.textInputLayTmhCaseNumber.validate(
+                        binding.textInputTmhCaseNumber,
+                        error
+                    )
+                } else true
+
+            val requestId =
+                if (it.requestId!!.isEnabled && it.requestId!!.isMandatory) {
+                    binding.textInputLayRequestId.validate(
+                        binding.textInputRequestId,
+                        error
+                    )
+                } else true
+
+            val discipline =
+                if (it.discipline!!.isEnabled && it.discipline!!.isMandatory) {
+                    binding.textInputLayDiscipline.validate(
+                        binding.textInputDiscipline,
+                        error
+                    )
+                } else true
+
+            val department =
+                if (it.department!!.isEnabled && it.department!!.isMandatory) {
+                    binding.textInputLayDepartment.validate(
+                        binding.textInputDepartment,
+                        error
+                    )
+                } else true
+
+            val relativePhoneNumber =
+                if (it.relativePhoneNumber!!.isEnabled && it.relativePhoneNumber!!.isMandatory) {
+                    binding.textInputLayRelativePhoneNumber.validate(
+                        binding.textInputRelativePhoneNumber,
+                        error
+                    ).and(
+                        binding.textInputLayRelativePhoneNumber.validateDigit(
+                            binding.textInputRelativePhoneNumber,
+                            R.string.enter_10_digits,
+                            10
+                        )
+                    )
+
+
+                } else true
+
 
             if (bOccuptions.and(bSocialCategory).and(bEducation)
                     .and(bEconomic).and(bNationalId).and(bOccuptions)
+                    .and(tmhCaseNumber).and(requestId).and(discipline)
+                    .and(department).and(relativePhoneNumber)
             ) block.invoke()
         }
     }

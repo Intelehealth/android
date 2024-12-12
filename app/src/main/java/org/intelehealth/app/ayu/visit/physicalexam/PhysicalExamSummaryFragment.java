@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import org.intelehealth.app.utilities.CustomLog;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -76,7 +78,7 @@ public class PhysicalExamSummaryFragment extends Fragment {
         int index = status.getVitalSection() ? 3 : 2;
         int total = status.getVitalSection() ? 4 : 3;
         TextView tvTitle = view.findViewById(R.id.tv_sub_title);
-        tvTitle.setText(getString(R.string.ui2_physical_exam_summay_title, index, total));
+        tvTitle.setText(getString(R.string.ui2_relapse_summary_title, index, total));
     }
 
     @Override

@@ -65,6 +65,14 @@ android {
             archivesBaseName = "intelehealth_unicef-" + versionName + " - " + date
         }
 
+        kcdo {
+            dimension client
+            applicationId 'org.intelehealth.kcdo'
+            versionCode 1
+            versionName '1.0.0'
+            archivesBaseName = "intelehealth_kcdo-" + versionName + " - " + date
+        }
+
         // This flavor used to handle different type of endpoint
         dev {
             dimension server
@@ -100,6 +108,9 @@ android {
             domain = "NAS"
         } else if (name.contains("unicef")) {
             domain = "UNICEF"
+        }
+        else if (name.contains("kcdo")) {
+            domain = "KCDO"
         } else {
             domain = "IDA"
         }
