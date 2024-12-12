@@ -43,7 +43,7 @@ public class VisitUtils {
         }
     }
 
-    public static void endVisitAndRedirectToHomeScreen(Context activityContext, String visitUuid, String patientUuid) {
+    private static void endVisitAndRedirectToHomeScreen(Context activityContext, String visitUuid, String patientUuid) {
         VisitsDAO visitsDAO = new VisitsDAO();
         try {
             visitsDAO.updateVisitEnddate(visitUuid, AppConstants.dateAndTimeUtils.currentDateTime());

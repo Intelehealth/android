@@ -589,13 +589,25 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
         // end visit - start
         PrescriptionModel pres = isVisitNotEnded(visitID);
         if (pres.getVisitUuid() != null) {
+            DialogUtils dialogUtils = new DialogUtils();
             endvisit_relative_block.setVisibility(View.VISIBLE);
             btn_end_visit.setOnClickListener(v -> {
                 if (!hasPrescription) {
-                    new DialogUtils().displayPrescriptionNotReceivedDialog(this);
+                    dialogUtils.displayPrescriptionNotReceivedDialog(this);
 //                    checkIfAppointmentExistsForVisit(visitID);
                 } else {
-                    triggerEndVisit();
+                    dialogUtils.showCommonDialog(this,
+                            R.drawable.dialog_close_visit_icon,
+                            getResources().getString(R.string.confirm_end_visit_reason),
+                            getResources().getString(R.string.confirm_end_visit_reason_message),
+                            false,
+                            getResources().getString(R.string.confirm),
+                            getResources().getString(R.string.cancel),
+                            action -> {
+                                if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
+                                    triggerEndVisit();
+                                }
+                            });
                 }
             });
         } else {
