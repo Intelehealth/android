@@ -246,7 +246,7 @@ public class SyncDAO {
                     //to prevent lagging
                     Single.fromCallable(() -> populatePullSuccessBackground(response, context))
                             .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
+                            .observeOn(Schedulers.io())
                             .subscribe();
                 }
 

@@ -5,11 +5,14 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
+
 import org.intelehealth.app.utilities.CustomLog;
 
 
 import com.github.ajalt.timberkt.Timber;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -191,6 +194,11 @@ public class PatientsDAO {
             values.put("contact_type", patientDTO.getContactType());
             values.put("em_contact_name", patientDTO.getEmContactName());
             values.put("em_contact_num", patientDTO.getEmContactNumber());
+
+            values.put("tms_case_number", patientDTO.getTmhCaseNumber());
+            values.put("request_id", patientDTO.getRequestId());
+            values.put("discipline", patientDTO.getDiscipline());
+            values.put("department", patientDTO.getDepartment());
 
             values.put("dead", false);
             values.put("sync", false);
@@ -1140,6 +1148,12 @@ public class PatientsDAO {
                 patientDTO.setProfileTimestamp(cursor.getString(cursor.getColumnIndexOrThrow("profileImageTimestamp")));
                 patientDTO.setCaste(cursor.getString(cursor.getColumnIndexOrThrow("caste")));
                 patientDTO.setCreatedDate(cursor.getString(cursor.getColumnIndexOrThrow("createdDate")));
+
+                patientDTO.setTmhCaseNumber(cursor.getString(cursor.getColumnIndexOrThrow("tmhCaseNumber")));
+                patientDTO.setRequestId(cursor.getString(cursor.getColumnIndexOrThrow("requestId")));
+                patientDTO.setDiscipline(cursor.getString(cursor.getColumnIndexOrThrow("discipline")));
+                patientDTO.setRelativePhoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("relativePhoneNumber")));
+                patientDTO.setDepartment(cursor.getString(cursor.getColumnIndexOrThrow("department")));
             } while (cursor.moveToNext());
         }
         cursor.close();
@@ -1164,7 +1178,7 @@ public class PatientsDAO {
                 + "o.value is NOT NULL GROUP BY a.patientuuid"
                 + " HAVING (value_text is NOT NULL AND LOWER(value_text) != 'no' AND value_text != '' ) ";
 
-        CustomLog.d("QUERY_COUNT",""+query);
+        CustomLog.d("QUERY_COUNT", query);
 
         final Cursor cursor = db.rawQuery(query, new String[]{UuidDictionary.FOLLOW_UP_VISIT});  //"e8caffd6-5d22-41c4-8d6a-bc31a44d0c86"
         if (cursor.moveToFirst()) {
