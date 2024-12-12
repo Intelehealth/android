@@ -16,7 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class RosterViewModel @Inject constructor(
     private val rosterRepository: RosterRepositoryImp,
-    private val addHealthServiceUseCase: AddHealthServiceUseCase
+    private val addHealthServiceUseCase: AddHealthServiceUseCase,
 ) : ViewModel() {
 
 
@@ -32,7 +32,8 @@ class RosterViewModel @Inject constructor(
     val outComeLiveList: LiveData<ArrayList<PregnancyOutComeModel>> = _outComeLiveList
 
 
-    private val _healthServiceLiveList = MutableLiveData<ArrayList<HealthServiceModel>>(arrayListOf())
+    private val _healthServiceLiveList =
+        MutableLiveData<ArrayList<HealthServiceModel>>(arrayListOf())
     val healthServiceLiveList: LiveData<ArrayList<HealthServiceModel>> = _healthServiceLiveList
 
     var existingRoasterQuestionList: ArrayList<RoasterViewQuestion>? = null
@@ -88,5 +89,6 @@ class RosterViewModel @Inject constructor(
         }
     }
 
-    fun getHealthServiceList(): ArrayList<RoasterViewQuestion> = addHealthServiceUseCase.getHealthServiceList(existingRoasterQuestionList)
+    fun getHealthServiceList(): ArrayList<RoasterViewQuestion> =
+        addHealthServiceUseCase.getHealthServiceList(existingRoasterQuestionList)
 }
