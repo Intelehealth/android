@@ -266,6 +266,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_visit_creation);
+        SessionManager.getInstance(this).clearVitalPreference();
         getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.white));
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
 
@@ -413,8 +414,6 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                         commit();
                 break;
             case STEP_2_VISIT_REASON:
-
-
                 //loadChiefComplainNodeForSelectedNames(mSelectedComplainList);
                 //mStep2ProgressBar.setProgress(40);
                 setTitle(STEP_2_VISIT_REASON_QUESTION);

@@ -4,11 +4,17 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.google.gson.Gson;
+
+import org.intelehealth.app.ayu.visit.vital.VitalPreference;
+import org.intelehealth.app.utilities.CustomLog;
+
 import org.intelehealth.app.BuildConfig;
 
 import java.util.Set;
 
 public class SessionManager {
+    private static final String VITAL_KEY ="vita_pref" ;
     // Shared preferences file name
     public static SessionManager instance;
     private static final String PREF_NAME = "Intelehealth";
@@ -557,6 +563,25 @@ public class SessionManager {
     public void removeVisitEditCache(String key) {
         editor.remove(key);
         editor.commit();
+    }
+
+
+    public void saveVitalPreference(VitalPreference vitalPreference) {
+        String json = new Gson().toJson(vitalPreference);
+        editor.putString(VITAL_KEY, json).apply();
+    }
+
+    public VitalPreference getVitalPreference() {
+        String json = pref.getString(VITAL_KEY, null);
+        if (json != null) {
+            return new Gson().fromJson(json, VitalPreference.class);
+        } else {
+            return null;
+        }
+    }
+
+    public void clearVitalPreference() {
+        editor.remove(VITAL_KEY).apply();
     }
 
     /**

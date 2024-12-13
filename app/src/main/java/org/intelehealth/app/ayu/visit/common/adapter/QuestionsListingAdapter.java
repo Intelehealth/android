@@ -12,6 +12,8 @@ import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+
+import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -315,7 +317,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
             Node _mNode = mPhysicalExam.getExamNode(position).getOption(0);
             final String parent_name = mPhysicalExam.getExamParentNodeName(position);
-            String nodeText = parent_name + " : " + _mNode.findDisplay();
+            String nodeText = BuildConfig.FLAVOR_client == "kcdo" ? _mNode.findDisplay() : parent_name + " : " + _mNode.findDisplay();
 
             genericViewHolder.tvQuestion.setText(nodeText);
 
@@ -2709,6 +2711,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
     }
 
     private void addDateView(Node node, GenericViewHolder holder, int index) {
+        holder.singleComponentContainer.removeAllViews();
         holder.singleComponentContainer.setVisibility(View.VISIBLE);
         View view = View.inflate(mContext, R.layout.visit_reason_date, null);
         final Button submitButton = view.findViewById(R.id.btn_submit);
