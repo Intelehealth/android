@@ -10,13 +10,14 @@
 
         <ImageView
             android:id="@+id/ivAppLogo"
-            android:layout_width="@dimen/inner_screen_logo_width"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/std_16dp"
             android:adjustViewBounds="true"
             android:contentDescription="@string/app_name"
-            android:src="@drawable/splash_logo"
+            android:maxHeight="@dimen/inner_screen_logo_height"
+            android:src="@drawable/splash_logo_small"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -24,9 +25,9 @@
         <TextView
             android:id="@+id/txtProgressTitle"
             style="@style/TextAppearance.AppCompat.Headline"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="center_horizontal"
             android:lineSpacingExtra="@dimen/std_8dp"
             android:textColor="@color/white"
             app:layout_constraintBottom_toTopOf="@id/progressIndicator"

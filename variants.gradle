@@ -14,7 +14,7 @@ android {
         }
     } else {
         androidComponents {
-            libraryVariants.configureEach {variant ->
+            libraryVariants.configureEach { variant ->
                 configureVariantFields(variant)
             }
         }
@@ -41,6 +41,8 @@ def configureVariantFields(variant) {
         domain = "UNICEF"
     } else if (name.contains("kcdo")) {
         domain = "KCDO"
+    } else if (name.contains("unfpa")) {
+        domain = "UNFPA"
     } else {
         domain = "IDA"
     }

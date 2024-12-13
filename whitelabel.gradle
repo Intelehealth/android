@@ -101,6 +101,14 @@ android {
 //            archivesBaseName = "intelehealth_kcdo-" + versionName + " - " + date
         }
 
+        unfpa {
+            dimension client
+            ext.appId = "unfpa.intelehealth.kcdo"
+            ext.vCode = 1
+            ext.vName = '1.0'
+            ext.arcBaseName = "intelehealth_unfpa-" + versionName + " - " + date
+        }
+
         // This flavor used to handle different type of endpoint
         dev {
             dimension server

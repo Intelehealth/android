@@ -12,8 +12,8 @@ import org.intelehealth.core.ui.activity.CircularProgressActivity
  **/
 class SyncActivity : CircularProgressActivity() {
     override fun onViewCreated() {
-        progressTitle("Initialisation")
-        progressTask("Sync...")
+        progressTitle("Please wait, Initial sync on going")
+        progressTask("Syncing...")
         SyncDataWorker.startSyncWorker(this) {
             if (it.state == WorkInfo.State.SUCCEEDED) {
                 onProgress(100)
