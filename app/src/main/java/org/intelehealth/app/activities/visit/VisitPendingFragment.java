@@ -14,7 +14,6 @@ import android.os.Bundle;
 import android.os.LocaleList;
 import android.text.Html;
 import android.util.DisplayMetrics;
-import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +42,7 @@ import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.VisitsDAO;
 import org.intelehealth.app.models.PrescriptionModel;
+import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.VisitCountInterface;
 import org.intelehealth.app.utilities.exception.DAOException;
@@ -175,7 +175,7 @@ public class VisitPendingFragment extends Fragment {
                         // update older data as it will not go at very bottom of list.
                         if (olderList != null && olderList.size() == 0) {
                             isolderFullyLoaded = true;
-                            CustomLog.d("TAG", "pending: recent: " + recentList.size() + ", older: " + olderList.size());
+                            //CustomLog.d("TAG", "pending: recent: " + recentList.size() + ", older: " + olderList.size());
                             return;
                         }
                         if (!isolderFullyLoaded) {

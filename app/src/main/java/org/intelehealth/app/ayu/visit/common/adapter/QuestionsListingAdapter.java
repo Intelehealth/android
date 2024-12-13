@@ -367,7 +367,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
             String type = genericViewHolder.node.getInputType();
             CustomLog.v(TAG, "onBindViewHolder Type - " + type);
-            CustomLog.v(TAG, "onBindViewHolder Node - " + new Gson().toJson(genericViewHolder.node));
+            //CustomLog.v(TAG, "onBindViewHolder Node - " + new Gson().toJson(genericViewHolder.node));
             if (type == null || type.isEmpty() && (genericViewHolder.node.getOptionsList() != null && !genericViewHolder.node.getOptionsList().isEmpty())) {
                 type = "options";
             }
@@ -1065,7 +1065,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
                     if (holder.isParallelMultiNestedNode && !isLastNodeSubmit) {
                         holder.selectedNestedOptionIndex += 1;
-                        holder.nestedQuestionsListingAdapter.addItem(options.get(holder.selectedNestedOptionIndex));
+                        holder.nestedQuestionsListingAdapter.addItem(TAG, options.get(holder.selectedNestedOptionIndex));
 
                     } else if (!selectedNode.isContainsTheQuestionBeforeOptions()) {
                         mOnItemSelection.onSelect(node, index, isSkipped, selectedNode);
@@ -1074,7 +1074,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                             mOnItemSelection.onSelect(node, index, isSkipped, selectedNode);
                         else {
                             holder.selectedNestedOptionIndex += 1;
-                            holder.nestedQuestionsListingAdapter.addItem(options.get(holder.selectedNestedOptionIndex));
+                            holder.nestedQuestionsListingAdapter.addItem(TAG, options.get(holder.selectedNestedOptionIndex));
                         }
                     }
                     //VisitUtils.scrollNow(holder.nestedRecyclerView, 1000, 0, 300);
@@ -1123,22 +1123,22 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
                     if (mIsEditMode) {
                         for (int i = 0; i < options.size(); i++) {
-                            holder.nestedQuestionsListingAdapter.addItem(options.get(i));
+                            holder.nestedQuestionsListingAdapter.addItem(TAG, options.get(i));
                         }
                     } else if (holder.selectedNestedOptionIndex > 0) {
                         holder.selectedNestedOptionIndex = 0;
                         CustomLog.v(TAG, "holder.selectedNestedOptionIndex 1 - " + (holder.selectedNestedOptionIndex));
-                        holder.nestedQuestionsListingAdapter.addItem(options.get(holder.selectedNestedOptionIndex));
+                        holder.nestedQuestionsListingAdapter.addItem(TAG, options.get(holder.selectedNestedOptionIndex));
                        /* for (int i = 0; i <= holder.selectedNestedOptionIndex; i++) {
                             if (options.size() < i) {
                                 holder.nestedQuestionsListingAdapter.addItem(options.get(i));
                             }
                         }*/
                     } else {
-                        holder.nestedQuestionsListingAdapter.addItem(options.get(holder.selectedNestedOptionIndex));
+                        holder.nestedQuestionsListingAdapter.addItem(TAG,options.get(holder.selectedNestedOptionIndex));
                     }
                 } else {
-                    holder.nestedQuestionsListingAdapter.addItem(selectedNode);
+                    holder.nestedQuestionsListingAdapter.addItem(TAG,selectedNode);
                 }
                 holder.isParallelMultiNestedNode = options.size() > 1;
 
@@ -1774,7 +1774,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                         mOnItemSelection.onSelect(node, index, isSkipped, selectedNode);
                     else {
                         holder.selectedNestedOptionIndex += 1;
-                        holder.nestedQuestionsListingAdapter.addItem(options.get(holder.selectedNestedOptionIndex));
+                        holder.nestedQuestionsListingAdapter.addItem(TAG, options.get(holder.selectedNestedOptionIndex));
                     }
                     //VisitUtils.scrollNow(holder.nestedRecyclerView, 1000, 0, 300);
                 }
@@ -1811,16 +1811,16 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 holder.nestedQuestionsListingAdapter.clearItems();
                 if (mIsEditMode) {
                     for (int i = 0; i < options.size(); i++) {
-                        holder.nestedQuestionsListingAdapter.addItem(options.get(i));
+                        holder.nestedQuestionsListingAdapter.addItem(TAG, options.get(i));
                     }
                 } else if (holder.selectedNestedOptionIndex > 0) {
                     for (int i = 0; i <= holder.selectedNestedOptionIndex; i++) {
                         if (options.size() < i) {
-                            holder.nestedQuestionsListingAdapter.addItem(options.get(i));
+                            holder.nestedQuestionsListingAdapter.addItem(TAG, options.get(i));
                         }
                     }
                 } else {
-                    holder.nestedQuestionsListingAdapter.addItem(options.get(holder.selectedNestedOptionIndex));
+                    holder.nestedQuestionsListingAdapter.addItem(TAG, options.get(holder.selectedNestedOptionIndex));
                 }
                 holder.isParallelMultiNestedNode = options.size() > 1;
 
