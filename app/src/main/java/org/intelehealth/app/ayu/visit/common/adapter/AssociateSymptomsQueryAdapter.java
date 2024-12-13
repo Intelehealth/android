@@ -123,7 +123,7 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
 
                 String type = genericViewHolder.node.getInputType();
                 CustomLog.v(TAG, "onBindViewHolder Type - " + type);
-                CustomLog.v(TAG, "onBindViewHolder Node - " + new Gson().toJson(genericViewHolder.node));
+                //CustomLog.v(TAG, "onBindViewHolder Node - " + new Gson().toJson(genericViewHolder.node));
                 if (type == null || type.isEmpty() && (genericViewHolder.node.getOptionsList() != null && !genericViewHolder.node.getOptionsList().isEmpty())) {
                     type = "options";
                 }

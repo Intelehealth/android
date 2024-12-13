@@ -2,7 +2,6 @@ package org.intelehealth.app.ayu.visit.reason;
 
 import android.content.Context;
 import android.os.Bundle;
-import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +17,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.github.ajalt.timberkt.Timber;
 import com.google.android.flexbox.FlexDirection;
 import com.google.android.flexbox.FlexboxLayoutManager;
 import com.google.android.flexbox.JustifyContent;
@@ -36,6 +34,7 @@ import org.intelehealth.app.ayu.visit.model.ReasonGroupData;
 import org.intelehealth.app.ayu.visit.reason.adapter.ReasonListingAdapter;
 import org.intelehealth.app.ayu.visit.reason.adapter.SelectedChipsGridAdapter;
 import org.intelehealth.app.knowledgeEngine.Node;
+import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.FileUtils;
 import org.intelehealth.app.utilities.SessionManager;
@@ -352,7 +351,7 @@ public class VisitReasonCaptureFragment extends Fragment {
             }
             for (String s : temp) {
                 String fileName = s.split(".json")[0];
-                Timber.tag("VisitReasonCaptureFragment").d("File name=>%s", fileName);
+                //Timber.tag("VisitReasonCaptureFragment").d("File name=>%s", fileName);
                 ReasonData reasonData = new ReasonData();
                 reasonData.setReasonName(fileName);
                 reasonData.setReasonNameLocalized(NodeAdapterUtils.getTheChiefComplainNameWRTLocale(getActivity(), fileName));

@@ -14,7 +14,6 @@ import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,6 +52,7 @@ import org.intelehealth.app.ayu.visit.reason.adapter.OptionsChipsGridAdapter;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.knowledgeEngine.PhysicalExam;
 import org.intelehealth.app.shared.FirstLetterUpperCaseInputFilter;
+import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.WindowsUtils;
 import org.json.JSONObject;
@@ -176,7 +176,8 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         mItemList.clear();
     }
 
-    public void addItem(Node node) {
+    public void addItem(String tag, Node node) {
+        CustomLog.v(TAG, "addItem() tag - " + tag);
         CustomLog.v(TAG, "addItem() " + new Gson().toJson(node));
         CustomLog.v(TAG, "mItemList count " + mItemList.size());
         for (int i = 0; i < mItemList.size(); i++) {
@@ -189,6 +190,8 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         CustomLog.v(TAG, "mItemList count " + mItemList.size());
         mIndexMappingHashMap.put(mItemList.size() - 1, mRootIndex);
         notifyItemInserted(mItemList.size() - 1);
+        CustomLog.v(TAG, "************************************ " + this);
+        CustomLog.v(TAG, "************************************ ADDED END NEW NESTED ******************************************");
     }
 
     public void addItemAll(List<Node> nodes) {
@@ -220,8 +223,8 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         if (holder instanceof GenericViewHolder) {
             GenericViewHolder genericViewHolder = (GenericViewHolder) holder;
             int position = genericViewHolder.getAbsoluteAdapterPosition();
-            if (genericViewHolder.node == null)
-                genericViewHolder.node = mItemList.get(position);
+            //if (genericViewHolder.node == null)
+            genericViewHolder.node = mItemList.get(position);
             genericViewHolder.index = position;
 
             genericViewHolder.singleComponentContainer.removeAllViews();
@@ -244,7 +247,12 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
 
 
             genericViewHolder.tvQuestion.setText(genericViewHolder.node.findDisplay());
-
+            CustomLog.v(TAG, "onBindViewHolder - rawPosition - " + rawPosition);
+            CustomLog.v(TAG, "onBindViewHolder - instance - " + this);
+            for (int i = 0; i < mItemList.size(); i++) {
+                CustomLog.v(TAG, "onBindViewHolder - Text - " + mItemList.get(i).getText());
+            }
+            CustomLog.v(TAG, "onBindViewHolder - position - " + position + " \t   size -  " + mItemList.size() + " \t Node text -  " + genericViewHolder.node.getText());
             routeByType(genericViewHolder, mParentNode, genericViewHolder.node, position, true, false);
 //            setTextViewDrawableColor(genericViewHolder.tvQuestion, mColors[0]);
             CustomLog.v(TAG, "mLoadedIds Nested - " + mLoadedIds.contains(genericViewHolder.node.getId()) + " \t Node findDisplay -  " + genericViewHolder.node.findDisplay());
@@ -760,8 +768,8 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
 
             OptionsChipsGridAdapter optionsChipsGridAdapter = new OptionsChipsGridAdapter(holder.optionRecyclerView, mContext, mItemList.get(index), options,
                     (node, isLoadingForNestedEditData) -> {
-                        CustomLog.d(TAG, "onSelect: " + isLoadingForNestedEditData + "\n" + mItemList.toString());
-                        CustomLog.d(TAG, "onSelect selectedNode: " + new Gson().toJson(selectedNode));
+                        CustomLog.d(TAG, "onSelect: isLoadingForNestedEditData - " + isLoadingForNestedEditData + "\n" + mItemList.toString());
+                        //CustomLog.d(TAG, "onSelect selectedNode: " + new Gson().toJson(selectedNode));
                         if (index == mItemList.size()) return;
                         if (!isLoadingForNestedEditData)
                             VisitUtils.scrollNow(mRootRecyclerView, 1000, 0, 300, mIsEditMode, mItemList.size() <= index || mLoadedIds.contains(mItemList.get(index).getId()));
@@ -797,8 +805,9 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                         if (type == null || type.isEmpty() && (node.getOptionsList() != null && !node.getOptionsList().isEmpty())) {
                             type = "options";
                         }
-                        CustomLog.v(TAG, "node - " + node.getText());
-                        CustomLog.v(TAG, "node - " + node.findDisplay());
+                        CustomLog.v(TAG, "node text- " + node.getText());
+                        CustomLog.v(TAG, "node id - " + node.getId());
+                        CustomLog.v(TAG, "node display- " + node.findDisplay());
                         CustomLog.v(TAG, "Type - " + type);
                         CustomLog.v(TAG, "isLoadingForNestedEditData - " + isLoadingForNestedEditData);
 
@@ -981,7 +990,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                         checkAndHideSkipButton(holder.skipButton);
                         if (type.equals("options")) {
                             CustomLog.v(TAG, "Option got!");
-                            addItem(node);
+                            addItem(TAG, node);
                             //showNestedItemsV2(node, holder, node.getOptionsList(), index, false, false);
                         } else {
                             routeByType(holder, selectedNode, node, index, true, true);
@@ -1073,7 +1082,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                     else {
                         holder.selectedNestedOptionIndex += 1;
                         CustomLog.v(TAG, "options.get(holder.selectedNestedOptionIndex) " + holder.selectedNestedOptionIndex);
-                        holder.nestedQuestionsListingAdapter.addItem(options.get(holder.selectedNestedOptionIndex));
+                        holder.nestedQuestionsListingAdapter.addItem(TAG, options.get(holder.selectedNestedOptionIndex));
                     }
                 }
 
@@ -1105,7 +1114,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
             holder.nestedQuestionsListingAdapter.addItemAll(options);
         } else {
             CustomLog.v(TAG, "showNestedItemsV2 options.get(holder.selectedNestedOptionIndex)111 - " + holder.selectedNestedOptionIndex);
-            holder.nestedQuestionsListingAdapter.addItem(options.get(holder.selectedNestedOptionIndex));
+            holder.nestedQuestionsListingAdapter.addItem(TAG, options.get(holder.selectedNestedOptionIndex));
         }
         holder.nestedQuestionsListingAdapter.setSuperNodeList(mSuperItemList);
         holder.superNestedRecyclerView.setVisibility(View.VISIBLE);
@@ -1181,7 +1190,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
 
                     else {
                         holder.selectedNestedOptionIndex += 1;
-                        holder.nestedQuestionsListingAdapter.addItem(options.get(holder.selectedNestedOptionIndex));
+                        holder.nestedQuestionsListingAdapter.addItem(TAG, options.get(holder.selectedNestedOptionIndex));
                     }
                 }
 
@@ -1209,7 +1218,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
             if (mIsEditMode) {
                 holder.nestedQuestionsListingAdapter.addItemAll(options);
             } else {
-                holder.nestedQuestionsListingAdapter.addItem(options.get(holder.selectedNestedOptionIndex));
+                holder.nestedQuestionsListingAdapter.addItem(TAG, options.get(holder.selectedNestedOptionIndex));
             }
             holder.nestedQuestionsListingAdapter.setSuperNodeList(mSuperItemList);
             holder.superNestedRecyclerView.setVisibility(View.VISIBLE);
@@ -2129,7 +2138,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                             //holder.node.setDataCaptured(true);
                             tempGenericViewHolder.node.setSelected(false);
                             tempGenericViewHolder.node.setDataCaptured(false);
-                            if(tempGenericViewHolder.node.getOptionsList()!=null && tempGenericViewHolder.node.getOptionsList().size()>0) {
+                            if (tempGenericViewHolder.node.getOptionsList() != null && tempGenericViewHolder.node.getOptionsList().size() > 0) {
                                 tempGenericViewHolder.node.getOptionsList().get(0).addLanguage("");
                                 //knowledgeEngine.setText(knowledgeEngine.getLanguage());
                                 //}

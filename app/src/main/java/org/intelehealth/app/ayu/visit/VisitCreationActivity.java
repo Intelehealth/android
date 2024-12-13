@@ -11,7 +11,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import org.intelehealth.app.utilities.CustomLog;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
@@ -31,7 +30,6 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity_New;
 import org.intelehealth.app.app.AppConstants;
@@ -240,23 +238,28 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         //finish();
     }
 
+    private boolean mIsInitilaFeaturesLoading = true;
+
     @Override
     protected void onFeatureActiveStatusLoaded(FeatureActiveStatus activeStatus) {
         super.onFeatureActiveStatusLoaded(activeStatus);
         featureActiveStatus = activeStatus;
-        if (featureActiveStatus != null && !featureActiveStatus.getVitalSection()) {
-            CustomLog.d(TAG,"featureActiveStatus first screen=>%s", featureActiveStatus.getVitalSection());
-            mStep1ProgressBar.setVisibility(View.GONE);
-            mCurrentStep = STEP_2_VISIT_REASON;
-            totalScreen = 3;
-            Timber.tag(TAG).d("Feature first screen=>%s", mCurrentStep);
-        }
+        if (mIsInitilaFeaturesLoading) {
+            if (featureActiveStatus != null && !featureActiveStatus.getVitalSection()) {
+                CustomLog.d(TAG, "featureActiveStatus first screen=>%s", featureActiveStatus.getVitalSection());
+                mStep1ProgressBar.setVisibility(View.GONE);
+                mCurrentStep = STEP_2_VISIT_REASON;
+                totalScreen = 3;
+                Timber.tag(TAG).d("Feature first screen=>%s", mCurrentStep);
+            }
 
-        if (!mIsEditMode) onFormSubmitted(mCurrentStep, mIsEditMode, mCommonVisitData);
+            if (!mIsEditMode) onFormSubmitted(mCurrentStep, mIsEditMode, mCommonVisitData);
 //            getSupportFragmentManager().beginTransaction().
 //                    replace(R.id.fl_steps_body, VitalCollectionFragment.newInstance(mCommonVisitData, mIsEditMode, null), VITAL_FRAGMENT).
 //                    commit();
-        else makeReadyForEdit();
+            else makeReadyForEdit();
+        }
+        mIsInitilaFeaturesLoading = false;
     }
 
     @Override

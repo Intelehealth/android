@@ -5,7 +5,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.provider.Settings;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 

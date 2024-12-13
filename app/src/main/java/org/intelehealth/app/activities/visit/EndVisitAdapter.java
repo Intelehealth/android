@@ -146,10 +146,10 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
                         .asDrawable().sizeMultiplier(0.3f);
                 Glide.with(context)
                         .load(model.getPatient_photo())
-                        .override(100, 100)
-                        .thumbnail(requestBuilder)
+                        .override(50, 50)
+                        //.thumbnail(requestBuilder)
                         .centerCrop()
-                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                         .skipMemoryCache(true)
                         .into(holder.profile_image);
             } else {
@@ -162,7 +162,7 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
                 String startDate = model.getVisit_start_date();
                 startDate = DateAndTimeUtils.date_formatter(startDate,
                         "yyyy-MM-dd'T'HH:mm:ss.SSSZ", "dd MMM 'at' HH:mm a");    // IDA-1346
-                CustomLog.v("startdate", "startDAte: " + startDate);
+                //CustomLog.v("startdate", "startDAte: " + startDate);
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
                     startDate = StringUtils.en_hi_dob_three(startDate);
                 holder.fu_date_txtview.setText(startDate);
@@ -390,10 +390,10 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
                                     .asDrawable().sizeMultiplier(0.3f);
                             Glide.with(context)
                                     .load(AppConstants.IMAGE_PATH + model.getPatientUuid() + ".jpg")
-                                    .override(100, 100)
-                                    .thumbnail(requestBuilder)
+                                    .override(50, 50)
+                                    //.thumbnail(requestBuilder)
                                     .centerCrop()
-                                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                                    .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                                     .skipMemoryCache(true)
                                     .into(holder.profile_image);
                         }
