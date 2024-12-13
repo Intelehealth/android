@@ -7,16 +7,16 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import org.intelehealth.app.ui.rosterquestionnaire.model.HealthServiceModel
 import org.intelehealth.app.ui.rosterquestionnaire.model.PregnancyOutComeModel
 import org.intelehealth.app.ui.rosterquestionnaire.model.RoasterViewQuestion
-import org.intelehealth.app.ui.rosterquestionnaire.repository.RosterRepositoryImp
 import org.intelehealth.app.ui.rosterquestionnaire.model.RosterModel
 import org.intelehealth.app.ui.rosterquestionnaire.usecase.AddHealthServiceUseCase
+import org.intelehealth.app.ui.rosterquestionnaire.usecase.AddOutComeUseCase
 import org.intelehealth.app.ui.rosterquestionnaire.utilities.RosterQuestionnaireStage
 import javax.inject.Inject
 
 @HiltViewModel
 class RosterViewModel @Inject constructor(
-    private val rosterRepository: RosterRepositoryImp,
     private val addHealthServiceUseCase: AddHealthServiceUseCase,
+    private val addOutComeUseCase: AddOutComeUseCase,
 ) : ViewModel() {
 
 
@@ -81,13 +81,8 @@ class RosterViewModel @Inject constructor(
 
     }
 
-    fun getOutcomeQuestionList(): ArrayList<RoasterViewQuestion> {
-        return if (existingRoasterQuestionList == null) {
-            rosterRepository.getOutcomeQuestionList()
-        } else {
-            existingRoasterQuestionList!!
-        }
-    }
+    fun getOutcomeQuestionList(): ArrayList<RoasterViewQuestion> =
+        addOutComeUseCase.getOutComeList(existingRoasterQuestionList)
 
     fun getHealthServiceList(): ArrayList<RoasterViewQuestion> =
         addHealthServiceUseCase.getHealthServiceList(existingRoasterQuestionList)
