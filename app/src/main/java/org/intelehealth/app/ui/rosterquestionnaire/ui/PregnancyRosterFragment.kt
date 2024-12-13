@@ -41,7 +41,7 @@ class PregnancyRosterFragment : BaseRosterFragment(R.layout.fragment_pregnancy_r
         rosterViewModel.outComeLiveList.observe(viewLifecycleOwner) {
             pregnancyOutComeList.clear()
             pregnancyOutComeList.addAll(it)
-            pregnancyAdapter?.notifyDataSetChanged()
+            pregnancyAdapter?.notifyList()
         }
     }
 
