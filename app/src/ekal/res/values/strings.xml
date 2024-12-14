@@ -33,5 +33,8 @@
     <string name="please_wait_for_the_doctor_to_share_the_prescription_before_closing_the_visit">Please wait for the doctor to share the prescription before closing the visit</string>
     <string name="confirm_end_visit_reason">End this visit?</string>
     <string name="confirm_end_visit_reason_message">Are you sure you want to end this visit?</string>
+    <string name="select_caste">Select Caste</string>
+    <string name="select_education">Select Education</string>
+    <string name="select_economic_category">Select Economic Status</string>
 
 </resources>

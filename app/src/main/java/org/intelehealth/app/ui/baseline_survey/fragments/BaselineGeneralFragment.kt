@@ -23,7 +23,8 @@ import org.intelehealth.app.utilities.extensions.hideError
  **/
 
 
-class BaselineGeneralFragment : BaseFragmentBaselineSurvey(R.layout.fragment_baseline_survey_general) {
+class BaselineGeneralFragment :
+    BaseFragmentBaselineSurvey(R.layout.fragment_baseline_survey_general) {
 
     private lateinit var binding: FragmentBaselineSurveyGeneralBinding
 
@@ -71,9 +72,11 @@ class BaselineGeneralFragment : BaseFragmentBaselineSurvey(R.layout.fragment_bas
                 R.id.radioACYes -> {
                     binding.rgACOptions.check(R.id.radioACYes)
                 }
+
                 R.id.radioACNo -> {
                     binding.rgACOptions.check(R.id.radioACNo)
                 }
+
                 R.id.radioACNotSure -> {
                     binding.rgACOptions.check(R.id.radioACNotSure)
                 }
@@ -87,9 +90,11 @@ class BaselineGeneralFragment : BaseFragmentBaselineSurvey(R.layout.fragment_bas
                 R.id.radioMCYes -> {
                     binding.rgMCOptions.check(R.id.radioMCYes)
                 }
+
                 R.id.radioMCNo -> {
                     binding.rgMCOptions.check(R.id.radioMCNo)
                 }
+
                 R.id.radioMCNotSure -> {
                     binding.rgMCOptions.check(R.id.radioMCNotSure)
                 }
@@ -103,9 +108,11 @@ class BaselineGeneralFragment : BaseFragmentBaselineSurvey(R.layout.fragment_bas
                 R.id.radioBAYes -> {
                     binding.rgBAOptions.check(R.id.radioBAYes)
                 }
+
                 R.id.radioBANo -> {
                     binding.rgBAOptions.check(R.id.radioBANo)
                 }
+
                 R.id.radioBANotSure -> {
                     binding.rgBAOptions.check(R.id.radioBANotSure)
                 }
@@ -119,9 +126,11 @@ class BaselineGeneralFragment : BaseFragmentBaselineSurvey(R.layout.fragment_bas
                 R.id.radioPersonal -> {
                     binding.rgBankAccountOptions.check(R.id.radioPersonal)
                 }
+
                 R.id.radioFamilyMember -> {
                     binding.rgBankAccountOptions.check(R.id.radioFamilyMember)
                 }
+
                 R.id.radioFamilyWhatsappNo -> {
                     binding.rgBankAccountOptions.check(R.id.radioFamilyWhatsappNo)
                 }
@@ -135,9 +144,11 @@ class BaselineGeneralFragment : BaseFragmentBaselineSurvey(R.layout.fragment_bas
                 R.id.radioMarried -> {
                     binding.rgMaritalStatusOptions.check(R.id.radioMarried)
                 }
+
                 R.id.radioUnmarried -> {
                     binding.rgMaritalStatusOptions.check(R.id.radioUnmarried)
                 }
+
                 R.id.radioWidowed -> {
                     binding.rgMaritalStatusOptions.check(R.id.radioWidowed)
                 }
@@ -146,66 +157,81 @@ class BaselineGeneralFragment : BaseFragmentBaselineSurvey(R.layout.fragment_bas
     }
 
     private fun setupOccupationCheck() {
-        val adapter = ArrayAdapterUtils.getArrayAdapter(requireContext(), R.array.general_occupation)
+        val adapter =
+            ArrayAdapterUtils.getArrayAdapter(requireContext(), R.array.occupation)
         binding.acOccupation.setAdapter(adapter)
-        binding.acOccupation.setText("Select your choice", false)
+        binding.acOccupation.setText(getString(R.string.select_occupation_txt), false)
 
         binding.acOccupation.setOnItemClickListener { _, _, i, _ ->
             binding.tilOccupationOption.hideError()
             LanguageUtils.getSpecificLocalResource(requireContext(), "en").apply {
-                binding.acOccupation.setText(this.getStringArray(R.array.general_occupation)[i], false)
+                binding.acOccupation.setText(
+                    this.getStringArray(R.array.occupation)[i],
+                    false
+                )
             }
         }
     }
 
     private fun setupCasteCheck() {
-        val adapter = ArrayAdapterUtils.getArrayAdapter(requireContext(), R.array.general_caste)
+        val adapter = ArrayAdapterUtils.getArrayAdapter(requireContext(), R.array.caste)
         binding.acCaste.setAdapter(adapter)
-        binding.acCaste.setText("Select your choice", false)
+        binding.acCaste.setText(getString(R.string.select_caste), false)
 
         binding.acCaste.setOnItemClickListener { _, _, i, _ ->
             binding.tilCasteOption.hideError()
             LanguageUtils.getSpecificLocalResource(requireContext(), "en").apply {
-                binding.acCaste.setText(this.getStringArray(R.array.general_caste)[i], false)
+                binding.acCaste.setText(this.getStringArray(R.array.caste)[i], false)
             }
         }
     }
 
     private fun setupEducationCheck() {
-        val adapter = ArrayAdapterUtils.getArrayAdapter(requireContext(), R.array.general_education)
+        val adapter = ArrayAdapterUtils.getArrayAdapter(requireContext(), R.array.education)
         binding.acEducation.setAdapter(adapter)
-        binding.acEducation.setText("Select your choice", false)
+        binding.acEducation.setText(getString(R.string.select_education), false)
 
         binding.acEducation.setOnItemClickListener { _, _, i, _ ->
             binding.tilEducationOption.hideError()
             LanguageUtils.getSpecificLocalResource(requireContext(), "en").apply {
-                binding.acEducation.setText(this.getStringArray(R.array.general_education)[i], false)
+                binding.acEducation.setText(
+                    this.getStringArray(R.array.education)[i],
+                    false
+                )
             }
         }
     }
 
     private fun setupEconomicStatusCheck() {
-        val adapter = ArrayAdapterUtils.getArrayAdapter(requireContext(), R.array.general_economic_status)
+        val adapter =
+            ArrayAdapterUtils.getArrayAdapter(requireContext(), R.array.economic)
         binding.acEconomicStatus.setAdapter(adapter)
-        binding.acEconomicStatus.setText("Select your choice", false)
+        binding.acEconomicStatus.setText(getString(R.string.select_economic_category), false)
 
         binding.acEconomicStatus.setOnItemClickListener { _, _, i, _ ->
             binding.tilEconomicStatusOption.hideError()
             LanguageUtils.getSpecificLocalResource(requireContext(), "en").apply {
-                binding.acEconomicStatus.setText(this.getStringArray(R.array.general_economic_status)[i], false)
+                binding.acEconomicStatus.setText(
+                    this.getStringArray(R.array.economic)[i],
+                    false
+                )
             }
         }
     }
 
     private fun setupPhoneOwnershipCheck() {
-        val adapter = ArrayAdapterUtils.getArrayAdapter(requireContext(), R.array.general_phone_ownership)
+        val adapter =
+            ArrayAdapterUtils.getArrayAdapter(requireContext(), R.array.phone_ownership)
         binding.acPhoneOwnership.setAdapter(adapter)
-        binding.acPhoneOwnership.setText("Select your choice", false)
+        binding.acPhoneOwnership.setText(getString(R.string.select), false)
 
         binding.acPhoneOwnership.setOnItemClickListener { _, _, i, _ ->
             binding.tilPhoneOwnershipOption.hideError()
             LanguageUtils.getSpecificLocalResource(requireContext(), "en").apply {
-                binding.acPhoneOwnership.setText(this.getStringArray(R.array.general_phone_ownership)[i], false)
+                binding.acPhoneOwnership.setText(
+                    this.getStringArray(R.array.phone_ownership)[i],
+                    false
+                )
             }
         }
     }
