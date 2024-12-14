@@ -77,6 +77,7 @@
                             style="@style/AppTheme.InputBox"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:hint="@string/select_occupation_txt"
                             android:inputType="none" />
                     </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
                 </LinearLayout>
@@ -117,6 +118,7 @@
                             style="@style/AppTheme.InputBox"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:hint="@string/select_caste"
                             android:inputType="none" />
                     </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
                 </LinearLayout>
@@ -157,6 +159,7 @@
                             style="@style/AppTheme.InputBox"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:hint="@string/select_education"
                             android:inputType="none" />
                     </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
                 </LinearLayout>
@@ -197,6 +200,7 @@
                             style="@style/AppTheme.InputBox"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:hint="@string/select_economic_category"
                             android:inputType="none" />
                     </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
                 </LinearLayout>
@@ -224,38 +228,38 @@
 
                     <RadioGroup
                         android:id="@+id/rg_AC_options"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
                         style="@style/RadioButtonStyleSelection"
                         config="@{generalConfig.ayushmanCard}"
                         editMode="@{baselineEditMode}"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/margin_5"
                         android:orientation="horizontal">
 
                         <RadioButton
                             android:id="@+id/radioACYes"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
                             config="@{generalConfig.ayushmanCard}"
                             editMode="@{baselineEditMode}"
-                            android:text="@string/yes"
-                            android:layout_marginEnd="@dimen/margin_20"/>
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/margin_20"
+                            android:text="@string/yes" />
 
                         <RadioButton
                             android:id="@+id/radioACNo"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
                             config="@{generalConfig.ayushmanCard}"
                             editMode="@{baselineEditMode}"
-                            android:text="@string/no"
-                            android:layout_marginEnd="@dimen/margin_20"/>
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/margin_20"
+                            android:text="@string/no" />
 
                         <RadioButton
                             android:id="@+id/radioACNotSure"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
                             config="@{generalConfig.ayushmanCard}"
                             editMode="@{baselineEditMode}"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:text="@string/generic_not_sure" />
                     </RadioGroup>
 
@@ -284,38 +288,38 @@
 
                     <RadioGroup
                         android:id="@+id/rg_MC_options"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
                         style="@style/RadioButtonStyleSelection"
                         config="@{generalConfig.mgnrega}"
                         editMode="@{baselineEditMode}"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/margin_5"
                         android:orientation="horizontal">
 
                         <RadioButton
                             android:id="@+id/radioMCYes"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
                             config="@{generalConfig.mgnrega}"
                             editMode="@{baselineEditMode}"
-                            android:text="@string/yes"
-                            android:layout_marginEnd="@dimen/margin_20"/>
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/margin_20"
+                            android:text="@string/yes" />
 
                         <RadioButton
                             android:id="@+id/radioMCNo"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
                             config="@{generalConfig.mgnrega}"
                             editMode="@{baselineEditMode}"
-                            android:text="@string/no"
-                            android:layout_marginEnd="@dimen/margin_20"/>
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/margin_20"
+                            android:text="@string/no" />
 
                         <RadioButton
                             android:id="@+id/radioMCNotSure"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
                             config="@{generalConfig.mgnrega}"
                             editMode="@{baselineEditMode}"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:text="@string/generic_not_sure" />
                     </RadioGroup>
 
@@ -344,38 +348,38 @@
 
                     <RadioGroup
                         android:id="@+id/rg_BA_options"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
                         style="@style/RadioButtonStyleSelection"
                         config="@{generalConfig.bankAccount}"
                         editMode="@{baselineEditMode}"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/margin_5"
                         android:orientation="vertical">
 
                         <RadioButton
                             android:id="@+id/radioBAYes"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
                             config="@{generalConfig.bankAccount}"
                             editMode="@{baselineEditMode}"
-                            android:text="@string/yes"
-                            android:layout_marginEnd="@dimen/margin_20"/>
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/margin_20"
+                            android:text="@string/yes" />
 
                         <RadioButton
                             android:id="@+id/radioBANo"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
                             config="@{generalConfig.bankAccount}"
                             editMode="@{baselineEditMode}"
-                            android:text="@string/no"
-                            android:layout_marginEnd="@dimen/margin_20"/>
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/margin_20"
+                            android:text="@string/no" />
 
                         <RadioButton
                             android:id="@+id/radioBANotSure"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
                             config="@{generalConfig.bankAccount}"
                             editMode="@{baselineEditMode}"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:text="@string/generic_not_sure" />
                     </RadioGroup>
 
@@ -417,6 +421,7 @@
                             style="@style/AppTheme.InputBox"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:hint="@string/select_phone_ownership"
                             android:inputType="none" />
                     </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
                 </LinearLayout>
@@ -443,39 +448,39 @@
                         tools:text="@string/family_whatsapp_question" />
 
                     <RadioGroup
-                        android:id="@+id/rg_Bank_account_options"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:id="@+id/rg_family_whatsapp_options"
                         style="@style/RadioButtonStyleSelection"
                         config="@{generalConfig.familyWhatsapp}"
                         editMode="@{baselineEditMode}"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/margin_5"
                         android:orientation="vertical">
 
                         <RadioButton
                             android:id="@+id/radioPersonal"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
                             config="@{generalConfig.familyWhatsapp}"
                             editMode="@{baselineEditMode}"
-                            android:text="@string/generic_yes_personal"
-                            android:layout_marginEnd="@dimen/margin_20"/>
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/margin_20"
+                            android:text="@string/generic_yes_personal" />
 
                         <RadioButton
                             android:id="@+id/radioFamilyMember"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
                             config="@{generalConfig.familyWhatsapp}"
                             editMode="@{baselineEditMode}"
-                            android:text="@string/generic_yes_family"
-                            android:layout_marginEnd="@dimen/margin_20"/>
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/margin_20"
+                            android:text="@string/generic_yes_family" />
 
                         <RadioButton
                             android:id="@+id/radioFamilyWhatsappNo"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
                             config="@{generalConfig.familyWhatsapp}"
                             editMode="@{baselineEditMode}"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:text="@string/no" />
                     </RadioGroup>
 
@@ -504,38 +509,38 @@
 
                     <RadioGroup
                         android:id="@+id/rg_marital_status_options"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
                         style="@style/RadioButtonStyleSelection"
                         config="@{generalConfig.maritalStatus}"
                         editMode="@{baselineEditMode}"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/margin_5"
                         android:orientation="vertical">
 
                         <RadioButton
                             android:id="@+id/radioMarried"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
                             config="@{generalConfig.maritalStatus}"
                             editMode="@{baselineEditMode}"
-                            android:text="@string/married"
-                            android:layout_marginEnd="@dimen/margin_20"/>
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/margin_20"
+                            android:text="@string/married" />
 
                         <RadioButton
                             android:id="@+id/radioUnmarried"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
                             config="@{generalConfig.maritalStatus}"
                             editMode="@{baselineEditMode}"
-                            android:text="@string/unmarried"
-                            android:layout_marginEnd="@dimen/margin_20"/>
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/margin_20"
+                            android:text="@string/unmarried" />
 
                         <RadioButton
                             android:id="@+id/radioWidowed"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
                             config="@{generalConfig.maritalStatus}"
                             editMode="@{baselineEditMode}"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:text="@string/widowed" />
                     </RadioGroup>
 

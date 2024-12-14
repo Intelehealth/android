@@ -36,5 +36,6 @@
     <string name="select_caste">Select Caste</string>
     <string name="select_education">Select Education</string>
     <string name="select_economic_category">Select Economic Status</string>
+    <string name="select_phone_ownership">Select Phone Ownership</string>
 
 </resources>

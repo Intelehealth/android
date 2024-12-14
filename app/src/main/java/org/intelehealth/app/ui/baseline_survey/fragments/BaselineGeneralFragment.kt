@@ -2,6 +2,7 @@ package org.intelehealth.app.ui.baseline_survey.fragments
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.core.view.isVisible
 import com.github.ajalt.timberkt.Timber
 import com.google.gson.Gson
@@ -15,6 +16,8 @@ import androidx.navigation.fragment.findNavController
 import org.intelehealth.app.utilities.ArrayAdapterUtils
 import org.intelehealth.app.utilities.LanguageUtils
 import org.intelehealth.app.utilities.extensions.hideError
+import org.intelehealth.app.utilities.extensions.validate
+import org.intelehealth.app.utilities.extensions.validateDropDowb
 
 /**
  * Created by Shazzad H Kanon on 06-12-2024 - 11:00.
@@ -59,116 +62,16 @@ class BaselineGeneralFragment :
         setupEducationCheck()
         setupEconomicStatusCheck()
         setupPhoneOwnershipCheck()
-        setupAyushmanCard()
-        setupMgnregaCard()
-        setupBankAccount()
-        setupFamilyWhatsapp()
-        setupMaritalStatus()
-    }
-
-    private fun setupAyushmanCard() {
-        binding.rgACOptions.setOnCheckedChangeListener { group, checkedId ->
-            when (checkedId) {
-                R.id.radioACYes -> {
-                    binding.rgACOptions.check(R.id.radioACYes)
-                }
-
-                R.id.radioACNo -> {
-                    binding.rgACOptions.check(R.id.radioACNo)
-                }
-
-                R.id.radioACNotSure -> {
-                    binding.rgACOptions.check(R.id.radioACNotSure)
-                }
-            }
-        }
-    }
-
-    private fun setupMgnregaCard() {
-        binding.rgMCOptions.setOnCheckedChangeListener { group, checkedId ->
-            when (checkedId) {
-                R.id.radioMCYes -> {
-                    binding.rgMCOptions.check(R.id.radioMCYes)
-                }
-
-                R.id.radioMCNo -> {
-                    binding.rgMCOptions.check(R.id.radioMCNo)
-                }
-
-                R.id.radioMCNotSure -> {
-                    binding.rgMCOptions.check(R.id.radioMCNotSure)
-                }
-            }
-        }
-    }
-
-    private fun setupBankAccount() {
-        binding.rgBAOptions.setOnCheckedChangeListener { group, checkedId ->
-            when (checkedId) {
-                R.id.radioBAYes -> {
-                    binding.rgBAOptions.check(R.id.radioBAYes)
-                }
-
-                R.id.radioBANo -> {
-                    binding.rgBAOptions.check(R.id.radioBANo)
-                }
-
-                R.id.radioBANotSure -> {
-                    binding.rgBAOptions.check(R.id.radioBANotSure)
-                }
-            }
-        }
-    }
-
-    private fun setupFamilyWhatsapp() {
-        binding.rgBankAccountOptions.setOnCheckedChangeListener { group, checkedId ->
-            when (checkedId) {
-                R.id.radioPersonal -> {
-                    binding.rgBankAccountOptions.check(R.id.radioPersonal)
-                }
-
-                R.id.radioFamilyMember -> {
-                    binding.rgBankAccountOptions.check(R.id.radioFamilyMember)
-                }
-
-                R.id.radioFamilyWhatsappNo -> {
-                    binding.rgBankAccountOptions.check(R.id.radioFamilyWhatsappNo)
-                }
-            }
-        }
-    }
-
-    private fun setupMaritalStatus() {
-        binding.rgMaritalStatusOptions.setOnCheckedChangeListener { group, checkedId ->
-            when (checkedId) {
-                R.id.radioMarried -> {
-                    binding.rgMaritalStatusOptions.check(R.id.radioMarried)
-                }
-
-                R.id.radioUnmarried -> {
-                    binding.rgMaritalStatusOptions.check(R.id.radioUnmarried)
-                }
-
-                R.id.radioWidowed -> {
-                    binding.rgMaritalStatusOptions.check(R.id.radioWidowed)
-                }
-            }
-        }
     }
 
     private fun setupOccupationCheck() {
-        val adapter =
-            ArrayAdapterUtils.getArrayAdapter(requireContext(), R.array.occupation)
+        val adapter = ArrayAdapterUtils.getArrayAdapter(requireContext(), R.array.occupation)
         binding.acOccupation.setAdapter(adapter)
-        binding.acOccupation.setText(getString(R.string.select_occupation_txt), false)
 
         binding.acOccupation.setOnItemClickListener { _, _, i, _ ->
             binding.tilOccupationOption.hideError()
             LanguageUtils.getSpecificLocalResource(requireContext(), "en").apply {
-                binding.acOccupation.setText(
-                    this.getStringArray(R.array.occupation)[i],
-                    false
-                )
+                binding.acOccupation.setText(this.getStringArray(R.array.occupation)[i], false)
             }
         }
     }
@@ -176,7 +79,6 @@ class BaselineGeneralFragment :
     private fun setupCasteCheck() {
         val adapter = ArrayAdapterUtils.getArrayAdapter(requireContext(), R.array.caste)
         binding.acCaste.setAdapter(adapter)
-        binding.acCaste.setText(getString(R.string.select_caste), false)
 
         binding.acCaste.setOnItemClickListener { _, _, i, _ ->
             binding.tilCasteOption.hideError()
@@ -189,7 +91,6 @@ class BaselineGeneralFragment :
     private fun setupEducationCheck() {
         val adapter = ArrayAdapterUtils.getArrayAdapter(requireContext(), R.array.education)
         binding.acEducation.setAdapter(adapter)
-        binding.acEducation.setText(getString(R.string.select_education), false)
 
         binding.acEducation.setOnItemClickListener { _, _, i, _ ->
             binding.tilEducationOption.hideError()
@@ -203,10 +104,8 @@ class BaselineGeneralFragment :
     }
 
     private fun setupEconomicStatusCheck() {
-        val adapter =
-            ArrayAdapterUtils.getArrayAdapter(requireContext(), R.array.economic)
+        val adapter = ArrayAdapterUtils.getArrayAdapter(requireContext(), R.array.economic)
         binding.acEconomicStatus.setAdapter(adapter)
-        binding.acEconomicStatus.setText(getString(R.string.select_economic_category), false)
 
         binding.acEconomicStatus.setOnItemClickListener { _, _, i, _ ->
             binding.tilEconomicStatusOption.hideError()
@@ -220,10 +119,8 @@ class BaselineGeneralFragment :
     }
 
     private fun setupPhoneOwnershipCheck() {
-        val adapter =
-            ArrayAdapterUtils.getArrayAdapter(requireContext(), R.array.phone_ownership)
+        val adapter = ArrayAdapterUtils.getArrayAdapter(requireContext(), R.array.phone_ownership)
         binding.acPhoneOwnership.setAdapter(adapter)
-        binding.acPhoneOwnership.setText(getString(R.string.select), false)
 
         binding.acPhoneOwnership.setOnItemClickListener { _, _, i, _ ->
             binding.tilPhoneOwnershipOption.hideError()
@@ -238,10 +135,80 @@ class BaselineGeneralFragment :
 
     private fun setClickListener() {
         binding.btnGeneralBaselineNext.setOnClickListener {
-            BaselineGeneralFragmentDirections.navigationGeneralToMedical().apply {
-                findNavController().navigate(this)
-            }
+            validateForm { saveSurveyData() }
         }
     }
 
+    private fun saveSurveyData() {
+
+    }
+
+    private fun validateForm(block: () -> Unit) {
+        val error = R.string.this_field_is_mandatory
+
+        binding.generalConfig?.let {
+            val bOccupation = if (it.occupation!!.isEnabled && it.occupation!!.isMandatory) {
+                binding.tilOccupationOption.validateDropDowb(binding.acOccupation, error)
+            } else true
+
+            val bCaste = if (it.caste!!.isEnabled && it.caste!!.isMandatory) {
+                binding.tilCasteOption.validateDropDowb(binding.acCaste, error)
+            } else true
+
+            val bEducation = if (it.education!!.isEnabled && it.education!!.isMandatory) {
+                binding.tilEducationOption.validateDropDowb(binding.acEducation, error)
+            } else true
+
+            val bEconomicStatus =
+                if (it.economicStatus!!.isEnabled && it.economicStatus!!.isMandatory) {
+                    binding.tilEconomicStatusOption.validateDropDowb(
+                        binding.acEconomicStatus,
+                        error
+                    )
+                } else true
+
+            val bAyushmanCard = if (it.ayushmanCard!!.isEnabled && it.ayushmanCard!!.isMandatory) {
+                binding.rgACOptions.validate()
+            } else true
+
+            val bMgnrega = if (it.mgnrega!!.isEnabled && it.mgnrega!!.isMandatory) {
+                binding.rgMCOptions.validate()
+            } else true
+
+            val bBankAc = if (it.bankAccount!!.isEnabled && it.bankAccount!!.isMandatory) {
+                binding.rgBAOptions.validate()
+            } else true
+
+            val phoneOwnership =
+                if (it.phoneOwnership!!.isEnabled && it.phoneOwnership!!.isMandatory) {
+                    binding.tilPhoneOwnershipOption.validateDropDowb(
+                        binding.acPhoneOwnership,
+                        error
+                    )
+                } else true
+
+            val familyWhatsApp =
+                if (it.familyWhatsapp!!.isEnabled && it.familyWhatsapp!!.isMandatory) {
+                    binding.rgFamilyWhatsappOptions.validate()
+                } else true
+
+            val maritalStatus =
+                if (it.maritalStatus!!.isEnabled && it.maritalStatus!!.isMandatory) {
+                    binding.rgMaritalStatusOptions.validate()
+                } else true
+
+            if (bOccupation.and(bCaste).and(bEducation).and(bEconomicStatus)
+                    .and(bAyushmanCard).and(bMgnrega).and(bBankAc).and(phoneOwnership)
+                    .and(familyWhatsApp).and(maritalStatus)
+            ) {
+                block.invoke()
+            } else {
+                Toast.makeText(
+                    requireActivity(),
+                    getString(R.string.please_select_all_the_required_fields),
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        }
+    }
 }

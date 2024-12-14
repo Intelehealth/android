@@ -444,7 +444,7 @@ object StaticPatientRegistrationEnabledFieldsHelper {
             groupId = "",
             name = "",
             idKey = PatientRegConfigKeys.GENERAL_OCCUPATION,
-            isMandatory = false,
+            isMandatory = true,
             isEditable = true,
             isEnabled = true
         )
@@ -456,7 +456,7 @@ object StaticPatientRegistrationEnabledFieldsHelper {
             groupId = "",
             name = "",
             idKey = PatientRegConfigKeys.GENERAL_CASTE,
-            isMandatory = false,
+            isMandatory = true,
             isEditable = true,
             isEnabled = true
         )
@@ -468,7 +468,7 @@ object StaticPatientRegistrationEnabledFieldsHelper {
             groupId = "",
             name = "",
             idKey = PatientRegConfigKeys.GENERAL_EDUCATION,
-            isMandatory = false,
+            isMandatory = true,
             isEditable = true,
             isEnabled = true
         )
@@ -480,7 +480,7 @@ object StaticPatientRegistrationEnabledFieldsHelper {
             groupId = "",
             name = "",
             idKey = PatientRegConfigKeys.GENERAL_ECONOMIC_STATUS,
-            isMandatory = false,
+            isMandatory = true,
             isEditable = true,
             isEnabled = true
         )
@@ -607,7 +607,7 @@ object StaticPatientRegistrationEnabledFieldsHelper {
             groupId = "",
             name = "",
             idKey = PatientRegConfigKeys.SMOKING_HISTORY,
-            isMandatory = false,
+            isMandatory = true,
             isEditable = true,
             isEnabled = true
         )
@@ -619,7 +619,7 @@ object StaticPatientRegistrationEnabledFieldsHelper {
             groupId = "",
             name = "",
             idKey = PatientRegConfigKeys.SMOKING_RATE,
-            isMandatory = false,
+            isMandatory = true,
             isEditable = true,
             isEnabled = true
         )
@@ -631,7 +631,7 @@ object StaticPatientRegistrationEnabledFieldsHelper {
             groupId = "",
             name = "",
             idKey = PatientRegConfigKeys.SMOKING_DURATION,
-            isMandatory = false,
+            isMandatory = true,
             isEditable = true,
             isEnabled = true
         )
@@ -643,7 +643,7 @@ object StaticPatientRegistrationEnabledFieldsHelper {
             groupId = "",
             name = "",
             idKey = PatientRegConfigKeys.SMOKING_FREQUENCY,
-            isMandatory = false,
+            isMandatory = true,
             isEditable = true,
             isEnabled = true
         )
@@ -655,7 +655,7 @@ object StaticPatientRegistrationEnabledFieldsHelper {
             groupId = "",
             name = "",
             idKey = PatientRegConfigKeys.CHEW_TOBACCO,
-            isMandatory = false,
+            isMandatory = true,
             isEditable = true,
             isEnabled = true
         )
@@ -667,7 +667,7 @@ object StaticPatientRegistrationEnabledFieldsHelper {
             groupId = "",
             name = "",
             idKey = PatientRegConfigKeys.ALCOHOL_HISTORY,
-            isMandatory = false,
+            isMandatory = true,
             isEditable = true,
             isEnabled = true
         )
@@ -679,7 +679,7 @@ object StaticPatientRegistrationEnabledFieldsHelper {
             groupId = "",
             name = "",
             idKey = PatientRegConfigKeys.ALCOHOL_RATE,
-            isMandatory = false,
+            isMandatory = true,
             isEditable = true,
             isEnabled = true
         )
@@ -691,7 +691,7 @@ object StaticPatientRegistrationEnabledFieldsHelper {
             groupId = "",
             name = "",
             idKey = PatientRegConfigKeys.ALCOHOL_DURATION,
-            isMandatory = false,
+            isMandatory = true,
             isEditable = true,
             isEnabled = true
         )
@@ -703,7 +703,7 @@ object StaticPatientRegistrationEnabledFieldsHelper {
             groupId = "",
             name = "",
             idKey = PatientRegConfigKeys.ALCOHOL_FREQUENCY,
-            isMandatory = false,
+            isMandatory = true,
             isEditable = true,
             isEnabled = true
         )
