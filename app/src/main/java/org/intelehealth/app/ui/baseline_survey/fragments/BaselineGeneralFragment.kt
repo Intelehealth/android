@@ -3,18 +3,17 @@ package org.intelehealth.app.ui.baseline_survey.fragments
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.core.view.isVisible
-import com.github.ajalt.timberkt.Timber
-import com.google.gson.Gson
 import org.intelehealth.app.R
 import org.intelehealth.app.activities.patientDetailActivity.StaticPatientRegistrationEnabledFieldsHelper
 import org.intelehealth.app.databinding.FragmentBaselineSurveyGeneralBinding
-import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.app.utilities.BaselineSurveyStage
 import org.intelehealth.app.utilities.PatientRegFieldsUtils
 import androidx.navigation.fragment.findNavController
+import org.intelehealth.app.models.dto.PatientAttributesDTO
+import org.intelehealth.app.ui.baseline_survey.model.Baseline
 import org.intelehealth.app.utilities.ArrayAdapterUtils
 import org.intelehealth.app.utilities.LanguageUtils
+import org.intelehealth.app.utilities.extensions.getSelectedData
 import org.intelehealth.app.utilities.extensions.hideError
 import org.intelehealth.app.utilities.extensions.validate
 import org.intelehealth.app.utilities.extensions.validateDropDowb
@@ -37,10 +36,8 @@ class BaselineGeneralFragment :
         super.onViewCreated(view, savedInstanceState)
     }
 
-    override fun onPatientDataLoaded(patient: PatientDTO) {
-        super.onPatientDataLoaded(patient)
-        Timber.d { "onPatientDataLoaded" }
-        Timber.d { Gson().toJson(patient) }
+    override fun onBaselineDataLoaded(baselineData: Baseline) {
+        super.onBaselineDataLoaded(baselineData)
         fetchGeneralBaselineConfig()
         binding.patient = patient
         binding.baselineEditMode = baselineSurveyViewModel.baselineEditMode
@@ -140,8 +137,24 @@ class BaselineGeneralFragment :
     }
 
     private fun saveSurveyData() {
-        BaselineGeneralFragmentDirections.navigationGeneralToMedical().apply {
-            findNavController().navigate(this)
+        baselineSurveyData.apply {
+
+            occupation = binding.acOccupation.text.toString()
+            caste = binding.acCaste.text.toString()
+            education = binding.acEducation.text.toString()
+            economicStatus = binding.acEconomicStatus.text.toString()
+            ayushmanCard = binding.rgACOptions.getSelectedData()
+            mgnregaCard = binding.rgMCOptions.getSelectedData()
+            bankAccount = binding.rgBAOptions.getSelectedData()
+            phoneOwnership = binding.acPhoneOwnership.text.toString()
+            familyWhatsApp = binding.rgFamilyWhatsappOptions.getSelectedData()
+            martialStatus = binding.rgMaritalStatusOptions.getSelectedData()
+
+            baselineSurveyViewModel.updateBaselineData(this)
+
+            BaselineGeneralFragmentDirections.navigationGeneralToMedical().apply {
+                findNavController().navigate(this)
+            }
         }
     }
 

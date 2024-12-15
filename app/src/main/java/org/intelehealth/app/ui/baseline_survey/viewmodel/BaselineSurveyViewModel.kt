@@ -9,7 +9,11 @@ import com.github.ajalt.timberkt.Timber
 import com.google.gson.Gson
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import org.apache.commons.lang3.mutable.Mutable
+import org.intelehealth.app.models.Patient
+import org.intelehealth.app.models.dto.PatientAttributesDTO
 import org.intelehealth.app.models.dto.PatientDTO
+import org.intelehealth.app.ui.baseline_survey.model.Baseline
 import org.intelehealth.app.ui.patient.data.PatientRepository
 import org.intelehealth.app.utilities.BaselineSurveyStage
 import org.intelehealth.app.utilities.PatientRegStage
@@ -29,6 +33,9 @@ class BaselineSurveyViewModel(
     private var mutableLivePatient = MutableLiveData<PatientDTO>()
     val patientData: LiveData<PatientDTO> get() = mutableLivePatient
 
+    private var baselineMutableLiveData = MutableLiveData<Baseline>()
+    val baselineData: LiveData<Baseline> get() = baselineMutableLiveData
+
     private var mutableBaselineSurveyStage = MutableLiveData(BaselineSurveyStage.GENERAL)
     val mutableBaselineSurveyStageData: LiveData<BaselineSurveyStage> get() = mutableBaselineSurveyStage
 
@@ -46,8 +53,11 @@ class BaselineSurveyViewModel(
         mutableLivePatient.postValue(patient)
     }
 
+    fun updateBaselineData(baselineData: Baseline) {
+        baselineMutableLiveData.postValue(baselineData)
+    }
+
     fun updateBaselineStage(stage: BaselineSurveyStage) {
         mutableBaselineSurveyStage.postValue(stage)
     }
-
 }

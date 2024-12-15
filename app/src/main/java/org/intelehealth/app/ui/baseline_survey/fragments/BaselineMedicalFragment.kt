@@ -11,6 +11,7 @@ import org.intelehealth.app.R
 import org.intelehealth.app.activities.patientDetailActivity.StaticPatientRegistrationEnabledFieldsHelper
 import org.intelehealth.app.databinding.FragmentBaselineSurveyMedicalBinding
 import org.intelehealth.app.models.dto.PatientDTO
+import org.intelehealth.app.ui.baseline_survey.model.Baseline
 import org.intelehealth.app.utilities.ArrayAdapterUtils
 import org.intelehealth.app.utilities.BaselineSurveyStage
 import org.intelehealth.app.utilities.LanguageUtils
@@ -45,6 +46,11 @@ class BaselineMedicalFragment :
         fetchMedicalBaselineConfig()
         binding.patient = patient
         binding.baselineEditMode = baselineSurveyViewModel.baselineEditMode
+    }
+
+    override fun onBaselineDataLoaded(baselineData: Baseline) {
+        super.onBaselineDataLoaded(baselineData)
+        val data = baselineData
     }
 
     private fun fetchMedicalBaselineConfig() {

@@ -21,6 +21,7 @@ import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.app.shared.BaseActivity
 import org.intelehealth.app.syncModule.SyncUtils
 import org.intelehealth.app.ui.baseline_survey.factory.BaselineSurveyViewModelFactory
+import org.intelehealth.app.ui.baseline_survey.model.Baseline
 import org.intelehealth.app.utilities.BaselineSurveySource
 import org.intelehealth.app.utilities.BaselineSurveyStage
 import org.intelehealth.app.utilities.BundleKeys.Companion.BASELINE_CURRENT_SOURCE
@@ -145,6 +146,7 @@ class BaselineSurveyActivity : BaseActivity() {
             it ?: return@observe
             baselineSurveyViewModel.handleResponse(it) { patient ->
                 baselineSurveyViewModel.updatedPatient(updatePatientDetails(patient))
+                baselineSurveyViewModel.updateBaselineData(Baseline())
             }
         }
     }

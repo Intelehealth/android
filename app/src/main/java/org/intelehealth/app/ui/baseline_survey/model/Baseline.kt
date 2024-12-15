@@ -1,0 +1,32 @@
+package org.intelehealth.app.ui.baseline_survey.model
+
+data class Baseline(
+    var occupation: String = "",
+    var caste: String = "",
+    var education: String = "",
+    var economicStatus: String = "",
+    var ayushmanCard: String = "",
+    var mgnregaCard: String = "",
+    var bankAccount: String = "",
+    var phoneOwnership: String = "",
+    var familyWhatsApp: String = "",
+    var martialStatus: String = "",
+    var hbCheck: String = "",
+    var bpCheck: String = "",
+    var sugarCheck: String = "",
+    var bpValue: String = "",
+    var diabetesValue: String = "",
+    var arthritisValue: String = "",
+    var anemiaValue: String = "",
+    var surgeryValue: String = "",
+    var surgeryReason: String = "",
+    var smokingHistory: String = "",
+    var smokingRate: String = "",
+    var smokingDuration: String = "",
+    var smokingFrequency: String = "",
+    var chewTobacco: String = "",
+    var alcoholHistory: String = "",
+    var alcoholRate: String = "",
+    var alcoholDuration: String = "",
+    var alcoholFrequency: String = ""
+)
