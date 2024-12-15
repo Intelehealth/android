@@ -713,4 +713,298 @@ object StaticPatientRegistrationEnabledFieldsHelper {
         return fields
     }
 
+    fun getEnabledOtherBaselineFields(): List<PatientRegistrationFields> {
+        val fields: MutableList<PatientRegistrationFields> = mutableListOf()
+
+        var currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.HEAD_OF_HOUSEHOLD,
+            isMandatory = true,
+            isEditable = true,
+            isEnabled = true
+        )
+
+        fields.add(currentField)
+
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.RATION_CARD_CHECK,
+            isMandatory = true,
+            isEditable = true,
+            isEnabled = true
+        )
+
+        fields.add(currentField)
+
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.ECONOMIC_STATUS,
+            isMandatory = false,
+            isEditable = true,
+            isEnabled = true
+        )
+
+        fields.add(currentField)
+
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.OTHER_BASELINE_RELIGION,
+            isMandatory = false,
+            isEditable = true,
+            isEnabled = true
+        )
+
+        fields.add(currentField)
+
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.TOTAL_HOUSEHOLD_MEMBERS,
+            isMandatory = false,
+            isEditable = true,
+            isEnabled = true
+        )
+
+        fields.add(currentField)
+
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.USUAL_HOUSEHOLD_MEMBERS,
+            isMandatory = false,
+            isEditable = true,
+            isEnabled = true
+        )
+
+        fields.add(currentField)
+
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.NUMBER_OF_SMARTPHONES,
+            isMandatory = false,
+            isEditable = true,
+            isEnabled = true
+        )
+
+        fields.add(currentField)
+
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.NUMBER_OF_FEATURE_PHONES,
+            isMandatory = false,
+            isEditable = true,
+            isEnabled = true
+        )
+
+        fields.add(currentField)
+
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.NUMBER_OF_EARNING_MEMBERS,
+            isMandatory = false,
+            isEditable = true,
+            isEnabled = true
+        )
+
+        fields.add(currentField)
+
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.ELECTRICITY_CHECK,
+            isMandatory = false,
+            isEditable = true,
+            isEnabled = true
+        )
+
+        fields.add(currentField)
+
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.WATER_CHECK,
+            isMandatory = false,
+            isEditable = true,
+            isEnabled = true
+        )
+
+        fields.add(currentField)
+
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.SOURCE_OF_WATER,
+            isMandatory = false,
+            isEditable = true,
+            isEnabled = true
+        )
+
+        fields.add(currentField)
+
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.SAFEGUARD_WATER,
+            isMandatory = false,
+            isEditable = true,
+            isEnabled = true
+        )
+
+        fields.add(currentField)
+
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.SAFEGUARD_WATER,
+            isMandatory = false,
+            isEditable = true,
+            isEnabled = true
+        )
+
+        fields.add(currentField)
+
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.DISTANCE_FROM_WATER,
+            isMandatory = false,
+            isEditable = true,
+            isEnabled = true
+        )
+
+        fields.add(currentField)
+
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.TOILET_FACILITY,
+            isMandatory = false,
+            isEditable = true,
+            isEnabled = true
+        )
+
+        fields.add(currentField)
+
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.HOUSE_STRUCTURE,
+            isMandatory = false,
+            isEditable = true,
+            isEnabled = true
+        )
+
+        fields.add(currentField)
+
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.CULTIVABLE_LAND,
+            isMandatory = false,
+            isEditable = true,
+            isEnabled = true
+        )
+
+        fields.add(currentField)
+
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.AVERAGE_INCOME,
+            isMandatory = false,
+            isEditable = true,
+            isEnabled = true
+        )
+
+        fields.add(currentField)
+
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.FUEL_TYPE,
+            isMandatory = false,
+            isEditable = true,
+            isEnabled = true
+        )
+
+        fields.add(currentField)
+
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.SOURCE_OF_LIGHT,
+            isMandatory = false,
+            isEditable = true,
+            isEnabled = true
+        )
+
+        fields.add(currentField)
+
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.HANDWASH_PRACTICES,
+            isMandatory = false,
+            isEditable = true,
+            isEnabled = true
+        )
+
+        fields.add(currentField)
+
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.EKAL_SERVICE_CHECK,
+            isMandatory = false,
+            isEditable = true,
+            isEnabled = true
+        )
+
+        fields.add(currentField)
+
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.RELATION_WITH_HOUSEHOLD,
+            isMandatory = true,
+            isEditable = true,
+            isEnabled = true
+        )
+
+        fields.add(currentField)
+
+        return fields
+    }
+
 }

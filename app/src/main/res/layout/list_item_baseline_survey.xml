@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tool="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:weightSum="1">
+
+    <View
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="@dimen/padding_15"
+        android:background="@drawable/ic_done_24dp"
+        android:backgroundTint="@color/green"
+        android:layout_marginEnd="@dimen/padding_10" />
+
+    <TextView
+        android:id="@+id/tv_baseline_item"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.75"
+        android:ellipsize="end"
+        android:fontFamily="@font/lato_bold"
+        android:includeFontPadding="false"
+        android:lines="1"
+        android:paddingStart="10dp"
+        android:paddingTop="5dp"
+        android:paddingEnd="10dp"
+        android:paddingBottom="5dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textSize="@dimen/card_content_small_text_size"
+        tools:text="General Survey" />
+
+</LinearLayout>

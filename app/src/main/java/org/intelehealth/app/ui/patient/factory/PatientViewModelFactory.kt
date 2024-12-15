@@ -32,7 +32,7 @@ class PatientViewModelFactory(
             val patientDao = PatientsDAO()
             val sqlHelper = IntelehealthApplication.inteleHealthDatabaseHelper
             val repository = PatientRepository(patientDao, sqlHelper, configDb.patientRegFieldDao())
-            val factory = BaselineSurveyViewModelFactory(repository)
+            val factory = PatientViewModelFactory(repository)
             return ViewModelProvider(owner, factory)[PatientViewModel::class]
         }
     }
