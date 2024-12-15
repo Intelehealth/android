@@ -856,7 +856,6 @@
     </string-array>
 
 
-
     <string-array name="source_of_water">
         <item>Piped into Dwelling</item>
         <item>Piped into Yard or Plot</item>
@@ -924,15 +923,21 @@
     </string-array>
 
     <string-array name="hb_check">
+        <item>Never Checked</item>
         <item>Within the last 6 months</item>
+        <item>More than 6 months ago</item>
     </string-array>
 
     <string-array name="bp_check">
+        <item>Never Checked</item>
         <item>Within the last 6 months</item>
+        <item>More than 6 months ago</item>
     </string-array>
 
     <string-array name="sugar_check">
+        <item>Never Checked</item>
         <item>Within the last 6 months</item>
+        <item>More than 6 months ago</item>
     </string-array>
 
     <string-array name="surgery_reason_check">

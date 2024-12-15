@@ -64,4 +64,6 @@
     <string name="two_fifty_five_hundred_ml">250 – 500 ml</string>
     <string name="more_than_five_hundred_ml">500 ml</string>
 
+    <string name="specify_the_reason">Specify the reason</string>
+
 </resources>
