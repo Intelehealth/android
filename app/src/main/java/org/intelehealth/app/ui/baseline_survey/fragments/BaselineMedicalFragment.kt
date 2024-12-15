@@ -63,7 +63,6 @@ class BaselineMedicalFragment :
     private fun setupHbCheck() {
         val adapter = ArrayAdapterUtils.getArrayAdapter(requireContext(), R.array.hb_check)
         binding.acHbCheck.setAdapter(adapter)
-        binding.acHbCheck.setText("Select your choice", false)
 
         binding.acHbCheck.setOnItemClickListener { _, _, i, _ ->
             binding.tilHbCheckOption.hideError()
@@ -76,7 +75,6 @@ class BaselineMedicalFragment :
     private fun setupBpCheck() {
         val adapter = ArrayAdapterUtils.getArrayAdapter(requireContext(), R.array.bp_check)
         binding.acBpCheck.setAdapter(adapter)
-        binding.acBpCheck.setText("Select your choice", false)
 
         binding.acBpCheck.setOnItemClickListener { _, _, i, _ ->
             binding.tilBpCheckOption.hideError()
@@ -89,7 +87,6 @@ class BaselineMedicalFragment :
     private fun setupSugarCheck() {
         val adapter = ArrayAdapterUtils.getArrayAdapter(requireContext(), R.array.sugar_check)
         binding.acSugarCheck.setAdapter(adapter)
-        binding.acSugarCheck.setText("Select your choice", false)
 
         binding.acSugarCheck.setOnItemClickListener { _, _, i, _ ->
             binding.tilSugarCheckOption.hideError()
@@ -103,7 +100,6 @@ class BaselineMedicalFragment :
         val adapter =
             ArrayAdapterUtils.getArrayAdapter(requireContext(), R.array.surgery_reason_check)
         binding.acSurgeryReasonCheck.setAdapter(adapter)
-        binding.acSurgeryReasonCheck.setText("Select your choice", false)
 
         binding.acSurgeryReasonCheck.setOnItemClickListener { _, _, i, _ ->
             binding.tilSurgeryReasonOption.hideError()
@@ -144,5 +140,8 @@ class BaselineMedicalFragment :
                 findNavController().navigate(this)
             }
         }
+    }
+
+    public fun validateForm(block: () -> Unit) {
     }
 }
