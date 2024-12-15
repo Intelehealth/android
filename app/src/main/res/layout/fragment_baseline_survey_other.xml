@@ -64,901 +64,845 @@
 
                     <RadioGroup
                         android:id="@+id/rg_HOH_options"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
                         style="@style/RadioButtonStyleSelection"
                         config="@{otherConfig.headOfHousehold}"
                         editMode="@{baselineEditMode}"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/margin_5"
                         android:orientation="horizontal">
 
                         <RadioButton
                             android:id="@+id/radioHOHYes"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
                             config="@{otherConfig.headOfHousehold}"
                             editMode="@{baselineEditMode}"
-                            android:text="@string/yes"
-                            android:layout_marginEnd="@dimen/margin_20"/>
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/margin_20"
+                            android:text="@string/yes" />
 
                         <RadioButton
                             android:id="@+id/radioHOHNo"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
                             config="@{otherConfig.headOfHousehold}"
                             editMode="@{baselineEditMode}"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:text="@string/no" />
                     </RadioGroup>
 
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/llRationCard"
+                    android:id="@+id/ll_hoh_yes"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/std_12dp"
                     android:orientation="vertical"
-                    android:visibility="@{otherConfig.rationCardCheck.enabled ? View.VISIBLE : View.GONE}"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/llHeadOfHousehold">
 
-                    <TextView
+                    <LinearLayout
+                        android:id="@+id/llRationCard"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:lineSpacingExtra="3sp"
-                        android:text="@{ otherConfig.rationCardCheck.mandatory ? @string/ration_card_question + ` *` : @string/ration_card_question}"
-                        android:textAppearance="@style/blur_txtview"
-                        android:textSize="@null"
-                        tools:text="@string/ration_card_question" />
+                        android:orientation="vertical"
+                        android:visibility="@{otherConfig.rationCardCheck.enabled ? View.VISIBLE : View.GONE}">
 
-                    <RadioGroup
-                        android:id="@+id/rg_Ration_options"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        style="@style/RadioButtonStyleSelection"
-                        config="@{otherConfig.rationCardCheck}"
-                        editMode="@{baselineEditMode}"
-                        android:layout_marginTop="@dimen/margin_5"
-                        android:orientation="horizontal">
-
-                        <RadioButton
-                            android:id="@+id/radioRationYes"
-                            android:layout_width="wrap_content"
+                        <TextView
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:lineSpacingExtra="3sp"
+                            android:text="@{ otherConfig.rationCardCheck.mandatory ? @string/ration_card_question + ` *` : @string/ration_card_question}"
+                            android:textAppearance="@style/blur_txtview"
+                            android:textSize="@null"
+                            tools:text="@string/ration_card_question" />
+
+                        <RadioGroup
+                            android:id="@+id/rg_Ration_options"
+                            style="@style/RadioButtonStyleSelection"
                             config="@{otherConfig.rationCardCheck}"
                             editMode="@{baselineEditMode}"
-                            android:text="@string/yes"
-                            android:layout_marginEnd="@dimen/margin_20"/>
-
-                        <RadioButton
-                            android:id="@+id/radioRationNo"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            config="@{otherConfig.rationCardCheck}"
+                            android:layout_marginTop="@dimen/margin_5"
+                            android:orientation="horizontal">
+
+                            <RadioButton
+                                android:id="@+id/radioRationYes"
+                                config="@{otherConfig.rationCardCheck}"
+                                editMode="@{baselineEditMode}"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="@dimen/margin_20"
+                                android:text="@string/yes" />
+
+                            <RadioButton
+                                android:id="@+id/radioRationNo"
+                                config="@{otherConfig.rationCardCheck}"
+                                editMode="@{baselineEditMode}"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="@dimen/margin_20"
+                                android:text="@string/no" />
+
+                            <RadioButton
+                                android:id="@+id/radioRationNotSure"
+                                config="@{otherConfig.rationCardCheck}"
+                                editMode="@{baselineEditMode}"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/generic_not_sure" />
+                        </RadioGroup>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/llEconomicStatus"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/std_12dp"
+                        android:orientation="vertical"
+                        android:visibility="@{otherConfig.economicStatus.enabled ? View.VISIBLE : View.GONE}">
+
+                        <TextView
+                            android:id="@+id/tv_bp_check_question"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:lineSpacingExtra="3sp"
+                            android:text="@{ otherConfig.economicStatus.mandatory ? @string/general_economic_status + ` *` : @string/general_economic_status}"
+                            android:textAppearance="@style/blur_txtview"
+                            android:textSize="@null"
+                            tools:text="@string/general_economic_status" />
+
+                        <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
+                            android:id="@+id/til_economic_status_option"
+                            style="@style/AppTheme.OutlineInputBox.DropDown"
+                            config="@{otherConfig.economicStatus}"
                             editMode="@{baselineEditMode}"
-                            android:text="@string/no"
-                            android:layout_marginEnd="@dimen/margin_20"/>
-
-                        <RadioButton
-                            android:id="@+id/radioRationNotSure"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            config="@{otherConfig.rationCardCheck}"
+                            android:layout_marginTop="@dimen/margin_4"
+                            app:hintEnabled="false">
+
+                            <AutoCompleteTextView
+                                android:id="@+id/ac_economic_status_check"
+                                style="@style/AppTheme.InputBox"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="none" />
+                        </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/llReligion"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/std_12dp"
+                        android:orientation="vertical"
+                        android:visibility="@{otherConfig.religion.enabled ? View.VISIBLE : View.GONE}">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:lineSpacingExtra="3sp"
+                            android:text="@{ otherConfig.religion.mandatory ? @string/other_religion_label + ` *` : @string/other_religion_label}"
+                            android:textAppearance="@style/blur_txtview"
+                            android:textSize="@null"
+                            tools:text="@string/other_religion_label" />
+
+                        <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
+                            android:id="@+id/til_religion_option"
+                            style="@style/AppTheme.OutlineInputBox.DropDown"
+                            config="@{otherConfig.religion}"
                             editMode="@{baselineEditMode}"
-                            android:text="@string/generic_not_sure" />
-                    </RadioGroup>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/llEconomicStatus"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/std_12dp"
-                    android:orientation="vertical"
-                    android:visibility="@{otherConfig.economicStatus.enabled ? View.VISIBLE : View.GONE}"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/llRationCard">
-
-                    <TextView
-                        android:id="@+id/tv_bp_check_question"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:lineSpacingExtra="3sp"
-                        android:text="@{ otherConfig.economicStatus.mandatory ? @string/general_economic_status + ` *` : @string/general_economic_status}"
-                        android:textAppearance="@style/blur_txtview"
-                        android:textSize="@null"
-                        tools:text="@string/general_economic_status" />
-
-                    <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
-                        android:id="@+id/til_economic_status_option"
-                        style="@style/AppTheme.OutlineInputBox.DropDown"
-                        config="@{otherConfig.economicStatus}"
-                        editMode="@{baselineEditMode}"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/margin_4"
-                        app:hintEnabled="false">
-
-                        <AutoCompleteTextView
-                            android:id="@+id/ac_economic_status_check"
-                            style="@style/AppTheme.InputBox"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="none" />
-                    </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
-                </LinearLayout>
+                            android:layout_marginTop="@dimen/margin_4"
+                            app:hintEnabled="false">
 
-                <LinearLayout
-                    android:id="@+id/llReligion"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/std_12dp"
-                    android:orientation="vertical"
-                    android:visibility="@{otherConfig.religion.enabled ? View.VISIBLE : View.GONE}"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/llEconomicStatus">
+                            <AutoCompleteTextView
+                                android:id="@+id/ac_religion"
+                                style="@style/AppTheme.InputBox"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="none" />
+                        </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
+                    </LinearLayout>
 
-                    <TextView
+                    <LinearLayout
+                        android:id="@+id/llTotalMembers"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:lineSpacingExtra="3sp"
-                        android:text="@{ otherConfig.religion.mandatory ? @string/other_religion_label + ` *` : @string/other_religion_label}"
-                        android:textAppearance="@style/blur_txtview"
-                        android:textSize="@null"
-                        tools:text="@string/other_religion_label" />
+                        android:layout_marginTop="@dimen/std_12dp"
+                        android:orientation="vertical"
+                        android:visibility="@{otherConfig.totalHouseholdMembers.enabled ? View.VISIBLE : View.GONE}">
 
-                    <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
-                        android:id="@+id/til_religion_option"
-                        style="@style/AppTheme.OutlineInputBox.DropDown"
-                        config="@{otherConfig.religion}"
-                        editMode="@{baselineEditMode}"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/margin_4"
-                        app:hintEnabled="false">
-
-                        <AutoCompleteTextView
-                            android:id="@+id/ac_religion"
-                            style="@style/AppTheme.InputBox"
+                        <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="none" />
-                    </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
-                </LinearLayout>
+                            android:lineSpacingExtra="3sp"
+                            android:text="@{ otherConfig.totalHouseholdMembers.mandatory ? @string/total_members_question + ` *` : @string/total_members_question}"
+                            android:textAppearance="@style/blur_txtview"
+                            android:textSize="@null"
+                            tools:text="@string/total_members_question" />
 
-                <LinearLayout
-                    android:id="@+id/llTotalMembers"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/std_12dp"
-                    android:orientation="vertical"
-                    android:visibility="@{otherConfig.totalHouseholdMembers.enabled ? View.VISIBLE : View.GONE}"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/llReligion">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:lineSpacingExtra="3sp"
-                        android:text="@{ otherConfig.totalHouseholdMembers.mandatory ? @string/total_members_question + ` *` : @string/total_members_question}"
-                        android:textAppearance="@style/blur_txtview"
-                        android:textSize="@null"
-                        tools:text="@string/total_members_question" />
-
-                    <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
-                        android:id="@+id/til_total_member_option"
-                        style="@style/AppTheme.OutlineInputBox"
-                        config="@{otherConfig.totalHouseholdMembers}"
-                        editMode="@{baselineEditMode}"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/margin_4"
-                        app:hintEnabled="false">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/textInputTotalHHMembers"
-                            style="@style/AppTheme.InputBox.Name"
+                        <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
+                            android:id="@+id/til_total_member_option"
+                            style="@style/AppTheme.OutlineInputBox"
+                            config="@{otherConfig.totalHouseholdMembers}"
+                            editMode="@{baselineEditMode}"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="0" />
-                    </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
-                </LinearLayout>
+                            android:layout_marginTop="@dimen/margin_4"
+                            app:hintEnabled="false">
 
-                <LinearLayout
-                    android:id="@+id/llUsualMembers"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/std_12dp"
-                    android:orientation="vertical"
-                    android:visibility="@{otherConfig.usualHouseholdMembers.enabled ? View.VISIBLE : View.GONE}"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/llTotalMembers">
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/textInputTotalHHMembers"
+                                style="@style/AppTheme.InputBox.Name"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="0" />
+                        </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
+                    </LinearLayout>
 
-                    <TextView
+                    <LinearLayout
+                        android:id="@+id/llUsualMembers"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:lineSpacingExtra="3sp"
-                        android:text="@{ otherConfig.usualHouseholdMembers.mandatory ? @string/usual_members_question + ` *` : @string/usual_members_question}"
-                        android:textAppearance="@style/blur_txtview"
-                        android:textSize="@null"
-                        tools:text="@string/usual_members_question" />
+                        android:layout_marginTop="@dimen/std_12dp"
+                        android:orientation="vertical"
+                        android:visibility="@{otherConfig.usualHouseholdMembers.enabled ? View.VISIBLE : View.GONE}">
 
-                    <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
-                        android:id="@+id/til_usual_member_option"
-                        style="@style/AppTheme.OutlineInputBox"
-                        config="@{otherConfig.usualHouseholdMembers}"
-                        editMode="@{baselineEditMode}"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/margin_4"
-                        app:hintEnabled="false">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/textInputUsualHHMembers"
-                            style="@style/AppTheme.InputBox.Name"
+                        <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="0" />
-                    </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
-                </LinearLayout>
+                            android:lineSpacingExtra="3sp"
+                            android:text="@{ otherConfig.usualHouseholdMembers.mandatory ? @string/usual_members_question + ` *` : @string/usual_members_question}"
+                            android:textAppearance="@style/blur_txtview"
+                            android:textSize="@null"
+                            tools:text="@string/usual_members_question" />
 
-                <LinearLayout
-                    android:id="@+id/llNoOfSmartphones"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/std_12dp"
-                    android:orientation="vertical"
-                    android:visibility="@{otherConfig.numberOfSmartphones.enabled ? View.VISIBLE : View.GONE}"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/llUsualMembers">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:lineSpacingExtra="3sp"
-                        android:text="@{ otherConfig.numberOfSmartphones.mandatory ? @string/smart_phone_label + ` *` : @string/smart_phone_label}"
-                        android:textAppearance="@style/blur_txtview"
-                        android:textSize="@null"
-                        tools:text="@string/smart_phone_label" />
-
-                    <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
-                        android:id="@+id/til_number_of_smartphones_option"
-                        style="@style/AppTheme.OutlineInputBox"
-                        config="@{otherConfig.numberOfSmartphones}"
-                        editMode="@{baselineEditMode}"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/margin_4"
-                        app:hintEnabled="false">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/textInputNoOfSmartPhones"
-                            style="@style/AppTheme.InputBox.Name"
+                        <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
+                            android:id="@+id/til_usual_member_option"
+                            style="@style/AppTheme.OutlineInputBox"
+                            config="@{otherConfig.usualHouseholdMembers}"
+                            editMode="@{baselineEditMode}"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="0" />
-                    </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
-                </LinearLayout>
+                            android:layout_marginTop="@dimen/margin_4"
+                            app:hintEnabled="false">
 
-                <LinearLayout
-                    android:id="@+id/llNoOfFeaturePhones"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/std_12dp"
-                    android:orientation="vertical"
-                    android:visibility="@{otherConfig.numberOfFeaturePhones.enabled ? View.VISIBLE : View.GONE}"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/llNoOfSmartphones">
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/textInputUsualHHMembers"
+                                style="@style/AppTheme.InputBox.Name"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="0" />
+                        </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
+                    </LinearLayout>
 
-                    <TextView
+                    <LinearLayout
+                        android:id="@+id/llNoOfSmartphones"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:lineSpacingExtra="3sp"
-                        android:text="@{ otherConfig.numberOfFeaturePhones.mandatory ? @string/feature_phone_label + ` *` : @string/feature_phone_label}"
-                        android:textAppearance="@style/blur_txtview"
-                        android:textSize="@null"
-                        tools:text="@string/feature_phone_label" />
+                        android:layout_marginTop="@dimen/std_12dp"
+                        android:orientation="vertical"
+                        android:visibility="@{otherConfig.numberOfSmartphones.enabled ? View.VISIBLE : View.GONE}">
 
-                    <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
-                        android:id="@+id/til_number_of_feature_phone_option"
-                        style="@style/AppTheme.OutlineInputBox"
-                        config="@{otherConfig.numberOfFeaturePhones}"
-                        editMode="@{baselineEditMode}"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/margin_4"
-                        app:hintEnabled="false">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/textInputNoOfFeaturePhones"
-                            style="@style/AppTheme.InputBox.Name"
+                        <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="0" />
-                    </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
-                </LinearLayout>
+                            android:lineSpacingExtra="3sp"
+                            android:text="@{ otherConfig.numberOfSmartphones.mandatory ? @string/smart_phone_label + ` *` : @string/smart_phone_label}"
+                            android:textAppearance="@style/blur_txtview"
+                            android:textSize="@null"
+                            tools:text="@string/smart_phone_label" />
 
-                <LinearLayout
-                    android:id="@+id/llNoOfEarningMembers"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/std_12dp"
-                    android:orientation="vertical"
-                    android:visibility="@{otherConfig.numberOfEarningMembers.enabled ? View.VISIBLE : View.GONE}"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/llNoOfFeaturePhones">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:lineSpacingExtra="3sp"
-                        android:text="@{ otherConfig.numberOfEarningMembers.mandatory ? @string/earning_members_label + ` *` : @string/earning_members_label}"
-                        android:textAppearance="@style/blur_txtview"
-                        android:textSize="@null"
-                        tools:text="@string/earning_members_label" />
-
-                    <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
-                        android:id="@+id/til_number_of_earning_members_option"
-                        style="@style/AppTheme.OutlineInputBox"
-                        config="@{otherConfig.numberOfEarningMembers}"
-                        editMode="@{baselineEditMode}"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/margin_4"
-                        app:hintEnabled="false">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/textInputEarningMembers"
-                            style="@style/AppTheme.InputBox.Name"
+                        <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
+                            android:id="@+id/til_number_of_smartphones_option"
+                            style="@style/AppTheme.OutlineInputBox"
+                            config="@{otherConfig.numberOfSmartphones}"
+                            editMode="@{baselineEditMode}"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="0" />
-                    </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
-                </LinearLayout>
+                            android:layout_marginTop="@dimen/margin_4"
+                            app:hintEnabled="false">
 
-                <LinearLayout
-                    android:id="@+id/llElectricity"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/std_12dp"
-                    android:orientation="vertical"
-                    android:visibility="@{otherConfig.electricityCheck.enabled ? View.VISIBLE : View.GONE}"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/llNoOfEarningMembers">
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/textInputNoOfSmartPhones"
+                                style="@style/AppTheme.InputBox.Name"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="0" />
+                        </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
+                    </LinearLayout>
 
-                    <TextView
+                    <LinearLayout
+                        android:id="@+id/llNoOfFeaturePhones"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:lineSpacingExtra="3sp"
-                        android:text="@{ otherConfig.electricityCheck.mandatory ? @string/electricity_check_question + ` *` : @string/electricity_check_question}"
-                        android:textAppearance="@style/blur_txtview"
-                        android:textSize="@null"
-                        tools:text="@string/electricity_check_question" />
+                        android:layout_marginTop="@dimen/std_12dp"
+                        android:orientation="vertical"
+                        android:visibility="@{otherConfig.numberOfFeaturePhones.enabled ? View.VISIBLE : View.GONE}">
 
-                    <RadioGroup
-                        android:id="@+id/rg_electricity_options"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        style="@style/RadioButtonStyleSelection"
-                        config="@{otherConfig.electricityCheck}"
-                        editMode="@{baselineEditMode}"
-                        android:layout_marginTop="@dimen/margin_5"
-                        android:orientation="horizontal">
-
-                        <RadioButton
-                            android:id="@+id/radioElectricityYes"
-                            android:layout_width="wrap_content"
+                        <TextView
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:lineSpacingExtra="3sp"
+                            android:text="@{ otherConfig.numberOfFeaturePhones.mandatory ? @string/feature_phone_label + ` *` : @string/feature_phone_label}"
+                            android:textAppearance="@style/blur_txtview"
+                            android:textSize="@null"
+                            tools:text="@string/feature_phone_label" />
+
+                        <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
+                            android:id="@+id/til_number_of_feature_phone_option"
+                            style="@style/AppTheme.OutlineInputBox"
+                            config="@{otherConfig.numberOfFeaturePhones}"
+                            editMode="@{baselineEditMode}"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/margin_4"
+                            app:hintEnabled="false">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/textInputNoOfFeaturePhones"
+                                style="@style/AppTheme.InputBox.Name"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="0" />
+                        </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/llNoOfEarningMembers"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/std_12dp"
+                        android:orientation="vertical"
+                        android:visibility="@{otherConfig.numberOfEarningMembers.enabled ? View.VISIBLE : View.GONE}">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:lineSpacingExtra="3sp"
+                            android:text="@{ otherConfig.numberOfEarningMembers.mandatory ? @string/earning_members_label + ` *` : @string/earning_members_label}"
+                            android:textAppearance="@style/blur_txtview"
+                            android:textSize="@null"
+                            tools:text="@string/earning_members_label" />
+
+                        <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
+                            android:id="@+id/til_number_of_earning_members_option"
+                            style="@style/AppTheme.OutlineInputBox"
+                            config="@{otherConfig.numberOfEarningMembers}"
+                            editMode="@{baselineEditMode}"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/margin_4"
+                            app:hintEnabled="false">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/textInputEarningMembers"
+                                style="@style/AppTheme.InputBox.Name"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="0" />
+                        </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/llElectricity"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/std_12dp"
+                        android:orientation="vertical"
+                        android:visibility="@{otherConfig.electricityCheck.enabled ? View.VISIBLE : View.GONE}">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:lineSpacingExtra="3sp"
+                            android:text="@{ otherConfig.electricityCheck.mandatory ? @string/electricity_check_question + ` *` : @string/electricity_check_question}"
+                            android:textAppearance="@style/blur_txtview"
+                            android:textSize="@null"
+                            tools:text="@string/electricity_check_question" />
+
+                        <RadioGroup
+                            android:id="@+id/rg_electricity_options"
+                            style="@style/RadioButtonStyleSelection"
                             config="@{otherConfig.electricityCheck}"
                             editMode="@{baselineEditMode}"
-                            android:text="@string/yes"
-                            android:layout_marginEnd="@dimen/margin_20"/>
-
-                        <RadioButton
-                            android:id="@+id/radioElectricityNo"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            config="@{otherConfig.electricityCheck}"
-                            editMode="@{baselineEditMode}"
-                            android:text="@string/no" />
-                    </RadioGroup>
+                            android:layout_marginTop="@dimen/margin_5"
+                            android:orientation="horizontal">
 
-                </LinearLayout>
+                            <RadioButton
+                                android:id="@+id/radioElectricityYes"
+                                config="@{otherConfig.electricityCheck}"
+                                editMode="@{baselineEditMode}"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="@dimen/margin_20"
+                                android:text="@string/yes" />
 
-                <LinearLayout
-                    android:id="@+id/llWaterCheck"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/std_12dp"
-                    android:orientation="vertical"
-                    android:visibility="@{otherConfig.waterCheck.enabled ? View.VISIBLE : View.GONE}"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/llElectricity">
+                            <RadioButton
+                                android:id="@+id/radioElectricityNo"
+                                config="@{otherConfig.electricityCheck}"
+                                editMode="@{baselineEditMode}"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/no" />
+                        </RadioGroup>
 
-                    <TextView
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/llWaterCheck"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:lineSpacingExtra="3sp"
-                        android:text="@{ otherConfig.waterCheck.mandatory ? @string/water_check_question + ` *` : @string/water_check_question}"
-                        android:textAppearance="@style/blur_txtview"
-                        android:textSize="@null"
-                        tools:text="@string/water_check_question" />
+                        android:layout_marginTop="@dimen/std_12dp"
+                        android:orientation="vertical"
+                        android:visibility="@{otherConfig.waterCheck.enabled ? View.VISIBLE : View.GONE}">
 
-                    <RadioGroup
-                        android:id="@+id/rg_water_check_options"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        style="@style/RadioButtonStyleSelection"
-                        config="@{otherConfig.waterCheck}"
-                        editMode="@{baselineEditMode}"
-                        android:layout_marginTop="@dimen/margin_5"
-                        android:orientation="horizontal">
-
-                        <RadioButton
-                            android:id="@+id/radioWaterCheckYes"
-                            android:layout_width="wrap_content"
+                        <TextView
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:lineSpacingExtra="3sp"
+                            android:text="@{ otherConfig.waterCheck.mandatory ? @string/water_check_question + ` *` : @string/water_check_question}"
+                            android:textAppearance="@style/blur_txtview"
+                            android:textSize="@null"
+                            tools:text="@string/water_check_question" />
+
+                        <RadioGroup
+                            android:id="@+id/rg_water_check_options"
+                            style="@style/RadioButtonStyleSelection"
                             config="@{otherConfig.waterCheck}"
                             editMode="@{baselineEditMode}"
-                            android:text="@string/yes"
-                            android:layout_marginEnd="@dimen/margin_20"/>
-
-                        <RadioButton
-                            android:id="@+id/radioWaterCheckNo"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            config="@{otherConfig.waterCheck}"
-                            editMode="@{baselineEditMode}"
-                            android:text="@string/no" />
-                    </RadioGroup>
+                            android:layout_marginTop="@dimen/margin_5"
+                            android:orientation="horizontal">
 
-                </LinearLayout>
+                            <RadioButton
+                                android:id="@+id/radioWaterCheckYes"
+                                config="@{otherConfig.waterCheck}"
+                                editMode="@{baselineEditMode}"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="@dimen/margin_20"
+                                android:text="@string/yes" />
 
-                <LinearLayout
-                    android:id="@+id/llSourceOfWater"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/std_12dp"
-                    android:orientation="vertical"
-                    android:visibility="@{otherConfig.sourceOfWater.enabled ? View.VISIBLE : View.GONE}"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/llWaterCheck">
+                            <RadioButton
+                                android:id="@+id/radioWaterCheckNo"
+                                config="@{otherConfig.waterCheck}"
+                                editMode="@{baselineEditMode}"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/no" />
+                        </RadioGroup>
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:lineSpacingExtra="3sp"
-                        android:text="@{ otherConfig.sourceOfWater.mandatory ? @string/source_of_water_question + ` *` : @string/source_of_water_question   }"
-                        android:textAppearance="@style/blur_txtview"
-                        android:textSize="@null"
-                        tools:text="@string/source_of_water_question" />
-
-                    <LinearLayout
-                        android:id="@+id/cgSourceOfWater"
-                        android:orientation="vertical"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
                     </LinearLayout>
 
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/llSafeguardWater"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/std_12dp"
-                    android:orientation="vertical"
-                    android:visibility="@{otherConfig.safeguardWater.enabled ? View.VISIBLE : View.GONE}"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/llSourceOfWater">
-
-                    <TextView
+                    <LinearLayout
+                        android:id="@+id/llSourceOfWater"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:lineSpacingExtra="3sp"
-                        android:text="@{ otherConfig.safeguardWater.mandatory ? @string/safequard_question + ` *` : @string/safequard_question   }"
-                        android:textAppearance="@style/blur_txtview"
-                        android:textSize="@null"
-                        tools:text="@string/safequard_question" />
-
-                    <LinearLayout
-                        android:id="@+id/cgSafeguardWater"
+                        android:layout_marginTop="@dimen/std_12dp"
                         android:orientation="vertical"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:visibility="@{otherConfig.sourceOfWater.enabled ? View.VISIBLE : View.GONE}">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:lineSpacingExtra="3sp"
+                            android:text="@{ otherConfig.sourceOfWater.mandatory ? @string/source_of_water_question + ` *` : @string/source_of_water_question   }"
+                            android:textAppearance="@style/blur_txtview"
+                            android:textSize="@null"
+                            tools:text="@string/source_of_water_question" />
+
+                        <LinearLayout
+                            android:id="@+id/cgSourceOfWater"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"></LinearLayout>
+
                     </LinearLayout>
 
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/llDistanceFromWater"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/std_12dp"
-                    android:orientation="vertical"
-                    android:visibility="@{otherConfig.distanceFromWater.enabled ? View.VISIBLE : View.GONE}"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/llSafeguardWater">
-
-                    <TextView
+                    <LinearLayout
+                        android:id="@+id/llSafeguardWater"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:lineSpacingExtra="3sp"
-                        android:text="@{ otherConfig.distanceFromWater.mandatory ? @string/distance_from_water_question + ` *` : @string/distance_from_water_question}"
-                        android:textAppearance="@style/blur_txtview"
-                        android:textSize="@null"
-                        tools:text="@string/distance_from_water_question" />
+                        android:layout_marginTop="@dimen/std_12dp"
+                        android:orientation="vertical"
+                        android:visibility="@{otherConfig.safeguardWater.enabled ? View.VISIBLE : View.GONE}">
 
-                    <RadioGroup
-                        android:id="@+id/rg_distance_from_water_options"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        style="@style/RadioButtonStyleSelection"
-                        config="@{otherConfig.distanceFromWater}"
-                        editMode="@{baselineEditMode}"
-                        android:layout_marginTop="@dimen/margin_5"
-                        android:orientation="horizontal">
-
-                        <RadioButton
-                            android:id="@+id/radioDistanceFromWaterYes"
-                            android:layout_width="wrap_content"
+                        <TextView
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:lineSpacingExtra="3sp"
+                            android:text="@{ otherConfig.safeguardWater.mandatory ? @string/safequard_question + ` *` : @string/safequard_question   }"
+                            android:textAppearance="@style/blur_txtview"
+                            android:textSize="@null"
+                            tools:text="@string/safequard_question" />
+
+                        <LinearLayout
+                            android:id="@+id/cgSafeguardWater"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"></LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/llDistanceFromWater"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/std_12dp"
+                        android:orientation="vertical"
+                        android:visibility="@{otherConfig.distanceFromWater.enabled ? View.VISIBLE : View.GONE}">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:lineSpacingExtra="3sp"
+                            android:text="@{ otherConfig.distanceFromWater.mandatory ? @string/distance_from_water_question + ` *` : @string/distance_from_water_question}"
+                            android:textAppearance="@style/blur_txtview"
+                            android:textSize="@null"
+                            tools:text="@string/distance_from_water_question" />
+
+                        <RadioGroup
+                            android:id="@+id/rg_distance_from_water_options"
+                            style="@style/RadioButtonStyleSelection"
                             config="@{otherConfig.distanceFromWater}"
                             editMode="@{baselineEditMode}"
-                            android:text="@string/yes"
-                            android:layout_marginEnd="@dimen/margin_20"/>
-
-                        <RadioButton
-                            android:id="@+id/radioDistanceFromWaterNo"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            config="@{otherConfig.distanceFromWater}"
-                            editMode="@{baselineEditMode}"
-                            android:text="@string/no" />
-                    </RadioGroup>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/llToiletFacility"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/std_12dp"
-                    android:orientation="vertical"
-                    android:visibility="@{otherConfig.toiletFacility.enabled ? View.VISIBLE : View.GONE}"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/llDistanceFromWater">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:lineSpacingExtra="3sp"
-                        android:text="@{ otherConfig.toiletFacility.mandatory ? @string/toilet_facility_question + ` *` : @string/toilet_facility_question}"
-                        android:textAppearance="@style/blur_txtview"
-                        android:textSize="@null"
-                        tools:text="@string/toilet_facility_question" />
-
-                    <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
-                        android:id="@+id/til_toilet_facility_option"
-                        style="@style/AppTheme.OutlineInputBox.DropDown"
-                        config="@{otherConfig.toiletFacility}"
-                        editMode="@{baselineEditMode}"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/margin_4"
-                        app:hintEnabled="false">
-
-                        <AutoCompleteTextView
-                            android:id="@+id/ac_toilet_facility"
-                            style="@style/AppTheme.InputBox"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="none" />
-                    </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
-                </LinearLayout>
+                            android:layout_marginTop="@dimen/margin_5"
+                            android:orientation="horizontal">
 
-                <LinearLayout
-                    android:id="@+id/llHouseStructure"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/std_12dp"
-                    android:orientation="vertical"
-                    android:visibility="@{otherConfig.houseStructure.enabled ? View.VISIBLE : View.GONE}"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/llToiletFacility">
+                            <RadioButton
+                                android:id="@+id/radioDistanceFromWaterYes"
+                                config="@{otherConfig.distanceFromWater}"
+                                editMode="@{baselineEditMode}"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="@dimen/margin_20"
+                                android:text="@string/yes" />
 
-                    <TextView
+                            <RadioButton
+                                android:id="@+id/radioDistanceFromWaterNo"
+                                config="@{otherConfig.distanceFromWater}"
+                                editMode="@{baselineEditMode}"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/no" />
+                        </RadioGroup>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/llToiletFacility"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:lineSpacingExtra="3sp"
-                        android:text="@{ otherConfig.houseStructure.mandatory ? @string/house_structure_label + ` *` : @string/house_structure_label}"
-                        android:textAppearance="@style/blur_txtview"
-                        android:textSize="@null"
-                        tools:text="@string/house_structure_label" />
+                        android:layout_marginTop="@dimen/std_12dp"
+                        android:orientation="vertical"
+                        android:visibility="@{otherConfig.toiletFacility.enabled ? View.VISIBLE : View.GONE}">
 
-                    <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
-                        android:id="@+id/til_house_structure_option"
-                        style="@style/AppTheme.OutlineInputBox.DropDown"
-                        config="@{otherConfig.houseStructure}"
-                        editMode="@{baselineEditMode}"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/margin_4"
-                        app:hintEnabled="false">
-
-                        <AutoCompleteTextView
-                            android:id="@+id/ac_house_structure"
-                            style="@style/AppTheme.InputBox"
+                        <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="none" />
-                    </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
-                </LinearLayout>
+                            android:lineSpacingExtra="3sp"
+                            android:text="@{ otherConfig.toiletFacility.mandatory ? @string/toilet_facility_question + ` *` : @string/toilet_facility_question}"
+                            android:textAppearance="@style/blur_txtview"
+                            android:textSize="@null"
+                            tools:text="@string/toilet_facility_question" />
 
-                <LinearLayout
-                    android:id="@+id/llCultivableLand"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/std_12dp"
-                    android:orientation="vertical"
-                    android:visibility="@{otherConfig.cultivableLand.enabled ? View.VISIBLE : View.GONE}"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/llHouseStructure">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:lineSpacingExtra="3sp"
-                        android:text="@{ otherConfig.cultivableLand.mandatory ? @string/cultivable_land_question + ` *` : @string/cultivable_land_question}"
-                        android:textAppearance="@style/blur_txtview"
-                        android:textSize="@null"
-                        tools:text="@string/cultivable_land_question" />
-
-                    <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
-                        android:id="@+id/til_cultivable_land_option"
-                        style="@style/AppTheme.OutlineInputBox.DropDown"
-                        config="@{otherConfig.houseStructure}"
-                        editMode="@{baselineEditMode}"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/margin_4"
-                        app:hintEnabled="false">
-
-                        <AutoCompleteTextView
-                            android:id="@+id/ac_cultivable_land"
-                            style="@style/AppTheme.InputBox"
+                        <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
+                            android:id="@+id/til_toilet_facility_option"
+                            style="@style/AppTheme.OutlineInputBox.DropDown"
+                            config="@{otherConfig.toiletFacility}"
+                            editMode="@{baselineEditMode}"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="none" />
-                    </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
-                </LinearLayout>
+                            android:layout_marginTop="@dimen/margin_4"
+                            app:hintEnabled="false">
 
-                <LinearLayout
-                    android:id="@+id/llAverageIncome"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/std_12dp"
-                    android:orientation="vertical"
-                    android:visibility="@{otherConfig.averageIncome.enabled ? View.VISIBLE : View.GONE}"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/llCultivableLand">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:lineSpacingExtra="3sp"
-                        android:text="@{ otherConfig.averageIncome.mandatory ? @string/average_income_label + ` *` : @string/average_income_label}"
-                        android:textAppearance="@style/blur_txtview"
-                        android:textSize="@null"
-                        tools:text="@string/average_income_label" />
-
-                    <RadioGroup
-                        android:id="@+id/rg_average_income_options"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        style="@style/RadioButtonStyleSelection"
-                        config="@{otherConfig.averageIncome}"
-                        editMode="@{baselineEditMode}"
-                        android:layout_marginTop="@dimen/margin_5"
-                        android:orientation="vertical">
-
-                        <RadioButton
-                            android:id="@+id/radioAverageIncome1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            config="@{otherConfig.averageIncome}"
-                            editMode="@{baselineEditMode}"
-                            android:text="0-30,000"
-                            android:layout_marginEnd="@dimen/margin_20"/>
-
-                        <RadioButton
-                            android:id="@+id/radioAverageIncome2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            config="@{otherConfig.averageIncome}"
-                            editMode="@{baselineEditMode}"
-                            android:text="30,000 - 50,000" />
-
-                        <RadioButton
-                            android:id="@+id/radioAverageIncome3"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            config="@{otherConfig.averageIncome}"
-                            editMode="@{baselineEditMode}"
-                            android:text="50,000-1,00,000" />
-
-                        <RadioButton
-                            android:id="@+id/radioAverageIncome4"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            config="@{otherConfig.averageIncome}"
-                            editMode="@{baselineEditMode}"
-                            android:text="1,00,000-2,50,000" />
-
-                        <RadioButton
-                            android:id="@+id/radioAverageIncome5"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            config="@{otherConfig.averageIncome}"
-                            editMode="@{baselineEditMode}"
-                            android:text="More than 2,50,000" />
-                    </RadioGroup>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/llFuelType"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/std_12dp"
-                    android:orientation="vertical"
-                    android:visibility="@{otherConfig.fuelType.enabled ? View.VISIBLE : View.GONE}"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/llAverageIncome">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:lineSpacingExtra="3sp"
-                        android:text="@{ otherConfig.fuelType.mandatory ? @string/fuel_type_question + ` *` : @string/fuel_type_question   }"
-                        android:textAppearance="@style/blur_txtview"
-                        android:textSize="@null"
-                        tools:text="@string/fuel_type_question" />
-
-                    <LinearLayout
-                        android:id="@+id/cgFuelType"
-                        android:orientation="vertical"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                            <AutoCompleteTextView
+                                android:id="@+id/ac_toilet_facility"
+                                style="@style/AppTheme.InputBox"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="none" />
+                        </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
                     </LinearLayout>
 
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/llSourceOfLight"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/std_12dp"
-                    android:orientation="vertical"
-                    android:visibility="@{otherConfig.sourceOfLight.enabled ? View.VISIBLE : View.GONE}"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/llFuelType">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:lineSpacingExtra="3sp"
-                        android:text="@{ otherConfig.sourceOfLight.mandatory ? @string/source_of_lighting_question + ` *` : @string/source_of_lighting_question   }"
-                        android:textAppearance="@style/blur_txtview"
-                        android:textSize="@null"
-                        tools:text="@string/source_of_lighting_question" />
-
                     <LinearLayout
-                        android:id="@+id/cgSourceOfLight"
+                        android:id="@+id/llHouseStructure"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/std_12dp"
                         android:orientation="vertical"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                    </LinearLayout>
+                        android:visibility="@{otherConfig.houseStructure.enabled ? View.VISIBLE : View.GONE}">
 
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/llHandWashPractise"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/std_12dp"
-                    android:orientation="vertical"
-                    android:visibility="@{otherConfig.handWashPractices.enabled ? View.VISIBLE : View.GONE}"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/llSourceOfLight">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:lineSpacingExtra="3sp"
-                        android:text="@{ otherConfig.handWashPractices.mandatory ? @string/hand_wash_Label + ` *` : @string/hand_wash_Label   }"
-                        android:textAppearance="@style/blur_txtview"
-                        android:textSize="@null"
-                        tools:text="@string/hand_wash_Label" />
-
-                    <LinearLayout
-                        android:id="@+id/cgHandWashPractices"
-                        android:orientation="vertical"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/margin_20">
-                    </LinearLayout>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/llEkalServiceCheck"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/std_12dp"
-                    android:orientation="vertical"
-                    android:visibility="@{otherConfig.ekalServiceCheck.enabled ? View.VISIBLE : View.GONE}"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/llHandWashPractise">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:lineSpacingExtra="3sp"
-                        android:text="@{ otherConfig.ekalServiceCheck.mandatory ? @string/ekal_service_check_question + ` *` : @string/ekal_service_check_question}"
-                        android:textAppearance="@style/blur_txtview"
-                        android:textSize="@null"
-                        tools:text="@string/ekal_service_check_question" />
-
-                    <RadioGroup
-                        android:id="@+id/rg_ekal_service_check_options"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        style="@style/RadioButtonStyleSelection"
-                        config="@{otherConfig.ekalServiceCheck}"
-                        editMode="@{baselineEditMode}"
-                        android:layout_marginTop="@dimen/margin_5"
-                        android:orientation="horizontal">
-
-                        <RadioButton
-                            android:id="@+id/radioEkalServiceYes"
-                            android:layout_width="wrap_content"
+                        <TextView
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:lineSpacingExtra="3sp"
+                            android:text="@{ otherConfig.houseStructure.mandatory ? @string/house_structure_label + ` *` : @string/house_structure_label}"
+                            android:textAppearance="@style/blur_txtview"
+                            android:textSize="@null"
+                            tools:text="@string/house_structure_label" />
+
+                        <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
+                            android:id="@+id/til_house_structure_option"
+                            style="@style/AppTheme.OutlineInputBox.DropDown"
+                            config="@{otherConfig.houseStructure}"
+                            editMode="@{baselineEditMode}"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/margin_4"
+                            app:hintEnabled="false">
+
+                            <AutoCompleteTextView
+                                android:id="@+id/ac_house_structure"
+                                style="@style/AppTheme.InputBox"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="none" />
+                        </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/llCultivableLand"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/std_12dp"
+                        android:orientation="vertical"
+                        android:visibility="@{otherConfig.cultivableLand.enabled ? View.VISIBLE : View.GONE}">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:lineSpacingExtra="3sp"
+                            android:text="@{ otherConfig.cultivableLand.mandatory ? @string/cultivable_land_question + ` *` : @string/cultivable_land_question}"
+                            android:textAppearance="@style/blur_txtview"
+                            android:textSize="@null"
+                            tools:text="@string/cultivable_land_question" />
+
+                        <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
+                            android:id="@+id/til_cultivable_land_option"
+                            style="@style/AppTheme.OutlineInputBox.DropDown"
+                            config="@{otherConfig.houseStructure}"
+                            editMode="@{baselineEditMode}"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/margin_4"
+                            app:hintEnabled="false">
+
+                            <AutoCompleteTextView
+                                android:id="@+id/ac_cultivable_land"
+                                style="@style/AppTheme.InputBox"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="none" />
+                        </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/llAverageIncome"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/std_12dp"
+                        android:orientation="vertical"
+                        android:visibility="@{otherConfig.averageIncome.enabled ? View.VISIBLE : View.GONE}">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:lineSpacingExtra="3sp"
+                            android:text="@{ otherConfig.averageIncome.mandatory ? @string/average_income_label + ` *` : @string/average_income_label}"
+                            android:textAppearance="@style/blur_txtview"
+                            android:textSize="@null"
+                            tools:text="@string/average_income_label" />
+
+                        <RadioGroup
+                            android:id="@+id/rg_average_income_options"
+                            style="@style/RadioButtonStyleSelection"
+                            config="@{otherConfig.averageIncome}"
+                            editMode="@{baselineEditMode}"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/margin_5"
+                            android:orientation="vertical">
+
+                            <RadioButton
+                                android:id="@+id/radioAverageIncome1"
+                                config="@{otherConfig.averageIncome}"
+                                editMode="@{baselineEditMode}"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="@dimen/margin_20"
+                                android:text="0-30,000" />
+
+                            <RadioButton
+                                android:id="@+id/radioAverageIncome2"
+                                config="@{otherConfig.averageIncome}"
+                                editMode="@{baselineEditMode}"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="30,000 - 50,000" />
+
+                            <RadioButton
+                                android:id="@+id/radioAverageIncome3"
+                                config="@{otherConfig.averageIncome}"
+                                editMode="@{baselineEditMode}"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="50,000-1,00,000" />
+
+                            <RadioButton
+                                android:id="@+id/radioAverageIncome4"
+                                config="@{otherConfig.averageIncome}"
+                                editMode="@{baselineEditMode}"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="1,00,000-2,50,000" />
+
+                            <RadioButton
+                                android:id="@+id/radioAverageIncome5"
+                                config="@{otherConfig.averageIncome}"
+                                editMode="@{baselineEditMode}"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="More than 2,50,000" />
+                        </RadioGroup>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/llFuelType"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/std_12dp"
+                        android:orientation="vertical"
+                        android:visibility="@{otherConfig.fuelType.enabled ? View.VISIBLE : View.GONE}">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:lineSpacingExtra="3sp"
+                            android:text="@{ otherConfig.fuelType.mandatory ? @string/fuel_type_question + ` *` : @string/fuel_type_question   }"
+                            android:textAppearance="@style/blur_txtview"
+                            android:textSize="@null"
+                            tools:text="@string/fuel_type_question" />
+
+                        <LinearLayout
+                            android:id="@+id/cgFuelType"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"></LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/llSourceOfLight"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/std_12dp"
+                        android:orientation="vertical"
+                        android:visibility="@{otherConfig.sourceOfLight.enabled ? View.VISIBLE : View.GONE}">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:lineSpacingExtra="3sp"
+                            android:text="@{ otherConfig.sourceOfLight.mandatory ? @string/source_of_lighting_question + ` *` : @string/source_of_lighting_question   }"
+                            android:textAppearance="@style/blur_txtview"
+                            android:textSize="@null"
+                            tools:text="@string/source_of_lighting_question" />
+
+                        <LinearLayout
+                            android:id="@+id/cgSourceOfLight"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"></LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/llHandWashPractise"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/std_12dp"
+                        android:orientation="vertical"
+                        android:visibility="@{otherConfig.handWashPractices.enabled ? View.VISIBLE : View.GONE}">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:lineSpacingExtra="3sp"
+                            android:text="@{ otherConfig.handWashPractices.mandatory ? @string/hand_wash_Label + ` *` : @string/hand_wash_Label   }"
+                            android:textAppearance="@style/blur_txtview"
+                            android:textSize="@null"
+                            tools:text="@string/hand_wash_Label" />
+
+                        <LinearLayout
+                            android:id="@+id/cgHandWashPractices"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/margin_20"
+                            android:orientation="vertical"></LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/llEkalServiceCheck"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/std_12dp"
+                        android:orientation="vertical"
+                        android:visibility="@{otherConfig.ekalServiceCheck.enabled ? View.VISIBLE : View.GONE}">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:lineSpacingExtra="3sp"
+                            android:text="@{ otherConfig.ekalServiceCheck.mandatory ? @string/ekal_service_check_question + ` *` : @string/ekal_service_check_question}"
+                            android:textAppearance="@style/blur_txtview"
+                            android:textSize="@null"
+                            tools:text="@string/ekal_service_check_question" />
+
+                        <RadioGroup
+                            android:id="@+id/rg_ekal_service_check_options"
+                            style="@style/RadioButtonStyleSelection"
                             config="@{otherConfig.ekalServiceCheck}"
                             editMode="@{baselineEditMode}"
-                            android:text="@string/yes"
-                            android:layout_marginEnd="@dimen/margin_20"/>
-
-                        <RadioButton
-                            android:id="@+id/radioEkalServiceNo"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            config="@{otherConfig.ekalServiceCheck}"
-                            editMode="@{baselineEditMode}"
-                            android:text="@string/no" />
-                    </RadioGroup>
+                            android:layout_marginTop="@dimen/margin_5"
+                            android:orientation="horizontal">
+
+                            <RadioButton
+                                android:id="@+id/radioEkalServiceYes"
+                                config="@{otherConfig.ekalServiceCheck}"
+                                editMode="@{baselineEditMode}"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="@dimen/margin_20"
+                                android:text="@string/yes" />
+
+                            <RadioButton
+                                android:id="@+id/radioEkalServiceNo"
+                                config="@{otherConfig.ekalServiceCheck}"
+                                editMode="@{baselineEditMode}"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/no" />
+                        </RadioGroup>
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
@@ -968,10 +912,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/std_12dp"
                     android:orientation="vertical"
-                    android:visibility="@{otherConfig.relationWithHousehold.enabled ? View.VISIBLE : View.GONE}"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/llEkalServiceCheck">
+                    app:layout_constraintTop_toBottomOf="@+id/ll_hoh_yes">
 
                     <TextView
                         android:layout_width="match_parent"
@@ -984,126 +928,126 @@
 
                     <RadioGroup
                         android:id="@+id/rg_relation_with_hoh_options"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
                         style="@style/RadioButtonStyleSelection"
                         config="@{otherConfig.relationWithHousehold}"
                         editMode="@{baselineEditMode}"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/margin_5"
                         android:orientation="vertical">
 
                         <RadioButton
                             android:id="@+id/radioSpouse"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
                             config="@{otherConfig.relationWithHousehold}"
                             editMode="@{baselineEditMode}"
-                            android:text="@string/spouse"
-                            android:layout_marginEnd="@dimen/margin_20"/>
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/margin_20"
+                            android:text="@string/spouse" />
 
                         <RadioButton
                             android:id="@+id/radioGrandchild"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
                             config="@{otherConfig.relationWithHousehold}"
                             editMode="@{baselineEditMode}"
-                            android:text="@string/grandchild"
-                            android:layout_marginEnd="@dimen/margin_20"/>
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/margin_20"
+                            android:text="@string/grandchild" />
 
                         <RadioButton
                             android:id="@+id/radioFatherMother"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
                             config="@{otherConfig.relationWithHousehold}"
                             editMode="@{baselineEditMode}"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:text="@string/father_mother" />
 
                         <RadioButton
                             android:id="@+id/radioFatherMotherInLaw"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
                             config="@{otherConfig.relationWithHousehold}"
                             editMode="@{baselineEditMode}"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:text="@string/father_mother_in_law" />
 
                         <RadioButton
                             android:id="@+id/radioBrotherSister"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
                             config="@{otherConfig.relationWithHousehold}"
                             editMode="@{baselineEditMode}"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:text="@string/brother_sister" />
 
                         <RadioButton
                             android:id="@+id/radioBrotherSisterInLaw"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
                             config="@{otherConfig.relationWithHousehold}"
                             editMode="@{baselineEditMode}"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:text="@string/brother_sister_in_law" />
 
                         <RadioButton
                             android:id="@+id/radioNieceNephew"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
                             config="@{otherConfig.relationWithHousehold}"
                             editMode="@{baselineEditMode}"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:text="@string/niece_nephew" />
 
                         <RadioButton
                             android:id="@+id/radioGrandparent"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
                             config="@{otherConfig.relationWithHousehold}"
                             editMode="@{baselineEditMode}"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:text="@string/grandparent" />
 
                         <RadioButton
                             android:id="@+id/radioOther"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
                             config="@{otherConfig.relationWithHousehold}"
                             editMode="@{baselineEditMode}"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:text="@string/other_relative" />
 
                         <RadioButton
                             android:id="@+id/radioAdopted"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
                             config="@{otherConfig.relationWithHousehold}"
                             editMode="@{baselineEditMode}"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:text="@string/adopted" />
 
                         <RadioButton
                             android:id="@+id/radioServant"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
                             config="@{otherConfig.relationWithHousehold}"
                             editMode="@{baselineEditMode}"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:text="@string/servant" />
 
                         <RadioButton
                             android:id="@+id/radioOtherNotRelated"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
                             config="@{otherConfig.relationWithHousehold}"
                             editMode="@{baselineEditMode}"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:text="@string/other_not_related" />
 
                         <RadioButton
                             android:id="@+id/radioOtherSpecify"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
                             config="@{otherConfig.relationWithHousehold}"
                             editMode="@{baselineEditMode}"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:text="@string/other_specify" />
 
                         <RadioButton
                             android:id="@+id/radioNotStated"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
                             config="@{otherConfig.relationWithHousehold}"
                             editMode="@{baselineEditMode}"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:text="@string/not_stated" />
 
                     </RadioGroup>
@@ -1112,6 +1056,7 @@
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+
         </androidx.core.widget.NestedScrollView>
 
         <com.google.android.material.button.MaterialButton
@@ -1141,5 +1086,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/frag3_btn_back" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>

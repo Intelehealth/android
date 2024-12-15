@@ -144,7 +144,7 @@ class BaselineMedicalFragment :
     }
 
     private fun setupSurgeries() {
-        binding.rgSurgeryOptions.setOnCheckedChangeListener { group, checkedId ->
+        binding.rgSurgeryOptions.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
                 R.id.radioSurgeryYes -> {
                     binding.llSurgeryReasonCheck.visibility = View.VISIBLE

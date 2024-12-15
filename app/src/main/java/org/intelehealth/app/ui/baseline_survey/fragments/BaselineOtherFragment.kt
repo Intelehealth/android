@@ -52,6 +52,7 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
         StaticPatientRegistrationEnabledFieldsHelper.getEnabledOtherBaselineFields()
 
     private fun setValues() {
+        setupHohCheck()
         setupSourceOfWater()
         setupSourceOfLight()
         setupFuelType()
@@ -71,6 +72,11 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
         setupNumberOfToiletFacilities()
         setupHouseStructure()
         setupCultivableLand()
+    }
+
+    private fun setupHohCheck() {
+        binding.rgHOHOptions.setOnCheckedChangeListener { _, checkedId ->
+        }
     }
 
     private fun setupSourceOfWater() {
@@ -117,7 +123,10 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
         binding.acEconomicStatusCheck.setOnItemClickListener { _, _, i, _ ->
             binding.tilEconomicStatusOption.hideError()
             LanguageUtils.getSpecificLocalResource(requireContext(), "en").apply {
-                binding.acEconomicStatusCheck.setText(this.getStringArray(R.array.hb_check)[i], false)
+                binding.acEconomicStatusCheck.setText(
+                    this.getStringArray(R.array.hb_check)[i],
+                    false
+                )
             }
         }
     }
@@ -176,13 +185,13 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
     }
 
 
-
     private fun setupHouseHead() {
         binding.rgHOHOptions.setOnCheckedChangeListener { group, checkedId ->
             when (checkedId) {
                 R.id.radioHOHYes -> {
                     binding.rgHOHOptions.check(R.id.radioHOHYes)
                 }
+
                 R.id.radioHOHNo -> {
                     binding.rgHOHOptions.check(R.id.radioHOHNo)
                 }
@@ -196,9 +205,11 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
                 R.id.radioRationYes -> {
                     binding.rgHOHOptions.check(R.id.radioRationYes)
                 }
+
                 R.id.radioRationNo -> {
                     binding.rgHOHOptions.check(R.id.radioRationNo)
                 }
+
                 R.id.radioRationNotSure -> {
                     binding.rgHOHOptions.check(R.id.radioRationNotSure)
                 }
@@ -212,42 +223,55 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
                 R.id.radioSpouse -> {
                     binding.rgHOHOptions.check(R.id.radioSpouse)
                 }
+
                 R.id.radioGrandchild -> {
                     binding.rgHOHOptions.check(R.id.radioGrandchild)
                 }
+
                 R.id.radioFatherMother -> {
                     binding.rgHOHOptions.check(R.id.radioFatherMother)
                 }
+
                 R.id.radioFatherMotherInLaw -> {
                     binding.rgHOHOptions.check(R.id.radioFatherMotherInLaw)
                 }
+
                 R.id.radioBrotherSister -> {
                     binding.rgHOHOptions.check(R.id.radioBrotherSister)
                 }
+
                 R.id.radioBrotherSisterInLaw -> {
                     binding.rgHOHOptions.check(R.id.radioBrotherSisterInLaw)
                 }
+
                 R.id.radioNieceNephew -> {
                     binding.rgHOHOptions.check(R.id.radioNieceNephew)
                 }
+
                 R.id.radioGrandparent -> {
                     binding.rgHOHOptions.check(R.id.radioGrandparent)
                 }
+
                 R.id.radioOther -> {
                     binding.rgHOHOptions.check(R.id.radioOther)
                 }
+
                 R.id.radioAdopted -> {
                     binding.rgHOHOptions.check(R.id.radioAdopted)
                 }
+
                 R.id.radioServant -> {
                     binding.rgHOHOptions.check(R.id.radioServant)
                 }
+
                 R.id.radioOtherNotRelated -> {
                     binding.rgHOHOptions.check(R.id.radioOtherNotRelated)
                 }
+
                 R.id.radioOtherSpecify -> {
                     binding.rgHOHOptions.check(R.id.radioOtherSpecify)
                 }
+
                 R.id.radioNotStated -> {
                     binding.rgHOHOptions.check(R.id.radioNotStated)
                 }
@@ -263,6 +287,7 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
                 R.id.radioElectricityYes -> {
                     binding.rgHOHOptions.check(R.id.radioElectricityYes)
                 }
+
                 R.id.radioElectricityNo -> {
                     binding.rgHOHOptions.check(R.id.radioElectricityNo)
                 }
@@ -276,6 +301,7 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
                 R.id.radioWaterCheckYes -> {
                     binding.rgHOHOptions.check(R.id.radioWaterCheckYes)
                 }
+
                 R.id.radioWaterCheckNo -> {
                     binding.rgHOHOptions.check(R.id.radioWaterCheckNo)
                 }
@@ -289,6 +315,7 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
                 R.id.radioDistanceFromWaterYes -> {
                     binding.rgHOHOptions.check(R.id.radioDistanceFromWaterYes)
                 }
+
                 R.id.radioDistanceFromWaterNo -> {
                     binding.rgHOHOptions.check(R.id.radioDistanceFromWaterNo)
                 }
@@ -302,15 +329,19 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
                 R.id.radioAverageIncome1 -> {
                     binding.rgHOHOptions.check(R.id.radioAverageIncome1)
                 }
+
                 R.id.radioAverageIncome2 -> {
                     binding.rgHOHOptions.check(R.id.radioAverageIncome2)
                 }
+
                 R.id.radioAverageIncome3 -> {
                     binding.rgHOHOptions.check(R.id.radioAverageIncome3)
                 }
+
                 R.id.radioAverageIncome4 -> {
                     binding.rgHOHOptions.check(R.id.radioAverageIncome4)
                 }
+
                 R.id.radioAverageIncome5 -> {
                     binding.rgHOHOptions.check(R.id.radioAverageIncome5)
                 }
@@ -324,6 +355,7 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
                 R.id.radioEkalServiceYes -> {
                     binding.rgHOHOptions.check(R.id.radioEkalServiceYes)
                 }
+
                 R.id.radioEkalServiceNo -> {
                     binding.rgHOHOptions.check(R.id.radioEkalServiceNo)
                 }
