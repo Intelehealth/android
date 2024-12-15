@@ -856,6 +856,73 @@
     </string-array>
 
 
+
+    <string-array name="source_of_water">
+        <item>Piped into Dwelling</item>
+        <item>Piped into Yard or Plot</item>
+        <item>Public Tap or Standpipe</item>
+        <item>Tube Well or Borehole</item>
+        <item>Protected Well</item>
+        <item>Unprotected Well</item>
+        <item>Protected Spring</item>
+        <item>Unprotected Spring</item>
+        <item>Rainwater</item>
+        <item>Tanker Truck</item>
+        <item>Cart With Small Truck</item>
+        <item>Surface Water</item>
+        <item>Common Hand Pump</item>
+        <item>Hand Pump At Home</item>
+        <item>Other</item>
+    </string-array>
+
+    <string-array name="safeguard_water">
+        <item>Boiling</item>
+        <item>Use Alum</item>
+        <item>Add Bleach</item>
+        <item>Strain Through a Cloth</item>
+        <item>Water Filter</item>
+        <item>Hand Made Purifier</item>
+        <item>Do Nothing</item>
+        <item>Others</item>
+    </string-array>
+
+
+    <string-array name="fuel_type">
+        <item>Electricity</item>
+        <item>LPG or Natural Gas</item>
+        <item>Biogas</item>
+        <item>Kerosene</item>
+        <item>Coal or Lignite</item>
+        <item>Charcoal</item>
+        <item>Wood</item>
+        <item>Straw or Shrubs or Grass</item>
+        <item>Agricultural Crop Waste</item>
+        <item>Dung Cakes</item>
+        <item>Others</item>
+    </string-array>
+
+    <string-array name="source_of_light">
+        <item>Lantern/Kerosene Lamp/Candle</item>
+        <item>Electricity</item>
+        <item>Solar Energy</item>
+        <item>None</item>
+        <item>Others</item>
+    </string-array>
+
+    <string-array name="hand_wash_practice">
+        <item>Use Soap</item>
+        <item>Use other means to wash hands</item>
+        <item>Wash after using toilet</item>
+        <item>Wash before cooking</item>
+        <item>Wash before and after eating</item>
+    </string-array>
+
+    <string-array name="baseline_survey_items">
+        <item>General Survey</item>
+        <item>Medical Survey</item>
+        <item>Other Survey</item>
+    </string-array>
+
     <string-array name="hb_check">
         <item>Within the last 6 months</item>
     </string-array>

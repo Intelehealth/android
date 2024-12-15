@@ -19,6 +19,25 @@
     <string name="action_home">Home</string>
 
 
+    // Relation with household
+    <string name="spouse">Spouse</string>
+    <string name="grandchild">Grandchild</string>
+    <string name="father_mother">Father or Mother</string>
+    <string name="father_mother_in_law">Father or Mother-In-Law</string>
+    <string name="brother_sister">Brother or Sister</string>
+    <string name="brother_sister_in_law">Brother or Sister-In-Law</string>
+    <string name="niece_nephew">Niece or Nephew</string>
+    <string name="grandparent">Grandparent or Grandparent-In-Law</string>
+    <string name="other_relative">Other Relative</string>
+    <string name="adopted">Adopted or Foster or Stepchild</string>
+    <string name="servant">Domestic Servant</string>
+    <string name="other_not_related">Other Not Related</string>
+    <string name="other_specify">Other (Specify)</string>
+    <string name="not_stated">Not Stated</string>
+
+
+
+
     //Database Schema Names
 
     //Login Screen
@@ -749,6 +768,32 @@
     <string name="alcohol_rate_label">Rate of alcohol consumption</string>
     <string name="alcohol_consumption_question">How long have you been consuming alcohol?</string>
     <string name="alcohol_frequency_label">Frequency of consumption</string>
+
+
+    <string name="head_of_household_question">Are you the head of the household?</string>
+    <string name="ration_card_question">Do you have a Ration card?</string>
+    <string name="other_religion_label">Religion</string>
+    <string name="total_members_question">Total no. of members in the household</string>
+    <string name="usual_members_question">How many members usually live in your household or are staying with you now?</string>
+    <string name="smart_phone_label">No. of smartphones in the household</string>
+    <string name="feature_phone_label">No. of feature phones in the household</string>
+    <string name="earning_members_label">No. of earning members in the household</string>
+    <string name="electricity_check_question">Does the house have electricity?</string>
+    <string name="water_check_question">Is there running water available in the house?</string>
+    <string name="source_of_water_question">What is the main source of drinking water for members in your household?</string>
+    <string name="safequard_question">What do you actually do to the water to make it safer to drink?</string>
+    <string name="distance_from_water_question">Is the source of drinking water within 30 minutes of round trip from the household?</string>
+    <string name="toilet_facility_question">What kind of toilet facility do members of your household usually use?</string>
+    <string name="house_structure_label">Select the structure of house</string>
+    <string name="cultivable_land_question">How much cultivable land does your family own?</string>
+    <string name="average_income_label">Average Annual Household Income (INR)</string>
+    <string name="fuel_type_question">What type of fuel does your household mainly used for cooking?</string>
+    <string name="source_of_lighting_question">What is the main source of lighting in this household?</string>
+    <string name="hand_wash_Label">Describe your hand wash practice</string>
+    <string name="ekal_service_check_question">Ekal is starting a telemedicine program in your village to provide primary health care including - HB testing, Sugar testing and doctor consultations as needed. Would you like to take our service?</string>
+    <string name="relation_with_household">What is your relationship with the head of household?</string>
+
+
 
 
     <!--END-->

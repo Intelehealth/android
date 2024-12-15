@@ -65,6 +65,8 @@ import android.os.Bundle;
 import android.os.LocaleList;
 import android.util.DisplayMetrics;
 
+import org.intelehealth.app.enums.ListTypeEnum;
+import org.intelehealth.app.models.BaselineSurveyItem;
 import org.intelehealth.app.models.FamilyMemberRes;
 import org.intelehealth.app.ui.baseline_survey.activity.BaselineSurveyActivity;
 import org.intelehealth.app.utilities.BaselineSurveySource;
@@ -76,9 +78,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.LinearInterpolator;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -156,6 +160,7 @@ import org.json.JSONObject;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -221,8 +226,11 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     private ActivityPatientDetail2Binding binding;
 
     private RecyclerView rvFamilyMembers;
+    private RecyclerView rvBaselineSurvey;
     private FamilyMemberAdapter familyMemberAdapter;
+    private BaselineSurveyAdapter baselineSurveyAdapter;
     private List<FamilyMemberRes> familyMemberList;
+    private List<String> bsItemList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -242,6 +250,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         regFieldViewModel = new ViewModelProvider(this, factory).get(RegFieldViewModel.class);
 
         rvFamilyMembers = findViewById(R.id.rv_family_members);
+        rvBaselineSurvey = findViewById(R.id.rv_baseline_survey);
         ImageView ivAddFamilyMember = findViewById(R.id.iv_add_family_member);
         ImageView ivAddBaselineSurvey = findViewById(R.id.iv_add_baseline_survey);
 
@@ -440,8 +449,8 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         } catch (DAOException e) {
             throw new RuntimeException(e);
         }
-        if (houseHoldValue != null && !houseHoldValue.isEmpty())
-            populateFamilyMembers(houseHoldValue);
+        if(houseHoldValue != null && !houseHoldValue.isEmpty()) populateFamilyMembers(houseHoldValue);
+        populateBaselineSurveys();
     }
 
     private void populateFamilyMembers(String hid) {
@@ -451,19 +460,43 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             familyMemberAdapter = new FamilyMemberAdapter(familyMemberList, this);
             rvFamilyMembers.setLayoutManager(new LinearLayoutManager(this));
             rvFamilyMembers.setAdapter(familyMemberAdapter);
-            checkEmptyList();
+            checkEmptyList(ListTypeEnum.FAMILY_MEMBER);
         } catch (DAOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private void checkEmptyList() {
-        if (familyMemberList.isEmpty()) {
-            llEmptyFamilyMember.setVisibility(View.VISIBLE);
-            rvFamilyMembers.setVisibility(View.GONE);
-        } else {
-            llEmptyFamilyMember.setVisibility(View.GONE);
-            rvFamilyMembers.setVisibility(View.VISIBLE);
+    private void populateBaselineSurveys() {
+        try {
+            String[] sourceArray = getResources().getStringArray(R.array.baseline_survey_items);
+            bsItemList = Arrays.asList(sourceArray);
+            baselineSurveyAdapter = new BaselineSurveyAdapter(bsItemList, this);
+            rvBaselineSurvey.setLayoutManager(new LinearLayoutManager(this));
+            rvBaselineSurvey.setAdapter(baselineSurveyAdapter);
+            checkEmptyList(ListTypeEnum.BASELINE_SURVEY);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void checkEmptyList(ListTypeEnum listTypeEnum) {
+        switch (listTypeEnum){
+            case FAMILY_MEMBER -> {
+                if (familyMemberList.isEmpty()) {
+                    llEmptyFamilyMember.setVisibility(View.VISIBLE);
+                    rvFamilyMembers.setVisibility(View.GONE);
+                } else {
+                    llEmptyFamilyMember.setVisibility(View.GONE);
+                    rvFamilyMembers.setVisibility(View.VISIBLE);
+                }
+            }
+            case BASELINE_SURVEY -> {
+                if (bsItemList.isEmpty()) {
+                    rvBaselineSurvey.setVisibility(View.GONE);
+                } else {
+                    rvBaselineSurvey.setVisibility(View.VISIBLE);
+                }
+            }
         }
     }
 

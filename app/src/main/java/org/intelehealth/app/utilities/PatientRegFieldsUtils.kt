@@ -8,6 +8,7 @@ import android.widget.TextView
 import com.hbb20.CountryCodePicker
 import org.intelehealth.app.ui.baseline_survey.config.GeneralBaselineConfig
 import org.intelehealth.app.ui.baseline_survey.config.MedicalBaselineConfig
+import org.intelehealth.app.ui.baseline_survey.config.OtherBaselineConfig
 import org.intelehealth.app.ui.patient.config.AddressInfoConfig
 import org.intelehealth.app.ui.patient.config.OtherInfoConfig
 import org.intelehealth.app.ui.patient.config.PersonalInfoConfig
@@ -207,6 +208,40 @@ object PatientRegFieldsUtils {
                     PatientRegConfigKeys.ALCOHOL_RATE -> alcoholRate = it
                     PatientRegConfigKeys.ALCOHOL_DURATION -> alcoholDuration = it
                     PatientRegConfigKeys.ALCOHOL_FREQUENCY -> alcoholFrequency = it
+                }
+            }
+        }
+    }
+
+
+    @JvmStatic
+    fun buildOtherBaselineConfig(patientRegistrationFields: List<PatientRegistrationFields>): OtherBaselineConfig {
+        return OtherBaselineConfig().apply {
+            patientRegistrationFields.forEach {
+                when (it.idKey) {
+                    PatientRegConfigKeys.HEAD_OF_HOUSEHOLD -> headOfHousehold = it
+                    PatientRegConfigKeys.RATION_CARD_CHECK -> rationCardCheck = it
+                    PatientRegConfigKeys.ECONOMIC_STATUS -> economicStatus = it
+                    PatientRegConfigKeys.OTHER_BASELINE_RELIGION -> religion = it
+                    PatientRegConfigKeys.TOTAL_HOUSEHOLD_MEMBERS -> totalHouseholdMembers = it
+                    PatientRegConfigKeys.USUAL_HOUSEHOLD_MEMBERS -> usualHouseholdMembers = it
+                    PatientRegConfigKeys.NUMBER_OF_SMARTPHONES -> numberOfSmartphones = it
+                    PatientRegConfigKeys.NUMBER_OF_FEATURE_PHONES -> numberOfFeaturePhones = it
+                    PatientRegConfigKeys.NUMBER_OF_EARNING_MEMBERS -> numberOfEarningMembers = it
+                    PatientRegConfigKeys.ELECTRICITY_CHECK -> electricityCheck = it
+                    PatientRegConfigKeys.WATER_CHECK -> waterCheck = it
+                    PatientRegConfigKeys.SOURCE_OF_WATER -> sourceOfWater = it
+                    PatientRegConfigKeys.SAFEGUARD_WATER -> safeguardWater = it
+                    PatientRegConfigKeys.DISTANCE_FROM_WATER -> distanceFromWater = it
+                    PatientRegConfigKeys.TOILET_FACILITY -> toiletFacility = it
+                    PatientRegConfigKeys.HOUSE_STRUCTURE -> houseStructure = it
+                    PatientRegConfigKeys.CULTIVABLE_LAND -> cultivableLand = it
+                    PatientRegConfigKeys.AVERAGE_INCOME -> averageIncome = it
+                    PatientRegConfigKeys.FUEL_TYPE -> fuelType = it
+                    PatientRegConfigKeys.SOURCE_OF_LIGHT -> sourceOfLight = it
+                    PatientRegConfigKeys.HANDWASH_PRACTICES -> handWashPractices = it
+                    PatientRegConfigKeys.EKAL_SERVICE_CHECK -> ekalServiceCheck = it
+                    PatientRegConfigKeys.RELATION_WITH_HOUSEHOLD -> relationWithHousehold = it
                 }
             }
         }
