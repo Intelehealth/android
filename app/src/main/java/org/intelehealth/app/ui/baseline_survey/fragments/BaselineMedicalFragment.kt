@@ -2,6 +2,7 @@ package org.intelehealth.app.ui.baseline_survey.fragments
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import com.github.ajalt.timberkt.Timber
@@ -15,6 +16,7 @@ import org.intelehealth.app.utilities.BaselineSurveyStage
 import org.intelehealth.app.utilities.LanguageUtils
 import org.intelehealth.app.utilities.PatientRegFieldsUtils
 import org.intelehealth.app.utilities.extensions.hideError
+import org.intelehealth.app.utilities.extensions.hideErrorOnTextChang
 import org.intelehealth.app.utilities.extensions.validate
 import org.intelehealth.app.utilities.extensions.validateDropDowb
 
@@ -60,6 +62,49 @@ class BaselineMedicalFragment :
         setupBpCheck()
         setupSugarCheck()
         setupSurgeries()
+        setInputTextChangedListener()
+        setupSmokingHistory()
+        setupAlcoholConsumption()
+    }
+
+    private fun setupAlcoholConsumption() {
+        binding.rgAlcoholHistoryOptions.setOnCheckedChangeListener { _, checkedId ->
+            when (checkedId) {
+                binding.radioAlcoholHistoryYes.id -> {
+                    binding.llAlcoholRate.visibility = View.VISIBLE
+                    binding.llAlcoholDuration.visibility = View.VISIBLE
+                    binding.llAlcoholFrequency.visibility = View.VISIBLE
+                }
+
+                else -> {
+                    binding.llAlcoholRate.visibility = View.GONE
+                    binding.llAlcoholDuration.visibility = View.GONE
+                    binding.llAlcoholFrequency.visibility = View.GONE
+                }
+            }
+        }
+    }
+
+    private fun setupSmokingHistory() {
+        binding.rgSmokingHistoryOptions.setOnCheckedChangeListener { _, checkedId ->
+            when (checkedId) {
+                binding.radioSmoker.id -> {
+                    binding.llSmokingDuration.visibility = View.VISIBLE
+                    binding.llSmokingRate.visibility = View.VISIBLE
+                    binding.llSmokingFrequency.visibility = View.VISIBLE
+                }
+
+                else -> {
+                    binding.llSmokingDuration.visibility = View.GONE
+                    binding.llSmokingRate.visibility = View.GONE
+                    binding.llSmokingFrequency.visibility = View.GONE
+                }
+            }
+        }
+    }
+
+    private fun setInputTextChangedListener() {
+        binding.tilSurgeryReasonOption.hideErrorOnTextChang(binding.etSurgeryReasonCheck)
     }
 
     private fun setupHbCheck() {
@@ -98,34 +143,15 @@ class BaselineMedicalFragment :
         }
     }
 
-    private fun setupSurgeryReasonCheck() {
-        val adapter =
-            ArrayAdapterUtils.getArrayAdapter(requireContext(), R.array.surgery_reason_check)
-        binding.acSurgeryReasonCheck.setAdapter(adapter)
-
-        binding.acSurgeryReasonCheck.setOnItemClickListener { _, _, i, _ ->
-            binding.tilSurgeryReasonOption.hideError()
-            LanguageUtils.getSpecificLocalResource(requireContext(), "en").apply {
-                binding.acSurgeryReasonCheck.setText(
-                    this.getStringArray(R.array.surgery_reason_check)[i],
-                    false
-                )
-            }
-        }
-    }
-
     private fun setupSurgeries() {
         binding.rgSurgeryOptions.setOnCheckedChangeListener { group, checkedId ->
             when (checkedId) {
                 R.id.radioSurgeryYes -> {
-                    binding.rgSurgeryOptions.check(R.id.radioSurgeryYes)
-                    binding.medicalConfig?.surgeryReason?.isEnabled = true
-                    setupSurgeryReasonCheck()
+                    binding.llSurgeryReasonCheck.visibility = View.VISIBLE
                 }
 
                 R.id.radioSurgeryNo -> {
-                    binding.rgSurgeryOptions.check(R.id.radioSurgeryNo)
-                    binding.medicalConfig?.surgeryReason?.isEnabled = false
+                    binding.llSurgeryReasonCheck.visibility = View.GONE
                 }
             }
         }
@@ -157,7 +183,7 @@ class BaselineMedicalFragment :
             } else true
 
             val bpCheck = if (it.bpCheck!!.isEnabled && it.bpCheck!!.isMandatory) {
-                binding.tilHbCheckOption.validateDropDowb(binding.acHbCheck, error)
+                binding.tilBpCheckOption.validateDropDowb(binding.acHbCheck, error)
             } else true
 
             val sugarCheck = if (it.sugarCheck!!.isEnabled && it.sugarCheck!!.isMandatory) {
@@ -186,10 +212,30 @@ class BaselineMedicalFragment :
                 binding.rgSurgeryOptions.validate()
             } else true
 
+            val surgeryReason =
+                if (it.surgeryReason!!.isEnabled && it.surgeryValue!!.isMandatory && binding.llSurgeryReasonCheck.isVisible) {
+                    binding.tilSurgeryReasonOption.validate(binding.etSurgeryReasonCheck, error)
+                } else true
+
             val smokingHistory =
                 if (it.smokingHistory!!.isEnabled && it.smokingHistory!!.isMandatory) {
                     binding.rgSmokingHistoryOptions.validate()
-                } else false
+                } else true
+
+            val smokingRate =
+                if (it.smokingRate!!.isEnabled && it.smokingRate!!.isMandatory && binding.llSmokingRate.isVisible) {
+                    binding.rgSmokingRateOptions.validate()
+                } else true
+
+            val smokingDuration =
+                if (it.smokingHistory!!.isEnabled && it.smokingHistory!!.isMandatory && binding.llSmokingDuration.isVisible) {
+                    binding.rgSmokingDurationOptions.validate()
+                } else true
+
+            val smokingFrequency =
+                if (it.smokingFrequency!!.isEnabled && it.smokingFrequency!!.isMandatory && binding.llSmokingFrequency.isVisible) {
+                    binding.rgSmokingFrequencyOptions.validate()
+                } else true
 
             val chewTobacco = if (it.chewTobacco!!.isEnabled && it.chewTobacco!!.isMandatory) {
                 binding.rgChewTobaccoOptions.validate()
@@ -198,7 +244,37 @@ class BaselineMedicalFragment :
             val alcoholHistory =
                 if (it.alcoholHistory!!.isEnabled && it.alcoholHistory!!.isMandatory) {
                     binding.rgAlcoholHistoryOptions.validate()
-                } else false
+                } else true
+
+            val alcoholRate =
+                if (it.alcoholRate!!.isEnabled && it.alcoholRate!!.isMandatory && binding.llAlcoholRate.isVisible) {
+                    binding.rgAlcoholRateOptions.validate()
+                } else true
+
+            val alcoholDuration =
+                if (it.alcoholDuration!!.isEnabled && it.alcoholDuration!!.isMandatory && binding.llAlcoholDuration.isVisible) {
+                    binding.rgAlcoholDurationOptions.validate()
+                } else true
+
+            val alcoholFrequency =
+                if (it.alcoholFrequency!!.isEnabled && it.alcoholFrequency!!.isMandatory && binding.llAlcoholFrequency.isVisible) {
+                    binding.rgAlcoholFrequencyOptions.validate()
+                } else true
+
+            if (hbCheck.and(bpCheck).and(sugarCheck).and(bpValue).and(diabetesValue)
+                    .and(arthritisValue).and(anemiaValue).and(surgeryValue).and(surgeryReason)
+                    .and(smokingHistory).and(smokingRate).and(smokingDuration).and(smokingFrequency)
+                    .and(chewTobacco).and(alcoholHistory).and(alcoholRate).and(alcoholDuration)
+                    .and(alcoholFrequency)
+            ) {
+                block.invoke()
+            } else {
+                Toast.makeText(
+                    requireActivity(),
+                    getString(R.string.please_select_all_the_required_fields),
+                    Toast.LENGTH_LONG
+                ).show()
+            }
         }
     }
 }

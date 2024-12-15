@@ -118,8 +118,8 @@
                             android:id="@+id/ac_bp_check"
                             style="@style/AppTheme.InputBox"
                             android:layout_width="match_parent"
-                            android:hint="@string/select_your_choice"
                             android:layout_height="wrap_content"
+                            android:hint="@string/select_your_choice"
                             android:inputType="none" />
                     </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
                 </LinearLayout>
@@ -158,9 +158,9 @@
                         <AutoCompleteTextView
                             android:id="@+id/ac_sugar_check"
                             style="@style/AppTheme.InputBox"
-                            android:hint="@string/select_your_choice"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:hint="@string/select_your_choice"
                             android:inputType="none" />
                     </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
                 </LinearLayout>
@@ -170,7 +170,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/space_10dp"
                     android:lineSpacingExtra="3sp"
-                    android:text="Medical History"
+                    android:text="@string/medical_history"
                     android:textColor="@color/deepBlue3"
                     tools:text="Medical History"
                     tools:textFontWeight="700" />
@@ -436,7 +436,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/std_12dp"
                     android:orientation="vertical"
-                    android:visibility="@{medicalConfig.surgeryReason.enabled ? View.VISIBLE : View.GONE}"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/llEducation">
@@ -453,7 +453,7 @@
 
                     <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
                         android:id="@+id/til_surgery_reason_option"
-                        style="@style/AppTheme.OutlineInputBox.DropDown"
+                        style="@style/AppTheme.OutlineInputBox"
                         config="@{medicalConfig.surgeryReason}"
                         editMode="@{baselineEditMode}"
                         android:layout_width="match_parent"
@@ -461,12 +461,12 @@
                         android:layout_marginTop="@dimen/margin_4"
                         app:hintEnabled="false">
 
-                        <AutoCompleteTextView
-                            android:id="@+id/ac_surgery_reason_check"
-                            android:hint="@string/select_your_choice"
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_surgery_reason_check"
                             style="@style/AppTheme.InputBox"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:hint="@string/select_your_choice"
                             android:inputType="none" />
                     </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
                 </LinearLayout>
@@ -509,7 +509,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="@dimen/margin_20"
-                            android:text="Smoker" />
+                            android:text="@string/smoker" />
 
                         <RadioButton
                             android:id="@+id/radioNonSmoker"
@@ -517,7 +517,7 @@
                             editMode="@{baselineEditMode}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Non-Smoker" />
+                            android:text="@string/non_smoker" />
 
                         <RadioButton
                             android:id="@+id/radioDeclined"
@@ -525,7 +525,7 @@
                             editMode="@{baselineEditMode}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Declined to answer" />
+                            android:text="@string/declined_to_answer" />
                     </RadioGroup>
 
                 </LinearLayout>
@@ -536,7 +536,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/std_12dp"
                     android:orientation="vertical"
-                    android:visibility="@{medicalConfig.smokingRate.enabled ? View.VISIBLE : View.GONE}"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/llEducation">
@@ -567,7 +567,7 @@
                             editMode="@{baselineEditMode}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="less than 5 bidis / cigarettes" />
+                            android:text="@string/less_than_5_bidis_or_cigarette" />
 
                         <RadioButton
                             android:id="@+id/radioSmokingRate2"
@@ -575,7 +575,7 @@
                             editMode="@{baselineEditMode}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="5-10 bidis / cigarettes" />
+                            android:text="@string/five_to_ten_bidis_or_cigarette" />
 
                         <RadioButton
                             android:id="@+id/radioSmokingRate3"
@@ -583,7 +583,7 @@
                             editMode="@{baselineEditMode}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="More than 10 bidis / cigarettes" />
+                            android:text="@string/more_than_10_bidis_or_cigarette" />
 
                     </RadioGroup>
 
@@ -595,7 +595,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/std_12dp"
                     android:orientation="vertical"
-                    android:visibility="@{medicalConfig.smokingDuration.enabled ? View.VISIBLE : View.GONE}"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/llEducation">
@@ -626,7 +626,7 @@
                             editMode="@{baselineEditMode}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Less than a year" />
+                            android:text="@string/less_than_a_year" />
 
                         <RadioButton
                             android:id="@+id/radioSmokingDuration2"
@@ -634,7 +634,7 @@
                             editMode="@{baselineEditMode}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="From 1 year to 5 years" />
+                            android:text="@string/from_1_year_to_5_years" />
 
                         <RadioButton
                             android:id="@+id/radioSmokingDuration3"
@@ -642,7 +642,7 @@
                             editMode="@{baselineEditMode}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="From 5 to 10 years" />
+                            android:text="@string/from_5_year_to_10_years" />
 
                         <RadioButton
                             android:id="@+id/radioSmokingDuration4"
@@ -650,7 +650,7 @@
                             editMode="@{baselineEditMode}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="More than 10 years" />
+                            android:text="@string/more_than_10_years" />
 
                     </RadioGroup>
 
@@ -662,7 +662,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/std_12dp"
                     android:orientation="vertical"
-                    android:visibility="@{medicalConfig.alcoholFrequency.enabled ? View.VISIBLE : View.GONE}"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/llEducation">
@@ -693,7 +693,7 @@
                             editMode="@{baselineEditMode}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Daily" />
+                            android:text="@string/frequency_daily" />
 
                         <RadioButton
                             android:id="@+id/radioSmokingFrequency2"
@@ -701,7 +701,7 @@
                             editMode="@{baselineEditMode}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Once a week" />
+                            android:text="@string/frequency_once_a_week" />
 
                         <RadioButton
                             android:id="@+id/radioSmokingFrequency3"
@@ -709,7 +709,7 @@
                             editMode="@{baselineEditMode}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Twice a week" />
+                            android:text="@string/frequency_twice_a_week" />
 
                         <RadioButton
                             android:id="@+id/radioSmokingFrequency4"
@@ -717,7 +717,7 @@
                             editMode="@{baselineEditMode}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Occasionally (Once a month or less)" />
+                            android:text="@string/frequency_occasionally" />
 
                     </RadioGroup>
 
@@ -845,7 +845,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/std_12dp"
                     android:orientation="vertical"
-                    android:visibility="@{medicalConfig.alcoholRate.enabled ? View.VISIBLE : View.GONE}"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/llEducation">
@@ -876,7 +876,7 @@
                             editMode="@{baselineEditMode}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="0-50 ml" />
+                            android:text="@string/zero_fifty_ml" />
 
                         <RadioButton
                             android:id="@+id/radioAlcoholRate2"
@@ -884,7 +884,7 @@
                             editMode="@{baselineEditMode}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="50-100 ml" />
+                            android:text="@string/fifty_hundred_ml" />
 
                         <RadioButton
                             android:id="@+id/radioAlcoholRate3"
@@ -892,7 +892,7 @@
                             editMode="@{baselineEditMode}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="100-250 ml" />
+                            android:text="@string/hundred_two_hundred_fifty_ml" />
 
                         <RadioButton
                             android:id="@+id/radioAlcoholRate4"
@@ -900,7 +900,7 @@
                             editMode="@{baselineEditMode}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="250-500 ml" />
+                            android:text="@string/two_fifty_five_hundred_ml" />
 
                         <RadioButton
                             android:id="@+id/radioAlcoholRate5"
@@ -908,7 +908,8 @@
                             editMode="@{baselineEditMode}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="More than 500 ml" />
+                            android:text="@string/more_than_five_hundred_ml" />
+
                     </RadioGroup>
 
                 </LinearLayout>
@@ -919,7 +920,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/std_12dp"
                     android:orientation="vertical"
-                    android:visibility="@{medicalConfig.alcoholDuration.enabled ? View.VISIBLE : View.GONE}"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/llEducation">
@@ -932,7 +933,7 @@
                         android:text="@{ medicalConfig.alcoholDuration.mandatory ? @string/alcohol_rate_label + ` *` : @string/alcohol_rate_label}"
                         android:textAppearance="@style/blur_txtview"
                         android:textSize="@null"
-                        tools:text="@string/alcohol_rate_label" />
+                        tools:text="@string/alcohol_consumption_question" />
 
                     <RadioGroup
                         android:id="@+id/rg_alcohol_duration_options"
@@ -950,7 +951,7 @@
                             editMode="@{baselineEditMode}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Less than a year" />
+                            android:text="@string/less_than_a_year" />
 
                         <RadioButton
                             android:id="@+id/radioAlcoholDuration2"
@@ -958,7 +959,7 @@
                             editMode="@{baselineEditMode}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="From 1 year to 5 years" />
+                            android:text="@string/from_1_year_to_5_years" />
 
                         <RadioButton
                             android:id="@+id/radioAlcoholDuration3"
@@ -966,7 +967,7 @@
                             editMode="@{baselineEditMode}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="From 5 to 10 years" />
+                            android:text="@string/from_5_year_to_10_years" />
 
                         <RadioButton
                             android:id="@+id/radioAlcoholDuration4"
@@ -974,7 +975,7 @@
                             editMode="@{baselineEditMode}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="More than 10 years" />
+                            android:text="@string/more_than_10_years" />
 
                     </RadioGroup>
 
@@ -986,7 +987,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/std_12dp"
                     android:orientation="vertical"
-                    android:visibility="@{medicalConfig.alcoholFrequency.enabled ? View.VISIBLE : View.GONE}"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/llEducation">
@@ -1017,7 +1018,7 @@
                             editMode="@{baselineEditMode}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Daily" />
+                            android:text="@string/daily" />
 
                         <RadioButton
                             android:id="@+id/radioAlcoholFrequency2"
@@ -1025,7 +1026,7 @@
                             editMode="@{baselineEditMode}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Once a week" />
+                            android:text="@string/frequency_once_a_week" />
 
                         <RadioButton
                             android:id="@+id/radioAlcoholFrequency3"
@@ -1033,7 +1034,7 @@
                             editMode="@{baselineEditMode}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Twice a week" />
+                            android:text="@string/frequency_twice_a_week" />
 
                         <RadioButton
                             android:id="@+id/radioAlcoholFrequency4"
@@ -1041,7 +1042,7 @@
                             editMode="@{baselineEditMode}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Occasionally (Once a month or less)" />
+                            android:text="@string/frequency_occasionally" />
 
                     </RadioGroup>
 

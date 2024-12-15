@@ -39,4 +39,29 @@
     <string name="select_phone_ownership">Select Phone Ownership</string>
     <string name="select_your_choice">Select your choice</string>
 
+    <string name="smoker">Smoker</string>
+    <string name="non_smoker">Non-Smoker</string>
+    <string name="declined_to_answer">Declined To Answer</string>
+    <string name="medical_history">Medical History</string>
+
+    <string name="less_than_5_bidis_or_cigarette">Less than 5 bidis / cigarette</string>
+    <string name="five_to_ten_bidis_or_cigarette">5 – 10 bidis / cigarette</string>
+    <string name="more_than_10_bidis_or_cigarette">More than 10 bidis / cigarette</string>
+
+    <string name="less_than_a_year">Less than a year</string>
+    <string name="from_1_year_to_5_years">From 1 year to 5 years</string>
+    <string name="from_5_year_to_10_years">From 5 to 10 years</string>
+    <string name="more_than_10_years">More than 10 years</string>
+
+    <string name="frequency_daily">Daily</string>
+    <string name="frequency_once_a_week">Once a week</string>
+    <string name="frequency_twice_a_week">Twice a week</string>
+    <string name="frequency_occasionally">Occasionally (Once a month or less)</string>
+
+    <string name="zero_fifty_ml">0 – 50 ml</string>
+    <string name="fifty_hundred_ml">50 – 100 ml</string>
+    <string name="hundred_two_hundred_fifty_ml">100 – 250 ml</string>
+    <string name="two_fifty_five_hundred_ml">250 – 500 ml</string>
+    <string name="more_than_five_hundred_ml">500 ml</string>
+
 </resources>

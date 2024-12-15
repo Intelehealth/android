@@ -597,7 +597,7 @@ object StaticPatientRegistrationEnabledFieldsHelper {
             idKey = PatientRegConfigKeys.SURGERY_REASON,
             isMandatory = true,
             isEditable = true,
-            isEnabled = false
+            isEnabled = true
         )
 
         fields.add(currentField)
