@@ -15,6 +15,8 @@ import org.intelehealth.app.utilities.BaselineSurveyStage
 import org.intelehealth.app.utilities.LanguageUtils
 import org.intelehealth.app.utilities.PatientRegFieldsUtils
 import org.intelehealth.app.utilities.extensions.hideError
+import org.intelehealth.app.utilities.extensions.validate
+import org.intelehealth.app.utilities.extensions.validateDropDowb
 
 /**
  * Created by Shazzad H Kanon on 06-12-2024 - 11:00.
@@ -136,12 +138,67 @@ class BaselineMedicalFragment :
             }
         }
         binding.frag2BtnNext.setOnClickListener {
-            BaselineMedicalFragmentDirections.navigationMedicalToOther().apply {
-                findNavController().navigate(this)
-            }
+            validateForm { saveSurveyData() }
         }
     }
 
-    public fun validateForm(block: () -> Unit) {
+    private fun saveSurveyData() {
+        BaselineMedicalFragmentDirections.navigationMedicalToOther().apply {
+            findNavController().navigate(this)
+        }
+    }
+
+    private fun validateForm(block: () -> Unit) {
+        val error = R.string.this_field_is_mandatory
+
+        binding.medicalConfig?.let {
+            val hbCheck = if (it.hbCheck!!.isEnabled && it.hbCheck!!.isMandatory) {
+                binding.tilHbCheckOption.validateDropDowb(binding.acHbCheck, error)
+            } else true
+
+            val bpCheck = if (it.bpCheck!!.isEnabled && it.bpCheck!!.isMandatory) {
+                binding.tilHbCheckOption.validateDropDowb(binding.acHbCheck, error)
+            } else true
+
+            val sugarCheck = if (it.sugarCheck!!.isEnabled && it.sugarCheck!!.isMandatory) {
+                binding.tilSugarCheckOption.validateDropDowb(binding.acSugarCheck, error)
+            } else true
+
+            val bpValue = if (it.bpValue!!.isEnabled && it.bpValue!!.isMandatory) {
+                binding.rgBpOptions.validate()
+            } else true
+
+            val diabetesValue =
+                if (it.diabetesValue!!.isEnabled && it.diabetesValue!!.isMandatory) {
+                    binding.rgDiabetesOptions.validate()
+                } else true
+
+            val arthritisValue =
+                if (it.arthritisValue!!.isEnabled && it.arthritisValue!!.isMandatory) {
+                    binding.rgArthritisOptions.validate()
+                } else true
+
+            val anemiaValue = if (it.anemiaValue!!.isEnabled && it.anemiaValue!!.isMandatory) {
+                binding.rgAnemiaOptions.validate()
+            } else true
+
+            val surgeryValue = if (it.surgeryValue!!.isEnabled && it.surgeryValue!!.isMandatory) {
+                binding.rgSurgeryOptions.validate()
+            } else true
+
+            val smokingHistory =
+                if (it.smokingHistory!!.isEnabled && it.smokingHistory!!.isMandatory) {
+                    binding.rgSmokingHistoryOptions.validate()
+                } else false
+
+            val chewTobacco = if (it.chewTobacco!!.isEnabled && it.chewTobacco!!.isMandatory) {
+                binding.rgChewTobaccoOptions.validate()
+            } else false
+
+            val alcoholHistory =
+                if (it.alcoholHistory!!.isEnabled && it.alcoholHistory!!.isMandatory) {
+                    binding.rgAlcoholHistoryOptions.validate()
+                } else false
+        }
     }
 }
