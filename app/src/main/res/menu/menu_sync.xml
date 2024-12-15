@@ -9,7 +9,9 @@
         android:icon="@drawable/cancel_btn_cross"
         android:orderInCategory="2"
         android:title="@string/cancel"
+        android:visible="false"
         app:showAsAction="always" />
+
     <item
         android:id="@+id/action_sync"
         android:orderInCategory="1"
