@@ -10,6 +10,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.animation.LinearInterpolator
 import android.widget.ImageView
+import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.core.content.IntentCompat
 import androidx.core.view.isVisible
@@ -58,8 +59,19 @@ class BaselineSurveyActivity : BaseActivity() {
         setContentView(binding.root)
         loadFeatureActiveStatus()
         extractAndBindUI()
+        handleOnBackPressListener()
         setupActionBar()
         observeCurrentPatientStage()
+    }
+
+    private fun handleOnBackPressListener() {
+        val callback = object : OnBackPressedCallback(false) {
+            override fun handleOnBackPressed() {
+                // Keeping this empty as we don't want to redirect back
+            }
+        }
+
+        onBackPressedDispatcher.addCallback(this@BaselineSurveyActivity, callback)
     }
 
     private fun observeCurrentPatientStage() {

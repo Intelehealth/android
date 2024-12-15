@@ -140,7 +140,9 @@ class BaselineGeneralFragment :
     }
 
     private fun saveSurveyData() {
-
+        BaselineGeneralFragmentDirections.navigationGeneralToMedical().apply {
+            findNavController().navigate(this)
+        }
     }
 
     private fun validateForm(block: () -> Unit) {
