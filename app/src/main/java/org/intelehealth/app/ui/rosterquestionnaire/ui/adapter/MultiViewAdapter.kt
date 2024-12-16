@@ -114,6 +114,11 @@ class MultiViewAdapter(
                          data.answer = text.toString()
                          binding.tilAnswer.hideError()
                      }
+                    if (isResulCheck && data.answer.isNullOrEmpty()) {
+                        binding.tilAnswer.validate(binding.tilEtAnswer, data.errorMessage)
+                    } else {
+                        binding.tilAnswer.hideError()
+                    }
                 }
 
             }
