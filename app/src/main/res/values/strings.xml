@@ -1507,4 +1507,5 @@
     <string name="health_service">Health Service</string>
     <string name="please_add_health_service">Please add health service</string>
     <string name="please_add_pregnancy_outcome">Please add pregnancy outcome</string>
+    <string name="please_select_pregnancy_outcome">Please select pregnancy outcome\n</string>
 </resources>

@@ -1,6 +1,7 @@
 package org.intelehealth.app.ui.rosterquestionnaire.ui
 
 import android.app.Dialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -33,15 +34,21 @@ class AddHealthServiceDialog : DialogFragment(), MultiViewListener {
         val builder = MaterialAlertDialogBuilder(requireContext())
         builder.setView(_binding.root)
 
-        val dialog = builder.create()
-        dialog.setCancelable(true)
-
         val alertDialog: androidx.appcompat.app.AlertDialog = builder.create()
-        alertDialog.window!!.setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg) // show rounded corner for the dialog
-        alertDialog.window!!.addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND) // dim background
-        requireContext().resources.getDimensionPixelSize(R.dimen.internet_dialog_width) // set width to your dialog.
-        alertDialog.window!!.setLayout(WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT)
+        alertDialog.setCancelable(true)
 
+        alertDialog.window?.apply {
+            setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg) // Show rounded corners
+            addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND) // Dim background
+
+            // Set the dialog width and height with margins
+            val metrics = requireContext().resources.displayMetrics
+            val horizontalMargin = requireContext().resources.getDimensionPixelSize(R.dimen.dialog_margin)
+            val verticalMargin = requireContext().resources.getDimensionPixelSize(R.dimen.dialog_margin_vertical)
+            val dialogWidth = metrics.widthPixels - (horizontalMargin * 2) // Screen width minus horizontal margins
+            val dialogHeight = metrics.heightPixels - (verticalMargin * 2) // Screen height minus vertical margins
+            setLayout(dialogWidth, dialogHeight)
+        }
         return alertDialog
     }
 
@@ -97,6 +104,11 @@ class AddHealthServiceDialog : DialogFragment(), MultiViewListener {
 
             }
         }, childFragmentManager)
+    }
+
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+        rosterViewModel.existingRoasterQuestionList = null
     }
 
 }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
         <import type="android.view.View"/>
@@ -7,15 +8,21 @@
             name="viewModel"
             type="org.intelehealth.app.ui.rosterquestionnaire.viewmodel.RosterViewModel" />
     </data>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
+<FrameLayout
+    android:id="@+id/flAddHealthService"
+    android:layout_width="0dp"
+    android:layout_height="0dp"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintBottom_toTopOf="@+id/frag2_btn_back"
+    app:layout_constraintTop_toTopOf="parent">
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cvAddHealthService"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_8"
         android:layout_marginTop="@dimen/margin_16"
@@ -28,41 +35,51 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:backgroundTint="@color/backgroundWhite"
+            android:orientation="vertical"
             android:padding="@dimen/card_options_padding">
 
 
-            <TextView
-                android:id="@+id/tvAddHealthServiceHeader"
-                android:layout_width="0dp"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_8"
-                android:text="@string/health_service"
-                android:textSize="@dimen/common_sub_headings_home"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:orientation="horizontal"
+                >
+                <TextView
+                    android:id="@+id/tvAddHealthServiceHeader"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_8"
+                    android:text="@string/health_service"
+                    android:textSize="@dimen/common_sub_headings_home"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
 
-            <TextView
-                android:id="@+id/tvAddHealthService"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_8"
-                android:background="@drawable/ic_rectangle"
-                android:paddingHorizontal="@dimen/padding_10"
-                android:paddingVertical="@dimen/padding_5"
-                android:text="@string/add"
-                android:textColor="?attr/colorPrimary"
-                android:textSize="12sp"
-                app:drawableStartCompat="@drawable/ic_add"
-                app:layout_constraintBottom_toBottomOf="@+id/tvAddHealthServiceHeader"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="1.0" />
+                <TextView
+                    android:id="@+id/tvAddHealthService"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_8"
+                    android:background="@drawable/ic_rectangle"
+                    android:paddingHorizontal="@dimen/padding_10"
+                    android:paddingVertical="@dimen/padding_5"
+                    android:text="@string/add"
+                    android:textColor="?attr/colorPrimary"
+                    android:textSize="12sp"
+                    app:drawableStartCompat="@drawable/ic_add"
+                    app:layout_constraintBottom_toBottomOf="@+id/tvAddHealthServiceHeader"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="1.0" />
+
+            </LinearLayout>
+
 
             <View
                 android:id="@+id/horizontal_view"
@@ -76,17 +93,20 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvHealthService"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_16"
+                android:layout_marginTop="12dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/horizontal_view"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/horizontal_view"
-                app:layout_constraintTop_toBottomOf="@+id/horizontal_view" />
+                app:layout_constraintTop_toBottomOf="@+id/horizontal_view"
+                app:layout_constraintVertical_bias="0.0" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
 
     </com.google.android.material.card.MaterialCardView>
-
+</FrameLayout>
 
     <Button
         android:id="@+id/frag2_btn_back"
@@ -97,6 +117,7 @@
         android:layout_marginBottom="@dimen/std_16dp"
         android:text="@string/generic_back"
         android:textColor="@color/primary_text"
+        app:layout_constraintTop_toBottomOf="@+id/flAddHealthService"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/frag2_btn_next"
         app:layout_constraintStart_toStartOf="parent" />
@@ -112,6 +133,7 @@
         android:text="@string/next"
         app:icon="@drawable/ui2_ic_baseline_arrow_forward_24"
         app:iconGravity="end"
+        app:layout_constraintTop_toBottomOf="@+id/flAddHealthService"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/frag2_btn_back" />

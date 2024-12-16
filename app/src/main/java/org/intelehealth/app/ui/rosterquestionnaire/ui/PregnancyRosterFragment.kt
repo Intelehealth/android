@@ -15,6 +15,8 @@ import org.intelehealth.app.ui.rosterquestionnaire.utilities.RosterQuestionnaire
 import org.intelehealth.app.ui.rosterquestionnaire.viewmodel.RosterViewModel
 import org.intelehealth.app.utilities.SpacingItemDecoration
 import org.intelehealth.app.utilities.ToastUtil
+import org.intelehealth.app.utilities.extensions.validate
+import org.intelehealth.app.utilities.extensions.validateDropDowb
 
 @AndroidEntryPoint
 class PregnancyRosterFragment : BaseRosterFragment(R.layout.fragment_pregnancy_roster),
@@ -69,7 +71,8 @@ class PregnancyRosterFragment : BaseRosterFragment(R.layout.fragment_pregnancy_r
     private fun setupOutcomeAdapter() {
         binding.rvPregnancyOutcome.apply {
             layoutManager = LinearLayoutManager(requireContext())
-            pregnancyAdapter = PregnancyOutcomeAdapter(pregnancyOutComeList, this@PregnancyRosterFragment)
+            pregnancyAdapter =
+                PregnancyOutcomeAdapter(pregnancyOutComeList, this@PregnancyRosterFragment)
             addItemDecoration(SpacingItemDecoration(16)) // Adds spacing between items
             adapter = pregnancyAdapter
         }
@@ -84,10 +87,22 @@ class PregnancyRosterFragment : BaseRosterFragment(R.layout.fragment_pregnancy_r
         }
 
         binding.frag2BtnNext.setOnClickListener {
-            if (pregnancyOutComeList.isNotEmpty()) {
-                navigateToHealthService()
+            if (!isValidRoaster()) {
+                return@setOnClickListener
+            } else if (!isValidOutcome()) {
+                ToastUtil.showShortToast(
+                    requireContext(),
+                    getString(R.string.please_select_pregnancy_outcome)
+                )
+                return@setOnClickListener
+            }
+            if (pregnancyOutComeList.isEmpty()) {
+                ToastUtil.showShortToast(
+                    requireContext(),
+                    getString(R.string.please_add_pregnancy_outcome)
+                )
             } else {
-                ToastUtil.showShortToast(requireContext(), getString(R.string.please_add_pregnancy_outcome))
+                navigateToHealthService()
             }
         }
 
@@ -140,4 +155,17 @@ class PregnancyRosterFragment : BaseRosterFragment(R.layout.fragment_pregnancy_r
         item.isOpen = !item.isOpen
         pregnancyAdapter?.notifyItemChanged(position)
     }
+
+    private fun isValidRoaster(): Boolean {
+        return binding.tilPregnancyCount.validate(
+            binding.tilEtPregnancyCount,
+            R.string.this_field_is_mandatory
+        ) && binding.tilPregnancyOutcomeCount.validate(
+            binding.tilEtPregnancyOutcomeCount,
+            R.string.this_field_is_mandatory
+        )
+    }
+
+    private fun isValidOutcome(): Boolean = binding.rgPregnancyOutcome.checkedRadioButtonId != -1
+
 }

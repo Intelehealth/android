@@ -112,7 +112,7 @@ class HealthServiceRosterFragment : BaseRosterFragment(R.layout.fragment_health_
      * @param item The HealthServiceModel to delete
      */
     override fun onClickDelete(view: View, position: Int, item: HealthServiceModel) {
-        rosterViewModel.deletePregnancyOutcome(position)
+        rosterViewModel.deleteHealthService(position)
         healthServiceList.removeAt(position)
         healthServiceAdapter?.notifyItemRemoved(position)
     }

@@ -80,6 +80,12 @@ class RosterViewModel @Inject constructor(
         _outComeLiveList.postValue(list as ArrayList<PregnancyOutComeModel>?)
 
     }
+    fun deleteHealthService(position: Int) {
+        val list = _healthServiceLiveList.value ?: mutableListOf()
+        list.removeAt(position)
+        _healthServiceLiveList.postValue(list as ArrayList<HealthServiceModel>?)
+
+    }
 
     fun getOutcomeQuestionList(): ArrayList<RoasterViewQuestion> =
         addOutComeUseCase.getOutComeList(existingRoasterQuestionList)

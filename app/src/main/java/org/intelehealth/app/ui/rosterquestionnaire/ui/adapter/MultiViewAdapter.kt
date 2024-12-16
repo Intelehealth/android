@@ -2,10 +2,12 @@ package org.intelehealth.app.ui.rosterquestionnaire.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import org.intelehealth.app.R
 import org.intelehealth.app.databinding.ItemDatePickerViewBinding
+import org.intelehealth.app.databinding.ItemEditTextViewBinding
 import org.intelehealth.app.databinding.ItemSpinnerViewBinding
 import org.intelehealth.app.ui.rosterquestionnaire.model.RoasterViewQuestion
 import org.intelehealth.app.ui.rosterquestionnaire.ui.listeners.MultiViewListener
@@ -34,6 +36,11 @@ class MultiViewAdapter(
             )
 
             RoasterQuestionView.DATE_PICKER.lavout -> ItemDatePickerViewBinding.inflate(
+                LayoutInflater.from(
+                    parent.context
+                ), parent, false
+            )
+            RoasterQuestionView.EDIT_TEXT.lavout -> ItemEditTextViewBinding.inflate(
                 LayoutInflater.from(
                     parent.context
                 ), parent, false
@@ -97,6 +104,16 @@ class MultiViewAdapter(
                     binding.textInputETDob.setOnClickListener {
                         listener.onItemClick(data, bindingAdapterPosition, it)
                     }
+                }
+
+                is ItemEditTextViewBinding ->{
+                    binding.tvEditTextHeader.text = data.question
+                    binding.tilEtAnswer.setText(data.answer ?: "")
+                    binding.tilEtAnswer.inputType = data.inputType
+                     binding.tilEtAnswer.doOnTextChanged { text, start, before, count ->
+                         data.answer = text.toString()
+                         binding.tilAnswer.hideError()
+                     }
                 }
 
             }
