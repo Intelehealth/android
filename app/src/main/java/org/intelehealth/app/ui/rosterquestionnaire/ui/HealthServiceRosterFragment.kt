@@ -9,7 +9,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import org.intelehealth.app.R
 import org.intelehealth.app.databinding.FragmentHealthServiceRosterBinding
 import org.intelehealth.app.ui.rosterquestionnaire.model.HealthServiceModel
-import org.intelehealth.app.ui.rosterquestionnaire.model.RoasterViewQuestion
 import org.intelehealth.app.ui.rosterquestionnaire.ui.adapter.HealthServiceAdapter
 import org.intelehealth.app.ui.rosterquestionnaire.ui.listeners.HealthServiceClickListener
 import org.intelehealth.app.ui.rosterquestionnaire.utilities.RosterQuestionnaireStage
@@ -84,7 +83,7 @@ class HealthServiceRosterFragment : BaseRosterFragment(R.layout.fragment_health_
      * Navigates to the Details screen if there are health services; shows a toast otherwise.
      */
     private fun navigateToDetails() {
-        if (!healthServiceList.isNullOrEmpty()) {
+        if (healthServiceList.isNotEmpty()) {
             HealthServiceRosterFragmentDirections.navigationHealthServiceToDetails(
                 patientUuid, "reg", "false"
             ).apply {
