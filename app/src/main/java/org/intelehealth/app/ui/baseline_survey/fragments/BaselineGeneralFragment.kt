@@ -56,7 +56,6 @@ class BaselineGeneralFragment :
         setupOccupationCheck()
         setupCasteCheck()
         setupEducationCheck()
-        setupEconomicStatusCheck()
         setupPhoneOwnershipCheck()
     }
 
@@ -99,21 +98,6 @@ class BaselineGeneralFragment :
         }
     }
 
-    private fun setupEconomicStatusCheck() {
-        val adapter = ArrayAdapterUtils.getArrayAdapter(requireContext(), R.array.economic)
-        binding.acEconomicStatus.setAdapter(adapter)
-
-        binding.acEconomicStatus.setOnItemClickListener { _, _, i, _ ->
-            binding.tilEconomicStatusOption.hideError()
-            LanguageUtils.getSpecificLocalResource(requireContext(), "en").apply {
-                binding.acEconomicStatus.setText(
-                    this.getStringArray(R.array.economic)[i],
-                    false
-                )
-            }
-        }
-    }
-
     private fun setupPhoneOwnershipCheck() {
         val adapter = ArrayAdapterUtils.getArrayAdapter(requireContext(), R.array.phone_ownership)
         binding.acPhoneOwnership.setAdapter(adapter)
@@ -141,7 +125,6 @@ class BaselineGeneralFragment :
             occupation = binding.acOccupation.text.toString()
             caste = binding.acCaste.text.toString()
             education = binding.acEducation.text.toString()
-            economicStatus = binding.acEconomicStatus.text.toString()
             ayushmanCard = binding.rgACOptions.getSelectedData()
             mgnregaCard = binding.rgMCOptions.getSelectedData()
             bankAccount = binding.rgBAOptions.getSelectedData()
@@ -171,14 +154,6 @@ class BaselineGeneralFragment :
             val bEducation = if (it.education!!.isEnabled && it.education!!.isMandatory) {
                 binding.tilEducationOption.validateDropDowb(binding.acEducation, error)
             } else true
-
-            val bEconomicStatus =
-                if (it.economicStatus!!.isEnabled && it.economicStatus!!.isMandatory) {
-                    binding.tilEconomicStatusOption.validateDropDowb(
-                        binding.acEconomicStatus,
-                        error
-                    )
-                } else true
 
             val bAyushmanCard = if (it.ayushmanCard!!.isEnabled && it.ayushmanCard!!.isMandatory) {
                 binding.rgACOptions.validate()
@@ -210,8 +185,8 @@ class BaselineGeneralFragment :
                     binding.rgMaritalStatusOptions.validate()
                 } else true
 
-            if (bOccupation.and(bCaste).and(bEducation).and(bEconomicStatus)
-                    .and(bAyushmanCard).and(bMgnrega).and(bBankAc).and(phoneOwnership)
+            if (bOccupation.and(bCaste).and(bEducation).and(bAyushmanCard)
+                    .and(bMgnrega).and(bBankAc).and(phoneOwnership)
                     .and(familyWhatsApp).and(maritalStatus)
             ) {
                 block.invoke()

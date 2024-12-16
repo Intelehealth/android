@@ -4,18 +4,12 @@ import android.os.Bundle
 import android.view.View
 import android.widget.CheckBox
 import android.widget.LinearLayout
-import android.widget.RadioButton
-import android.widget.RadioGroup
-import android.widget.RadioGroup.OnCheckedChangeListener
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
-import com.github.ajalt.timberkt.Timber
-import com.google.gson.Gson
 import org.intelehealth.app.R
 import org.intelehealth.app.activities.patientDetailActivity.StaticPatientRegistrationEnabledFieldsHelper
 import org.intelehealth.app.databinding.FragmentBaselineSurveyOtherBinding
-import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.app.ui.baseline_survey.model.Baseline
 import org.intelehealth.app.utilities.ArrayAdapterUtils
 import org.intelehealth.app.utilities.BaselineSurveyStage
@@ -194,7 +188,7 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
             }
         }
         binding.frag3BtnNext.setOnClickListener {
-            validateFields { savePatient() }
+            validateFields { saveSurveyData() }
         }
     }
 
@@ -359,8 +353,12 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
         }
     }
 
-    private fun savePatient() {
+    private fun saveSurveyData() {
+        val isHeadOfHousehold = binding.llHohYes.isVisible
 
+        baselineSurveyData.apply {
+
+        }
     }
 
     private fun navigateToPatientDetailsScreen() {

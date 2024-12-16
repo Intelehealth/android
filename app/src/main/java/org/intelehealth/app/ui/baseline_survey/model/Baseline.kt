@@ -1,10 +1,11 @@
 package org.intelehealth.app.ui.baseline_survey.model
 
+import org.intelehealth.config.room.entity.PatientRegistrationFields
+
 data class Baseline(
     var occupation: String = "",
     var caste: String = "",
     var education: String = "",
-    var economicStatus: String = "",
     var ayushmanCard: String = "",
     var mgnregaCard: String = "",
     var bankAccount: String = "",
@@ -28,5 +29,28 @@ data class Baseline(
     var alcoholHistory: String = "",
     var alcoholRate: String = "",
     var alcoholDuration: String = "",
-    var alcoholFrequency: String = ""
+    var alcoholFrequency: String = "",
+    var headOfHousehold: String = "",
+    var rationCardCheck: String = "",
+    var economicStatus: String = "",
+    var religion: String = "",
+    var totalHouseholdMembers: String = "",
+    var usualHouseholdMembers: String = "",
+    var numberOfSmartphones: String = "",
+    var numberOfFeaturePhones: String = "",
+    var numberOfEarningMembers: String = "",
+    var electricityCheck: String = "",
+    var waterCheck: String = "",
+    var sourceOfWater: String = "",
+    var safeguardWater: String = "",
+    var distanceFromWater: String = "",
+    var toiletFacility: String = "",
+    var houseStructure: String = "",
+    var cultivableLand: String = "",
+    var averageIncome: String = "",
+    var fuelType: String = "",
+    var sourceOfLight: String = "",
+    var handWashPractices: String = "",
+    var ekalServiceCheck: String = "",
+    var relationWithHousehold: String = "",
 )

@@ -167,48 +167,6 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/llEconomicStatus"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/std_12dp"
-                    android:orientation="vertical"
-                    android:visibility="@{generalConfig.economicStatus.enabled ? View.VISIBLE : View.GONE}"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/llEducation">
-
-                    <TextView
-                        android:id="@+id/tv_economic_status_label"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:lineSpacingExtra="3sp"
-                        android:text="@{generalConfig.economicStatus.mandatory ? @string/general_economic_status + ` *` : @string/general_occupation}"
-                        android:textAppearance="@style/blur_txtview"
-                        android:textSize="@null"
-                        tools:text="@string/general_economic_status" />
-
-                    <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
-                        android:id="@+id/til_economic_status_option"
-                        style="@style/AppTheme.OutlineInputBox.DropDown"
-                        config="@{generalConfig.economicStatus}"
-                        editMode="@{baselineEditMode}"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/margin_4"
-                        app:hintEnabled="false">
-
-                        <AutoCompleteTextView
-                            android:id="@+id/ac_economic_status"
-                            style="@style/AppTheme.InputBox"
-                            bindAutoCompleteValue="@{baseline.economicStatus}"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/select_economic_category"
-                            android:inputType="none" />
-                    </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
-                </LinearLayout>
-
-                <LinearLayout
                     android:id="@+id/llAyushmanCard"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -217,7 +175,7 @@
                     android:visibility="@{generalConfig.ayushmanCard.enabled ? View.VISIBLE : View.GONE}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/llEconomicStatus">
+                    app:layout_constraintTop_toBottomOf="@id/llEducation">
 
                     <TextView
                         android:id="@+id/tv_AC_label"
