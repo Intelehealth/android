@@ -169,17 +169,16 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             postalcode, patientcountry, patientstate, patientdistrict, village, address1, addr2View,
             son_daughter_wife, patientoccupation, patientcaste, patienteducation, patienteconomicstatus, patientNationalID,
             guardina_name_tv, guardian_type_tv, contact_type_tv, em_contact_name_tv, em_contact_number_tv,
-            tmh_case_number_tv, request_id_tv, relative_phone_num_tv, discipline_tv, department_tv;
-            guardina_name_tv, guardian_type_tv, contact_type_tv, em_contact_name_tv, em_contact_number_tv,
-            provinceTv, cityTv, registrationAddressOfHfTv,innTv, codeOfHealthFacilityTv, healthFacilityNameTv,
+            tmh_case_number_tv, request_id_tv, relative_phone_num_tv, discipline_tv, department_tv,
+            provinceTv, cityTv, registrationAddressOfHfTv, innTv, codeOfHealthFacilityTv, healthFacilityNameTv,
             codeOfDepartmentTv, departmentTv;
 
     TableRow nameTr, genderTr, dobTr, ageTr, phoneNumTr, guardianTypeTr, guardianNameTr,
             emContactNameTr, emContactTypeTr, emContactNumberTr, postalCodeTr, countryTr,
             stateTr, districtTr, villageCityTr, addressOneTr, addressTwoTr, nidTr, occupationTr, socialCategoryTr,
-            educationTr, economicCategoryTr, tmhCaseNumberTr,requestIdTr,relativePhnNumTr,disciplineTr,departmentTr;
-            educationTr, economicCategoryTr, provinceTr, cityTr, registrationAddressOfHfTr,
-            innTr, codeOfHealthFacilityTr, healthFacilityNameTr, codeOfDepartmentTr, departmentTr;
+            educationTr, economicCategoryTr, tmhCaseNumberTr, requestIdTr, relativePhnNumTr, disciplineTr, departmentTr,
+            provinceTr, cityTr, registrationAddressOfHfTr,
+            innTr, codeOfHealthFacilityTr, healthFacilityNameTr, codeOfDepartmentTr;
 
     SessionManager sessionManager = null;
     //    Patient patientDTO = new Patient();
@@ -882,15 +881,14 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                                 null
                         );
 
-                case PatientRegConfigKeys.REQUEST_ID ->
-                        PatientRegFieldsUtils.INSTANCE.configField(
-                                false,
-                                fields,
-                                requestIdTr,
-                                null,
-                                null,
-                                null
-                        );
+                case PatientRegConfigKeys.REQUEST_ID -> PatientRegFieldsUtils.INSTANCE.configField(
+                        false,
+                        fields,
+                        requestIdTr,
+                        null,
+                        null,
+                        null
+                );
 
                 case PatientRegConfigKeys.RELATIVE_PHONE_NUM ->
                         PatientRegFieldsUtils.INSTANCE.configField(
@@ -902,25 +900,23 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                                 null
                         );
 
-                case PatientRegConfigKeys.DISCIPLINE ->
-                        PatientRegFieldsUtils.INSTANCE.configField(
-                                false,
-                                fields,
-                                disciplineTr,
-                                null,
-                                null,
-                                null
-                        );
+                case PatientRegConfigKeys.DISCIPLINE -> PatientRegFieldsUtils.INSTANCE.configField(
+                        false,
+                        fields,
+                        disciplineTr,
+                        null,
+                        null,
+                        null
+                );
 
-                case PatientRegConfigKeys.DEPARTMENT ->
-                        PatientRegFieldsUtils.INSTANCE.configField(
-                                false,
-                                fields,
-                                departmentTr,
-                                null,
-                                null,
-                                null
-                        );
+                case PatientRegConfigKeys.DEPARTMENT -> PatientRegFieldsUtils.INSTANCE.configField(
+                        false,
+                        fields,
+                        departmentTr,
+                        null,
+                        null,
+                        null
+                );
 
                 case PatientRegConfigKeys.PROVINCES -> PatientRegFieldsUtils.INSTANCE.configField(
                         false,
@@ -950,15 +946,14 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                                 null
                         );
 
-                case PatientRegConfigKeys.INN ->
-                        PatientRegFieldsUtils.INSTANCE.configField(
-                                false,
-                                fields,
-                                innTr,
-                                null,
-                                null,
-                                null
-                        );
+                case PatientRegConfigKeys.INN -> PatientRegFieldsUtils.INSTANCE.configField(
+                        false,
+                        fields,
+                        innTr,
+                        null,
+                        null,
+                        null
+                );
 
                 case PatientRegConfigKeys.CODE_OF_HEALTHY_FACILITY ->
                         PatientRegFieldsUtils.INSTANCE.configField(
@@ -990,15 +985,6 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                                 null
                         );
 
-                case PatientRegConfigKeys.DEPARTMENT ->
-                        PatientRegFieldsUtils.INSTANCE.configField(
-                                false,
-                                fields,
-                                departmentTr,
-                                null,
-                                null,
-                                null
-                        );
             }
         }
     }

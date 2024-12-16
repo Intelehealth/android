@@ -22,5 +22,4 @@ class OtherInfoConfig {
     var codeOfHealthyFacility: PatientRegistrationFields? = null
     var healthFacilityName: PatientRegistrationFields? = null
     var codeOfDepartment: PatientRegistrationFields? = null
-    var department: PatientRegistrationFields? = null
 }

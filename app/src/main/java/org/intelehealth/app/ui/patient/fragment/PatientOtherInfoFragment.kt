@@ -141,13 +141,11 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
         binding.textInputLayDiscipline.hideErrorOnTextChang(binding.textInputDiscipline)
         binding.textInputLayDepartment.hideErrorOnTextChang(binding.textInputDepartment)
         binding.textInputLayRelativePhoneNumber.hideDigitErrorOnTextChang(
-            binding.textInputRelativePhoneNumber,
-            10
+            binding.textInputRelativePhoneNumber, 10
         )
         binding.textInputLayInn.hideErrorOnTextChang(binding.textInputInn)
         binding.textInputLayCodeOfHealthyFacility.hideErrorOnTextChang(binding.textInputCodeOfHealthyFacility)
         binding.textInputLayCodeOfDepartment.hideErrorOnTextChang(binding.textInputCodeOfDepartment)
-        binding.textInputLayDepartment.hideErrorOnTextChang(binding.textInputDepartment)
     }
 
     private fun setupEducations() {
@@ -194,9 +192,10 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
                 binding.textInputLayInn.validate(binding.textInputInn, error)
             } else true
 
-            val bCodeOfHealthyFacility = if (it.codeOfHealthyFacility!!.isEnabled && it.codeOfHealthyFacility!!.isMandatory) {
-                binding.textInputLayCodeOfHealthyFacility.validate(binding.textInputCodeOfHealthyFacility, error)
-            } else true
+            val bCodeOfHealthyFacility =
+                if (it.codeOfHealthyFacility!!.isEnabled && it.codeOfHealthyFacility!!.isMandatory) {
+                    binding.textInputLayCodeOfHealthyFacility.validate(binding.textInputCodeOfHealthyFacility, error)
+                } else true
 
             val bCodeOfDepartment = if (it.codeOfDepartment!!.isEnabled && it.codeOfDepartment!!.isMandatory) {
                 binding.textInputLayCodeOfDepartment.validate(binding.textInputCodeOfDepartment, error)
@@ -206,94 +205,65 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
                 binding.textInputLayDepartment.validate(binding.textInputDepartment, error)
             } else true
 
-            val bHealthFacilityName =
-                if (it.healthFacilityName!!.isEnabled && it.healthFacilityName!!.isMandatory) {
-                    binding.textInputLayHealthFacilityName.validateDropDowb(
-                        binding.autoCompleteHealthFacilityName,
-                        error
-                    )
-                } else true
-
-
-            val bSocialCategory =
-                if (it.socialCategory!!.isEnabled && it.socialCategory!!.isMandatory) {
-                    binding.textInputLaySocialCategory.validateDropDowb(
-                        binding.autoCompleteSocialCategory,
-                        error
-                    )
-                } else true
-
-            val bEducation = if (it.education!!.isEnabled && it.education!!.isMandatory) {
-                binding.textInputLayEducation.validateDropDowb(
-                    binding.autoCompleteEducation,
-                    error
+            val bHealthFacilityName = if (it.healthFacilityName!!.isEnabled && it.healthFacilityName!!.isMandatory) {
+                binding.textInputLayHealthFacilityName.validateDropDowb(
+                    binding.autoCompleteHealthFacilityName, error
                 )
             } else true
 
-            val bEconomic =
-                if (it.economicCategory!!.isEnabled && it.economicCategory!!.isMandatory) {
-                    binding.textInputLayEconomicCategory.validateDropDowb(
-                        binding.autoCompleteEconomicCategory,
-                        error
+
+            val bSocialCategory = if (it.socialCategory!!.isEnabled && it.socialCategory!!.isMandatory) {
+                binding.textInputLaySocialCategory.validateDropDowb(
+                    binding.autoCompleteSocialCategory, error
+                )
+            } else true
+
+            val bEducation = if (it.education!!.isEnabled && it.education!!.isMandatory) {
+                binding.textInputLayEducation.validateDropDowb(
+                    binding.autoCompleteEducation, error
+                )
+            } else true
+
+            val bEconomic = if (it.economicCategory!!.isEnabled && it.economicCategory!!.isMandatory) {
+                binding.textInputLayEconomicCategory.validateDropDowb(
+                    binding.autoCompleteEconomicCategory, error
+                )
+            } else true
+
+            val tmhCaseNumber = if (it.tmhCaseNumber!!.isEnabled && it.tmhCaseNumber!!.isMandatory) {
+                binding.textInputLayTmhCaseNumber.validate(
+                    binding.textInputTmhCaseNumber, error
+                )
+            } else true
+
+            val requestId = if (it.requestId!!.isEnabled && it.requestId!!.isMandatory) {
+                binding.textInputLayRequestId.validate(
+                    binding.textInputRequestId, error
+                )
+            } else true
+
+            val discipline = if (it.discipline!!.isEnabled && it.discipline!!.isMandatory) {
+                binding.textInputLayDiscipline.validate(
+                    binding.textInputDiscipline, error
+                )
+            } else true
+
+            val relativePhoneNumber = if (it.relativePhoneNumber!!.isEnabled && it.relativePhoneNumber!!.isMandatory) {
+                binding.textInputLayRelativePhoneNumber.validate(
+                    binding.textInputRelativePhoneNumber, error
+                ).and(
+                    binding.textInputLayRelativePhoneNumber.validateDigit(
+                        binding.textInputRelativePhoneNumber, R.string.enter_10_digits, 10
                     )
-                } else true
-
-            val tmhCaseNumber =
-                if (it.tmhCaseNumber!!.isEnabled && it.tmhCaseNumber!!.isMandatory) {
-                    binding.textInputLayTmhCaseNumber.validate(
-                        binding.textInputTmhCaseNumber,
-                        error
-                    )
-                } else true
-
-            val requestId =
-                if (it.requestId!!.isEnabled && it.requestId!!.isMandatory) {
-                    binding.textInputLayRequestId.validate(
-                        binding.textInputRequestId,
-                        error
-                    )
-                } else true
-
-            val discipline =
-                if (it.discipline!!.isEnabled && it.discipline!!.isMandatory) {
-                    binding.textInputLayDiscipline.validate(
-                        binding.textInputDiscipline,
-                        error
-                    )
-                } else true
-
-            val department =
-                if (it.department!!.isEnabled && it.department!!.isMandatory) {
-                    binding.textInputLayDepartment.validate(
-                        binding.textInputDepartment,
-                        error
-                    )
-                } else true
-
-            val relativePhoneNumber =
-                if (it.relativePhoneNumber!!.isEnabled && it.relativePhoneNumber!!.isMandatory) {
-                    binding.textInputLayRelativePhoneNumber.validate(
-                        binding.textInputRelativePhoneNumber,
-                        error
-                    ).and(
-                        binding.textInputLayRelativePhoneNumber.validateDigit(
-                            binding.textInputRelativePhoneNumber,
-                            R.string.enter_10_digits,
-                            10
-                        )
-                    )
+                )
 
 
-                } else true
+            } else true
 
 
-            if (bOccuptions.and(bSocialCategory).and(bEducation)
-                    .and(bEconomic).and(bNationalId).and(bOccuptions)
-                    .and(tmhCaseNumber).and(requestId).and(discipline)
-                    .and(department).and(relativePhoneNumber)
-                    .and(bInn).and(bCodeOfHealthyFacility)
-                    .and(bHealthFacilityName).and(bCodeOfDepartment)
-                    .and(bDepartment)
+            if (bOccuptions.and(bSocialCategory).and(bEducation).and(bEconomic).and(bNationalId).and(bOccuptions)
+                    .and(tmhCaseNumber).and(requestId).and(discipline).and(relativePhoneNumber).and(bInn)
+                    .and(bCodeOfHealthyFacility).and(bHealthFacilityName).and(bCodeOfDepartment).and(bDepartment)
             ) block.invoke()
         }
     }

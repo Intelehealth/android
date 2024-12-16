@@ -19,16 +19,7 @@
     <string name="relapse">Relapse</string>
     <string name="_relapse">%1$d/%2$d Relapse</string>
     <string name="ui2_relapse_summary_title">%1$d/%2$d Relapse summary</string>
-    <string name="tmh_case_number">TMH Case Number</string>
-    <string name="enter_tmh_case_number">Enter TMH Case Number</string>
-    <string name="request_id">Request ID</string>
-    <string name="discipline">Discipline (Specialty)</string>
 
-    <string name="enter_request_id">Enter Request ID</string>
-    <string name="enter_discipline">Enter Discipline</string>
-    <string name="department">Department</string>
-    <string name="enter_department">Enter Department</string>
-    <string name="relative_phone_number">Relative Phone Number</string>
 
 <!--    <string name="visit_left_action_btn_label">@string/preview</string>-->
 <!--    <string name="visit_right_action_btn_label">@string/save_visit_button</string>-->

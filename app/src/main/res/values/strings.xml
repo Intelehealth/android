@@ -1082,4 +1082,32 @@
     <string name="select_city">Select City</string>
     <string name="registration_address_of_health_facility">Registration Address of Health Facility</string>
     <string name="enter_registration_address">Enter Registration Address</string>
+
+    <!-- KCDO Strings start  -->
+    <string name="relapse_info">Relapse Info</string>
+    <string name="relapse">Relapse</string>
+    <string name="_relapse">%1$d/%2$d Relapse</string>
+    <string name="ui2_relapse_summary_title">%1$d/%2$d Relapse summary</string>
+
+    <string name="tmh_case_number">TMH Case Number</string>
+    <string name="enter_tmh_case_number">Enter TMH Case Number</string>
+    <string name="request_id">Request ID</string>
+    <string name="discipline">Discipline (Specialty)</string>
+
+    <string name="enter_request_id">Enter Request ID</string>
+    <string name="enter_discipline">Enter Discipline</string>
+    <string name="department">Department</string>
+    <string name="enter_department">Enter Department</string>
+    <string name="relative_phone_number">Relative Phone Number</string>
+    <!-- KCDO Strings end   -->
+
+    <!-- UNFPA Strings start  -->
+    <string name="inn">INN</string>
+    <string name="enter_inn">Enter INN</string>
+    <string name="code_of_the_health_facility">Code of the Health Facility</string>
+    <string name="enter_code">Enter Code</string>
+    <string name="enter_name">Enter Name</string>
+    <string name="health_facility_name">Health facility name</string>
+    <string name="code_of_the_department">Code of the Department</string>
+    <!-- UNFPA Strings end  -->
 </resources>

@@ -79,16 +79,14 @@ public class PatientAttributesDTO implements Serializable {
         REQUEST_ID("Request ID"),
         RELATIVE_PHONE_NUMBER("Relative Phone Number"),
         DISCIPLINE("Discipline"),
-        DEPARTMENT("Department");
-        CREATED_DATE("createdDate"),
+        DEPARTMENT("Department"),
         PROVINCES("Provinces"),
         CITIES("Cities"),
         REGISTRATION_ADDRESS_OF_HF("Registration address of health facility"),
         INN("INN"),
         CODE_OF_HEALTH_FACILITY("Code of the Health Facility"),
         HEALTH_FACILITY_NAME("Health facility name"),
-        CODE_OF_DEPARTMENT("Code of the Department"),
-        DEPARTMENT("Department");
+        CODE_OF_DEPARTMENT("Code of the Department");
 
         public final String value;
 

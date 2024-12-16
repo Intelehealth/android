@@ -133,9 +133,9 @@ public class PatientDTO implements Serializable {
         return department;
     }
 
-    public void setDepartment(String department) {
-        this.department = department;
-    }
+//    public void setDepartment(String department) {
+//        this.department = department;
+//    }
 
     public String getPatientImageFromDownload() {
         return patientImageFromDownload;
@@ -174,7 +174,6 @@ public class PatientDTO implements Serializable {
     private String codeOfHealthFacility;
     private String healthFacilityName;
     private String codeOfDepartment;
-    private String department;
 
     public String getProvince() {
         return province;
@@ -216,9 +215,9 @@ public class PatientDTO implements Serializable {
         this.codeOfDepartment = codeOfDepartment;
     }
 
-    public String getDepartment() {
-        return department;
-    }
+//    public String getDepartment() {
+//        return department;
+//    }
 
     public void setDepartment(String department) {
         this.department = department;
