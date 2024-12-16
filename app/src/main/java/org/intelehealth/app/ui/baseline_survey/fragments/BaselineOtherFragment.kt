@@ -4,6 +4,9 @@ import android.os.Bundle
 import android.view.View
 import android.widget.CheckBox
 import android.widget.LinearLayout
+import android.widget.RadioButton
+import android.widget.RadioGroup
+import android.widget.RadioGroup.OnCheckedChangeListener
 import androidx.navigation.fragment.findNavController
 import com.github.ajalt.timberkt.Timber
 import com.google.gson.Gson
@@ -36,7 +39,7 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
     override fun onBaselineDataLoaded(baselineData: Baseline) {
         super.onBaselineDataLoaded(baselineData)
         fetchOtherBaselineConfig()
-        binding.patient = patient
+        binding.baseline = baselineData
         binding.baselineEditMode = baselineSurveyViewModel.baselineEditMode
     }
 
@@ -57,15 +60,6 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
         setupFuelType()
         setupHandWashPractice()
         setupWaterSafeguarding()
-        setupHouseHead()
-        setupRationCard()
-        setupRelationWithHOH()
-        setupElectricityCheck()
-        setupWaterCheck()
-        setupDistanceFromWater()
-        setupAverageIncome()
-        setupEkalServiceCheck()
-        setupEkalServiceCheck()
         setupEconomicStatus()
         setupReligion()
         setupNumberOfToiletFacilities()
@@ -75,6 +69,17 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
 
     private fun setupHohCheck() {
         binding.rgHOHOptions.setOnCheckedChangeListener { _, checkedId ->
+            when (checkedId) {
+                binding.radioHOHYes.id -> {
+                    binding.llHohYes.visibility = View.VISIBLE
+                    binding.llRelationWithHOH.visibility = View.GONE
+                }
+
+                else -> {
+                    binding.llHohYes.visibility = View.GONE
+                    binding.llRelationWithHOH.visibility = View.VISIBLE
+                }
+            }
         }
     }
 
@@ -179,185 +184,6 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
             binding.tilCultivableLandOption.hideError()
             LanguageUtils.getSpecificLocalResource(requireContext(), "en").apply {
                 binding.acCultivableLand.setText(this.getStringArray(R.array.hb_check)[i], false)
-            }
-        }
-    }
-
-
-    private fun setupHouseHead() {
-        binding.rgHOHOptions.setOnCheckedChangeListener { group, checkedId ->
-            when (checkedId) {
-                R.id.radioHOHYes -> {
-                    binding.rgHOHOptions.check(R.id.radioHOHYes)
-                }
-
-                R.id.radioHOHNo -> {
-                    binding.rgHOHOptions.check(R.id.radioHOHNo)
-                }
-            }
-        }
-    }
-
-    private fun setupRationCard() {
-        binding.rgRationOptions.setOnCheckedChangeListener { group, checkedId ->
-            when (checkedId) {
-                R.id.radioRationYes -> {
-                    binding.rgHOHOptions.check(R.id.radioRationYes)
-                }
-
-                R.id.radioRationNo -> {
-                    binding.rgHOHOptions.check(R.id.radioRationNo)
-                }
-
-                R.id.radioRationNotSure -> {
-                    binding.rgHOHOptions.check(R.id.radioRationNotSure)
-                }
-            }
-        }
-    }
-
-    private fun setupRelationWithHOH() {
-        binding.rgRelationWithHohOptions.setOnCheckedChangeListener { group, checkedId ->
-            when (checkedId) {
-                R.id.radioSpouse -> {
-                    binding.rgHOHOptions.check(R.id.radioSpouse)
-                }
-
-                R.id.radioGrandchild -> {
-                    binding.rgHOHOptions.check(R.id.radioGrandchild)
-                }
-
-                R.id.radioFatherMother -> {
-                    binding.rgHOHOptions.check(R.id.radioFatherMother)
-                }
-
-                R.id.radioFatherMotherInLaw -> {
-                    binding.rgHOHOptions.check(R.id.radioFatherMotherInLaw)
-                }
-
-                R.id.radioBrotherSister -> {
-                    binding.rgHOHOptions.check(R.id.radioBrotherSister)
-                }
-
-                R.id.radioBrotherSisterInLaw -> {
-                    binding.rgHOHOptions.check(R.id.radioBrotherSisterInLaw)
-                }
-
-                R.id.radioNieceNephew -> {
-                    binding.rgHOHOptions.check(R.id.radioNieceNephew)
-                }
-
-                R.id.radioGrandparent -> {
-                    binding.rgHOHOptions.check(R.id.radioGrandparent)
-                }
-
-                R.id.radioOther -> {
-                    binding.rgHOHOptions.check(R.id.radioOther)
-                }
-
-                R.id.radioAdopted -> {
-                    binding.rgHOHOptions.check(R.id.radioAdopted)
-                }
-
-                R.id.radioServant -> {
-                    binding.rgHOHOptions.check(R.id.radioServant)
-                }
-
-                R.id.radioOtherNotRelated -> {
-                    binding.rgHOHOptions.check(R.id.radioOtherNotRelated)
-                }
-
-                R.id.radioOtherSpecify -> {
-                    binding.rgHOHOptions.check(R.id.radioOtherSpecify)
-                }
-
-                R.id.radioNotStated -> {
-                    binding.rgHOHOptions.check(R.id.radioNotStated)
-                }
-
-
-            }
-        }
-    }
-
-    private fun setupElectricityCheck() {
-        binding.rgElectricityOptions.setOnCheckedChangeListener { group, checkedId ->
-            when (checkedId) {
-                R.id.radioElectricityYes -> {
-                    binding.rgHOHOptions.check(R.id.radioElectricityYes)
-                }
-
-                R.id.radioElectricityNo -> {
-                    binding.rgHOHOptions.check(R.id.radioElectricityNo)
-                }
-            }
-        }
-    }
-
-    private fun setupWaterCheck() {
-        binding.rgWaterCheckOptions.setOnCheckedChangeListener { group, checkedId ->
-            when (checkedId) {
-                R.id.radioWaterCheckYes -> {
-                    binding.rgHOHOptions.check(R.id.radioWaterCheckYes)
-                }
-
-                R.id.radioWaterCheckNo -> {
-                    binding.rgHOHOptions.check(R.id.radioWaterCheckNo)
-                }
-            }
-        }
-    }
-
-    private fun setupDistanceFromWater() {
-        binding.rgDistanceFromWaterOptions.setOnCheckedChangeListener { group, checkedId ->
-            when (checkedId) {
-                R.id.radioDistanceFromWaterYes -> {
-                    binding.rgHOHOptions.check(R.id.radioDistanceFromWaterYes)
-                }
-
-                R.id.radioDistanceFromWaterNo -> {
-                    binding.rgHOHOptions.check(R.id.radioDistanceFromWaterNo)
-                }
-            }
-        }
-    }
-
-    private fun setupAverageIncome() {
-        binding.rgAverageIncomeOptions.setOnCheckedChangeListener { group, checkedId ->
-            when (checkedId) {
-                R.id.radioAverageIncome1 -> {
-                    binding.rgHOHOptions.check(R.id.radioAverageIncome1)
-                }
-
-                R.id.radioAverageIncome2 -> {
-                    binding.rgHOHOptions.check(R.id.radioAverageIncome2)
-                }
-
-                R.id.radioAverageIncome3 -> {
-                    binding.rgHOHOptions.check(R.id.radioAverageIncome3)
-                }
-
-                R.id.radioAverageIncome4 -> {
-                    binding.rgHOHOptions.check(R.id.radioAverageIncome4)
-                }
-
-                R.id.radioAverageIncome5 -> {
-                    binding.rgHOHOptions.check(R.id.radioAverageIncome5)
-                }
-            }
-        }
-    }
-
-    private fun setupEkalServiceCheck() {
-        binding.rgEkalServiceCheckOptions.setOnCheckedChangeListener { group, checkedId ->
-            when (checkedId) {
-                R.id.radioEkalServiceYes -> {
-                    binding.rgHOHOptions.check(R.id.radioEkalServiceYes)
-                }
-
-                R.id.radioEkalServiceNo -> {
-                    binding.rgHOHOptions.check(R.id.radioEkalServiceNo)
-                }
             }
         }
     }

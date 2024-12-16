@@ -9,16 +9,16 @@
         <import type="android.view.View" />
 
         <variable
-            name="patient"
-            type="org.intelehealth.app.models.dto.PatientDTO" />
-
-        <variable
             name="otherConfig"
             type="org.intelehealth.app.ui.baseline_survey.config.OtherBaselineConfig" />
 
         <variable
             name="baselineEditMode"
             type="Boolean" />
+
+        <variable
+            name="baseline"
+            type="org.intelehealth.app.ui.baseline_survey.model.Baseline" />
 
     </data>
 
@@ -193,6 +193,7 @@
                                 android:layout_height="wrap_content"
                                 android:inputType="none" />
                         </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
+
                     </LinearLayout>
 
                     <LinearLayout
