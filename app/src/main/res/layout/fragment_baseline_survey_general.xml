@@ -74,11 +74,11 @@
                         <AutoCompleteTextView
                             android:id="@+id/ac_occupation"
                             style="@style/AppTheme.InputBox"
+                            bindAutoCompleteValue="@{baseline.occupation}"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/select_occupation_txt"
-                            android:inputType="none"
-                            android:text="@{baseline.occupation}" />
+                            android:inputType="none" />
                     </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
                 </LinearLayout>
 
@@ -116,11 +116,11 @@
                         <AutoCompleteTextView
                             android:id="@+id/ac_caste"
                             style="@style/AppTheme.InputBox"
+                            bindAutoCompleteValue="@{baseline.caste}"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/select_caste"
-                            android:inputType="none"
-                            android:text="@{baseline.caste}" />
+                            android:inputType="none" />
                     </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
                 </LinearLayout>
 
@@ -158,11 +158,11 @@
                         <AutoCompleteTextView
                             android:id="@+id/ac_education"
                             style="@style/AppTheme.InputBox"
+                            bindAutoCompleteValue="@{baseline.education}"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/select_education"
-                            android:inputType="none"
-                            android:text="@{baseline.education}" />
+                            android:inputType="none" />
                     </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
                 </LinearLayout>
 
@@ -200,11 +200,11 @@
                         <AutoCompleteTextView
                             android:id="@+id/ac_economic_status"
                             style="@style/AppTheme.InputBox"
+                            bindAutoCompleteValue="@{baseline.economicStatus}"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/select_economic_category"
-                            android:inputType="none"
-                            android:text="@{baseline.economicStatus}" />
+                            android:inputType="none" />
                     </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
                 </LinearLayout>
 
@@ -425,11 +425,11 @@
                         <AutoCompleteTextView
                             android:id="@+id/ac_phone_ownership"
                             style="@style/AppTheme.InputBox"
+                            bindAutoCompleteValue="@{baseline.phoneOwnership}"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/select_phone_ownership"
-                            android:inputType="none"
-                            android:text="@{baseline.phoneOwnership}" />
+                            android:inputType="none" />
                     </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
                 </LinearLayout>
 

@@ -1,6 +1,7 @@
 package org.intelehealth.app.ui.binding
 
 import android.view.View
+import android.widget.AutoCompleteTextView
 import android.widget.NumberPicker
 import android.widget.RadioButton
 import android.widget.RadioGroup
@@ -61,12 +62,21 @@ fun maintainDynamicMargin(view: View?, config: PatientRegistrationFields?, margi
 }
 
 @BindingAdapter("radioButtonValue")
-fun bindRadioButtonValue(radioGroup: RadioGroup, data: String) {
-    radioGroup.forEach {
-        if (it is RadioButton && it.text.toString() == data) {
-            it.isChecked = true
-            return@forEach
+fun bindRadioButtonValue(radioGroup: RadioGroup?, data: String?) {
+    data?.let {
+        radioGroup?.forEach {
+            if (it is RadioButton && it.text.toString() == data) {
+                it.isChecked = true
+                return@forEach
+            }
         }
+    }
+}
+
+@BindingAdapter("bindAutoCompleteValue")
+fun bindAutoCompleteValue(autoCompleteTextView: AutoCompleteTextView?, data: String?) {
+    data?.let {
+        autoCompleteTextView?.setText(data, false)
     }
 }
 
