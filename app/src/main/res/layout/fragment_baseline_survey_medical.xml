@@ -76,11 +76,11 @@
                         <AutoCompleteTextView
                             android:id="@+id/ac_hb_check"
                             style="@style/AppTheme.InputBox"
+                            bindAutoCompleteValue="@{baseline.hbCheck}"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/select_your_choice"
-                            android:inputType="none"
-                            android:text="@{baseline.hbCheck}" />
+                            android:inputType="none" />
 
                     </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
 
@@ -120,11 +120,11 @@
                         <AutoCompleteTextView
                             android:id="@+id/ac_bp_check"
                             style="@style/AppTheme.InputBox"
+                            bindAutoCompleteValue="@{baseline.bpCheck}"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/select_your_choice"
-                            android:inputType="none"
-                            android:text="@{baseline.bpCheck}" />
+                            android:inputType="none" />
                     </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
                 </LinearLayout>
 
@@ -162,11 +162,11 @@
                         <AutoCompleteTextView
                             android:id="@+id/ac_sugar_check"
                             style="@style/AppTheme.InputBox"
+                            bindAutoCompleteValue="@{baseline.sugarCheck}"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/select_your_choice"
-                            android:inputType="none"
-                            android:text="@{baseline.sugarCheck}" />
+                            android:inputType="none" />
                     </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
                 </LinearLayout>
 
