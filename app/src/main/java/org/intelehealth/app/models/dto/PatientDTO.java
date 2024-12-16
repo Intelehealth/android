@@ -166,6 +166,80 @@ public class PatientDTO implements Serializable {
         this.genderAgeString = genderAgeString;
     }
 
+    //for unfpa
+    private String province;
+    private String city;
+    private String registrationAddressOfHf;
+    private String inn;
+    private String codeOfHealthFacility;
+    private String healthFacilityName;
+    private String codeOfDepartment;
+    private String department;
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public String getInn() {
+        return inn;
+    }
+
+    public void setInn(String inn) {
+        this.inn = inn;
+    }
+
+    public String getCodeOfHealthFacility() {
+        return codeOfHealthFacility;
+    }
+
+    public void setCodeOfHealthFacility(String codeOfHealthFacility) {
+        this.codeOfHealthFacility = codeOfHealthFacility;
+    }
+
+    public String getHealthFacilityName() {
+        return healthFacilityName;
+    }
+
+    public void setHealthFacilityName(String healthFacilityName) {
+        this.healthFacilityName = healthFacilityName;
+    }
+
+    public String getCodeOfDepartment() {
+        return codeOfDepartment;
+    }
+
+    public void setCodeOfDepartment(String codeOfDepartment) {
+        this.codeOfDepartment = codeOfDepartment;
+    }
+
+    public String getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(String department) {
+        this.department = department;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getRegistrationAddressOfHf() {
+        return registrationAddressOfHf;
+    }
+
+    public void setRegistrationAddressOfHf(String registrationAddressOfHf) {
+        this.registrationAddressOfHf = registrationAddressOfHf;
+    }
+
     public String getUuid() {
         return uuid;
     }
@@ -497,15 +571,15 @@ public class PatientDTO implements Serializable {
     }
 
     private String splitVillageAndDistrict(int index) {
-       try{
-           if (cityvillage != null && !cityvillage.isEmpty() && cityvillage.contains(":")) {
-               return cityvillage.split(":")[index];
-           }
-           if (index == 1) return cityvillage;
-           else return null;
-       }catch (Exception e){
-           return null;
-       }
+        try {
+            if (cityvillage != null && !cityvillage.isEmpty() && cityvillage.contains(":")) {
+                return cityvillage.split(":")[index];
+            }
+            if (index == 1) return cityvillage;
+            else return null;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override

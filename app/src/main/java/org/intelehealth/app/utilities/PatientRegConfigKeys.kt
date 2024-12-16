@@ -31,6 +31,9 @@ class PatientRegConfigKeys {
         const val VILLAGE_TOWN_CITY = "a_village_town_city"
         const val ADDRESS_1 = "a_corresponding_address_1"
         const val ADDRESS_2 = "a_corresponding_address_2"
+        const val PROVINCES = "a_provinces"
+        const val CITIES = "a_cities"
+        const val REGISTRATION_ADDRESS_OF_HF = "a_registration_address_of_health_facility"
 
         //OTHERS
         const val NATIONAL_ID = "o_national_id"
@@ -44,5 +47,10 @@ class PatientRegConfigKeys {
         const val RELATIVE_PHONE_NUM = "o_relative_phone_number"
         const val DISCIPLINE = "o_discipline"
         const val DEPARTMENT = "o_department"
+
+        const val INN = "o_inn"
+        const val CODE_OF_HEALTHY_FACILITY = "o_code_of_the_health_facility"
+        const val HEALTH_FACILITY_NAME = "o_health_facility_name"
+        const val CODE_OF_DEPARTMENT = "o_code_of_the_department"
     }
 }

@@ -162,6 +162,70 @@ class PatientRepository(
                 )
             )
 
+
+
+            add(
+                createPatientAttribute(
+                    patient.uuid,
+                    PatientAttributesDTO.Column.PROVINCES.value,
+                    patient.province
+                )
+            )
+            add(
+                createPatientAttribute(
+                    patient.uuid,
+                    PatientAttributesDTO.Column.CITIES.value,
+                    patient.city
+                )
+            )
+
+            add(
+                createPatientAttribute(
+                    patient.uuid,
+                    PatientAttributesDTO.Column.REGISTRATION_ADDRESS_OF_HF.value,
+                    patient.registrationAddressOfHf
+                )
+            )
+
+            add(
+                createPatientAttribute(
+                    patient.uuid,
+                    PatientAttributesDTO.Column.INN.value,
+                    patient.inn
+                )
+            )
+
+            add(
+                createPatientAttribute(
+                    patient.uuid,
+                    PatientAttributesDTO.Column.CODE_OF_HEALTH_FACILITY.value,
+                    patient.codeOfHealthFacility
+                )
+            )
+
+            add(
+                createPatientAttribute(
+                    patient.uuid,
+                    PatientAttributesDTO.Column.HEALTH_FACILITY_NAME.value,
+                    patient.healthFacilityName
+                )
+            )
+
+            add(
+                createPatientAttribute(
+                    patient.uuid,
+                    PatientAttributesDTO.Column.CODE_OF_DEPARTMENT.value,
+                    patient.codeOfDepartment
+                )
+            )
+
+            add(
+                createPatientAttribute(
+                    patient.uuid,
+                    PatientAttributesDTO.Column.DEPARTMENT.value,
+                    patient.department
+                )
+            )
         }
 
     private fun createPatientAttribute(

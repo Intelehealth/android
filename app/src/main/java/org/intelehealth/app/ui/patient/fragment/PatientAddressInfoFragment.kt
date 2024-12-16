@@ -1,20 +1,26 @@
 package org.intelehealth.app.ui.patient.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
 import androidx.databinding.OnRebindCallback
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavDirections
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.github.ajalt.timberkt.Timber
 import com.google.gson.Gson
+import kotlinx.coroutines.launch
 import org.intelehealth.app.R
 import org.intelehealth.app.activities.identificationActivity.model.DistData
+import org.intelehealth.app.activities.identificationActivity.model.ProvincesAndCities
 import org.intelehealth.app.activities.identificationActivity.model.StateData
 import org.intelehealth.app.databinding.FragmentPatientAddressInfoBinding
 import org.intelehealth.app.databinding.FragmentPatientOtherInfoBinding
 import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.app.ui.filter.FirstLetterUpperCaseInputFilter
+import org.intelehealth.app.ui.patient.activity.PatientRegistrationActivity
 import org.intelehealth.app.utilities.ArrayAdapterUtils
 import org.intelehealth.app.utilities.LanguageUtils
 import org.intelehealth.app.utilities.PatientRegFieldsUtils
@@ -90,6 +96,7 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
             super.onBound(binding)
             setupCountries()
             setupStates()
+            setupProvinceAndCities()
             applyFilter()
             setInputTextChangListener()
             setClickListener()
@@ -111,6 +118,8 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
             else village
             address1 = binding.textInputAddress1.text?.toString()
             address2 = binding.textInputAddress2.text?.toString()
+            registrationAddressOfHf = binding.textInputRegistrationAddressOfHf.text?.toString()
+
             patientViewModel.updatedPatient(this)
             if (patientViewModel.isEditMode) {
                 saveAndNavigateToDetails()
@@ -152,6 +161,8 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
         binding.textInputLayCityVillage.hideErrorOnTextChang(binding.textInputCityVillage)
         binding.textInputLayAddress1.hideErrorOnTextChang(binding.textInputAddress1)
         binding.textInputLayAddress2.hideErrorOnTextChang(binding.textInputAddress2)
+        binding.textInputLayRegistrationAddressOfHf.hideErrorOnTextChang(binding.textInputRegistrationAddressOfHf)
+
         binding.textInputLayPostalCode.hideDigitErrorOnTextChang(binding.textInputPostalCode, 6)
     }
 
@@ -176,6 +187,53 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
                 val selectedState = list[i]
                 patient.stateprovince = selectedState.state
                 setupDistricts(selectedState)
+            }
+        }
+
+    }
+
+    private fun setupProvinceAndCities() {
+        LanguageUtils.getProvincesAndCities().let {
+            //province
+            binding.textInputLayProvince.tag = it
+            val adapter: ArrayAdapter<String> = ArrayAdapterUtils.getObjectArrayAdapter(
+                requireContext(), it.provinces
+            )
+            binding.autoCompleteProvince.setAdapter(adapter)
+
+            if (patient.province != null && patient.province.isNotEmpty()) {
+                val province = LanguageUtils.getProvince(patient.province)
+                if (province != null) {
+                    binding.autoCompleteProvince.setText(province.toString(), false)
+                }
+            }
+
+            binding.autoCompleteProvince.setOnItemClickListener { adapterView, _, i, _ ->
+                binding.textInputLayProvince.hideError()
+                val provincesAndCities: ProvincesAndCities =
+                    binding.textInputLayProvince.tag as ProvincesAndCities
+                patient.province = provincesAndCities.provinces[i]
+            }
+
+            //cities
+            binding.textInputLayCity.tag = it
+            val cityAdapter: ArrayAdapter<String> = ArrayAdapterUtils.getObjectArrayAdapter(
+                requireContext(), it.cities
+            )
+            binding.autoCompleteCity.setAdapter(cityAdapter)
+
+            if (patient.city != null && patient.city.isNotEmpty()) {
+                val city = LanguageUtils.getCity(patient.city)
+                if (city != null) {
+                    binding.autoCompleteCity.setText(city.toString(), false)
+                }
+            }
+
+            binding.autoCompleteCity.setOnItemClickListener { adapterView, _, i, _ ->
+                binding.textInputLayCity.hideError()
+                val provincesAndCities: ProvincesAndCities =
+                    binding.textInputLayCity.tag as ProvincesAndCities
+                patient.city = provincesAndCities.cities[i]
             }
         }
 
@@ -249,6 +307,28 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
                 )
             } else true
 
+            val bProvince = if (it.province!!.isEnabled && it.province!!.isMandatory) {
+                binding.textInputLayProvince.validateDropDowb(
+                    binding.autoCompleteProvince,
+                    error
+                )
+            } else true
+
+            val bCity = if (it.city!!.isEnabled && it.city!!.isMandatory) {
+                binding.textInputLayCity.validateDropDowb(
+                    binding.autoCompleteCity,
+                    error
+                )
+            } else true
+
+            val bRelativeAddressOfHf =
+                if (it.registrationAddressOfHf!!.isEnabled && it.registrationAddressOfHf!!.isMandatory) {
+                    binding.textInputLayRegistrationAddressOfHf.validate(
+                        binding.textInputRegistrationAddressOfHf,
+                        R.string.error_field_required,
+                    )
+                } else true
+
 
             val bAddress1 = if (it.address1!!.isEnabled && it.address1!!.isMandatory) {
                 binding.textInputLayAddress1.validate(binding.textInputAddress1, error)
@@ -260,7 +340,8 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
 
 
             if (bPostalCode.and(bCountry).and(bState).and(bDistrict).and(bCityVillage)
-                    .and(bAddress1).and(bAddress2)
+                    .and(bAddress1).and(bAddress2).and(bProvince).and(bCity)
+                    .and(bRelativeAddressOfHf)
             ) block.invoke()
         }
     }

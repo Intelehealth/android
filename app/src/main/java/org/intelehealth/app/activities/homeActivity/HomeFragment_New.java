@@ -18,6 +18,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.LocaleList;
 import android.util.DisplayMetrics;
+
+import org.intelehealth.app.BuildConfig;
+import org.intelehealth.app.activities.onboarding.PersonalConsentActivity;
+import org.intelehealth.app.utilities.AddPatientUtils;
+import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -393,10 +398,7 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
         });
 
         addpatient_cardview.setOnClickListener(v -> {
-            Intent intent = new Intent(requireActivity(), PrivacyPolicyActivity_New.class);
-            intent.putExtra("intentType", "navigateFurther");
-            intent.putExtra("add_patient", "add_patient");
-            startActivity(intent);
+            AddPatientUtils.navigate(requireActivity());
         });
     }
 

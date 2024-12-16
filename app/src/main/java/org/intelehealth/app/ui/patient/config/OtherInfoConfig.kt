@@ -18,4 +18,9 @@ class OtherInfoConfig {
     var relativePhoneNumber: PatientRegistrationFields? = null
     var discipline: PatientRegistrationFields? = null
     var department: PatientRegistrationFields? = null
+    var inn: PatientRegistrationFields? = null
+    var codeOfHealthyFacility: PatientRegistrationFields? = null
+    var healthFacilityName: PatientRegistrationFields? = null
+    var codeOfDepartment: PatientRegistrationFields? = null
+    var department: PatientRegistrationFields? = null
 }

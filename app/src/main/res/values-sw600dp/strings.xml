@@ -122,4 +122,10 @@
     <string name="contact_your_admin">Contact your admin</string>
     <string name="sync">Refresh</string>
     <string name="sending_otp">Sending OTP...</string>
+    <string name="province">Province</string>
+    <string name="select_province">Select Province</string>
+    <string name="city">City</string>
+    <string name="select_city">Select City</string>
+    <string name="registration_address_of_health_facility">Registration Address of Health Facility</string>
+    <string name="enter_registration_address">Enter Registration Address</string>
 </resources>

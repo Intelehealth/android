@@ -170,11 +170,16 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             son_daughter_wife, patientoccupation, patientcaste, patienteducation, patienteconomicstatus, patientNationalID,
             guardina_name_tv, guardian_type_tv, contact_type_tv, em_contact_name_tv, em_contact_number_tv,
             tmh_case_number_tv, request_id_tv, relative_phone_num_tv, discipline_tv, department_tv;
+            guardina_name_tv, guardian_type_tv, contact_type_tv, em_contact_name_tv, em_contact_number_tv,
+            provinceTv, cityTv, registrationAddressOfHfTv,innTv, codeOfHealthFacilityTv, healthFacilityNameTv,
+            codeOfDepartmentTv, departmentTv;
 
     TableRow nameTr, genderTr, dobTr, ageTr, phoneNumTr, guardianTypeTr, guardianNameTr,
             emContactNameTr, emContactTypeTr, emContactNumberTr, postalCodeTr, countryTr,
             stateTr, districtTr, villageCityTr, addressOneTr, addressTwoTr, nidTr, occupationTr, socialCategoryTr,
             educationTr, economicCategoryTr, tmhCaseNumberTr,requestIdTr,relativePhnNumTr,disciplineTr,departmentTr;
+            educationTr, economicCategoryTr, provinceTr, cityTr, registrationAddressOfHfTr,
+            innTr, codeOfHealthFacilityTr, healthFacilityNameTr, codeOfDepartmentTr, departmentTr;
 
     SessionManager sessionManager = null;
     //    Patient patientDTO = new Patient();
@@ -562,6 +567,16 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         discipline_tv = findViewById(R.id.discipline);
         department_tv = findViewById(R.id.department);
 
+        provinceTv = findViewById(R.id.province);
+        cityTv = findViewById(R.id.city);
+        registrationAddressOfHfTv = findViewById(R.id.registrationAddressOfHf);
+
+        innTv = findViewById(R.id.inn);
+        codeOfHealthFacilityTv = findViewById(R.id.code_of_healthy_facility);
+        healthFacilityNameTv = findViewById(R.id.health_facility_name);
+        codeOfDepartmentTv = findViewById(R.id.code_of_department);
+        departmentTv = findViewById(R.id.department);
+
         nameTr = findViewById(R.id.name_tr);
         genderTr = findViewById(R.id.gender_tr);
         dobTr = findViewById(R.id.dob_tr);
@@ -594,6 +609,12 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         disciplineTr = findViewById(R.id.discipline_tr);
         departmentTr = findViewById(R.id.department_tr);
 
+        innTr = findViewById(R.id.inn_tr);
+        codeOfHealthFacilityTr = findViewById(R.id.code_of_healthy_facility_tr);
+        healthFacilityNameTr = findViewById(R.id.health_facility_name_tr);
+        codeOfDepartmentTr = findViewById(R.id.code_of_department_tr);
+        departmentTr = findViewById(R.id.department_tr);
+
         postalcode = findViewById(R.id.postalcode);
         patientcountry = findViewById(R.id.country);
         patientstate = findViewById(R.id.state);
@@ -601,6 +622,10 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         village = findViewById(R.id.village);
         address1 = findViewById(R.id.address1);
         addr2View = findViewById(R.id.addr2View);
+
+        provinceTr = findViewById(R.id.province_tr);
+        cityTr = findViewById(R.id.city_tr);
+        registrationAddressOfHfTr = findViewById(R.id.registrationAddressOfHf_tr);
 
         son_daughter_wife = findViewById(R.id.son_daughter_wife);
         patientNationalID = findViewById(R.id.national_ID);
@@ -882,6 +907,84 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                                 false,
                                 fields,
                                 disciplineTr,
+                                null,
+                                null,
+                                null
+                        );
+
+                case PatientRegConfigKeys.DEPARTMENT ->
+                        PatientRegFieldsUtils.INSTANCE.configField(
+                                false,
+                                fields,
+                                departmentTr,
+                                null,
+                                null,
+                                null
+                        );
+
+                case PatientRegConfigKeys.PROVINCES -> PatientRegFieldsUtils.INSTANCE.configField(
+                        false,
+                        fields,
+                        provinceTr,
+                        null,
+                        null,
+                        null
+                );
+
+                case PatientRegConfigKeys.CITIES -> PatientRegFieldsUtils.INSTANCE.configField(
+                        false,
+                        fields,
+                        cityTr,
+                        null,
+                        null,
+                        null
+                );
+
+                case PatientRegConfigKeys.REGISTRATION_ADDRESS_OF_HF ->
+                        PatientRegFieldsUtils.INSTANCE.configField(
+                                false,
+                                fields,
+                                registrationAddressOfHfTr,
+                                null,
+                                null,
+                                null
+                        );
+
+                case PatientRegConfigKeys.INN ->
+                        PatientRegFieldsUtils.INSTANCE.configField(
+                                false,
+                                fields,
+                                innTr,
+                                null,
+                                null,
+                                null
+                        );
+
+                case PatientRegConfigKeys.CODE_OF_HEALTHY_FACILITY ->
+                        PatientRegFieldsUtils.INSTANCE.configField(
+                                false,
+                                fields,
+                                codeOfHealthFacilityTr,
+                                null,
+                                null,
+                                null
+                        );
+
+                case PatientRegConfigKeys.HEALTH_FACILITY_NAME ->
+                        PatientRegFieldsUtils.INSTANCE.configField(
+                                false,
+                                fields,
+                                healthFacilityNameTr,
+                                null,
+                                null,
+                                null
+                        );
+
+                case PatientRegConfigKeys.CODE_OF_DEPARTMENT ->
+                        PatientRegFieldsUtils.INSTANCE.configField(
+                                false,
+                                fields,
+                                codeOfDepartmentTr,
                                 null,
                                 null,
                                 null
@@ -1233,6 +1336,38 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
                 if (name.equalsIgnoreCase(PatientAttributesDTO.Column.DISCIPLINE.value)) {
                     patientDTO.setDiscipline(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+
+                if (name.equalsIgnoreCase(PatientAttributesDTO.Column.DEPARTMENT.value)) {
+                    patientDTO.setDepartment(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+
+                if (name.equalsIgnoreCase(PatientAttributesDTO.Column.PROVINCES.value)) {
+                    patientDTO.setProvince(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+
+                if (name.equalsIgnoreCase(PatientAttributesDTO.Column.CITIES.value)) {
+                    patientDTO.setCity(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+
+                if (name.equalsIgnoreCase(PatientAttributesDTO.Column.REGISTRATION_ADDRESS_OF_HF.value)) {
+                    patientDTO.setRegistrationAddressOfHf(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+
+                if (name.equalsIgnoreCase(PatientAttributesDTO.Column.INN.value)) {
+                    patientDTO.setInn(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+
+                if (name.equalsIgnoreCase(PatientAttributesDTO.Column.CODE_OF_HEALTH_FACILITY.value)) {
+                    patientDTO.setCodeOfHealthFacility(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+
+                if (name.equalsIgnoreCase(PatientAttributesDTO.Column.HEALTH_FACILITY_NAME.value)) {
+                    patientDTO.setHealthFacilityName(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+
+                if (name.equalsIgnoreCase(PatientAttributesDTO.Column.CODE_OF_DEPARTMENT.value)) {
+                    patientDTO.setCodeOfDepartment(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
 
                 if (name.equalsIgnoreCase(PatientAttributesDTO.Column.DEPARTMENT.value)) {
@@ -1938,6 +2073,78 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             department_tv.setText(patientDTO.getDepartment());
         } else {
             department_tv.setText(getString(R.string.not_provided));
+        }
+
+        //province
+        if (patientDTO.getProvince() != null && !patientDTO.getProvince().
+
+                equals("")) {
+            provinceTv.setText(patientDTO.getProvince());
+        } else {
+            provinceTv.setText(getString(R.string.not_provided));
+        }
+
+        //city
+        if (patientDTO.getCity() != null && !patientDTO.getCity().
+
+                equals("")) {
+            cityTv.setText(patientDTO.getCity());
+        } else {
+            cityTv.setText(getString(R.string.not_provided));
+        }
+
+        //registration address
+        if (patientDTO.getRegistrationAddressOfHf() != null && !patientDTO.getRegistrationAddressOfHf().
+
+                equals("")) {
+            registrationAddressOfHfTv.setText(patientDTO.getRegistrationAddressOfHf());
+        } else {
+            registrationAddressOfHfTv.setText(getString(R.string.not_provided));
+        }
+
+        //Inn
+        if (patientDTO.getInn() != null && !patientDTO.getInn().
+
+                equals("")) {
+            innTv.setText(patientDTO.getInn());
+        } else {
+            innTv.setText(getString(R.string.not_provided));
+        }
+
+        //Code of the Health Facility
+        if (patientDTO.getCodeOfHealthFacility() != null && !patientDTO.getCodeOfHealthFacility().
+
+                equals("")) {
+            codeOfHealthFacilityTv.setText(patientDTO.getCodeOfHealthFacility());
+        } else {
+            codeOfHealthFacilityTv.setText(getString(R.string.not_provided));
+        }
+
+        //Health facility name
+        if (patientDTO.getHealthFacilityName() != null && !patientDTO.getHealthFacilityName().
+
+                equals("")) {
+            healthFacilityNameTv.setText(patientDTO.getHealthFacilityName());
+        } else {
+            healthFacilityNameTv.setText(getString(R.string.not_provided));
+        }
+
+        //Code of the Department
+        if (patientDTO.getCodeOfDepartment() != null && !patientDTO.getCodeOfDepartment().
+
+                equals("")) {
+            codeOfDepartmentTv.setText(patientDTO.getCodeOfDepartment());
+        } else {
+            codeOfDepartmentTv.setText(getString(R.string.not_provided));
+        }
+
+        //department
+        if (patientDTO.getDepartment() != null && !patientDTO.getDepartment().
+
+                equals("")) {
+            departmentTv.setText(patientDTO.getDepartment());
+        } else {
+            departmentTv.setText(getString(R.string.not_provided));
         }
     }
 

@@ -1154,6 +1154,14 @@ public class PatientsDAO {
                 patientDTO.setDiscipline(cursor.getString(cursor.getColumnIndexOrThrow("discipline")));
                 patientDTO.setRelativePhoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("relativePhoneNumber")));
                 patientDTO.setDepartment(cursor.getString(cursor.getColumnIndexOrThrow("department")));
+
+                patientDTO.setProvince(cursor.getString(cursor.getColumnIndexOrThrow("provinces")));
+                patientDTO.setCity(cursor.getString(cursor.getColumnIndexOrThrow("cities")));
+                patientDTO.setRegistrationAddressOfHf(cursor.getString(cursor.getColumnIndexOrThrow("registrationAddressOfHf")));
+                patientDTO.setInn(cursor.getString(cursor.getColumnIndexOrThrow("inn")));
+                patientDTO.setCodeOfHealthFacility(cursor.getString(cursor.getColumnIndexOrThrow("codeOfHealthFacility")));
+                patientDTO.setHealthFacilityName(cursor.getString(cursor.getColumnIndexOrThrow("healthFacilityName")));
+                patientDTO.setCodeOfDepartment(cursor.getString(cursor.getColumnIndexOrThrow("codeOfDepartment")));
             } while (cursor.moveToNext());
         }
         cursor.close();
