@@ -1505,4 +1505,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="enter_date">Enter Date</string>
     <string name="health_service">Health Service</string>
+    <string name="please_add_health_service">Please add health service</string>
+    <string name="please_add_pregnancy_outcome">Please add pregnancy outcome</string>
 </resources>

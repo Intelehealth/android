@@ -11,7 +11,7 @@ import org.intelehealth.app.ui.rosterquestionnaire.ui.listeners.HealthServiceCli
 import org.intelehealth.app.utilities.SpacingItemDecoration
 
 class HealthServiceAdapter(
-    private val items: ArrayList<HealthServiceModel>,
+    private val items: MutableList<HealthServiceModel>,
     private val listener: HealthServiceClickListener,
 ) : RecyclerView.Adapter<HealthServiceAdapter.ParentViewHolder>() {
 
