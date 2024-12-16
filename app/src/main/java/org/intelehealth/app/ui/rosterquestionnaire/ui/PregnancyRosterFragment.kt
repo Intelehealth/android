@@ -9,93 +9,133 @@ import dagger.hilt.android.AndroidEntryPoint
 import org.intelehealth.app.R
 import org.intelehealth.app.databinding.FragmentPregnancyRosterBinding
 import org.intelehealth.app.ui.rosterquestionnaire.model.PregnancyOutComeModel
-import org.intelehealth.app.ui.rosterquestionnaire.model.RoasterViewQuestion
 import org.intelehealth.app.ui.rosterquestionnaire.ui.adapter.PregnancyOutcomeAdapter
 import org.intelehealth.app.ui.rosterquestionnaire.ui.listeners.PregnancyOutcomeClickListener
 import org.intelehealth.app.ui.rosterquestionnaire.utilities.RosterQuestionnaireStage
 import org.intelehealth.app.ui.rosterquestionnaire.viewmodel.RosterViewModel
 import org.intelehealth.app.utilities.SpacingItemDecoration
+import org.intelehealth.app.utilities.ToastUtil
 
 @AndroidEntryPoint
 class PregnancyRosterFragment : BaseRosterFragment(R.layout.fragment_pregnancy_roster),
     PregnancyOutcomeClickListener {
+
     private var pregnancyAdapter: PregnancyOutcomeAdapter? = null
     private lateinit var binding: FragmentPregnancyRosterBinding
     private var patientUuid: String? = null
-    private var pregnancyOutComeList = ArrayList<PregnancyOutComeModel>()
+    private val pregnancyOutComeList = ArrayList<PregnancyOutComeModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentPregnancyRosterBinding.bind(view)
+
+        // Initialize ViewModel and bind lifecycle
         rosterViewModel = ViewModelProvider.create(requireActivity())[RosterViewModel::class]
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = rosterViewModel
+
+        // Update the current roster stage
         rosterViewModel.updateRosterStage(RosterQuestionnaireStage.PREGNANCY_ROSTER)
+
         initViews()
-        setOutcomeAdapter()
-        clickListeners()
-        setObserver()
+        setupOutcomeAdapter()
+        setupClickListeners()
+        observeLiveData()
     }
 
-    private fun setObserver() {
-        rosterViewModel.outComeLiveList.observe(viewLifecycleOwner) {
-            pregnancyOutComeList.clear()
-            pregnancyOutComeList.addAll(it)
+    /**
+     * Observes LiveData for updates to the pregnancy outcome list and refreshes the adapter.
+     */
+    private fun observeLiveData() {
+        rosterViewModel.outComeLiveList.observe(viewLifecycleOwner) { outcomeList ->
+            pregnancyOutComeList.apply {
+                clear()
+                addAll(outcomeList)
+            }
             pregnancyAdapter?.notifyList()
         }
     }
 
+    /**
+     * Initializes necessary data and extracts the patient UUID from the intent.
+     */
     private fun initViews() {
-        val intent = requireActivity().intent
-        if (intent != null) {
-            patientUuid = intent.getStringExtra("patientUuid")
-        }
+        patientUuid = requireActivity().intent?.getStringExtra("patientUuid")
     }
 
-    private fun setOutcomeAdapter() {
+    /**
+     * Sets up the RecyclerView adapter for displaying the list of pregnancy outcomes.
+     */
+    private fun setupOutcomeAdapter() {
         binding.rvPregnancyOutcome.apply {
             layoutManager = LinearLayoutManager(requireContext())
-            pregnancyAdapter =
-                PregnancyOutcomeAdapter(pregnancyOutComeList, this@PregnancyRosterFragment)
-            addItemDecoration(SpacingItemDecoration(16))
+            pregnancyAdapter = PregnancyOutcomeAdapter(pregnancyOutComeList, this@PregnancyRosterFragment)
+            addItemDecoration(SpacingItemDecoration(16)) // Adds spacing between items
             adapter = pregnancyAdapter
         }
-
     }
 
-    private fun clickListeners() {
+    /**
+     * Configures click listeners for UI actions like adding outcomes, navigating forward, and going back.
+     */
+    private fun setupClickListeners() {
         binding.tvAddPregnancyOutcome.setOnClickListener {
-            val dialog = AddOutcomeDialog()
-            dialog.show(childFragmentManager, AddOutcomeDialog::class.simpleName)
+            AddOutcomeDialog().show(childFragmentManager, AddOutcomeDialog::class.simpleName)
         }
 
         binding.frag2BtnNext.setOnClickListener {
-            navigateToDetails()
+            if (pregnancyOutComeList.isNotEmpty()) {
+                navigateToHealthService()
+            } else {
+                ToastUtil.showShortToast(requireContext(), getString(R.string.please_add_pregnancy_outcome))
+            }
         }
+
         binding.frag2BtnBack.setOnClickListener {
             findNavController().popBackStack()
         }
     }
 
-    private fun navigateToDetails() {
+    /**
+     * Navigates to the Health Service section of the application.
+     */
+    private fun navigateToHealthService() {
         PregnancyRosterFragmentDirections.navigationPregnancyToHealthService().apply {
             findNavController().navigate(this)
         }
     }
 
+    /**
+     * Deletes the selected pregnancy outcome from the list and updates the RecyclerView.
+     * @param view The view triggering the event
+     * @param position The position of the item to be deleted
+     * @param item The pregnancy outcome model to delete
+     */
     override fun onClickDelete(view: View, position: Int, item: PregnancyOutComeModel) {
         rosterViewModel.deletePregnancyOutcome(position)
+        pregnancyOutComeList.removeAt(position)
         pregnancyAdapter?.notifyItemRemoved(position)
     }
 
+    /**
+     * Opens the edit dialog for a selected pregnancy outcome.
+     * @param view The view triggering the event
+     * @param position The position of the item to edit
+     * @param item The pregnancy outcome model to edit
+     */
     override fun onClickEdit(view: View, position: Int, item: PregnancyOutComeModel) {
         rosterViewModel.existPregnancyOutComePosition = position
         rosterViewModel.existingRoasterQuestionList =
-            item.roasterViewQuestion as ArrayList<RoasterViewQuestion>
-        val dialog = AddOutcomeDialog()
-        dialog.show(childFragmentManager, AddOutcomeDialog::class.simpleName)
+            ArrayList(item.roasterViewQuestion)
+        AddOutcomeDialog().show(childFragmentManager, AddOutcomeDialog::class.simpleName)
     }
 
+    /**
+     * Toggles the open/close state of the pregnancy outcome item and updates the view.
+     * @param view The view triggering the event
+     * @param position The position of the item to toggle
+     * @param item The pregnancy outcome model to toggle
+     */
     override fun onClickOpen(view: View, position: Int, item: PregnancyOutComeModel) {
         item.isOpen = !item.isOpen
         pregnancyAdapter?.notifyItemChanged(position)
