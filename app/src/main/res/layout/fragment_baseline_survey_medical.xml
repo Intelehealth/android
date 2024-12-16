@@ -9,16 +9,16 @@
         <import type="android.view.View" />
 
         <variable
-            name="patient"
-            type="org.intelehealth.app.models.dto.PatientDTO" />
-
-        <variable
             name="medicalConfig"
             type="org.intelehealth.app.ui.baseline_survey.config.MedicalBaselineConfig" />
 
         <variable
             name="baselineEditMode"
             type="Boolean" />
+
+        <variable
+            name="baseline"
+            type="org.intelehealth.app.ui.baseline_survey.model.Baseline" />
 
     </data>
 
@@ -79,8 +79,11 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/select_your_choice"
-                            android:inputType="none" />
+                            android:inputType="none"
+                            android:text="@{baseline.hbCheck}" />
+
                     </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -120,7 +123,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/select_your_choice"
-                            android:inputType="none" />
+                            android:inputType="none"
+                            android:text="@{baseline.bpCheck}" />
                     </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
                 </LinearLayout>
 
@@ -161,7 +165,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/select_your_choice"
-                            android:inputType="none" />
+                            android:inputType="none"
+                            android:text="@{baseline.sugarCheck}" />
                     </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
                 </LinearLayout>
 
@@ -201,6 +206,7 @@
                         style="@style/RadioButtonStyleSelection"
                         config="@{medicalConfig.bpValue}"
                         editMode="@{baselineEditMode}"
+                        radioButtonValue="@{baseline.bpValue}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/margin_5"
@@ -252,6 +258,7 @@
                         style="@style/RadioButtonStyleSelection"
                         config="@{medicalConfig.diabetesValue}"
                         editMode="@{baselineEditMode}"
+                        radioButtonValue="@{baseline.diabetesValue}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/margin_5"
@@ -303,6 +310,7 @@
                         style="@style/RadioButtonStyleSelection"
                         config="@{medicalConfig.arthritisValue}"
                         editMode="@{baselineEditMode}"
+                        radioButtonValue="@{baseline.arthritisValue}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/margin_5"
@@ -354,6 +362,7 @@
                         style="@style/RadioButtonStyleSelection"
                         config="@{medicalConfig.anemiaValue}"
                         editMode="@{baselineEditMode}"
+                        radioButtonValue="@{baseline.anemiaValue}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/margin_5"
@@ -405,6 +414,7 @@
                         style="@style/RadioButtonStyleSelection"
                         config="@{medicalConfig.surgeryValue}"
                         editMode="@{baselineEditMode}"
+                        radioButtonValue="@{baseline.surgeryValue}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/margin_5"
@@ -467,8 +477,10 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/specify_the_reason"
-                            android:inputType="none" />
+                            android:inputType="none"
+                            android:text="@{baseline.surgeryReason}" />
                     </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -497,6 +509,7 @@
                         style="@style/RadioButtonStyleSelection"
                         config="@{medicalConfig.smokingHistory}"
                         editMode="@{baselineEditMode}"
+                        radioButtonValue="@{baseline.smokingHistory}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/margin_5"
@@ -556,6 +569,7 @@
                         style="@style/RadioButtonStyleSelection"
                         config="@{medicalConfig.smokingRate}"
                         editMode="@{baselineEditMode}"
+                        radioButtonValue="@{baseline.smokingRate}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/margin_5"
@@ -615,6 +629,7 @@
                         style="@style/RadioButtonStyleSelection"
                         config="@{medicalConfig.smokingDuration}"
                         editMode="@{baselineEditMode}"
+                        radioButtonValue="@{baseline.smokingDuration}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/margin_5"
@@ -682,6 +697,7 @@
                         style="@style/RadioButtonStyleSelection"
                         config="@{medicalConfig.smokingFrequency}"
                         editMode="@{baselineEditMode}"
+                        radioButtonValue="@{baseline.smokingFrequency}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/margin_5"
@@ -749,6 +765,7 @@
                         style="@style/RadioButtonStyleSelection"
                         config="@{medicalConfig.chewTobacco}"
                         editMode="@{baselineEditMode}"
+                        radioButtonValue="@{baseline.chewTobacco}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/margin_5"
@@ -807,6 +824,7 @@
                         style="@style/RadioButtonStyleSelection"
                         config="@{medicalConfig.alcoholHistory}"
                         editMode="@{baselineEditMode}"
+                        radioButtonValue="@{baseline.alcoholHistory}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/margin_5"
@@ -865,6 +883,7 @@
                         style="@style/RadioButtonStyleSelection"
                         config="@{medicalConfig.alcoholRate}"
                         editMode="@{baselineEditMode}"
+                        radioButtonValue="@{baseline.alcoholRate}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/margin_5"
@@ -940,6 +959,7 @@
                         style="@style/RadioButtonStyleSelection"
                         config="@{medicalConfig.alcoholDuration}"
                         editMode="@{baselineEditMode}"
+                        radioButtonValue="@{baseline.alcoholDuration}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/margin_5"
@@ -1007,6 +1027,7 @@
                         style="@style/RadioButtonStyleSelection"
                         config="@{medicalConfig.alcoholFrequency}"
                         editMode="@{baselineEditMode}"
+                        radioButtonValue="@{baseline.alcoholFrequency}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/margin_5"

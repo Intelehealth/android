@@ -44,7 +44,7 @@ class BaselineMedicalFragment :
     override fun onBaselineDataLoaded(baselineData: Baseline) {
         super.onBaselineDataLoaded(baselineData)
         fetchMedicalBaselineConfig()
-        binding.patient = patient
+        binding.baseline = baselineData
         binding.baselineEditMode = baselineSurveyViewModel.baselineEditMode
     }
 
@@ -181,6 +181,7 @@ class BaselineMedicalFragment :
             anemiaValue = binding.rgAnemiaOptions.getSelectedData()
             surgeryValue = binding.rgSurgeryOptions.getSelectedData()
             surgeryReason = binding.etSurgeryReasonCheck.text.toString()
+            smokingHistory = binding.rgSmokingHistoryOptions.getSelectedData()
             smokingRate = binding.rgSmokingRateOptions.getSelectedData()
             smokingDuration = binding.rgSmokingDurationOptions.getSelectedData()
             smokingFrequency = binding.rgSmokingFrequencyOptions.getSelectedData()
