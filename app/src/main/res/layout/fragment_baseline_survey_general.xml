@@ -1,16 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:bind="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <import type="android.view.View" />
-
-        <variable
-            name="patient"
-            type="org.intelehealth.app.models.dto.PatientDTO" />
 
         <variable
             name="generalConfig"
@@ -19,6 +14,10 @@
         <variable
             name="baselineEditMode"
             type="Boolean" />
+
+        <variable
+            name="baseline"
+            type="org.intelehealth.app.ui.baseline_survey.model.Baseline" />
 
     </data>
 
@@ -78,7 +77,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/select_occupation_txt"
-                            android:inputType="none" />
+                            android:inputType="none"
+                            android:text="@{baseline.occupation}" />
                     </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
                 </LinearLayout>
 
@@ -119,7 +119,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/select_caste"
-                            android:inputType="none" />
+                            android:inputType="none"
+                            android:text="@{baseline.caste}" />
                     </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
                 </LinearLayout>
 
@@ -160,7 +161,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/select_education"
-                            android:inputType="none" />
+                            android:inputType="none"
+                            android:text="@{baseline.education}" />
                     </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
                 </LinearLayout>
 
@@ -201,7 +203,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/select_economic_category"
-                            android:inputType="none" />
+                            android:inputType="none"
+                            android:text="@{baseline.economicStatus}" />
                     </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
                 </LinearLayout>
 
@@ -231,6 +234,7 @@
                         style="@style/RadioButtonStyleSelection"
                         config="@{generalConfig.ayushmanCard}"
                         editMode="@{baselineEditMode}"
+                        radioButtonValue="@{baseline.ayushmanCard}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/margin_5"
@@ -291,6 +295,7 @@
                         style="@style/RadioButtonStyleSelection"
                         config="@{generalConfig.mgnrega}"
                         editMode="@{baselineEditMode}"
+                        radioButtonValue="@{baseline.mgnregaCard}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/margin_5"
@@ -351,6 +356,7 @@
                         style="@style/RadioButtonStyleSelection"
                         config="@{generalConfig.bankAccount}"
                         editMode="@{baselineEditMode}"
+                        radioButtonValue="@{baseline.bankAccount}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/margin_5"
@@ -422,7 +428,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/select_phone_ownership"
-                            android:inputType="none" />
+                            android:inputType="none"
+                            android:text="@{baseline.phoneOwnership}" />
                     </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
                 </LinearLayout>
 
@@ -452,6 +459,7 @@
                         style="@style/RadioButtonStyleSelection"
                         config="@{generalConfig.familyWhatsapp}"
                         editMode="@{baselineEditMode}"
+                        radioButtonValue="@{baseline.familyWhatsApp}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/margin_5"
@@ -512,6 +520,7 @@
                         style="@style/RadioButtonStyleSelection"
                         config="@{generalConfig.maritalStatus}"
                         editMode="@{baselineEditMode}"
+                        radioButtonValue="@{baseline.martialStatus}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/margin_5"

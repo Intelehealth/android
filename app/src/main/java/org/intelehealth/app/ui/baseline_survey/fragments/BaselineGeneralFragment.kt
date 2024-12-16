@@ -3,16 +3,15 @@ package org.intelehealth.app.ui.baseline_survey.fragments
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.navigation.fragment.findNavController
 import org.intelehealth.app.R
 import org.intelehealth.app.activities.patientDetailActivity.StaticPatientRegistrationEnabledFieldsHelper
 import org.intelehealth.app.databinding.FragmentBaselineSurveyGeneralBinding
-import org.intelehealth.app.utilities.BaselineSurveyStage
-import org.intelehealth.app.utilities.PatientRegFieldsUtils
-import androidx.navigation.fragment.findNavController
-import org.intelehealth.app.models.dto.PatientAttributesDTO
 import org.intelehealth.app.ui.baseline_survey.model.Baseline
 import org.intelehealth.app.utilities.ArrayAdapterUtils
+import org.intelehealth.app.utilities.BaselineSurveyStage
 import org.intelehealth.app.utilities.LanguageUtils
+import org.intelehealth.app.utilities.PatientRegFieldsUtils
 import org.intelehealth.app.utilities.extensions.getSelectedData
 import org.intelehealth.app.utilities.extensions.hideError
 import org.intelehealth.app.utilities.extensions.validate
@@ -39,7 +38,7 @@ class BaselineGeneralFragment :
     override fun onBaselineDataLoaded(baselineData: Baseline) {
         super.onBaselineDataLoaded(baselineData)
         fetchGeneralBaselineConfig()
-        binding.patient = patient
+        binding.baseline = baselineData
         binding.baselineEditMode = baselineSurveyViewModel.baselineEditMode
     }
 

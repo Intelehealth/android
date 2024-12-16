@@ -2,8 +2,11 @@ package org.intelehealth.app.ui.binding
 
 import android.view.View
 import android.widget.NumberPicker
+import android.widget.RadioButton
+import android.widget.RadioGroup
 import androidx.annotation.DimenRes
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.forEach
 import androidx.core.view.marginStart
 import androidx.databinding.BindingAdapter
 import com.github.ajalt.timberkt.Timber
@@ -49,11 +52,21 @@ fun changeEditMode(view: View?, config: PatientRegistrationFields?, editMode: Bo
 }
 
 @BindingAdapter(value = ["config", "dynamicMargin"], requireAll = true)
-fun maintainDynamicMargin(view: View?, config: PatientRegistrationFields?,  margin: Float) {
+fun maintainDynamicMargin(view: View?, config: PatientRegistrationFields?, margin: Float) {
     if (view != null && config != null) {
         val param = view.layoutParams as ConstraintLayout.LayoutParams
         param.marginStart = if (config.isEnabled) margin.toInt() else 0
         view.layoutParams = param
+    }
+}
+
+@BindingAdapter("radioButtonValue")
+fun bindRadioButtonValue(radioGroup: RadioGroup, data: String) {
+    radioGroup.forEach {
+        if (it is RadioButton && it.text.toString() == data) {
+            it.isChecked = true
+            return@forEach
+        }
     }
 }
 
