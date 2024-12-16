@@ -66,4 +66,10 @@
 
     <string name="specify_the_reason">Specify the reason</string>
 
+    <string name="zero_thirty_thousand">0 – 30,000</string>
+    <string name="thirty_fifty_thousand">30,000 – 50,000</string>
+    <string name="fifty_thousand_one_lakh">50,000 – 1,00,000</string>
+    <string name="one_lakh_two_lakh_fifty_thousand">1,00,000 – 2,50,000</string>
+    <string name="more_than_two_lakh_fifty_thousand">More than 2,50,000</string>
+
 </resources>

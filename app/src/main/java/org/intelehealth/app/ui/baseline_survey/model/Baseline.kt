@@ -3,6 +3,8 @@ package org.intelehealth.app.ui.baseline_survey.model
 import org.intelehealth.config.room.entity.PatientRegistrationFields
 
 data class Baseline(
+
+    // General
     var occupation: String = "",
     var caste: String = "",
     var education: String = "",
@@ -12,6 +14,8 @@ data class Baseline(
     var phoneOwnership: String = "",
     var familyWhatsApp: String = "",
     var martialStatus: String = "",
+
+    // Medical
     var hbCheck: String = "",
     var bpCheck: String = "",
     var sugarCheck: String = "",
@@ -30,6 +34,8 @@ data class Baseline(
     var alcoholRate: String = "",
     var alcoholDuration: String = "",
     var alcoholFrequency: String = "",
+
+    // Other
     var headOfHousehold: String = "",
     var rationCardCheck: String = "",
     var economicStatus: String = "",

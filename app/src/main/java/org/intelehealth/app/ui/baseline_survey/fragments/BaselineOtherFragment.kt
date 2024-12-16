@@ -15,6 +15,7 @@ import org.intelehealth.app.utilities.ArrayAdapterUtils
 import org.intelehealth.app.utilities.BaselineSurveyStage
 import org.intelehealth.app.utilities.LanguageUtils
 import org.intelehealth.app.utilities.PatientRegFieldsUtils
+import org.intelehealth.app.utilities.extensions.getSelectedData
 import org.intelehealth.app.utilities.extensions.hideError
 import org.intelehealth.app.utilities.extensions.validate
 import org.intelehealth.app.utilities.extensions.validateCheckboxes
@@ -266,12 +267,12 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
 
             val sourceOfWater =
                 if (it.sourceOfWater!!.isEnabled && it.sourceOfWater!!.isMandatory && isHeadOfHousehold) {
-                    binding.llSourceOfWater.validateCheckboxes()
+                    binding.cgSourceOfWater.validateCheckboxes()
                 } else true
 
             val safeguardWater =
                 if (it.safeguardWater!!.isEnabled && it.sourceOfWater!!.isMandatory && isHeadOfHousehold) {
-                    binding.llSafeguardWater.validateCheckboxes()
+                    binding.cgSafeguardWater.validateCheckboxes()
                 } else true
 
             val distanceFromWater =
@@ -357,7 +358,35 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
         val isHeadOfHousehold = binding.llHohYes.isVisible
 
         baselineSurveyData.apply {
+            headOfHousehold = binding.rgHOHOptions.getSelectedData()
 
+            if (!isHeadOfHousehold) {
+                relationWithHousehold = binding.rgRelationWithHohOptions.getSelectedData()
+            } else {
+                rationCardCheck = binding.rgRationOptions.getSelectedData()
+                economicStatus = binding.acEconomicStatusCheck.text.toString()
+                religion = binding.acReligion.text.toString()
+                totalHouseholdMembers = binding.textInputTotalHHMembers.text.toString()
+                usualHouseholdMembers = binding.textInputUsualHHMembers.text.toString()
+                numberOfSmartphones = binding.textInputNoOfSmartPhones.text.toString()
+                numberOfFeaturePhones = binding.textInputNoOfFeaturePhones.text.toString()
+                numberOfEarningMembers = binding.textInputEarningMembers.text.toString()
+                electricityCheck = binding.rgElectricityOptions.getSelectedData()
+                waterCheck = binding.rgWaterCheckOptions.getSelectedData()
+//                sourceOfWater = to be done
+//                safeguardWater = to be done
+                distanceFromWater = binding.rgDistanceFromWaterOptions.getSelectedData()
+                toiletFacility = binding.acToiletFacility.text.toString()
+                houseStructure = binding.acHouseStructure.text.toString()
+                cultivableLand = binding.acCultivableLand.text.toString()
+                averageIncome = binding.rgAverageIncomeOptions.getSelectedData()
+//                fuelType = binding.cgFuelType - to be done
+//                sourceOfLight = binding.cgSourceOfLight - to be done
+//                handWashPractices = binding.cgHandWashPractices - to be done
+                ekalServiceCheck = binding.rgEkalServiceCheckOptions.getSelectedData()
+
+                baselineSurveyViewModel.updateBaselineData(this)
+            }
         }
     }
 

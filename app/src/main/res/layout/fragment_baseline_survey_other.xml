@@ -67,6 +67,7 @@
                         style="@style/RadioButtonStyleSelection"
                         config="@{otherConfig.headOfHousehold}"
                         editMode="@{baselineEditMode}"
+                        radioButtonValue="@{baseline.headOfHousehold}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/margin_5"
@@ -98,7 +99,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/std_12dp"
                     android:orientation="vertical"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/llHeadOfHousehold">
@@ -124,6 +125,7 @@
                             style="@style/RadioButtonStyleSelection"
                             config="@{otherConfig.rationCardCheck}"
                             editMode="@{baselineEditMode}"
+                            radioButtonValue="@{baseline.rationCardCheck}"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/margin_5"
@@ -189,6 +191,7 @@
                             <AutoCompleteTextView
                                 android:id="@+id/ac_economic_status_check"
                                 style="@style/AppTheme.InputBox"
+                                bindAutoCompleteValue="@{baseline.economicStatus}"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:hint="@string/select_your_choice"
@@ -228,6 +231,7 @@
                             <AutoCompleteTextView
                                 android:id="@+id/ac_religion"
                                 style="@style/AppTheme.InputBox"
+                                bindAutoCompleteValue="@{baseline.religion}"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:hint="@string/select_your_choice"
@@ -264,11 +268,13 @@
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/textInputTotalHHMembers"
-                                style="@style/AppTheme.InputBox.Name"
+                                style="@style/AppTheme.InputBox.Phone"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="@string/enter_number" />
+                                android:hint="@string/enter_number"
+                                android:text="@{baseline.totalHouseholdMembers}" />
                         </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
+
                     </LinearLayout>
 
                     <LinearLayout
@@ -300,10 +306,11 @@
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/textInputUsualHHMembers"
-                                style="@style/AppTheme.InputBox.Name"
+                                style="@style/AppTheme.InputBox.Phone"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="@string/enter_number" />
+                                android:hint="@string/enter_number"
+                                android:text="@{baseline.usualHouseholdMembers}" />
                         </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
                     </LinearLayout>
 
@@ -336,11 +343,14 @@
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/textInputNoOfSmartPhones"
-                                style="@style/AppTheme.InputBox.Name"
+                                style="@style/AppTheme.InputBox.Phone"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="@string/enter_number" />
+                                android:hint="@string/enter_number"
+                                android:text="@{baseline.numberOfSmartphones}" />
+
                         </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
+
                     </LinearLayout>
 
                     <LinearLayout
@@ -372,11 +382,14 @@
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/textInputNoOfFeaturePhones"
-                                style="@style/AppTheme.InputBox.Name"
+                                style="@style/AppTheme.InputBox.Phone"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="@string/enter_number" />
+                                android:hint="@string/enter_number"
+                                android:text="@{baseline.numberOfFeaturePhones}" />
+
                         </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
+
                     </LinearLayout>
 
                     <LinearLayout
@@ -408,11 +421,14 @@
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/textInputEarningMembers"
-                                style="@style/AppTheme.InputBox.Name"
+                                style="@style/AppTheme.InputBox.Phone"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="@string/enter_number" />
+                                android:hint="@string/enter_number"
+                                android:text="@{baseline.numberOfEarningMembers}" />
+
                         </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
+
                     </LinearLayout>
 
                     <LinearLayout
@@ -437,6 +453,7 @@
                             style="@style/RadioButtonStyleSelection"
                             config="@{otherConfig.electricityCheck}"
                             editMode="@{baselineEditMode}"
+                            radioButtonValue="@{baseline.electricityCheck}"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/margin_5"
@@ -484,6 +501,7 @@
                             style="@style/RadioButtonStyleSelection"
                             config="@{otherConfig.waterCheck}"
                             editMode="@{baselineEditMode}"
+                            radioButtonValue="@{baseline.waterCheck}"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/margin_5"
@@ -557,7 +575,7 @@
                             android:id="@+id/cgSafeguardWater"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical"></LinearLayout>
+                            android:orientation="vertical" />
 
                     </LinearLayout>
 
@@ -583,6 +601,7 @@
                             style="@style/RadioButtonStyleSelection"
                             config="@{otherConfig.distanceFromWater}"
                             editMode="@{baselineEditMode}"
+                            radioButtonValue="@{baseline.distanceFromWater}"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/margin_5"
@@ -604,6 +623,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/no" />
+
                         </RadioGroup>
 
                     </LinearLayout>
@@ -638,11 +658,14 @@
                             <AutoCompleteTextView
                                 android:id="@+id/ac_toilet_facility"
                                 style="@style/AppTheme.InputBox"
+                                bindAutoCompleteValue="@{baseline.toiletFacility}"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:hint="@string/select_your_choice"
                                 android:inputType="none" />
+
                         </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
+
                     </LinearLayout>
 
                     <LinearLayout
@@ -675,11 +698,14 @@
                             <AutoCompleteTextView
                                 android:id="@+id/ac_house_structure"
                                 style="@style/AppTheme.InputBox"
+                                bindAutoCompleteValue="@{baseline.houseStructure}"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:hint="@string/select_your_choice"
                                 android:inputType="none" />
+
                         </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
+
                     </LinearLayout>
 
                     <LinearLayout
@@ -715,8 +741,11 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:hint="@string/select_your_choice"
-                                android:inputType="none" />
+                                android:inputType="none"
+                                android:text="@{baseline.cultivableLand}" />
+
                         </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
+
                     </LinearLayout>
 
                     <LinearLayout
@@ -741,6 +770,7 @@
                             style="@style/RadioButtonStyleSelection"
                             config="@{otherConfig.averageIncome}"
                             editMode="@{baselineEditMode}"
+                            radioButtonValue="@{baseline.averageIncome}"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/margin_5"
@@ -753,7 +783,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginEnd="@dimen/margin_20"
-                                android:text="0-30,000" />
+                                android:text="@string/zero_thirty_thousand" />
 
                             <RadioButton
                                 android:id="@+id/radioAverageIncome2"
@@ -761,7 +791,7 @@
                                 editMode="@{baselineEditMode}"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="30,000 - 50,000" />
+                                android:text="@string/thirty_fifty_thousand" />
 
                             <RadioButton
                                 android:id="@+id/radioAverageIncome3"
@@ -769,7 +799,7 @@
                                 editMode="@{baselineEditMode}"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="50,000-1,00,000" />
+                                android:text="@string/fifty_thousand_one_lakh" />
 
                             <RadioButton
                                 android:id="@+id/radioAverageIncome4"
@@ -777,7 +807,7 @@
                                 editMode="@{baselineEditMode}"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="1,00,000-2,50,000" />
+                                android:text="@string/one_lakh_two_lakh_fifty_thousand" />
 
                             <RadioButton
                                 android:id="@+id/radioAverageIncome5"
@@ -785,7 +815,7 @@
                                 editMode="@{baselineEditMode}"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="More than 2,50,000" />
+                                android:text="@string/more_than_two_lakh_fifty_thousand" />
                         </RadioGroup>
 
                     </LinearLayout>
@@ -811,7 +841,7 @@
                             android:id="@+id/cgFuelType"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical"></LinearLayout>
+                            android:orientation="vertical" />
 
                     </LinearLayout>
 
@@ -836,7 +866,7 @@
                             android:id="@+id/cgSourceOfLight"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical"></LinearLayout>
+                            android:orientation="vertical" />
 
                     </LinearLayout>
 
@@ -862,7 +892,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/margin_20"
-                            android:orientation="vertical"></LinearLayout>
+                            android:orientation="vertical" />
 
                     </LinearLayout>
 
@@ -888,6 +918,7 @@
                             style="@style/RadioButtonStyleSelection"
                             config="@{otherConfig.ekalServiceCheck}"
                             editMode="@{baselineEditMode}"
+                            radioButtonValue="@{baseline.ekalServiceCheck}"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/margin_5"
@@ -940,6 +971,7 @@
                         style="@style/RadioButtonStyleSelection"
                         config="@{otherConfig.relationWithHousehold}"
                         editMode="@{baselineEditMode}"
+                        radioButtonValue="@{baseline.relationWithHousehold}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/margin_5"
