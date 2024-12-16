@@ -7,6 +7,8 @@ import android.widget.LinearLayout
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.RadioGroup.OnCheckedChangeListener
+import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import com.github.ajalt.timberkt.Timber
 import com.google.gson.Gson
@@ -20,6 +22,9 @@ import org.intelehealth.app.utilities.BaselineSurveyStage
 import org.intelehealth.app.utilities.LanguageUtils
 import org.intelehealth.app.utilities.PatientRegFieldsUtils
 import org.intelehealth.app.utilities.extensions.hideError
+import org.intelehealth.app.utilities.extensions.validate
+import org.intelehealth.app.utilities.extensions.validateCheckboxes
+import org.intelehealth.app.utilities.extensions.validateDropDowb
 
 /**
  * Created by Shazzad H Kanon on 06-12-2024 - 11:00.
@@ -122,7 +127,6 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
     private fun setupEconomicStatus() {
         val adapter = ArrayAdapterUtils.getArrayAdapter(requireContext(), R.array.hb_check)
         binding.acEconomicStatusCheck.setAdapter(adapter)
-        binding.acEconomicStatusCheck.setText("Select your choice", false)
 
         binding.acEconomicStatusCheck.setOnItemClickListener { _, _, i, _ ->
             binding.tilEconomicStatusOption.hideError()
@@ -138,7 +142,6 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
     private fun setupReligion() {
         val adapter = ArrayAdapterUtils.getArrayAdapter(requireContext(), R.array.hb_check)
         binding.acReligion.setAdapter(adapter)
-        binding.acReligion.setText("Select your choice", false)
 
         binding.acReligion.setOnItemClickListener { _, _, i, _ ->
             binding.tilReligionOption.hideError()
@@ -151,7 +154,6 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
     private fun setupNumberOfToiletFacilities() {
         val adapter = ArrayAdapterUtils.getArrayAdapter(requireContext(), R.array.hb_check)
         binding.acToiletFacility.setAdapter(adapter)
-        binding.acToiletFacility.setText("Select your choice", false)
 
         binding.acToiletFacility.setOnItemClickListener { _, _, i, _ ->
             binding.tilToiletFacilityOption.hideError()
@@ -161,11 +163,9 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
         }
     }
 
-
     private fun setupHouseStructure() {
         val adapter = ArrayAdapterUtils.getArrayAdapter(requireContext(), R.array.hb_check)
         binding.acHouseStructure.setAdapter(adapter)
-        binding.acHouseStructure.setText("Select your choice", false)
 
         binding.acHouseStructure.setOnItemClickListener { _, _, i, _ ->
             binding.tilHouseStructureOption.hideError()
@@ -178,7 +178,6 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
     private fun setupCultivableLand() {
         val adapter = ArrayAdapterUtils.getArrayAdapter(requireContext(), R.array.hb_check)
         binding.acCultivableLand.setAdapter(adapter)
-        binding.acCultivableLand.setText("Select your choice", false)
 
         binding.acCultivableLand.setOnItemClickListener { _, _, i, _ ->
             binding.tilCultivableLandOption.hideError()
@@ -195,12 +194,181 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
             }
         }
         binding.frag3BtnNext.setOnClickListener {
-            BaselineOtherFragmentDirections.navigationOtherToPatientDetails(
-                patient.uuid, "searchPatient", "false"
-            ).also {
-                findNavController().navigate(it)
-                requireActivity().finish()
+            validateFields { savePatient() }
+        }
+    }
+
+    private fun validateFields(block: () -> Unit) {
+        val error = R.string.this_field_is_mandatory
+        val isHeadOfHousehold = binding.llHohYes.isVisible
+
+        binding.otherConfig?.let {
+            val headOfHousehold =
+                if (it.headOfHousehold!!.isEnabled && it.headOfHousehold!!.isMandatory) {
+                    binding.rgHOHOptions.validate()
+                } else true
+
+            val rationCardCheck =
+                if (it.rationCardCheck!!.isEnabled && it.rationCardCheck!!.isMandatory && isHeadOfHousehold) {
+                    binding.rgRationOptions.validate()
+                } else true
+
+            val economicStatus =
+                if (it.economicStatus!!.isEnabled && it.economicStatus!!.isMandatory && isHeadOfHousehold) {
+                    binding.tilEconomicStatusOption.validateDropDowb(
+                        binding.acEconomicStatusCheck,
+                        error
+                    )
+                } else true
+
+            val religion =
+                if (it.religion!!.isEnabled && it.religion!!.isMandatory && isHeadOfHousehold) {
+                    binding.tilReligionOption.validateDropDowb(binding.acReligion, error)
+                } else true
+
+            val totalHouseholdMembers =
+                if (it.totalHouseholdMembers!!.isEnabled && it.totalHouseholdMembers!!.isMandatory && isHeadOfHousehold) {
+                    binding.tilTotalMemberOption.validate(binding.textInputTotalHHMembers, error)
+                } else true
+
+            val usualHouseholdMembers =
+                if (it.usualHouseholdMembers!!.isEnabled && it.usualHouseholdMembers!!.isMandatory && isHeadOfHousehold) {
+                    binding.tilUsualMemberOption.validate(binding.textInputUsualHHMembers, error)
+                } else true
+
+            val numberOfSmartphones =
+                if (it.numberOfSmartphones!!.isEnabled && it.numberOfSmartphones!!.isMandatory && isHeadOfHousehold) {
+                    binding.tilNumberOfSmartphonesOption.validate(
+                        binding.textInputNoOfSmartPhones,
+                        error
+                    )
+                } else true
+
+            val numberOfFeaturePhones =
+                if (it.numberOfFeaturePhones!!.isEnabled && it.numberOfFeaturePhones!!.isMandatory && isHeadOfHousehold) {
+                    binding.tilNumberOfFeaturePhoneOption.validate(
+                        binding.textInputNoOfFeaturePhones,
+                        error
+                    )
+                } else true
+
+            val numberOfEarningMembers =
+                if (it.numberOfEarningMembers!!.isEnabled && it.numberOfEarningMembers!!.isMandatory && isHeadOfHousehold) {
+                    binding.tilNumberOfEarningMembersOption.validate(
+                        binding.textInputEarningMembers,
+                        error
+                    )
+                } else true
+
+            val electricityCheck =
+                if (it.electricityCheck!!.isEnabled && it.electricityCheck!!.isMandatory && isHeadOfHousehold) {
+                    binding.rgElectricityOptions.validate()
+                } else true
+
+            val waterCheck =
+                if (it.waterCheck!!.isEnabled && it.waterCheck!!.isMandatory && isHeadOfHousehold) {
+                    binding.rgWaterCheckOptions.validate()
+                } else true
+
+            val sourceOfWater =
+                if (it.sourceOfWater!!.isEnabled && it.sourceOfWater!!.isMandatory && isHeadOfHousehold) {
+                    binding.llSourceOfWater.validateCheckboxes()
+                } else true
+
+            val safeguardWater =
+                if (it.safeguardWater!!.isEnabled && it.sourceOfWater!!.isMandatory && isHeadOfHousehold) {
+                    binding.llSafeguardWater.validateCheckboxes()
+                } else true
+
+            val distanceFromWater =
+                if (it.distanceFromWater!!.isEnabled && it.distanceFromWater!!.isMandatory && isHeadOfHousehold) {
+                    binding.rgDistanceFromWaterOptions.validate()
+                } else true
+
+            val toiletFacility =
+                if (it.toiletFacility!!.isEnabled && it.toiletFacility!!.isMandatory && isHeadOfHousehold) {
+                    binding.tilToiletFacilityOption.validateDropDowb(
+                        binding.acToiletFacility,
+                        error
+                    )
+                } else true
+
+            val houseStructure =
+                if (it.houseStructure!!.isEnabled && it.houseStructure!!.isMandatory && isHeadOfHousehold) {
+                    binding.tilHouseStructureOption.validateDropDowb(
+                        binding.acHouseStructure,
+                        error
+                    )
+                } else true
+
+            val cultivableLand =
+                if (it.cultivableLand!!.isEnabled && it.cultivableLand!!.isMandatory && isHeadOfHousehold) {
+                    binding.tilCultivableLandOption.validateDropDowb(
+                        binding.acHouseStructure,
+                        error
+                    )
+                } else true
+
+            val averageIncome =
+                if (it.averageIncome!!.isEnabled && it.averageIncome!!.isMandatory && isHeadOfHousehold) {
+                    binding.rgAverageIncomeOptions.validate()
+                } else true
+
+            val fuelType =
+                if (it.fuelType!!.isEnabled && it.fuelType!!.isMandatory && isHeadOfHousehold) {
+                    binding.cgFuelType.validateCheckboxes()
+                } else true
+
+            val sourceOfLight =
+                if (it.sourceOfLight!!.isEnabled && it.sourceOfLight!!.isMandatory && isHeadOfHousehold) {
+                    binding.cgSourceOfLight.validateCheckboxes()
+                } else true
+
+            val handWashPractices =
+                if (it.handWashPractices!!.isEnabled && it.handWashPractices!!.isMandatory && isHeadOfHousehold) {
+                    binding.cgHandWashPractices.validateCheckboxes()
+                } else true
+
+            val ekalServiceCheck =
+                if (it.ekalServiceCheck!!.isEnabled && it.ekalServiceCheck!!.isMandatory && isHeadOfHousehold) {
+                    binding.rgEkalServiceCheckOptions.validate()
+                } else true
+
+            val relationWithHousehold =
+                if (it.relationWithHousehold!!.isEnabled && it.relationWithHousehold!!.isMandatory && !isHeadOfHousehold) {
+                    binding.rgRelationWithHohOptions.validate()
+                } else true
+
+
+            if (headOfHousehold.and(rationCardCheck).and(rationCardCheck).and(economicStatus)
+                    .and(religion).and(totalHouseholdMembers).and(usualHouseholdMembers)
+                    .and(numberOfSmartphones).and(numberOfFeaturePhones).and(numberOfEarningMembers)
+                    .and(electricityCheck).and(waterCheck).and(sourceOfWater).and(safeguardWater)
+                    .and(distanceFromWater).and(toiletFacility).and(houseStructure)
+                    .and(cultivableLand).and(averageIncome).and(fuelType).and(sourceOfLight)
+                    .and(handWashPractices).and(ekalServiceCheck).and(relationWithHousehold)
+            ) {
+                block.invoke()
+            } else {
+                Toast.makeText(
+                    requireActivity(),
+                    getString(R.string.please_select_all_the_required_fields),
+                    Toast.LENGTH_LONG
+                ).show()
             }
+        }
+    }
+
+    private fun savePatient() {
+
+    }
+
+    private fun navigateToPatientDetailsScreen() {
+        BaselineOtherFragmentDirections.navigationOtherToPatientDetails(
+            patient.uuid, "searchPatient", "false"
+        ).also {
+            findNavController().navigate(it)
+            requireActivity().finish()
         }
     }
 

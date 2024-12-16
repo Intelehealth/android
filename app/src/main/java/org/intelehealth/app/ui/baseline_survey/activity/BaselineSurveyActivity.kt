@@ -81,9 +81,6 @@ class BaselineSurveyActivity : BaseActivity() {
 
     private fun setupActionBar() {
         setSupportActionBar(binding.toolbar)
-//        binding.toolbar.setNavigationOnClickListener {
-//            handleBackPressed()
-//        }
     }
 
     private fun handleBackPressed() {

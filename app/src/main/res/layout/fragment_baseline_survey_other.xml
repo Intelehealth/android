@@ -191,7 +191,9 @@
                                 style="@style/AppTheme.InputBox"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:hint="@string/select_your_choice"
                                 android:inputType="none" />
+
                         </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
 
                     </LinearLayout>
@@ -228,6 +230,7 @@
                                 style="@style/AppTheme.InputBox"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:hint="@string/select_your_choice"
                                 android:inputType="none" />
                         </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
                     </LinearLayout>
@@ -264,7 +267,7 @@
                                 style="@style/AppTheme.InputBox.Name"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="0" />
+                                android:hint="@string/enter_number" />
                         </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
                     </LinearLayout>
 
@@ -300,7 +303,7 @@
                                 style="@style/AppTheme.InputBox.Name"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="0" />
+                                android:hint="@string/enter_number" />
                         </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
                     </LinearLayout>
 
@@ -336,7 +339,7 @@
                                 style="@style/AppTheme.InputBox.Name"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="0" />
+                                android:hint="@string/enter_number" />
                         </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
                     </LinearLayout>
 
@@ -372,7 +375,7 @@
                                 style="@style/AppTheme.InputBox.Name"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="0" />
+                                android:hint="@string/enter_number" />
                         </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
                     </LinearLayout>
 
@@ -408,7 +411,7 @@
                                 style="@style/AppTheme.InputBox.Name"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="0" />
+                                android:hint="@string/enter_number" />
                         </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
                     </LinearLayout>
 
@@ -527,7 +530,9 @@
                             android:id="@+id/cgSourceOfWater"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical"></LinearLayout>
+                            android:orientation="vertical">
+
+                        </LinearLayout>
 
                     </LinearLayout>
 
@@ -635,6 +640,7 @@
                                 style="@style/AppTheme.InputBox"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:hint="@string/select_your_choice"
                                 android:inputType="none" />
                         </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
                     </LinearLayout>
@@ -671,6 +677,7 @@
                                 style="@style/AppTheme.InputBox"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:hint="@string/select_your_choice"
                                 android:inputType="none" />
                         </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
                     </LinearLayout>
@@ -707,6 +714,7 @@
                                 style="@style/AppTheme.InputBox"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:hint="@string/select_your_choice"
                                 android:inputType="none" />
                         </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
                     </LinearLayout>

@@ -745,7 +745,7 @@ object StaticPatientRegistrationEnabledFieldsHelper {
             groupId = "",
             name = "",
             idKey = PatientRegConfigKeys.ECONOMIC_STATUS,
-            isMandatory = false,
+            isMandatory = true,
             isEditable = true,
             isEnabled = true
         )
@@ -757,7 +757,7 @@ object StaticPatientRegistrationEnabledFieldsHelper {
             groupId = "",
             name = "",
             idKey = PatientRegConfigKeys.OTHER_BASELINE_RELIGION,
-            isMandatory = false,
+            isMandatory = true,
             isEditable = true,
             isEnabled = true
         )
@@ -769,7 +769,7 @@ object StaticPatientRegistrationEnabledFieldsHelper {
             groupId = "",
             name = "",
             idKey = PatientRegConfigKeys.TOTAL_HOUSEHOLD_MEMBERS,
-            isMandatory = false,
+            isMandatory = true,
             isEditable = true,
             isEnabled = true
         )
@@ -781,7 +781,7 @@ object StaticPatientRegistrationEnabledFieldsHelper {
             groupId = "",
             name = "",
             idKey = PatientRegConfigKeys.USUAL_HOUSEHOLD_MEMBERS,
-            isMandatory = false,
+            isMandatory = true,
             isEditable = true,
             isEnabled = true
         )
@@ -793,7 +793,7 @@ object StaticPatientRegistrationEnabledFieldsHelper {
             groupId = "",
             name = "",
             idKey = PatientRegConfigKeys.NUMBER_OF_SMARTPHONES,
-            isMandatory = false,
+            isMandatory = true,
             isEditable = true,
             isEnabled = true
         )
@@ -805,7 +805,7 @@ object StaticPatientRegistrationEnabledFieldsHelper {
             groupId = "",
             name = "",
             idKey = PatientRegConfigKeys.NUMBER_OF_FEATURE_PHONES,
-            isMandatory = false,
+            isMandatory = true,
             isEditable = true,
             isEnabled = true
         )
@@ -817,7 +817,7 @@ object StaticPatientRegistrationEnabledFieldsHelper {
             groupId = "",
             name = "",
             idKey = PatientRegConfigKeys.NUMBER_OF_EARNING_MEMBERS,
-            isMandatory = false,
+            isMandatory = true,
             isEditable = true,
             isEnabled = true
         )
@@ -829,7 +829,7 @@ object StaticPatientRegistrationEnabledFieldsHelper {
             groupId = "",
             name = "",
             idKey = PatientRegConfigKeys.ELECTRICITY_CHECK,
-            isMandatory = false,
+            isMandatory = true,
             isEditable = true,
             isEnabled = true
         )
@@ -841,7 +841,7 @@ object StaticPatientRegistrationEnabledFieldsHelper {
             groupId = "",
             name = "",
             idKey = PatientRegConfigKeys.WATER_CHECK,
-            isMandatory = false,
+            isMandatory = true,
             isEditable = true,
             isEnabled = true
         )
@@ -853,7 +853,7 @@ object StaticPatientRegistrationEnabledFieldsHelper {
             groupId = "",
             name = "",
             idKey = PatientRegConfigKeys.SOURCE_OF_WATER,
-            isMandatory = false,
+            isMandatory = true,
             isEditable = true,
             isEnabled = true
         )
@@ -865,7 +865,7 @@ object StaticPatientRegistrationEnabledFieldsHelper {
             groupId = "",
             name = "",
             idKey = PatientRegConfigKeys.SAFEGUARD_WATER,
-            isMandatory = false,
+            isMandatory = true,
             isEditable = true,
             isEnabled = true
         )
@@ -877,7 +877,7 @@ object StaticPatientRegistrationEnabledFieldsHelper {
             groupId = "",
             name = "",
             idKey = PatientRegConfigKeys.SAFEGUARD_WATER,
-            isMandatory = false,
+            isMandatory = true,
             isEditable = true,
             isEnabled = true
         )
@@ -889,7 +889,7 @@ object StaticPatientRegistrationEnabledFieldsHelper {
             groupId = "",
             name = "",
             idKey = PatientRegConfigKeys.DISTANCE_FROM_WATER,
-            isMandatory = false,
+            isMandatory = true,
             isEditable = true,
             isEnabled = true
         )
@@ -901,7 +901,7 @@ object StaticPatientRegistrationEnabledFieldsHelper {
             groupId = "",
             name = "",
             idKey = PatientRegConfigKeys.TOILET_FACILITY,
-            isMandatory = false,
+            isMandatory = true,
             isEditable = true,
             isEnabled = true
         )
@@ -913,7 +913,7 @@ object StaticPatientRegistrationEnabledFieldsHelper {
             groupId = "",
             name = "",
             idKey = PatientRegConfigKeys.HOUSE_STRUCTURE,
-            isMandatory = false,
+            isMandatory = true,
             isEditable = true,
             isEnabled = true
         )
@@ -925,7 +925,7 @@ object StaticPatientRegistrationEnabledFieldsHelper {
             groupId = "",
             name = "",
             idKey = PatientRegConfigKeys.CULTIVABLE_LAND,
-            isMandatory = false,
+            isMandatory = true,
             isEditable = true,
             isEnabled = true
         )
@@ -937,7 +937,7 @@ object StaticPatientRegistrationEnabledFieldsHelper {
             groupId = "",
             name = "",
             idKey = PatientRegConfigKeys.AVERAGE_INCOME,
-            isMandatory = false,
+            isMandatory = true,
             isEditable = true,
             isEnabled = true
         )
@@ -949,7 +949,7 @@ object StaticPatientRegistrationEnabledFieldsHelper {
             groupId = "",
             name = "",
             idKey = PatientRegConfigKeys.FUEL_TYPE,
-            isMandatory = false,
+            isMandatory = true,
             isEditable = true,
             isEnabled = true
         )
@@ -961,7 +961,7 @@ object StaticPatientRegistrationEnabledFieldsHelper {
             groupId = "",
             name = "",
             idKey = PatientRegConfigKeys.SOURCE_OF_LIGHT,
-            isMandatory = false,
+            isMandatory = true,
             isEditable = true,
             isEnabled = true
         )
@@ -973,7 +973,7 @@ object StaticPatientRegistrationEnabledFieldsHelper {
             groupId = "",
             name = "",
             idKey = PatientRegConfigKeys.HANDWASH_PRACTICES,
-            isMandatory = false,
+            isMandatory = true,
             isEditable = true,
             isEnabled = true
         )
@@ -985,7 +985,7 @@ object StaticPatientRegistrationEnabledFieldsHelper {
             groupId = "",
             name = "",
             idKey = PatientRegConfigKeys.EKAL_SERVICE_CHECK,
-            isMandatory = false,
+            isMandatory = true,
             isEditable = true,
             isEnabled = true
         )

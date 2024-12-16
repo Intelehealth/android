@@ -440,7 +440,6 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
         ivAddBaselineSurvey.setOnClickListener(view -> {
             BaselineSurveyActivity.startBaselineSurvey(this, patientDTO.getUuid(), BaselineSurveyStage.GENERAL, BaselineSurveySource.PATIENT_DETAIL);
-            finish();
         });
 
         String houseHoldValue = "";
@@ -449,7 +448,8 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         } catch (DAOException e) {
             throw new RuntimeException(e);
         }
-        if(houseHoldValue != null && !houseHoldValue.isEmpty()) populateFamilyMembers(houseHoldValue);
+        if (houseHoldValue != null && !houseHoldValue.isEmpty())
+            populateFamilyMembers(houseHoldValue);
         populateBaselineSurveys();
     }
 
@@ -480,7 +480,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     }
 
     private void checkEmptyList(ListTypeEnum listTypeEnum) {
-        switch (listTypeEnum){
+        switch (listTypeEnum) {
             case FAMILY_MEMBER -> {
                 if (familyMemberList.isEmpty()) {
                     llEmptyFamilyMember.setVisibility(View.VISIBLE);

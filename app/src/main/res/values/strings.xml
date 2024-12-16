@@ -36,8 +36,6 @@
     <string name="not_stated">Not Stated</string>
 
 
-
-
     //Database Schema Names
 
     //Login Screen
@@ -794,8 +792,6 @@
     <string name="relation_with_household">What is your relationship with the head of household?</string>
 
 
-
-
     <!--END-->
 
     <string name="recent_visit">Recent Visits</string>
@@ -1247,6 +1243,7 @@
 
 
     <string name="hint_drop_down_hb_check">Select Duration</string>
+    <string name="enter_number">Enter number</string>
 
 
 </resources>
