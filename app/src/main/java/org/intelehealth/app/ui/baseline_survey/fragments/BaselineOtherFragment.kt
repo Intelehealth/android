@@ -11,6 +11,7 @@ import org.intelehealth.app.R
 import org.intelehealth.app.activities.patientDetailActivity.StaticPatientRegistrationEnabledFieldsHelper
 import org.intelehealth.app.databinding.FragmentBaselineSurveyOtherBinding
 import org.intelehealth.app.models.dto.PatientDTO
+import org.intelehealth.app.ui.baseline_survey.model.Baseline
 import org.intelehealth.app.utilities.ArrayAdapterUtils
 import org.intelehealth.app.utilities.BaselineSurveyStage
 import org.intelehealth.app.utilities.LanguageUtils
@@ -32,10 +33,8 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
         super.onViewCreated(view, savedInstanceState)
     }
 
-    override fun onPatientDataLoaded(patient: PatientDTO) {
-        super.onPatientDataLoaded(patient)
-        Timber.d { "onPatientDataLoaded" }
-        Timber.d { Gson().toJson(patient) }
+    override fun onBaselineDataLoaded(baselineData: Baseline) {
+        super.onBaselineDataLoaded(baselineData)
         fetchOtherBaselineConfig()
         binding.patient = patient
         binding.baselineEditMode = baselineSurveyViewModel.baselineEditMode

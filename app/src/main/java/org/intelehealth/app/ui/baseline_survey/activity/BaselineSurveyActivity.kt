@@ -142,13 +142,7 @@ class BaselineSurveyActivity : BaseActivity() {
 
 
     private fun fetchPatientDetails(id: String) {
-        baselineSurveyViewModel.loadPatientDetails(id).observe(this) {
-            it ?: return@observe
-            baselineSurveyViewModel.handleResponse(it) { patient ->
-                baselineSurveyViewModel.updatedPatient(updatePatientDetails(patient))
-                baselineSurveyViewModel.updateBaselineData(Baseline())
-            }
-        }
+        baselineSurveyViewModel.updateBaselineData(Baseline())
     }
 
     private fun updatePatientDetails(patient: PatientDTO) = patient.apply {

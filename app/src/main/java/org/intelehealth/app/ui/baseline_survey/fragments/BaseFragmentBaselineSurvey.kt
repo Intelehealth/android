@@ -24,16 +24,9 @@ abstract class BaseFragmentBaselineSurvey(@LayoutRes layoutResId: Int) : Fragmen
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        baselineSurveyViewModel.patientData.observe(viewLifecycleOwner) {
-            onPatientDataLoaded(it)
-        }
         baselineSurveyViewModel.baselineData.observe(viewLifecycleOwner) {
             onBaselineDataLoaded(it)
         }
-    }
-
-    open fun onPatientDataLoaded(patient: PatientDTO) {
-        this.patient = patient
     }
 
     open fun onBaselineDataLoaded(baselineData: Baseline) {

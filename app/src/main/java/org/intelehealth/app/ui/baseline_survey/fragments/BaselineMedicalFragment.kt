@@ -3,6 +3,7 @@ package org.intelehealth.app.ui.baseline_survey.fragments
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.core.view.get
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import com.github.ajalt.timberkt.Timber
@@ -16,6 +17,7 @@ import org.intelehealth.app.utilities.ArrayAdapterUtils
 import org.intelehealth.app.utilities.BaselineSurveyStage
 import org.intelehealth.app.utilities.LanguageUtils
 import org.intelehealth.app.utilities.PatientRegFieldsUtils
+import org.intelehealth.app.utilities.extensions.getSelectedData
 import org.intelehealth.app.utilities.extensions.hideError
 import org.intelehealth.app.utilities.extensions.hideErrorOnTextChang
 import org.intelehealth.app.utilities.extensions.validate
@@ -39,18 +41,11 @@ class BaselineMedicalFragment :
         super.onViewCreated(view, savedInstanceState)
     }
 
-    override fun onPatientDataLoaded(patient: PatientDTO) {
-        super.onPatientDataLoaded(patient)
-        Timber.d { "onPatientDataLoaded" }
-        Timber.d { Gson().toJson(patient) }
+    override fun onBaselineDataLoaded(baselineData: Baseline) {
+        super.onBaselineDataLoaded(baselineData)
         fetchMedicalBaselineConfig()
         binding.patient = patient
         binding.baselineEditMode = baselineSurveyViewModel.baselineEditMode
-    }
-
-    override fun onBaselineDataLoaded(baselineData: Baseline) {
-        super.onBaselineDataLoaded(baselineData)
-        val data = baselineData
     }
 
     private fun fetchMedicalBaselineConfig() {
@@ -175,8 +170,30 @@ class BaselineMedicalFragment :
     }
 
     private fun saveSurveyData() {
-        BaselineMedicalFragmentDirections.navigationMedicalToOther().apply {
-            findNavController().navigate(this)
+        baselineSurveyData.apply {
+
+            hbCheck = binding.acBpCheck.text.toString()
+            bpCheck = binding.acBpCheck.text.toString()
+            sugarCheck = binding.acSugarCheck.text.toString()
+            bpValue = binding.rgBpOptions.getSelectedData()
+            diabetesValue = binding.rgDiabetesOptions.getSelectedData()
+            arthritisValue = binding.rgArthritisOptions.getSelectedData()
+            anemiaValue = binding.rgAnemiaOptions.getSelectedData()
+            surgeryValue = binding.rgSurgeryOptions.getSelectedData()
+            surgeryReason = binding.etSurgeryReasonCheck.text.toString()
+            smokingRate = binding.rgSmokingRateOptions.getSelectedData()
+            smokingDuration = binding.rgSmokingDurationOptions.getSelectedData()
+            smokingFrequency = binding.rgSmokingFrequencyOptions.getSelectedData()
+            chewTobacco = binding.rgChewTobaccoOptions.getSelectedData()
+            alcoholHistory = binding.rgAlcoholHistoryOptions.getSelectedData()
+            alcoholRate = binding.rgAlcoholRateOptions.getSelectedData()
+            alcoholDuration = binding.rgAlcoholDurationOptions.getSelectedData()
+            alcoholFrequency = binding.rgAlcoholFrequencyOptions.getSelectedData()
+
+            baselineSurveyViewModel.updateBaselineData(this)
+            BaselineMedicalFragmentDirections.navigationMedicalToOther().apply {
+                findNavController().navigate(this)
+            }
         }
     }
 
@@ -188,13 +205,15 @@ class BaselineMedicalFragment :
                 binding.tilHbCheckOption.validateDropDowb(binding.acHbCheck, error)
             } else true
 
-            val bpCheck = if (it.bpCheck!!.isEnabled && it.bpCheck!!.isMandatory) {
-                binding.tilBpCheckOption.validateDropDowb(binding.acHbCheck, error)
-            } else true
+            val bpCheck =
+                if (it.bpCheck!!.isEnabled && it.bpCheck!!.isMandatory && binding.llBpCheck.isVisible) {
+                    binding.tilBpCheckOption.validateDropDowb(binding.acHbCheck, error)
+                } else true
 
-            val sugarCheck = if (it.sugarCheck!!.isEnabled && it.sugarCheck!!.isMandatory) {
-                binding.tilSugarCheckOption.validateDropDowb(binding.acSugarCheck, error)
-            } else true
+            val sugarCheck =
+                if (it.sugarCheck!!.isEnabled && it.sugarCheck!!.isMandatory && binding.llSugarCheck.isVisible) {
+                    binding.tilSugarCheckOption.validateDropDowb(binding.acSugarCheck, error)
+                } else true
 
             val bpValue = if (it.bpValue!!.isEnabled && it.bpValue!!.isMandatory) {
                 binding.rgBpOptions.validate()

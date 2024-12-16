@@ -8,6 +8,8 @@ fun RadioGroup.validate(): Boolean {
 }
 
 fun RadioGroup.getSelectedData(): String {
-    val checkedRadioButton = findViewById<RadioButton>(checkedRadioButtonId)
-    return checkedRadioButton.text.toString()
+    return if (checkedRadioButtonId != -1) {
+        val checkedRadioButton = findViewById<RadioButton>(checkedRadioButtonId)
+        checkedRadioButton.text.toString()
+    } else ""
 }

@@ -151,7 +151,6 @@ class BaselineGeneralFragment :
             martialStatus = binding.rgMaritalStatusOptions.getSelectedData()
 
             baselineSurveyViewModel.updateBaselineData(this)
-
             BaselineGeneralFragmentDirections.navigationGeneralToMedical().apply {
                 findNavController().navigate(this)
             }
