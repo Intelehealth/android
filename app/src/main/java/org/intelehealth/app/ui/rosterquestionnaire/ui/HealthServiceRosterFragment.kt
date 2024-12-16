@@ -100,8 +100,8 @@ class HealthServiceRosterFragment : BaseRosterFragment(R.layout.fragment_health_
         rosterViewModel.existPregnancyOutComePosition = position
         rosterViewModel.existingRoasterQuestionList =
             item.roasterViewQuestion as ArrayList<RoasterViewQuestion>
-        val dialog = AddOutcomeDialog()
-        dialog.show(childFragmentManager, AddOutcomeDialog::class.simpleName)
+        val dialog = AddHealthServiceDialog()
+        dialog.show(childFragmentManager, AddHealthServiceDialog::class.simpleName)
     }
 
     override fun onClickOpen(view: View, position: Int, item: HealthServiceModel) {

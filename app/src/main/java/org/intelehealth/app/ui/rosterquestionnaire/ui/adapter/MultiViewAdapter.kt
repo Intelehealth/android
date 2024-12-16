@@ -9,6 +9,7 @@ import org.intelehealth.app.databinding.ItemDatePickerViewBinding
 import org.intelehealth.app.databinding.ItemSpinnerViewBinding
 import org.intelehealth.app.ui.rosterquestionnaire.model.RoasterViewQuestion
 import org.intelehealth.app.ui.rosterquestionnaire.ui.listeners.MultiViewListener
+import org.intelehealth.app.ui.rosterquestionnaire.utilities.RoasterQuestionView
 import org.intelehealth.app.utilities.ArrayAdapterUtils
 import org.intelehealth.app.utilities.extensions.hideError
 import org.intelehealth.app.utilities.extensions.showDropDownError
@@ -21,18 +22,18 @@ class MultiViewAdapter(
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun getItemViewType(position: Int): Int {
-        return items[position].layoutId
+        return items[position].layoutId.lavout
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val binding = when (viewType) {
-            R.layout.item_spinner_view -> ItemSpinnerViewBinding.inflate(
+            RoasterQuestionView.SPINNER.lavout -> ItemSpinnerViewBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
             )
 
-            R.layout.item_date_picker_view -> ItemDatePickerViewBinding.inflate(
+            RoasterQuestionView.DATE_PICKER.lavout -> ItemDatePickerViewBinding.inflate(
                 LayoutInflater.from(
                     parent.context
                 ), parent, false

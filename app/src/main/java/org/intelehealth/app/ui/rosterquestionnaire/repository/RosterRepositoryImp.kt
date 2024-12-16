@@ -4,6 +4,7 @@ import android.content.Context
 import org.intelehealth.app.R
 import org.intelehealth.app.app.IntelehealthApplication
 import org.intelehealth.app.ui.rosterquestionnaire.model.RoasterViewQuestion
+import org.intelehealth.app.ui.rosterquestionnaire.utilities.RoasterQuestionView
 import javax.inject.Inject
 
 class RosterRepositoryImp @Inject constructor() : RosterRepository {
@@ -13,7 +14,7 @@ class RosterRepositoryImp @Inject constructor() : RosterRepository {
         list.apply {
             add(
                 RoasterViewQuestion(
-                    layoutId = R.layout.item_spinner_view,
+                    layoutId = RoasterQuestionView.SPINNER,
                     question = "What was the outcome of your pregnancy?",
                     spinnerItem = context.resources.getStringArray(R.array.outcomes).toList(),
                     errorMessage = context.getString(R.string.this_field_is_mandatory)
@@ -21,7 +22,7 @@ class RosterRepositoryImp @Inject constructor() : RosterRepository {
             )
             add(
                 RoasterViewQuestion(
-                    layoutId = R.layout.item_spinner_view,
+                    layoutId = RoasterQuestionView.SPINNER,
                     question = "What was the year of pregnancy outcome? ((a) for pregnant ladies, mention the date when conceived (b) in case of other options mention the date of delivery/miscarriage)",
                     spinnerItem = context.resources.getStringArray(R.array.outcomes).toList(),
                     errorMessage = context.getString(R.string.this_field_is_mandatory)
@@ -29,14 +30,14 @@ class RosterRepositoryImp @Inject constructor() : RosterRepository {
             )
             add(
                 RoasterViewQuestion(
-                    layoutId = R.layout.item_date_picker_view,
+                    layoutId = RoasterQuestionView.DATE_PICKER,
                     question = "What was the year of pregnancy outcome? ((a) for pregnant ladies, mention the date when conceived (b) in case of other options mention the date of delivery/miscarriage)",
                     errorMessage = context.getString(R.string.this_field_is_mandatory)
                 )
             )
             add(
                 RoasterViewQuestion(
-                    layoutId = R.layout.item_spinner_view,
+                    layoutId = RoasterQuestionView.SPINNER,
                     question = "How many months did this pregnancy last?",
                     spinnerItem = context.resources.getStringArray(R.array.outcomes).toList(),
                     errorMessage = context.getString(R.string.this_field_is_mandatory)
@@ -51,7 +52,7 @@ class RosterRepositoryImp @Inject constructor() : RosterRepository {
         list.apply {
             add(
                 RoasterViewQuestion(
-                    layoutId = R.layout.item_spinner_view,
+                    layoutId = RoasterQuestionView.SPINNER,
                     question = "What was the outcome of your pregnancy?",
                     spinnerItem = context.resources.getStringArray(R.array.outcomes).toList(),
                     errorMessage = context.getString(R.string.this_field_is_mandatory)
@@ -59,7 +60,7 @@ class RosterRepositoryImp @Inject constructor() : RosterRepository {
             )
             add(
                 RoasterViewQuestion(
-                    layoutId = R.layout.item_spinner_view,
+                    layoutId = RoasterQuestionView.SPINNER,
                     question = "What was the year of pregnancy outcome? ((a) for pregnant ladies, mention the date when conceived (b) in case of other options mention the date of delivery/miscarriage)",
                     spinnerItem = context.resources.getStringArray(R.array.outcomes).toList(),
                     errorMessage = context.getString(R.string.this_field_is_mandatory)
@@ -68,7 +69,7 @@ class RosterRepositoryImp @Inject constructor() : RosterRepository {
 
             add(
                 RoasterViewQuestion(
-                    layoutId = R.layout.item_spinner_view,
+                    layoutId = RoasterQuestionView.SPINNER,
                     question = "How many months did this pregnancy last?",
                     spinnerItem = context.resources.getStringArray(R.array.outcomes).toList(),
                     errorMessage = context.getString(R.string.this_field_is_mandatory)
