@@ -120,7 +120,7 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
     }
 
     private fun setupEconomicStatus() {
-        val adapter = ArrayAdapterUtils.getArrayAdapter(requireContext(), R.array.hb_check)
+        val adapter = ArrayAdapterUtils.getArrayAdapter(requireContext(), R.array.economic)
         binding.acEconomicStatusCheck.setAdapter(adapter)
 
         binding.acEconomicStatusCheck.setOnItemClickListener { _, _, i, _ ->
@@ -135,7 +135,7 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
     }
 
     private fun setupReligion() {
-        val adapter = ArrayAdapterUtils.getArrayAdapter(requireContext(), R.array.hb_check)
+        val adapter = ArrayAdapterUtils.getArrayAdapter(requireContext(), R.array.baseline_religion)
         binding.acReligion.setAdapter(adapter)
 
         binding.acReligion.setOnItemClickListener { _, _, i, _ ->
@@ -147,7 +147,11 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
     }
 
     private fun setupNumberOfToiletFacilities() {
-        val adapter = ArrayAdapterUtils.getArrayAdapter(requireContext(), R.array.hb_check)
+        val adapter = ArrayAdapterUtils.getArrayAdapter(
+            requireContext(),
+            R.array.baseline_toilet_facilities
+        )
+
         binding.acToiletFacility.setAdapter(adapter)
 
         binding.acToiletFacility.setOnItemClickListener { _, _, i, _ ->
@@ -159,7 +163,8 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
     }
 
     private fun setupHouseStructure() {
-        val adapter = ArrayAdapterUtils.getArrayAdapter(requireContext(), R.array.hb_check)
+        val adapter =
+            ArrayAdapterUtils.getArrayAdapter(requireContext(), R.array.baseline_house_structure)
         binding.acHouseStructure.setAdapter(adapter)
 
         binding.acHouseStructure.setOnItemClickListener { _, _, i, _ ->
@@ -171,7 +176,11 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
     }
 
     private fun setupCultivableLand() {
-        val adapter = ArrayAdapterUtils.getArrayAdapter(requireContext(), R.array.hb_check)
+        val adapter = ArrayAdapterUtils.getArrayAdapter(
+            requireContext(),
+            R.array.baseline_cultivable_land
+        )
+        
         binding.acCultivableLand.setAdapter(adapter)
 
         binding.acCultivableLand.setOnItemClickListener { _, _, i, _ ->

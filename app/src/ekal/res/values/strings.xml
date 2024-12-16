@@ -72,4 +72,32 @@
     <string name="one_lakh_two_lakh_fifty_thousand">1,00,000 – 2,50,000</string>
     <string name="more_than_two_lakh_fifty_thousand">More than 2,50,000</string>
 
+    <string name="religion_hindu">Hindu</string>
+    <string name="religion_muslim">Muslim</string>
+    <string name="religion_christian">Christian</string>
+    <string name="religion_sikh">Sikh</string>
+    <string name="religion_buddhist_neo_buddhist">Buddhist or Neo-Buddhist</string>
+    <string name="religion_jain">Jain</string>
+    <string name="religion_others">Others</string>
+
+    <string name="economic_status_apl">APL</string>
+    <string name="economic_status_bpl">BPL</string>
+
+    <string name="toilet_facility_open_defecation">Open Defecation</string>
+    <string name="toilet_facility_own_a_toilet_but_it_unusable">Own a toilet but it is unusable</string>
+    <string name="toilet_facility_use_toilet_at_home">Use toilet at home</string>
+    <string name="toilet_facility_use_community_toilet">Use Community Toilet</string>
+    <string name="toilet_facility_shared_toilet_with_other_households">Shared Toilet with other households</string>
+    <string name="toilet_facility_declined_to_answer">Declined to answer</string>
+
+    <string name="house_structure_kutcha_house">Kutcha House</string>
+    <string name="house_structure_pakka_house">Pakka House</string>
+    <string name="house_structure_homeless">Homeless</string>
+
+    <string name="cultivable_land_bigha">Bigha</string>
+    <string name="cultivable_land_gunta">Gunta</string>
+    <string name="cultivable_land_acre">Acre</string>
+    <string name="cultivable_land_hectare">Hectare</string>
+    <string name="cultivable_land_landless">Landless</string>
+
 </resources>
