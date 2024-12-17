@@ -1161,4 +1161,11 @@ public class DateAndTimeUtils {
         Date date = new Date(currentTimeMillis);
         return simpleFormat.format(date);
     }
+    public static String currentDateTimeFormat() {
+        Locale.setDefault(Locale.ENGLISH);
+        DateFormat date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+// you can get seconds by adding  "...:ss" to it
+        Date todayDate = new Date();
+        return date.format(todayDate);
+    }
 }

@@ -905,4 +905,34 @@ public class EncounterDAO {
 
         return list;
     }
+    public static String fetchEncounterUuidForEncounterDiagnostics(String visitUUID) {
+        String uuid = "";
+
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        db.beginTransaction();
+
+        if(visitUUID != null) {
+            final Cursor cursor = db.rawQuery("select * from tbl_encounter where visituuid = ? and " +
+                    "(sync = 1 OR sync = 'true' OR sync = 'TRUE') and voided = 0 and " +
+                    "encounter_type_uuid = ?", new String[]{visitUUID, ENCOUNTER_VITALS});
+
+            if (cursor.moveToFirst()) {
+                do {
+                    try {
+                        uuid = cursor.getString(cursor.getColumnIndexOrThrow("uuid"));
+                        CustomLog.v("modifiedDate", "uuid: " + uuid);
+                    }
+                    catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+            db.setTransactionSuccessful();
+            db.endTransaction();
+        }
+
+        return uuid;
+    }
+
 }

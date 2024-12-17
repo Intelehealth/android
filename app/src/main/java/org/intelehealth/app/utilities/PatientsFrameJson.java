@@ -2,6 +2,8 @@ package org.intelehealth.app.utilities;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
+
 import org.intelehealth.app.utilities.CustomLog;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
@@ -99,6 +101,7 @@ public class PatientsFrameJson {
                 attributeList.clear();
                 try {
                     attributeList = patientsDAO.getPatientAttributes(patientDTOList.get(i).getUuid());
+                    Log.d("kzdevchk", "frameJson: PatientAttribute : "+ new Gson().toJson(attributeList));
                 } catch (DAOException e) {
                     FirebaseCrashlytics.getInstance().recordException(e);
                     CustomLog.e(TAG,e.getMessage());

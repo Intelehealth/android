@@ -118,4 +118,7 @@
     <string name="select_city">Select City</string>
     <string name="registration_address_of_health_facility">Registration Address of Health Facility</string>
     <string name="enter_registration_address">Enter Registration Address</string>
+    <string name="family_members">Family Members</string>
+    <string name="no_family_member_registered">No family member registered</string>
+    <string name="draft_survey">Draft Survey</string>
 </resources>

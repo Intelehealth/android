@@ -905,7 +905,7 @@
     <string name="all_reasons">All reasons</string>
     <string name="_visit_reason_summary">%1$d/%2$d Visit Reason summary</string>
     <string name="change">Change</string>
-    <string name="_vitals_summary">1/4. Vitals summary</string>
+    <string name="_vitals_summary">1/5. Vitals summary</string>
     <string name="mo">Mo</string>
     <string name="tu">Tu</string>
     <string name="we">We</string>
@@ -1077,4 +1077,7 @@
     <string name="select_city">Select City</string>
     <string name="registration_address_of_health_facility">Registration Address of Health Facility</string>
     <string name="enter_registration_address">Enter Registration Address</string>
+    <string name="family_members">Family Members</string>
+    <string name="no_family_member_registered">No family member registered</string>
+    <string name="draft_survey">Draft Survey</string>
 </resources>

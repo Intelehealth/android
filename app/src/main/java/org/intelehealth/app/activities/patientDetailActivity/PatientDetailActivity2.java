@@ -66,8 +66,16 @@ import android.os.LocaleList;
 import android.util.DisplayMetrics;
 
 import org.intelehealth.app.models.dto.PatientAttributesDTO;
+
+import org.intelehealth.app.activities.householdSurvey.HouseholdSurveyActivity;
+import org.intelehealth.app.models.FamilyMemberRes;
+import org.intelehealth.app.BuildConfig;
+import org.intelehealth.app.ui.rosterquestionnaire.ui.RosterQuestionnaireMainActivity;
+import org.intelehealth.app.ui.rosterquestionnaire.utilities.RosterQuestionnaireStage;
 import org.intelehealth.app.utilities.CustomLog;
 
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -128,6 +136,7 @@ import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.DownloadFilesUtils;
 import org.intelehealth.app.utilities.FileUtils;
+import org.intelehealth.app.utilities.HouseholdSurveyStage;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
@@ -171,14 +180,14 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             guardina_name_tv, guardian_type_tv, contact_type_tv, em_contact_name_tv, em_contact_number_tv,
             tmh_case_number_tv, request_id_tv, relative_phone_num_tv, discipline_tv, department_tv,
             provinceTv, cityTv, registrationAddressOfHfTv, innTv, codeOfHealthFacilityTv, healthFacilityNameTv,
-            codeOfDepartmentTv, departmentTv;
+            codeOfDepartmentTv, departmentTv, householdNumber;
 
     TableRow nameTr, genderTr, dobTr, ageTr, phoneNumTr, guardianTypeTr, guardianNameTr,
             emContactNameTr, emContactTypeTr, emContactNumberTr, postalCodeTr, countryTr,
             stateTr, districtTr, villageCityTr, addressOneTr, addressTwoTr, nidTr, occupationTr, socialCategoryTr,
             educationTr, economicCategoryTr, tmhCaseNumberTr, requestIdTr, relativePhnNumTr, disciplineTr, departmentTr,
             provinceTr, cityTr, registrationAddressOfHfTr,
-            innTr, codeOfHealthFacilityTr, healthFacilityNameTr, codeOfDepartmentTr;
+            innTr, codeOfHealthFacilityTr, healthFacilityNameTr, codeOfDepartmentTr, householdNumberTr;
 
     SessionManager sessionManager = null;
     //    Patient patientDTO = new Patient();
@@ -308,6 +317,13 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             finish();
         });
 
+        // Family Member Registration
+        loadFamilyMembers();
+
+        binding.familyMemberCard.imgBtnAddFamMember.setOnClickListener(v -> {
+            addFamilyMember();
+        });
+
         cancelbtn.setOnClickListener(v -> {
             Intent i = new Intent(PatientDetailActivity2.this, HomeScreenActivity_New.class);
             startActivity(i);
@@ -395,6 +411,97 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 getOnBackPressedDispatcher().onBackPressed();
             }
         });
+
+        setClickListeners();
+
+    }
+
+    private void setClickListeners() {
+        binding.householdSurvey.tvHouseholdSurvey.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                HouseholdSurveyActivity.startHouseholdSurvey(PatientDetailActivity2.this, patientDTO.getUuid(), HouseholdSurveyStage.FIRST_SCREEN);
+
+               /* Intent intent1 = new Intent(PatientDetailActivity2.this, HouseholdSurveyActivity.class);
+                intent1.putExtra("patientUuid", patientDTO.getUuid());
+                startActivity(intent1);*/
+            }
+        });
+
+        binding.rosterDetails.generalEdit.setOnClickListener(v -> {
+            RosterQuestionnaireMainActivity.startRosterQuestionnaire(this, patientDTO.getUuid(), RosterQuestionnaireStage.GENERAL_ROSTER);
+            finish();
+        });
+        binding.rosterDetails.pregnancyEdit.setOnClickListener(v -> {
+            RosterQuestionnaireMainActivity.startRosterQuestionnaire(this, patientDTO.getUuid(), RosterQuestionnaireStage.PREGNANCY_ROSTER);
+            finish();
+        });
+        binding.rosterDetails.healthServiceEdit.setOnClickListener(v -> {
+            RosterQuestionnaireMainActivity.startRosterQuestionnaire(this, patientDTO.getUuid(), RosterQuestionnaireStage.HEALTH_SERVICE);
+            finish();
+        });
+
+    }
+
+    // Family Member
+    private void loadFamilyMembers() {
+        String houseHoldValue = "";
+        try {
+            houseHoldValue = patientsDAO.getHouseHoldValue(patientDTO.getUuid());
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+        Log.v("Familyyy", "load fam: " + houseHoldValue);
+
+        if (houseHoldValue !=null && !houseHoldValue.equalsIgnoreCase("")) {
+            //Fetch all patient UUID from houseHoldValue
+            try {
+                List<FamilyMemberRes> listPatientNames = new ArrayList<>();
+                List<String> patientUUIDs = new ArrayList<>(patientsDAO.getPatientUUIDs(houseHoldValue));
+                Log.e("patientUUIDs", "" + patientUUIDs);
+
+                for (int i = 0; i < patientUUIDs.size(); i++) {
+                    if (!patientUUIDs.get(i).equals(patientDTO.getUuid())) {
+                        listPatientNames.addAll(patientsDAO.getPatientName(patientUUIDs.get(i)));
+                    }
+                }
+
+                //  Logger.logD("List", listPatientNames.get(0).getOpenMRSID());
+                if (listPatientNames.size() > 0) {
+                    binding.familyMemberCard.tvNoFamilyMember.setVisibility(View.GONE);
+                    binding.familyMemberCard.rvFamilyMember.setVisibility(View.VISIBLE);
+
+                    FamilyMemberAdapter familyMemberAdapter = new FamilyMemberAdapter(listPatientNames, this);
+                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+                    binding.familyMemberCard.rvFamilyMember.setLayoutManager(linearLayoutManager);
+                    binding.familyMemberCard.rvFamilyMember.setAdapter(familyMemberAdapter);
+                } else {
+                    binding.familyMemberCard.tvNoFamilyMember.setVisibility(View.VISIBLE);
+                    binding.familyMemberCard.rvFamilyMember.setVisibility(View.GONE);
+                }
+
+            } catch (DAOException e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+            }
+        }
+    }
+
+    private void addFamilyMember() {
+        String houseHoldValue = "";
+        try {
+            houseHoldValue = patientsDAO.getHouseHoldValue(patientDTO.getUuid());
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+        Log.v("Familyyy", "pat detail householdNo: " + houseHoldValue);
+
+        sessionManager.setHouseholdUuid(houseHoldValue);
+        PatientRegistrationActivity.startPatientRegistrationForFamilyMemberRegistration(
+                this,
+                patientDTO.getUuid(),
+                null,
+                PatientRegStage.PERSONAL);
     }
 
     private BroadcastReceiver mBroadcastReceiver;
@@ -595,6 +702,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         guardianTypeTr = findViewById(R.id.guardian_type_table_row);
         addressOneTr = findViewById(R.id.address1_tr);
         addressTwoTr = findViewById(R.id.tr_address_2);
+        householdNumberTr = findViewById(R.id.household_no_tr);
 
         nidTr = findViewById(R.id.nid_tr);
         occupationTr = findViewById(R.id.occupation_tr);
@@ -621,6 +729,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         village = findViewById(R.id.village);
         address1 = findViewById(R.id.address1);
         addr2View = findViewById(R.id.addr2View);
+        householdNumber = findViewById(R.id.household_number);
 
         provinceTr = findViewById(R.id.province_tr);
         cityTr = findViewById(R.id.city_tr);
@@ -870,6 +979,15 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                                 null,
                                 null
                         );
+                case PatientRegConfigKeys.HOUSEHOLD_NUMBER ->
+                        PatientRegFieldsUtils.INSTANCE.configField(
+                                false,
+                                fields,
+                                householdNumberTr,
+                                null,
+                                null,
+                                null
+                        );
 
                 case PatientRegConfigKeys.TMH_CASE_SUMMARY ->
                         PatientRegFieldsUtils.INSTANCE.configField(
@@ -987,6 +1105,9 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
             }
         }
+        /*for NAS corresponding address is not required and address 1
+             means household no value thats why disabled the corresponding address 1 field for nas*/
+        addressOneTr.setVisibility(BuildConfig.FLAVOR_client.equals("nas") ? View.GONE : View.VISIBLE);
     }
 
 
@@ -1233,7 +1354,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         String[] patientColumns = {"uuid", "openmrs_id", "first_name", "middle_name", "last_name", "gender",
                 "date_of_birth", "address1", "address2", "city_village", "state_province",
                 "postal_code", "country", "phone_number", "gender", "sdw",
-                "patient_photo", "guardian_type", "guardian_name", "contact_type", "em_contact_name", "em_contact_num"};
+                "patient_photo", "guardian_type", "guardian_name", "contact_type", "em_contact_name", "em_contact_num", "address3"};
         Cursor idCursor = db.query("tbl_patient", patientColumns, patientSelection, patientArgs, null, null, null);
         if (idCursor.moveToFirst()) {
             do {
@@ -1306,6 +1427,9 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 }
                 if (name.equalsIgnoreCase("providerUUID")) {
                     patientDTO.setProviderUUID(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("blockSurvey")) {
+                    patientDTO.setBlock(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
 
                 if (name.equalsIgnoreCase(PatientAttributesDTO.Column.TMH_CASE_NUMBER.value)) {
@@ -2132,6 +2256,12 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         } else {
             departmentTv.setText(getString(R.string.not_provided));
         }
+
+        if (patientDTO.getAddress1() != null && !patientDTO.getAddress1().equals("")) {
+            householdNumber.setText(patientDTO.getAddress1());
+        } else {
+            householdNumber.setText(getString(R.string.not_provided));
+        }
     }
 
     private String getStateTranslated(String state, String language) {
@@ -2491,6 +2621,9 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     }
 
     private void initForPastVisit() {
+        if (patientDTO == null || patientDTO.getUuid() == null) {
+            return;
+        }
         mPastVisitDataList.clear();
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         String visitSelection = "patientuuid = ? and enddate IS NOT NULL and enddate != ''";
@@ -2685,6 +2818,8 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         if (activeStatus != null) {
             binding.setAddressActiveStatus(activeStatus.getActiveStatusPatientAddress());
             binding.setOtherActiveStatus(activeStatus.getActiveStatusPatientOther());
+            binding.setFamilyMemberActiveStatus(activeStatus.getActiveStatusPatientFamilyMemberRegistration());
+            binding.setHouseholdSurveyActiveStatus(activeStatus.getActiveStatusPatientHouseholdSurvey());
         }
     }
 }

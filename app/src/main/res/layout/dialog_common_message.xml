@@ -84,8 +84,6 @@
                     android:layout_toEndOf="@id/negative_btn"
                     android:background="@drawable/primary_bg_rounded_corners"
                     android:gravity="center"
-                    android:paddingHorizontal="@dimen/padding_15"
-                    android:paddingVertical="@dimen/padding_12"
                     android:text="@string/no" />
             </LinearLayout>
 
