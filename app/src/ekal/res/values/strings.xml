@@ -41,7 +41,7 @@
 
     <string name="smoker">Smoker</string>
     <string name="non_smoker">Non-Smoker</string>
-    <string name="declined_to_answer">Declined To Answer</string>
+    <string name="denied_to_answer">Denied To Answer</string>
     <string name="medical_history">Medical History</string>
 
     <string name="less_than_5_bidis_or_cigarette">Less than 5 bidis / cigarette</string>
@@ -99,5 +99,8 @@
     <string name="cultivable_land_acre">Acre</string>
     <string name="cultivable_land_hectare">Hectare</string>
     <string name="cultivable_land_landless">Landless</string>
+
+    <string name="error_number_of_people_living_cannot_be_greater_than_the_total_number_of_members_in_the_household">Number of members living cannot be greater than total number of members in the household</string>
+    <string name="load_shedding_hours_error">The number of hours must be between 0 and 24.</string>
 
 </resources>

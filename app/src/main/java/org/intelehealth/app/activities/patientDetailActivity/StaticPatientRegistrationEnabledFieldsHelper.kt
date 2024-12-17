@@ -840,6 +840,30 @@ object StaticPatientRegistrationEnabledFieldsHelper {
             id = 0,
             groupId = "",
             name = "",
+            idKey = PatientRegConfigKeys.LOAD_SHEDDING_HOURS,
+            isMandatory = true,
+            isEditable = true,
+            isEnabled = true
+        )
+
+        fields.add(currentField)
+
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.LOAD_SHEDDING_DAYS,
+            isMandatory = true,
+            isEditable = true,
+            isEnabled = true
+        )
+
+        fields.add(currentField)
+
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
             idKey = PatientRegConfigKeys.WATER_CHECK,
             isMandatory = true,
             isEditable = true,

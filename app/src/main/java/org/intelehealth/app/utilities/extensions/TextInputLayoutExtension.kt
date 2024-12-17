@@ -1,9 +1,13 @@
 package org.intelehealth.app.utilities.extensions
 
+import android.annotation.SuppressLint
+import android.text.Editable
 import android.text.InputFilter
+import android.text.TextWatcher
 import android.widget.AutoCompleteTextView
 import android.widget.EditText
 import androidx.annotation.StringRes
+import androidx.core.widget.doAfterTextChanged
 import androidx.core.widget.doOnTextChanged
 import com.github.ajalt.timberkt.Timber
 import com.google.android.material.textfield.TextInputEditText
@@ -71,4 +75,33 @@ fun TextInputLayout.validateDigit(
 
 fun EditText.addFilter(filter: InputFilter) {
     this.filters = this.filters + filter
+}
+
+fun TextInputLayout.validateNumberOfUsualMembers(
+    usualMembersInput: TextInputEditText,
+    totalMembersInput: TextInputEditText,
+    @StringRes resId: Int
+): Boolean {
+    val usualMembers: String = usualMembersInput.text.toString()
+    val totalMembers: String = totalMembersInput.text.toString()
+    return if (usualMembers.isNotEmpty() || totalMembers.isNotEmpty()) {
+        if (usualMembers.toInt() > totalMembers.toInt()) {
+            showError(resId)
+            false
+        } else true
+    } else false
+}
+
+fun TextInputLayout.validateIntegerDataLimits(
+    valueEditText: TextInputEditText,
+    startLimit: Int,
+    endLimit: Int,
+    @StringRes resId: Int
+): Boolean {
+    val input = valueEditText.text.toString()
+    return if (input.isNotEmpty()) {
+        val enteredValue: Int = input.toInt()
+        showError(resId)
+        enteredValue in startLimit..endLimit
+    } else false
 }

@@ -18,6 +18,8 @@ class OtherBaselineConfig {
     var numberOfFeaturePhones: PatientRegistrationFields? = null
     var numberOfEarningMembers: PatientRegistrationFields? = null
     var electricityCheck: PatientRegistrationFields? = null
+    var loadSheddingHours: PatientRegistrationFields? = null
+    var loadSheddingDays: PatientRegistrationFields? = null
     var waterCheck: PatientRegistrationFields? = null
     var sourceOfWater: PatientRegistrationFields? = null
     var safeguardWater: PatientRegistrationFields? = null

@@ -102,7 +102,8 @@
                     android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/llHeadOfHousehold">
+                    app:layout_constraintTop_toBottomOf="@+id/llHeadOfHousehold"
+                    tools:visibility="visible">
 
                     <LinearLayout
                         android:id="@+id/llRationCard"
@@ -476,6 +477,45 @@
                                 android:layout_height="wrap_content"
                                 android:text="@string/no" />
                         </RadioGroup>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/llLoadSheddingHours"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/std_12dp"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:lineSpacingExtra="3sp"
+                            android:text="@{ otherConfig.loadSheddingHours.mandatory ? @string/load_shedding + ` *` : @string/load_shedding}"
+                            android:textAppearance="@style/blur_txtview"
+                            android:textSize="@null"
+                            tools:text="@string/load_shedding" />
+
+                        <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
+                            android:id="@+id/til_load_sheding_hours_option"
+                            style="@style/AppTheme.OutlineInputBox"
+                            config="@{otherConfig.usualHouseholdMembers}"
+                            editMode="@{baselineEditMode}"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/margin_4"
+                            app:hintEnabled="false">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/textInputloadSheddingHours"
+                                style="@style/AppTheme.InputBox.Phone"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="@string/enter_number"
+                                android:text="@{baseline.usualHouseholdMembers}" />
+
+                        </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
 
                     </LinearLayout>
 

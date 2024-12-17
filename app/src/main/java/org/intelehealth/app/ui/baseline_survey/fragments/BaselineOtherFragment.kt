@@ -10,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import org.intelehealth.app.R
 import org.intelehealth.app.activities.patientDetailActivity.StaticPatientRegistrationEnabledFieldsHelper
 import org.intelehealth.app.databinding.FragmentBaselineSurveyOtherBinding
+import org.intelehealth.app.ui.baseline_survey.constants.Constants
 import org.intelehealth.app.ui.baseline_survey.model.Baseline
 import org.intelehealth.app.utilities.ArrayAdapterUtils
 import org.intelehealth.app.utilities.BaselineSurveyStage
@@ -17,9 +18,12 @@ import org.intelehealth.app.utilities.LanguageUtils
 import org.intelehealth.app.utilities.PatientRegFieldsUtils
 import org.intelehealth.app.utilities.extensions.getSelectedData
 import org.intelehealth.app.utilities.extensions.hideError
+import org.intelehealth.app.utilities.extensions.hideErrorOnTextChang
 import org.intelehealth.app.utilities.extensions.validate
 import org.intelehealth.app.utilities.extensions.validateCheckboxes
 import org.intelehealth.app.utilities.extensions.validateDropDowb
+import org.intelehealth.app.utilities.extensions.validateIntegerDataLimits
+import org.intelehealth.app.utilities.extensions.validateNumberOfUsualMembers
 
 /**
  * Created by Shazzad H Kanon on 06-12-2024 - 11:00.
@@ -62,9 +66,34 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
         setupWaterSafeguarding()
         setupEconomicStatus()
         setupReligion()
+        setupElectricityCheck()
         setupNumberOfToiletFacilities()
         setupHouseStructure()
         setupCultivableLand()
+        setOnTextChangeListener()
+    }
+
+    private fun setOnTextChangeListener() {
+        binding.tilTotalMemberOption.hideErrorOnTextChang(binding.textInputTotalHHMembers)
+        binding.tilUsualMemberOption.hideErrorOnTextChang(binding.textInputUsualHHMembers)
+        binding.tilNumberOfSmartphonesOption.hideErrorOnTextChang(binding.textInputNoOfSmartPhones)
+        binding.tilNumberOfFeaturePhoneOption.hideErrorOnTextChang(binding.textInputNoOfFeaturePhones)
+        binding.tilNumberOfEarningMembersOption.hideErrorOnTextChang(binding.textInputEarningMembers)
+        binding.tilLoadShedingHoursOption.hideErrorOnTextChang(binding.textInputloadSheddingHours)
+    }
+
+    private fun setupElectricityCheck() {
+        binding.rgElectricityOptions.setOnCheckedChangeListener { _, checkedId ->
+            when (checkedId) {
+                binding.radioElectricityYes.id -> {
+                    binding.llLoadSheddingHours.visibility = View.VISIBLE
+                }
+
+                else -> {
+                    binding.llLoadSheddingHours.visibility = View.GONE
+                }
+            }
+        }
     }
 
     private fun setupHohCheck() {
@@ -127,7 +156,7 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
             binding.tilEconomicStatusOption.hideError()
             LanguageUtils.getSpecificLocalResource(requireContext(), "en").apply {
                 binding.acEconomicStatusCheck.setText(
-                    this.getStringArray(R.array.hb_check)[i],
+                    this.getStringArray(R.array.economic)[i],
                     false
                 )
             }
@@ -141,7 +170,7 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
         binding.acReligion.setOnItemClickListener { _, _, i, _ ->
             binding.tilReligionOption.hideError()
             LanguageUtils.getSpecificLocalResource(requireContext(), "en").apply {
-                binding.acReligion.setText(this.getStringArray(R.array.hb_check)[i], false)
+                binding.acReligion.setText(this.getStringArray(R.array.baseline_religion)[i], false)
             }
         }
     }
@@ -157,7 +186,10 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
         binding.acToiletFacility.setOnItemClickListener { _, _, i, _ ->
             binding.tilToiletFacilityOption.hideError()
             LanguageUtils.getSpecificLocalResource(requireContext(), "en").apply {
-                binding.acToiletFacility.setText(this.getStringArray(R.array.hb_check)[i], false)
+                binding.acToiletFacility.setText(
+                    this.getStringArray(R.array.baseline_toilet_facilities)[i],
+                    false
+                )
             }
         }
     }
@@ -180,7 +212,7 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
             requireContext(),
             R.array.baseline_cultivable_land
         )
-        
+
         binding.acCultivableLand.setAdapter(adapter)
 
         binding.acCultivableLand.setOnItemClickListener { _, _, i, _ ->
@@ -203,8 +235,13 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
     }
 
     private fun validateFields(block: () -> Unit) {
-        val error = R.string.this_field_is_mandatory
         val isHeadOfHousehold = binding.llHohYes.isVisible
+        val isElectricityAvailable = binding.radioElectricityYes.isChecked
+
+        val error = R.string.this_field_is_mandatory
+        val usualMembersError =
+            R.string.error_number_of_people_living_cannot_be_greater_than_the_total_number_of_members_in_the_household
+        val loadSheddingHoursError = R.string.load_shedding_hours_error
 
         binding.otherConfig?.let {
             val headOfHousehold =
@@ -238,6 +275,11 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
             val usualHouseholdMembers =
                 if (it.usualHouseholdMembers!!.isEnabled && it.usualHouseholdMembers!!.isMandatory && isHeadOfHousehold) {
                     binding.tilUsualMemberOption.validate(binding.textInputUsualHHMembers, error)
+                    binding.tilUsualMemberOption.validateNumberOfUsualMembers(
+                        binding.textInputUsualHHMembers,
+                        binding.textInputTotalHHMembers,
+                        usualMembersError
+                    )
                 } else true
 
             val numberOfSmartphones =
@@ -267,6 +309,20 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
             val electricityCheck =
                 if (it.electricityCheck!!.isEnabled && it.electricityCheck!!.isMandatory && isHeadOfHousehold) {
                     binding.rgElectricityOptions.validate()
+                } else true
+
+            val loadSheddingHours =
+                if (it.loadSheddingHours!!.isEnabled && it.loadSheddingHours!!.isMandatory && isHeadOfHousehold && isElectricityAvailable) {
+                    binding.tilLoadShedingHoursOption.validate(
+                        binding.textInputloadSheddingHours,
+                        error
+                    )
+                    binding.tilLoadShedingHoursOption.validateIntegerDataLimits(
+                        binding.textInputloadSheddingHours,
+                        Constants.LOAD_SHEDDING_START_HOURS,
+                        Constants.LOAD_SHEDDING_END_HOURS,
+                        loadSheddingHoursError
+                    )
                 } else true
 
             val waterCheck =
@@ -343,14 +399,14 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
                     binding.rgRelationWithHohOptions.validate()
                 } else true
 
-
             if (headOfHousehold.and(rationCardCheck).and(rationCardCheck).and(economicStatus)
                     .and(religion).and(totalHouseholdMembers).and(usualHouseholdMembers)
                     .and(numberOfSmartphones).and(numberOfFeaturePhones).and(numberOfEarningMembers)
-                    .and(electricityCheck).and(waterCheck).and(sourceOfWater).and(safeguardWater)
-                    .and(distanceFromWater).and(toiletFacility).and(houseStructure)
-                    .and(cultivableLand).and(averageIncome).and(fuelType).and(sourceOfLight)
-                    .and(handWashPractices).and(ekalServiceCheck).and(relationWithHousehold)
+                    .and(electricityCheck).and(loadSheddingHours).and(waterCheck).and(sourceOfWater)
+                    .and(safeguardWater).and(distanceFromWater).and(toiletFacility)
+                    .and(houseStructure).and(cultivableLand).and(averageIncome).and(fuelType)
+                    .and(sourceOfLight).and(handWashPractices).and(ekalServiceCheck)
+                    .and(relationWithHousehold)
             ) {
                 block.invoke()
             } else {

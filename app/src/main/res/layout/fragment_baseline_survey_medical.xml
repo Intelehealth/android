@@ -538,7 +538,7 @@
                             editMode="@{baselineEditMode}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/declined_to_answer" />
+                            android:text="@string/denied_to_answer" />
                     </RadioGroup>
 
                 </LinearLayout>
@@ -793,7 +793,7 @@
                             editMode="@{baselineEditMode}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/decline_to_answer" />
+                            android:text="@string/denied_to_answer" />
                     </RadioGroup>
 
                 </LinearLayout>
@@ -852,7 +852,7 @@
                             editMode="@{baselineEditMode}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/decline_to_answer" />
+                            android:text="@string/denied_to_answer" />
                     </RadioGroup>
 
                 </LinearLayout>

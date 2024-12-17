@@ -7,7 +7,7 @@ package org.intelehealth.app.utilities
  * Patient register config keys
  */
 class PatientRegConfigKeys {
-    companion object{
+    companion object {
         //PERSONAL
         const val PROFILE_PHOTO = "p_profile_photo"
         const val FIRST_NAME = "p_first_name"
@@ -68,7 +68,7 @@ class PatientRegConfigKeys {
         const val CHEW_TOBACCO = "chew_tobacco"
         const val ALCOHOL_HISTORY = "alcohol_history"
         const val ALCOHOL_RATE = "alcohol_rate"
-        const val ALCOHOL_DURATION= "alcohol_duration"
+        const val ALCOHOL_DURATION = "alcohol_duration"
         const val ALCOHOL_FREQUENCY = "alcohol_frequency"
 
         // OTHERS
@@ -82,6 +82,8 @@ class PatientRegConfigKeys {
         const val NUMBER_OF_FEATURE_PHONES = "NUMBER_OF_FEATURE_PHONES"
         const val NUMBER_OF_EARNING_MEMBERS = "NUMBER_OF_EARNING_MEMBERS"
         const val ELECTRICITY_CHECK = "ELECTRICITY_CHECK"
+        const val LOAD_SHEDDING_HOURS = "LOAD_SHEDDING_HOURS"
+        const val LOAD_SHEDDING_DAYS = "LOAD_SHEDDING_DAYS"
         const val WATER_CHECK = "WATER_CHECK"
         const val SOURCE_OF_WATER = "SOURCE_OF_WATER"
         const val SAFEGUARD_WATER = "SAFEGUARD_WATER"
@@ -89,7 +91,7 @@ class PatientRegConfigKeys {
         const val TOILET_FACILITY = "TOILET_FACILITY"
         const val HOUSE_STRUCTURE = "HOUSE_STRUCTURE"
         const val CULTIVABLE_LAND = "CULTIVABLE_LAND"
-        const val AVERAGE_INCOME= "AVERAGE_INCOME"
+        const val AVERAGE_INCOME = "AVERAGE_INCOME"
         const val FUEL_TYPE = "FUEL_TYPE"
         const val SOURCE_OF_LIGHT = "SOURCE_OF_LIGHT"
         const val HANDWASH_PRACTICES = "HANDWASH_PRACTICES"

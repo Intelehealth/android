@@ -28,7 +28,7 @@ object PatientRegFieldsUtils {
         fieldViewSecondary: View?,
         titleTv: TextView?
     ) {
-        layoutView.visibility = if(field.isEnabled)  View.VISIBLE else View.GONE
+        layoutView.visibility = if (field.isEnabled) View.VISIBLE else View.GONE
 
         //if existing title has * then removing it first
         var titleStr = titleTv?.text
@@ -229,6 +229,8 @@ object PatientRegFieldsUtils {
                     PatientRegConfigKeys.NUMBER_OF_FEATURE_PHONES -> numberOfFeaturePhones = it
                     PatientRegConfigKeys.NUMBER_OF_EARNING_MEMBERS -> numberOfEarningMembers = it
                     PatientRegConfigKeys.ELECTRICITY_CHECK -> electricityCheck = it
+                    PatientRegConfigKeys.LOAD_SHEDDING_HOURS -> loadSheddingHours = it
+                    PatientRegConfigKeys.LOAD_SHEDDING_DAYS -> loadSheddingDays = it
                     PatientRegConfigKeys.WATER_CHECK -> waterCheck = it
                     PatientRegConfigKeys.SOURCE_OF_WATER -> sourceOfWater = it
                     PatientRegConfigKeys.SAFEGUARD_WATER -> safeguardWater = it
