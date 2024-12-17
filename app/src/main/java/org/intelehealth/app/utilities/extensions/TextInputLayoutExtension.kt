@@ -101,7 +101,11 @@ fun TextInputLayout.validateIntegerDataLimits(
     val input = valueEditText.text.toString()
     return if (input.isNotEmpty()) {
         val enteredValue: Int = input.toInt()
-        showError(resId)
-        enteredValue in startLimit..endLimit
+        return if (enteredValue in startLimit..endLimit) {
+            true
+        } else {
+            showError(resId)
+            false
+        }
     } else false
 }

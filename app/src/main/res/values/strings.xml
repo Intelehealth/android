@@ -778,6 +778,8 @@
     <string name="earning_members_label">No. of earning members in the household</string>
     <string name="electricity_check_question">Does the house have electricity?</string>
     <string name="load_shedding">Load Shedding</string>
+    <string name="load_shedding_hours_question">No. of load shedding hours per day</string>
+    <string name="load_shedding_days_question">No. of load shedding days per week</string>
     <string name="water_check_question">Is there running water available in the house?</string>
     <string name="source_of_water_question">What is the main source of drinking water for members in your household?</string>
     <string name="safequard_question">What do you actually do to the water to make it safer to drink?</string>

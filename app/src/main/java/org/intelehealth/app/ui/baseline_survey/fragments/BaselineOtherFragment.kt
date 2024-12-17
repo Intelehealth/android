@@ -80,17 +80,18 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
         binding.tilNumberOfFeaturePhoneOption.hideErrorOnTextChang(binding.textInputNoOfFeaturePhones)
         binding.tilNumberOfEarningMembersOption.hideErrorOnTextChang(binding.textInputEarningMembers)
         binding.tilLoadShedingHoursOption.hideErrorOnTextChang(binding.textInputloadSheddingHours)
+        binding.tilLoadShedingDaysOption.hideErrorOnTextChang(binding.textInputloadSheddingDays)
     }
 
     private fun setupElectricityCheck() {
         binding.rgElectricityOptions.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
                 binding.radioElectricityYes.id -> {
-                    binding.llLoadSheddingHours.visibility = View.VISIBLE
+                    binding.llLoadShedding.visibility = View.VISIBLE
                 }
 
                 else -> {
-                    binding.llLoadSheddingHours.visibility = View.GONE
+                    binding.llLoadShedding.visibility = View.GONE
                 }
             }
         }
@@ -242,6 +243,7 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
         val usualMembersError =
             R.string.error_number_of_people_living_cannot_be_greater_than_the_total_number_of_members_in_the_household
         val loadSheddingHoursError = R.string.load_shedding_hours_error
+        val loadSheddingDaysError = R.string.load_shedding_days_error
 
         binding.otherConfig?.let {
             val headOfHousehold =
@@ -325,6 +327,21 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
                     )
                 } else true
 
+            val loadSheddingDays =
+                if (it.loadSheddingDays!!.isEnabled && it.loadSheddingDays!!.isMandatory && isHeadOfHousehold && isElectricityAvailable) {
+                    binding.tilLoadShedingDaysOption.validate(
+                        binding.textInputloadSheddingDays,
+                        error
+                    )
+
+                    binding.tilLoadShedingDaysOption.validateIntegerDataLimits(
+                        binding.textInputloadSheddingDays,
+                        Constants.LOAD_SHEDDING_START_DAY,
+                        Constants.LOAD_SHEDDING_END_DAY,
+                        loadSheddingDaysError
+                    )
+                } else true
+
             val waterCheck =
                 if (it.waterCheck!!.isEnabled && it.waterCheck!!.isMandatory && isHeadOfHousehold) {
                     binding.rgWaterCheckOptions.validate()
@@ -402,10 +419,10 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
             if (headOfHousehold.and(rationCardCheck).and(rationCardCheck).and(economicStatus)
                     .and(religion).and(totalHouseholdMembers).and(usualHouseholdMembers)
                     .and(numberOfSmartphones).and(numberOfFeaturePhones).and(numberOfEarningMembers)
-                    .and(electricityCheck).and(loadSheddingHours).and(waterCheck).and(sourceOfWater)
-                    .and(safeguardWater).and(distanceFromWater).and(toiletFacility)
-                    .and(houseStructure).and(cultivableLand).and(averageIncome).and(fuelType)
-                    .and(sourceOfLight).and(handWashPractices).and(ekalServiceCheck)
+                    .and(electricityCheck).and(loadSheddingHours).and(loadSheddingDays)
+                    .and(waterCheck).and(sourceOfWater).and(safeguardWater).and(distanceFromWater)
+                    .and(toiletFacility).and(houseStructure).and(cultivableLand).and(averageIncome)
+                    .and(fuelType).and(sourceOfLight).and(handWashPractices).and(ekalServiceCheck)
                     .and(relationWithHousehold)
             ) {
                 block.invoke()

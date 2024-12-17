@@ -481,26 +481,36 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/llLoadSheddingHours"
+                        android:id="@+id/llLoadShedding"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/std_12dp"
                         android:orientation="vertical"
-                        android:visibility="gone">
+                        android:visibility="gone"
+                        tools:visibility="visible">
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:lineSpacingExtra="3sp"
-                            android:text="@{ otherConfig.loadSheddingHours.mandatory ? @string/load_shedding + ` *` : @string/load_shedding}"
+                            android:text="@string/load_shedding"
                             android:textAppearance="@style/blur_txtview"
                             android:textSize="@null"
                             tools:text="@string/load_shedding" />
 
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:lineSpacingExtra="3sp"
+                            android:text="@{ otherConfig.loadSheddingHours.mandatory ? @string/load_shedding_hours_question + ` *` : @string/load_shedding_hours_question}"
+                            android:textAppearance="@style/blur_txtview"
+                            android:textSize="@null"
+                            tools:text="@string/load_shedding_hours_question" />
+
                         <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
                             android:id="@+id/til_load_sheding_hours_option"
                             style="@style/AppTheme.OutlineInputBox"
-                            config="@{otherConfig.usualHouseholdMembers}"
+                            config="@{otherConfig.loadSheddingHours}"
                             editMode="@{baselineEditMode}"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -509,6 +519,36 @@
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/textInputloadSheddingHours"
+                                style="@style/AppTheme.InputBox.Phone"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="@string/enter_number"
+                                android:text="@{baseline.usualHouseholdMembers}" />
+
+                        </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/std_12dp"
+                            android:lineSpacingExtra="3sp"
+                            android:text="@{ otherConfig.loadSheddingHours.mandatory ? @string/load_shedding_days_question + ` *` : @string/load_shedding_days_question}"
+                            android:textAppearance="@style/blur_txtview"
+                            android:textSize="@null"
+                            tools:text="@string/load_shedding_hours_question" />
+
+                        <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
+                            android:id="@+id/til_load_sheding_days_option"
+                            style="@style/AppTheme.OutlineInputBox"
+                            config="@{otherConfig.loadSheddingDays}"
+                            editMode="@{baselineEditMode}"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/margin_4"
+                            app:hintEnabled="false">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/textInputloadSheddingDays"
                                 style="@style/AppTheme.InputBox.Phone"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"

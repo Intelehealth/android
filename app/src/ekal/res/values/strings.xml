@@ -102,5 +102,6 @@
 
     <string name="error_number_of_people_living_cannot_be_greater_than_the_total_number_of_members_in_the_household">Number of members living cannot be greater than total number of members in the household</string>
     <string name="load_shedding_hours_error">The number of hours must be between 0 and 24.</string>
+    <string name="load_shedding_days_error">The number of days must be between 0 and 7.</string>
 
 </resources>
