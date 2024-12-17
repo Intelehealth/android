@@ -1077,19 +1077,11 @@
     <string name="lbl_clear_all">Clear All</string>
     <string name="sync">Refresh</string>
     <string name="sending_otp">Sending OTP...</string>
-    <string name="blood_glucose_random">Random Blood Sugar (RBS) (mg/dl)</string>
-    <string name="blood_glucose_post_prandial">Post Prandial Blood Sugar (PPBS) (mg/dl)</string>
-    <string name="blood_glucose_fasting">Fasting Blood Sugar (FBS) (mg/dl)</string>
-    <string name="haemoglobin">Hemoglobin (mg/dL)</string>
-    <string name="diagnostics">Diagnostics</string>
-    <string name="uric_acid">Uric Acid</string>
-    <string name="total_cholestrol">Total Cholesterol</string>
     <string name="glucose_random_eg">E.g., 100</string>
     <string name="glucose_fasting_eg">E.g., 70</string>
     <string name="glucose_post_prandial_eg">E.g., 120</string>
     <string name="hemoglobin_eg">E.g., 10 mg/dL</string>
     <string name="cholestrol_eg">E.g., 100</string>
-    <string name="blood_glucose_non_fasting">Blood Glucose (Non-Fasting)</string>
     <string name="glucose_non_fasting_eg">E.g., 60</string>
     <string name="uric_acid_eg">E.g., 7</string>
     <string name="cholesterol_eg">E.g., 100</string>
@@ -1098,7 +1090,9 @@
     <string name="glucose_non_fasting_error">Blood glucose(Non-Fasting) should be in between %1$s and %2$s</string>
     <string name="post_prandial_error">Post Prandial Blood Sugar should be in between %1$s and %2$s</string>
     <string name="hemoglobin_error">Hemoglobin should be in between %1$s and %2$s</string>
+<!--
     <string name="_diagnostics_summary">2/5. Diagnostics summary</string>
+-->
     <string name="diagnostics_section">%1$d/%2$d Diagnostics</string>
     <string name="uric_acid_error">Uric acid should be in between %1$s and %2$s</string>
     <string name="cholestrol_acid_error">Total cholestrol should be in between %1$s and %2$s</string>
@@ -1385,4 +1379,136 @@
     <string name="close_">Close patient registration?</string>
 
     <string name="draft_survey">Draft Survey</string>
+    <string name="no_of_m_km">No. of M/KM</string>
+
+        <!--Roster-->
+    <string name="txt_hedingRosters">Rosters</string>
+    <string name="txt_heading_pregnancy_outcome_roster">Pregnancy Outcome Roster</string>
+    <string name="txt_what_is_your_relationship_with_head_of_household">What is your relationship with Head of Household*</string>
+    <string name="txt_what_is_your_maritual_status">What is your Maritual Status</string>
+    <string name="txt_phone_ownership">Phone Ownership*</string>
+    <string name="txt_bp_checked">BP checked</string>
+    <string name="txt_sugar_checked">Sugar Checked</string>
+    <string name="txt_hb_test">HB test</string>
+    <string name="hint_drop_down_select">Select</string>
+    <string name="other_relation">Other</string>
+    <string name="what_is_your_marital_status">What is your marital status?*</string>
+    <string name="what_is_your_education_status">What is your education status?*</string>
+    <string name="nas_occupation">Occupation*</string>
+    <string name="txt_when_was_the_last_time_you_got_your_bp_checked">When was the last time you got your BP checked?*</string>
+    <string name="txt_when_was_the_last_time_you_got_your_sugar_level_checked">When was the last time you got your sugar level checked?*</string>
+    <string name="txt_when_was_the_last_time_you_got_your_hb_level_tested">When was the last time you got your HB level tested?*</string>
+    <string name="txt_bmi_height_and_weight_checked">BMI (Height and weight) checked?*</string>
+    <string name="close_roster_questionnaire">Close roster questionnaire?</string>
+    <string name="sure_you_want_close_close_roster">Are you sure you want to close the roster questionnaire?</string>
+    <string name="update_roster">Update Roster</string>
+    <string name="roster">Roster</string>
+    <string name="general_roster">General</string>
+    <string name="pregnancy_roster">Pregnancy</string>
+    <string name="health_service_roster">Health Service</string>
+    <string name="general_to_pregnancy_roster">General to Pregnancy roster</string>
+    <string name="pregnancy_to_health_service_roster">Pregnancy to Health service</string>
+    <string name="complete_patient_details">Complete patient details</string>
+    <string name="continue_to_enter_roster">Continue to enter roster details.</string>
+    <string name="general_roster_details">General Roster</string>
+    <string name="pregnancy_roster_details">Pregnancy Roster</string>
+    <string name="health_service_roster_details">Health Service Roster</string>
+    <string name="save_prescription">Save Prescription</string>
+    <string name="visit_confirmation">"Are you sure that you want to start the visit? "</string>
+    <string name="name_of_investigator">Name of Investigator*</string>
+    <string name="village">Village*</string>
+    <string name="district_nashik">Nashik</string>
+    <string name="state_Maharastra">Maharastra</string>
+
+    //generate bill - NAS-70
+    <string name="generate_bill">Generate Bill</string>
+    <string name="confirm_tests">Please confirm the test(s)</string>
+    <string name="intelehealth_address">Telehealth Innovations Foundation\n14A, Shreeji Arcade,\nOpp Nitin Company , Panchpakhadi\nThane, 400602, Maharashtra, India.</string>
+    <string name="consultation_charges">Consultation Charges</string>
+    <string name="follow_up_charges">Follow-Up Charges</string>
+    <string name="total_amount">Total Amount</string>
+    <string name="patient_paying">Is patient paying the bill?</string>
+    <string name="confirm_button">Confirm</string>
+    <string name="enter_reason">Enter Reason</string>
+    <string name="print_button">Print</string>
+    <string name="enter_reason_toast">Enter reason for not paying bill</string>
+    <string name="bill_generated_success">Bill generated successfully!</string>
+    <string name="select_payment_information">Payment Information is not selected.</string>
+    <string name="download_bill">First download the bill to share.</string>
+    <string name="intelehealth">Intelehealth</string>
+    <string name="receipt">Receipt</string>
+    <string name="paid">Paid</string>
+    <string name="receipt_no">"Receipt No.: "</string>
+    <string name="client_name">"Client Name: "</string>
+    <string name="client_id">"Client ID: "</string>
+    <string name="visit_id">"Visit ID: "</string>
+    <string name="contact_no">"Contact Number: "</string>
+    <string name="client_village_name">"Client Village Name: "</string>
+    <string name="date_bill">"Date: "</string>
+    <string name="unpaid">Unpaid</string>
+    <string name="view_bill">View Bill</string>
+    <string name="training_setup">Training Setup</string>
+    <string name="prescription_notprovided_msg">Doctor has not given prescription. Please wait for prescription to end the visit.</string>
+    <string name="to_bill">" to "</string>
+    <string name="reschedule_follow_up">Reschedule Follow Up</string>
+
+    <!-- NAS -->
+    <string name="analysing">Analysing ....</string>
+    <string name="test_completed">Test Completed</string>
+    <string name="diagnostics">Diagnostics</string>
+    <string name="uric_acid">Uric Acid</string>
+    <string name="total_cholestrol">Total Cholesterol</string>
+    <string name="uric_acid_calibration">Uric Acid Calibration</string>
+    <string name="total_cholesterol_calibration">Total Cholesterol Calibration</string>
+    <string name="blood_glucose_non_fasting">Blood Glucose (Non-Fasting)</string>
+    <string name="blood_glucose_random">Random Blood Sugar (RBS) (mg/dl)</string>
+    <string name="blood_glucose_post_prandial">Post Prandial Blood Sugar (PPBS) (mg/dl)</string>
+    <string name="blood_glucose_fasting">Fasting Blood Sugar (FBS) (mg/dl)</string>
+    <string name="haemoglobin">Hemoglobin (mg/dL)</string>
+    <string name="visit_summary_button_download">Download</string>
+
+    <!-- Thermal Printer -->
+    <string name="please_connect">Select Available Device</string>
+    <string name="disconnect">Disconnect</string>
+    <string name="connect">Connect</string>
+    <string name="view_print">View/Print</string>
+    <string name="printing">Printing</string>
+    <string name="paired_devices">Paired</string>
+    <string name="tip_have_no_paired_device">No paired device</string>
+    <string name="tip_have_no_found_bluetooth_device">No Device</string>
+    <string name="search_device">Search</string>
+    <string name="dialog_cancel">Cancel</string>
+    <string name="dialog_ok">OK</string>
+    <string name="dialog_tip">Tip</string>
+    <string name="main_pls_choose_device">Please choose a device</string>
+    <string name="dialog_back">Back</string>
+    <string name="main_discon_click_repeatedly">Device has been disconnected, no need to click repeatedly</string>
+    <string name="barcode_print">Barcode Print</string>
+    <string name="headbar_back">Back</string>
+    <string name="title_barcode">Barcode</string>
+    <string name="title_activity_barcode_print">BarcodePrintActivity</string>
+    <string name="choose_bluetooth_device">Choose Bluetooth Device</string>
+    <string name="bluetooth_notsupported_device">Bluetooth is not supported on this device</string>
+    <string name="turn_on_bluetooth">Please Turn On Bluetooth</string>
+    <string name="_main_connected">" connect success"</string>
+    <string name="_main_connected_fail">connect fail</string>
+    <string name="_main_disconnect">" disconnected"</string>
+    <string name="prescription_printing">The prescription is being printed</string>
+    <string name="hint_other_relation">Other relation</string>
+    <string name="hint_occupation">Other occupation</string>
+
+    <string name="how_many_times_have_you_been_pregnant">How many times have you been pregnant?*</string>
+    <string name="enter">Enter</string>
+    <string name="have_you_had_any_pregnancy_outcomes_in_the_past_2_years">Have you had any pregnancy outcomes in the past 2 years?*</string>
+    <string name="no_of_pregnancy_outcomes_in_the_past_2_years">No. of pregnancy outcomes in the past 2 years</string>
+    <string name="pregnancy_outcome">Pregnancy Outcome</string>
+    <string name="add">Add</string>
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="enter_date">Enter Date</string>
+    <string name="health_service">Health Service</string>
+    <string name="please_add_health_service">Please add health service</string>
+    <string name="please_add_pregnancy_outcome">Please add pregnancy outcome</string>
+    <string name="please_select_pregnancy_outcome">Please select pregnancy outcome\n</string>
+    <string name="_diagnostics_summary">%1$d/%2$d Diagnostics summary</string>
 </resources>

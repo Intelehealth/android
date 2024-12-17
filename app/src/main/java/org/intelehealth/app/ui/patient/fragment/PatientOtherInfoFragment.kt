@@ -1,8 +1,8 @@
 package org.intelehealth.app.ui.patient.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
-import androidx.databinding.OnRebindCallback
 import androidx.navigation.fragment.findNavController
 import com.github.ajalt.timberkt.Timber
 import com.google.gson.Gson
@@ -10,7 +10,11 @@ import org.intelehealth.app.R
 import org.intelehealth.app.databinding.FragmentPatientOtherInfoBinding
 import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.app.ui.filter.FirstLetterUpperCaseInputFilter
+import org.intelehealth.app.ui.rosterquestionnaire.ui.RosterQuestionnaireMainActivity.Companion.startRosterQuestionnaire
+import org.intelehealth.app.ui.rosterquestionnaire.utilities.RosterQuestionnaireStage
 import org.intelehealth.app.utilities.ArrayAdapterUtils
+import org.intelehealth.app.utilities.DialogUtils
+import org.intelehealth.app.utilities.DialogUtils.CustomDialogListener
 import org.intelehealth.app.utilities.LanguageUtils
 import org.intelehealth.app.utilities.PatientRegFieldsUtils
 import org.intelehealth.app.utilities.PatientRegStage
@@ -104,12 +108,30 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
     }
 
     private fun navigateToDetails() {
-        PatientOtherInfoFragmentDirections.navigationOtherToDetails(
-            patient.uuid, "searchPatient", "false"
-        ).also {
-            findNavController().navigate(it)
-            requireActivity().finish()
+        //For roster- if roster module enabled then redirect user to Roster screen otherwise on patient details screen
+        //for now adding roster config hardcoded for testing
+        if (patientViewModel.isEditMode) {
+            PatientOtherInfoFragmentDirections.navigationOtherToDetails(
+                patient.uuid, "searchPatient", "false"
+            ).also {
+                findNavController().navigate(it)
+                requireActivity().finish()
+            }
+        } else {
+            val rosterConfig = patientViewModel.activeStatusRosterSection
+            Log.d("TAG", "navigateToDetails: rosterConfig : " + rosterConfig)
+            if (rosterConfig) {
+                showMoveToRosterDialog()
+            } else {
+                PatientOtherInfoFragmentDirections.navigationOtherToDetails(
+                    patient.uuid, "searchPatient", "false"
+                ).also {
+                    findNavController().navigate(it)
+                    requireActivity().finish()
+                }
+            }
         }
+
     }
 
     private fun applyFilter() {
@@ -178,4 +200,29 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
             ) block.invoke()
         }
     }
+
+    private fun showMoveToRosterDialog() {
+        val dialogUtils = DialogUtils()
+        dialogUtils.showCommonDialog(
+            requireActivity(),
+            R.drawable.ui2_complete_icon,
+            getString(R.string.complete_patient_details),
+            getString(R.string.continue_to_enter_roster),
+            false,
+            getString(R.string.confirm),
+            getString(R.string.cancel)
+        ) { action ->
+            if (action == CustomDialogListener.POSITIVE_CLICK) {
+                startRosterQuestionnaire(
+                    requireActivity(),
+                    patient.uuid,
+                    RosterQuestionnaireStage.GENERAL_ROSTER
+                )
+                requireActivity().finish()
+            } else if (action == CustomDialogListener.NEGATIVE_CLICK) {
+
+            }
+        }
+    }
+
 }

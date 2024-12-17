@@ -393,7 +393,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/form_fields_common_margin_top"
                             android:lineSpacingExtra="3sp"
-                            android:text="@string/how_far_is_the_water_source_from_the_house"
+                            android:text="@string/no_of_m_km"
                             android:textAppearance="@style/blur_txtview"
                             android:textSize="@null"
                             app:layout_constraintEnd_toEndOf="parent"

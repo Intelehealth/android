@@ -239,6 +239,8 @@ class PatientRegistrationActivity : BaseActivity() {
                 removeOrNavigateBack(R.id.fragmentPatientAddressInfo)
                 patientViewModel.updatePatientStage(PatientRegStage.PERSONAL)
             }
+            patientViewModel.activeStatusRosterSection = it.activeStatusRosterQuestionnaireSection
+            Log.d("TAG", "onFeatureActiveStatusLoaded: FeatureActiveStatus : "+Gson().toJson(activeStatus))
         }
     }
 

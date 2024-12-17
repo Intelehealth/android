@@ -826,6 +826,8 @@
     <dimen name="radio_buttons_margin_top">4dp</dimen>
     <dimen name="radio_buttons_between_margin">30dp</dimen>
     <dimen name="radio_group_margin_top">2dp</dimen>
+    <dimen name="dialog_margin">32dp</dimen>
+    <dimen name="dialog_margin_vertical">62dp</dimen>
 
 
 </resources>

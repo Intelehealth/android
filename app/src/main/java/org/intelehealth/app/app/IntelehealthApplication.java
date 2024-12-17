@@ -35,11 +35,13 @@ import org.intelehealth.klivekit.socket.SocketManager;
 import org.intelehealth.klivekit.utils.DateTimeResource;
 import org.intelehealth.klivekit.utils.Manager;
 
+import dagger.hilt.android.HiltAndroidApp;
 import io.reactivex.plugins.RxJavaPlugins;
 import okhttp3.Dispatcher;
 import okhttp3.OkHttpClient;
 
 //Extend Application class with MultiDexApplication for multidex support
+@HiltAndroidApp
 public class IntelehealthApplication extends MultiDexApplication implements DefaultLifecycleObserver {
 
     private static final String TAG = IntelehealthApplication.class.getSimpleName();
@@ -90,14 +92,14 @@ public class IntelehealthApplication extends MultiDexApplication implements Defa
         sessionManager = new SessionManager(this);
         // keeping the base url in one singleton object for using in apprtc module
 
-      /*  configureCrashReporting();
+        configureCrashReporting();
 
         RxJavaPlugins.setErrorHandler(throwable -> {
             FirebaseCrashlytics.getInstance().recordException(throwable);
         });
         androidId = String
                 .format("%16s", Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID))
-                .replace(' ', '0');*/
+                .replace(' ', '0');
 //        String url = BuildConfig.SERVER_URL;
 //        if (url == null) {
 //            Log.i(TAG, "onCreate: Parse not init");
