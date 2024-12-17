@@ -523,7 +523,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:hint="@string/enter_number"
-                                android:text="@{baseline.usualHouseholdMembers}" />
+                                android:text="@{baseline.loadSheddingHours}" />
 
                         </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
 
@@ -553,7 +553,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:hint="@string/enter_number"
-                                android:text="@{baseline.usualHouseholdMembers}" />
+                                android:text="@{baseline.loadSheddingDays}" />
 
                         </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
 

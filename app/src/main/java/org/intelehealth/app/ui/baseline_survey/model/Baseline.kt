@@ -47,6 +47,8 @@ data class Baseline(
     var numberOfEarningMembers: String = "",
     var electricityCheck: String = "",
     var waterCheck: String = "",
+    val loadSheddingHours: String = "",
+    val loadSheddingDays: String = "",
     var sourceOfWater: String = "",
     var safeguardWater: String = "",
     var distanceFromWater: String = "",
