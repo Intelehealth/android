@@ -17,6 +17,7 @@ import org.intelehealth.app.utilities.ArrayAdapterUtils
 import org.intelehealth.app.utilities.BaselineSurveyStage
 import org.intelehealth.app.utilities.LanguageUtils
 import org.intelehealth.app.utilities.PatientRegFieldsUtils
+import org.intelehealth.app.utilities.extensions.getSelectedCheckboxes
 import org.intelehealth.app.utilities.extensions.getSelectedData
 import org.intelehealth.app.utilities.extensions.getTextIfVisible
 import org.intelehealth.app.utilities.extensions.hideError
@@ -544,8 +545,9 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
                 waterAvailabilityDays =
                     binding.llWaterAvailability.getTextIfVisible(binding.textInputWaterAvailabilityDays)
 
-//                sourceOfWater = to be done
-//                safeguardWater = to be done
+                sourceOfWater = binding.cgSourceOfWater.getSelectedCheckboxes()
+                safeguardWater = binding.cgSafeguardWater.getSelectedCheckboxes()
+
                 distanceFromWater = binding.rgDistanceFromWaterOptions.getSelectedData()
                 toiletFacility = binding.acToiletFacility.text.toString()
                 houseStructure = binding.acHouseStructure.text.toString()
@@ -555,9 +557,9 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
                     binding.tilCultivableLandValue.getTextIfVisible(binding.textInputCultivableLandValue)
 
                 averageIncome = binding.rgAverageIncomeOptions.getSelectedData()
-//                fuelType = binding.cgFuelType - to be done
-//                sourceOfLight = binding.cgSourceOfLight - to be done
-//                handWashPractices = binding.cgHandWashPractices - to be done
+                fuelType = binding.cgFuelType.getSelectedCheckboxes()
+                sourceOfLight = binding.cgSourceOfLight.getSelectedCheckboxes()
+                handWashPractices = binding.cgHandWashPractices.getSelectedCheckboxes()
                 ekalServiceCheck = binding.rgEkalServiceCheckOptions.getSelectedData()
 
                 baselineSurveyViewModel.updateBaselineData(this)

@@ -2,6 +2,7 @@ package org.intelehealth.app.ui.binding
 
 import android.view.View
 import android.widget.AutoCompleteTextView
+import android.widget.LinearLayout
 import android.widget.NumberPicker
 import android.widget.RadioButton
 import android.widget.RadioGroup
@@ -13,6 +14,7 @@ import androidx.databinding.BindingAdapter
 import com.github.ajalt.timberkt.Timber
 import com.google.android.material.button.MaterialButtonToggleGroup
 import org.intelehealth.app.R
+import org.intelehealth.app.utilities.extensions.setSelectedCheckboxes
 import org.intelehealth.config.network.response.PatientRegFieldConfig
 import org.intelehealth.config.room.entity.PatientRegistrationFields
 
@@ -78,5 +80,10 @@ fun bindAutoCompleteValue(autoCompleteTextView: AutoCompleteTextView?, data: Str
     data?.let {
         autoCompleteTextView?.setText(data, false)
     }
+}
+
+@BindingAdapter("bindCheckBoxesValue")
+fun bindCheckBoxesValue(linearLayout: LinearLayout, data: String) {
+    linearLayout.setSelectedCheckboxes(data)
 }
 
