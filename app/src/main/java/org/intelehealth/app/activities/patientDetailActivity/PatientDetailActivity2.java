@@ -63,6 +63,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.LocaleList;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 
 import org.intelehealth.app.activities.householdSurvey.HouseholdSurveyActivity;
@@ -158,9 +159,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 
 import io.reactivex.Observable;
@@ -450,17 +453,18 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             //Fetch all patient UUID from houseHoldValue
             try {
                 List<FamilyMemberRes> listPatientNames = new ArrayList<>();
-                List<String> patientUUIDs = new ArrayList<>(patientsDAO.getPatientUUIDs(houseHoldValue));
+                HashSet<String> patientUUIDs = new HashSet<>(patientsDAO.getPatientUUIDs(houseHoldValue));
                 Log.e("patientUUIDs", "" + patientUUIDs);
 
-                for (int i = 0; i < patientUUIDs.size(); i++) {
-                    if (!patientUUIDs.get(i).equals(patientDTO.getUuid())) {
-                        listPatientNames.addAll(patientsDAO.getPatientName(patientUUIDs.get(i)));
+                for (String id : patientUUIDs) {
+                    if (!id.equals(patientDTO.getUuid())) {
+
+                        listPatientNames.addAll(patientsDAO.getPatientName(id));
                     }
                 }
 
                 //  Logger.logD("List", listPatientNames.get(0).getOpenMRSID());
-                if (listPatientNames.size() > 0) {
+                if (!listPatientNames.isEmpty()) {
                     binding.familyMemberCard.tvNoFamilyMember.setVisibility(View.GONE);
                     binding.familyMemberCard.rvFamilyMember.setVisibility(View.VISIBLE);
 
@@ -1902,9 +1906,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         }
 
         //contact type
-        if (patientDTO.getContactType() != null && !patientDTO.getContactType().
-
-                equals("")) {
+        if (!TextUtils.isEmpty(patientDTO.getContactType())) {
             if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                 String type = switch_hi_contact_type_edit(patientDTO.getContactType());
                 contact_type_tv.setText(type);
