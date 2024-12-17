@@ -2,7 +2,6 @@ package org.intelehealth.app.ui.rosterquestionnaire.ui
 
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import org.intelehealth.app.ui.rosterquestionnaire.viewmodel.RosterViewModel
 
 abstract class BaseRosterFragment(@LayoutRes layoutResId: Int) : Fragment(layoutResId) {

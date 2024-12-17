@@ -1496,5 +1496,19 @@
     <string name="prescription_printing">The prescription is being printed</string>
     <string name="hint_other_relation">Other relation</string>
     <string name="hint_occupation">Other occupation</string>
+
+    <string name="how_many_times_have_you_been_pregnant">How many times have you been pregnant?*</string>
+    <string name="enter">Enter</string>
+    <string name="have_you_had_any_pregnancy_outcomes_in_the_past_2_years">Have you had any pregnancy outcomes in the past 2 years?*</string>
+    <string name="no_of_pregnancy_outcomes_in_the_past_2_years">No. of pregnancy outcomes in the past 2 years</string>
+    <string name="pregnancy_outcome">Pregnancy Outcome</string>
+    <string name="add">Add</string>
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="enter_date">Enter Date</string>
+    <string name="health_service">Health Service</string>
+    <string name="please_add_health_service">Please add health service</string>
+    <string name="please_add_pregnancy_outcome">Please add pregnancy outcome</string>
+    <string name="please_select_pregnancy_outcome">Please select pregnancy outcome\n</string>
     <string name="_diagnostics_summary">%1$d/%2$d Diagnostics summary</string>
 </resources>
