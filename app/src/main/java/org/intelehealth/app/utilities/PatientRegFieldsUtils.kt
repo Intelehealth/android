@@ -232,12 +232,15 @@ object PatientRegFieldsUtils {
                     PatientRegConfigKeys.LOAD_SHEDDING_HOURS -> loadSheddingHours = it
                     PatientRegConfigKeys.LOAD_SHEDDING_DAYS -> loadSheddingDays = it
                     PatientRegConfigKeys.WATER_CHECK -> waterCheck = it
+                    PatientRegConfigKeys.WATER_AVAILABILITY_DAYS -> waterAvailabilityHours = it
+                    PatientRegConfigKeys.WATER_AVAILABILITY_HOURS -> waterAvailabilityDays = it
                     PatientRegConfigKeys.SOURCE_OF_WATER -> sourceOfWater = it
                     PatientRegConfigKeys.SAFEGUARD_WATER -> safeguardWater = it
                     PatientRegConfigKeys.DISTANCE_FROM_WATER -> distanceFromWater = it
                     PatientRegConfigKeys.TOILET_FACILITY -> toiletFacility = it
                     PatientRegConfigKeys.HOUSE_STRUCTURE -> houseStructure = it
                     PatientRegConfigKeys.CULTIVABLE_LAND -> cultivableLand = it
+                    PatientRegConfigKeys.CULTIVABLE_LAND_VALUE -> cultivableLandValue = it
                     PatientRegConfigKeys.AVERAGE_INCOME -> averageIncome = it
                     PatientRegConfigKeys.FUEL_TYPE -> fuelType = it
                     PatientRegConfigKeys.SOURCE_OF_LIGHT -> sourceOfLight = it

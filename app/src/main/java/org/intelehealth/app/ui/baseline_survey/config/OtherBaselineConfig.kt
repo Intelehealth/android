@@ -21,12 +21,15 @@ class OtherBaselineConfig {
     var loadSheddingHours: PatientRegistrationFields? = null
     var loadSheddingDays: PatientRegistrationFields? = null
     var waterCheck: PatientRegistrationFields? = null
+    var waterAvailabilityHours: PatientRegistrationFields? = null
+    var waterAvailabilityDays: PatientRegistrationFields? = null
     var sourceOfWater: PatientRegistrationFields? = null
     var safeguardWater: PatientRegistrationFields? = null
     var distanceFromWater: PatientRegistrationFields? = null
     var toiletFacility: PatientRegistrationFields? = null
     var houseStructure: PatientRegistrationFields? = null
     var cultivableLand: PatientRegistrationFields? = null
+    var cultivableLandValue: PatientRegistrationFields? = null
     var averageIncome: PatientRegistrationFields? = null
     var fuelType: PatientRegistrationFields? = null
     var sourceOfLight: PatientRegistrationFields? = null

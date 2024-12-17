@@ -7,6 +7,7 @@ import android.text.TextWatcher
 import android.widget.AutoCompleteTextView
 import android.widget.EditText
 import androidx.annotation.StringRes
+import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.core.widget.doOnTextChanged
 import com.github.ajalt.timberkt.Timber

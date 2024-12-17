@@ -608,6 +608,85 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/llWaterAvailability"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/std_12dp"
+                        android:orientation="vertical"
+                        android:visibility="gone"
+                        tools:visibility="visible">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:lineSpacingExtra="3sp"
+                            android:text="@string/availability_of_water_supply"
+                            android:textAppearance="@style/blur_txtview"
+                            android:textSize="@null"
+                            tools:text="@string/availability_of_water_supply" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:lineSpacingExtra="3sp"
+                            android:text="@{ otherConfig.waterAvailabilityHours.mandatory ? @string/water_availability_hours_per_day + ` *` : @string/water_availability_hours_per_day}"
+                            android:textAppearance="@style/blur_txtview"
+                            android:textSize="@null"
+                            tools:text="@string/water_availability_hours_per_day" />
+
+                        <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
+                            android:id="@+id/til_water_availability_hours_option"
+                            style="@style/AppTheme.OutlineInputBox"
+                            config="@{otherConfig.waterAvailabilityHours}"
+                            editMode="@{baselineEditMode}"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/margin_4"
+                            app:hintEnabled="false">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/textInputWaterAvailabilityHours"
+                                style="@style/AppTheme.InputBox.Phone"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="@string/enter_number"
+                                android:text="@{baseline.waterAvailabilityHours}" />
+
+                        </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/std_12dp"
+                            android:lineSpacingExtra="3sp"
+                            android:text="@{ otherConfig.waterAvailabilityDays.mandatory ? @string/water_availability_days_per_week + ` *` : @string/water_availability_days_per_week}"
+                            android:textAppearance="@style/blur_txtview"
+                            android:textSize="@null"
+                            tools:text="@string/load_shedding_hours_question" />
+
+                        <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
+                            android:id="@+id/til_water_availability_days_option"
+                            style="@style/AppTheme.OutlineInputBox"
+                            config="@{otherConfig.waterAvailabilityDays}"
+                            editMode="@{baselineEditMode}"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/margin_4"
+                            app:hintEnabled="false">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/textInputWaterAvailabilityDays"
+                                style="@style/AppTheme.InputBox.Phone"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="@string/enter_number"
+                                android:text="@{baseline.waterAvailabilityDays}" />
+
+                        </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
                         android:id="@+id/llSourceOfWater"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -823,6 +902,28 @@
                                 android:hint="@string/select_your_choice"
                                 android:inputType="none"
                                 android:text="@{baseline.cultivableLand}" />
+
+                        </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
+
+                        <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
+                            android:id="@+id/til_cultivable_land_value"
+                            style="@style/AppTheme.OutlineInputBox"
+                            config="@{otherConfig.loadSheddingHours}"
+                            editMode="@{baselineEditMode}"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/margin_4"
+                            android:visibility="gone"
+                            app:hintEnabled="false"
+                            tools:visibility="visible">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/textInputCultivableLandValue"
+                                style="@style/AppTheme.InputBox.Phone"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="@string/enter_number"
+                                android:text="@{baseline.loadSheddingHours}" />
 
                         </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
 

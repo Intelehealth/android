@@ -746,55 +746,6 @@
     <string name="national_ID">National ID (Citizenship ID, Aadhar No., etc.)</string>
     <string name="national_ID_other_details">National ID</string>
     <string name="enter_national_ID">Enter National ID</string>
-
-
-    <string name="hb_check_question">When was the last time you got your HB level checked?</string>
-    <string name="bp_check_question">When was the last time you got your BP level checked?</string>
-    <string name="sugar_check_question">When was the last time you got your sugar level checked?</string>
-    <string name="bp_label">BP</string>
-    <string name="diabetes_label">Diabetes</string>
-    <string name="arthritis_label">Arthritis</string>
-    <string name="anemia_label">Anemia</string>
-    <string name="surgery_label">Any Surgery?</string>
-    <string name="surgery_reason_label">Reason for surgery</string>
-    <string name="smoking_history_question">Is there a history of smoking?</string>
-    <string name="smoking_rate_label">Rate of smoking</string>
-    <string name="smoking_duration_question">How long have you been smoking?</string>
-    <string name="smoking_frequency_label">Frequency of consumption</string>
-    <string name="chew_tobacco_question">Does the person chew tobacco?</string>
-    <string name="alcohol_history_question">Is there a history of alcohol consumption?</string>
-    <string name="alcohol_rate_label">Rate of alcohol consumption</string>
-    <string name="alcohol_consumption_question">How long have you been consuming alcohol?</string>
-    <string name="alcohol_frequency_label">Frequency of consumption</string>
-
-
-    <string name="head_of_household_question">Are you the head of the household?</string>
-    <string name="ration_card_question">Do you have a Ration card?</string>
-    <string name="other_religion_label">Religion</string>
-    <string name="total_members_question">Total no. of members in the household</string>
-    <string name="usual_members_question">How many members usually live in your household or are staying with you now?</string>
-    <string name="smart_phone_label">No. of smartphones in the household</string>
-    <string name="feature_phone_label">No. of feature phones in the household</string>
-    <string name="earning_members_label">No. of earning members in the household</string>
-    <string name="electricity_check_question">Does the house have electricity?</string>
-    <string name="load_shedding">Load Shedding</string>
-    <string name="load_shedding_hours_question">No. of load shedding hours per day</string>
-    <string name="load_shedding_days_question">No. of load shedding days per week</string>
-    <string name="water_check_question">Is there running water available in the house?</string>
-    <string name="source_of_water_question">What is the main source of drinking water for members in your household?</string>
-    <string name="safequard_question">What do you actually do to the water to make it safer to drink?</string>
-    <string name="distance_from_water_question">Is the source of drinking water within 30 minutes of round trip from the household?</string>
-    <string name="toilet_facility_question">What kind of toilet facility do members of your household usually use?</string>
-    <string name="house_structure_label">Select the structure of house</string>
-    <string name="cultivable_land_question">How much cultivable land does your family own?</string>
-    <string name="average_income_label">Average Annual Household Income (INR)</string>
-    <string name="fuel_type_question">What type of fuel does your household mainly used for cooking?</string>
-    <string name="source_of_lighting_question">What is the main source of lighting in this household?</string>
-    <string name="hand_wash_Label">Describe your hand wash practice</string>
-    <string name="ekal_service_check_question">Ekal is starting a telemedicine program in your village to provide primary health care including - HB testing, Sugar testing and doctor consultations as needed. Would you like to take our service?</string>
-    <string name="relation_with_household">What is your relationship with the head of household?</string>
-
-
     <!--END-->
 
     <string name="recent_visit">Recent Visits</string>

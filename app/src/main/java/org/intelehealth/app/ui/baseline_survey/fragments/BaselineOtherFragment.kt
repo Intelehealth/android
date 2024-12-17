@@ -17,6 +17,7 @@ import org.intelehealth.app.utilities.BaselineSurveyStage
 import org.intelehealth.app.utilities.LanguageUtils
 import org.intelehealth.app.utilities.PatientRegFieldsUtils
 import org.intelehealth.app.utilities.extensions.getSelectedData
+import org.intelehealth.app.utilities.extensions.getTextIfVisible
 import org.intelehealth.app.utilities.extensions.hideError
 import org.intelehealth.app.utilities.extensions.hideErrorOnTextChang
 import org.intelehealth.app.utilities.extensions.validate
@@ -33,6 +34,8 @@ import org.intelehealth.app.utilities.extensions.validateNumberOfUsualMembers
 class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_baseline_survey_other) {
 
     private lateinit var binding: FragmentBaselineSurveyOtherBinding
+
+    private var isLandlessOptionChosen: Boolean = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding = FragmentBaselineSurveyOtherBinding.bind(view)
@@ -67,6 +70,7 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
         setupEconomicStatus()
         setupReligion()
         setupElectricityCheck()
+        setUpWaterCheck()
         setupNumberOfToiletFacilities()
         setupHouseStructure()
         setupCultivableLand()
@@ -81,6 +85,22 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
         binding.tilNumberOfEarningMembersOption.hideErrorOnTextChang(binding.textInputEarningMembers)
         binding.tilLoadShedingHoursOption.hideErrorOnTextChang(binding.textInputloadSheddingHours)
         binding.tilLoadShedingDaysOption.hideErrorOnTextChang(binding.textInputloadSheddingDays)
+        binding.tilWaterAvailabilityHoursOption.hideErrorOnTextChang(binding.textInputWaterAvailabilityHours)
+        binding.tilWaterAvailabilityDaysOption.hideErrorOnTextChang(binding.textInputWaterAvailabilityDays)
+    }
+
+    private fun setUpWaterCheck() {
+        binding.rgWaterCheckOptions.setOnCheckedChangeListener { _, checkedId ->
+            when (checkedId) {
+                binding.radioWaterCheckYes.id -> {
+                    binding.llWaterAvailability.visibility = View.VISIBLE
+                }
+
+                else -> {
+                    binding.llWaterAvailability.visibility = View.VISIBLE
+                }
+            }
+        }
     }
 
     private fun setupElectricityCheck() {
@@ -203,7 +223,10 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
         binding.acHouseStructure.setOnItemClickListener { _, _, i, _ ->
             binding.tilHouseStructureOption.hideError()
             LanguageUtils.getSpecificLocalResource(requireContext(), "en").apply {
-                binding.acHouseStructure.setText(this.getStringArray(R.array.hb_check)[i], false)
+                binding.acHouseStructure.setText(
+                    this.getStringArray(R.array.baseline_house_structure)[i],
+                    false
+                )
             }
         }
     }
@@ -215,11 +238,24 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
         )
 
         binding.acCultivableLand.setAdapter(adapter)
-
         binding.acCultivableLand.setOnItemClickListener { _, _, i, _ ->
+            when (i) {
+                4 -> {
+                    binding.tilCultivableLandValue.visibility = View.GONE
+                    isLandlessOptionChosen = true
+                }
+
+                else -> {
+                    binding.tilCultivableLandValue.visibility = View.VISIBLE
+                    isLandlessOptionChosen = false
+                }
+            }
             binding.tilCultivableLandOption.hideError()
             LanguageUtils.getSpecificLocalResource(requireContext(), "en").apply {
-                binding.acCultivableLand.setText(this.getStringArray(R.array.hb_check)[i], false)
+                binding.acCultivableLand.setText(
+                    this.getStringArray(R.array.baseline_cultivable_land)[i],
+                    false
+                )
             }
         }
     }
@@ -238,12 +274,13 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
     private fun validateFields(block: () -> Unit) {
         val isHeadOfHousehold = binding.llHohYes.isVisible
         val isElectricityAvailable = binding.radioElectricityYes.isChecked
+        val isRunningWaterAvailable = binding.radioWaterCheckYes.isChecked
 
         val error = R.string.this_field_is_mandatory
         val usualMembersError =
             R.string.error_number_of_people_living_cannot_be_greater_than_the_total_number_of_members_in_the_household
-        val loadSheddingHoursError = R.string.load_shedding_hours_error
-        val loadSheddingDaysError = R.string.load_shedding_days_error
+        val hoursError = R.string.load_shedding_hours_error
+        val daysError = R.string.load_shedding_days_error
 
         binding.otherConfig?.let {
             val headOfHousehold =
@@ -321,9 +358,9 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
                     )
                     binding.tilLoadShedingHoursOption.validateIntegerDataLimits(
                         binding.textInputloadSheddingHours,
-                        Constants.LOAD_SHEDDING_START_HOURS,
-                        Constants.LOAD_SHEDDING_END_HOURS,
-                        loadSheddingHoursError
+                        Constants.LIMIT_START_HOURS,
+                        Constants.LIMIT_END_HOURS,
+                        hoursError
                     )
                 } else true
 
@@ -336,15 +373,44 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
 
                     binding.tilLoadShedingDaysOption.validateIntegerDataLimits(
                         binding.textInputloadSheddingDays,
-                        Constants.LOAD_SHEDDING_START_DAY,
-                        Constants.LOAD_SHEDDING_END_DAY,
-                        loadSheddingDaysError
+                        Constants.LIMIT_START_DAY,
+                        Constants.LIMIT_END_DAY,
+                        daysError
                     )
                 } else true
 
             val waterCheck =
                 if (it.waterCheck!!.isEnabled && it.waterCheck!!.isMandatory && isHeadOfHousehold) {
                     binding.rgWaterCheckOptions.validate()
+                } else true
+
+            val waterAvailabilityHours =
+                if (it.waterAvailabilityHours!!.isEnabled && it.waterAvailabilityHours!!.isMandatory && isHeadOfHousehold && isRunningWaterAvailable) {
+                    binding.tilWaterAvailabilityHoursOption.validate(
+                        binding.textInputWaterAvailabilityHours,
+                        error
+                    )
+                    binding.tilWaterAvailabilityHoursOption.validateIntegerDataLimits(
+                        binding.textInputWaterAvailabilityHours,
+                        Constants.LIMIT_START_HOURS,
+                        Constants.LIMIT_END_HOURS,
+                        hoursError
+                    )
+                } else true
+
+            val waterAvailabilityDays =
+                if (it.waterAvailabilityDays!!.isEnabled && it.waterAvailabilityDays!!.isMandatory && isHeadOfHousehold && isRunningWaterAvailable) {
+                    binding.tilWaterAvailabilityDaysOption.validate(
+                        binding.textInputWaterAvailabilityDays,
+                        error
+                    )
+
+                    binding.tilWaterAvailabilityDaysOption.validateIntegerDataLimits(
+                        binding.textInputWaterAvailabilityDays,
+                        Constants.LIMIT_START_DAY,
+                        Constants.LIMIT_END_DAY,
+                        daysError
+                    )
                 } else true
 
             val sourceOfWater =
@@ -381,7 +447,15 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
             val cultivableLand =
                 if (it.cultivableLand!!.isEnabled && it.cultivableLand!!.isMandatory && isHeadOfHousehold) {
                     binding.tilCultivableLandOption.validateDropDowb(
-                        binding.acHouseStructure,
+                        binding.acCultivableLand,
+                        error
+                    )
+                } else true
+
+            val cultivableLandValue =
+                if (it.cultivableLandValue!!.isEnabled && it.cultivableLandValue!!.isMandatory && isHeadOfHousehold && !isLandlessOptionChosen) {
+                    binding.tilCultivableLandValue.validate(
+                        binding.textInputCultivableLandValue,
                         error
                     )
                 } else true
@@ -420,10 +494,11 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
                     .and(religion).and(totalHouseholdMembers).and(usualHouseholdMembers)
                     .and(numberOfSmartphones).and(numberOfFeaturePhones).and(numberOfEarningMembers)
                     .and(electricityCheck).and(loadSheddingHours).and(loadSheddingDays)
-                    .and(waterCheck).and(sourceOfWater).and(safeguardWater).and(distanceFromWater)
-                    .and(toiletFacility).and(houseStructure).and(cultivableLand).and(averageIncome)
-                    .and(fuelType).and(sourceOfLight).and(handWashPractices).and(ekalServiceCheck)
-                    .and(relationWithHousehold)
+                    .and(waterCheck).and(waterAvailabilityHours).and(waterAvailabilityDays)
+                    .and(sourceOfWater).and(safeguardWater).and(distanceFromWater)
+                    .and(toiletFacility).and(houseStructure).and(cultivableLand)
+                    .and(cultivableLandValue).and(averageIncome).and(fuelType).and(sourceOfLight)
+                    .and(handWashPractices).and(ekalServiceCheck).and(relationWithHousehold)
             ) {
                 block.invoke()
             } else {
@@ -448,19 +523,32 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
                 rationCardCheck = binding.rgRationOptions.getSelectedData()
                 economicStatus = binding.acEconomicStatusCheck.text.toString()
                 religion = binding.acReligion.text.toString()
+
                 totalHouseholdMembers = binding.textInputTotalHHMembers.text.toString()
                 usualHouseholdMembers = binding.textInputUsualHHMembers.text.toString()
                 numberOfSmartphones = binding.textInputNoOfSmartPhones.text.toString()
                 numberOfFeaturePhones = binding.textInputNoOfFeaturePhones.text.toString()
                 numberOfEarningMembers = binding.textInputEarningMembers.text.toString()
+
                 electricityCheck = binding.rgElectricityOptions.getSelectedData()
+                loadSheddingHours =
+                    binding.llLoadShedding.getTextIfVisible(binding.textInputloadSheddingHours)
+                loadSheddingDays =
+                    binding.llLoadShedding.getTextIfVisible(binding.textInputloadSheddingDays)
+
                 waterCheck = binding.rgWaterCheckOptions.getSelectedData()
+                waterAvailabilityHours =
+                    binding.llWaterAvailability.getTextIfVisible(binding.textInputWaterAvailabilityHours)
+                waterAvailabilityDays =
+                    binding.llWaterAvailability.getTextIfVisible(binding.textInputWaterAvailabilityDays)
+
 //                sourceOfWater = to be done
 //                safeguardWater = to be done
                 distanceFromWater = binding.rgDistanceFromWaterOptions.getSelectedData()
                 toiletFacility = binding.acToiletFacility.text.toString()
                 houseStructure = binding.acHouseStructure.text.toString()
                 cultivableLand = binding.acCultivableLand.text.toString()
+                cultivableLandValue = binding.textInputCultivableLandValue.text.toString()
                 averageIncome = binding.rgAverageIncomeOptions.getSelectedData()
 //                fuelType = binding.cgFuelType - to be done
 //                sourceOfLight = binding.cgSourceOfLight - to be done

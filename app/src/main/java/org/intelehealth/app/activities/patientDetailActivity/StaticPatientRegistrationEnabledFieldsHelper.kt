@@ -876,6 +876,30 @@ object StaticPatientRegistrationEnabledFieldsHelper {
             id = 0,
             groupId = "",
             name = "",
+            idKey = PatientRegConfigKeys.WATER_AVAILABILITY_HOURS,
+            isMandatory = true,
+            isEditable = true,
+            isEnabled = true
+        )
+
+        fields.add(currentField)
+
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.WATER_AVAILABILITY_DAYS,
+            isMandatory = true,
+            isEditable = true,
+            isEnabled = true
+        )
+
+        fields.add(currentField)
+
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
             idKey = PatientRegConfigKeys.SOURCE_OF_WATER,
             isMandatory = true,
             isEditable = true,
@@ -949,6 +973,18 @@ object StaticPatientRegistrationEnabledFieldsHelper {
             groupId = "",
             name = "",
             idKey = PatientRegConfigKeys.CULTIVABLE_LAND,
+            isMandatory = true,
+            isEditable = true,
+            isEnabled = true
+        )
+
+        fields.add(currentField)
+
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.CULTIVABLE_LAND_VALUE,
             isMandatory = true,
             isEditable = true,
             isEnabled = true
