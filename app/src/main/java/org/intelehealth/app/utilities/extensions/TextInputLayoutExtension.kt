@@ -1,14 +1,10 @@
 package org.intelehealth.app.utilities.extensions
 
-import android.annotation.SuppressLint
-import android.text.Editable
 import android.text.InputFilter
-import android.text.TextWatcher
 import android.widget.AutoCompleteTextView
 import android.widget.EditText
 import androidx.annotation.StringRes
 import androidx.core.view.isVisible
-import androidx.core.widget.doAfterTextChanged
 import androidx.core.widget.doOnTextChanged
 import com.github.ajalt.timberkt.Timber
 import com.google.android.material.textfield.TextInputEditText
@@ -109,4 +105,10 @@ fun TextInputLayout.validateIntegerDataLimits(
             false
         }
     } else false
+}
+
+fun TextInputLayout.getTextIfVisible(editText: TextInputEditText): String = if (this.isVisible) {
+    editText.text.toString()
+} else {
+    ""
 }

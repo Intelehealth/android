@@ -887,7 +887,7 @@
                         <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
                             android:id="@+id/til_cultivable_land_option"
                             style="@style/AppTheme.OutlineInputBox.DropDown"
-                            config="@{otherConfig.houseStructure}"
+                            config="@{otherConfig.cultivableLand}"
                             editMode="@{baselineEditMode}"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -897,18 +897,18 @@
                             <AutoCompleteTextView
                                 android:id="@+id/ac_cultivable_land"
                                 style="@style/AppTheme.InputBox"
+                                bindAutoCompleteValue="@{baseline.cultivableLand}"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:hint="@string/select_your_choice"
-                                android:inputType="none"
-                                android:text="@{baseline.cultivableLand}" />
+                                android:inputType="none" />
 
                         </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
 
                         <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
                             android:id="@+id/til_cultivable_land_value"
                             style="@style/AppTheme.OutlineInputBox"
-                            config="@{otherConfig.loadSheddingHours}"
+                            config="@{otherConfig.cultivableLandValue}"
                             editMode="@{baselineEditMode}"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -923,7 +923,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:hint="@string/enter_number"
-                                android:text="@{baseline.loadSheddingHours}" />
+                                android:text="@{baseline.cultivableLandValue}" />
 
                         </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
 

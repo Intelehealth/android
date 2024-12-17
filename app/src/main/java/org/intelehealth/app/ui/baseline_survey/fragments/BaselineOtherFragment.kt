@@ -6,6 +6,7 @@ import android.widget.CheckBox
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.core.view.isVisible
+import androidx.core.widget.doOnTextChanged
 import androidx.navigation.fragment.findNavController
 import org.intelehealth.app.R
 import org.intelehealth.app.activities.patientDetailActivity.StaticPatientRegistrationEnabledFieldsHelper
@@ -87,6 +88,7 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
         binding.tilLoadShedingDaysOption.hideErrorOnTextChang(binding.textInputloadSheddingDays)
         binding.tilWaterAvailabilityHoursOption.hideErrorOnTextChang(binding.textInputWaterAvailabilityHours)
         binding.tilWaterAvailabilityDaysOption.hideErrorOnTextChang(binding.textInputWaterAvailabilityDays)
+        binding.tilCultivableLandValue.hideErrorOnTextChang(binding.textInputCultivableLandValue)
     }
 
     private fun setUpWaterCheck() {
@@ -97,7 +99,7 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
                 }
 
                 else -> {
-                    binding.llWaterAvailability.visibility = View.VISIBLE
+                    binding.llWaterAvailability.visibility = View.GONE
                 }
             }
         }
@@ -239,23 +241,23 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
 
         binding.acCultivableLand.setAdapter(adapter)
         binding.acCultivableLand.setOnItemClickListener { _, _, i, _ ->
-            when (i) {
-                4 -> {
-                    binding.tilCultivableLandValue.visibility = View.GONE
-                    isLandlessOptionChosen = true
-                }
-
-                else -> {
-                    binding.tilCultivableLandValue.visibility = View.VISIBLE
-                    isLandlessOptionChosen = false
-                }
-            }
             binding.tilCultivableLandOption.hideError()
             LanguageUtils.getSpecificLocalResource(requireContext(), "en").apply {
                 binding.acCultivableLand.setText(
                     this.getStringArray(R.array.baseline_cultivable_land)[i],
                     false
                 )
+            }
+        }
+
+        binding.acCultivableLand.doOnTextChanged { text, start, before, count ->
+            val value = getString(R.string.cultivable_land_landless)
+            if (text?.isEmpty() == true || value == text.toString()) {
+                binding.tilCultivableLandValue.visibility = View.GONE
+                isLandlessOptionChosen = true
+            } else {
+                binding.tilCultivableLandValue.visibility = View.VISIBLE
+                isLandlessOptionChosen = false
             }
         }
     }
@@ -547,8 +549,11 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
                 distanceFromWater = binding.rgDistanceFromWaterOptions.getSelectedData()
                 toiletFacility = binding.acToiletFacility.text.toString()
                 houseStructure = binding.acHouseStructure.text.toString()
+
                 cultivableLand = binding.acCultivableLand.text.toString()
-                cultivableLandValue = binding.textInputCultivableLandValue.text.toString()
+                cultivableLandValue =
+                    binding.tilCultivableLandValue.getTextIfVisible(binding.textInputCultivableLandValue)
+
                 averageIncome = binding.rgAverageIncomeOptions.getSelectedData()
 //                fuelType = binding.cgFuelType - to be done
 //                sourceOfLight = binding.cgSourceOfLight - to be done
