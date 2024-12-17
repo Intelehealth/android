@@ -207,6 +207,7 @@
 
                 <include
                     android:id="@+id/roster_details"
+                    android:visibility="gone"
                     layout="@layout/layout_roster_details" />
 
                 <LinearLayout

@@ -43,5 +43,7 @@ data class ConfigResponse(
     @SerializedName("roster_questionnaire")
     val rosterQuestionnaire: RosterQuestionnaireActiveStatus,
     @SerializedName("roster_questionnaire_section")
-    val rosterQuestionnaireSection: Boolean = true
+    val rosterQuestionnaireSection: Boolean = true,
+    @SerializedName("patient_diagnostics_section")
+    val patientDiagnosticsSection: Boolean = true
 )

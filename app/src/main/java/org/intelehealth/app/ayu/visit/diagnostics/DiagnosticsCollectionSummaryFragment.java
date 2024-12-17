@@ -38,6 +38,7 @@ import org.intelehealth.config.presenter.fields.factory.DiagnosticsViewModelFact
 import org.intelehealth.config.presenter.fields.viewmodel.DiagnosticsViewModel;
 import org.intelehealth.config.room.ConfigDatabase;
 import org.intelehealth.config.room.entity.Diagnostics;
+import org.intelehealth.config.room.entity.FeatureActiveStatus;
 import org.intelehealth.config.utility.PatientDiagnosticsConfigKeys;
 import org.intelehealth.config.utility.PatientDiagnosticsConfigKeys;
 
@@ -83,6 +84,12 @@ public class DiagnosticsCollectionSummaryFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        FeatureActiveStatus status = ((VisitCreationActivity) requireActivity()).getFeatureActiveStatus();
+        int index = status.getVitalSection() ? 2 : 1;
+        int total = status.getVitalSection() ? 5 : 4;
+        TextView tvTitle = view.findViewById(R.id.tv_sub_title);
+        tvTitle.setText(getString(R.string._diagnostics_summary, index, total));
+
         //config viewmodel initialization
         DiagnosticsRepository repository = new DiagnosticsRepository(ConfigDatabase.getInstance(requireActivity()).patientDiagnosticsDao());
         DiagnosticsViewModelFactory factory = new DiagnosticsViewModelFactory(repository);
