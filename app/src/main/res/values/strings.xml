@@ -1546,4 +1546,6 @@
     <string name="please_add_pregnancy_outcome">Please add pregnancy outcome</string>
     <string name="please_select_pregnancy_outcome">Please select pregnancy outcome\n</string>
     <string name="_diagnostics_summary">%1$d/%2$d Diagnostics summary</string>
+    <string name="physical_exam_screen_title">@string/physical_examination</string>
+    <string name="physical_exam_screen_header">@string/general_exams</string>
 </resources>
