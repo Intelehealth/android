@@ -45,6 +45,12 @@ data class FeatureActiveStatus(
     @SerializedName("abha_section")
     var activeStatusAbha: Boolean = true
 
+    @SerializedName("baseline_medical_section")
+    var baselineMedicalSection: Boolean = true
+
+    @SerializedName("baseline_other_section")
+    var baselineOtherSection: Boolean = true
+
     companion object {
         fun getDefaultFeatureStatus() = FeatureActiveStatus(
             id = 0,
@@ -58,6 +64,7 @@ data class FeatureActiveStatus(
             visitSummeryHwFollowUp = false
         ).apply {
             activeStatusAbha = false
+            activeStatusPatientOther = false
         }
     }
 }

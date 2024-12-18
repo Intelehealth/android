@@ -563,6 +563,7 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
                 ekalServiceCheck = binding.rgEkalServiceCheckOptions.getSelectedData()
 
                 baselineSurveyViewModel.updateBaselineData(this)
+//                baselineSurveyViewModel.
             }
         }
     }

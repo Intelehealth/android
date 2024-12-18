@@ -23,7 +23,7 @@ class PatientQueryBuilder : QueryBuilder() {
                     + buildPatientAttributesQuery(PatientAttributesDTO.Column.NATIONAL_ID.value) + " nationalId,"
                     + buildPatientAttributesQuery(PatientAttributesDTO.Column.HOUSEHOLD_ID.value) + " householdID,"
                     + buildPatientAttributesQuery(PatientAttributesDTO.Column.PROFILE_IMG_TIMESTAMP.value) + " profileImageTimestamp,"
-                    + buildPatientAttributesQuery(PatientAttributesDTO.Column.CAST.value) + " caste,"
+                    + buildPatientAttributesQuery(PatientAttributesDTO.Column.CASTE.value) + " caste,"
                     + buildPatientAttributesQuery(PatientAttributesDTO.Column.CREATED_DATE.value) + " createdDate "
         )
             .from("tbl_patient P")

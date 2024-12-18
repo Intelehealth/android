@@ -33,7 +33,7 @@ import java.util.Locale
         FeatureActiveStatus::class,
         PatientVital::class
     ],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 abstract class ConfigDatabase : RoomDatabase() {

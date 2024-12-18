@@ -4,11 +4,11 @@
     <data>
 
         <variable
-            name="addressActiveStatus"
+            name="activeBaselineMedical"
             type="Boolean" />
 
         <variable
-            name="otherActiveStatus"
+            name="activeBaselineOther"
             type="Boolean" />
 
         <variable
@@ -48,8 +48,8 @@
             <include
                 android:id="@+id/baselineSurveyTab"
                 layout="@layout/view_baseline_survey_tab"
-                bind:activeAddress="@{addressActiveStatus}"
-                bind:activeOther="@{otherActiveStatus}" />
+                bind:activeBaselineMedical="@{activeBaselineMedical}"
+                bind:activeBaselineOther="@{activeBaselineOther}" />
 
             <androidx.fragment.app.FragmentContainerView
                 android:id="@+id/navHostBaselineSurvey"

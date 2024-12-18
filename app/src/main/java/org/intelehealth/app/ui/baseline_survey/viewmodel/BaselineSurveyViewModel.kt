@@ -30,9 +30,6 @@ class BaselineSurveyViewModel(
     private val repository: PatientRepository
 ) : RegFieldViewModel(repository) {
 
-    private var mutableLivePatient = MutableLiveData<PatientDTO>()
-    val patientData: LiveData<PatientDTO> get() = mutableLivePatient
-
     private var baselineMutableLiveData = MutableLiveData<Baseline>()
     val baselineData: LiveData<Baseline> get() = baselineMutableLiveData
 
@@ -48,11 +45,6 @@ class BaselineSurveyViewModel(
         repository.fetchPatient(patientId)
     }.asLiveData()
 
-    fun updatedPatient(patient: PatientDTO) {
-        Timber.d { "Saved patient => ${Gson().toJson(patient)}" }
-        mutableLivePatient.postValue(patient)
-    }
-
     fun updateBaselineData(baselineData: Baseline) {
         baselineMutableLiveData.postValue(baselineData)
     }
@@ -60,4 +52,10 @@ class BaselineSurveyViewModel(
     fun updateBaselineStage(stage: BaselineSurveyStage) {
         mutableBaselineSurveyStage.postValue(stage)
     }
+
+//    fun savePatient() = executeLocalInsertUpdateQuery {
+////        return@executeLocalInsertUpdateQuery baselineData.value?.let {
+////
+////        }
+//    }
 }

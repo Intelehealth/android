@@ -115,8 +115,7 @@ class BaselineGeneralFragment :
 
     private fun setClickListener() {
         binding.btnGeneralBaselineNext.setOnClickListener {
-            saveSurveyData()
-//            validateForm { saveSurveyData() }
+            validateForm { saveSurveyData() }
         }
     }
 

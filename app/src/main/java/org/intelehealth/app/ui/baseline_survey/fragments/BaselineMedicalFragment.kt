@@ -165,8 +165,7 @@ class BaselineMedicalFragment :
             }
         }
         binding.frag2BtnNext.setOnClickListener {
-            saveSurveyData()
-//            validateForm { saveSurveyData() }
+            validateForm { saveSurveyData() }
         }
     }
 

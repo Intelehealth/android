@@ -66,18 +66,59 @@ public class PatientAttributesDTO implements Serializable {
 
     public enum Column {
         TELEPHONE("Telephone Number"),
-        ECONOMIC_STATUS("Economic Status"),
-        EDUCATION("Education Level"),
         PROVIDER_ID("providerUUID"),
-        OCCUPATION("occupation"),
         SWD("Son/wife/daughter"),
         NATIONAL_ID("NationalID"),
-
         HOUSEHOLD_ID("householdID"),
         PROFILE_IMG_TIMESTAMP("ProfileImageTimestamp"),
-        CAST("Caste"),
-        CREATED_DATE("createdDate");
+        CREATED_DATE("createdDate"),
 
+        OCCUPATION("occupation"),
+        CASTE("Caste"),
+        EDUCATION("Education Level"),
+        AYUSHMAN_CARD_STATUS("ayushmanCardStatus"),
+        MGNREGA_CARD_STATUS("mgnregaCardStatus"),
+        BANK_ACCOUNT("Bank Account"),
+        MOBILE_PHONE_TYPE("Mobile Phone Type"),
+        USE_WHATSAPP("Use WhatsApp"),
+        MARTIAL_STATUS("martialStatus"),
+
+        HB_CHECKED("hbChecked"),
+        BP_CHECKED("bpChecked"),
+        SUGAR_CHECKED("sugarChecked"),
+        OTHER_MEDICAL_HISTORY("otherMedicalHistory"),
+        SMOKING_STATUS("smokingStatus"),
+        TOBACCO_STATUS("TobaccoStatus"),
+        ALCOHOL_CONSUMPTION_STATUS("alcoholConsumptionStatus"),
+
+        HOH_RELATIONSHIP("hohRelationship"),
+        RATION_CARD("rationCardStatus"),
+        ECONOMIC_STATUS("Economic Status"),
+        RELIGION("religion"),
+        TOTAL_FAMILY_MEMBERS("Total Family Members"),
+        TOTAl_FAMILY_MEMBERS_STAYING("Total Family Members Staying"),
+        NUMBER_OF_SMARTPHONES("numberOfSmartphones"),
+        NUMBER_OF_FEATURE_PHONES("numberOfFeaturePhones"),
+        NUMBER_OF_EARNING_MEMBERS("numberOfEarningMembers"),
+        ELECTRICITY_STATUS("electricityStatus"),
+        LOAD_SHEDDING_HOURS_PER_DAY("loadSheddingHoursPerDay"),
+        LOAD_SHEDDING_DAYS_PER_WEEK("loadSheddingDaysPerWeek"),
+        RUNNING_WATER_AVAILABILITY("runningWaterAvailability"),
+        WATER_SUPPLY_AVAILABILITY_HOURS_PER_DAY("waterSupplyAvailabilityHoursPerDay"),
+        WATER_SUPPLY_AVAILABILITY_DAYS_PER_WEEK("waterSupplyAvailabilityDaysPerWeek"),
+        DRINKING_WATER_SOURCE("Drinking Water Source"),
+        TIME_DRINKING_WATER_SOURCE("Time Drinking Water Source"),
+        TOILET_FACILITY("Toilet Facility"),
+        HOUSE_STRUCTURE("House Structure"),
+        FAMILY_CULTIVABLE_LAND("Family Cultivable Land"),
+        AVERAGE_ANNUAL_HOUSEHOLD_INCOME("averageAnnualHouseholdIncome"),
+        COOKING_FUEL("cookingFuel"),
+        HOUSEHOLD_LIGHTING("householdLighting"),
+        REASON_FOR_OPEN_DEFECATION("reasonForOpenDefecation"),
+        SOAP_HAND_WASHING_OCCASION("soapHandWashingOccasion"),
+        TAKE_OUR_SERVICE("TakeOurService")
+
+        ;
         public final String value;
 
         Column(String value) {

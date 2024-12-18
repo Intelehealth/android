@@ -7,11 +7,11 @@
         <import type="android.view.View" />
 
         <variable
-            name="activeAddress"
+            name="activeBaselineMedical"
             type="Boolean" />
 
         <variable
-            name="activeOther"
+            name="activeBaselineOther"
             type="Boolean" />
     </data>
 
@@ -43,7 +43,7 @@
             android:layout_marginBottom="@dimen/std_24dp"
             android:contentDescription="@string/general_to_medical_info"
             android:src="@drawable/line_11"
-            android:visibility="@{activeAddress ? View.VISIBLE : View.GONE}"
+            android:visibility="@{activeBaselineMedical ? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toBottomOf="@id/tvIndicatorPatientPersonal"
             app:layout_constraintEnd_toStartOf="@id/tvIndicatorPatientAddress"
             app:layout_constraintStart_toEndOf="@id/tvIndicatorPatientPersonal"
@@ -57,7 +57,7 @@
             android:gravity="center"
             android:text="@string/baseline_medical"
             android:textAppearance="@style/personal_txtview"
-            android:visibility="@{activeAddress ? View.VISIBLE : View.GONE}"
+            android:visibility="@{activeBaselineMedical ? View.VISIBLE : View.GONE}"
             app:drawableTopCompat="@drawable/ic_baseline_medical"
             app:layout_constraintEnd_toStartOf="@id/line_2"
             app:layout_constraintStart_toEndOf="@id/line_1"
@@ -70,7 +70,7 @@
             android:layout_marginBottom="@dimen/std_24dp"
             android:contentDescription="@string/medical_to_other_info"
             android:src="@drawable/line_11"
-            android:visibility="@{activeOther ? View.VISIBLE : View.GONE}"
+            android:visibility="@{activeBaselineOther ? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toBottomOf="@id/tvIndicatorPatientPersonal"
             app:layout_constraintEnd_toStartOf="@id/tvIndicatorPatientOther"
             app:layout_constraintStart_toEndOf="@id/tvIndicatorPatientAddress"
@@ -84,7 +84,7 @@
             android:gravity="center"
             android:text="@string/other_identification"
             android:textAppearance="@style/personal_txtview"
-            android:visibility="@{activeOther ? View.VISIBLE : View.GONE}"
+            android:visibility="@{activeBaselineOther ? View.VISIBLE : View.GONE}"
             app:drawableTopCompat="@drawable/addresslocation_icon_unselected"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/line_2"

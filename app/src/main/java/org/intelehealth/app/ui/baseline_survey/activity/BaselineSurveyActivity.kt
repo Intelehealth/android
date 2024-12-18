@@ -201,12 +201,12 @@ class BaselineSurveyActivity : BaseActivity() {
         if (::syncAnimator.isInitialized) syncAnimator.cancel()
         activeStatus?.let {
 
-            if (it.activeStatusPatientOther.not() && it.activeStatusPatientAddress.not()) {
+            if (it.baselineMedicalSection.not() && it.baselineOtherSection.not()) {
                 binding.baselineSurveyTab.root.isVisible = false
             } else {
                 binding.baselineSurveyTab.root.isVisible = true
-                binding.addressActiveStatus = it.activeStatusPatientAddress
-                binding.otherActiveStatus = it.activeStatusPatientOther
+                binding.activeBaselineMedical = it.baselineMedicalSection
+                binding.activeBaselineOther = it.baselineMedicalSection
             }
         }
     }
