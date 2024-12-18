@@ -836,12 +836,13 @@
 
                     <TextView
                         style="@style/text_title_style"
+                        android:id="@+id/physical_exam_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginStart="@dimen/margin_8"
                         android:layout_toEndOf="@+id/vs_icon"
-                        android:text="@string/relapse" />
+                        android:text="@string/physical_examination" />
 
                     <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
                         android:id="@+id/btn_up_phyexam_header"
@@ -880,10 +881,11 @@
 
                         <TextView
                             style="@style/vs_title_head_14sp"
+                            android:id="@+id/physical_exam_info_tv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:lineSpacingExtra="-3sp"
-                            android:text="@string/relapse_info"
+                            android:text="@string/general_exams"
                             android:textStyle="bold" />
 
                         <LinearLayout

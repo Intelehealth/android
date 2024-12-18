@@ -14,7 +14,7 @@ class AddPatientUtils {
         fun navigate(context: Context) {
             val weakContext = WeakReference(context)
             weakContext.get()?.let { ctx ->
-                val intent = if (BuildConfig.FLAVOR_client == "unfpa") {
+                val intent = if (BuildConfig.FLAVOR_client == FlavorKeys.UNFPA) {
                     Intent(ctx, PersonalConsentActivity::class.java)
                 } else {
                     Intent(ctx, PrivacyPolicyActivity_New::class.java).apply {

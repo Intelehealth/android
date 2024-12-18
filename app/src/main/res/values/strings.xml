@@ -1109,5 +1109,10 @@
     <string name="enter_name">Enter Name</string>
     <string name="health_facility_name">Health facility name</string>
     <string name="code_of_the_department">Code of the Department</string>
+
+    <string name="obstetric_history">Obstetric History</string>
+    <string name="obstetric_history_info">Obstetric History Info</string>
+    <string name="_obstetric_history">%1$d/%2$d Obstetric History</string>
+    <string name="ui2_obstetric_history_summary_title">%1$d/%2$d Obstetric History summary</string>
     <!-- UNFPA Strings end  -->
 </resources>

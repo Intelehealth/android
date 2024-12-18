@@ -3,6 +3,8 @@ package org.intelehealth.app.ayu.visit.physicalexam;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+
+import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.utilities.CustomLog;
 
 import android.util.Log;
@@ -26,6 +28,7 @@ import org.intelehealth.app.ayu.visit.model.CommonVisitData;
 import org.intelehealth.app.ayu.visit.model.VisitSummaryData;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.syncModule.SyncUtils;
+import org.intelehealth.app.utilities.FlavorKeys;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.config.room.entity.FeatureActiveStatus;
@@ -78,7 +81,13 @@ public class PhysicalExamSummaryFragment extends Fragment {
         int index = status.getVitalSection() ? 3 : 2;
         int total = status.getVitalSection() ? 4 : 3;
         TextView tvTitle = view.findViewById(R.id.tv_sub_title);
-        tvTitle.setText(getString(R.string.ui2_relapse_summary_title, index, total));
+        String title = getString(R.string.ui2_physical_exam_summay_title, index, total);
+        if(BuildConfig.FLAVOR_client == FlavorKeys.KCDO){
+            title =  getString(R.string.ui2_relapse_summary_title, index, total);
+        }else if(BuildConfig.FLAVOR_client == FlavorKeys.UNFPA){
+            title =  getString(R.string.ui2_obstetric_history_summary_title, index, total);
+        }
+        tvTitle.setText(title);
     }
 
     @Override
@@ -93,8 +102,14 @@ public class PhysicalExamSummaryFragment extends Fragment {
                 if (mIsEditMode && ((VisitCreationActivity) requireActivity()).isEditTriggerFromVisitSummary()) {
                     requireActivity().setResult(Activity.RESULT_OK);
                     requireActivity().finish();
-                } else
-                    mActionListener.onFormSubmitted(VisitCreationActivity.STEP_4_PAST_MEDICAL_HISTORY, mIsEditMode, null);
+                } else{
+                    if(BuildConfig.FLAVOR_client == FlavorKeys.UNFPA){
+                        mActionListener.onFormSubmitted(VisitCreationActivity.FROM_SUMMARY_RESUME_BACK_FOR_EDIT, mIsEditMode, VisitCreationActivity.STEP_5_FAMILY_HISTORY);
+                    }else {
+                        mActionListener.onFormSubmitted(VisitCreationActivity.STEP_4_PAST_MEDICAL_HISTORY, mIsEditMode, null);
+                    }
+                }
+
             }
         });
 

@@ -56,6 +56,7 @@ import org.intelehealth.app.knowledgeEngine.PhysicalExam;
 import org.intelehealth.app.models.AnswerResult;
 import org.intelehealth.app.shared.FirstLetterUpperCaseInputFilter;
 import org.intelehealth.app.utilities.DialogUtils;
+import org.intelehealth.app.utilities.FlavorKeys;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.WindowsUtils;
 import org.json.JSONObject;
@@ -317,7 +318,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
             Node _mNode = mPhysicalExam.getExamNode(position).getOption(0);
             final String parent_name = mPhysicalExam.getExamParentNodeName(position);
-            String nodeText = BuildConfig.FLAVOR_client == "kcdo" ? _mNode.findDisplay() : parent_name + " : " + _mNode.findDisplay();
+            String nodeText = BuildConfig.FLAVOR_client == FlavorKeys.KCDO ? _mNode.findDisplay() : parent_name + " : " + _mNode.findDisplay();
 
             genericViewHolder.tvQuestion.setText(nodeText);
 

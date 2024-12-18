@@ -30,6 +30,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity_New;
 import org.intelehealth.app.app.AppConstants;
@@ -67,6 +68,7 @@ import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.FileUtils;
+import org.intelehealth.app.utilities.FlavorKeys;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
@@ -396,11 +398,14 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         } else
             loadPhysicalExam();
 
-        if (!sessionManager.getVisitEditCache(SessionManager.PATIENT_HISTORY + visitUuid).isEmpty())
-            mPastMedicalHistoryNode = new Gson().fromJson(sessionManager.getVisitEditCache(SessionManager.PATIENT_HISTORY + visitUuid), Node.class);
-        else
-            mPastMedicalHistoryNode = loadPastMedicalHistory();
+        //we don't need patient history for unfpa
+        if(BuildConfig.FLAVOR_client != FlavorKeys.UNFPA){
+            if (!sessionManager.getVisitEditCache(SessionManager.PATIENT_HISTORY + visitUuid).isEmpty())
+                mPastMedicalHistoryNode = new Gson().fromJson(sessionManager.getVisitEditCache(SessionManager.PATIENT_HISTORY + visitUuid), Node.class);
+            else
+                mPastMedicalHistoryNode = loadPastMedicalHistory();
 
+        }
         if (!sessionManager.getVisitEditCache(SessionManager.FAMILY_HISTORY + visitUuid).isEmpty())
             mFamilyHistoryNode = new Gson().fromJson(sessionManager.getVisitEditCache(SessionManager.FAMILY_HISTORY + visitUuid), Node.class);
         else
@@ -488,6 +493,11 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                 break;
 
             case STEP_2_VISIT_REASON_QUESTION:
+                //on UNFPA, we are directly jump into the visit reason question without going to the VisitReasonCaptureFragment
+                if(BuildConfig.FLAVOR_client == FlavorKeys.UNFPA){
+                    getSupportFragmentManager().popBackStack();
+                    mSummaryFrameLayout.setVisibility(View.GONE);
+                }
                 mSelectedComplainList = (List<ReasonData>) object;
                 loadChiefComplainNodeForSelectedNames(mSelectedComplainList);
                 mStep2ProgressBar.setProgress(40);
@@ -616,6 +626,9 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
 
     private void showFamilyHistoryFragment(boolean isEditMode) {
         mStep4ProgressBar.setProgress(50);
+        if(BuildConfig.FLAVOR_client == FlavorKeys.UNFPA){
+            mStep3ProgressBar.setProgress(100);
+        }
         mSummaryFrameLayout.setVisibility(View.GONE);
         //boolean isEditMode = true;
         if (mFamilyHistoryNode == null) {
@@ -860,7 +873,13 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
             title = getResources().getString(R.string.visit_reason, currentScreenIndex, totalScreen) + " : " + mSelectedComplainList.get(0).getReasonNameLocalized();
         } else if (screenId == STEP_3_PHYSICAL_EXAMINATION) {
             currentScreenIndex = featureActiveStatus.getVitalSection() ? 3 : 2;
-            title = getString(R.string._relapse, currentScreenIndex, totalScreen);
+            String titleStr = getString(R.string._phy_examination, currentScreenIndex, totalScreen);
+            if(BuildConfig.FLAVOR_client == FlavorKeys.KCDO){
+                titleStr =  getString(R.string._relapse, currentScreenIndex, totalScreen);
+            }else if(BuildConfig.FLAVOR_client == FlavorKeys.UNFPA){
+                titleStr = getString(R.string._obstetric_history, currentScreenIndex, totalScreen);
+            }
+            title = titleStr;
         } else if (screenId == STEP_4_PAST_MEDICAL_HISTORY) {
             currentScreenIndex = featureActiveStatus.getVitalSection() ? 4 : 3;
             title = getString(R.string.patinet_history, currentScreenIndex, totalScreen);
@@ -1229,7 +1248,9 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
      */
     private boolean savePastHistoryData() {
         // save to cache
-        sessionManager.setVisitEditCache(SessionManager.PATIENT_HISTORY + visitUuid, new Gson().toJson(mPastMedicalHistoryNode));
+        if(BuildConfig.FLAVOR_client != FlavorKeys.UNFPA){
+            sessionManager.setVisitEditCache(SessionManager.PATIENT_HISTORY + visitUuid, new Gson().toJson(mPastMedicalHistoryNode));
+        }
         sessionManager.setVisitEditCache(SessionManager.FAMILY_HISTORY + visitUuid, new Gson().toJson(mFamilyHistoryNode));
         //**********
         patientHistory = mPastMedicalHistoryNode.generateLanguage();
