@@ -188,7 +188,7 @@ object StaticPatientRegistrationEnabledFieldsHelper {
             groupId = "",
             name = "",
             idKey = PatientRegConfigKeys.POSTAL_CODE,
-            isMandatory = true,
+            isMandatory = false,
             isEditable = true,
             isEnabled = true
         )
@@ -253,7 +253,7 @@ object StaticPatientRegistrationEnabledFieldsHelper {
             groupId = "",
             name = "",
             idKey = PatientRegConfigKeys.ADDRESS_1,
-            isMandatory = true,
+            isMandatory = false,
             isEditable = true,
             isEnabled = true
         )
