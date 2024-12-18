@@ -2,25 +2,12 @@ package org.intelehealth.app.ui.baseline_survey.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
-import androidx.lifecycle.viewModelScope
-import com.github.ajalt.timberkt.Timber
-import com.google.gson.Gson
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
-import org.apache.commons.lang3.mutable.Mutable
-import org.intelehealth.app.models.Patient
-import org.intelehealth.app.models.dto.PatientAttributesDTO
-import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.app.ui.baseline_survey.data.BaselineRepository
 import org.intelehealth.app.ui.baseline_survey.model.Baseline
 import org.intelehealth.app.ui.patient.data.PatientRepository
 import org.intelehealth.app.utilities.BaselineSurveyStage
-import org.intelehealth.app.utilities.PatientRegStage
-import org.intelehealth.config.presenter.fields.data.RegFieldRepository
 import org.intelehealth.config.presenter.fields.viewmodel.RegFieldViewModel
-import org.intelehealth.core.shared.ui.viewmodel.BaseViewModel
 
 /**
  * Created by Shazzad H Kanon on 10-12-2024 - 11:00.
@@ -41,10 +28,10 @@ class BaselineSurveyViewModel(
     var baselineEditMode: Boolean = false
     lateinit var patientId: String
 
-    fun loadPatientDetails(
+    fun loadBaselineData(
         patientId: String
     ) = executeLocalQuery {
-        repository.fetchPatient(patientId)
+        baselineRepository.getPatientAttributes(patientId)
     }.asLiveData()
 
     fun updateBaselineData(baselineData: Baseline) {

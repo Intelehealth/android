@@ -440,6 +440,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
         ivAddBaselineSurvey.setOnClickListener(view -> {
             BaselineSurveyActivity.startBaselineSurvey(this, patientDTO.getUuid(), BaselineSurveyStage.GENERAL, BaselineSurveySource.PATIENT_DETAIL);
+            finish();
         });
 
         String houseHoldValue = "";
@@ -2462,6 +2463,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
                     }
                 } while (visitCursor.moveToPrevious());
+                visitCursor.close();
             }
 
             if (!mPastVisitDataList.isEmpty()) {

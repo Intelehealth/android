@@ -31,9 +31,6 @@ class PatientViewModel(
     private var mutableLivePatientStage = MutableLiveData(PatientRegStage.PERSONAL)
     val patientStageData: LiveData<PatientRegStage> get() = mutableLivePatientStage
 
-    private var mutableBaselineSurveyStage = MutableLiveData(BaselineSurveyStage.GENERAL)
-    val mutableBaselineSurveyStageData: LiveData<BaselineSurveyStage> get() = mutableBaselineSurveyStage
-
     var activeStatusAddressSection = true
     var activeStatusOtherSection = true
     var isEditMode: Boolean = false
@@ -53,10 +50,6 @@ class PatientViewModel(
 
     fun updatePatientStage(stage: PatientRegStage) {
         mutableLivePatientStage.postValue(stage)
-    }
-
-    fun updateBaselineStage(stage: BaselineSurveyStage) {
-        mutableBaselineSurveyStage.postValue(stage)
     }
 
     fun savePatient() = executeLocalInsertUpdateQuery {

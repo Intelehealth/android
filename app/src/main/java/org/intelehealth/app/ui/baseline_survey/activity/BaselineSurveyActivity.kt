@@ -140,9 +140,13 @@ class BaselineSurveyActivity : BaseActivity() {
         navController.graph = navGraph
     }
 
-
     private fun fetchPatientDetails(id: String) {
-        baselineSurveyViewModel.updateBaselineData(Baseline())
+        baselineSurveyViewModel.loadBaselineData(id).observe(this) {
+            it ?: return@observe
+            baselineSurveyViewModel.handleResponse(it) { data ->
+                baselineSurveyViewModel.updateBaselineData(data)
+            }
+        }
     }
 
     private fun updatePatientDetails(patient: PatientDTO) = patient.apply {

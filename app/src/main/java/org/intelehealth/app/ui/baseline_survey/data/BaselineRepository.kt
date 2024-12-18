@@ -20,6 +20,12 @@ class BaselineRepository(
         }
     }
 
+    fun getPatientAttributes(patientId: String): Baseline {
+        return patientsDAO.getPatientAttributesForBaseline(patientId).let {
+            PatientAttributeToBaseline(patientsDAO).getBaselineData(it)
+        }
+    }
+
     fun syncOnServer() {
         if (NetworkConnection.isOnline(IntelehealthApplication.getAppContext())) {
             val syncDAO = SyncDAO()

@@ -573,7 +573,7 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
 
     private fun navigateToPatientDetailsScreen() {
         BaselineOtherFragmentDirections.navigationOtherToPatientDetails(
-            patient.uuid, "searchPatient", "false"
+            baselineSurveyViewModel.patientId, "searchPatient", "false"
         ).also {
             findNavController().navigate(it)
             requireActivity().finish()
