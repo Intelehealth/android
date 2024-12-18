@@ -108,7 +108,10 @@ class BaselineSurveyActivity : BaseActivity() {
             } else BaselineSurveyStage.GENERAL
 
             patientId?.let { id ->
-                baselineSurveyViewModel.baselineEditMode = true
+                baselineSurveyViewModel.apply {
+                    baselineEditMode = true
+                    this.patientId = id
+                }
                 fetchPatientDetails(id)
             }
 

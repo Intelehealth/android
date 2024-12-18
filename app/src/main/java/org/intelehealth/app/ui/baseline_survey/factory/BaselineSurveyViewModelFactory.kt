@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import org.intelehealth.app.app.IntelehealthApplication
 import org.intelehealth.app.database.dao.PatientsDAO
+import org.intelehealth.app.ui.baseline_survey.data.BaselineRepository
 import org.intelehealth.app.ui.baseline_survey.viewmodel.BaselineSurveyViewModel
 import org.intelehealth.app.ui.patient.data.PatientRepository
 import org.intelehealth.config.room.ConfigDatabase
@@ -16,10 +17,11 @@ import org.intelehealth.config.room.ConfigDatabase
  * Mob   : +8801647040520
  **/
 class BaselineSurveyViewModelFactory(
-    private val patientRepository: PatientRepository
+    private val repository: PatientRepository,
+    private val baselineRepository: BaselineRepository
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return BaselineSurveyViewModel(patientRepository) as T
+        return BaselineSurveyViewModel(repository, baselineRepository) as T
     }
 
     companion object {
@@ -31,7 +33,8 @@ class BaselineSurveyViewModelFactory(
             val patientDao = PatientsDAO()
             val sqlHelper = IntelehealthApplication.inteleHealthDatabaseHelper
             val repository = PatientRepository(patientDao, sqlHelper, configDb.patientRegFieldDao())
-            val factory = BaselineSurveyViewModelFactory(repository)
+            val baselineRepository = BaselineRepository(patientDao, sqlHelper)
+            val factory = BaselineSurveyViewModelFactory(repository, baselineRepository)
             return ViewModelProvider(owner, factory)[BaselineSurveyViewModel::class]
         }
     }

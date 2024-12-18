@@ -561,9 +561,12 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
                 sourceOfLight = binding.cgSourceOfLight.getSelectedCheckboxes()
                 handWashPractices = binding.cgHandWashPractices.getSelectedCheckboxes()
                 ekalServiceCheck = binding.rgEkalServiceCheckOptions.getSelectedData()
+            }
 
-                baselineSurveyViewModel.updateBaselineData(this)
-//                baselineSurveyViewModel.
+            baselineSurveyViewModel.updateBaselineData(this)
+            baselineSurveyViewModel.savePatient().observe(viewLifecycleOwner) {
+                it ?: return@observe
+                baselineSurveyViewModel.handleResponse(it) { result -> if (result) navigateToPatientDetailsScreen() }
             }
         }
     }
@@ -576,5 +579,4 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
             requireActivity().finish()
         }
     }
-
 }

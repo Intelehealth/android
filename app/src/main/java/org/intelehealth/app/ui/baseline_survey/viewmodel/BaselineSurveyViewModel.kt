@@ -13,6 +13,7 @@ import org.apache.commons.lang3.mutable.Mutable
 import org.intelehealth.app.models.Patient
 import org.intelehealth.app.models.dto.PatientAttributesDTO
 import org.intelehealth.app.models.dto.PatientDTO
+import org.intelehealth.app.ui.baseline_survey.data.BaselineRepository
 import org.intelehealth.app.ui.baseline_survey.model.Baseline
 import org.intelehealth.app.ui.patient.data.PatientRepository
 import org.intelehealth.app.utilities.BaselineSurveyStage
@@ -27,7 +28,8 @@ import org.intelehealth.core.shared.ui.viewmodel.BaseViewModel
  * Mob   : +8801647040520
  **/
 class BaselineSurveyViewModel(
-    private val repository: PatientRepository
+    private val repository: PatientRepository,
+    private val baselineRepository: BaselineRepository
 ) : RegFieldViewModel(repository) {
 
     private var baselineMutableLiveData = MutableLiveData<Baseline>()
@@ -37,7 +39,7 @@ class BaselineSurveyViewModel(
     val mutableBaselineSurveyStageData: LiveData<BaselineSurveyStage> get() = mutableBaselineSurveyStage
 
     var baselineEditMode: Boolean = false
-
+    lateinit var patientId: String
 
     fun loadPatientDetails(
         patientId: String
@@ -53,9 +55,9 @@ class BaselineSurveyViewModel(
         mutableBaselineSurveyStage.postValue(stage)
     }
 
-//    fun savePatient() = executeLocalInsertUpdateQuery {
-////        return@executeLocalInsertUpdateQuery baselineData.value?.let {
-////
-////        }
-//    }
+    fun savePatient() = executeLocalInsertUpdateQuery {
+        return@executeLocalInsertUpdateQuery baselineData.value?.let {
+            baselineRepository.createPatientAttributes(it, patientId)
+        } ?: false
+    }.asLiveData()
 }
