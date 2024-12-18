@@ -210,24 +210,24 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
                 binding.textInputLayOccupation.validate(binding.textInputOccupation, error)
             } else true
 
-            val bInn = if (it.inn!!.isEnabled && it.inn!!.isMandatory) {
+            val bInn = if (it.inn?.isEnabled == true && it.inn?.isMandatory == true) {
                 binding.textInputLayInn.validate(binding.textInputInn, error)
             } else true
 
             val bCodeOfHealthyFacility =
-                if (it.codeOfHealthyFacility!!.isEnabled && it.codeOfHealthyFacility!!.isMandatory) {
+                if (it.codeOfHealthyFacility?.isEnabled == true && it.codeOfHealthyFacility?.isMandatory == true) {
                     binding.textInputLayCodeOfHealthyFacility.validate(binding.textInputCodeOfHealthyFacility, error)
                 } else true
 
-            val bCodeOfDepartment = if (it.codeOfDepartment!!.isEnabled && it.codeOfDepartment!!.isMandatory) {
+            val bCodeOfDepartment = if (it.codeOfDepartment?.isEnabled == true && it.codeOfDepartment?.isMandatory == true) {
                 binding.textInputLayCodeOfDepartment.validate(binding.textInputCodeOfDepartment, error)
             } else true
 
-            val bDepartment = if (it.department!!.isEnabled && it.department!!.isMandatory) {
+            val bDepartment = if (it.department?.isEnabled == true && it.department?.isMandatory == true) {
                 binding.textInputLayDepartment.validate(binding.textInputDepartment, error)
             } else true
 
-            val bHealthFacilityName = if (it.healthFacilityName!!.isEnabled && it.healthFacilityName!!.isMandatory) {
+            val bHealthFacilityName = if (it.healthFacilityName?.isEnabled == true && it.healthFacilityName?.isMandatory == true) {
                 binding.textInputLayHealthFacilityName.validateDropDowb(
                     binding.autoCompleteHealthFacilityName, error
                 )
@@ -252,25 +252,25 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
                 )
             } else true
 
-            val tmhCaseNumber = if (it.tmhCaseNumber!!.isEnabled && it.tmhCaseNumber!!.isMandatory) {
+            val tmhCaseNumber = if (it.tmhCaseNumber?.isEnabled == true && it.tmhCaseNumber?.isMandatory == true) {
                 binding.textInputLayTmhCaseNumber.validate(
                     binding.textInputTmhCaseNumber, error
                 )
             } else true
 
-            val requestId = if (it.requestId!!.isEnabled && it.requestId!!.isMandatory) {
+            val requestId = if (it.requestId?.isEnabled == true && it.requestId?.isMandatory == true) {
                 binding.textInputLayRequestId.validate(
                     binding.textInputRequestId, error
                 )
             } else true
 
-            val discipline = if (it.discipline!!.isEnabled && it.discipline!!.isMandatory) {
+            val discipline = if (it.discipline?.isEnabled == true && it.discipline?.isMandatory == true) {
                 binding.textInputLayDiscipline.validate(
                     binding.textInputDiscipline, error
                 )
             } else true
 
-            val relativePhoneNumber = if (it.relativePhoneNumber!!.isEnabled && it.relativePhoneNumber!!.isMandatory) {
+            val relativePhoneNumber = if (it.relativePhoneNumber?.isEnabled == true && it.relativePhoneNumber?.isMandatory == true) {
                 binding.textInputLayRelativePhoneNumber.validate(
                     binding.textInputRelativePhoneNumber, error
                 ).and(

@@ -28,7 +28,7 @@ class PatientQueryBuilder : QueryBuilder() {
                     + buildPatientAttributesQuery(PatientAttributesDTO.Column.REQUEST_ID.value) + " requestId,"
                     + buildPatientAttributesQuery(PatientAttributesDTO.Column.DISCIPLINE.value) + " discipline,"
                     + buildPatientAttributesQuery(PatientAttributesDTO.Column.RELATIVE_PHONE_NUMBER.value) + " relativePhoneNumber,"
-                    + buildPatientAttributesQuery(PatientAttributesDTO.Column.DEPARTMENT.value) + " department "
+                    + buildPatientAttributesQuery(PatientAttributesDTO.Column.DEPARTMENT.value) + " department, "
                     + buildPatientAttributesQuery(PatientAttributesDTO.Column.CREATED_DATE.value) + " createdDate,"
 
                     + buildPatientAttributesQuery(PatientAttributesDTO.Column.PROVINCES.value) + " provinces,"
@@ -38,7 +38,7 @@ class PatientQueryBuilder : QueryBuilder() {
                     + buildPatientAttributesQuery(PatientAttributesDTO.Column.CODE_OF_HEALTH_FACILITY.value) + " codeOfHealthFacility,"
                     + buildPatientAttributesQuery(PatientAttributesDTO.Column.HEALTH_FACILITY_NAME.value) + " healthFacilityName,"
                     + buildPatientAttributesQuery(PatientAttributesDTO.Column.CODE_OF_DEPARTMENT.value) + " codeOfDepartment,"
-                    + buildPatientAttributesQuery(PatientAttributesDTO.Column.DEPARTMENT.value) + " department "
+                    + buildPatientAttributesQuery(PatientAttributesDTO.Column.DEPARTMENT.value) + " department, "
                     + buildPatientAttributesQuery(PatientAttributesDTO.Column.CREATED_DATE.value) + " createdDate, "
                     + buildPatientAttributesQuery(PatientAttributesDTO.Column.BLOCK.value) + " blockSurvey, "
                     + buildPatientAttributesQuery(PatientAttributesDTO.Column.HOUSEHOLD_UUID_LINKING.value) + " HouseHold"

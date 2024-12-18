@@ -99,17 +99,6 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
         }
     }
 
-    private val onRebindCallback = object : OnRebindCallback<FragmentPatientAddressInfoBinding>() {
-        override fun onBound(binding: FragmentPatientAddressInfoBinding?) {
-            super.onBound(binding)
-            setupCountries()
-            setupStates()
-            setupProvinceAndCities()
-            applyFilter()
-            setInputTextChangListener()
-            setClickListener()
-        }
-    }
 
     private fun setClickListener() {
         binding.frag2BtnBack.setOnClickListener {
@@ -404,14 +393,14 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
                         )
                 } else true
 
-            val bProvince = if (it.province!!.isEnabled && it.province!!.isMandatory) {
+            val bProvince = if (it.province?.isEnabled == true && it.province?.isMandatory == true) {
                 binding.textInputLayProvince.validateDropDowb(
                     binding.autoCompleteProvince,
                     error
                 )
             } else true
 
-            val bCity = if (it.city!!.isEnabled && it.city!!.isMandatory) {
+            val bCity = if (it.city?.isEnabled == true && it.city?.isMandatory == true) {
                 binding.textInputLayCity.validateDropDowb(
                     binding.autoCompleteCity,
                     error
@@ -419,7 +408,7 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
             } else true
 
             val bRelativeAddressOfHf =
-                if (it.registrationAddressOfHf!!.isEnabled && it.registrationAddressOfHf!!.isMandatory) {
+                if (it.registrationAddressOfHf?.isEnabled == true && it.registrationAddressOfHf?.isMandatory == true) {
                     binding.textInputLayRegistrationAddressOfHf.validate(
                         binding.textInputRegistrationAddressOfHf,
                         R.string.error_field_required,
@@ -590,6 +579,7 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
             //  resetAdaptersAndFieldData();
             setupCountries()
             setupStates()
+            setupProvinceAndCities()
             applyFilter()
             setInputTextChangListener()
             setClickListener()
