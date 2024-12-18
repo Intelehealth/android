@@ -69,6 +69,8 @@ import android.util.DisplayMetrics;
 import org.intelehealth.app.activities.householdSurvey.HouseholdSurveyActivity;
 import org.intelehealth.app.models.FamilyMemberRes;
 import org.intelehealth.app.BuildConfig;
+import org.intelehealth.app.models.dto.PatientAttributesDTO;
+import org.intelehealth.app.models.pushRequestApiCall.Attribute;
 import org.intelehealth.app.ui.rosterquestionnaire.ui.RosterQuestionnaireMainActivity;
 import org.intelehealth.app.ui.rosterquestionnaire.utilities.RosterQuestionnaireStage;
 import org.intelehealth.app.utilities.CustomLog;
@@ -449,7 +451,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
         Log.v("Familyyy", "load fam: " + houseHoldValue);
 
-        if (houseHoldValue !=null && !houseHoldValue.equalsIgnoreCase("")) {
+        if (houseHoldValue != null && !houseHoldValue.equalsIgnoreCase("")) {
             //Fetch all patient UUID from houseHoldValue
             try {
                 List<FamilyMemberRes> listPatientNames = new ArrayList<>();
@@ -1904,33 +1906,37 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             guardianTypeTr.setVisibility(View.GONE);
 
         }
-
+        Set<Attribute> attributes;
+        try {
+            attributes = new HashSet<>(patientsDAO.getPatientAttributes(patientDTO.getUuid()));
+        } catch (DAOException e) {
+            throw new RuntimeException(e);
+        }
+        String emergencyContactName = !TextUtils.isEmpty(patientDTO.getEmContactName()) ? patientDTO.getEmContactName() : getValueByUuid(attributes, "9b37e244-2cf5-4bd8-af32-b85ed4f919aa");
+        String emergencyContactNumber = !TextUtils.isEmpty(patientDTO.getEmContactNumber()) ? patientDTO.getEmContactNumber() : getValueByUuid(attributes, "6c25becf-1bdd-4b2e-98dd-558a4becf4a4");
+        String emergencyContactType = !TextUtils.isEmpty(patientDTO.getContactType()) ? patientDTO.getContactType() : getValueByUuid(attributes, "5fde1411-801c-49b9-93d4-abeefd8e1164");
         //contact type
-        if (!TextUtils.isEmpty(patientDTO.getContactType())) {
+        if (!TextUtils.isEmpty(emergencyContactType)) {
             if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                String type = switch_hi_contact_type_edit(patientDTO.getContactType());
+                String type = switch_hi_contact_type_edit(emergencyContactType);
                 contact_type_tv.setText(type);
             } else {
-                contact_type_tv.setText(patientDTO.getContactType());
+                contact_type_tv.setText(emergencyContactType);
             }
         } else {
             contact_type_tv.setText(getString(R.string.not_provided));
         }
 
         //emergency contact name
-        if (patientDTO.getEmContactName() != null && !patientDTO.getEmContactName().
-
-                equals("")) {
-            em_contact_name_tv.setText(patientDTO.getEmContactName());
+        if (!TextUtils.isEmpty(emergencyContactName)) {
+            em_contact_name_tv.setText(emergencyContactName);
         } else {
             em_contact_name_tv.setText(getString(R.string.not_provided));
         }
 
         //emergency contact number
-        if (patientDTO.getEmContactNumber() != null && !patientDTO.getEmContactNumber().
-
-                equals("")) {
-            em_contact_number_tv.setText(patientDTO.getEmContactNumber());
+        if (!TextUtils.isEmpty(emergencyContactNumber) && emergencyContactNumber.length()>8) {
+            em_contact_number_tv.setText(emergencyContactNumber);
         } else {
             em_contact_number_tv.setText(getString(R.string.not_provided));
         }
@@ -1940,6 +1946,15 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         } else {
             householdNumber.setText(getString(R.string.not_provided));
         }
+    }
+
+    public String getValueByUuid(Set<Attribute> patientAttributesDTO, String targetUuid) {
+        for (Attribute dto : patientAttributesDTO) {
+            if (dto.getAttributeType().equals(targetUuid)) {
+                return dto.getValue(); // Return the value for the matching UUID
+            }
+        }
+        return null; // Return null if no match is found
     }
 
     private String getStateTranslated(String state, String language) {

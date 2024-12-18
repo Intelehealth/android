@@ -145,6 +145,27 @@ class PatientRepository(
                     patient.reportDateOfPatientCreated
                 )
             )
+            add(
+                createPatientAttribute(
+                    patient.uuid,
+                    PatientAttributesDTO.Column.EMERGENCY_CONTACT_NAME.value,
+                    patient.emContactName
+                )
+            )
+            add(
+                createPatientAttribute(
+                    patient.uuid,
+                    PatientAttributesDTO.Column.EMERGENCY_CONTACT_NUMBER.value,
+                    patient.emContactNumber
+                )
+            )
+            add(
+                createPatientAttribute(
+                    patient.uuid,
+                    PatientAttributesDTO.Column.EMERGENCY_CONTACT_TYPE.value,
+                    patient.contactType
+                )
+            )
         }
 
     private fun createPatientAttribute(

@@ -41,7 +41,7 @@ public class PatientsDAO {
     int limit = 10, offset = 0;
     private static final String TAG = "PatientsDAO";
 
-    public boolean insertPatients(List<PatientDTO> patientDTO) throws DAOException {
+    public boolean insertPatients(List<PatientDTO> patientDTO, List<PatientAttributesDTO> patientAttributesDTO) throws DAOException {
 
         boolean isInserted = true;
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
@@ -49,7 +49,7 @@ public class PatientsDAO {
         db.beginTransaction();
         try {
             for (PatientDTO patient : patientDTO) {
-                createPatients(patient, db);
+                createPatients(patient, db,patientAttributesDTO);
             }
             db.setTransactionSuccessful();
         } catch (SQLException e) {
@@ -62,8 +62,15 @@ public class PatientsDAO {
 
         return isInserted;
     }
-
-    public boolean createPatients(PatientDTO patient, SQLiteDatabase db) throws DAOException {
+    public String getValueByUuid(List<PatientAttributesDTO> patientAttributesDTO, String targetUuid) {
+        for (PatientAttributesDTO dto : patientAttributesDTO) {
+            if (dto.getPersonAttributeTypeUuid().equals(targetUuid)) {
+                return dto.getValue(); // Return the value for the matching UUID
+            }
+        }
+        return null; // Return null if no match is found
+    }
+    public boolean createPatients(PatientDTO patient, SQLiteDatabase db, List<PatientAttributesDTO> patientAttributesDTO) throws DAOException {
         boolean isCreated = true;
         ContentValues values = new ContentValues();
         try {
@@ -84,9 +91,19 @@ public class PatientsDAO {
 
             values.put("guardian_type", patient.getGuardianType());
             values.put("guardian_name", patient.getGuardianName());
-            values.put("contact_type", patient.getContactType());
-            values.put("em_contact_name", patient.getEmContactName());
-            values.put("em_contact_num", patient.getEmContactNumber());
+
+
+            String emergencyContactName = getValueByUuid(patientAttributesDTO, "9b37e244-2cf5-4bd8-af32-b85ed4f919aa");
+            String emergencyContactNumber = getValueByUuid(patientAttributesDTO, "6c25becf-1bdd-4b2e-98dd-558a4becf4a4");
+            String emergencyContactType = getValueByUuid(patientAttributesDTO, "5fde1411-801c-49b9-93d4-abeefd8e1164");
+
+            values.put("contact_type", emergencyContactType);
+            values.put("em_contact_name", emergencyContactName);
+            values.put("em_contact_num", emergencyContactNumber);
+
+//            values.put("contact_type", patient.getContactType());
+//            values.put("em_contact_name", patient.getEmContactName());
+//            values.put("em_contact_num", patient.getEmContactNumber());
 
             values.put("dead", patient.getDead());
             values.put("sync", patient.getSyncd());
@@ -546,6 +563,7 @@ public class PatientsDAO {
                     patientDTO.setPostalcode(idCursor.getString(idCursor.getColumnIndexOrThrow("postal_code")));
                     patientDTO.setGuardianType(idCursor.getString(idCursor.getColumnIndexOrThrow("guardian_type")));
                     patientDTO.setGuardianName(idCursor.getString(idCursor.getColumnIndexOrThrow("guardian_name")));
+                    // Patient contatct type
                     patientDTO.setContactType(idCursor.getString(idCursor.getColumnIndexOrThrow("contact_type")));
                     patientDTO.setEmContactName(idCursor.getString(idCursor.getColumnIndexOrThrow("em_contact_name")));
                     patientDTO.setEmContactNumber(idCursor.getString(idCursor.getColumnIndexOrThrow("em_contact_num")));

@@ -84,7 +84,7 @@ public class SyncDAO {
         try {
             Logger.logD(TAG, "pull sync started");
             saveConfig(responseDTO.getData().getConfigResponse());
-            patientsDAO.insertPatients(responseDTO.getData().getPatientDTO());
+            patientsDAO.insertPatients(responseDTO.getData().getPatientDTO(),responseDTO.getData().getPatientAttributesDTO());
             patientsDAO.patientAttributes(responseDTO.getData().getPatientAttributesDTO());
             patientsDAO.patinetAttributeMaster(responseDTO.getData().getPatientAttributeTypeMasterDTO());
             visitsDAO.insertVisit(responseDTO.getData().getVisitDTO());

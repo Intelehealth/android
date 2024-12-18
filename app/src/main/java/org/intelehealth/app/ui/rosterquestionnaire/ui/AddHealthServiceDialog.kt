@@ -39,7 +39,7 @@ class AddHealthServiceDialog : DialogFragment(), MultiViewListener {
 
         alertDialog.window?.apply {
             setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg) // Show rounded corners
-            addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND) // Dim background
+//            addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND) // Dim background
 
             // Set the dialog width and height with margins
             val metrics = requireContext().resources.displayMetrics
