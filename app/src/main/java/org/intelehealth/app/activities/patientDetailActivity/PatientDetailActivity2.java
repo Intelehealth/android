@@ -2837,6 +2837,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             binding.setOtherActiveStatus(activeStatus.getActiveStatusPatientOther());
             binding.setFamilyMemberActiveStatus(activeStatus.getActiveStatusPatientFamilyMemberRegistration());
             binding.setHouseholdSurveyActiveStatus(activeStatus.getActiveStatusPatientHouseholdSurvey());
+            binding.setRosterQuestionnaireActiveStatus(activeStatus.getActiveStatusRosterQuestionnaireSection());
         }
     }
 }
