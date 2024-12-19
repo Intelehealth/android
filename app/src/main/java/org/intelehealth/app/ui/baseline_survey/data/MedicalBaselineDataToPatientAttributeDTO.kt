@@ -15,75 +15,73 @@ fun bindMedicalBaselinePatientAttributes(
     baseline: Baseline,
     patientId: String,
     patientsDAO: PatientsDAO
-): List<PatientAttributesDTO> {
-    return ArrayList<PatientAttributesDTO>().apply {
-        add(
-            createPatientAttribute(
-                patientId, PatientAttributesDTO.Column.SUGAR_CHECKED.value,
-                baseline.sugarCheck.storeHyphenIfEmpty(),
-                patientsDAO
-            )
+): List<PatientAttributesDTO> = ArrayList<PatientAttributesDTO>().apply {
+    add(
+        createPatientAttribute(
+            patientId, PatientAttributesDTO.Column.SUGAR_CHECKED.value,
+            baseline.sugarCheck.storeHyphenIfEmpty(),
+            patientsDAO
         )
-        add(
-            createPatientAttribute(
-                patientId, PatientAttributesDTO.Column.BP_CHECKED.value,
-                baseline.bpCheck.storeHyphenIfEmpty(),
-                patientsDAO
-            )
+    )
+    add(
+        createPatientAttribute(
+            patientId, PatientAttributesDTO.Column.BP_CHECKED.value,
+            baseline.bpCheck.storeHyphenIfEmpty(),
+            patientsDAO
         )
-        add(
-            createPatientAttribute(
-                patientId, PatientAttributesDTO.Column.SUGAR_CHECKED.value,
-                baseline.sugarCheck.storeHyphenIfEmpty(),
-                patientsDAO
-            )
+    )
+    add(
+        createPatientAttribute(
+            patientId, PatientAttributesDTO.Column.HB_CHECKED.value,
+            baseline.hbCheck.storeHyphenIfEmpty(),
+            patientsDAO
         )
-        add(
-            createPatientAttribute(
-                patientId, PatientAttributesDTO.Column.OTHER_MEDICAL_HISTORY.value,
-                getMedicalHistory(
-                    baseline.bpValue,
-                    baseline.diabetesValue,
-                    baseline.arthritisValue,
-                    baseline.anemiaValue,
-                    baseline.surgeryValue,
-                    baseline.surgeryReason
-                ),
-                patientsDAO
-            )
+    )
+    add(
+        createPatientAttribute(
+            patientId, PatientAttributesDTO.Column.OTHER_MEDICAL_HISTORY.value,
+            getMedicalHistory(
+                baseline.bpValue,
+                baseline.diabetesValue,
+                baseline.arthritisValue,
+                baseline.anemiaValue,
+                baseline.surgeryValue,
+                baseline.surgeryReason
+            ),
+            patientsDAO
         )
-        add(
-            createPatientAttribute(
-                patientId, PatientAttributesDTO.Column.SMOKING_STATUS.value,
-                getSmokingHistory(
-                    baseline.smokingHistory,
-                    baseline.smokingRate,
-                    baseline.smokingDuration,
-                    baseline.smokingFrequency
-                ),
-                patientsDAO
-            )
+    )
+    add(
+        createPatientAttribute(
+            patientId, PatientAttributesDTO.Column.SMOKING_STATUS.value,
+            getSmokingHistory(
+                baseline.smokingHistory,
+                baseline.smokingRate,
+                baseline.smokingDuration,
+                baseline.smokingFrequency
+            ),
+            patientsDAO
         )
-        add(
-            createPatientAttribute(
-                patientId, PatientAttributesDTO.Column.TOBACCO_STATUS.value,
-                getTobaccoHistory(baseline.chewTobacco),
-                patientsDAO
-            )
+    )
+    add(
+        createPatientAttribute(
+            patientId, PatientAttributesDTO.Column.TOBACCO_STATUS.value,
+            getTobaccoHistory(baseline.chewTobacco),
+            patientsDAO
         )
-        add(
-            createPatientAttribute(
-                patientId, PatientAttributesDTO.Column.ALCOHOL_CONSUMPTION_STATUS.value,
-                getAlcoholHistory(
-                    baseline.alcoholHistory,
-                    baseline.alcoholRate,
-                    baseline.alcoholDuration,
-                    baseline.alcoholFrequency
-                ),
-                patientsDAO
-            )
+    )
+    add(
+        createPatientAttribute(
+            patientId, PatientAttributesDTO.Column.ALCOHOL_CONSUMPTION_STATUS.value,
+            getAlcoholHistory(
+                baseline.alcoholHistory,
+                baseline.alcoholRate,
+                baseline.alcoholDuration,
+                baseline.alcoholFrequency
+            ),
+            patientsDAO
         )
-    }
+    )
 }
 
 private fun getAlcoholHistory(

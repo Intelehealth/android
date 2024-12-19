@@ -196,7 +196,7 @@ class BaselineMedicalFragment :
     private fun saveSurveyData() {
         baselineSurveyData.apply {
 
-            hbCheck = binding.acBpCheck.text.toString()
+            hbCheck = binding.acHbCheck.text.toString()
             bpCheck = binding.acBpCheck.text.toString()
             sugarCheck = binding.acSugarCheck.text.toString()
             bpValue = binding.rgBpOptions.getSelectedData()
