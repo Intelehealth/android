@@ -1,4 +1,4 @@
-package org.intelehealth.app.activities.householdSurvey.repository
+package org.intelehealth.app.ui.householdSurvey.repository
 
 object HouseholdSurveyFragmentMap {
     private val fragmentFieldsMap = mapOf(
@@ -18,6 +18,6 @@ object HouseholdSurveyFragmentMap {
     )
 
     fun getFieldsForFragment(fragmentIdentifier: String): List<String> {
-        return fragmentFieldsMap[fragmentIdentifier] ?: emptyList()
+        return org.intelehealth.app.ui.householdSurvey.repository.HouseholdSurveyFragmentMap.fragmentFieldsMap[fragmentIdentifier] ?: emptyList()
     }
 }

@@ -1,4 +1,4 @@
-package org.intelehealth.app.activities.householdSurvey.models;
+package org.intelehealth.app.ui.householdSurvey.models;
 
 public class HouseholdSurveyModel {
     String houseStructure;

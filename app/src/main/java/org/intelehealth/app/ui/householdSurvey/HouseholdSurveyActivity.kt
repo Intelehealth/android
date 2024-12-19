@@ -1,4 +1,4 @@
-package org.intelehealth.app.activities.householdSurvey
+package org.intelehealth.app.ui.householdSurvey
 
 import android.animation.ObjectAnimator
 import android.content.Context
@@ -11,11 +11,10 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.IntentCompat
 import androidx.navigation.fragment.NavHostFragment
 import org.intelehealth.app.R
-import org.intelehealth.app.activities.householdSurvey.factory.HouseHoldViewModelFactory
-import org.intelehealth.app.activities.householdSurvey.models.HouseholdSurveyModel
 import org.intelehealth.app.databinding.ActivityHouseholdSurveyBinding
 import org.intelehealth.app.shared.BaseActivity
 import org.intelehealth.app.syncModule.SyncUtils
+import org.intelehealth.app.ui.householdSurvey.factory.HouseHoldViewModelFactory
 import org.intelehealth.app.utilities.BundleKeys.Companion.HOUSEHOLD_CURRENT_STAGE
 import org.intelehealth.app.utilities.BundleKeys.Companion.PATIENT_UUID
 import org.intelehealth.app.utilities.DialogUtils
@@ -40,16 +39,9 @@ class HouseholdSurveyActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityHouseholdSurveyBinding.inflate(layoutInflater)
         setContentView(binding.root)
-//        manageTitleVisibilityOnScrolling()
         extractAndBindUI()
         setupActionBar()
-
-        //  observeCurrentPatientStage()
     }
-
-    /* private fun observeCurrentPatientStage() {
-         houseHoldViewModel.patientStageData.observe(this) { changeIconStatus(it) }
-     }*/
 
     private fun setupActionBar() {
         setSupportActionBar(binding.toolbar)
@@ -115,48 +107,6 @@ class HouseholdSurveyActivity : BaseActivity() {
         navController.graph = navGraph
     }
 
-    /*private fun generatePatientId() {
-        PatientDTO().apply {
-            uuid = UUID.randomUUID().toString()
-            createdDate = DateAndTimeUtils.getTodaysDateInRequiredFormat("dd MMMM, yyyy")
-            providerUUID = SessionManager.getInstance(this@PatientRegistrationActivity).providerID
-        }.also { patientViewModel.updatedPatient(it) }
-    }*/
-
-    /* private fun fetchPatientDetails(id: String) {
-         patientViewModel.loadPatientDetails(id).observe(this) {
-             it ?: return@observe
-             patientViewModel.handleResponse(it) { patient ->
-                 patientViewModel.updatedPatient(updatePatientDetails(patient))
-             }
-         }
-     }*/
-
-    /* private fun updatePatientDetails(patient: PatientDTO) = patient.apply {
-         if (createdDate.isNullOrEmpty()) {
-             createdDate = DateAndTimeUtils.getTodaysDateInRequiredFormat("dd MMMM, yyyy")
-         }
-         if (providerUUID.isNullOrEmpty()) {
-             providerUUID = SessionManager.getInstance(this@PatientRegistrationActivity).providerID
-         }
-     }*/
-
-    /*override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_sync, menu)
-        menu?.findItem(R.id.action_sync)?.actionView?.let {
-            actionRefresh = it.findViewById(R.id.refresh)
-            ObjectAnimator.ofFloat<View>(actionRefresh, View.ROTATION, 0f, 359f).apply {
-                repeatCount = ValueAnimator.INFINITE
-                interpolator = LinearInterpolator()
-                duration = 1200
-            }.also { anim -> syncAnimator = anim }
-
-            actionRefresh.setOnClickListener { startRefreshing() }
-        }
-
-        return true
-    }*/
-
     private fun startRefreshing() {
 
         if (NetworkConnection.isOnline(this)) {
@@ -171,22 +121,6 @@ class HouseholdSurveyActivity : BaseActivity() {
         else if (item.itemId == R.id.action_cancel) handleBackPressed()
         return true
     }
-
-//    private fun manageTitleVisibilityOnScrolling() {
-//        binding.appBarLayoutPatient.addOnOffsetChangedListener(object : OnOffsetChangedListener {
-//            var scrollRange = -1;
-//            override fun onOffsetChanged(appBarLayout: AppBarLayout?, verticalOffset: Int) {
-//                if (scrollRange == -1) {
-//                    scrollRange = appBarLayout?.totalScrollRange ?: -1
-//                }
-//
-//                binding.collapsingToolbar.title = if (scrollRange + verticalOffset == 0) {
-//                    resources.getString(R.string.add_new_patient)
-//                } else ""
-//            }
-//        })
-//    }
-
 
     override fun onResume() {
         super.onResume()
@@ -235,7 +169,7 @@ class HouseholdSurveyActivity : BaseActivity() {
         }
     }
 
-    private fun updatePatientDetails(householdSurveyModel: HouseholdSurveyModel) =
+    private fun updatePatientDetails(householdSurveyModel: org.intelehealth.app.ui.householdSurvey.models.HouseholdSurveyModel) =
         householdSurveyModel.apply {
             /* if (createdDate.isNullOrEmpty()) {
                  createdDate = DateAndTimeUtils.getTodaysDateInRequiredFormat("dd MMMM, yyyy")

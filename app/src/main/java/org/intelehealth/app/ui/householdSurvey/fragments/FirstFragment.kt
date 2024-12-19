@@ -1,4 +1,4 @@
-package org.intelehealth.app.activities.householdSurvey.fragments
+package org.intelehealth.app.ui.householdSurvey.fragments
 
 import android.os.Bundle
 import android.util.Log
@@ -9,7 +9,7 @@ import androidx.navigation.fragment.findNavController
 import com.github.ajalt.timberkt.Timber
 import com.google.gson.Gson
 import org.intelehealth.app.R
-import org.intelehealth.app.activities.householdSurvey.models.HouseholdSurveyModel
+import org.intelehealth.app.ui.householdSurvey.models.HouseholdSurveyModel
 import org.intelehealth.app.activities.householdSurvey.utilities.HouseholdSurveyConstants.Companion.AVAILABLE_ACCEPTED
 import org.intelehealth.app.activities.householdSurvey.utilities.HouseholdSurveyConstants.Companion.AVAILABLE_DEFERRED
 import org.intelehealth.app.activities.householdSurvey.utilities.HouseholdSurveyConstants.Companion.NOT_AVAILABLE_ON_SECOND_VISIT
@@ -124,7 +124,8 @@ class FirstFragment : BaseHouseholdSurveyFragment(R.layout.fragment_one_househol
     }
 
   private fun saveAndNavigateToDetails(patient: PatientDTO,
-                                       householdSurveyModel: HouseholdSurveyModel) {
+                                       householdSurveyModel: org.intelehealth.app.ui.householdSurvey.models.HouseholdSurveyModel
+  ) {
       houseHoldViewModel.savePatient("firstScreen",patient,householdSurveyModel).observe(viewLifecycleOwner) {
           it ?: return@observe
           houseHoldViewModel.handleResponse(it) { result -> if (result) navigateToDetails() }
@@ -141,7 +142,7 @@ class FirstFragment : BaseHouseholdSurveyFragment(R.layout.fragment_one_househol
         }
     }
 
-    override fun onPatientDataLoaded(householdSurveyModel: HouseholdSurveyModel) {
+    override fun onPatientDataLoaded(householdSurveyModel: org.intelehealth.app.ui.householdSurvey.models.HouseholdSurveyModel) {
         super.onPatientDataLoaded(householdSurveyModel)
         Timber.d { Gson().toJson(householdSurveyModel) }
         setDataToUI();

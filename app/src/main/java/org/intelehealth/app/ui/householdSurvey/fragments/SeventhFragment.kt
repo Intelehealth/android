@@ -1,4 +1,4 @@
-package org.intelehealth.app.activities.householdSurvey.fragments
+package org.intelehealth.app.ui.householdSurvey.fragments
 
 import android.content.Context
 import android.content.Intent
@@ -14,7 +14,7 @@ import com.google.android.datatransport.runtime.firebase.transport.LogEventDropp
 import com.google.gson.Gson
 import org.intelehealth.app.R
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New
-import org.intelehealth.app.activities.householdSurvey.models.HouseholdSurveyModel
+import org.intelehealth.app.ui.householdSurvey.models.HouseholdSurveyModel
 import org.intelehealth.app.databinding.FragmentSeventhHouseholdSurveyBinding
 import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.app.ui.patient.fragment.PatientAddressInfoFragmentDirections
@@ -78,7 +78,7 @@ class SeventhFragment : BaseHouseholdSurveyFragment(R.layout.fragment_seventh_ho
 
     private fun saveAndNavigateToDetails(
         patient: PatientDTO,
-        householdSurveyModel: HouseholdSurveyModel
+        householdSurveyModel: org.intelehealth.app.ui.householdSurvey.models.HouseholdSurveyModel
     ) {
         houseHoldViewModel.savePatient(
             "seventhScreen", patient,
@@ -116,7 +116,7 @@ class SeventhFragment : BaseHouseholdSurveyFragment(R.layout.fragment_seventh_ho
         setDataToDistanceToNearestTertiaryCareFacilityUI()
     }
 
-    override fun onPatientDataLoaded(householdSurveyModel: HouseholdSurveyModel) {
+    override fun onPatientDataLoaded(householdSurveyModel: org.intelehealth.app.ui.householdSurvey.models.HouseholdSurveyModel) {
         super.onPatientDataLoaded(householdSurveyModel)
         Timber.d { Gson().toJson(householdSurveyModel) }
         setDataToUI();
