@@ -201,7 +201,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     LinearLayout personal_edit, address_edit, others_edit;
     Myreceiver reMyreceive;
     IntentFilter filter;
-    Button startVisitBtn;
+    Button startVisitBtn, startSevikaVisitBtn;
     EncounterDTO encounterDTO;
     ImageView cancelBtn;
     //private boolean returning;
@@ -221,6 +221,8 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     private NetworkUtils networkUtils;
     String tag = "";
     RegFieldViewModel regFieldViewModel;
+
+    private boolean isBaselineSurveyCompleted = false;
 
     List<PatientRegistrationFields> patientAllFields;
     private ActivityPatientDetail2Binding binding;
@@ -253,6 +255,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         rvBaselineSurvey = findViewById(R.id.rv_baseline_survey);
         ImageView ivAddFamilyMember = findViewById(R.id.iv_add_family_member);
         ImageView ivAddBaselineSurvey = findViewById(R.id.iv_add_baseline_survey);
+        LinearLayout llChangeBaselineSurvey = findViewById(R.id.llBaselineSurvey);
 
         llEmptyFamilyMember = findViewById(R.id.ll_empty_family);
         familyMemberList = new ArrayList<>();
@@ -443,14 +446,36 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             finish();
         });
 
+        llChangeBaselineSurvey.setOnClickListener(view -> {
+            BaselineSurveyActivity.startBaselineSurvey(this, patientDTO.getUuid(), BaselineSurveyStage.GENERAL, BaselineSurveySource.PATIENT_DETAIL);
+            finish();
+        });
+
         String houseHoldValue = "";
         try {
             houseHoldValue = patientsDAO.getHouseHoldValue(patientDTO.getUuid());
         } catch (DAOException e) {
             throw new RuntimeException(e);
         }
-        if (houseHoldValue != null && !houseHoldValue.isEmpty())
+
+        isBaselineSurveyCompleted = new PatientsDAO().checkIfBaselineSurveyCompleted(patientDTO.getUuid());
+
+        if (!isBaselineSurveyCompleted) {
+            startVisitBtn.setEnabled(false);
+            startSevikaVisitBtn.setEnabled(false);
+            ivAddBaselineSurvey.setVisibility(View.VISIBLE);
+            llChangeBaselineSurvey.setVisibility(View.GONE);
+        } else {
+            startVisitBtn.setEnabled(true);
+            startSevikaVisitBtn.setEnabled(true);
+            ivAddBaselineSurvey.setVisibility(View.GONE);
+            llChangeBaselineSurvey.setVisibility(View.VISIBLE);
+        }
+
+        if (houseHoldValue != null && !houseHoldValue.isEmpty()) {
             populateFamilyMembers(houseHoldValue);
+        }
+
         populateBaselineSurveys();
     }
 
@@ -492,7 +517,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 }
             }
             case BASELINE_SURVEY -> {
-                if (bsItemList.isEmpty()) {
+                if (!isBaselineSurveyCompleted) {
                     rvBaselineSurvey.setVisibility(View.GONE);
                 } else {
                     rvBaselineSurvey.setVisibility(View.VISIBLE);
@@ -723,6 +748,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         cancelbtn = findViewById(R.id.cancelbtn);
 
         startVisitBtn = findViewById(R.id.startVisitBtn);
+        startSevikaVisitBtn = findViewById(R.id.startSevikaVisitBtn);
 
         mCurrentVisitsRecyclerView = findViewById(R.id.rcv_open_visits);
         mCurrentVisitsRecyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));

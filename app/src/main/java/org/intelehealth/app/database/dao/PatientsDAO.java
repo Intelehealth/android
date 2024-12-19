@@ -1169,4 +1169,17 @@ public class PatientsDAO {
         return count;
     }
 
+    public boolean checkIfBaselineSurveyCompleted(String patientId) {
+        boolean isBaselineSurveyCompleted = false;
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
+        String query = "SELECT * FROM tbl_patient_attribute WHERE patientuuid = ? AND person_attribute_type_uuid = ?";
+
+        final Cursor cursor = db.rawQuery(query, new String[]{patientId, "7bc0540f-6bcf-4fdd-a0c5-4068a3c922f9"});
+        if (cursor.moveToFirst()) {
+            isBaselineSurveyCompleted = true;
+        }
+
+        cursor.close();
+        return isBaselineSurveyCompleted;
+    }
 }

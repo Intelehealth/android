@@ -1198,6 +1198,7 @@
 
     <string name="hint_drop_down_hb_check">Select Duration</string>
     <string name="enter_number">Enter number</string>
+    <string name="baseline_survey_completed">Baseline Survey Completed</string>
 
 
 </resources>

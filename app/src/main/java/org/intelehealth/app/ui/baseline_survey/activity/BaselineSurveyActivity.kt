@@ -66,7 +66,7 @@ class BaselineSurveyActivity : BaseActivity() {
     }
 
     private fun handleOnBackPressListener() {
-        val callback = object : OnBackPressedCallback(false) {
+        val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 // Keeping this empty as we don't want to redirect back
             }
@@ -213,7 +213,7 @@ class BaselineSurveyActivity : BaseActivity() {
             } else {
                 binding.baselineSurveyTab.root.isVisible = true
                 binding.activeBaselineMedical = it.baselineMedicalSection
-                binding.activeBaselineOther = it.baselineMedicalSection
+                binding.activeBaselineOther = it.baselineOtherSection
             }
         }
     }

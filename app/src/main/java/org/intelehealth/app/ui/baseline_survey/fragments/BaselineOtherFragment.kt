@@ -1,7 +1,9 @@
 package org.intelehealth.app.ui.baseline_survey.fragments
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.LinearLayout
 import android.widget.Toast
@@ -39,8 +41,17 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
 
     private var isLandlessOptionChosen: Boolean = false
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentBaselineSurveyOtherBinding.inflate(layoutInflater)
+        setCheckboxes()
+        return binding.root
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        binding = FragmentBaselineSurveyOtherBinding.bind(view)
         baselineSurveyViewModel.updateBaselineStage(BaselineSurveyStage.OTHER)
         super.onViewCreated(view, savedInstanceState)
     }
@@ -64,11 +75,6 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
 
     private fun setValues() {
         setupHohCheck()
-        setupSourceOfWater()
-        setupSourceOfLight()
-        setupFuelType()
-        setupHandWashPractice()
-        setupWaterSafeguarding()
         setupEconomicStatus()
         setupReligion()
         setupElectricityCheck()
@@ -77,6 +83,14 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
         setupHouseStructure()
         setupCultivableLand()
         setOnTextChangeListener()
+    }
+
+    private fun setCheckboxes() {
+        setupSourceOfWater()
+        setupSourceOfLight()
+        setupFuelType()
+        setupHandWashPractice()
+        setupWaterSafeguarding()
     }
 
     private fun setOnTextChangeListener() {
@@ -567,7 +581,16 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
             baselineSurveyViewModel.updateBaselineData(this)
             baselineSurveyViewModel.savePatient().observe(viewLifecycleOwner) {
                 it ?: return@observe
-                baselineSurveyViewModel.handleResponse(it) { result -> if (result) navigateToPatientDetailsScreen() }
+                baselineSurveyViewModel.handleResponse(it) { result ->
+                    if (result) {
+                        Toast.makeText(
+                            requireContext(),
+                            getString(R.string.baseline_survey_completed),
+                            Toast.LENGTH_LONG
+                        ).show()
+                        navigateToPatientDetailsScreen()
+                    }
+                }
             }
         }
     }

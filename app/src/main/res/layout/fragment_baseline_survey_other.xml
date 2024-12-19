@@ -1299,7 +1299,7 @@
             android:layout_marginStart="@dimen/std_16dp"
             android:layout_marginEnd="@dimen/std_16dp"
             android:layout_marginBottom="@dimen/std_16dp"
-            android:text="@string/next"
+            android:text="@string/button_save"
             app:icon="@drawable/ui2_ic_baseline_arrow_forward_24"
             app:iconGravity="end"
             app:layout_constraintBottom_toBottomOf="parent"
