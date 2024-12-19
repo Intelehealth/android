@@ -107,6 +107,7 @@ public class PatientAttributesDTO implements Serializable {
         WATER_SUPPLY_AVAILABILITY_HOURS_PER_DAY("waterSupplyAvailabilityHoursPerDay"),
         WATER_SUPPLY_AVAILABILITY_DAYS_PER_WEEK("waterSupplyAvailabilityDaysPerWeek"),
         DRINKING_WATER_SOURCE("Drinking Water Source"),
+        SAFE_DRINKING_WATER("Safe Drinking Water"),
         TIME_DRINKING_WATER_SOURCE("Time Drinking Water Source"),
         TOILET_FACILITY("Toilet Facility"),
         HOUSE_STRUCTURE("House Structure"),
@@ -114,11 +115,8 @@ public class PatientAttributesDTO implements Serializable {
         AVERAGE_ANNUAL_HOUSEHOLD_INCOME("averageAnnualHouseholdIncome"),
         COOKING_FUEL("cookingFuel"),
         HOUSEHOLD_LIGHTING("householdLighting"),
-        REASON_FOR_OPEN_DEFECATION("reasonForOpenDefecation"),
         SOAP_HAND_WASHING_OCCASION("soapHandWashingOccasion"),
-        TAKE_OUR_SERVICE("TakeOurService")
-
-        ;
+        TAKE_OUR_SERVICE("TakeOurService");
         public final String value;
 
         Column(String value) {

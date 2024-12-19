@@ -64,4 +64,33 @@ data class Baseline(
     var handWashPractices: String = "",
     var ekalServiceCheck: String = "",
     var relationWithHousehold: String = "",
-)
+) {
+    fun setOptionalFieldsInOtherWithHyphen() {
+        this.rationCardCheck = "-"
+        this.economicStatus = "-"
+        this.religion = "-"
+        this.totalHouseholdMembers = "-"
+        this.usualHouseholdMembers = "-"
+        this.numberOfSmartphones = "-"
+        this.numberOfFeaturePhones = "-"
+        this.numberOfEarningMembers = "-"
+        this.electricityCheck = "-"
+        this.waterCheck = "-"
+        this.loadSheddingHours = "-"
+        this.loadSheddingDays = "-"
+        this.sourceOfWater = "-"
+        this.waterAvailabilityHours = "-"
+        this.waterAvailabilityDays = "-"
+        this.safeguardWater = "-"
+        this.distanceFromWater = "-"
+        this.toiletFacility = "-"
+        this.houseStructure = "-"
+        this.cultivableLand = "-"
+        this.cultivableLandValue = "-"
+        this.averageIncome = "-"
+        this.fuelType = "-"
+        this.sourceOfLight = "-"
+        this.handWashPractices = "-"
+        this.ekalServiceCheck = "-"
+    }
+}

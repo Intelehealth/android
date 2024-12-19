@@ -1262,14 +1262,6 @@
                             android:text="@string/other_not_related" />
 
                         <RadioButton
-                            android:id="@+id/radioOtherSpecify"
-                            config="@{otherConfig.relationWithHousehold}"
-                            editMode="@{baselineEditMode}"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/other_specify" />
-
-                        <RadioButton
                             android:id="@+id/radioNotStated"
                             config="@{otherConfig.relationWithHousehold}"
                             editMode="@{baselineEditMode}"

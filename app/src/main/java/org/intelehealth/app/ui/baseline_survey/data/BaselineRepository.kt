@@ -27,8 +27,15 @@ class BaselineRepository(
             patientsDAO
         )
 
+        val otherAttributesList = bindOtherBaselinePatientAttributes(
+            baseline,
+            patientId,
+            patientsDAO
+        )
+
         flag = patientsDAO.patientAttributes(generalAttributesList)
         flag = patientsDAO.patientAttributes(medicalAttributesList)
+        flag = patientsDAO.patientAttributes(otherAttributesList)
         syncOnServer()
         return flag
     }

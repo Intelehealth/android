@@ -9,6 +9,9 @@ import org.intelehealth.app.ui.baseline_survey.model.Baseline
 import org.intelehealth.app.ui.baseline_survey.model.MedicalHistory
 import org.intelehealth.app.ui.baseline_survey.model.SmokingHistory
 import org.intelehealth.app.ui.baseline_survey.model.TobaccoHistory
+import org.intelehealth.app.utilities.extensions.getCultivableLandUnit
+import org.intelehealth.app.utilities.extensions.getCultivableLandValue
+import org.intelehealth.app.utilities.extensions.getHyphenOrRelation
 import org.intelehealth.app.utilities.extensions.returnEmptyIfHyphen
 
 class PatientAttributeToBaseline(private val patientsDAO: PatientsDAO) {
@@ -17,6 +20,7 @@ class PatientAttributeToBaseline(private val patientsDAO: PatientsDAO) {
         return Baseline().apply {
             getGeneralData(list = patientAttributeList, baseline = this)
             getMedicalData(list = patientAttributeList, baseline = this)
+            getOtherData(list = patientAttributeList, baseline = this)
         }
     }
 
@@ -68,6 +72,93 @@ class PatientAttributeToBaseline(private val patientsDAO: PatientsDAO) {
                     baseline,
                     it.value
                 )
+            }
+        }
+    }
+
+    private fun getOtherData(
+        baseline: Baseline,
+        list: List<Attribute>,
+        patientsDAO: PatientsDAO = this.patientsDAO
+    ) {
+        list.forEach {
+            val personTypeAttributeName = patientsDAO.getAttributesName(it.attributeType)
+            when (personTypeAttributeName) {
+                Column.HOH_RELATIONSHIP.value -> it.value.getHyphenOrRelation(baseline)
+
+                Column.RATION_CARD.value -> baseline.rationCardCheck =
+                    it.value.returnEmptyIfHyphen()
+
+                Column.ECONOMIC_STATUS.value -> baseline.economicStatus =
+                    it.value.returnEmptyIfHyphen()
+
+                Column.RELIGION.value -> baseline.religion = it.value.returnEmptyIfHyphen()
+                Column.TOTAL_FAMILY_MEMBERS.value -> baseline.totalHouseholdMembers =
+                    it.value.returnEmptyIfHyphen()
+
+                Column.TOTAl_FAMILY_MEMBERS_STAYING.value -> baseline.usualHouseholdMembers =
+                    it.value.returnEmptyIfHyphen()
+
+                Column.NUMBER_OF_SMARTPHONES.value -> baseline.numberOfSmartphones =
+                    it.value.returnEmptyIfHyphen()
+
+                Column.NUMBER_OF_FEATURE_PHONES.value -> baseline.numberOfFeaturePhones =
+                    it.value.returnEmptyIfHyphen()
+
+                Column.NUMBER_OF_EARNING_MEMBERS.value -> baseline.numberOfEarningMembers =
+                    it.value.returnEmptyIfHyphen()
+
+                Column.ELECTRICITY_STATUS.value -> baseline.electricityCheck =
+                    it.value.returnEmptyIfHyphen()
+
+                Column.LOAD_SHEDDING_HOURS_PER_DAY.value -> baseline.loadSheddingHours =
+                    it.value.returnEmptyIfHyphen()
+
+                Column.LOAD_SHEDDING_DAYS_PER_WEEK.value -> baseline.loadSheddingDays =
+                    it.value.returnEmptyIfHyphen()
+
+                Column.RUNNING_WATER_AVAILABILITY.value -> baseline.waterCheck =
+                    it.value.returnEmptyIfHyphen()
+
+                Column.WATER_SUPPLY_AVAILABILITY_HOURS_PER_DAY.value -> baseline.waterAvailabilityHours =
+                    it.value.returnEmptyIfHyphen()
+
+                Column.WATER_SUPPLY_AVAILABILITY_DAYS_PER_WEEK.value -> baseline.waterAvailabilityDays =
+                    it.value.returnEmptyIfHyphen()
+
+                Column.DRINKING_WATER_SOURCE.value -> baseline.sourceOfWater =
+                    it.value.returnEmptyIfHyphen()
+
+                Column.SAFE_DRINKING_WATER.value -> baseline.safeguardWater =
+                    it.value.returnEmptyIfHyphen()
+
+                Column.TIME_DRINKING_WATER_SOURCE.value -> baseline.distanceFromWater =
+                    it.value.returnEmptyIfHyphen()
+
+                Column.TOILET_FACILITY.value -> baseline.toiletFacility =
+                    it.value.returnEmptyIfHyphen()
+
+                Column.HOUSE_STRUCTURE.value -> baseline.houseStructure =
+                    it.value.returnEmptyIfHyphen()
+
+                Column.FAMILY_CULTIVABLE_LAND.value -> {
+                    baseline.cultivableLand = it.value.getCultivableLandUnit().returnEmptyIfHyphen()
+                    baseline.cultivableLandValue =
+                        it.value.getCultivableLandValue().returnEmptyIfHyphen()
+                }
+
+                Column.AVERAGE_ANNUAL_HOUSEHOLD_INCOME.value -> baseline.averageIncome =
+                    it.value.returnEmptyIfHyphen()
+
+                Column.COOKING_FUEL.value -> baseline.fuelType = it.value.returnEmptyIfHyphen()
+                Column.HOUSEHOLD_LIGHTING.value -> baseline.sourceOfLight =
+                    it.value.returnEmptyIfHyphen()
+
+                Column.SOAP_HAND_WASHING_OCCASION.value -> baseline.handWashPractices =
+                    it.value.returnEmptyIfHyphen()
+
+                Column.TAKE_OUR_SERVICE.value -> baseline.ekalServiceCheck =
+                    it.value.returnEmptyIfHyphen()
             }
         }
     }

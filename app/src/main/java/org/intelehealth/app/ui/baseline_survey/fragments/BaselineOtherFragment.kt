@@ -522,6 +522,7 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
 
             if (!isHeadOfHousehold) {
                 relationWithHousehold = binding.rgRelationWithHohOptions.getSelectedData()
+                setOptionalFieldsInOtherWithHyphen()
             } else {
                 rationCardCheck = binding.rgRationOptions.getSelectedData()
                 economicStatus = binding.acEconomicStatusCheck.text.toString()
