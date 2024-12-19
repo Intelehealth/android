@@ -11,6 +11,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
@@ -635,8 +636,9 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
             mFamilyHistoryNode = loadFamilyHistory();
             isEditMode = false;
         }
+
         getSupportFragmentManager().beginTransaction().
-                replace(R.id.fl_steps_body, FamilyHistoryFragment.newInstance(mCommonVisitData, isEditMode, mFamilyHistoryNode), FAMILY_HISTORY_SUMMARY_FRAGMENT).
+                replace (R.id.fl_steps_body, FamilyHistoryFragment.newInstance(mCommonVisitData, isEditMode, mFamilyHistoryNode), FAMILY_HISTORY_SUMMARY_FRAGMENT).
                 commit();
         setTitle(STEP_5_FAMILY_HISTORY);
     }
@@ -1247,10 +1249,12 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
      * @return
      */
     private boolean savePastHistoryData() {
-        // save to cache
-        if(BuildConfig.FLAVOR_client != FlavorKeys.UNFPA){
-            sessionManager.setVisitEditCache(SessionManager.PATIENT_HISTORY + visitUuid, new Gson().toJson(mPastMedicalHistoryNode));
+        //for UNFPA, saving only family history
+        if(BuildConfig.FLAVOR_client == FlavorKeys.UNFPA){
+            return saveOnlyFamilyHistory();
         }
+        // save to cache
+        sessionManager.setVisitEditCache(SessionManager.PATIENT_HISTORY + visitUuid, new Gson().toJson(mPastMedicalHistoryNode));
         sessionManager.setVisitEditCache(SessionManager.FAMILY_HISTORY + visitUuid, new Gson().toJson(mFamilyHistoryNode));
         //**********
         patientHistory = mPastMedicalHistoryNode.generateLanguage();
@@ -1336,6 +1340,75 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         return insertDbPastHistory(patientHistoryWithLocaleJsonString, familyHistoryWithLocaleJsonString);
     }
 
+    /**
+     * here we are proccesing only family history for UNFPA
+     * @return
+     */
+    private boolean saveOnlyFamilyHistory() {
+        // save to cache
+        sessionManager.setVisitEditCache(SessionManager.FAMILY_HISTORY + visitUuid, new Gson().toJson(mFamilyHistoryNode));
+
+        //familyHistory = mFamilyHistoryNode.generateLanguage();
+
+        familyHistory = generateFamilyHistoryAns(false);
+        CustomLog.v(TAG, "familyHistory - " + familyHistory);
+        if (familyHistory == null || familyHistory.trim().isEmpty()) {
+            DialogUtils dialogUtils = new DialogUtils();
+            dialogUtils.showCommonDialog(VisitCreationActivity.this,
+                    0,
+                    getString(R.string.alert_label_txt),
+                    getString(R.string.you_missed_the_compulsory_questions_please_answer_them),
+                    true,
+                    getResources().getString(R.string.generic_ok),
+                    getResources().getString(R.string.cancel),
+                    action -> {
+                    });
+
+            return false;
+        }
+        familyHistoryLocale = generateFamilyHistoryAns(true);
+
+        familyHistory = familyHistory.replaceAll("null.", "");
+
+
+        while (familyHistory.contains("[Describe"))
+            familyHistory = familyHistory.replace("[Describe]", "");
+        List<String> imagePathList = mFamilyHistoryNode.getImagePathList();
+
+        if (imagePathList != null) {
+            for (String imagePath : imagePathList) {
+                String comments = mFamilyHistoryNode.getImagePathListWithSectionTag().get(imagePath);
+                updateImageDatabase(imagePath, comments);
+            }
+        }
+
+        JSONObject jsonObject = new JSONObject();
+        JSONObject jsonObject1 = new JSONObject();
+        try {
+            familyHistoryLocale = VisitUtils.replaceEnglishCommonString(familyHistoryLocale, sessionManager.getAppLanguage());
+
+            String[] matchDate1 = DateAndTimeUtils.findDateFromStringDDMMMYYY(familyHistoryLocale);
+            if (matchDate1 != null) {
+                for (String date : matchDate1) {
+                    familyHistoryLocale = familyHistoryLocale.replaceAll(date, DateAndTimeUtils.formatInLocalDateForDDMMMYYYY(date, sessionManager.getAppLanguage()));
+                }
+            }
+
+            familyHistory = VisitUtils.replaceToEnglishCommonString(familyHistory, sessionManager.getAppLanguage());
+            jsonObject1.put("en", familyHistory);
+            //if(!sessionManager.getAppLanguage().equalsIgnoreCase("en")) {
+            jsonObject1.put("l-" + sessionManager.getAppLanguage(), familyHistoryLocale);
+            //}
+            familyHistoryWithLocaleJsonString = jsonObject1.toString().replace("\\/", "/");
+            CustomLog.v(TAG, familyHistoryWithLocaleJsonString);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return insertDbPastHistory(null, familyHistoryWithLocaleJsonString);
+    }
+
     private String generateFamilyHistoryAns(boolean isLocale) {
         String familyHistory = "";
         ArrayList<String> familyInsertionList = new ArrayList<>();
@@ -1380,43 +1453,49 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         boolean isInserted = false;
         try {
             ObsDAO obsDAO = new ObsDAO();
-
-            String uuidOBS = obsDAO.getObsuuid(encounterAdultIntials, UuidDictionary.RHK_MEDICAL_HISTORY_BLURB);
-            CustomLog.i(TAG, "insertDbPastHistory patientHistory : uuidOBS - " + uuidOBS);
-
             ObsDTO obsDTO = new ObsDTO();
-            obsDTO.setConceptuuid(UuidDictionary.RHK_MEDICAL_HISTORY_BLURB);
-            obsDTO.setEncounteruuid(encounterAdultIntials);
-            obsDTO.setCreator(sessionManager.getCreatorID());
-            obsDTO.setValue(StringUtils.getValue(patientHistory));
+
+            //sometimes we will send patientHistory as null
+            //because some flavor doesn't required this
+            if(patientHistory != null){
+                String uuidOBS = obsDAO.getObsuuid(encounterAdultIntials, UuidDictionary.RHK_MEDICAL_HISTORY_BLURB);
+                CustomLog.i(TAG, "insertDbPastHistory patientHistory : uuidOBS - " + uuidOBS);
+
+                obsDTO.setConceptuuid(UuidDictionary.RHK_MEDICAL_HISTORY_BLURB);
+                obsDTO.setEncounteruuid(encounterAdultIntials);
+                obsDTO.setCreator(sessionManager.getCreatorID());
+                obsDTO.setValue(StringUtils.getValue(patientHistory));
 
 
-            if (uuidOBS != null) {
-                obsDTO.setUuid(uuidOBS);
-                CustomLog.v("obsDTO update", new Gson().toJson(obsDTO));
+                if (uuidOBS != null) {
+                    obsDTO.setUuid(uuidOBS);
+                    CustomLog.v("obsDTO update", new Gson().toJson(obsDTO));
 
-                isInserted = obsDAO.updateObs(obsDTO);
-            } else {
-                CustomLog.v("obsDTO insert", new Gson().toJson(obsDTO));
-                isInserted = obsDAO.insertObs(obsDTO);
+                    isInserted = obsDAO.updateObs(obsDTO);
+                } else {
+                    CustomLog.v("obsDTO insert", new Gson().toJson(obsDTO));
+                    isInserted = obsDAO.insertObs(obsDTO);
+                }
             }
 
-            String uuidOBS1 = obsDAO.getObsuuid(encounterAdultIntials, UuidDictionary.RHK_FAMILY_HISTORY_BLURB);
-            CustomLog.i(TAG, "insertDbPastHistory familyHistory : uuidOBS - " + uuidOBS1);
-            obsDTO = new ObsDTO();
-            obsDTO.setConceptuuid(UuidDictionary.RHK_FAMILY_HISTORY_BLURB);
-            obsDTO.setEncounteruuid(encounterAdultIntials);
-            obsDTO.setCreator(sessionManager.getCreatorID());
-            obsDTO.setValue(org.intelehealth.app.utilities.StringUtils.getValue(familyHistory));
+            if(familyHistory != null){
+                String uuidOBS1 = obsDAO.getObsuuid(encounterAdultIntials, UuidDictionary.RHK_FAMILY_HISTORY_BLURB);
+                CustomLog.i(TAG, "insertDbPastHistory familyHistory : uuidOBS - " + uuidOBS1);
+                obsDTO = new ObsDTO();
+                obsDTO.setConceptuuid(UuidDictionary.RHK_FAMILY_HISTORY_BLURB);
+                obsDTO.setEncounteruuid(encounterAdultIntials);
+                obsDTO.setCreator(sessionManager.getCreatorID());
+                obsDTO.setValue(org.intelehealth.app.utilities.StringUtils.getValue(familyHistory));
 
-            if (uuidOBS1 != null) {
-                obsDTO.setUuid(uuidOBS1);
-                CustomLog.v("obsDTO update", new Gson().toJson(obsDTO));
+                if (uuidOBS1 != null) {
+                    obsDTO.setUuid(uuidOBS1);
+                    CustomLog.v("obsDTO update", new Gson().toJson(obsDTO));
 
-                isInserted = obsDAO.updateObs(obsDTO);
-            } else {
-                CustomLog.v("obsDTO insert", new Gson().toJson(obsDTO));
-                isInserted = obsDAO.insertObs(obsDTO);
+                    isInserted = obsDAO.updateObs(obsDTO);
+                } else {
+                    CustomLog.v("obsDTO insert", new Gson().toJson(obsDTO));
+                    isInserted = obsDAO.insertObs(obsDTO);
+                }
             }
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
