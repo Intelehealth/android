@@ -2,6 +2,7 @@ package org.intelehealth.app.utilities;
 
 import android.content.Context;
 import android.text.format.DateUtils;
+
 import org.intelehealth.app.utilities.CustomLog;
 
 import androidx.annotation.NonNull;
@@ -27,7 +28,7 @@ import java.util.regex.Pattern;
 
 public class DateAndTimeUtils {
     private static final String TAG = "DateAndTimeUtils";
-     public static final String D_FORMAT_dd_M_yyyy = "dd/M/yyyy";
+    public static final String D_FORMAT_dd_M_yyyy = "dd/M/yyyy";
 
     public static float getFloat_Age_Year_Month(String date_of_birth) {
         float year_month = 0;
@@ -289,6 +290,29 @@ public class DateAndTimeUtils {
         return age;
     }
 
+    public static Integer getAgeInYears(String s) {
+        DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+        DateFormat targetFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
+        Date date = null;
+        try {
+            date = originalFormat.parse(s);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        String formattedDate = targetFormat.format(date);  // 20120821
+        String[] components = formattedDate.split("-");
+
+        int year = Integer.parseInt(components[2]);
+        int month = Integer.parseInt(components[1]);
+        int day = Integer.parseInt(components[0]);
+
+        LocalDate birthdate = new LocalDate(year, month, day);          //Birth date
+        LocalDate now = new LocalDate();                    //Today's date
+        Period period = new Period(birthdate, now, PeriodType.yearMonthDay());
+        return period.getYears();
+    }
+
     public static String getFormatedDateOfBirth(String oldformatteddate) {
 
         DateFormat originalFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH);
@@ -390,7 +414,7 @@ public class DateAndTimeUtils {
     }
 
     public static String formatDateFromOnetoAnother(String date, String sourceFormat, String anotherFormat) {
-        if(date.isEmpty()) return "";
+        if (date.isEmpty()) return "";
         String result = "";
         SimpleDateFormat sdf;
         SimpleDateFormat sdf1;
@@ -883,7 +907,7 @@ public class DateAndTimeUtils {
 
         Date date = null;
         try {
-            date = inputFormat.parse(dateToConvert+" "+time);
+            date = inputFormat.parse(dateToConvert + " " + time);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -1130,7 +1154,7 @@ public class DateAndTimeUtils {
         }
     }
 
-    public static long getTimeStampFromString(String dateString, String format){
+    public static long getTimeStampFromString(String dateString, String format) {
         SimpleDateFormat dateFormat = new SimpleDateFormat(format, Locale.US);
 
         try {

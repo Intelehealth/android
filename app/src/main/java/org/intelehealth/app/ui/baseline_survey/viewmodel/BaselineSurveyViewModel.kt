@@ -42,6 +42,10 @@ class BaselineSurveyViewModel(
         mutableBaselineSurveyStage.postValue(stage)
     }
 
+    fun getPatientAge(patientId: String) = executeLocalQuery {
+        return@executeLocalQuery baselineRepository.getPatientAge(patientId)
+    }.asLiveData()
+
     fun savePatient() = executeLocalInsertUpdateQuery {
         return@executeLocalInsertUpdateQuery baselineData.value?.let {
             baselineRepository.createPatientAttributes(it, patientId)

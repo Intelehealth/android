@@ -6,6 +6,7 @@ import org.intelehealth.app.database.dao.ImagesPushDAO
 import org.intelehealth.app.database.dao.PatientsDAO
 import org.intelehealth.app.database.dao.SyncDAO
 import org.intelehealth.app.ui.baseline_survey.model.Baseline
+import org.intelehealth.app.utilities.DateAndTimeUtils
 import org.intelehealth.app.utilities.NetworkConnection
 
 class BaselineRepository(
@@ -24,6 +25,11 @@ class BaselineRepository(
         return patientsDAO.getPatientAttributesForBaseline(patientId).let {
             PatientAttributeToBaseline(patientsDAO).getBaselineData(it)
         }
+    }
+
+    fun getPatientAge(patientId: String): Int {
+        val dateOfBirth = patientsDAO.getPatientDob(patientId)
+        return DateAndTimeUtils.getAgeInYears(dateOfBirth)
     }
 
     fun syncOnServer() {

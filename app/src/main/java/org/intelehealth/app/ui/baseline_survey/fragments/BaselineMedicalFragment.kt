@@ -34,6 +34,7 @@ class BaselineMedicalFragment :
     BaseFragmentBaselineSurvey(R.layout.fragment_baseline_survey_medical) {
 
     private lateinit var binding: FragmentBaselineSurveyMedicalBinding
+    private var isAgeGreaterThan18: Boolean = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding = FragmentBaselineSurveyMedicalBinding.bind(view)
@@ -46,7 +47,29 @@ class BaselineMedicalFragment :
         fetchMedicalBaselineConfig()
         binding.baseline = baselineData
         binding.baselineEditMode = baselineSurveyViewModel.baselineEditMode
+        checkPatientAge()
     }
+
+    private fun checkPatientAge() {
+        baselineSurveyViewModel
+            .getPatientAge(baselineSurveyViewModel.patientId)
+            .observe(viewLifecycleOwner) {
+                it ?: return@observe
+                baselineSurveyViewModel.handleResponse(it) { age -> setUp18Fields(age) }
+            }
+    }
+
+    private fun setUp18Fields(age: Int) {
+        if (age > 18) {
+            isAgeGreaterThan18 = true
+            return
+        }
+
+        binding.llHbCheck.visibility = View.GONE
+        binding.llBpCheck.visibility = View.GONE
+        binding.llSugarCheck.visibility = View.GONE
+    }
+
 
     private fun fetchMedicalBaselineConfig() {
         val it = getStaticPatientRegistrationFields()
@@ -202,17 +225,18 @@ class BaselineMedicalFragment :
         val error = R.string.this_field_is_mandatory
 
         binding.medicalConfig?.let {
-            val hbCheck = if (it.hbCheck!!.isEnabled && it.hbCheck!!.isMandatory) {
-                binding.tilHbCheckOption.validateDropDowb(binding.acHbCheck, error)
-            } else true
+            val hbCheck =
+                if (it.hbCheck!!.isEnabled && it.hbCheck!!.isMandatory && isAgeGreaterThan18) {
+                    binding.tilHbCheckOption.validateDropDowb(binding.acHbCheck, error)
+                } else true
 
             val bpCheck =
-                if (it.bpCheck!!.isEnabled && it.bpCheck!!.isMandatory && binding.llBpCheck.isVisible) {
+                if (it.bpCheck!!.isEnabled && it.bpCheck!!.isMandatory && isAgeGreaterThan18) {
                     binding.tilBpCheckOption.validateDropDowb(binding.acHbCheck, error)
                 } else true
 
             val sugarCheck =
-                if (it.sugarCheck!!.isEnabled && it.sugarCheck!!.isMandatory && binding.llSugarCheck.isVisible) {
+                if (it.sugarCheck!!.isEnabled && it.sugarCheck!!.isMandatory && isAgeGreaterThan18) {
                     binding.tilSugarCheckOption.validateDropDowb(binding.acSugarCheck, error)
                 } else true
 

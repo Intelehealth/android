@@ -352,7 +352,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="3sp"
-                        android:text="@{ medicalConfig.anemiaValue.mandatory ? @string/bp_label + ` *` : @string/bp_label}"
+                        android:text="@{ medicalConfig.anemiaValue.mandatory ? @string/anemia_label + ` *` : @string/anemia_label}"
                         android:textAppearance="@style/blur_txtview"
                         android:textSize="@null"
                         tools:text="@string/anemia_label" />

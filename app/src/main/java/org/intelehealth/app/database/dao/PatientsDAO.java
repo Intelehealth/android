@@ -930,6 +930,19 @@ public class PatientsDAO {
         return result;
     }
 
+    public String getPatientDob(String patientUuid) {
+        String dateOfBirth = "";
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT date_of_birth FROM tbl_patient WHERE uuid = ?", new String[]{patientUuid});
+        if (cursor.moveToFirst()) {
+            do {
+                dateOfBirth = cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth"));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return dateOfBirth;
+    }
+
     public static String[] getPatientsPhoneNumber(String patientUuid) {
         String[] result = new String[0];
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
