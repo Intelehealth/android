@@ -19,7 +19,9 @@
             name="householdSurveyActiveStatus"
             type="Boolean" />
 
-
+        <variable
+            name="rosterQuestionnaireActiveStatus"
+            type="Boolean" />
     </data>
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -207,8 +209,8 @@
 
                 <include
                     android:id="@+id/roster_details"
-                    android:visibility="gone"
-                    layout="@layout/layout_roster_details" />
+                    layout="@layout/layout_roster_details"
+                    app:activeStatus="@{rosterQuestionnaireActiveStatus}"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
