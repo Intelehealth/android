@@ -77,6 +77,8 @@ public class PatientsFrameJson {
                 person.setBirthdate(patientDTOList.get(i).getDateofbirth());
                 person.setGender(patientDTOList.get(i).getGender());
                 person.setUuid(patientDTOList.get(i).getUuid());
+                person.setUuid(patientDTOList.get(i).getUuid());
+
                 personList.add(person);
 
                 List<Name> nameList = new ArrayList<>();
@@ -101,7 +103,7 @@ public class PatientsFrameJson {
                 attributeList.clear();
                 try {
                     attributeList = patientsDAO.getPatientAttributes(patientDTOList.get(i).getUuid());
-                    Log.d("kzdevchk", "frameJson: PatientAttribute : "+ new Gson().toJson(attributeList));
+                    Log.d("Patient Attribute", "frameJson: PatientAttribute : "+ new Gson().toJson(attributeList));
                 } catch (DAOException e) {
                     FirebaseCrashlytics.getInstance().recordException(e);
                     CustomLog.e(TAG,e.getMessage());

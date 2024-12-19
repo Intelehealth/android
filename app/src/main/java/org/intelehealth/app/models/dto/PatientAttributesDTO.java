@@ -147,7 +147,11 @@ public class PatientAttributesDTO implements Serializable {
         NEAREST_PATHOLOGICAL_LAB_DISTANCE("nearestPathologicalLabDistance"),
         NEAREST_PRIVATE_CLINIC_MBBS_DOCTOR("nearestPrivateClinicMBBSDoctor"),
         NEAREST_PRIVATE_CLINIC_ALTERNATE_MEDICINE("nearestPrivateClinicAlternateMedicine"),
-        NEAREST_TERTIARY_CARE_FACILITY("nearestTertiaryCareFacility");
+        NEAREST_TERTIARY_CARE_FACILITY("nearestTertiaryCareFacility"),
+        EMERGENCY_CONTACT_NAME("Emergency Contact Name"),
+        EMERGENCY_CONTACT_NUMBER("Emergency Contact Number"),
+        EMERGENCY_CONTACT_TYPE("Emergency Contact Type");
+
 
         public final String value;
 
