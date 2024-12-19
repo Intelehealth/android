@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.text.TextUtils;
 import android.util.Log;
 
 import org.intelehealth.app.activities.householdSurvey.models.HouseholdSurveyModel;
@@ -16,7 +17,9 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.intelehealth.app.models.FamilyMemberRes;
 import org.intelehealth.app.models.dto.VisitDTO;
@@ -71,9 +74,9 @@ public class PatientsDAO {
 
         return isInserted;
     }
-    public String getValueByUuid(List<PatientAttributesDTO> patientAttributesDTO, String targetUuid) {
-        for (PatientAttributesDTO dto : patientAttributesDTO) {
-            if (dto.getPersonAttributeTypeUuid().equals(targetUuid)) {
+    public String getValueByUuid(Set<Attribute> patientAttributesDTO, String targetUuid) {
+        for (Attribute dto : patientAttributesDTO) {
+            if (dto.getAttributeType().equals(targetUuid)) {
                 return dto.getValue(); // Return the value for the matching UUID
             }
         }
@@ -1136,8 +1139,16 @@ public class PatientsDAO {
     public PatientDTO retrievePatientDetails(Cursor cursor) {
         Timber.tag("PatientDao").d("retrievePatientDetails");
         PatientDTO patientDTO = new PatientDTO();
+        PatientsDAO patientsDAO = new PatientsDAO();
         if (cursor.moveToFirst()) {
             do {
+                Set<Attribute> attributes;
+                try {
+                    attributes = new HashSet<>(patientsDAO.getPatientAttributes(cursor.getString(cursor.getColumnIndexOrThrow("uuid"))));
+                } catch (DAOException e) {
+                    throw new RuntimeException(e);
+                }
+
                 patientDTO.setUuid(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
                 patientDTO.setOpenmrsId(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
                 patientDTO.setFirstname(cursor.getString(cursor.getColumnIndexOrThrow("first_name")));
@@ -1156,9 +1167,9 @@ public class PatientsDAO {
                 patientDTO.setPatientPhoto(cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")));
                 patientDTO.setGuardianType(cursor.getString(cursor.getColumnIndexOrThrow("guardian_type")));
                 patientDTO.setGuardianName(cursor.getString(cursor.getColumnIndexOrThrow("guardian_name")));
-                patientDTO.setContactType(cursor.getString(cursor.getColumnIndexOrThrow("contact_type")));
-                patientDTO.setEmContactName(cursor.getString(cursor.getColumnIndexOrThrow("em_contact_name")));
-                patientDTO.setEmContactNumber(cursor.getString(cursor.getColumnIndexOrThrow("em_contact_num")));
+                patientDTO.setContactType(getValueByUuid(attributes, "5fde1411-801c-49b9-93d4-abeefd8e1164"));
+                patientDTO.setEmContactName(getValueByUuid(attributes, "9b37e244-2cf5-4bd8-af32-b85ed4f919aa"));
+                patientDTO.setEmContactNumber(getValueByUuid(attributes, "6c25becf-1bdd-4b2e-98dd-558a4becf4a4"));
 
                 // Attributes
                 patientDTO.setPhonenumber(cursor.getString(cursor.getColumnIndexOrThrow("telephone")));

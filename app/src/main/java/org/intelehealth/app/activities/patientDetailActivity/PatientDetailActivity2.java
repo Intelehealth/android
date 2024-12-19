@@ -2119,31 +2119,41 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         } catch (DAOException e) {
             throw new RuntimeException(e);
         }
-        String emergencyContactName = !TextUtils.isEmpty(patientDTO.getEmContactName()) ? patientDTO.getEmContactName() : getValueByUuid(attributes, "9b37e244-2cf5-4bd8-af32-b85ed4f919aa");
-        String emergencyContactNumber = !TextUtils.isEmpty(patientDTO.getEmContactNumber()) ? patientDTO.getEmContactNumber() : getValueByUuid(attributes, "6c25becf-1bdd-4b2e-98dd-558a4becf4a4");
-        String emergencyContactType = !TextUtils.isEmpty(patientDTO.getContactType()) ? patientDTO.getContactType() : getValueByUuid(attributes, "5fde1411-801c-49b9-93d4-abeefd8e1164");
+
+        if (TextUtils.isEmpty(patientDTO.getEmContactName())) {
+            patientDTO.setEmContactName(getValueByUuid(attributes, "9b37e244-2cf5-4bd8-af32-b85ed4f919aa"));
+        }
+
+        if (TextUtils.isEmpty(patientDTO.getEmContactNumber())) {
+            patientDTO.setEmContactNumber(getValueByUuid(attributes, "6c25becf-1bdd-4b2e-98dd-558a4becf4a4"));
+        }
+
+
+        if (TextUtils.isEmpty(patientDTO.getContactType())) {
+            patientDTO.setContactType(getValueByUuid(attributes, "5fde1411-801c-49b9-93d4-abeefd8e1164"));
+        }
         //contact type
-        if (!TextUtils.isEmpty(emergencyContactType)) {
+        if (!TextUtils.isEmpty(patientDTO.getContactType())) {
             if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                String type = switch_hi_contact_type_edit(emergencyContactType);
+                String type = switch_hi_contact_type_edit(patientDTO.getContactType());
                 contact_type_tv.setText(type);
             } else {
-                contact_type_tv.setText(emergencyContactType);
+                contact_type_tv.setText(patientDTO.getContactType());
             }
         } else {
             contact_type_tv.setText(getString(R.string.not_provided));
         }
 
         //emergency contact name
-        if (!TextUtils.isEmpty(emergencyContactName)) {
-            em_contact_name_tv.setText(emergencyContactName);
+        if (!TextUtils.isEmpty(patientDTO.getEmContactName())) {
+            em_contact_name_tv.setText(patientDTO.getEmContactName());
         } else {
             em_contact_name_tv.setText(getString(R.string.not_provided));
         }
 
         //emergency contact number
-        if (!TextUtils.isEmpty(emergencyContactNumber) && emergencyContactNumber.length()>8) {
-            em_contact_number_tv.setText(emergencyContactNumber);
+        if (!TextUtils.isEmpty(patientDTO.getEmContactNumber()) && patientDTO.getEmContactNumber().length()>8) {
+            em_contact_number_tv.setText(patientDTO.getEmContactNumber());
         } else {
             em_contact_number_tv.setText(getString(R.string.not_provided));
         }
