@@ -50,7 +50,7 @@ public class PatientsDAO {
     int limit = 10, offset = 0;
     private static final String TAG = "PatientsDAO";
 
-    public boolean insertPatients(List<PatientDTO> patientDTO, List<PatientAttributesDTO> patientAttributesDTO) throws DAOException {
+    public boolean insertPatients(List<PatientDTO> patientDTO) throws DAOException {
 
         boolean isInserted = true;
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
@@ -58,7 +58,7 @@ public class PatientsDAO {
         db.beginTransaction();
         try {
             for (PatientDTO patient : patientDTO) {
-                createPatients(patient, db,patientAttributesDTO);
+                createPatients(patient, db);
             }
             db.setTransactionSuccessful();
         } catch (SQLException e) {
@@ -79,7 +79,7 @@ public class PatientsDAO {
         }
         return null; // Return null if no match is found
     }
-    public boolean createPatients(PatientDTO patient, SQLiteDatabase db, List<PatientAttributesDTO> patientAttributesDTO) throws DAOException {
+    public boolean createPatients(PatientDTO patient, SQLiteDatabase db) throws DAOException {
         boolean isCreated = true;
         ContentValues values = new ContentValues();
         try {
@@ -102,13 +102,6 @@ public class PatientsDAO {
             values.put("guardian_name", patient.getGuardianName());
 
 
-            String emergencyContactName = getValueByUuid(patientAttributesDTO, "9b37e244-2cf5-4bd8-af32-b85ed4f919aa");
-            String emergencyContactNumber = getValueByUuid(patientAttributesDTO, "6c25becf-1bdd-4b2e-98dd-558a4becf4a4");
-            String emergencyContactType = getValueByUuid(patientAttributesDTO, "5fde1411-801c-49b9-93d4-abeefd8e1164");
-
-            values.put("contact_type", emergencyContactType);
-            values.put("em_contact_name", emergencyContactName);
-            values.put("em_contact_num", emergencyContactNumber);
 
 //            values.put("contact_type", patient.getContactType());
 //            values.put("em_contact_name", patient.getEmContactName());
