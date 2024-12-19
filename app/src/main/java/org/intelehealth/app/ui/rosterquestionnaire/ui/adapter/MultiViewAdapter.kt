@@ -1,7 +1,9 @@
 package org.intelehealth.app.ui.rosterquestionnaire.ui.adapter
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
@@ -40,6 +42,7 @@ class MultiViewAdapter(
                     parent.context
                 ), parent, false
             )
+
             RoasterQuestionView.EDIT_TEXT.lavout -> ItemEditTextViewBinding.inflate(
                 LayoutInflater.from(
                     parent.context
@@ -77,11 +80,17 @@ class MultiViewAdapter(
                         }
 
                         if (text.toString() != data.answer) {
-                            setText(data.answer ?: binding.root.context.getString(R.string.select), false)
+                            setText(
+                                data.answer ?: binding.root.context.getString(R.string.select),
+                                false
+                            )
                         }
 
                         if (isResulCheck && data.answer.isNullOrEmpty()) {
-                            binding.textInputLayRelation.showDropDownError(data.answer, data.errorMessage)
+                            binding.textInputLayRelation.showDropDownError(
+                                data.answer,
+                                data.errorMessage
+                            )
                         } else {
                             binding.textInputLayRelation.hideError()
                         }
@@ -106,18 +115,28 @@ class MultiViewAdapter(
                     }
                 }
 
-                is ItemEditTextViewBinding ->{
+                is ItemEditTextViewBinding -> {
                     binding.tvEditTextHeader.text = data.question
                     binding.tilEtAnswer.setText(data.answer ?: "")
                     binding.tilEtAnswer.inputType = data.inputType
-                     binding.tilEtAnswer.doOnTextChanged { text, start, before, count ->
-                         data.answer = text.toString()
-                         binding.tilAnswer.hideError()
-                     }
+                    binding.tilEtAnswer.doOnTextChanged { text, start, before, count ->
+                        data.answer = text.toString()
+                        binding.tilAnswer.hideError()
+                    }
                     if (isResulCheck && data.answer.isNullOrEmpty()) {
                         binding.tilAnswer.validate(binding.tilEtAnswer, data.errorMessage)
                     } else {
                         binding.tilAnswer.hideError()
+                    }
+                    // Explicitly request focus and show the keyboard
+                    binding.tilEtAnswer.setOnFocusChangeListener { _, hasFocus ->
+                        val imm =
+                            binding.root.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                        if (hasFocus) {
+                            imm.showSoftInput(binding.tilEtAnswer, InputMethodManager.SHOW_IMPLICIT)
+                        } else {
+                            imm.hideSoftInputFromWindow(binding.tilEtAnswer.windowToken, 0)
+                        }
                     }
                 }
 
