@@ -20,6 +20,7 @@ import org.intelehealth.app.utilities.PatientRegFieldsUtils
 import org.intelehealth.app.utilities.extensions.getSelectedData
 import org.intelehealth.app.utilities.extensions.hideError
 import org.intelehealth.app.utilities.extensions.hideErrorOnTextChang
+import org.intelehealth.app.utilities.extensions.storeReasonIfAnswerIsPositive
 import org.intelehealth.app.utilities.extensions.validate
 import org.intelehealth.app.utilities.extensions.validateDropDowb
 
@@ -60,7 +61,7 @@ class BaselineMedicalFragment :
     }
 
     private fun setUp18Fields(age: Int) {
-        if (age > 18) {
+        if (age >= 18) {
             isAgeGreaterThan18 = true
             return
         }
@@ -204,6 +205,7 @@ class BaselineMedicalFragment :
             anemiaValue = binding.rgAnemiaOptions.getSelectedData()
             surgeryValue = binding.rgSurgeryOptions.getSelectedData()
             surgeryReason = binding.etSurgeryReasonCheck.text.toString()
+                .storeReasonIfAnswerIsPositive(surgeryReason)
             smokingHistory = binding.rgSmokingHistoryOptions.getSelectedData()
             smokingRate = binding.rgSmokingRateOptions.getSelectedData()
             smokingDuration = binding.rgSmokingDurationOptions.getSelectedData()

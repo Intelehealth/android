@@ -13,3 +13,11 @@ fun String.returnEmptyIfHyphen(): String {
         this
     }
 }
+
+fun String.storeReasonIfAnswerIsPositive(answer: String): String {
+    return if (answer == "Yes") {
+        this
+    } else {
+        ""
+    }
+}

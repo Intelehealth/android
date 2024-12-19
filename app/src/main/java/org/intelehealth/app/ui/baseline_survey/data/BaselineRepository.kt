@@ -14,11 +14,23 @@ class BaselineRepository(
     private val sqlHelper: SQLiteOpenHelper
 ) {
     fun createPatientAttributes(baseline: Baseline, patientId: String): Boolean {
-        bindGeneralBaselinePatientAttributes(baseline, patientId, patientsDAO).let {
-            val flag = patientsDAO.patientAttributes(it)
-            syncOnServer()
-            return flag
-        }
+        var flag = false
+        val generalAttributesList = bindGeneralBaselinePatientAttributes(
+            baseline,
+            patientId,
+            patientsDAO
+        )
+
+        val medicalAttributesList = bindMedicalBaselinePatientAttributes(
+            baseline,
+            patientId,
+            patientsDAO
+        )
+
+        flag = patientsDAO.patientAttributes(generalAttributesList)
+        flag = patientsDAO.patientAttributes(medicalAttributesList)
+        syncOnServer()
+        return flag
     }
 
     fun getPatientAttributes(patientId: String): Baseline {
