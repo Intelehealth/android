@@ -3,6 +3,7 @@ package org.intelehealth.app.ui.baseline_survey.data
 import org.intelehealth.app.database.dao.PatientsDAO
 import org.intelehealth.app.models.dto.PatientAttributesDTO
 import org.intelehealth.app.ui.baseline_survey.model.Baseline
+import org.intelehealth.app.utilities.extensions.storeHyphenIfEmpty
 import java.util.UUID
 
 fun bindGeneralBaselinePatientAttributes(
@@ -15,7 +16,7 @@ fun bindGeneralBaselinePatientAttributes(
             createPatientAttribute(
                 patientId,
                 PatientAttributesDTO.Column.OCCUPATION.value,
-                baseline.occupation,
+                baseline.occupation.storeHyphenIfEmpty(),
                 patientsDAO
             )
         )
@@ -24,7 +25,7 @@ fun bindGeneralBaselinePatientAttributes(
             createPatientAttribute(
                 patientId,
                 PatientAttributesDTO.Column.CASTE.value,
-                baseline.caste,
+                baseline.caste.storeHyphenIfEmpty(),
                 patientsDAO
             )
         )
@@ -33,7 +34,7 @@ fun bindGeneralBaselinePatientAttributes(
             createPatientAttribute(
                 patientId,
                 PatientAttributesDTO.Column.EDUCATION.value,
-                baseline.education,
+                baseline.education.storeHyphenIfEmpty(),
                 patientsDAO
             )
         )
@@ -42,7 +43,7 @@ fun bindGeneralBaselinePatientAttributes(
             createPatientAttribute(
                 patientId,
                 PatientAttributesDTO.Column.AYUSHMAN_CARD_STATUS.value,
-                baseline.ayushmanCard,
+                baseline.ayushmanCard.storeHyphenIfEmpty(),
                 patientsDAO
             )
         )
@@ -51,7 +52,7 @@ fun bindGeneralBaselinePatientAttributes(
             createPatientAttribute(
                 patientId,
                 PatientAttributesDTO.Column.MGNREGA_CARD_STATUS.value,
-                baseline.mgnregaCard,
+                baseline.mgnregaCard.storeHyphenIfEmpty(),
                 patientsDAO
             )
         )
@@ -60,7 +61,7 @@ fun bindGeneralBaselinePatientAttributes(
             createPatientAttribute(
                 patientId,
                 PatientAttributesDTO.Column.BANK_ACCOUNT.value,
-                baseline.bankAccount,
+                baseline.bankAccount.storeHyphenIfEmpty(),
                 patientsDAO
             )
         )
@@ -69,7 +70,7 @@ fun bindGeneralBaselinePatientAttributes(
             createPatientAttribute(
                 patientId,
                 PatientAttributesDTO.Column.MOBILE_PHONE_TYPE.value,
-                baseline.phoneOwnership,
+                baseline.phoneOwnership.storeHyphenIfEmpty(),
                 patientsDAO
             )
         )
@@ -78,7 +79,7 @@ fun bindGeneralBaselinePatientAttributes(
             createPatientAttribute(
                 patientId,
                 PatientAttributesDTO.Column.USE_WHATSAPP.value,
-                baseline.familyWhatsApp,
+                baseline.familyWhatsApp.storeHyphenIfEmpty(),
                 patientsDAO
             )
         )
@@ -86,7 +87,7 @@ fun bindGeneralBaselinePatientAttributes(
         add(
             createPatientAttribute(
                 patientId, PatientAttributesDTO.Column.MARTIAL_STATUS.value,
-                baseline.martialStatus,
+                baseline.martialStatus.storeHyphenIfEmpty(),
                 patientsDAO
             )
         )
