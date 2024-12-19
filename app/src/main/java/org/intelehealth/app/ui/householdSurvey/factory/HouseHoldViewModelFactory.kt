@@ -1,17 +1,13 @@
-package org.intelehealth.app.activities.householdSurvey.factory
+package org.intelehealth.app.ui.householdSurvey.factory
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
-import org.intelehealth.app.activities.householdSurvey.repository.HouseholdRepository
-import org.intelehealth.app.activities.householdSurvey.viewmodels.HouseHoldViewModel
 import org.intelehealth.app.app.IntelehealthApplication
 import org.intelehealth.app.database.dao.PatientsDAO
-import org.intelehealth.app.ui.patient.data.PatientRepository
-import org.intelehealth.app.ui.patient.viewmodel.PatientViewModel
-import org.intelehealth.config.presenter.fields.factory.PatientViewModelFactory
-import org.intelehealth.config.room.ConfigDatabase
+import org.intelehealth.app.ui.householdSurvey.repository.HouseholdRepository
+import org.intelehealth.app.ui.householdSurvey.viewmodels.HouseHoldViewModel
 
 class HouseHoldViewModelFactory(
     private val householdRepository: HouseholdRepository

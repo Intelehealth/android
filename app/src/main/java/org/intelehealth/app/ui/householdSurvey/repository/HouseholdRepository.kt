@@ -1,11 +1,11 @@
-package org.intelehealth.app.activities.householdSurvey.repository
+package org.intelehealth.app.ui.householdSurvey.repository
 
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
 import com.github.ajalt.timberkt.Timber
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.gson.Gson
-import org.intelehealth.app.activities.householdSurvey.models.HouseholdSurveyModel
+import org.intelehealth.app.ui.householdSurvey.models.HouseholdSurveyModel
 import org.intelehealth.app.app.IntelehealthApplication
 import org.intelehealth.app.database.dao.ImagesPushDAO
 import org.intelehealth.app.database.dao.PatientsDAO
@@ -23,7 +23,7 @@ class HouseholdRepository(
     fun addHouseholdPatientAttributes(
         fragmentIdentifier: String,
         patient: PatientDTO,
-        householdSurveyModel: HouseholdSurveyModel
+        householdSurveyModel: org.intelehealth.app.ui.householdSurvey.models.HouseholdSurveyModel
     ): Boolean {
         bindPatientAttributes(fragmentIdentifier, patient, householdSurveyModel).let {
             val flag = patientsDao.updatePatientSurveyInDb(it.uuid, it.patientAttributesDTOList)
@@ -38,7 +38,7 @@ class HouseholdRepository(
     fun updateHouseholdPatientAttributes(
         fragmentIdentifier: String,
         patient: PatientDTO,
-        householdSurveyModel: HouseholdSurveyModel
+        householdSurveyModel: org.intelehealth.app.ui.householdSurvey.models.HouseholdSurveyModel
     ): Boolean {
         return bindPatientAttributes(fragmentIdentifier, patient, householdSurveyModel).let {
             val flag = patientsDao.updatePatientSurveyInDb(it.uuid, it.patientAttributesDTOList)
@@ -50,7 +50,7 @@ class HouseholdRepository(
     private fun bindPatientAttributes(
         fragmentIdentifier: String,
         patient: PatientDTO,
-        householdSurveyModel: HouseholdSurveyModel
+        householdSurveyModel: org.intelehealth.app.ui.householdSurvey.models.HouseholdSurveyModel
     ) = patient.apply {
         patientAttributesDTOList =
             createPatientAttributes(fragmentIdentifier, patient, householdSurveyModel, patient.uuid)
@@ -60,16 +60,17 @@ class HouseholdRepository(
     private fun mapAllScreenAttributes(
         fragmentIdentifier: String,
         patient: PatientDTO,
-        householdSurveyModel: HouseholdSurveyModel,
+        householdSurveyModel: org.intelehealth.app.ui.householdSurvey.models.HouseholdSurveyModel,
         uuid: String?
     ) {
 
     }
 
-    fun fetchPatient(uuid: String): HouseholdSurveyModel {
+    fun fetchPatient(uuid: String): org.intelehealth.app.ui.householdSurvey.models.HouseholdSurveyModel {
         Timber.d { "uuid => $uuid" }
         val patientsDao = PatientsDAO()
-        var householdSurveyModel = HouseholdSurveyModel()
+        var householdSurveyModel =
+            org.intelehealth.app.ui.householdSurvey.models.HouseholdSurveyModel()
         var houseHoldValue = ""
         try {
             houseHoldValue = patientsDao.getHouseHoldValue(uuid)
@@ -130,10 +131,11 @@ class HouseholdRepository(
         }
     }
 
-    private fun getAllRecords(patientUuid: String): HouseholdSurveyModel {
+    private fun getAllRecords(patientUuid: String): org.intelehealth.app.ui.householdSurvey.models.HouseholdSurveyModel {
         val db = IntelehealthApplication.inteleHealthDatabaseHelper.writeDb
         val patientsDao = PatientsDAO()
-        var householdSurveyModel = HouseholdSurveyModel()
+        var householdSurveyModel =
+            org.intelehealth.app.ui.householdSurvey.models.HouseholdSurveyModel()
         val patientSelection1 = "patientuuid = ?"
         val patientArgs1 = arrayOf(patientUuid)
         val patientColumns1 = arrayOf("value", "person_attribute_type_uuid")
@@ -365,7 +367,7 @@ class HouseholdRepository(
     private fun createPatientAttributes(
         fragmentIdentifier: String,
         patient: PatientDTO,
-        householdSurveyModel: HouseholdSurveyModel,
+        householdSurveyModel: org.intelehealth.app.ui.householdSurvey.models.HouseholdSurveyModel,
         patientUuid: String
     ) = arrayListOf<PatientAttributesDTO>().apply {
         if (fragmentIdentifier.isNotEmpty() && fragmentIdentifier.equals(

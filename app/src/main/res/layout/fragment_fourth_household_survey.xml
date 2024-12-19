@@ -8,7 +8,7 @@
 
         <variable
             name="patientSurveyAttributes"
-            type="org.intelehealth.app.activities.householdSurvey.models.HouseholdSurveyModel" />
+            type="org.intelehealth.app.ui.householdSurvey.models.HouseholdSurveyModel" />
 
         <variable
             name="isEditMode"

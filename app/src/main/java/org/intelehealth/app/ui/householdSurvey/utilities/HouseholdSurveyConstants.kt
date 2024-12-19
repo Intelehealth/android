@@ -1,4 +1,4 @@
-package org.intelehealth.app.activities.householdSurvey.utilities
+package org.intelehealth.app.ui.householdSurvey.utilities
 
 class HouseholdSurveyConstants {
     companion object {

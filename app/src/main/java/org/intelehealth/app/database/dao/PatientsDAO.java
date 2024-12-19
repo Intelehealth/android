@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 import android.util.Log;
 
-import org.intelehealth.app.activities.householdSurvey.models.HouseholdSurveyModel;
+import org.intelehealth.app.ui.householdSurvey.models.HouseholdSurveyModel;
 import org.intelehealth.app.utilities.CustomLog;
 
 

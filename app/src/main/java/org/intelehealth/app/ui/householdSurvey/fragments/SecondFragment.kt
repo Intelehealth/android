@@ -1,4 +1,4 @@
-package org.intelehealth.app.activities.householdSurvey.fragments
+package org.intelehealth.app.ui.householdSurvey.fragments
 
 import android.content.Context
 import android.content.res.Configuration
@@ -11,7 +11,7 @@ import androidx.navigation.fragment.findNavController
 import com.github.ajalt.timberkt.Timber
 import com.google.gson.Gson
 import org.intelehealth.app.R
-import org.intelehealth.app.activities.householdSurvey.models.HouseholdSurveyModel
+import org.intelehealth.app.ui.householdSurvey.models.HouseholdSurveyModel
 import org.intelehealth.app.app.IntelehealthApplication
 import org.intelehealth.app.databinding.FragmentSecondHouseholdSurveyBinding
 import org.intelehealth.app.models.dto.PatientDTO
@@ -64,7 +64,7 @@ class SecondFragment : BaseHouseholdSurveyFragment(R.layout.fragment_second_hous
         applyFilter()
     }
 
-    override fun onPatientDataLoaded(householdSurveyModel: HouseholdSurveyModel) {
+    override fun onPatientDataLoaded(householdSurveyModel: org.intelehealth.app.ui.householdSurvey.models.HouseholdSurveyModel) {
         super.onPatientDataLoaded(householdSurveyModel)
         Timber.d { Gson().toJson(householdSurveyModel) }
         setDataToUI();
@@ -123,7 +123,7 @@ class SecondFragment : BaseHouseholdSurveyFragment(R.layout.fragment_second_hous
 
     private fun saveAndNavigateToDetails(
         patient: PatientDTO,
-        householdSurveyModel: HouseholdSurveyModel
+        householdSurveyModel: org.intelehealth.app.ui.householdSurvey.models.HouseholdSurveyModel
     ) {
         houseHoldViewModel.savePatient(
             "secondScreen", patient,

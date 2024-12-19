@@ -68,11 +68,11 @@ import android.util.DisplayMetrics;
 
 import org.intelehealth.app.models.dto.PatientAttributesDTO;
 
-import org.intelehealth.app.activities.householdSurvey.HouseholdSurveyActivity;
 import org.intelehealth.app.models.FamilyMemberRes;
 import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.models.dto.PatientAttributesDTO;
 import org.intelehealth.app.models.pushRequestApiCall.Attribute;
+import org.intelehealth.app.ui.householdSurvey.HouseholdSurveyActivity;
 import org.intelehealth.app.ui.rosterquestionnaire.ui.RosterQuestionnaireMainActivity;
 import org.intelehealth.app.ui.rosterquestionnaire.utilities.RosterQuestionnaireStage;
 import org.intelehealth.app.utilities.CustomLog;
