@@ -1090,11 +1090,11 @@
     <string name="glucose_fasting_error">Fasting Blood Sugar (FBS) should be in between %1$s and %2$s</string>
     <string name="glucose_non_fasting_error">Blood glucose(Non-Fasting) should be in between %1$s and %2$s</string>
     <string name="post_prandial_error">Post Prandial Blood Sugar should be in between %1$s and %2$s</string>
-    <string name="hemoglobin_error">Hemoglobin should be in between %1$s and %2$s</string>
+    <string name="hemoglobin_error">िमोग्लोबीन दरम्यान असावे %1$s आणि %2$s</string>
 <!--
     <string name="_diagnostics_summary">2/5. Diagnostics summary</string>
 -->
-    <string name="diagnostics_section">%1$d/%2$d Diagnostics</string>
+    <string name="diagnostics_section">%1$d/%2$d निदान</string>
     <string name="uric_acid_error">Uric acid should be in between %1$s and %2$s</string>
     <string name="cholestrol_acid_error">Total cholestrol should be in between %1$s and %2$s</string>
     <string name="reason">Reason</string>
