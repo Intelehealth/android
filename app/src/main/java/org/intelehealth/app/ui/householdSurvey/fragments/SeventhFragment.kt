@@ -14,6 +14,7 @@ import com.google.android.datatransport.runtime.firebase.transport.LogEventDropp
 import com.google.gson.Gson
 import org.intelehealth.app.R
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New
+import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity2
 import org.intelehealth.app.ui.householdSurvey.models.HouseholdSurveyModel
 import org.intelehealth.app.databinding.FragmentSeventhHouseholdSurveyBinding
 import org.intelehealth.app.models.dto.PatientDTO
@@ -78,7 +79,7 @@ class SeventhFragment : BaseHouseholdSurveyFragment(R.layout.fragment_seventh_ho
 
     private fun saveAndNavigateToDetails(
         patient: PatientDTO,
-        householdSurveyModel: org.intelehealth.app.ui.householdSurvey.models.HouseholdSurveyModel
+        householdSurveyModel: HouseholdSurveyModel
     ) {
         houseHoldViewModel.savePatient(
             "seventhScreen", patient,
@@ -116,7 +117,7 @@ class SeventhFragment : BaseHouseholdSurveyFragment(R.layout.fragment_seventh_ho
         setDataToDistanceToNearestTertiaryCareFacilityUI()
     }
 
-    override fun onPatientDataLoaded(householdSurveyModel: org.intelehealth.app.ui.householdSurvey.models.HouseholdSurveyModel) {
+    override fun onPatientDataLoaded(householdSurveyModel: HouseholdSurveyModel) {
         super.onPatientDataLoaded(householdSurveyModel)
         Timber.d { Gson().toJson(householdSurveyModel) }
         setDataToUI();
@@ -330,8 +331,8 @@ class SeventhFragment : BaseHouseholdSurveyFragment(R.layout.fragment_seventh_ho
             resources.getString(R.string.ok),
             resources.getString(R.string.cancel)
         ) {
-            val intent = Intent(requireActivity(), HomeScreenActivity_New::class.java)
-            startActivity(intent)
+          /*  val intent = Intent(requireActivity(), PatientDetailActivity2::class.java)
+            startActivity(intent)*/
             requireActivity().finish()
         }
     }

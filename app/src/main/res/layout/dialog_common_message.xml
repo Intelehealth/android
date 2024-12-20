@@ -73,7 +73,6 @@
                     android:gravity="center"
                     android:text="@string/yes"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/txtsize_patdetail_16sp"
                     app:backgroundTint="@null" />
 
                 <Button

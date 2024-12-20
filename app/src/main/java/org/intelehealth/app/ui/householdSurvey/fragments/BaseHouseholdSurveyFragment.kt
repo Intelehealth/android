@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
-import org.intelehealth.app.activities.householdSurvey.factory.HouseHoldViewModelFactory
+import org.intelehealth.app.ui.householdSurvey.factory.HouseHoldViewModelFactory
 import org.intelehealth.app.ui.householdSurvey.models.HouseholdSurveyModel
 
 abstract class BaseHouseholdSurveyFragment (@LayoutRes layoutResId: Int) : Fragment(layoutResId) {

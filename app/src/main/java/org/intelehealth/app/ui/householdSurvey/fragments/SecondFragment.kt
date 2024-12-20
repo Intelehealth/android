@@ -64,10 +64,10 @@ class SecondFragment : BaseHouseholdSurveyFragment(R.layout.fragment_second_hous
         applyFilter()
     }
 
-    override fun onPatientDataLoaded(householdSurveyModel: org.intelehealth.app.ui.householdSurvey.models.HouseholdSurveyModel) {
+    override fun onPatientDataLoaded(householdSurveyModel: HouseholdSurveyModel) {
         super.onPatientDataLoaded(householdSurveyModel)
         Timber.d { Gson().toJson(householdSurveyModel) }
-        setDataToUI();
+        setDataToUI()
 
         binding.patientSurveyAttributes = householdSurveyModel
         binding.isEditMode = houseHoldViewModel.isEditMode
@@ -123,7 +123,7 @@ class SecondFragment : BaseHouseholdSurveyFragment(R.layout.fragment_second_hous
 
     private fun saveAndNavigateToDetails(
         patient: PatientDTO,
-        householdSurveyModel: org.intelehealth.app.ui.householdSurvey.models.HouseholdSurveyModel
+        householdSurveyModel: HouseholdSurveyModel
     ) {
         houseHoldViewModel.savePatient(
             "secondScreen", patient,
@@ -152,7 +152,7 @@ class SecondFragment : BaseHouseholdSurveyFragment(R.layout.fragment_second_hous
             val translatedValue = StringUtils.getHouseholdHeadReligionEdit(
                 householdSurveyModel.religion,
                 requireContext(),
-                SessionManager(requireActivity()).getAppLanguage()
+                SessionManager(requireActivity()).appLanguage
             )
             val position: Int = getIndex(binding.autoCompleteReligion, translatedValue)
             if (position == -1) { // If "Other" was selected by the user

@@ -60,10 +60,10 @@ class FourthFragment : BaseHouseholdSurveyFragment(R.layout.fragment_fourth_hous
         }
     }
 
-    override fun onPatientDataLoaded(householdSurveyModel: org.intelehealth.app.ui.householdSurvey.models.HouseholdSurveyModel) {
+    override fun onPatientDataLoaded(householdSurveyModel: HouseholdSurveyModel) {
         super.onPatientDataLoaded(householdSurveyModel)
         Timber.d { Gson().toJson(householdSurveyModel) }
-        setDataToUI();
+        setDataToUI()
 
         binding.patientSurveyAttributes = householdSurveyModel
         binding.isEditMode = houseHoldViewModel.isEditMode
@@ -116,7 +116,7 @@ class FourthFragment : BaseHouseholdSurveyFragment(R.layout.fragment_fourth_hous
 
     private fun saveAndNavigateToDetails(
         patient: PatientDTO,
-        householdSurveyModel: org.intelehealth.app.ui.householdSurvey.models.HouseholdSurveyModel
+        householdSurveyModel: HouseholdSurveyModel
     ) {
         houseHoldViewModel.savePatient(
             "fourthScreen", patient,
