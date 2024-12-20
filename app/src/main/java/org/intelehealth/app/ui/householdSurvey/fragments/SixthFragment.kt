@@ -69,7 +69,7 @@ class SixthFragment : BaseHouseholdSurveyFragment(R.layout.fragment_sixth_househ
 
     private fun saveAndNavigateToDetails(
         patient: PatientDTO,
-        householdSurveyModel: org.intelehealth.app.ui.householdSurvey.models.HouseholdSurveyModel
+        householdSurveyModel: HouseholdSurveyModel
     ) {
         houseHoldViewModel.savePatient(
             "sixthScreen", patient,
@@ -170,10 +170,10 @@ class SixthFragment : BaseHouseholdSurveyFragment(R.layout.fragment_sixth_househ
         }
     }*/
 
-    override fun onPatientDataLoaded(householdSurveyModel: org.intelehealth.app.ui.householdSurvey.models.HouseholdSurveyModel) {
+    override fun onPatientDataLoaded(householdSurveyModel: HouseholdSurveyModel) {
         super.onPatientDataLoaded(householdSurveyModel)
         Timber.d { Gson().toJson(householdSurveyModel) }
-        setDataToUI();
+        setDataToUI()
 
         binding.patientSurveyAttributes = householdSurveyModel
         binding.isEditMode = houseHoldViewModel.isEditMode

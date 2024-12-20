@@ -2152,7 +2152,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         }
 
         //emergency contact number
-        if (!TextUtils.isEmpty(patientDTO.getEmContactNumber()) && patientDTO.getEmContactNumber().length()>8) {
+        if (!TextUtils.isEmpty(patientDTO.getEmContactNumber()) && patientDTO.getEmContactNumber().length() > 8) {
             em_contact_number_tv.setText(patientDTO.getEmContactNumber());
         } else {
             em_contact_number_tv.setText(getString(R.string.not_provided));

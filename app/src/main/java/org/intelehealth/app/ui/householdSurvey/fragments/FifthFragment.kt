@@ -91,7 +91,7 @@ class FifthFragment : BaseHouseholdSurveyFragment(R.layout.fragment_fifth_househ
     }
 
     private fun saveAndNavigateToDetails(
-        patient: PatientDTO, householdSurveyModel: org.intelehealth.app.ui.householdSurvey.models.HouseholdSurveyModel
+        patient: PatientDTO, householdSurveyModel: HouseholdSurveyModel
     ) {
         houseHoldViewModel.savePatient(
             "fifthScreen", patient, householdSurveyModel
@@ -444,10 +444,10 @@ class FifthFragment : BaseHouseholdSurveyFragment(R.layout.fragment_fifth_househ
         setDataForHouseholdToiletFacility()
     }
 
-    override fun onPatientDataLoaded(householdSurveyModel: org.intelehealth.app.ui.householdSurvey.models.HouseholdSurveyModel) {
+    override fun onPatientDataLoaded(householdSurveyModel: HouseholdSurveyModel) {
         super.onPatientDataLoaded(householdSurveyModel)
         Timber.d { Gson().toJson(householdSurveyModel) }
-        setDataToUI();
+        setDataToUI()
 
         binding.patientSurveyAttributes = householdSurveyModel
         binding.isEditMode = houseHoldViewModel.isEditMode

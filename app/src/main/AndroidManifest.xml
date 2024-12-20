@@ -75,7 +75,7 @@
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activities.householdSurvey.HouseholdSurveyActivity"
+            android:name=".ui.householdSurvey.HouseholdSurveyActivity"
             android:exported="true"
             android:theme="@style/AppThemeMaterialNew"
             android:windowSoftInputMode="adjustPan" />

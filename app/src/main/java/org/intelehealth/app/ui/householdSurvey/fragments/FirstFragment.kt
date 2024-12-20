@@ -9,16 +9,16 @@ import androidx.navigation.fragment.findNavController
 import com.github.ajalt.timberkt.Timber
 import com.google.gson.Gson
 import org.intelehealth.app.R
-import org.intelehealth.app.ui.householdSurvey.models.HouseholdSurveyModel
-import org.intelehealth.app.activities.householdSurvey.utilities.HouseholdSurveyConstants.Companion.AVAILABLE_ACCEPTED
-import org.intelehealth.app.activities.householdSurvey.utilities.HouseholdSurveyConstants.Companion.AVAILABLE_DEFERRED
-import org.intelehealth.app.activities.householdSurvey.utilities.HouseholdSurveyConstants.Companion.NOT_AVAILABLE_ON_SECOND_VISIT
-import org.intelehealth.app.activities.householdSurvey.utilities.HouseholdSurveyConstants.Companion.NOT_AVAILABLE_ON_SURVEY
-import org.intelehealth.app.activities.householdSurvey.utilities.HouseholdSurveyConstants.Companion.NOT_AVAILABLE_ON_THIRD_VISIT
-import org.intelehealth.app.activities.householdSurvey.utilities.HouseholdSurveyConstants.Companion.REFUSED_TO_PARTICIPATE
 import org.intelehealth.app.databinding.FragmentOneHouseholdSurveyBinding
 import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.app.ui.filter.FirstLetterUpperCaseInputFilter
+import org.intelehealth.app.ui.householdSurvey.models.HouseholdSurveyModel
+import org.intelehealth.app.ui.householdSurvey.utilities.HouseholdSurveyConstants.Companion.AVAILABLE_ACCEPTED
+import org.intelehealth.app.ui.householdSurvey.utilities.HouseholdSurveyConstants.Companion.AVAILABLE_DEFERRED
+import org.intelehealth.app.ui.householdSurvey.utilities.HouseholdSurveyConstants.Companion.NOT_AVAILABLE_ON_SECOND_VISIT
+import org.intelehealth.app.ui.householdSurvey.utilities.HouseholdSurveyConstants.Companion.NOT_AVAILABLE_ON_SURVEY
+import org.intelehealth.app.ui.householdSurvey.utilities.HouseholdSurveyConstants.Companion.NOT_AVAILABLE_ON_THIRD_VISIT
+import org.intelehealth.app.ui.householdSurvey.utilities.HouseholdSurveyConstants.Companion.REFUSED_TO_PARTICIPATE
 import org.intelehealth.app.utilities.DateAndTimeUtils
 import org.intelehealth.app.utilities.HouseholdSurveyStage
 import org.intelehealth.app.utilities.StringUtils
@@ -89,6 +89,7 @@ class FirstFragment : BaseHouseholdSurveyFragment(R.layout.fragment_one_househol
         val intent = requireActivity().intent
         if (intent != null) {
             patientUuid = intent.getStringExtra("patientUuid")
+            Log.d(TAG, "initViews: patientUuid : "+patientUuid)
         }
         setClickListener()
         radioButtonsClickListener()
@@ -124,7 +125,7 @@ class FirstFragment : BaseHouseholdSurveyFragment(R.layout.fragment_one_househol
     }
 
   private fun saveAndNavigateToDetails(patient: PatientDTO,
-                                       householdSurveyModel: org.intelehealth.app.ui.householdSurvey.models.HouseholdSurveyModel
+                                       householdSurveyModel: HouseholdSurveyModel
   ) {
       houseHoldViewModel.savePatient("firstScreen",patient,householdSurveyModel).observe(viewLifecycleOwner) {
           it ?: return@observe
@@ -142,7 +143,7 @@ class FirstFragment : BaseHouseholdSurveyFragment(R.layout.fragment_one_househol
         }
     }
 
-    override fun onPatientDataLoaded(householdSurveyModel: org.intelehealth.app.ui.householdSurvey.models.HouseholdSurveyModel) {
+    override fun onPatientDataLoaded(householdSurveyModel: HouseholdSurveyModel) {
         super.onPatientDataLoaded(householdSurveyModel)
         Timber.d { Gson().toJson(householdSurveyModel) }
         setDataToUI();
