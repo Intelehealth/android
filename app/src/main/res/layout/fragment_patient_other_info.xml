@@ -651,9 +651,10 @@
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/textInputDepartment"
-                            style="@style/AppTheme.InputBox.Address"
+                            style="@style/AppTheme.InputBox.Department"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:inputType="text"
                             android:hint="@string/enter_department"
                             android:text="@{patient.department}" />
                     </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>

@@ -70,6 +70,7 @@ import android.util.DisplayMetrics;
 
 import org.intelehealth.app.utilities.CustomLog;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -341,7 +342,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     String gender_tv;
     String mFileName = CONFIG_FILE_NAME;
     String mHeight, mWeight, mBMI, mBP, mPulse, mTemp, mSPO2, mresp;
-    String speciality_selected = "",selectedConsultationType = "";
+    String speciality_selected = "", selectedConsultationType = "";
     private TextView physcialExaminationDownloadText, vd_special_value;
     NetworkChangeReceiver receiver;
     public static final String FILTER = "io.intelehealth.client.activities.visit_summary_activity.REQUEST_PROCESSED";
@@ -457,6 +458,9 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             findViewById(R.id.flVdCard).setVisibility(activeStatus.getVisitSummeryDoctorSpeciality() ? View.VISIBLE : View.GONE);
             findViewById(R.id.cardPriorityVisit).setVisibility(activeStatus.getVisitSummeryPriorityVisit() ? View.VISIBLE : View.GONE);
             findViewById(R.id.cvFollowup).setVisibility(activeStatus.getVisitSummeryHwFollowUp() ? View.VISIBLE : View.GONE);
+
+            mBinding.flDiagnosisCard.setVisibility(activeStatus.getDiagnosisAtSecondaryLevel() ? View.VISIBLE : View.GONE);
+            mBinding.flConsultationTypeCard.setVisibility(activeStatus.getTypeOfConsultation() ? View.VISIBLE : View.GONE);
 //            if (!activeStatus.getVisitSummeryAppointment()) {
             Button btn = findViewById(R.id.btn_vs_appointment);
             boolean isAppointment = btn.getText().toString().equals(getString(R.string.appointment));
@@ -653,6 +657,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         viewModel.fetchSpecialization().observe(this, specializations -> {
             CustomLog.d(TAG, new Gson().toJson(specializations));
             setupSpecializationDataSpinner(specializations);
+            setupDiagnosisData();
             setupTypeOfConsultationSpinner();
             setFacilityToVisitSpinner();
             setSeveritySpinner();
@@ -810,7 +815,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 editAddDocs.setVisibility(View.GONE);
                 add_additional_doc.setVisibility(View.GONE);
 
-                if(BuildConfig.FLAVOR_client == FlavorKeys.UNFPA){
+                if (BuildConfig.FLAVOR_client == FlavorKeys.UNFPA) {
                     mBinding.diagnosisCard.setVisibility(View.GONE);
                     mBinding.diagnosisVdCard.setVisibility(View.VISIBLE);
 
@@ -871,7 +876,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 btn_bottom_printshare.setVisibility(View.GONE);
                 btn_bottom_vs.setVisibility(View.VISIBLE);
 
-                if(BuildConfig.FLAVOR_client == FlavorKeys.UNFPA){
+                if (BuildConfig.FLAVOR_client == FlavorKeys.UNFPA) {
                     mBinding.diagnosisCard.setVisibility(View.VISIBLE);
                     mBinding.diagnosisVdCard.setVisibility(View.GONE);
 
@@ -921,7 +926,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
     private void updateUIState() {
         if (hasPrescription) {
-            if(BuildConfig.FLAVOR_client == FlavorKeys.UNFPA){
+            if (BuildConfig.FLAVOR_client == FlavorKeys.UNFPA) {
                 mBinding.diagnosisCard.setVisibility(View.GONE);
                 mBinding.diagnosisVdCard.setVisibility(View.VISIBLE);
 
@@ -971,6 +976,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 vs_medhist_header_expandview.setVisibility(View.VISIBLE);
                 vd_special_header_expandview.setVisibility(View.VISIBLE);
                 vd_addnotes_header_expandview.setVisibility(View.VISIBLE);
+                mBinding.vdDiagnosisHeaderExpandview.setVisibility(View.VISIBLE);
+                mBinding.vdConsultationTypeHeaderExpandview.setVisibility(View.VISIBLE);
                 mOpenCount = 6;
             } else {
                 openall_btn.setText(getResources().getString(R.string.open_all));
@@ -981,6 +988,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 vs_medhist_header_expandview.setVisibility(View.GONE);
                 vd_special_header_expandview.setVisibility(View.GONE);
                 vd_addnotes_header_expandview.setVisibility(View.GONE);
+                mBinding.vdDiagnosisHeaderExpandview.setVisibility(View.GONE);
+                mBinding.vdConsultationTypeHeaderExpandview.setVisibility(View.GONE);
                 mOpenCount = 0;
             }
 
@@ -1119,6 +1128,38 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             } else {
                 mOpenCount++;
                 vd_addnotes_header_expandview.setVisibility(View.VISIBLE);
+                openall_btn.setText(getResources().getString(R.string.close_all));
+                openall_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_up_24, 0);
+            }
+        });
+
+        mBinding.diagnosisVdHeaderRelative.setOnClickListener(v -> {
+            if (mBinding.vdDiagnosisHeaderExpandview.getVisibility() == View.VISIBLE) {
+                mBinding.vdDiagnosisHeaderExpandview.setVisibility(View.GONE);
+                mOpenCount--;
+                if (mOpenCount == 0) {
+                    openall_btn.setText(getResources().getString(R.string.open_all));
+                    openall_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_down_24, 0);
+                }
+            } else {
+                mOpenCount++;
+                mBinding.vdDiagnosisHeaderExpandview.setVisibility(View.VISIBLE);
+                openall_btn.setText(getResources().getString(R.string.close_all));
+                openall_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_up_24, 0);
+            }
+        });
+
+        mBinding.consultationTypeVdHeaderRelative.setOnClickListener(v -> {
+            if (mBinding.vdConsultationTypeHeaderExpandview.getVisibility() == View.VISIBLE) {
+                mBinding.vdConsultationTypeHeaderExpandview.setVisibility(View.GONE);
+                mOpenCount--;
+                if (mOpenCount == 0) {
+                    openall_btn.setText(getResources().getString(R.string.open_all));
+                    openall_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_down_24, 0);
+                }
+            } else {
+                mOpenCount++;
+                mBinding.vdConsultationTypeHeaderExpandview.setVisibility(View.VISIBLE);
                 openall_btn.setText(getResources().getString(R.string.close_all));
                 openall_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_up_24, 0);
             }
@@ -2102,10 +2143,21 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         });
     }
 
+    private void setupDiagnosisData() {
+        String diagnosis = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, DIAGNOSIS);
+        if (!TextUtils.isEmpty(diagnosis)) {
+            mBinding.vdDiagnosisValue.setText(" " + Node.bullet + "  " + diagnosis);
+        } else {
+            mBinding.vdDiagnosisValue.setText(getString(R.string.no_data_found));
+        }
+    }
+
     private void setupTypeOfConsultationSpinner() {
         String consultationType = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, CONSULTATION_TYPE);
         if (!TextUtils.isEmpty(consultationType)) {
             mBinding.vdConsultationTypeValue.setText(" " + Node.bullet + "  " + consultationType);
+        } else {
+            mBinding.vdConsultationTypeValue.setText(getString(R.string.no_data_found));
         }
 
         mBinding.typeOfConsultationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -3014,9 +3066,23 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
 
     private void visitSendDialog(Context context, Drawable drawable, String title, String subTitle, String positiveBtnTxt, String negativeBtnTxt) {
-
+        //validate diagnosis and type of consultation
+        if (mBinding.diagnosisTextInput.getText().toString().isEmpty()) {
+            mBinding.diagnosisTextInput.setError(getString(R.string.enter_diagnosis));
+        }
+        if (selectedConsultationType.isEmpty()) {
+            TextView view = (TextView) mBinding.typeOfConsultationSpinner.getSelectedView();
+            view.setError(getString(R.string.select_consultation_type));
+            view.setTextColor(Color.RED);
+        }
         if (speciality_selected == null || speciality_selected.isEmpty()) {
             showSelectSpeciliatyErrorDialog();
+        }
+
+        if (mBinding.diagnosisTextInput.getText().toString().isEmpty() ||
+                selectedConsultationType.isEmpty() ||
+                (speciality_selected == null || speciality_selected.isEmpty())
+        ) {
             return;
         }
         MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(context);
@@ -5515,9 +5581,9 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 //general exam exam replaced as Obstetric History on UNFPA
                 //that's why added the logic
                 if (BuildConfig.FLAVOR_client == FlavorKeys.UNFPA) {
-                    valueArray =  value.replace("Obstetric History: <br>", "<b>Obstetric History: </b><br/>").split("<b>Obstetric History: </b><br/>");
-                }else {
-                    valueArray =  value.replace("General exams: <br>", "<b>General exams: </b><br/>").split("<b>General exams: </b><br/>");
+                    valueArray = value.replace("Obstetric History: <br>", "<b>Obstetric History: </b><br/>").split("<b>Obstetric History: </b><br/>");
+                } else {
+                    valueArray = value.replace("General exams: <br>", "<b>General exams: </b><br/>").split("<b>General exams: </b><br/>");
                 }
 
                 if (BuildConfig.FLAVOR_client == FlavorKeys.KCDO) {

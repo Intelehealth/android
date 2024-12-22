@@ -701,7 +701,7 @@
                                         android:layout_marginStart="@dimen/fu_margin_start"
                                         android:layout_marginEnd="@dimen/fu_margin_start"
                                         android:layout_marginBottom="@dimen/margin_16dp"
-                                        android:text="Test Diagnosis" />
+                                        />
 
                                 </RelativeLayout>
 
@@ -846,7 +846,7 @@
                                         android:layout_marginStart="@dimen/fu_margin_start"
                                         android:layout_marginEnd="@dimen/fu_margin_start"
                                         android:layout_marginBottom="@dimen/margin_16dp"
-                                        android:text="Test Colsultation" />
+                                        />
 
                                 </RelativeLayout>
 

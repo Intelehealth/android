@@ -1046,4 +1046,5 @@
     <string name="type_of_consultation">Type Of Consultation</string>
     <string name="select_consultation_type">Select Consulation Type</string>
     <string name="enter_diagnosis">Enter Diagnosis</string>
+    <string name="diagnosis_required">Diagnosis Required</string>
 </resources>

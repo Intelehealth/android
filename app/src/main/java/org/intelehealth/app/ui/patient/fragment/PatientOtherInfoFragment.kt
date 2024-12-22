@@ -130,6 +130,7 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
     private fun applyFilter() {
 //        binding.textInputNationalId.addFilter(FirstLetterUpperCaseInputFilter())
         binding.textInputOccupation.addFilter(FirstLetterUpperCaseInputFilter())
+        binding.textInputDepartment.addFilter(FirstLetterUpperCaseInputFilter())
     }
 
     private fun setInputTextChangListener() {
