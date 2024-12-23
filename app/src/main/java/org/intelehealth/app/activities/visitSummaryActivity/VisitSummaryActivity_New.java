@@ -2,6 +2,7 @@ package org.intelehealth.app.activities.visitSummaryActivity;
 
 import static org.intelehealth.app.app.AppConstants.CONFIG_FILE_NAME;
 import static org.intelehealth.app.ayu.visit.common.VisitUtils.convertCtoF;
+import static org.intelehealth.app.ayu.visit.common.VisitUtils.convertCtoFNew;
 import static org.intelehealth.app.ayu.visit.common.VisitUtils.getTranslatedAssociatedSymptomQString;
 import static org.intelehealth.app.ayu.visit.common.VisitUtils.getTranslatedPatientDenies;
 import static org.intelehealth.app.database.dao.EncounterDAO.fetchEncounterUuidForEncounterAdultInitials;
@@ -29,6 +30,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -71,6 +73,7 @@ import org.intelehealth.app.activities.visit.staticEnabledFields.VitalsEnabledFi
 import org.intelehealth.app.database.dao.VisitsDAO;
 import org.intelehealth.app.utilities.CustomLog;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -102,6 +105,7 @@ import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
@@ -202,6 +206,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -258,10 +264,12 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     private ComplaintHeaderAdapter cc_adapter;
     private String mEngReason = "";
 
+    SQLiteDatabase db;
+
     boolean hasLicense = false;
     private boolean hasPrescription = false;
     private boolean isRespiratory = false, uploaded = false, downloaded = false;
-    Button uploadButton, /*btn_vs_print, btn_vs_share,*/
+    Button uploadButton, btn_vs_print, btn_vs_share,
             mViewPrescriptionButton;
     ImageView ivPrescription;   // todo: not needed here
 
@@ -281,6 +289,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     ObsDTO haemoglobinDTO = new ObsDTO();
     ObsDTO sugarRandomDTO = new ObsDTO();
     ObsDTO resp = new ObsDTO();
+
+    String visitStartDate = "";
 
     String diagnosisReturned = "";
     String rxReturned = "";
@@ -353,6 +363,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     private Handler mBackgroundHandler;
     private List<DocumentObject> rowListItem;
     String sign_url;
+
+    String language;
 
     LinearLayout editVitals, editPhysical, editFamHist, editMedHist, editComplaint, cc_details_edit, ass_symp_edit;
     ImageButton editAddDocs;
@@ -483,7 +495,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         getWindow().setStatusBarColor(Color.WHITE);
 
-        //db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+        db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
 
         initUI();
         networkUtils = new NetworkUtils(this, this);
@@ -507,6 +519,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         setViewsData();
         setupSpecialization();
         checkIfVisitIsEnded();
+
+        language = sessionManager.getAppLanguage();
     }
 
     private void checkIfVisitIsEnded() {
@@ -2715,14 +2729,14 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
         // Bottom Buttons - start
         btn_bottom_printshare = findViewById(R.id.btn_bottom_printshare);   // linear: print - share
-        /*btn_vs_print = findViewById(R.id.btn_vs_print);   // print
-        btn_vs_share = findViewById(R.id.btn_vs_share);   // share*/
+        btn_vs_print = findViewById(R.id.btn_vs_print);   // print
+        btn_vs_share = findViewById(R.id.btn_vs_share);   // share
         mViewPrescriptionButton = findViewById(R.id.btnPrescriptionView);   // share*/
 
         btn_bottom_vs = findViewById(R.id.btn_bottom_vs);   // appointment - upload
         uploadButton = findViewById(R.id.btn_vs_sendvisit);
 
-        mViewPrescriptionButton.setOnClickListener(new View.OnClickListener() {
+        /*mViewPrescriptionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent in = new Intent(VisitSummaryActivity_New.this, PrescriptionActivity.class);
@@ -2741,6 +2755,121 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 in.putExtra("followupDate", "");
                 in.putExtra("openmrsID", patient.getOpenmrs_id());
                 startActivity(in);
+            }
+        });*/
+
+        btn_vs_print.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent in = new Intent(VisitSummaryActivity_New.this, PrescriptionActivity.class);
+                in.putExtra("patientname", patientName);
+                in.putExtra("patientUuid", patientUuid);
+                in.putExtra("patient_photo", patient.getPatient_photo());
+                in.putExtra("visit_ID", visitUUID);
+                in.putExtra("visit_startDate", "");
+                in.putExtra("gender", patient.getGender());
+                in.putExtra("encounterUuidVitals", encounterVitals);
+                in.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
+                String age = DateAndTimeUtils.getAge_FollowUp(patient.getDate_of_birth(), VisitSummaryActivity_New.this);
+
+                in.putExtra("age", age);
+                in.putExtra("tag", "VISITSUMMARY");
+                in.putExtra("followupDate", "");
+                in.putExtra("openmrsID", patient.getOpenmrs_id());
+                startActivity(in);
+            }
+        });
+
+
+
+        btn_vs_share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (!language.equalsIgnoreCase("")) {
+                    Locale locale = new Locale(language);
+                    Locale.setDefault(locale);
+                    Configuration config = new Configuration();
+                    config.locale = locale;
+                    getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+                }
+
+                if (hasPrescription) {
+                    getVisitStartDate();
+
+                    String fileNamePatientName = patientName.replace(" ", "-");
+                    String fileNameOpenMrsId = patient.getOpenmrs_id();
+                    String fileNameVisitID = visitUuid.substring(visitUuid.length() - 5);
+                    String prescriptionString = "Prescription";
+
+                    String fileName = fileNamePatientName.concat("-").concat(prescriptionString).concat("-").concat(visitStartDate).concat(".pdf");
+                    buildAndSavePrescription(fileName);
+                    try {
+                        File pdfFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), fileName);
+                        Uri uri = FileProvider.getUriForFile(VisitSummaryActivity_New.this, getApplicationContext().getPackageName() + ".provider", pdfFile);
+
+                        Intent intent = new Intent(Intent.ACTION_SEND);
+                        intent.setType("application/pdf");
+                        intent.putExtra(Intent.EXTRA_STREAM, uri);
+                        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                        intent.setPackage("com.whatsapp");
+                        Log.d("DEBUG", "File path: " + pdfFile.getAbsolutePath());
+                        Log.d("DEBUG", "File exists: " + pdfFile.exists());
+                        Log.d("DEBUG", "File size: " + pdfFile.length());
+                        Log.d("DEBUG", "URI: " + uri.toString());
+                        startActivity(intent);
+                    } catch (ActivityNotFoundException exception) {
+                        Toast.makeText(VisitSummaryActivity_New.this, getString(R.string.please_install_whatsapp), Toast.LENGTH_LONG).show();
+                    }
+
+//                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(VisitSummaryActivity.this);
+//                    EditText editText = new EditText(VisitSummaryActivity.this);
+//                    editText.setInputType(InputType.TYPE_CLASS_PHONE);
+//                    InputFilter inputFilter = new InputFilter() {
+//                        @Override
+//                        public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+//                            return null;
+//                        }
+//                    };
+//                    String partial_whatsapp_presc_url = new UrlModifiers().setwhatsappPresciptionUrl();
+//                    String whatsapp_url = partial_whatsapp_presc_url.concat(visitUuid);
+////                    Spanned hyperlink_whatsapp = HtmlCompat.fromHtml("<a href=" + whatsapp_url + ">Click Here</a>", HtmlCompat.FROM_HTML_MODE_COMPACT);
+//
+//                    editText.setFilters(new InputFilter[]{inputFilter, new InputFilter.LengthFilter(10)});
+//                    editText.setText(patient.getPhone_number());
+//                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+//                    editText.setLayoutParams(layoutParams);
+//                    alertDialog.setView(editText);
+//
+//                    //AlertDialog alertDialog = new AlertDialog.Builder(context,R.style.AlertDialogStyle).create();
+//                    alertDialog.setMessage(getResources().getString(R.string.enter_mobile_number_to_share_prescription));
+//                    alertDialog.setPositiveButton(getResources().getString(R.string.share), new DialogInterface.OnClickListener() {
+//                        public void onClick(DialogInterface dialog, int which) {
+//
+//                            if (!editText.getText().toString().equalsIgnoreCase("")) {
+//                                String phoneNumber = "+91" + editText.getText().toString();
+////                                String whatsappMessage = getResources().getString(R.string.hello_thankyou_for_using_intelehealth_app_to_download_click_here) + whatsapp_url + getResources().getString(R.string.and_enter_your_patient_id) + idView.getText().toString();
+////
+////                                // Toast.makeText(context, R.string.whatsapp_presc_toast, Toast.LENGTH_LONG).show();
+////                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(String.format("https://api.whatsapp.com/send?phone=%s&text=%s", phoneNumber, whatsappMessage))));
+////
+////                                // isreturningWhatsapp = true;
+//
+//                            } else {
+//                                Toast.makeText(context, getResources().getString(R.string.please_enter_mobile_number), Toast.LENGTH_SHORT).show();
+//
+//                            }
+//
+//                        }
+//                    });
+//                    AlertDialog dialog = alertDialog.show();
+//                    Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+//                    positiveButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
+//                    //alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+//                    IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
+                } else
+                    showOkDismissDialog(null, getString(R.string.download_prescription_first_before_sharing), getString(R.string.ok));
+
             }
         });
 
@@ -2791,6 +2920,68 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             in.putExtra("requestCode", AppConstants.EVENT_APPOINTMENT_BOOKING_FROM_VISIT_SUMMARY);
             mStartForScheduleAppointment.launch(in);
         });
+    }
+
+    private void getVisitStartDate() {
+        String[] columnsToReturn = {"startdate"};
+        String visitIdOrderBy = "startdate";
+        String visitIDSelection = "uuid = ?";
+        String[] visitIDArgs = {visitUuid};
+        db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+
+        final Cursor visitIDCursor = db.query("tbl_visit", columnsToReturn, visitIDSelection, visitIDArgs, null, null, visitIdOrderBy);
+        visitIDCursor.moveToLast();
+        String startDateTime = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("startdate"));
+        visitIDCursor.close();
+
+        visitStartDate = DateAndTimeUtils.SimpleDatetoLongDate(startDateTime);
+    }
+
+    private void buildAndSavePrescription(String fileName) {
+        PrescriptionBuilder builder = new PrescriptionBuilder(this);
+        builder.setPatientData(patient, visitStartDate);
+        builder.setVitals(getVitals());
+        builder.setComplaintData(formatComplaintData(complaint.getValue()));
+        builder.setDiagnosis(diagnosisReturned);
+        builder.setMedication(rxReturned);
+        builder.setTests(testsReturned);
+        builder.setAdvice(medicalAdvice_string);
+        builder.setFollowUp(followUpDate);
+        builder.setDoctorData(objClsDoctorDetails);
+//        builder.builder(patient, getAllVitalsData(), diagnosisReturned, rxReturned, adviceReturned, testsReturned, referredSpeciality, followUpDate, objClsDoctorDetails, mFeatureActiveStatus);
+        builder.build(fileName);
+    }
+
+    private String formatComplaintData(String mComplaint) {
+        String[] complaints = org.apache.commons.lang3.StringUtils.split(mComplaint, Node.bullet_arrow);
+        String formattedData = "";
+        String colon = ":";
+
+        if (complaints != null) {
+            for (String value : complaints) {
+                if (value.isEmpty() && value.trim().isEmpty()) {
+                    continue;
+                }
+
+                if (value.contains("Associated symptoms")) {
+                    continue;
+                }
+
+                try {
+                    formattedData = formattedData.concat(Node.big_bullet).concat(" ").concat(value.substring(0, value.indexOf(colon))).concat("\n");
+                } catch (Exception e) {
+                    Toast.makeText(VisitSummaryActivity_New.this, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            if (!formattedData.isEmpty()) {
+                formattedData = formattedData.replaceAll("<b>", "");
+                formattedData = formattedData.replaceAll("</b>", "");
+            }
+        }
+
+        formattedData = formattedData.substring(0, formattedData.lastIndexOf("\n"));
+        return formattedData;
     }
 
 
@@ -4623,6 +4814,43 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         mWebView = webView;
     }
 
+    private VitalsObject getVitals() {
+        VitalsObject vitalsObject = new VitalsObject();
+        vitalsObject.setHeight(checkAndReturnVitalsValue(height));
+        vitalsObject.setWeight(checkAndReturnVitalsValue(weight));
+        vitalsObject.setBmi(mBMI);
+        vitalsObject.setBpsys(checkAndReturnVitalsValue(bpSys));
+        vitalsObject.setBpdia(checkAndReturnVitalsValue(bpDias));
+        vitalsObject.setPulse(checkAndReturnVitalsValue(pulse));
+        vitalsObject.setTemperature(checkAndReturnTemperatureValue(temperature));
+        vitalsObject.setResp(checkAndReturnVitalsValue(resp));
+        vitalsObject.setHaemoglobin(checkAndReturnVitalsValue(haemoglobinDTO));
+        vitalsObject.setBloodGroup(checkAndReturnVitalsValue(mBloodGroupObsDTO));
+//        vitalsObject.setSugarfasting(checkAndReturnVitalsValue(sugarfasting));
+        vitalsObject.setSugarRandom(checkAndReturnVitalsValue(sugarRandomDTO));
+        vitalsObject.setSpo2(checkAndReturnVitalsValue(spO2));
+        return vitalsObject;
+    }
+
+    public String checkAndReturnVitalsValue(ObsDTO dto) {
+        if (dto == null) {
+            return "NA";
+        } else if (dto.getValue() == null || dto.getValue().equalsIgnoreCase("0")) {
+            return "NA";
+        } else {
+            return dto.getValue();
+        }
+    }
+
+    public String checkAndReturnTemperatureValue(ObsDTO dto) {
+        if (dto == null || dto.getValue() == null || dto.getValue().isEmpty()) {
+            return "NA";
+        } else {
+            return convertCtoFNew(dto.getValue());
+        }
+    }
+
+
     private VitalsObject getAllVitalsData() {
         VitalsObject vitalsObject = new VitalsObject();
         vitalsObject.setHeight(height.getValue());
@@ -6111,5 +6339,14 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             }
         }
 
+    }
+
+    private void showOkDismissDialog(String title, String message, String okBtn) {
+        try {
+            DialogUtils dialogUtils = new DialogUtils();
+            dialogUtils.showOkDialog(this, getString(R.string.error), getString(R.string.sync_failed), getString(R.string.generic_ok));
+        } catch (Exception e) {
+
+        }
     }
 }
