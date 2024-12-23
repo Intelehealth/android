@@ -579,6 +579,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             } else if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.WEIGHT)) {
                 mWeightLinearLayout.setVisibility(View.VISIBLE);
 
+
             } else if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.BMI)) {
                 mBMILinearLayout.setVisibility(View.VISIBLE);
 
@@ -922,6 +923,10 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             btnAppointment.setText(getString(R.string.reschedule));
             doesAppointmentExist = true;
         }
+
+
+        setupDiagnosisData();
+        setupTypeOfConsultationSpinner();
     }
 
     private void updateUIState() {
@@ -3072,8 +3077,10 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         }
         if (selectedConsultationType.isEmpty()) {
             TextView view = (TextView) mBinding.typeOfConsultationSpinner.getSelectedView();
-            view.setError(getString(R.string.select_consultation_type));
-            view.setTextColor(Color.RED);
+            if (view != null) {
+                view.setError(getString(R.string.select_consultation_type));
+                view.setTextColor(Color.RED);
+            }
         }
         if (speciality_selected == null || speciality_selected.isEmpty()) {
             showSelectSpeciliatyErrorDialog();
@@ -3145,10 +3152,17 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 if (selectedSeverity != null) {
                     visitAttributeListDAO.insertVisitAttributes(visitUuid, selectedSeverity, SEVERITY);
                 }
+
                 visitAttributeListDAO.insertVisitAttributes(visitUuid, AppConstants.dateAndTimeUtils.currentDateTime(), VISIT_UPLOAD_TIME);
 
-                visitAttributeListDAO.insertVisitAttributes(visitUuid, mBinding.diagnosisTextInput.getText().toString(), DIAGNOSIS);
-                visitAttributeListDAO.insertVisitAttributes(visitUuid, selectedConsultationType, CONSULTATION_TYPE);
+                if (!mBinding.diagnosisTextInput.getText().toString().isEmpty()) {
+                    visitAttributeListDAO.insertVisitAttributes(visitUuid, mBinding.diagnosisTextInput.getText().toString(), DIAGNOSIS);
+                }
+
+                if (!selectedConsultationType.isEmpty()) {
+                    visitAttributeListDAO.insertVisitAttributes(visitUuid, selectedConsultationType, CONSULTATION_TYPE);
+                }
+
 
                 if (!TextUtils.isEmpty(selectedFollowupDate) && !TextUtils.isEmpty(selectedFollowupTime)) {
                     EncounterDAO encounterDAO = new EncounterDAO();

@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.github.ajalt.timberkt.Timber
 import com.google.gson.Gson
 import kotlinx.coroutines.launch
+import org.intelehealth.app.BuildConfig
 import org.intelehealth.app.R
 import org.intelehealth.app.activities.identificationActivity.model.DistData
 import org.intelehealth.app.activities.identificationActivity.model.ProvincesAndCities
@@ -22,6 +23,7 @@ import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.app.ui.filter.FirstLetterUpperCaseInputFilter
 import org.intelehealth.app.ui.patient.activity.PatientRegistrationActivity
 import org.intelehealth.app.utilities.ArrayAdapterUtils
+import org.intelehealth.app.utilities.FlavorKeys
 import org.intelehealth.app.utilities.LanguageUtils
 import org.intelehealth.app.utilities.PatientRegFieldsUtils
 import org.intelehealth.app.utilities.PatientRegStage
@@ -96,10 +98,13 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
             super.onBound(binding)
             setupCountries()
             setupStates()
-            setupProvinceAndCities()
             applyFilter()
             setInputTextChangListener()
             setClickListener()
+            //province and cities required only for unfpa
+            if(BuildConfig.FLAVOR_client == FlavorKeys.UNFPA){
+                setupProvinceAndCities()
+            }
         }
     }
 
