@@ -1208,8 +1208,9 @@
                     android:text="@string/view_prescription_lbl"
                     android:textColor="@color/white"
                     android:textSize="@dimen/common_button_text_size"
+                    android:visibility="gone"
                     android:textStyle="bold" />
-                <!--<Button
+                <Button
                     android:id="@+id/btn_vs_print"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/fu_btn_size"
@@ -1242,7 +1243,7 @@
                     android:text="@string/share"
                     android:textColor="@color/white"
                     android:textSize="@dimen/common_button_text_size"
-                    android:textStyle="bold" />-->
+                    android:textStyle="bold" />
 
             </LinearLayout>
 

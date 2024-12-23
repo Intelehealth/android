@@ -390,5 +390,20 @@ AB NEGATIVE = 1231*/
 
     }
 
+    public static String convertCtoFNew(String temperature) {
+        if (temperature == null || temperature.isEmpty()) return "";
+        String result = "";
+        double a = Double.parseDouble(String.valueOf(temperature));
+        Double b = (a * 9 / 5) + 32;
+
+        //DecimalFormat dtime = new DecimalFormat("#.##");
+        DecimalFormat dtime = new DecimalFormat("#.#");
+        b = Double.parseDouble(dtime.format(b));
+        result = String.format("%.1f", b);
+        //result = String.valueOf(b);
+        return result;
+
+    }
+
 
 }

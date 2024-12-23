@@ -825,4 +825,9 @@
     <dimen name="location_chip_start_padding">5dp</dimen>
     <dimen name="location_chip_end_padding">5dp</dimen>
 
+    // Prescription
+    <dimen name="heading_title_size">15sp</dimen>
+    <dimen name="data_title_size">13sp</dimen>
+    <dimen name="dr_signature_size">25sp</dimen>
+
 </resources>
