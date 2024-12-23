@@ -919,13 +919,17 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                                         if (!isLoadingForNestedEditData) {
                                             // found the correct node
                                             boolean found = false;
+                                            int foundIndex = -1;
                                             for (int i = 0; i < mItemList.size(); i++) {
                                                 Node n = mItemList.get(i);
                                                 CustomLog.v(TAG, node.getText() + "## n ## " + n.getText());
                                                 if (node.getText().equalsIgnoreCase(n.getText())) {
                                                     found = true;
-                                                    mItemList.remove(i);
-                                                    notifyItemRemoved(i);
+                                                    // remove all the next nodes of the selected node - nested options.
+                                                    while (mItemList.size() > i) {
+                                                        mItemList.remove(i);
+                                                        notifyItemRemoved(i);
+                                                    }
                                                     break;
                                                 }
                                             }
@@ -1107,6 +1111,11 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
             public void onImageRemoved(int nodeIndex, int imageIndex, String image) {
 
             }
+            @Override
+            public void onTerminalNodeAnsweredForParentUpdate(String parentNodeId) {
+                mParentNode.setDataCaptured(true);
+                selectedNode.setDataCaptured(true);
+            }
         });
         holder.nestedQuestionsListingAdapter.setEngineVersion(getEngineVersion());
         holder.superNestedRecyclerView.setAdapter(holder.nestedQuestionsListingAdapter);
@@ -1212,6 +1221,11 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                 @Override
                 public void onImageRemoved(int nodeIndex, int imageIndex, String image) {
 
+                }
+                @Override
+                public void onTerminalNodeAnsweredForParentUpdate(String parentNodeId) {
+                    mParentNode.setDataCaptured(true);
+                    selectedNode.setDataCaptured(true);
                 }
             });
             holder.superNestedRecyclerView.setAdapter(holder.nestedQuestionsListingAdapter);
@@ -1580,6 +1594,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                     @Override
                     public void onFinish() {
                         mOnItemSelection.onSelect(node, mRootIndex, false, parentNode);
+                        mOnItemSelection.onTerminalNodeAnsweredForParentUpdate(parentNode.getId());
                     }
                 });
 
@@ -1765,6 +1780,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                         @Override
                         public void onFinish() {
                             mOnItemSelection.onSelect(node, mRootIndex, false, parentNode);
+                            mOnItemSelection.onTerminalNodeAnsweredForParentUpdate(parentNode.getId());
 
                         }
                     });
@@ -1903,10 +1919,12 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                     AdapterUtils.setToDisable(skipButton);
                     node.setSkipped(false);
                     parentNode.setSkipped(false);
+
                     AdapterUtils.buttonProgressAnimation(mContext, submitButton, true, new AdapterUtils.OnFinishActionListener() {
                         @Override
                         public void onFinish() {
                             mOnItemSelection.onSelect(node, mRootIndex, false, parentNode);
+                            mOnItemSelection.onTerminalNodeAnsweredForParentUpdate(parentNode.getId());
 
                         }
                     });
@@ -2158,6 +2176,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                         @Override
                         public void onFinish() {
                             mOnItemSelection.onSelect(node, mRootIndex, false, parentNode);
+                            mOnItemSelection.onTerminalNodeAnsweredForParentUpdate(parentNode.getId());
                         }
                     });
 

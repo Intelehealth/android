@@ -1,10 +1,13 @@
 package org.intelehealth.app.ayu.visit.common;
 
-import org.intelehealth.app.utilities.CustomLog;
-
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.intelehealth.app.knowledgeEngine.Node;
+import org.intelehealth.app.utilities.CustomLog;
+
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 public class VisitUtils {
 
@@ -69,7 +72,7 @@ AB NEGATIVE = 1231*/
 
     public static boolean checkNodeValidByGenderAndAge(String patientGender, float floatAgeYearMonth, String nodeGender, String minAge, String maxAge) {
 
-        if(nodeGender==null || nodeGender.isEmpty()){
+        if (nodeGender == null || nodeGender.isEmpty()) {
             return true;
         }
         float minAgeF = minAge != null && !minAge.isEmpty() ? Float.parseFloat(minAge) : 0f;
@@ -390,5 +393,31 @@ AB NEGATIVE = 1231*/
 
     }
 
+    private List<Node> tempList = new ArrayList<>();
+
+    public void updateParentNodesIfSelectedAndDataCaptured(Node parentNode) {
+
+        if (parentNode.getOptionsList() != null) {
+            for (Node nestedNode : parentNode.getOptionsList()) {
+                tempList.add(parentNode);
+                //nestedNode.setParentNode(parentNode);
+                if (nestedNode.isTerminal()) {
+                    if (nestedNode.isSelected() && nestedNode.isDataCaptured()) {
+                        for (int i = 0; i < tempList.size(); i++) {
+                            tempList.get(i).setSelected(true);
+                            tempList.get(i).setDataCaptured(true);
+                        }
+                    }
+                    tempList.clear();
+                    break;
+                } else {
+                    updateParentNodesIfSelectedAndDataCaptured(nestedNode);
+
+
+                }
+            }
+        }
+
+    }
 
 }

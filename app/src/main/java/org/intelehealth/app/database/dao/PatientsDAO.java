@@ -302,9 +302,12 @@ public class PatientsDAO {
             if (cursor.moveToFirst()) {
                 while (!cursor.isAfterLast()) {
                     attribute = new Attribute();
-                    attribute.setAttributeType(cursor.getString(cursor.getColumnIndex("person_attribute_type_uuid")));
+                    String attributeType = cursor.getString(cursor.getColumnIndex("person_attribute_type_uuid"));
+                    attribute.setAttributeType(attributeType);
                     attribute.setValue(cursor.getString(cursor.getColumnIndex("value")));
-                    patientAttributesList.add(attribute);
+                    if(attributeType !=null && !attributeType.isEmpty()){
+                        patientAttributesList.add(attribute);
+                    }
                     cursor.moveToNext();
                 }
             }

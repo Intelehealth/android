@@ -41,6 +41,7 @@ import org.intelehealth.app.R;
 import org.intelehealth.app.activities.complaintNodeActivity.CustomArrayAdapter;
 import org.intelehealth.app.activities.questionNodeActivity.QuestionsAdapter;
 import org.intelehealth.app.app.IntelehealthApplication;
+import org.intelehealth.app.ayu.visit.common.VisitUtils;
 import org.intelehealth.app.models.AnswerResult;
 import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.InputFilterMinMax;
@@ -3236,7 +3237,7 @@ public class Node implements Serializable {
         stringBuilder.append("\n");
         for (int i = 0; i < optionsList.size(); i++) {
             Node node = optionsList.get(i);
-            updateParentNodesIfSelectedAndDataCaptured(node);
+            new VisitUtils().updateParentNodesIfSelectedAndDataCaptured(node);
             if (node.isRequired()) {
                 if (node.optionsList != null && !node.optionsList.isEmpty()) {
                     if (!node.isSelected() || !node.anySubSelected() || (node.isSelected() && !isNestedMandatoryOptionsAnswered(node))) {
@@ -3283,31 +3284,7 @@ public class Node implements Serializable {
     public void setParentNode(Node parentNode) {
         this.parentNode = parentNode;
     }*/
-    private List<Node> tempList = new ArrayList<>();
 
-    public void updateParentNodesIfSelectedAndDataCaptured(Node parentNode) {
-       /* tempList = new ArrayList<>();
-        if (parentNode.getOptionsList() != null) {
-            for (Node nestedNode : parentNode.getOptionsList()) {
-                tempList.add(parentNode);
-                //nestedNode.setParentNode(parentNode);
-                if (nestedNode.isTerminal()) {
-                    if (nestedNode.isSelected() && nestedNode.isDataCaptured()) {
-                        for (int i = 0; i < tempList.size(); i++) {
-                            tempList.get(i).setSelected(true);
-                            tempList.get(i).setDataCaptured(true);
-                        }
-                       tempList.clear();
-                    }
-                    break;
-                } else {
-                    updateParentNodesIfSelectedAndDataCaptured(nestedNode);
-
-                }
-            }
-        }*/
-
-    }
 
     public AnswerResult checkAllRequiredAnsweredRootNode(Context context) {
 
