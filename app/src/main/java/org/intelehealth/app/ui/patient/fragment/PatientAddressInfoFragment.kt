@@ -264,7 +264,7 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
         Timber.d { "Final patient =>${Gson().toJson(patient)}" }
         val error = R.string.this_field_is_mandatory
         binding.addressInfoConfig?.let {
-            val bPostalCode = if (it.postalCode!!.isEnabled && it.postalCode!!.isMandatory) {
+            val bPostalCode = if (it.postalCode?.isEnabled == true && it.postalCode?.isMandatory == true) {
                 binding.textInputLayPostalCode.validate(binding.textInputPostalCode, error).and(
                     binding.textInputLayPostalCode.validateDigit(
                         binding.textInputPostalCode,
@@ -276,28 +276,28 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
             } else true
 
 
-            val bCountry = if (it.country!!.isEnabled && it.country!!.isMandatory) {
+            val bCountry = if (it.country?.isEnabled == true && it.country?.isMandatory == true) {
                 binding.textInputLayCountry.validateDropDowb(
                     binding.autoCompleteCountry,
                     error
                 )
             } else true
 
-            val bState = if (it.state!!.isEnabled && it.state!!.isMandatory) {
+            val bState = if (it.state?.isEnabled == true && it.state?.isMandatory == true) {
                 binding.textInputLayState.validateDropDowb(
                     binding.autoCompleteState,
                     error
                 )
             } else true
 
-            val bDistrict = if (it.district!!.isEnabled && it.district!!.isMandatory) {
+            val bDistrict = if (it.district?.isEnabled == true && it.district?.isMandatory == true) {
                 binding.textInputLayDistrict.validateDropDowb(
                     binding.autoCompleteState,
                     error
                 )
             } else true
 
-            val bCityVillage = if (it.cityVillage!!.isEnabled && it.cityVillage!!.isMandatory) {
+            val bCityVillage = if (it.cityVillage?.isEnabled == true && it.cityVillage?.isMandatory == true) {
                 binding.textInputLayCityVillage.validate(binding.textInputCityVillage, error).and(
                     binding.textInputLayCityVillage.validateDigit(
                         binding.textInputCityVillage,
@@ -307,14 +307,14 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
                 )
             } else true
 
-            val bProvince = if (it.province!!.isEnabled && it.province!!.isMandatory) {
+            val bProvince = if (it.province?.isEnabled == true && it.province?.isMandatory == true) {
                 binding.textInputLayProvince.validateDropDowb(
                     binding.autoCompleteProvince,
                     error
                 )
             } else true
 
-            val bCity = if (it.city!!.isEnabled && it.city!!.isMandatory) {
+            val bCity = if (it.city?.isEnabled == true && it.city?.isMandatory == true) {
                 binding.textInputLayCity.validateDropDowb(
                     binding.autoCompleteCity,
                     error
@@ -322,7 +322,7 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
             } else true
 
             val bRelativeAddressOfHf =
-                if (it.registrationAddressOfHf!!.isEnabled && it.registrationAddressOfHf!!.isMandatory) {
+                if (it.registrationAddressOfHf?.isEnabled == true && it.registrationAddressOfHf?.isMandatory == true) {
                     binding.textInputLayRegistrationAddressOfHf.validate(
                         binding.textInputRegistrationAddressOfHf,
                         R.string.error_field_required,
@@ -330,11 +330,11 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
                 } else true
 
 
-            val bAddress1 = if (it.address1!!.isEnabled && it.address1!!.isMandatory) {
+            val bAddress1 = if (it.address1?.isEnabled == true && it.address1?.isMandatory == true) {
                 binding.textInputLayAddress1.validate(binding.textInputAddress1, error)
             } else true
 
-            val bAddress2 = if (it.address2!!.isEnabled && it.address2!!.isMandatory) {
+            val bAddress2 = if (it.address2?.isEnabled == true && it.address2?.isMandatory == true) {
                 binding.textInputLayAddress2.validate(binding.textInputAddress2, error)
             } else true
 
