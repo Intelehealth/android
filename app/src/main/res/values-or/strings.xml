@@ -403,4 +403,8 @@
     <string name="select_city">Select City</string>
     <string name="registration_address_of_health_facility">Registration Address of Health Facility</string>
     <string name="enter_registration_address">Enter Registration Address</string>
+    <string name="type_of_consultation">Type Of Consultation</string>
+    <string name="select_consultation_type">Select Consulation Type</string>
+    <string name="enter_diagnosis">Enter Diagnosis</string>
+    <string name="diagnosis_required">Diagnosis Required</string>
 </resources>

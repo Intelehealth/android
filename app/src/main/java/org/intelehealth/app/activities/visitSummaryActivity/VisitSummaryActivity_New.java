@@ -14,6 +14,8 @@ import static org.intelehealth.app.utilities.DateAndTimeUtils.parse_DateToddMMyy
 import static org.intelehealth.app.utilities.DateAndTimeUtils.parse_DateToddMMyyyy_new;
 import static org.intelehealth.app.utilities.StringUtils.setGenderAgeLocal;
 import static org.intelehealth.app.utilities.UuidDictionary.ADDITIONAL_NOTES;
+import static org.intelehealth.app.utilities.UuidDictionary.CONSULTATION_TYPE;
+import static org.intelehealth.app.utilities.UuidDictionary.DIAGNOSIS;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_ADULTINITIAL;
 import static org.intelehealth.app.utilities.UuidDictionary.FACILITY;
 import static org.intelehealth.app.utilities.UuidDictionary.HW_FOLLOWUP_CONCEPT_ID;
@@ -65,7 +67,10 @@ import android.text.Html;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
+
 import org.intelehealth.app.utilities.CustomLog;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -166,6 +171,7 @@ import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.DownloadFilesUtils;
 import org.intelehealth.app.utilities.FileUtils;
+import org.intelehealth.app.utilities.FlavorKeys;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
@@ -195,6 +201,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -229,10 +236,12 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     Button btn_vs_sendvisit;
     private Context context;
     private ImageButton btn_up_header, btn_up_vitals_header, btn_up_visitreason_header, btn_up_phyexam_header, btn_up_medhist_header, btn_up_addnotes_vd_header;
-    private RelativeLayout vitals_header_relative, chiefcomplaint_header_relative, physExam_header_relative, pathistory_header_relative, addnotes_vd_header_relative, special_vd_header_relative;
+    private RelativeLayout vitals_header_relative, chiefcomplaint_header_relative, physExam_header_relative,
+            pathistory_header_relative, addnotes_vd_header_relative, special_vd_header_relative, associated_sym_relative,
+            reports_relative, denies_relative, pathist_details_relative;
     private RelativeLayout vs_header_expandview, vs_vitals_header_expandview, vd_special_header_expandview, vs_visitreason_header_expandview, vs_phyexam_header_expandview, vs_medhist_header_expandview, vd_addnotes_header_expandview, vs_add_notes, parentLayout;
     private RelativeLayout add_additional_doc;
-    private LinearLayout btn_bottom_printshare;
+    private LinearLayout btn_bottom_printshare, ll_associated_sympt;
     private ConstraintLayout btn_bottom_vs;
     private TextInputEditText etAdditionalNotesVS;
     SessionManager sessionManager, sessionManager1;
@@ -311,7 +320,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     TextView spO2View;
     TextView mBloodGroupTextView;
     TextView bmiView;
-    TextView complaintView, patientReports_txtview, patientDenies_txtview;
+    TextView complaintView, patientReports_txtview, patientDenies_txtview, physical_exam_tv, physical_exam_info_tv;
     TextView famHistView;
     TextView patHistView;
     TextView physFindingsView;
@@ -333,7 +342,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     String gender_tv;
     String mFileName = CONFIG_FILE_NAME;
     String mHeight, mWeight, mBMI, mBP, mPulse, mTemp, mSPO2, mresp;
-    String speciality_selected = "";
+    String speciality_selected = "", selectedConsultationType = "";
     private TextView physcialExaminationDownloadText, vd_special_value;
     NetworkChangeReceiver receiver;
     public static final String FILTER = "io.intelehealth.client.activities.visit_summary_activity.REQUEST_PROCESSED";
@@ -432,6 +441,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     public void startVideoChat(View view) {
         Toast.makeText(this, getString(R.string.video_call_req_sent), Toast.LENGTH_SHORT).show();
     }
+
     private FeatureActiveStatus mFeatureActiveStatus;
 
     @Override
@@ -448,6 +458,9 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             findViewById(R.id.flVdCard).setVisibility(activeStatus.getVisitSummeryDoctorSpeciality() ? View.VISIBLE : View.GONE);
             findViewById(R.id.cardPriorityVisit).setVisibility(activeStatus.getVisitSummeryPriorityVisit() ? View.VISIBLE : View.GONE);
             findViewById(R.id.cvFollowup).setVisibility(activeStatus.getVisitSummeryHwFollowUp() ? View.VISIBLE : View.GONE);
+
+            mBinding.flDiagnosisCard.setVisibility(activeStatus.getDiagnosisAtSecondaryLevel() ? View.VISIBLE : View.GONE);
+            mBinding.flConsultationTypeCard.setVisibility(activeStatus.getTypeOfConsultation() ? View.VISIBLE : View.GONE);
 //            if (!activeStatus.getVisitSummeryAppointment()) {
             Button btn = findViewById(R.id.btn_vs_appointment);
             boolean isAppointment = btn.getText().toString().equals(getString(R.string.appointment));
@@ -496,7 +509,28 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         });
 
         setupVitalConfig();
+        setupVisibilityForSpecificFlavor();
 
+    }
+
+    private void setupVisibilityForSpecificFlavor() {
+        String physicalExamTitle = getString(R.string.physical_examination);
+        String physicalExamSubtitle = getString(R.string.general_exams);
+        //hiding associated symptoms,patient history for UNFPA
+        if (BuildConfig.FLAVOR_client == FlavorKeys.UNFPA) {
+            associated_sym_relative.setVisibility(View.GONE);
+            mAssociateSymptomsLinearLayout.setVisibility(View.GONE);
+            reports_relative.setVisibility(View.GONE);
+            denies_relative.setVisibility(View.GONE);
+            pathist_details_relative.setVisibility(View.GONE);
+            physicalExamTitle = getString(R.string.obstetric_history);
+            physicalExamSubtitle = getString(R.string.obstetric_history);
+        } else if (BuildConfig.FLAVOR_client == FlavorKeys.KCDO) {
+            physicalExamTitle = getString(R.string.relapse);
+            physicalExamSubtitle = getString(R.string.relapse_info);
+        }
+        physical_exam_tv.setText(physicalExamTitle);
+        physical_exam_info_tv.setText(physicalExamSubtitle);
     }
 
     private List<PatientVital> mPatientVitalList;
@@ -519,7 +553,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         patientVitalViewModel.getAllEnabledLiveFields()
                 .observe(this, it -> {
                             mPatientVitalList = it;
-                            CustomLog.v(TAG,new Gson().toJson(mPatientVitalList));
+                            CustomLog.v(TAG, new Gson().toJson(mPatientVitalList));
                             updateUI();
                         }
                 );
@@ -537,13 +571,14 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
         mBloodGroupLinearLayout.setVisibility(View.GONE);
         for (PatientVital patientVital : mPatientVitalList) {
-            CustomLog.v(TAG,patientVital.getName() + "\t" + patientVital.getVitalKey());
+            CustomLog.v(TAG, patientVital.getName() + "\t" + patientVital.getVitalKey());
 
             if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.HEIGHT)) {
                 mHeightLinearLayout.setVisibility(View.VISIBLE);
 
             } else if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.WEIGHT)) {
                 mWeightLinearLayout.setVisibility(View.VISIBLE);
+
 
             } else if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.BMI)) {
                 mBMILinearLayout.setVisibility(View.VISIBLE);
@@ -621,8 +656,10 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         SpecializationRepository repository = new SpecializationRepository(db.specializationDao());
         viewModel = new ViewModelProvider(this, new SpecializationViewModelFactory(repository)).get(SpecializationViewModel.class);
         viewModel.fetchSpecialization().observe(this, specializations -> {
-           CustomLog.d(TAG,new Gson().toJson(specializations));
+            CustomLog.d(TAG, new Gson().toJson(specializations));
             setupSpecializationDataSpinner(specializations);
+            setupDiagnosisData();
+            setupTypeOfConsultationSpinner();
             setFacilityToVisitSpinner();
             setSeveritySpinner();
             String followupValue = fetchValueFromLocalDb(visitUUID);
@@ -631,6 +668,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             }
         });
     }
+
 
     private void fetchingIntent() {
         sessionManager = new SessionManager(getApplicationContext());
@@ -694,7 +732,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 hasPrescription = new EncounterDAO().isPrescriptionReceived(visitUuid);
                 Timber.tag(TAG).d("has prescription main::%s", hasPrescription);
             } catch (DAOException e) {
-                CustomLog.e(TAG,e.getMessage());
+                CustomLog.e(TAG, e.getMessage());
                 throw new RuntimeException(e);
             }
 
@@ -762,7 +800,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 isPrescriptionReceived = new EncounterDAO().isPrescriptionReceived(visitUUID);
             } catch (DAOException e) {
                 e.printStackTrace();
-                CustomLog.e(TAG,e.getMessage());
+                CustomLog.e(TAG, e.getMessage());
             }
             boolean isAllowForEdit = !isVisitSpecialityExists; //&& !isCompletedExitedSurvey && isPrescriptionReceived;
             // Edit btn visibility based on user coming from Visit Details screen - Start
@@ -777,6 +815,14 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 editMedHist.setVisibility(View.GONE);
                 editAddDocs.setVisibility(View.GONE);
                 add_additional_doc.setVisibility(View.GONE);
+
+                if (BuildConfig.FLAVOR_client == FlavorKeys.UNFPA) {
+                    mBinding.diagnosisCard.setVisibility(View.GONE);
+                    mBinding.diagnosisVdCard.setVisibility(View.VISIBLE);
+
+                    mBinding.typeOfConsultationCard.setVisibility(View.GONE);
+                    mBinding.consultationTypeVdCard.setVisibility(View.VISIBLE);
+                }
 
                 btn_bottom_printshare.setVisibility(View.VISIBLE);
                 btn_bottom_vs.setVisibility(View.GONE);
@@ -831,6 +877,14 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 btn_bottom_printshare.setVisibility(View.GONE);
                 btn_bottom_vs.setVisibility(View.VISIBLE);
 
+                if (BuildConfig.FLAVOR_client == FlavorKeys.UNFPA) {
+                    mBinding.diagnosisCard.setVisibility(View.VISIBLE);
+                    mBinding.diagnosisVdCard.setVisibility(View.GONE);
+
+                    mBinding.typeOfConsultationCard.setVisibility(View.VISIBLE);
+                    mBinding.consultationTypeVdCard.setVisibility(View.GONE);
+                }
+
                 doc_speciality_card.setVisibility(View.VISIBLE);
                 special_vd_card.setVisibility(View.GONE);
                 // vs_add_notes.setVisibility(View.VISIBLE);
@@ -858,7 +912,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         }
         btn_bottom_printshare.setVisibility(View.GONE);
         btn_bottom_vs.setVisibility(View.VISIBLE);
-        CustomLog.d(TAG,"has prescription::%s", hasPrescription);
+        CustomLog.d(TAG, "has prescription::%s", hasPrescription);
         updateUIState();
 
         //here we changing the appointment button behavior
@@ -869,10 +923,21 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             btnAppointment.setText(getString(R.string.reschedule));
             doesAppointmentExist = true;
         }
+
+
+        setupDiagnosisData();
+        setupTypeOfConsultationSpinner();
     }
 
     private void updateUIState() {
         if (hasPrescription) {
+            if (BuildConfig.FLAVOR_client == FlavorKeys.UNFPA) {
+                mBinding.diagnosisCard.setVisibility(View.GONE);
+                mBinding.diagnosisVdCard.setVisibility(View.VISIBLE);
+
+                mBinding.typeOfConsultationCard.setVisibility(View.GONE);
+                mBinding.consultationTypeVdCard.setVisibility(View.VISIBLE);
+            }
             doc_speciality_card.setVisibility(View.GONE);
             special_vd_card.setVisibility(View.VISIBLE);
 
@@ -916,6 +981,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 vs_medhist_header_expandview.setVisibility(View.VISIBLE);
                 vd_special_header_expandview.setVisibility(View.VISIBLE);
                 vd_addnotes_header_expandview.setVisibility(View.VISIBLE);
+                mBinding.vdDiagnosisHeaderExpandview.setVisibility(View.VISIBLE);
+                mBinding.vdConsultationTypeHeaderExpandview.setVisibility(View.VISIBLE);
                 mOpenCount = 6;
             } else {
                 openall_btn.setText(getResources().getString(R.string.open_all));
@@ -926,6 +993,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 vs_medhist_header_expandview.setVisibility(View.GONE);
                 vd_special_header_expandview.setVisibility(View.GONE);
                 vd_addnotes_header_expandview.setVisibility(View.GONE);
+                mBinding.vdDiagnosisHeaderExpandview.setVisibility(View.GONE);
+                mBinding.vdConsultationTypeHeaderExpandview.setVisibility(View.GONE);
                 mOpenCount = 0;
             }
 
@@ -1068,6 +1137,38 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 openall_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_up_24, 0);
             }
         });
+
+        mBinding.diagnosisVdHeaderRelative.setOnClickListener(v -> {
+            if (mBinding.vdDiagnosisHeaderExpandview.getVisibility() == View.VISIBLE) {
+                mBinding.vdDiagnosisHeaderExpandview.setVisibility(View.GONE);
+                mOpenCount--;
+                if (mOpenCount == 0) {
+                    openall_btn.setText(getResources().getString(R.string.open_all));
+                    openall_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_down_24, 0);
+                }
+            } else {
+                mOpenCount++;
+                mBinding.vdDiagnosisHeaderExpandview.setVisibility(View.VISIBLE);
+                openall_btn.setText(getResources().getString(R.string.close_all));
+                openall_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_up_24, 0);
+            }
+        });
+
+        mBinding.consultationTypeVdHeaderRelative.setOnClickListener(v -> {
+            if (mBinding.vdConsultationTypeHeaderExpandview.getVisibility() == View.VISIBLE) {
+                mBinding.vdConsultationTypeHeaderExpandview.setVisibility(View.GONE);
+                mOpenCount--;
+                if (mOpenCount == 0) {
+                    openall_btn.setText(getResources().getString(R.string.open_all));
+                    openall_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_down_24, 0);
+                }
+            } else {
+                mOpenCount++;
+                mBinding.vdConsultationTypeHeaderExpandview.setVisibility(View.VISIBLE);
+                openall_btn.setText(getResources().getString(R.string.close_all));
+                openall_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_up_24, 0);
+            }
+        });
     }
 
     private String complaintLocalString = "", physicalExamLocaleString = "", patientHistoryLocaleString = "", familyHistoryLocaleString = "";
@@ -1084,7 +1185,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 profileImage = imagesDAO.getPatientProfileChangeTime(patientUuid);
             } catch (DAOException e) {
                 FirebaseCrashlytics.getInstance().recordException(e);
-                CustomLog.e(TAG,e.getMessage());
+                CustomLog.e(TAG, e.getMessage());
             }
         }
 
@@ -1213,7 +1314,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
         } catch (JSONException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
-            CustomLog.e(TAG,e.getMessage());
+            CustomLog.e(TAG, e.getMessage());
         }
         // temperature - end
 
@@ -1251,7 +1352,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 }
             } catch (DAOException e) {
                 e.printStackTrace();
-                CustomLog.e(TAG,e.getMessage());
+                CustomLog.e(TAG, e.getMessage());
             }
             rowListItem = new ArrayList<>();
 
@@ -1314,7 +1415,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 emergencyUuid = encounterDAO.getEmergencyEncounters(visitUuid, encounterDAO.getEncounterTypeUuid("EMERGENCY"));
             } catch (DAOException e) {
                 FirebaseCrashlytics.getInstance().recordException(e);
-                CustomLog.e(TAG,e.getMessage());
+                CustomLog.e(TAG, e.getMessage());
             }
 
             if (!emergencyUuid.isEmpty() || !emergencyUuid.equalsIgnoreCase("")) {
@@ -1334,7 +1435,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                     encounterDAO.setEmergency(visitUuid, isChecked);
                 } catch (DAOException e) {
                     FirebaseCrashlytics.getInstance().recordException(e);
-                    CustomLog.e(TAG,e.getMessage());
+                    CustomLog.e(TAG, e.getMessage());
                 }
             }
         });
@@ -1459,7 +1560,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                                 imagesDAO.deleteConceptImages(encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_PE);
                             } catch (DAOException e1) {
                                 FirebaseCrashlytics.getInstance().recordException(e1);
-                                CustomLog.e(TAG,e1.getMessage());
+                                CustomLog.e(TAG, e1.getMessage());
                             }
                         }
 
@@ -1607,7 +1708,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                                 imagesDAO.deleteConceptImages(encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_PE);
                             } catch (DAOException e1) {
                                 FirebaseCrashlytics.getInstance().recordException(e1);
-                                CustomLog.e(TAG,e1.getMessage());
+                                CustomLog.e(TAG, e1.getMessage());
                             }
                         }
                         Intent intent1 = new Intent(VisitSummaryActivity_New.this, VisitCreationActivity.class);
@@ -2047,6 +2148,42 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         });
     }
 
+    private void setupDiagnosisData() {
+        String diagnosis = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, DIAGNOSIS);
+        if (!TextUtils.isEmpty(diagnosis)) {
+            mBinding.vdDiagnosisValue.setText(" " + Node.bullet + "  " + diagnosis);
+        } else {
+            mBinding.vdDiagnosisValue.setText(getString(R.string.no_data_found));
+        }
+    }
+
+    private void setupTypeOfConsultationSpinner() {
+        String consultationType = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, CONSULTATION_TYPE);
+        if (!TextUtils.isEmpty(consultationType)) {
+            mBinding.vdConsultationTypeValue.setText(" " + Node.bullet + "  " + consultationType);
+        } else {
+            mBinding.vdConsultationTypeValue.setText(getString(R.string.no_data_found));
+        }
+
+        mBinding.typeOfConsultationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (i != 0) {
+                    CustomLog.d("SPINNER", "SPINNER_Selected: " + adapterView.getItemAtPosition(i).toString());
+                    selectedConsultationType = adapterView.getItemAtPosition(i).toString();
+                } else {
+                    selectedConsultationType = "";
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+    }
+
     private List<FacilityToVisitModel> getFacilityList() {
         facilityList = new ArrayList<FacilityToVisitModel>();
         facilityList.add(new FacilityToVisitModel("0", "Select Facility"));
@@ -2213,7 +2350,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 }
             } catch (ParseException e) {
                 e.printStackTrace();
-                CustomLog.e(TAG,e.getMessage());
+                CustomLog.e(TAG, e.getMessage());
             }
         }
     }
@@ -2378,7 +2515,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
         } catch (JSONException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
-            CustomLog.e(TAG,e.getMessage());
+            CustomLog.e(TAG, e.getMessage());
         }
     }
 
@@ -2485,6 +2622,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     private void initUI() {
         // textview - start
         filter_framelayout = findViewById(R.id.filter_framelayout);
+
         filter = findViewById(R.id.filter);
 
         reminder = findViewById(R.id.reminder);
@@ -2547,8 +2685,12 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         pathistory_header_relative = findViewById(R.id.pathistory_header_relative);
         btn_up_special_vd_header = findViewById(R.id.btn_up_special_vd_header);
         special_vd_header_relative = findViewById(R.id.special_vd_header_relative);
+        associated_sym_relative = findViewById(R.id.associ_sym_relative);
         btn_up_addnotes_vd_header = findViewById(R.id.btn_up_addnotes_vd_header);
         addnotes_vd_header_relative = findViewById(R.id.addnotes_vd_header_relative);
+        reports_relative = findViewById(R.id.reports_relative);
+        denies_relative = findViewById(R.id.denies_relative);
+        pathist_details_relative = findViewById(R.id.pathist_details_relative);
 
         vs_header_expandview = findViewById(R.id.vs_header_expandview);
         vs_vitals_header_expandview = findViewById(R.id.vs_vitals_header_expandview);
@@ -2572,6 +2714,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         doc_speciality_card = findViewById(R.id.doc_speciality_card);
         addnotes_vd_card = findViewById(R.id.addnotes_vd_card);
         special_vd_card = findViewById(R.id.special_vd_card);
+
         priority_hint = findViewById(R.id.priority_hint);
 
         priority_hint.setOnClickListener(v -> {
@@ -2609,6 +2752,9 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         complaintView = findViewById(R.id.textView_content_complaint);
         patientReports_txtview = findViewById(R.id.patientReports_txtview);
         patientDenies_txtview = findViewById(R.id.patientDenies_txtview);
+
+        physical_exam_tv = findViewById(R.id.physical_exam_tv);
+        physical_exam_info_tv = findViewById(R.id.physical_exam_info_tv);
         // complaint ids - end
 
         // Phys exam ids
@@ -2925,9 +3071,25 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
 
     private void visitSendDialog(Context context, Drawable drawable, String title, String subTitle, String positiveBtnTxt, String negativeBtnTxt) {
-
+        //validate diagnosis and type of consultation
+        if (mBinding.diagnosisTextInput.getText().toString().isEmpty()) {
+            mBinding.diagnosisTextInput.setError(getString(R.string.enter_diagnosis));
+        }
+        if (selectedConsultationType.isEmpty()) {
+            TextView view = (TextView) mBinding.typeOfConsultationSpinner.getSelectedView();
+            if (view != null) {
+                view.setError(getString(R.string.select_consultation_type));
+                view.setTextColor(Color.RED);
+            }
+        }
         if (speciality_selected == null || speciality_selected.isEmpty()) {
             showSelectSpeciliatyErrorDialog();
+        }
+
+        if (mBinding.diagnosisTextInput.getText().toString().isEmpty() ||
+                selectedConsultationType.isEmpty() ||
+                (speciality_selected == null || speciality_selected.isEmpty())
+        ) {
             return;
         }
         MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(context);
@@ -2990,7 +3152,18 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 if (selectedSeverity != null) {
                     visitAttributeListDAO.insertVisitAttributes(visitUuid, selectedSeverity, SEVERITY);
                 }
+
                 visitAttributeListDAO.insertVisitAttributes(visitUuid, AppConstants.dateAndTimeUtils.currentDateTime(), VISIT_UPLOAD_TIME);
+
+                if (!mBinding.diagnosisTextInput.getText().toString().isEmpty()) {
+                    visitAttributeListDAO.insertVisitAttributes(visitUuid, mBinding.diagnosisTextInput.getText().toString(), DIAGNOSIS);
+                }
+
+                if (!selectedConsultationType.isEmpty()) {
+                    visitAttributeListDAO.insertVisitAttributes(visitUuid, selectedConsultationType, CONSULTATION_TYPE);
+                }
+
+
                 if (!TextUtils.isEmpty(selectedFollowupDate) && !TextUtils.isEmpty(selectedFollowupTime)) {
                     EncounterDAO encounterDAO = new EncounterDAO();
                     EncounterDTO encounterDTO = new EncounterDTO();
@@ -3919,7 +4092,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         }
 
         setAppointmentButtonStatus();
-
+        setupVisibilityForSpecificFlavor();
     }
 
     // Netowork reciever
@@ -5316,8 +5489,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             boolean isAssociateSymptomFound = false;
             if (mIsCCInOldFormat) {
                 complaintView.setVisibility(View.VISIBLE);
-                findViewById(R.id.reports_relative).setVisibility(View.VISIBLE);
-                findViewById(R.id.denies_relative).setVisibility(View.VISIBLE);
+                reports_relative.setVisibility(View.VISIBLE);
+                denies_relative.setVisibility(View.VISIBLE);
 
                 valueArray = value.split("►<b> " + Node.ASSOCIATE_SYMPTOMS + "</b>:  <br/>");
                 isAssociateSymptomFound = valueArray.length >= 2;
@@ -5418,10 +5591,18 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             CustomLog.v(TAG, "phyExam : " + value);
             if (isInOldFormat) {
                 physFindingsView.setVisibility(View.VISIBLE);
-                String valueArray[] = value.replace("General exams: <br>", "<b>General exams: </b><br/>").split("<b>General exams: </b><br/>");
-                if(BuildConfig.FLAVOR_client == "kcdo"){
+                String[] valueArray;
+                //general exam exam replaced as Obstetric History on UNFPA
+                //that's why added the logic
+                if (BuildConfig.FLAVOR_client == FlavorKeys.UNFPA) {
+                    valueArray = value.replace("Obstetric History: <br>", "<b>Obstetric History: </b><br/>").split("<b>Obstetric History: </b><br/>");
+                } else {
+                    valueArray = value.replace("General exams: <br>", "<b>General exams: </b><br/>").split("<b>General exams: </b><br/>");
+                }
+
+                if (BuildConfig.FLAVOR_client == FlavorKeys.KCDO) {
                     physFindingsView.setText(Html.fromHtml(valueArray[0]));
-                }else {
+                } else {
                     if (valueArray.length > 1)
                         physFindingsView.setText(Html.fromHtml(valueArray[1]));//.replaceFirst("<b>", "<br/><b>")));
                 }
@@ -5635,7 +5816,10 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             } else {
                 view.findViewById(R.id.iv_blt).setVisibility(View.VISIBLE);
             }*/
-                mAssociateSymptomsLinearLayout.addView(view);
+                //hiding associated symptoms for UNFPA
+                if (BuildConfig.FLAVOR_client != FlavorKeys.UNFPA) {
+                    mAssociateSymptomsLinearLayout.addView(view);
+                }
             }
         }
 
