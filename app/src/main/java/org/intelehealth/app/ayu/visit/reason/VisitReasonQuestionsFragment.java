@@ -365,6 +365,11 @@ public class VisitReasonQuestionsFragment extends Fragment {
         public void onImageRemoved(int nodeIndex, int imageIndex, String image) {
 
         }
+
+        @Override
+        public void onTerminalNodeAnsweredForParentUpdate(String parentNodeId) {
+
+        }
     }
 
     private boolean completeProcess(OnItemSelection itemSelection, int index) {
