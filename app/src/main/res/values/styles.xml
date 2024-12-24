@@ -580,6 +580,10 @@
         <item name="android:digits">@string/validation_latter_with_space_only</item>
     </style>
 
+    <style name="AppTheme.InputBox.Department" parent="AppTheme.InputBox">
+        <item name="android:digits">@string/validation_department</item>
+    </style>
+
     <style name="AppTheme.InputBox.Address" parent="AppTheme.InputBox">
         <!--        <item name="android:maxLength">25</item>-->
         <item name="android:digits">@string/validation_address</item>

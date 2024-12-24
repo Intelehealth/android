@@ -12,6 +12,11 @@ import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+
+import org.intelehealth.app.BuildConfig;
+import org.intelehealth.app.utilities.CustomLog;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,6 +60,7 @@ import org.intelehealth.app.models.AnswerResult;
 import org.intelehealth.app.shared.FirstLetterUpperCaseInputFilter;
 import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.DialogUtils;
+import org.intelehealth.app.utilities.FlavorKeys;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.WindowsUtils;
 import org.json.JSONObject;
@@ -316,9 +322,16 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
             Node _mNode = mPhysicalExam.getExamNode(position).getOption(0);
             final String parent_name = mPhysicalExam.getExamParentNodeName(position);
-            String nodeText = BuildConfig.FLAVOR_client == "kcdo" ? _mNode.findDisplay() : parent_name + " : " + _mNode.findDisplay();
+            String nodeText = (BuildConfig.FLAVOR_client == FlavorKeys.KCDO || BuildConfig.FLAVOR_client == FlavorKeys.UNFPA) ?
+                    _mNode.findDisplay() :
+                    parent_name + " : " + _mNode.findDisplay();
 
             genericViewHolder.tvQuestion.setText(nodeText);
+
+            //hiding default text if input type is text
+            if(_mNode.getInputType().equals("text")){
+                genericViewHolder.tvQuestionDesc.setVisibility(View.GONE);
+            }
 
             if (genericViewHolder.node.getJobAidFile() != null && !genericViewHolder.node.getJobAidFile().isEmpty()) {
                 genericViewHolder.referenceContainerLinearLayout.setVisibility(View.VISIBLE);
