@@ -1,5 +1,6 @@
 package org.intelehealth.app.ayu.visit.diagnostics;
 
+import static org.intelehealth.app.ayu.visit.VisitCreationActivity.STEP_2_DIAGNOSTICS_SUMMARY;
 import static org.intelehealth.app.ayu.visit.common.VisitUtils.convertCtoF;
 import static org.intelehealth.app.syncModule.SyncUtils.syncNow;
 
@@ -26,6 +27,7 @@ import com.google.gson.Gson;
 import org.intelehealth.app.R;
 import org.intelehealth.app.ayu.visit.VisitCreationActionListener;
 import org.intelehealth.app.ayu.visit.VisitCreationActivity;
+import org.intelehealth.app.ayu.visit.common.ManageSummaryScreenTitles;
 import org.intelehealth.app.databinding.FragmentDiagnosticsCollectionBinding;
 import org.intelehealth.app.databinding.FragmentDiagnosticsCollectionSummaryBinding;
 import org.intelehealth.app.models.DiagnosticsModel;
@@ -84,11 +86,12 @@ public class DiagnosticsCollectionSummaryFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        FeatureActiveStatus status = ((VisitCreationActivity) requireActivity()).getFeatureActiveStatus();
-        int index = status.getVitalSection() ? 2 : 1;
-        int total = status.getVitalSection() ? 5 : 4;
+       FeatureActiveStatus status = ((VisitCreationActivity) requireActivity()).getFeatureActiveStatus();
+        /* int index = status.getVitalSection() ? 2 : 1;
+        int total = status.getVitalSection() ? 5 : 4;*/
+        String title = ManageSummaryScreenTitles.setScreenTitle(requireActivity(), status, STEP_2_DIAGNOSTICS_SUMMARY);
         TextView tvTitle = view.findViewById(R.id.tv_sub_title);
-        tvTitle.setText(getString(R.string._diagnostics_summary, index, total));
+        tvTitle.setText(title);
 
         //config viewmodel initialization
         DiagnosticsRepository repository = new DiagnosticsRepository(ConfigDatabase.getInstance(requireActivity()).patientDiagnosticsDao());

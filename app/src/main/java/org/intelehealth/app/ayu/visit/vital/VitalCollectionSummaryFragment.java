@@ -1,5 +1,7 @@
 package org.intelehealth.app.ayu.visit.vital;
 
+import static org.intelehealth.app.ayu.visit.VisitCreationActivity.STEP_1_VITAL_SUMMARY;
+import static org.intelehealth.app.ayu.visit.VisitCreationActivity.STEP_2_DIAGNOSTICS_SUMMARY;
 import static org.intelehealth.app.ayu.visit.common.VisitUtils.convertCtoF;
 import static org.intelehealth.app.syncModule.SyncUtils.syncNow;
 
@@ -22,6 +24,7 @@ import androidx.lifecycle.ViewModelProvider;
 import org.intelehealth.app.R;
 import org.intelehealth.app.ayu.visit.VisitCreationActionListener;
 import org.intelehealth.app.ayu.visit.VisitCreationActivity;
+import org.intelehealth.app.ayu.visit.common.ManageSummaryScreenTitles;
 import org.intelehealth.app.ayu.visit.common.VisitUtils;
 import org.intelehealth.app.models.VitalsObject;
 import org.intelehealth.app.utilities.ConfigUtils;
@@ -32,6 +35,7 @@ import org.intelehealth.config.presenter.fields.data.PatientVitalRepository;
 import org.intelehealth.config.presenter.fields.factory.PatientVitalViewModelFactory;
 import org.intelehealth.config.presenter.fields.viewmodel.PatientVitalViewModel;
 import org.intelehealth.config.room.ConfigDatabase;
+import org.intelehealth.config.room.entity.FeatureActiveStatus;
 import org.intelehealth.config.room.entity.PatientVital;
 import org.intelehealth.config.utility.PatientVitalConfigKeys;
 
@@ -83,6 +87,10 @@ public class VitalCollectionSummaryFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        FeatureActiveStatus status = ((VisitCreationActivity) requireActivity()).getFeatureActiveStatus();
+        String title = ManageSummaryScreenTitles.setScreenTitle(requireActivity(), status, STEP_1_VITAL_SUMMARY);
+        TextView tvTitle = view.findViewById(R.id.tv_sub_title);
+        tvTitle.setText(title);
         //config viewmodel initialization
         PatientVitalRepository repository = new PatientVitalRepository(ConfigDatabase.getInstance(requireActivity()).patientVitalDao());
         PatientVitalViewModelFactory factory = new PatientVitalViewModelFactory(repository);
@@ -109,7 +117,7 @@ public class VitalCollectionSummaryFragment extends Fragment {
 
         mBloodGroupLinearLayout.setVisibility(View.GONE);
         for (PatientVital patientVital : mPatientVitalList) {
-            CustomLog.v(TAG,patientVital.getName() + "\t" + patientVital.getVitalKey());
+            CustomLog.v(TAG, patientVital.getName() + "\t" + patientVital.getVitalKey());
 
             if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.HEIGHT)) {
                 mHeightLinearLayout.setVisibility(View.VISIBLE);
@@ -219,8 +227,12 @@ public class VitalCollectionSummaryFragment extends Fragment {
                     getActivity().setResult(Activity.RESULT_OK);
                     getActivity().finish();
                 } else {
-                   // mActionListener.onFormSubmitted(VisitCreationActivity.STEP_3_VISIT_REASON, mIsEditMode, mVitalsObject);
-                    mActionListener.onFormSubmitted(VisitCreationActivity.STEP_2_DIAGNOSTICS, mIsEditMode, mVitalsObject);
+                    // mActionListener.onFormSubmitted(VisitCreationActivity.STEP_3_VISIT_REASON, mIsEditMode, mVitalsObject);
+                    FeatureActiveStatus status = ((VisitCreationActivity) requireActivity()).getFeatureActiveStatus();
+                    int nextStep = (status != null && status.getActiveStatusDiagnosticsSection())
+                            ? VisitCreationActivity.STEP_2_DIAGNOSTICS
+                            : VisitCreationActivity.STEP_3_VISIT_REASON;
+                    mActionListener.onFormSubmitted(nextStep, mIsEditMode, mVitalsObject);
 
                 }
             }

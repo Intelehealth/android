@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -143,6 +144,8 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        manageBackButtonVisibility();
+
         //config viewmodel initialization
         DiagnosticsRepository repository = new DiagnosticsRepository(ConfigDatabase.getInstance(requireActivity()).patientDiagnosticsDao());
         DiagnosticsViewModelFactory factory = new DiagnosticsViewModelFactory(repository);
@@ -737,5 +740,23 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
             }
         }
         return true;
+    }
+
+    private void manageBackButtonVisibility() {
+        boolean vitalsActiveStatus = ((VisitCreationActivity) requireActivity()).getFeatureActiveStatus().getVitalSection();
+        mBinding.btnCancel.setVisibility(vitalsActiveStatus ? View.VISIBLE : View.GONE);
+        if (mBinding.btnCancel.getVisibility() == View.GONE) {
+            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) mBinding.btnSubmit.getLayoutParams();
+            params.width = LinearLayout.LayoutParams.MATCH_PARENT;
+            params.weight = 0f;
+            params.setMargins(0, params.topMargin, params.rightMargin, params.bottomMargin);
+            mBinding.btnSubmit.setLayoutParams(params);
+        } else {
+            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) mBinding.btnSubmit.getLayoutParams();
+            params.width = 0;
+            params.weight = 1f;
+            params.setMargins(16, params.topMargin, params.rightMargin, params.bottomMargin);
+            mBinding.btnSubmit.setLayoutParams(params);
+        }
     }
 }

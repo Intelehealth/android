@@ -32,4 +32,5 @@
 <!--    <string name="visit_save_and_upload_status">@string/visit_saving</string>-->
     <string name="physical_exam_screen_title">@string/relapse</string>
     <string name="physical_exam_screen_header">@string/relapse_info</string>
+    <string name="ui2_physical_exam_summay_title">@string/ui2_relapse_summary_title</string>
 </resources>

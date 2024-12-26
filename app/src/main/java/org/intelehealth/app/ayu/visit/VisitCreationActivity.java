@@ -267,13 +267,13 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         super.onFeatureActiveStatusLoaded(activeStatus);
         featureActiveStatus = activeStatus;
         if (mIsInitilaFeaturesLoading) {
-            if (featureActiveStatus != null && !featureActiveStatus.getVitalSection()) {
-                CustomLog.d(TAG, "featureActiveStatus first screen=>%s", featureActiveStatus.getVitalSection());
-                mStep1ProgressBar.setVisibility(View.GONE);
-                mCurrentStep = STEP_3_VISIT_REASON;
-                totalScreen = 3;
-                Timber.tag(TAG).d("Feature first screen=>%s", mCurrentStep);
-            }
+//            if (featureActiveStatus != null && !featureActiveStatus.getVitalSection()) {
+//                CustomLog.d(TAG, "featureActiveStatus first screen=>%s", featureActiveStatus.getVitalSection());
+//                mStep1ProgressBar.setVisibility(View.GONE);
+//                mCurrentStep = STEP_3_VISIT_REASON;
+//                totalScreen = 3;
+//                Timber.tag(TAG).d("Feature first screen=>%s", mCurrentStep);
+//            }
 
         if (featureActiveStatus != null){
             boolean isVitalsActive = featureActiveStatus.getVitalSection();
@@ -281,7 +281,6 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
             CustomLog.d(TAG, "featureActiveStatus vitals first screen : "   + featureActiveStatus.getVitalSection());
             CustomLog.d(TAG, "featureActiveStatus diagnostics first screen : " + featureActiveStatus.getActiveStatusDiagnosticsSection());
 
-            //1. if vital is not active vitals will be first screen.
             if (!isVitalsActive) {
                 mStep1ProgressBar.setVisibility(View.GONE);
                 mCurrentStep = STEP_2_DIAGNOSTICS;
@@ -295,18 +294,21 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                 Timber.tag(TAG).d("2 Feature first screen : " +mCurrentStep);
             }
             if (isVitalsActive && isDiagnosticsActive) {
-                //mStep2ProgressBar.setVisibility(View.GONE);
+                mStep1ProgressBar.setVisibility(View.VISIBLE);
+                mStep2ProgressBar.setVisibility(View.VISIBLE);
                 mCurrentStep = STEP_1_VITAL;
                 totalScreen = 5;
                 Timber.tag(TAG).d("3 Feature first screen : " +mCurrentStep);
             }
             if (!isVitalsActive && isDiagnosticsActive) {
                 mStep1ProgressBar.setVisibility(View.GONE);
+                mStep2ProgressBar.setVisibility(View.VISIBLE);
                 mCurrentStep = STEP_2_DIAGNOSTICS;
                 totalScreen = 4;
                 Timber.tag(TAG).d("4 Feature first screen : " +mCurrentStep);
             }
             if (isVitalsActive && !isDiagnosticsActive) {
+                mStep1ProgressBar.setVisibility(View.VISIBLE);
                 mStep2ProgressBar.setVisibility(View.GONE);
                 mCurrentStep = STEP_1_VITAL;
                 totalScreen = 4;
@@ -564,7 +566,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                         replace(R.id.fl_steps_body, DiagnosticsCollectionFragment.newInstance(mCommonVisitData, isEditMode, mDiagnosticsModel), DIAGNOSTICS_FRAGMENT).
                         commit();
                 break;
-            case STEP_2_DIAGNOSTICS_SUMMARY://change here forddiagnostics tempkaveri
+            case STEP_2_DIAGNOSTICS_SUMMARY://change here for diagnostics temp kaveri
                 if (object != null)
                     mDiagnosticsModel = (DiagnosticsModel) object;
                 if (mDiagnosticsModel != null) {
@@ -661,7 +663,6 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                 }
                 break;
             case STEP_5_PAST_MEDICAL_HISTORY:
-                mStep4ProgressBar.setProgress(100);
                 showPastMedicalHistoryFragment(isEditMode);
                 setTitle(nextAction);
                 break;
@@ -947,19 +948,16 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
     }
 
 
+/*
     public void setTitle(int screenId) {
         Timber.tag(TAG).d("setTitle=>%s", screenId);
-        Log.d(TAG, "setTitle: totalScreen : "+totalScreen);
         int currentScreenIndex = 1;
         String title = getString(R.string._1_4_vitals, currentScreenIndex, totalScreen);
         if (screenId == STEP_1_VITAL) {
             title = getString(R.string._1_4_vitals, 1, 5);
         } else if (screenId == STEP_2_DIAGNOSTICS) {
-            Log.d(TAG, "kkkksetTitle: in ifkk");
             currentScreenIndex = featureActiveStatus.getVitalSection() ? 2 : 1;
             title = getString(R.string.diagnostics_section, currentScreenIndex, totalScreen);
-            Log.d(TAG, "kkkksetTitle: in ifkk currentScreenIndex : " + currentScreenIndex);
-            Log.d(TAG, "kkkksetTitle: in ifkk title : " + title);
         } else if (screenId == STEP_3_VISIT_REASON) {
             currentScreenIndex = featureActiveStatus.getVitalSection() ? 3 : 2;
             title = getString(R.string.visit_reason, currentScreenIndex, totalScreen);
@@ -978,14 +976,15 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         }
         ((TextView) findViewById(R.id.tv_sub_title)).setText(title);
     }
+*/
     @Override
     public void onProgress(int progress) {
         switch (mCurrentStep) {
             case STEP_3_VISIT_REASON_QUESTION:
-                mStep2ProgressBar.setProgress(mStep2ProgressBar.getProgress() + progress);
+                mStep3ProgressBar.setProgress(mStep3ProgressBar.getProgress() + progress);
                 break;
             case STEP_4_PHYSICAL_EXAMINATION:
-                mStep3ProgressBar.setProgress(mStep2ProgressBar.getProgress() + progress);
+                mStep4ProgressBar.setProgress(mStep3ProgressBar.getProgress() + progress);
                 break;
         }
     }
@@ -1751,57 +1750,77 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         return featureActiveStatus;
     }
 
-  /*  @Override
-    protected void onFeatureActiveStatusLoaded(FeatureActiveStatus activeStatus) {
-        super.onFeatureActiveStatusLoaded(activeStatus);
-        featureActiveStatus = activeStatus;
-        if (featureActiveStatus != null && !featureActiveStatus.getVitalSection()) {
-            CustomLog.d(TAG, "featureActiveStatus first screen=>%s", featureActiveStatus.getVitalSection());
-            mStep1ProgressBar.setVisibility(View.GONE);
-            mCurrentStep = STEP_3_VISIT_REASON;
-            totalScreen = 4;
-            Timber.tag(TAG).d("Feature first screen=>%s", mCurrentStep);
-        }
-
-        if (!mIsEditMode) onFormSubmitted(mCurrentStep, mIsEditMode, mCommonVisitData);
-//            getSupportFragmentManager().beginTransaction().
-//                    replace(R.id.fl_steps_body, VitalCollectionFragment.newInstance(mCommonVisitData, mIsEditMode, null), VITAL_FRAGMENT).
-//                    commit();
-        else makeReadyForEdit();
-    }*/
-
-    /*public void setTitle(int screenId) {
+    public void setTitle(int screenId) {
         Timber.tag(TAG).d("setTitle=>%s", screenId);
-        Log.d(TAG, "setTitle: totalScreen : "+totalScreen);
 
-        int currentScreenIndex = 1;
-        String title = getString(R.string._1_4_vitals, currentScreenIndex, totalScreen);
-        if (screenId == STEP_1_VITAL) {
-            title = getString(R.string._1_4_vitals, 1, 5);
-        } else if (screenId == STEP_2_DIAGNOSTICS) {
-            Log.d(TAG, "kkkksetTitle: in ifkk");
-            currentScreenIndex = featureActiveStatus.getVitalSection() ? 2 : 1;
-            title = getString(R.string.diagnostics_section, currentScreenIndex, totalScreen);
-            Log.d(TAG, "kkkksetTitle: in ifkk currentScreenIndex : " + currentScreenIndex);
-            Log.d(TAG, "kkkksetTitle: in ifkk title : " + title);
+        int currentScreenIndex = 1; // Default screen index
+        String title = "";
 
-        } else if (screenId == STEP_3_VISIT_REASON) {
-            currentScreenIndex = featureActiveStatus.getVitalSection() ? 3 : 2;
-            title = getString(R.string.visit_reason, currentScreenIndex, totalScreen);
-        } else if (screenId == STEP_3_VISIT_REASON_QUESTION) {
-            currentScreenIndex = featureActiveStatus.getVitalSection() ? 3 : 2;
-            title = getResources().getString(R.string.visit_reason, currentScreenIndex, totalScreen) + " : " + mSelectedComplainList.get(0).getReasonNameLocalized();
-        } else if (screenId == STEP_4_PHYSICAL_EXAMINATION) {
-            currentScreenIndex = featureActiveStatus.getVitalSection() ? 4 : 3;
-            title = getString(R.string._phy_examination, currentScreenIndex, totalScreen);
-        } else if (screenId == STEP_5_PAST_MEDICAL_HISTORY) {
-            currentScreenIndex = featureActiveStatus.getVitalSection() ? 5 : 4;
-            title = getString(R.string.patinet_history, currentScreenIndex, totalScreen);
-        } else if (screenId == STEP_6_FAMILY_HISTORY) {
-            currentScreenIndex = featureActiveStatus.getVitalSection() ? 5 : 4;
-            title = getString(R.string._medical_family_history, currentScreenIndex, totalScreen);
+        boolean isVitalEnabled = featureActiveStatus.getVitalSection();
+        boolean isDiagnosticsEnabled = featureActiveStatus.getActiveStatusDiagnosticsSection();
+
+        // Determine the starting positions of screens based on configurability
+        int vitalScreenIndex = isVitalEnabled ? 1 : 0;
+        int diagnosticsScreenIndex = isDiagnosticsEnabled ? vitalScreenIndex + 1 : vitalScreenIndex;
+        int visitReasonScreenIndex = Math.max(vitalScreenIndex, diagnosticsScreenIndex) + 1;
+
+        // Adjust totalScreen count dynamically if necessary
+
+        int adjustedTotalScreen = 5; // Default total
+        if (!isVitalEnabled) adjustedTotalScreen--;
+        if (!isDiagnosticsEnabled) adjustedTotalScreen--;
+
+        switch (screenId) {
+            case STEP_1_VITAL:
+                if (isVitalEnabled) {
+                    currentScreenIndex = vitalScreenIndex;
+                    title = getString(R.string._1_4_vitals, currentScreenIndex, adjustedTotalScreen);
+                }
+                break;
+
+            case STEP_2_DIAGNOSTICS:
+                if (isDiagnosticsEnabled) {
+                    currentScreenIndex = diagnosticsScreenIndex;
+                    title = getString(R.string.diagnostics_section, currentScreenIndex, adjustedTotalScreen);
+                }
+                break;
+
+            case STEP_3_VISIT_REASON:
+                currentScreenIndex = visitReasonScreenIndex;
+                title = getString(R.string.visit_reason, currentScreenIndex, adjustedTotalScreen);
+                break;
+
+            case STEP_3_VISIT_REASON_QUESTION:
+                currentScreenIndex = visitReasonScreenIndex;
+                title = getString(R.string.visit_reason, currentScreenIndex, adjustedTotalScreen)
+                        + " : " + mSelectedComplainList.get(0).getReasonNameLocalized();
+                break;
+            case STEP_3_VISIT_REASON_QUESTION_SUMMARY:
+                currentScreenIndex = visitReasonScreenIndex;
+                title = getString(R.string._visit_reason_summary, currentScreenIndex, adjustedTotalScreen)
+                        + " : " + mSelectedComplainList.get(0).getReasonNameLocalized();
+                break;
+
+            case STEP_4_PHYSICAL_EXAMINATION:
+                currentScreenIndex = visitReasonScreenIndex + 1;
+                title = getString(R.string._phy_examination, currentScreenIndex, adjustedTotalScreen);
+                break;
+
+            case STEP_5_PAST_MEDICAL_HISTORY:
+                currentScreenIndex = visitReasonScreenIndex + 2;
+                title = getString(R.string.patinet_history, currentScreenIndex, adjustedTotalScreen);
+                break;
+
+            case STEP_6_FAMILY_HISTORY:
+                currentScreenIndex = visitReasonScreenIndex + 2;
+                title = getString(R.string._medical_family_history, currentScreenIndex, adjustedTotalScreen);
+                break;
+            default:
+                Log.w(TAG, "Unknown screenId: " + screenId);
         }
+
+        // Update the subtitle TextView
         ((TextView) findViewById(R.id.tv_sub_title)).setText(title);
-    }*/
+    }
 
 }

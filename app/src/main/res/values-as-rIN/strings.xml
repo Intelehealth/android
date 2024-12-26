@@ -902,7 +902,8 @@
     <string name="all_reasons">সকলো কাৰণ</string>
     <string name="_visit_reason_summary">%1$d/%2$d কাৰণ সাৰাংশ চাওক</string>
     <string name="change">সলনি কৰা</string>
-    <string name="_vitals_summary">1/4.ভাইটেল্ছ সাৰাংশ</string>
+<!--<string name="_vitals_summary">1/4.ভাইটেল্ছ সাৰাংশ</string>-->
+    <string name="_vitals_summary">%1$d/%2$d ভাইটেল্ছ সাৰাংশ</string>
     <string name="mo">সোম</string>
     <string name="tu">মঙল</string>
     <string name="we">বুধ</string>

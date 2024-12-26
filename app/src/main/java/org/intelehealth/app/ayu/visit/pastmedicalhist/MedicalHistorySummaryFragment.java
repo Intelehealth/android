@@ -1,5 +1,7 @@
 package org.intelehealth.app.ayu.visit.pastmedicalhist;
 
+import static org.intelehealth.app.ayu.visit.VisitCreationActivity.STEP_4_PHYSICAL_SUMMARY_EXAMINATION;
+import static org.intelehealth.app.ayu.visit.VisitCreationActivity.STEP_6_HISTORY_SUMMARY;
 import static org.intelehealth.app.knowledgeEngine.Node.bullet_arrow;
 import static org.intelehealth.app.syncModule.SyncUtils.syncNow;
 
@@ -8,6 +10,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 
+import org.intelehealth.app.ayu.visit.common.ManageSummaryScreenTitles;
 import org.intelehealth.app.utilities.CustomLog;
 
 import android.view.LayoutInflater;
@@ -86,11 +89,15 @@ public class MedicalHistorySummaryFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        FeatureActiveStatus status = ((VisitCreationActivity) requireActivity()).getFeatureActiveStatus();
+       /* FeatureActiveStatus status = ((VisitCreationActivity) requireActivity()).getFeatureActiveStatus();
         int index = status.getVitalSection() ? 5 : 4;
         int total = status.getVitalSection() ? 5 : 4;
         TextView tvTitle = view.findViewById(R.id.tv_sub_title);
-        tvTitle.setText(getString(R.string.ui2_medical_hist_title_text, index, total));
+        tvTitle.setText(getString(R.string.ui2_medical_hist_title_text, index, total));*/
+        FeatureActiveStatus status = ((VisitCreationActivity) requireActivity()).getFeatureActiveStatus();
+        String title = ManageSummaryScreenTitles.setScreenTitle(requireActivity(), status, STEP_6_HISTORY_SUMMARY);
+        TextView tvTitle = view.findViewById(R.id.tv_sub_title);
+        tvTitle.setText(title);
     }
 
     @Override
