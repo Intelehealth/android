@@ -380,15 +380,17 @@ AB NEGATIVE = 1231*/
 
         if (temperature == null || temperature.isEmpty()) return "";
         String result = "";
-        double a = Double.parseDouble(String.valueOf(temperature));
-        Double b = (a * 9 / 5) + 32;
+        try{
+            double a = Double.parseDouble(String.valueOf(temperature));
+            Double b = (a * 9 / 5) + 32;
 
-        //DecimalFormat dtime = new DecimalFormat("#.##");
-        DecimalFormat dtime = new DecimalFormat("#.#");
-        b = Double.parseDouble(dtime.format(b));
-        result = String.format("%.1f", b);
-        //result = String.valueOf(b);
-        CustomLog.i(TAG, "convertCtoF OUT: " + result);
+            //DecimalFormat dtime = new DecimalFormat("#.##");
+            DecimalFormat dtime = new DecimalFormat("#.#");
+            b = Double.parseDouble(dtime.format(b));
+            result = String.format("%.1f", b);
+            //result = String.valueOf(b);
+            CustomLog.i(TAG, "convertCtoF OUT: " + result);
+        }catch (Exception ignored){}
         return result;
 
     }
