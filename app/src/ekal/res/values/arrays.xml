@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="baseline_religion">
+        <item>@string/religion_hindu</item>
+        <item>@string/religion_muslim</item>
+        <item>@string/religion_christian</item>
+        <item>@string/religion_sikh</item>
+        <item>@string/religion_buddhist_neo_buddhist</item>
+        <item>@string/religion_jain</item>
+        <item>@string/religion_others</item>
+    </string-array>
+
+    <string-array name="baseline_toilet_facilities">
+        <item>@string/toilet_facility_open_defecation</item>
+        <item>@string/toilet_facility_own_a_toilet_but_it_unusable</item>
+        <item>@string/toilet_facility_use_toilet_at_home</item>
+        <item>@string/toilet_facility_use_community_toilet</item>
+        <item>@string/toilet_facility_shared_toilet_with_other_households</item>
+        <item>@string/toilet_facility_declined_to_answer</item>
+    </string-array>
+
+    <string-array name="baseline_house_structure">
+        <item>@string/house_structure_kutcha_house</item>
+        <item>@string/house_structure_pakka_house</item>
+        <item>@string/house_structure_homeless</item>
+    </string-array>
+
+    <string-array name="baseline_cultivable_land">
+        <item>@string/cultivable_land_bigha</item>
+        <item>@string/cultivable_land_gunta</item>
+        <item>@string/cultivable_land_acre</item>
+        <item>@string/cultivable_land_hectare</item>
+        <item>@string/cultivable_land_landless</item>
+    </string-array>
+
+    <string-array name="economic">
+        <item>@string/economic_status_apl</item>
+        <item>@string/economic_status_bpl</item>
+    </string-array>
+
+</resources>
