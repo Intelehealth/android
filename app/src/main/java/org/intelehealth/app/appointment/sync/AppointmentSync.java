@@ -36,8 +36,6 @@ public class AppointmentSync {
 
         SessionManager sessionManager = new SessionManager(context);
         String baseurl = sessionManager.getServerUrl() + ":3004";
-        Timber.tag(TAG).d("URL =>%s", BuildConfig.SERVER_URL);
-        Timber.tag(TAG).d("Session URL =>%s", sessionManager.getServerUrl());
         ApiClientAppointment.getInstance(baseurl).getApi()
                 .getSlotsAll(selectedStartDate, selectedEndDate, new SessionManager(context).getCurrentLocationUuid())
 

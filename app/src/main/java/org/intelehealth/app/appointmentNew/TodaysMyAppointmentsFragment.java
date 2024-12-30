@@ -610,7 +610,7 @@ public class TodaysMyAppointmentsFragment extends Fragment {
     }
 
     private void getSlots() {
-        String serverUrl = BuildConfig.SERVER_URL + ":3004";
+        String serverUrl = sessionManager.getServerUrl() + ":3004";
 
         ApiClientAppointment.getInstance(serverUrl).getApi().getSlotsAll(DateAndTimeUtils.getCurrentDateInDDMMYYYYFormat(), DateAndTimeUtils.getCurrentDateInDDMMYYYYFormat(), new SessionManager(getActivity()).getCurrentLocationUuid()).enqueue(new Callback<AppointmentListingResponse>() {
             @Override
