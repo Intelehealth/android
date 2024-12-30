@@ -84,7 +84,7 @@ public class MyAppointmentActivity extends BaseActivity implements UpdateAppoint
 
     private void loadAllAppointments() {
         CustomLog.v(TAG, "loadAllAppointments");
-        String baseurl = BuildConfig.SERVER_URL + ":3004";
+        String baseurl = sessionManager.getServerUrl() + ":3004";
         int tabIndex = tabLayout.getSelectedTabPosition();
         if (mUpdateFragmentOnEventHashMap.containsKey(tabIndex))
             Objects.requireNonNull(mUpdateFragmentOnEventHashMap.get(tabIndex)).onFinished(AppConstants.EVENT_FLAG_START);

@@ -79,7 +79,7 @@ class MyAppointmentActivityNew : BaseActivity(), UpdateAppointmentsCount,
 
     private fun loadAllAppointments() {
         Log.v(TAG, "loadAllAppointments")
-        val baseurl = BuildConfig.SERVER_URL + ":3004"
+        val baseurl = sessionManager.serverUrl + ":3004"
         var tabIndex = 0
         if (!isFinishing && !isDestroyed) {
             tabIndex = tabLayout?.selectedTabPosition ?: 0
@@ -98,7 +98,7 @@ class MyAppointmentActivityNew : BaseActivity(), UpdateAppointmentsCount,
                 .getSlotsAll(
                     DateAndTimeUtils.getCurrentDateInDDMMYYYYFormat(),
                     DateAndTimeUtils.getOneMonthAheadDateInDDMMYYYYFormat(),
-                    SessionManager(this).locationUuid
+                    SessionManager.getInstance(this).currentLocationUuid
                 )
                 .enqueue(object : Callback<AppointmentListingResponse?> {
                     override fun onResponse(
@@ -154,7 +154,8 @@ class MyAppointmentActivityNew : BaseActivity(), UpdateAppointmentsCount,
 
         configureTabLayout()
 
-        WindowCompat.getInsetsController(window,window.decorView).isAppearanceLightStatusBars = true
+        WindowCompat.getInsetsController(window, window.decorView).isAppearanceLightStatusBars =
+            true
         window.statusBarColor = Color.WHITE
 
         bottomNav = findViewById(R.id.bottom_nav_my_appointments)
