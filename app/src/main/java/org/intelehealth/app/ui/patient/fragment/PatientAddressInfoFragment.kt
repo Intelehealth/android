@@ -548,7 +548,7 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
                         val selectedVillage = villages[i]
                         if (binding.autoCompleteBlock.text.contains("Other", ignoreCase = true)
                         ) binding.textInputCityVillage.setText("")
-                        // else patient.cityvillage = selectedVillage.name
+                         else patient.cityvillage = selectedVillage.name
                     }
                 } else {
                     Log.d("kaveridev", "No villages available for ${gramPanchayat.name}")
@@ -659,9 +659,10 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
 
     private fun setOtherBlockData() {
         //if (binding.autoCompleteBlock.text.contains("Other", ignoreCase = true)) {
+        Log.d("kk25", "setOtherBlockData: isOtherBlockSelected : "+isOtherBlockSelected)
         if (isOtherBlockSelected()) {
             patient.block = binding.textInputOtherBlock.text.toString()
-            //patient.cityvillage = binding.textInputCityVillage.text.toString()
+            patient.cityvillage = binding.textInputCityVillage.text.toString()
         }
         //}
     }

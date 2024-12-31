@@ -842,7 +842,7 @@ public class PatientsDAO {
             if (patientUUID_List.size() != 0) {
                 for (int i = 0; i < patientUUID_List.size(); i++) {
                     final Cursor searchCursor = db.rawQuery("SELECT * FROM " + table +
-                            " WHERE first_name LIKE " + "'%" + search + "%' OR middle_name LIKE '%" + search + "%' OR uuid = ? " +
+                            " WHERE first_name LIKE " + "'%" + search + "%' OR middle_name LIKE '%" + search + "%' OR address1 LIKE '%" + search + "%' OR uuid = ? " +
                             "OR last_name LIKE '%" + search + "%' OR (first_name || middle_name) " +
                             "LIKE '%" + search + "%' OR (middle_name || last_name) LIKE '%" + search + "%' OR " +
                             "(first_name || last_name) LIKE '%" + search + "%'" +
@@ -879,7 +879,7 @@ public class PatientsDAO {
                 }
             } else { // no mobile number was added in search text.
                 final Cursor searchCursor = db.rawQuery("SELECT * FROM " + table + " WHERE first_name LIKE " + "'%" + search + "%' " +
-                        "OR middle_name LIKE '%" + search + "%' OR last_name LIKE '%" + search + "%' OR " +
+                        "OR middle_name LIKE '%" + search +  "%'  OR  address1 LIKE '%" + search + "%' OR last_name LIKE '%" + search + "%' OR " +
                         "(first_name || middle_name) LIKE '%" + search + "%' OR (middle_name || last_name) " +
                         "LIKE '%" + search + "%' OR (first_name || last_name) LIKE '%" + search + "%'" +
                         "OR first_name || ' ' || middle_name LIKE" + "'%" + search + "%' OR first_name || ' ' || middle_name || ' ' || last_name LIKE" + "'%" + search + "%' " +

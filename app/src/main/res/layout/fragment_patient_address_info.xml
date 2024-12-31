@@ -93,7 +93,7 @@
                                 android:hint="@string/enter_postal_code"
                                 android:inputType="textPostalAddress"
                                 android:maxLength="6"
-                                android:text="@{patient.postalcode}" />
+                                android:text="@={patient.postalcode}" />
                         </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
                     </LinearLayout>
 
