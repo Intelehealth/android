@@ -124,6 +124,110 @@ class PatientRepository(
                     patient.providerUUID
                 )
             )
+
+            add(
+                createPatientAttribute(
+                    patient.uuid,
+                    PatientAttributesDTO.Column.TMH_CASE_NUMBER.value,
+                    patient.tmhCaseNumber
+                )
+            )
+
+            add(
+                createPatientAttribute(
+                    patient.uuid,
+                    PatientAttributesDTO.Column.REQUEST_ID.value,
+                    patient.requestId
+                )
+            )
+
+            add(
+                createPatientAttribute(
+                    patient.uuid,
+                    PatientAttributesDTO.Column.DISCIPLINE.value,
+                    patient.discipline
+                )
+            )
+
+            add(
+                createPatientAttribute(
+                    patient.uuid,
+                    PatientAttributesDTO.Column.DEPARTMENT.value,
+                    patient.department
+                )
+            )
+            add(
+                createPatientAttribute(
+                    patient.uuid,
+                    PatientAttributesDTO.Column.RELATIVE_PHONE_NUMBER.value,
+                    patient.relativePhoneNumber
+                )
+            )
+
+
+
+            add(
+                createPatientAttribute(
+                    patient.uuid,
+                    PatientAttributesDTO.Column.PROVINCES.value,
+                    patient.province
+                )
+            )
+            add(
+                createPatientAttribute(
+                    patient.uuid,
+                    PatientAttributesDTO.Column.CITIES.value,
+                    patient.city
+                )
+            )
+
+            add(
+                createPatientAttribute(
+                    patient.uuid,
+                    PatientAttributesDTO.Column.REGISTRATION_ADDRESS_OF_HF.value,
+                    patient.registrationAddressOfHf
+                )
+            )
+
+            add(
+                createPatientAttribute(
+                    patient.uuid,
+                    PatientAttributesDTO.Column.INN.value,
+                    patient.inn
+                )
+            )
+
+            add(
+                createPatientAttribute(
+                    patient.uuid,
+                    PatientAttributesDTO.Column.CODE_OF_HEALTH_FACILITY.value,
+                    patient.codeOfHealthFacility
+                )
+            )
+
+            add(
+                createPatientAttribute(
+                    patient.uuid,
+                    PatientAttributesDTO.Column.HEALTH_FACILITY_NAME.value,
+                    patient.healthFacilityName
+                )
+            )
+
+            add(
+                createPatientAttribute(
+                    patient.uuid,
+                    PatientAttributesDTO.Column.CODE_OF_DEPARTMENT.value,
+                    patient.codeOfDepartment
+                )
+            )
+
+            add(
+                createPatientAttribute(
+                    patient.uuid,
+                    PatientAttributesDTO.Column.DEPARTMENT.value,
+                    patient.department
+                )
+            )
             add(
                 createPatientAttribute(
                     patient.uuid,
@@ -143,6 +247,27 @@ class PatientRepository(
                     patient.uuid,
                     PatientAttributesDTO.Column.REPORT_DATE_OF_PATIENT_CREATED.value,
                     patient.reportDateOfPatientCreated
+                )
+            )
+            add(
+                createPatientAttribute(
+                    patient.uuid,
+                    PatientAttributesDTO.Column.EMERGENCY_CONTACT_NAME.value,
+                    patient.emContactName
+                )
+            )
+            add(
+                createPatientAttribute(
+                    patient.uuid,
+                    PatientAttributesDTO.Column.EMERGENCY_CONTACT_NUMBER.value,
+                    patient.emContactNumber
+                )
+            )
+            add(
+                createPatientAttribute(
+                    patient.uuid,
+                    PatientAttributesDTO.Column.EMERGENCY_CONTACT_TYPE.value,
+                    patient.contactType
                 )
             )
         }

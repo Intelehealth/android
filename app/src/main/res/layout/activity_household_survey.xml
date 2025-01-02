@@ -3,15 +3,6 @@
 
     <data>
 
-        <!--  <variable
-              name="addressActiveStatus"
-              type="Boolean" />
-
-          <variable
-              name="otherActiveStatus"
-              type="Boolean" />
-
-        -->
         <variable
             name="isEditMode"
             type="Boolean" />

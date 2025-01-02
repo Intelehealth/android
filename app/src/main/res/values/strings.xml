@@ -658,6 +658,7 @@
     <string name="slider_desc">range slider</string>
     <string name="drag_tow_capture_range_from_0_to_100">Drag tow capture range from 0 to 100</string>
     <string name="chw_id">CHW ID:</string>
+    <string name="mcc_id">MCC ID:</string>
     <string name="sync_successful">Sync successful</string>
     <string name="app_reset_successfully">App Reset Successfully</string>
     <string name="please_open_the_app_again">Please open the app again.</string>
@@ -899,7 +900,8 @@
     <string name="all_reasons">All reasons</string>
     <string name="_visit_reason_summary">%1$d/%2$d Visit Reason summary</string>
     <string name="change">Change</string>
-    <string name="_vitals_summary">1/5. Vitals summary</string>
+    <string name="_vitals_summary">%1$d/%2$d Vitals summary</string>
+    <!-- <string name="_vitals_summary">1/5. Vitals summary</string>-->
     <string name="mo">Mo</string>
     <string name="tu">Tu</string>
     <string name="we">We</string>
@@ -1090,7 +1092,7 @@
     <string name="glucose_non_fasting_error">Blood glucose(Non-Fasting) should be in between %1$s and %2$s</string>
     <string name="post_prandial_error">Post Prandial Blood Sugar should be in between %1$s and %2$s</string>
     <string name="hemoglobin_error">Hemoglobin should be in between %1$s and %2$s</string>
-<!--
+    <!--
     <string name="_diagnostics_summary">2/5. Diagnostics summary</string>
 -->
     <string name="diagnostics_section">%1$d/%2$d Diagnostics</string>
@@ -1106,6 +1108,40 @@
     <string name="other_block">Other Block</string>
 
     <string name="title_video">Video Feature</string>
+    <string name="province">Province</string>
+    <string name="select_province">Select Province</string>
+    <string name="city">City</string>
+    <string name="select_city">Select City</string>
+    <string name="registration_address_of_health_facility">Registration Address of Health Facility</string>
+    <string name="enter_registration_address">Enter Registration Address</string>
+
+    <!-- KCDO Strings start  -->
+    <string name="relapse_info">Relapse Info</string>
+    <string name="relapse">Relapse</string>
+    <string name="_relapse">%1$d/%2$d Relapse</string>
+    <string name="ui2_relapse_summary_title">%1$d/%2$d Relapse summary</string>
+
+    <string name="tmh_case_number">TMH Case Number</string>
+    <string name="enter_tmh_case_number">Enter TMH Case Number</string>
+    <string name="request_id">Request ID</string>
+    <string name="discipline">Discipline (Specialty)</string>
+
+    <string name="enter_request_id">Enter Request ID</string>
+    <string name="enter_discipline">Enter Discipline</string>
+    <string name="department">Department</string>
+    <string name="enter_department">Enter Department</string>
+    <string name="relative_phone_number">Relative Phone Number</string>
+    <!-- KCDO Strings end   -->
+
+    <!-- UNFPA Strings start  -->
+    <string name="inn">INN</string>
+    <string name="enter_inn">Enter INN</string>
+    <string name="code_of_the_health_facility">Code of the Health Facility</string>
+    <string name="enter_code">Enter Code</string>
+    <string name="enter_name">Enter Name</string>
+    <string name="health_facility_name">Health facility name</string>
+    <string name="code_of_the_department">Code of the Department</string>
+    <!-- UNFPA Strings end  -->
     <string name="update_household_survey">Update Household Survey</string>
     <string name="household_survey">Household Survey</string>
     <string name="name_of_primary_respondent">Name of Primary Respondent*</string>
@@ -1381,7 +1417,7 @@
     <string name="draft_survey">Draft Survey</string>
     <string name="no_of_m_km">No. of M/KM</string>
 
-        <!--Roster-->
+    <!--Roster-->
     <string name="txt_hedingRosters">Rosters</string>
     <string name="txt_heading_pregnancy_outcome_roster">Pregnancy Outcome Roster</string>
     <string name="txt_what_is_your_relationship_with_head_of_household">What is your relationship with Head of Household*</string>
@@ -1503,7 +1539,7 @@
     <string name="no_of_pregnancy_outcomes_in_the_past_2_years">No. of pregnancy outcomes in the past 2 years</string>
     <string name="pregnancy_outcome">Pregnancy Outcome</string>
     <string name="add">Add</string>
-<!-- TODO: Remove or change this placeholder text -->
+    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="enter_date">Enter Date</string>
     <string name="health_service">Health Service</string>
@@ -1511,4 +1547,23 @@
     <string name="please_add_pregnancy_outcome">Please add pregnancy outcome</string>
     <string name="please_select_pregnancy_outcome">Please select pregnancy outcome\n</string>
     <string name="_diagnostics_summary">%1$d/%2$d Diagnostics summary</string>
+    <string name="physical_exam_screen_title">@string/physical_examination</string>
+    <string name="physical_exam_screen_header">@string/general_exams</string>
+    <string name="what_was_the_outcome_of_your_pregnancy">What was the outcome of your pregnancy?*</string>
+    <string name="what_was_the_year_of_pregnancy_outcome_a_for_pregnant_ladies_mention_the_date_when_conceived_b_in_case_of_other_options_mention_the_date_of_delivery_miscarriage">What was the year of pregnancy outcome? ((a) for pregnant ladies, mention the date when conceived (b) in case of other options mention the date of delivery/miscarriage)</string>
+    <string name="how_many_months_did_this_pregnancy_last">How many months did this pregnancy last?</string>
+    <string name="what_is_the_place_of_delivery">What is the Place of Delivery?</string>
+    <string name="what_is_the_type_of_delivery">What is the type of Delivery?</string>
+    <string name="was_the_pregnancy_planned">Was the pregnancy planned?</string>
+    <string name="where_you_identified_as_a_high_risk_pregnancy_case">Where you identified as a High-Risk Pregnancy case?</string>
+    <string name="health_issue_reported">Health Issue Reported</string>
+    <string name="no_of_episodes_in_the_last_years">No. Of Episodes in The Last Years</string>
+    <string name="generally_which_is_the_primary_health_provider_you_interacted_with_for_health_issues">Generally, which is the primary health provider you interacted with for health issues?</string>
+    <string name="first_location_of_visit_interaction">First location Of Visit / interaction</string>
+    <string name="referred_to">Referred To</string>
+    <string name="mode_of_transportation_used_to_reach_facility">Mode Of Transportation Used To Reach facility</string>
+    <string name="average_cost_incurred_on_travel_and_stay_per_episode">Average cost incurred on travel and stay per episode</string>
+    <string name="average_cost_incurred_on_consultation_fee_per_episode">Average cost incurred on consultation fee per episode</string>
+    <string name="average_cost_incurred_on_medicines_per_episode">Average cost incurred on medicines per episode</string>
+    <string name="score_for_experience_of_treatment">Score for experience of treatment</string>
 </resources>

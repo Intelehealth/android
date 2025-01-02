@@ -257,8 +257,6 @@
 
                     <com.google.android.material.button.MaterialButtonToggleGroup
                         android:id="@+id/toggleGender"
-                        config="@{personalConfig.gender}"
-                        editMode="@{isEditMode}"
                         gender="@{patient.gender}"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"

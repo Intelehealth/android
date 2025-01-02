@@ -7,7 +7,7 @@
     <!-- Fragment One -->
     <fragment
         android:id="@+id/fragmentFirst"
-        android:name="org.intelehealth.app.activities.householdSurvey.fragments.FirstFragment"
+        android:name="org.intelehealth.app.ui.householdSurvey.fragments.FirstFragment"
         tools:layout="@layout/fragment_one_household_survey">
         <action
             android:id="@+id/action_one_to_two"
@@ -17,7 +17,7 @@
     <!-- Fragment Two -->
     <fragment
         android:id="@+id/fragmentSecond"
-        android:name="org.intelehealth.app.activities.householdSurvey.fragments.SecondFragment"
+        android:name="org.intelehealth.app.ui.householdSurvey.fragments.SecondFragment"
         tools:layout="@layout/fragment_second_household_survey">
         <action
             android:id="@+id/action_two_to_three"
@@ -30,7 +30,7 @@
     <!-- Fragment Three -->
     <fragment
         android:id="@+id/fragmentThird"
-        android:name="org.intelehealth.app.activities.householdSurvey.fragments.ThirdFragment"
+        android:name="org.intelehealth.app.ui.householdSurvey.fragments.ThirdFragment"
         tools:layout="@layout/fragment_third_household_survey">
         <action
             android:id="@+id/action_three_to_four"
@@ -43,7 +43,7 @@
     <!-- Fragment Four -->
     <fragment
         android:id="@+id/fragmentFourth"
-        android:name="org.intelehealth.app.activities.householdSurvey.fragments.FourthFragment"
+        android:name="org.intelehealth.app.ui.householdSurvey.fragments.FourthFragment"
         tools:layout="@layout/fragment_fourth_household_survey">
         <action
             android:id="@+id/action_four_to_five"
@@ -56,7 +56,7 @@
     <!-- Fragment Five -->
     <fragment
         android:id="@+id/fragmentFifth"
-        android:name="org.intelehealth.app.activities.householdSurvey.fragments.FifthFragment"
+        android:name="org.intelehealth.app.ui.householdSurvey.fragments.FifthFragment"
         tools:layout="@layout/fragment_fifth_household_survey">
         <action
             android:id="@+id/action_five_to_six"
@@ -69,7 +69,7 @@
     <!-- Fragment Six -->
     <fragment
         android:id="@+id/fragmentSixth"
-        android:name="org.intelehealth.app.activities.householdSurvey.fragments.SixthFragment"
+        android:name="org.intelehealth.app.ui.householdSurvey.fragments.SixthFragment"
         tools:layout="@layout/fragment_sixth_household_survey">
         <action
             android:id="@+id/action_six_to_seven"
@@ -82,7 +82,7 @@
     <!-- Fragment Seven -->
     <fragment
         android:id="@+id/fragmentSeventh"
-        android:name="org.intelehealth.app.activities.householdSurvey.fragments.SeventhFragment"
+        android:name="org.intelehealth.app.ui.householdSurvey.fragments.SeventhFragment"
         tools:layout="@layout/fragment_seventh_household_survey">
         <action
             android:id="@+id/action_seven_to_six"

@@ -1,9 +1,16 @@
 package org.intelehealth.app.ayu.visit.physicalexam;
 
+import static org.intelehealth.app.ayu.visit.VisitCreationActivity.STEP_3_VISIT_REASON_QUESTION_SUMMARY;
+import static org.intelehealth.app.ayu.visit.VisitCreationActivity.STEP_4_PHYSICAL_SUMMARY_EXAMINATION;
+
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+
+import org.intelehealth.app.ayu.visit.common.ManageSummaryScreenTitles;
 import org.intelehealth.app.utilities.CustomLog;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,11 +79,15 @@ public class PhysicalExamSummaryFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        FeatureActiveStatus status = ((VisitCreationActivity) requireActivity()).getFeatureActiveStatus();
+       /* FeatureActiveStatus status = ((VisitCreationActivity) requireActivity()).getFeatureActiveStatus();
         int index = status.getVitalSection() ? 4 : 3;
         int total = status.getVitalSection() ? 5 : 4;
         TextView tvTitle = view.findViewById(R.id.tv_sub_title);
-        tvTitle.setText(getString(R.string.ui2_physical_exam_summay_title, index, total));
+        tvTitle.setText(getString(R.string.ui2_relapse_summary_title, index, total));*/
+        FeatureActiveStatus status = ((VisitCreationActivity) requireActivity()).getFeatureActiveStatus();
+        String title = ManageSummaryScreenTitles.setScreenTitle(requireActivity(), status, STEP_4_PHYSICAL_SUMMARY_EXAMINATION);
+        TextView tvTitle = view.findViewById(R.id.tv_sub_title);
+        tvTitle.setText(title);
     }
 
     @Override

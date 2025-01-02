@@ -7,19 +7,25 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.databinding.OnRebindCallback
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavDirections
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.github.ajalt.timberkt.Timber
 import com.github.ajalt.timberkt.Timber.tag
 import com.google.gson.Gson
+import kotlinx.coroutines.launch
 import org.intelehealth.app.BuildConfig
 import org.intelehealth.app.R
 import org.intelehealth.app.activities.identificationActivity.model.Block
 import org.intelehealth.app.activities.identificationActivity.model.DistData
+import org.intelehealth.app.activities.identificationActivity.model.ProvincesAndCities
 import org.intelehealth.app.activities.identificationActivity.model.StateData
 import org.intelehealth.app.activities.identificationActivity.model.Village
 import org.intelehealth.app.databinding.FragmentPatientAddressInfoBinding
 import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.app.ui.filter.FirstLetterUpperCaseInputFilter
+import org.intelehealth.app.ui.patient.activity.PatientRegistrationActivity
 import org.intelehealth.app.utilities.ArrayAdapterUtils
 import org.intelehealth.app.utilities.LanguageUtils
 import org.intelehealth.app.utilities.PatientRegFieldsUtils
@@ -80,7 +86,6 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
         Timber.d { "onPatientDataLoaded" }
         Timber.d { Gson().toJson(patient) }
         binding.patient = patient
-        Log.d("kaveridev", "onPatientDataLoaded: district from db : " + patient.district)
         binding.isEditMode = patientViewModel.isEditMode
         fetchPersonalInfoConfig()
     }
@@ -92,6 +97,7 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
             binding.addOnRebindCallback(onRebindCallback)
         }
     }
+
 
     private fun setClickListener() {
         binding.frag2BtnBack.setOnClickListener {
@@ -111,6 +117,8 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
              cityvillage = if (district.isNullOrEmpty().not()) "${district}:$village"
              else village*/
             address2 = binding.textInputAddress2.text?.toString()
+            registrationAddressOfHf = binding.textInputRegistrationAddressOfHf.text?.toString()
+
             //householdNumber = binding.textInputHouseholdNumber.text?.toString()
 
             if (BuildConfig.FLAVOR_client == "nas") {
@@ -133,17 +141,6 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
             }
             cityvillage = if (district.isNullOrEmpty().not()) "${district}:$village"
             else village
-
-            Log.d("kaveridev", "savePatient: address3 : " + block)
-            Log.d(
-                "kaveridev",
-                "savePatient: viewsele : " + binding.autoCompleteBlock.text.toString()
-            )
-            Log.d("kaveridev", "savePatient: village : " + village)
-            Log.d("kaveridev", "savePatient: district : " + district)
-            Log.d("kaveridev", "savePatient: district : " + district)
-            Log.d("kaveridev", "savePatient: householdno : " + address1)
-            Log.d("kaveridev", "savePatient: patient cityvillage : " + patient.cityvillage)
 
             patientViewModel.updatedPatient(this)
             if (patientViewModel.isEditMode) {
@@ -187,13 +184,14 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
         binding.textInputLayCityVillage.hideErrorOnTextChang(binding.textInputCityVillage)
         binding.textInputLayAddress1.hideErrorOnTextChang(binding.textInputAddress1)
         binding.textInputLayAddress2.hideErrorOnTextChang(binding.textInputAddress2)
+        binding.textInputLayRegistrationAddressOfHf.hideErrorOnTextChang(binding.textInputRegistrationAddressOfHf)
+
         binding.textInputLayPostalCode.hideDigitErrorOnTextChang(binding.textInputPostalCode, 6)
         binding.textInputLayOtherBlock.hideErrorOnTextChang(binding.textInputOtherBlock)
         binding.textInputLayHouseholdNumber.hideErrorOnTextChang(binding.textInputHouseholdNumber)
     }
 
     private fun setupStates() {
-        Log.d("kaveridev", "setupStates: check state")
         val isConfigStateEditable = binding.addressInfoConfig?.state?.isEditable ?: true
         val defaultState = LanguageUtils.getState(getString(R.string.default_state))
 
@@ -220,7 +218,6 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
                     requireContext(), it
                 )
                 binding.autoCompleteState.setAdapter(adapter)
-                Log.d("kaveridev", "setupStates: satte : " + patient.stateprovince)
                 if (patient.stateprovince != null && patient.stateprovince.isNotEmpty()) {
                     val state = LanguageUtils.getState(patient.stateprovince)
                     if (state != null) {
@@ -243,8 +240,54 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
         }
     }
 
+    private fun setupProvinceAndCities() {
+        LanguageUtils.getProvincesAndCities().let {
+            //province
+            binding.textInputLayProvince.tag = it
+            val adapter: ArrayAdapter<String> = ArrayAdapterUtils.getObjectArrayAdapter(
+                requireContext(), it.provinces
+            )
+            binding.autoCompleteProvince.setAdapter(adapter)
+
+            if (patient.province != null && patient.province.isNotEmpty()) {
+                val province = LanguageUtils.getProvince(patient.province)
+                if (province != null) {
+                    binding.autoCompleteProvince.setText(province.toString(), false)
+                }
+            }
+
+            binding.autoCompleteProvince.setOnItemClickListener { adapterView, _, i, _ ->
+                binding.textInputLayProvince.hideError()
+                val provincesAndCities: ProvincesAndCities =
+                    binding.textInputLayProvince.tag as ProvincesAndCities
+                patient.province = provincesAndCities.provinces[i]
+            }
+
+            //cities
+            binding.textInputLayCity.tag = it
+            val cityAdapter: ArrayAdapter<String> = ArrayAdapterUtils.getObjectArrayAdapter(
+                requireContext(), it.cities
+            )
+            binding.autoCompleteCity.setAdapter(cityAdapter)
+
+            if (patient.city != null && patient.city.isNotEmpty()) {
+                val city = LanguageUtils.getCity(patient.city)
+                if (city != null) {
+                    binding.autoCompleteCity.setText(city.toString(), false)
+                }
+            }
+
+            binding.autoCompleteCity.setOnItemClickListener { adapterView, _, i, _ ->
+                binding.textInputLayCity.hideError()
+                val provincesAndCities: ProvincesAndCities =
+                    binding.textInputLayCity.tag as ProvincesAndCities
+                patient.city = provincesAndCities.cities[i]
+            }
+        }
+
+    }
+
     private fun setupDistricts(stateData: StateData) {
-        Log.d("kaveridev", "setupDistricts: check district")
 
         val isConfigDistrictEditable = binding.addressInfoConfig?.district?.isEditable ?: true
         val defaultDistrict =
@@ -260,7 +303,6 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
         } else {
             // IDA flow (No default value for state
             setFieldEnabledStatus(binding.textInputLayDistrict, isConfigDistrictEditable)
-            Log.d("kaveridev", "setupDistricts: patient.district : " + patient.district)
             val adapter: ArrayAdapter<DistData> = ArrayAdapterUtils.getObjectArrayAdapter(
                 requireContext(), stateData.distDataList
             )
@@ -268,18 +310,11 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
 
             if (patient.district != null && patient.district.isNotEmpty()) {
                 val selected = LanguageUtils.getDistrict(stateData, patient.district)
-                Log.d("kaveridev", "setupDistricts: selected1 : " + selected)
                 if (selected != null) {
-                    Log.d("kaveridev", "setupDistricts: in selected notnull")
                     binding.autoCompleteDistrict.setText(selected.toString(), false)
                     if (binding.llBlock.isEnabled) setupBlocks(selected)
                 }
             }
-            Log.d(
-                "kaveridev",
-                "setupDistricts: selected2 : " + binding.autoCompleteDistrict.text.toString()
-            )
-
 
             binding.textInputLayDistrict.tag = stateData.distDataList
             binding.autoCompleteDistrict.setOnItemClickListener { adapterView, _, i, _ ->
@@ -335,6 +370,28 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
                         )
                 } else true
 
+            val bProvince = if (it.province?.isEnabled == true && it.province?.isMandatory == true) {
+                binding.textInputLayProvince.validateDropDowb(
+                    binding.autoCompleteProvince,
+                    error
+                )
+            } else true
+
+            val bCity = if (it.city?.isEnabled == true && it.city?.isMandatory == true) {
+                binding.textInputLayCity.validateDropDowb(
+                    binding.autoCompleteCity,
+                    error
+                )
+            } else true
+
+            val bRelativeAddressOfHf =
+                if (it.registrationAddressOfHf?.isEnabled == true && it.registrationAddressOfHf?.isMandatory == true) {
+                    binding.textInputLayRegistrationAddressOfHf.validate(
+                        binding.textInputRegistrationAddressOfHf,
+                        R.string.error_field_required,
+                    )
+                } else true
+
 
             val bAddress1 = if (it.address1!!.isEnabled && it.address1!!.isMandatory) {
                 binding.textInputLayAddress1.validate(binding.textInputAddress1, error)
@@ -371,6 +428,8 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
                 } else true
 
             if (bPostalCode.and(bCountry).and(bState).and(bDistrict).and(bCityVillage)
+                    .and(bAddress1).and(bAddress2).and(bProvince).and(bCity)
+                    .and(bRelativeAddressOfHf)
                     .and(bAddress1).and(bAddress2).and(bBlock).and(bVillageField)
                     .and(bHouseholdNumber)
             ) block.invoke()
@@ -393,7 +452,6 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
                 val selected = LanguageUtils.getBlock(districtData, patient.block)
                 if (selected == null) {
                     val selected = LanguageUtils.getBlock(districtData, "Other Block")
-                    Log.d("kaveridev", "setupBlocks: selected : " + selected)
                     binding.autoCompleteBlock.setText(selected.toString(), false)
                     binding.textInputOtherBlock.setText(patient.block)
                     enableOtherBlock()
@@ -432,7 +490,6 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
                 setupVillages(selectedBlock)
             }
         } else {
-            Log.d("kaveridev", "setupBlocks: blocksarenull")
             eraseAllBlockFields()
 
         }
@@ -466,13 +523,11 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
                         val selectedVillage = villages[i]
                         if (binding.autoCompleteBlock.text.contains("Other", ignoreCase = true)
                         ) binding.textInputCityVillage.setText("")
-                        // else patient.cityvillage = selectedVillage.name
+                         else patient.cityvillage = selectedVillage.name
                     }
                 } else {
-                    Log.d("kaveridev", "No villages available for ${gramPanchayat.name}")
                 }
             } ?: run {
-                Log.d("kaveridev", "Villages are null for ${gramPanchayat.name}")
             }
         }
 
@@ -497,6 +552,7 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
             //  resetAdaptersAndFieldData();
             setupCountries()
             setupStates()
+            setupProvinceAndCities()
             applyFilter()
             setInputTextChangListener()
             setClickListener()
@@ -515,10 +571,7 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
             viewLifecycleOwner
         ) { isEnabled ->
             isCityVillageEnabled = isEnabled
-            Log.d(
-                "devcheck",
-                "observeBlockAndVillageChange: isOtherBlockSelected : " + isOtherBlockSelected
-            )
+
             manageBlockVisibility(isBlockEnabled ?: false)
         }
 
@@ -559,7 +612,6 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
         if (isBlockEnabled) {
             binding.llBlock.visibility = View.VISIBLE
             binding.llBlock.isEnabled = true
-            Log.d("devcheck", "manageBlockVisibility: address3 : " + address3)
             if ((address3 != null && address3.isNotEmpty() && isOtherBlockSelected) || (isOtherBlockSelected)) {
                 enableOtherBlock()
             } else {
@@ -578,7 +630,7 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
         //if (binding.autoCompleteBlock.text.contains("Other", ignoreCase = true)) {
         if (isOtherBlockSelected()) {
             patient.block = binding.textInputOtherBlock.text.toString()
-            //patient.cityvillage = binding.textInputCityVillage.text.toString()
+            patient.cityvillage = binding.textInputCityVillage.text.toString()
         }
         //}
     }

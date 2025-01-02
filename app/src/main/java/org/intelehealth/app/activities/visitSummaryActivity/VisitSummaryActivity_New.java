@@ -469,6 +469,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             if (isVisitSpecialityExists)
                 findViewById(R.id.btnGenerateBill).setVisibility(activeStatus.getGenerateBillButton() ? View.VISIBLE : View.GONE);
 
+            findViewById(R.id.diagnosticsCard).setVisibility(activeStatus.getActiveStatusDiagnosticsSection() ? View.VISIBLE : View.GONE);
+
 //            }
         }
     }
@@ -514,10 +516,14 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 (mBinding, VisitSummaryActivity_New.this, null,
                         this, encounterVitals, mCommonVisitData);
         visitDiagnosticsSummary.initViews();
+
+        setupDiagnosticsConfig();
     }
 
     private List<PatientVital> mPatientVitalList;
     private LinearLayout mHeightLinearLayout, mWeightLinearLayout, mBMILinearLayout, mBPLinearLayout, mPulseLinearLayout, mTemperatureLinearLayout, mSpo2LinearLayout, mRespiratoryRateLinearLayout, mBloodGroupLinearLayout;
+    private LinearLayout mRandomGlucoseLinearLayout, mFastingGlucoseLinearLayout, mPostPrandialLinearLayout, mHemoglobinLinearLayout, mUricAcidLinearLayout, mCholestrolLinearLayout;
+    private List<Diagnostics> mPatientDiagnosticsList;
 
     private void setupVitalConfig() {
         mHeightLinearLayout = findViewById(R.id.ll_height_container);
@@ -5509,8 +5515,13 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             if (isInOldFormat) {
                 physFindingsView.setVisibility(View.VISIBLE);
                 String valueArray[] = value.replace("General exams: <br>", "<b>General exams: </b><br/>").split("<b>General exams: </b><br/>");
-                if (valueArray.length > 1)
-                    physFindingsView.setText(Html.fromHtml(valueArray[1]));//.replaceFirst("<b>", "<br/><b>")));
+                if(BuildConfig.FLAVOR_client == "kcdo"){
+                    physFindingsView.setText(Html.fromHtml(valueArray[0]));
+                }else {
+                    if (valueArray.length > 1)
+                        physFindingsView.setText(Html.fromHtml(valueArray[1]));//.replaceFirst("<b>", "<br/><b>")));
+                }
+
             } else {
                 //physFindingsView.setText(Html.fromHtml(value.replaceFirst("<b>", "<br/><b>")));
                 setDataForPhysicalExamSummary(physicalExamLocaleString);
@@ -6195,6 +6206,60 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             }
         }
         return true;
+    }
+    private void setupDiagnosticsConfig() {
+        mRandomGlucoseLinearLayout = findViewById(R.id.ll_glucose_random_container);
+        mFastingGlucoseLinearLayout = findViewById(R.id.ll_glucose_fasting_container);
+        mPostPrandialLinearLayout = findViewById(R.id.ll_post_prandial_container);
+        mHemoglobinLinearLayout = findViewById(R.id.ll_hemoglobin_container);
+        mUricAcidLinearLayout = findViewById(R.id.ll_uric_acid_container);
+        mCholestrolLinearLayout = findViewById(R.id.ll_total_cholestrol_container);
+
+
+        DiagnosticsRepository repository = new DiagnosticsRepository(ConfigDatabase.getInstance(this).patientDiagnosticsDao());
+        DiagnosticsViewModelFactory factory = new DiagnosticsViewModelFactory(repository);
+        DiagnosticsViewModel diagnosticsViewModel = new ViewModelProvider(this, factory).get(DiagnosticsViewModel.class);
+        diagnosticsViewModel.getAllEnabledLiveFields()
+                .observe(this, it -> {
+                    mPatientDiagnosticsList = it;
+                            CustomLog.v(TAG, new Gson().toJson(mPatientDiagnosticsList));
+                            updateUIForDiagnostics();
+                        }
+                );
+
+    }
+
+    private void updateUIForDiagnostics() {
+        mRandomGlucoseLinearLayout.setVisibility(View.GONE);
+        mFastingGlucoseLinearLayout.setVisibility(View.GONE);
+        mPostPrandialLinearLayout.setVisibility(View.GONE);
+        mHemoglobinLinearLayout.setVisibility(View.GONE);
+        mUricAcidLinearLayout.setVisibility(View.GONE);
+        mCholestrolLinearLayout.setVisibility(View.GONE);
+
+        for (Diagnostics diagnostics : mPatientDiagnosticsList) {
+            CustomLog.v(TAG, diagnostics.getName() + "\t" + diagnostics.getDiagnosticsKey());
+
+            if (diagnostics.getDiagnosticsKey().equals(PatientDiagnosticsConfigKeys.RANDOM_BLOOD_SUGAR)) {
+                mRandomGlucoseLinearLayout.setVisibility(View.VISIBLE);
+
+            } else if (diagnostics.getDiagnosticsKey().equals(PatientDiagnosticsConfigKeys.FASTING_BLOOD_SUGAR)) {
+                mFastingGlucoseLinearLayout.setVisibility(View.VISIBLE);
+
+            } else if (diagnostics.getDiagnosticsKey().equals(PatientDiagnosticsConfigKeys.POST_PRANDIAL_BLOOD_SUGAR)) {
+                mPostPrandialLinearLayout.setVisibility(View.VISIBLE);
+
+            } else if (diagnostics.getDiagnosticsKey().equals(PatientDiagnosticsConfigKeys.HEAMOGLOBIN)) {
+                mHemoglobinLinearLayout.setVisibility(View.VISIBLE);
+
+            } else if (diagnostics.getDiagnosticsKey().equals(PatientDiagnosticsConfigKeys.URIC_ACID)) {
+                mUricAcidLinearLayout.setVisibility(View.VISIBLE);
+
+            } else if (diagnostics.getDiagnosticsKey().equals(PatientDiagnosticsConfigKeys.TOTAL_CHOLESTEROL)) {
+                mCholestrolLinearLayout.setVisibility(View.VISIBLE);
+
+            }
+        }
     }
 
 }

@@ -3,13 +3,11 @@ package org.intelehealth.app.ui.rosterquestionnaire.ui
 import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.intelehealth.app.R
 import org.intelehealth.app.databinding.DialogAddHealthServiceBinding
 import org.intelehealth.app.ui.dialog.CalendarDialog
@@ -27,19 +25,21 @@ class AddHealthServiceDialog : DialogFragment(), MultiViewListener {
     private lateinit var rosterViewModel: RosterViewModel
     private var healthServiceQuestionList: ArrayList<RoasterViewQuestion> = arrayListOf()
 
+
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         // Inflate the binding
-        _binding = DialogAddHealthServiceBinding.inflate(LayoutInflater.from(context))
+
         rosterViewModel = ViewModelProvider.create(requireActivity())[RosterViewModel::class]
-        val builder = MaterialAlertDialogBuilder(requireContext())
-        builder.setView(_binding.root)
+        val dialog = Dialog(requireContext())
+        _binding = DialogAddHealthServiceBinding.inflate(layoutInflater)
+        dialog.setContentView(_binding.root)
 
-        val alertDialog: androidx.appcompat.app.AlertDialog = builder.create()
-        alertDialog.setCancelable(true)
 
-        alertDialog.window?.apply {
+        dialog.setCancelable(true)
+
+        dialog.window?.apply {
+
             setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg) // Show rounded corners
-            addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND) // Dim background
 
             // Set the dialog width and height with margins
             val metrics = requireContext().resources.displayMetrics
@@ -47,9 +47,12 @@ class AddHealthServiceDialog : DialogFragment(), MultiViewListener {
             val verticalMargin = requireContext().resources.getDimensionPixelSize(R.dimen.dialog_margin_vertical)
             val dialogWidth = metrics.widthPixels - (horizontalMargin * 2) // Screen width minus horizontal margins
             val dialogHeight = metrics.heightPixels - (verticalMargin * 2) // Screen height minus vertical margins
+            clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM)
+            setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
+
             setLayout(dialogWidth, dialogHeight)
         }
-        return alertDialog
+        return dialog
     }
 
 

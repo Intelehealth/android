@@ -5,9 +5,10 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.text.TextUtils;
 import android.util.Log;
 
-import org.intelehealth.app.activities.householdSurvey.models.HouseholdSurveyModel;
+import org.intelehealth.app.ui.householdSurvey.models.HouseholdSurveyModel;
 import org.intelehealth.app.utilities.CustomLog;
 
 
@@ -16,7 +17,9 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.intelehealth.app.models.FamilyMemberRes;
 import org.intelehealth.app.models.dto.VisitDTO;
@@ -33,6 +36,15 @@ import org.intelehealth.app.models.pushRequestApiCall.Attribute;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
+
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.Observer;
+import io.reactivex.Scheduler;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class PatientsDAO {
 
@@ -62,7 +74,14 @@ public class PatientsDAO {
 
         return isInserted;
     }
-
+    public String getValueByUuid(Set<Attribute> patientAttributesDTO, String targetUuid) {
+        for (Attribute dto : patientAttributesDTO) {
+            if (dto.getAttributeType().equals(targetUuid)) {
+                return dto.getValue(); // Return the value for the matching UUID
+            }
+        }
+        return null; // Return null if no match is found
+    }
     public boolean createPatients(PatientDTO patient, SQLiteDatabase db) throws DAOException {
         boolean isCreated = true;
         ContentValues values = new ContentValues();
@@ -84,9 +103,12 @@ public class PatientsDAO {
 
             values.put("guardian_type", patient.getGuardianType());
             values.put("guardian_name", patient.getGuardianName());
-            values.put("contact_type", patient.getContactType());
-            values.put("em_contact_name", patient.getEmContactName());
-            values.put("em_contact_num", patient.getEmContactNumber());
+
+
+
+//            values.put("contact_type", patient.getContactType());
+//            values.put("em_contact_name", patient.getEmContactName());
+//            values.put("em_contact_num", patient.getEmContactNumber());
 
             values.put("dead", patient.getDead());
             values.put("sync", patient.getSyncd());
@@ -186,6 +208,11 @@ public class PatientsDAO {
             values.put("contact_type", patientDTO.getContactType());
             values.put("em_contact_name", patientDTO.getEmContactName());
             values.put("em_contact_num", patientDTO.getEmContactNumber());
+
+            values.put("tms_case_number", patientDTO.getTmhCaseNumber());
+            values.put("request_id", patientDTO.getRequestId());
+            values.put("discipline", patientDTO.getDiscipline());
+            values.put("department", patientDTO.getDepartment());
 
             values.put("dead", false);
             values.put("sync", false);
@@ -291,7 +318,8 @@ public class PatientsDAO {
                     attribute = new Attribute();
                     attribute.setAttributeType(cursor.getString(cursor.getColumnIndex("person_attribute_type_uuid")));
                     attribute.setValue(cursor.getString(cursor.getColumnIndex("value")));
-                    patientAttributesList.add(attribute);
+                    if(attribute.getAttributeType()!=null && !attribute.getAttributeType().isEmpty())
+                        patientAttributesList.add(attribute);
                     cursor.moveToNext();
                 }
             }
@@ -546,6 +574,7 @@ public class PatientsDAO {
                     patientDTO.setPostalcode(idCursor.getString(idCursor.getColumnIndexOrThrow("postal_code")));
                     patientDTO.setGuardianType(idCursor.getString(idCursor.getColumnIndexOrThrow("guardian_type")));
                     patientDTO.setGuardianName(idCursor.getString(idCursor.getColumnIndexOrThrow("guardian_name")));
+                    // Patient contatct type
                     patientDTO.setContactType(idCursor.getString(idCursor.getColumnIndexOrThrow("contact_type")));
                     patientDTO.setEmContactName(idCursor.getString(idCursor.getColumnIndexOrThrow("em_contact_name")));
                     patientDTO.setEmContactNumber(idCursor.getString(idCursor.getColumnIndexOrThrow("em_contact_num")));
@@ -782,6 +811,116 @@ public class PatientsDAO {
         return modelList;
     }
 
+    public static Observable<List<PatientDTO>> getQueryPatientsObs(String query) {
+        return Observable.create(emitter ->{
+            String search = query/*.trim().replaceAll("\\s", "")*/;
+            // search = StringUtils.mobileNumberEmpty(phoneNumber());
+            List<PatientDTO> modelList = new ArrayList<PatientDTO>();
+            SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+            String table = "tbl_patient";
+            List<String> patientUUID_List = new ArrayList<>();
+
+            final Cursor search_mobile_cursor = db.rawQuery("SELECT DISTINCT patientuuid FROM tbl_patient_attribute WHERE value = ?",
+                    new String[]{search});
+            /* DISTINCT will get remove the duplicate values. The duplicate value will come when you have created
+             * a patient with mobile no. 12345 and patient is pushed than later you edit the mobile no to
+             * 12344 or something. In this case, the local db maintains two separate rows both with value: 12344 */
+            //if no data is present against that corresponding cursor than cursor count returns = 0 ... i.e cursor_count = 0 ...
+            try {
+                if (search_mobile_cursor.moveToFirst()) {
+                    do {
+                        patientUUID_List.add(search_mobile_cursor.getString
+                                (search_mobile_cursor.getColumnIndexOrThrow("patientuuid")));
+                    }
+                    while (search_mobile_cursor.moveToNext());
+                }
+            } catch (Exception e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+                CustomLog.e(TAG,e.getMessage());
+            }
+            CustomLog.d("patientUUID_list", "list: " + patientUUID_List);
+            if (patientUUID_List.size() != 0) {
+                for (int i = 0; i < patientUUID_List.size(); i++) {
+                    final Cursor searchCursor = db.rawQuery("SELECT * FROM " + table +
+                            " WHERE first_name LIKE " + "'%" + search + "%' OR middle_name LIKE '%" + search + "%' OR address1 LIKE '%" + search + "%' OR uuid = ? " +
+                            "OR last_name LIKE '%" + search + "%' OR (first_name || middle_name) " +
+                            "LIKE '%" + search + "%' OR (middle_name || last_name) LIKE '%" + search + "%' OR " +
+                            "(first_name || last_name) LIKE '%" + search + "%'" +
+                            "OR openmrs_id " + "LIKE '%" + search + "%' " + "ORDER BY first_name ASC", new String[]{patientUUID_List.get(i)});
+                    //  if(searchCursor.getCount() != -1) { //all values are present as per the search text entered...
+                    try {
+                        if (searchCursor.moveToFirst()) {
+                            do {
+                                PatientDTO model = new PatientDTO();
+                                model.setOpenmrsId(searchCursor.getString(searchCursor.getColumnIndexOrThrow("openmrs_id")));
+                                model.setFirstname(searchCursor.getString(searchCursor.getColumnIndexOrThrow("first_name")));
+                                model.setLastname(searchCursor.getString(searchCursor.getColumnIndexOrThrow("last_name")));
+                                model.setDateofbirth(searchCursor.getString(searchCursor.getColumnIndexOrThrow("date_of_birth")));
+                                model.setGender(searchCursor.getString(searchCursor.getColumnIndexOrThrow("gender")));
+                                model.setOpenmrsId(searchCursor.getString(searchCursor.getColumnIndexOrThrow("openmrs_id")));
+                                model.setMiddlename(searchCursor.getString(searchCursor.getColumnIndexOrThrow("middle_name")));
+                                model.setUuid(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")));
+                                model.setDateofbirth(searchCursor.getString(searchCursor.getColumnIndexOrThrow("date_of_birth")));
+                                model.setPhonenumber(StringUtils.mobileNumberEmpty
+                                        (phoneNumber(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")))));
+                                model.setPatientPhoto(searchCursor.getString(searchCursor.getColumnIndexOrThrow("patient_photo")));
+                                model.setGuardianType(searchCursor.getString(searchCursor.getColumnIndexOrThrow("guardian_type")));
+                                model.setGuardianName(searchCursor.getString(searchCursor.getColumnIndexOrThrow("guardian_name")));
+                                model.setContactType(searchCursor.getString(searchCursor.getColumnIndexOrThrow("contact_type")));
+                                model.setEmContactName(searchCursor.getString(searchCursor.getColumnIndexOrThrow("em_contact_name")));
+                                model.setEmContactNumber(searchCursor.getString(searchCursor.getColumnIndexOrThrow("em_contact_num")));
+                                modelList.add(model);
+                            } while (searchCursor.moveToNext());
+                        }
+                    } catch (DAOException e) {
+                        FirebaseCrashlytics.getInstance().recordException(e);
+                        CustomLog.e(TAG,e.getMessage());
+                    }
+                }
+            } else { // no mobile number was added in search text.
+                final Cursor searchCursor = db.rawQuery("SELECT * FROM " + table + " WHERE first_name LIKE " + "'%" + search + "%' " +
+                        "OR middle_name LIKE '%" + search +  "%'  OR  address1 LIKE '%" + search + "%' OR last_name LIKE '%" + search + "%' OR " +
+                        "(first_name || middle_name) LIKE '%" + search + "%' OR (middle_name || last_name) " +
+                        "LIKE '%" + search + "%' OR (first_name || last_name) LIKE '%" + search + "%'" +
+                        "OR first_name || ' ' || middle_name LIKE" + "'%" + search + "%' OR first_name || ' ' || middle_name || ' ' || last_name LIKE" + "'%" + search + "%' " +
+                        "OR middle_name || ' ' || last_name LIKE" + "'%" + search + "%'" +
+                        "OR first_name || ' ' || last_name LIKE" + "'%" + search + "%'" +
+                        " OR openmrs_id LIKE '%" + search + "%' " + "ORDER BY first_name ASC", null);
+
+                //  if(searchCursor.getCount() != -1) { //all values are present as per the search text entered...
+                try {
+                    if (searchCursor.moveToFirst()) {
+                        do {
+                            PatientDTO model = new PatientDTO();
+                            model.setOpenmrsId(searchCursor.getString(searchCursor.getColumnIndexOrThrow("openmrs_id")));
+                            model.setFirstname(searchCursor.getString(searchCursor.getColumnIndexOrThrow("first_name")));
+                            model.setLastname(searchCursor.getString(searchCursor.getColumnIndexOrThrow("last_name")));
+                            model.setDateofbirth(searchCursor.getString(searchCursor.getColumnIndexOrThrow("date_of_birth")));
+                            model.setGender(searchCursor.getString(searchCursor.getColumnIndexOrThrow("gender")));
+                            model.setOpenmrsId(searchCursor.getString(searchCursor.getColumnIndexOrThrow("openmrs_id")));
+                            model.setMiddlename(searchCursor.getString(searchCursor.getColumnIndexOrThrow("middle_name")));
+                            model.setUuid(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")));
+                            model.setDateofbirth(searchCursor.getString(searchCursor.getColumnIndexOrThrow("date_of_birth")));
+                            model.setPhonenumber(StringUtils.mobileNumberEmpty(phoneNumber(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")))));
+                            model.setPatientPhoto(searchCursor.getString(searchCursor.getColumnIndexOrThrow("patient_photo")));
+                            model.setGuardianType(searchCursor.getString(searchCursor.getColumnIndexOrThrow("guardian_type")));
+                            model.setGuardianName(searchCursor.getString(searchCursor.getColumnIndexOrThrow("guardian_name")));
+                            model.setContactType(searchCursor.getString(searchCursor.getColumnIndexOrThrow("contact_type")));
+                            model.setEmContactName(searchCursor.getString(searchCursor.getColumnIndexOrThrow("em_contact_name")));
+                            model.setEmContactNumber(searchCursor.getString(searchCursor.getColumnIndexOrThrow("em_contact_num")));
+                            modelList.add(model);
+                        } while (searchCursor.moveToNext());
+                    }
+                } catch (DAOException e) {
+                    FirebaseCrashlytics.getInstance().recordException(e);
+                    CustomLog.e(TAG,e.getMessage());
+                }
+            }
+            emitter.onNext(modelList);
+            emitter.onComplete();
+        });
+    }
+
     public static String phoneNumber(String patientuuid) throws DAOException {
         String phone = null;
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
@@ -819,9 +958,9 @@ public class PatientsDAO {
                         else if (isSynced.equalsIgnoreCase("1") || isSynced.toLowerCase().equalsIgnoreCase("true"))
                             sync = true;
                     }
-                    CustomLog.d("TAG", "isVisitPresentForPatient_fetchVisitValues: " + sync);
+                    //CustomLog.d("TAG", "isVisitPresentForPatient_fetchVisitValues: " + sync);
                     visitDTO.setSyncd(sync);
-                    CustomLog.d("TAG", "isVisitPresentForPatient_fetchVisitValues: visit: " + visitDTO);
+                    //CustomLog.d("TAG", "isVisitPresentForPatient_fetchVisitValues: visit: " + visitDTO);
                 }
                 while (idCursor.moveToNext());
             }
@@ -1000,8 +1139,16 @@ public class PatientsDAO {
     public PatientDTO retrievePatientDetails(Cursor cursor) {
         Timber.tag("PatientDao").d("retrievePatientDetails");
         PatientDTO patientDTO = new PatientDTO();
+        PatientsDAO patientsDAO = new PatientsDAO();
         if (cursor.moveToFirst()) {
             do {
+                Set<Attribute> attributes;
+                try {
+                    attributes = new HashSet<>(patientsDAO.getPatientAttributes(cursor.getString(cursor.getColumnIndexOrThrow("uuid"))));
+                } catch (DAOException e) {
+                    throw new RuntimeException(e);
+                }
+
                 patientDTO.setUuid(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
                 patientDTO.setOpenmrsId(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
                 patientDTO.setFirstname(cursor.getString(cursor.getColumnIndexOrThrow("first_name")));
@@ -1020,9 +1167,9 @@ public class PatientsDAO {
                 patientDTO.setPatientPhoto(cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")));
                 patientDTO.setGuardianType(cursor.getString(cursor.getColumnIndexOrThrow("guardian_type")));
                 patientDTO.setGuardianName(cursor.getString(cursor.getColumnIndexOrThrow("guardian_name")));
-                patientDTO.setContactType(cursor.getString(cursor.getColumnIndexOrThrow("contact_type")));
-                patientDTO.setEmContactName(cursor.getString(cursor.getColumnIndexOrThrow("em_contact_name")));
-                patientDTO.setEmContactNumber(cursor.getString(cursor.getColumnIndexOrThrow("em_contact_num")));
+                patientDTO.setContactType(getValueByUuid(attributes, "5fde1411-801c-49b9-93d4-abeefd8e1164"));
+                patientDTO.setEmContactName(getValueByUuid(attributes, "9b37e244-2cf5-4bd8-af32-b85ed4f919aa"));
+                patientDTO.setEmContactNumber(getValueByUuid(attributes, "6c25becf-1bdd-4b2e-98dd-558a4becf4a4"));
 
                 // Attributes
                 patientDTO.setPhonenumber(cursor.getString(cursor.getColumnIndexOrThrow("telephone")));
@@ -1035,6 +1182,20 @@ public class PatientsDAO {
                 patientDTO.setProfileTimestamp(cursor.getString(cursor.getColumnIndexOrThrow("profileImageTimestamp")));
                 patientDTO.setCaste(cursor.getString(cursor.getColumnIndexOrThrow("caste")));
                 patientDTO.setCreatedDate(cursor.getString(cursor.getColumnIndexOrThrow("createdDate")));
+
+                patientDTO.setTmhCaseNumber(cursor.getString(cursor.getColumnIndexOrThrow("tmhCaseNumber")));
+                patientDTO.setRequestId(cursor.getString(cursor.getColumnIndexOrThrow("requestId")));
+                patientDTO.setDiscipline(cursor.getString(cursor.getColumnIndexOrThrow("discipline")));
+                patientDTO.setRelativePhoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("relativePhoneNumber")));
+                patientDTO.setDepartment(cursor.getString(cursor.getColumnIndexOrThrow("department")));
+
+                patientDTO.setProvince(cursor.getString(cursor.getColumnIndexOrThrow("provinces")));
+                patientDTO.setCity(cursor.getString(cursor.getColumnIndexOrThrow("cities")));
+                patientDTO.setRegistrationAddressOfHf(cursor.getString(cursor.getColumnIndexOrThrow("registrationAddressOfHf")));
+                patientDTO.setInn(cursor.getString(cursor.getColumnIndexOrThrow("inn")));
+                patientDTO.setCodeOfHealthFacility(cursor.getString(cursor.getColumnIndexOrThrow("codeOfHealthFacility")));
+                patientDTO.setHealthFacilityName(cursor.getString(cursor.getColumnIndexOrThrow("healthFacilityName")));
+                patientDTO.setCodeOfDepartment(cursor.getString(cursor.getColumnIndexOrThrow("codeOfDepartment")));
                 patientDTO.setBlock(cursor.getString(cursor.getColumnIndexOrThrow("blockSurvey")));
                 patientDTO.setHouseholdLinkingUUIDlinking(cursor.getString(cursor.getColumnIndexOrThrow("HouseHold")));
             } while (cursor.moveToNext());
@@ -1061,7 +1222,7 @@ public class PatientsDAO {
                 + "o.value is NOT NULL GROUP BY a.patientuuid"
                 + " HAVING (value_text is NOT NULL AND LOWER(value_text) != 'no' AND value_text != '' ) ";
 
-        CustomLog.d("QUERY_COUNT",""+query);
+        CustomLog.d("QUERY_COUNT", query);
 
         final Cursor cursor = db.rawQuery(query, new String[]{UuidDictionary.FOLLOW_UP_VISIT});  //"e8caffd6-5d22-41c4-8d6a-bc31a44d0c86"
         if (cursor.moveToFirst()) {

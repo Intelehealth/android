@@ -75,6 +75,18 @@ public class PatientAttributesDTO implements Serializable {
         PROFILE_IMG_TIMESTAMP("ProfileImageTimestamp"),
         CAST("Caste"),
         CREATED_DATE("createdDate"),
+        TMH_CASE_NUMBER("TMH Case Number"),
+        REQUEST_ID("Request ID"),
+        RELATIVE_PHONE_NUMBER("Relative Phone Number"),
+        DISCIPLINE("Discipline"),
+        DEPARTMENT("Department"),
+        PROVINCES("Provinces"),
+        CITIES("Cities"),
+        REGISTRATION_ADDRESS_OF_HF("Registration address of health facility"),
+        INN("INN"),
+        CODE_OF_HEALTH_FACILITY("Code of the Health Facility"),
+        HEALTH_FACILITY_NAME("Health facility name"),
+        CODE_OF_DEPARTMENT("Code of the Department"),
         HOUSEHOLD_UUID_LINKING("HouseHold"),
         BLOCK("blockSurvey"),
 
@@ -135,7 +147,11 @@ public class PatientAttributesDTO implements Serializable {
         NEAREST_PATHOLOGICAL_LAB_DISTANCE("nearestPathologicalLabDistance"),
         NEAREST_PRIVATE_CLINIC_MBBS_DOCTOR("nearestPrivateClinicMBBSDoctor"),
         NEAREST_PRIVATE_CLINIC_ALTERNATE_MEDICINE("nearestPrivateClinicAlternateMedicine"),
-        NEAREST_TERTIARY_CARE_FACILITY("nearestTertiaryCareFacility");
+        NEAREST_TERTIARY_CARE_FACILITY("nearestTertiaryCareFacility"),
+        EMERGENCY_CONTACT_NAME("Emergency Contact Name"),
+        EMERGENCY_CONTACT_NUMBER("Emergency Contact Number"),
+        EMERGENCY_CONTACT_TYPE("Emergency Contact Type");
+
 
         public final String value;
 

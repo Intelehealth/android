@@ -79,6 +79,9 @@ public class SessionManager {
     public static final String TERMS_OF_USE = "TERMS_OF_USE";
     public static final String PERSONAL_DATA_PROCESSING_POLICY = "PERSONAL_DATA_PROCESSING_POLICY";
     private static final String CUSTOM_LOG_VERSION = "custom_log_version";
+    private static final String DEFAULT_PULL_START_TIME = "2006-08-22 22:21:48";
+//    private static final int DAYS_DELTA_FOR_SMOOTH_SYNC = -300;
+//    private static final String DEFAULT_PULL_START_TIME = DateAndTimeUtils.convertDateObjectToString(DateUtils.addDays(new Date(), DAYS_DELTA_FOR_SMOOTH_SYNC), "yyyy-MM-dd HH:mm:ss");  ;
 
 
     // LogCat tag
@@ -151,7 +154,7 @@ public class SessionManager {
     }
 
     public String getPullExcutedTime() {
-        return pref.getString(PULL_EXECUTED_TIME, "2006-08-22 22:21:48 ");
+        return pref.getString(PULL_EXECUTED_TIME, DEFAULT_PULL_START_TIME);
     }
 
     public void setPullExcutedTime(String pullExcutedTime) {
@@ -374,7 +377,7 @@ public class SessionManager {
     }
 
     public String isPulled() {
-        return pref.getString(PULLED, "2006-08-22 22:21:48");
+        return pref.getString(PULLED, DEFAULT_PULL_START_TIME);
     }  //getting the sync value  and time and saving in the sharedpref
 
     public void setPulled(String pulled) {

@@ -43,6 +43,8 @@ import android.provider.Settings;
 import android.text.Html;
 import android.util.DisplayMetrics;
 
+import org.intelehealth.app.activities.onboarding.PersonalConsentActivity;
+import org.intelehealth.app.utilities.AddPatientUtils;
 import org.intelehealth.app.activities.draftSurvey.DraftSurveyActivity;
 
 import org.intelehealth.app.utilities.CustomLog;
@@ -354,6 +356,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             }
         }
     }
+
     private void setupAlarmPermissionLauncher() {
         scheduleExactAlarmPermissionLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
@@ -1322,10 +1325,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
                     loadFragment(fragment, TAG_HELP);
                     return true;
                 case R.id.bottom_nav_add_patient:
-                    Intent intent = new Intent(HomeScreenActivity_New.this, PrivacyPolicyActivity_New.class);
-                    intent.putExtra("intentType", "navigateFurther");
-                    intent.putExtra("add_patient", "add_patient");
-                    startActivity(intent);
+                    AddPatientUtils.navigate(HomeScreenActivity_New.this);
                     return false;
             }
 
@@ -1350,8 +1350,14 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
                     userFullName = providerDTO.getFamilyName();
 
                 }
+
+                String idTitleStr = getString(R.string.chw_id);
+                if(providerDTO.getRole().toLowerCase().contains(AppConstants.MCC_USER_TYPE)){
+                    idTitleStr = getString(R.string.mcc_id);
+                }
+
                 tvUsername.setText(userFullName);
-                tvUserId.setText(getString(R.string.chw_id).concat(" ").concat(sessionManager.getChwname()));
+                tvUserId.setText(idTitleStr.concat(" ").concat(sessionManager.getChwname()));
 
                 if (providerDTO.getImagePath() != null && !providerDTO.getImagePath().isEmpty()) {
                     RequestBuilder<Drawable> requestBuilder = Glide.with(this)

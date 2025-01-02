@@ -353,7 +353,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             patientUuid = intent.getStringExtra("patientUuid");
             gender = intent.getStringExtra("gender");
             age = intent.getStringExtra("age");
-            CustomLog.d("TAG", "getAge_FollowUp: s : " + age);
+//            CustomLog.d("TAG", "getAge_FollowUp: s : " + age);
             openmrsID = intent.getStringExtra("openmrsID");
             visitID = intent.getStringExtra("visit_ID");
             vitalsUUID = intent.getStringExtra("encounterUuidVitals");
@@ -363,7 +363,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             intentTag = intent.getStringExtra("tag");
             try {
                 hasPrescription = new EncounterDAO().isPrescriptionReceived(visitID);
-                CustomLog.d(PrescriptionActivity.class.getSimpleName(), "has prescription main::%s", hasPrescription);
+//                CustomLog.d(PrescriptionActivity.class.getSimpleName(),"has prescription main::%s", hasPrescription);
             } catch (DAOException e) {
                 CustomLog.e(TAG, e.getMessage());
                 throw new RuntimeException(e);

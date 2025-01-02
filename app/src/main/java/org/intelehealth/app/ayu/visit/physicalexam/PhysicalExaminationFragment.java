@@ -197,9 +197,7 @@ public class PhysicalExaminationFragment extends Fragment {
             });
 
             recyclerView.setAdapter(mQuestionsListingAdapter);
-            mQuestionsListingAdapter.addItem(physicalExam.getExamNode(mCurrentComplainNodeOptionsIndex).
-
-                    getOption(0), physicalExam.getEngineVersion());
+            mQuestionsListingAdapter.addItem(physicalExam.getExamNode(mCurrentComplainNodeOptionsIndex).getOption(0), physicalExam.getEngineVersion());
             showSanityDialog();
             if (mIsEditMode) {
                 while (true) {

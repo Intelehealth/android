@@ -8,15 +8,14 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+
+import org.intelehealth.app.app.IntelehealthApplication;
+import org.intelehealth.app.models.dto.VisitAttributeDTO;
 import org.intelehealth.app.utilities.CustomLog;
+import org.intelehealth.app.utilities.exception.DAOException;
 
 import java.util.List;
 import java.util.UUID;
-
-import org.intelehealth.app.app.AppConstants;
-import org.intelehealth.app.app.IntelehealthApplication;
-import org.intelehealth.app.models.dto.VisitAttributeDTO;
-import org.intelehealth.app.utilities.exception.DAOException;
 
 /**
  * Created by Prajwal Waingankar
@@ -72,11 +71,11 @@ public class VisitAttributeListDAO {
                     visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(ADDITIONAL_NOTES) || visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(PRESCRIPTION_LINK) ) {
                 createdRecordsCount = db.insertWithOnConflict("tbl_visit_attribute", null, values, SQLiteDatabase.CONFLICT_REPLACE);
 
-                if (createdRecordsCount != -1) {
-                    CustomLog.d("SPECI", "SIZEVISTATTR: " + createdRecordsCount);
-                } else {
-                    CustomLog.d("SPECI", "SIZEVISTATTR: " + createdRecordsCount);
-                }
+//                if (createdRecordsCount != -1) {
+//                    CustomLog.d("SPECI", "SIZEVISTATTR: " + createdRecordsCount);
+//                } else {
+//                    CustomLog.d("SPECI", "SIZEVISTATTR: " + createdRecordsCount);
+//                }
             }
         } catch (SQLException e) {
             isCreated = false;
