@@ -740,8 +740,6 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_below="@id/diagnosis_title"
-                                    android:layout_marginStart="@dimen/fu_margin_start"
-                                    android:layout_marginEnd="@dimen/fu_margin_start"
                                     android:layout_marginTop="@dimen/fu_margin_start"
                                     android:layout_marginBottom="@dimen/margin_16dp"
                                     app:hintEnabled="false"
@@ -751,8 +749,8 @@
                                         android:id="@+id/diagnosis_text_input"
                                         android:background="@drawable/input_edittext_border"
                                         android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
                                         android:padding="@dimen/fu_margin_start"
+                                        android:layout_height="wrap_content"
                                         android:hint="@string/enter_diagnosis"
                                         />
 
@@ -890,9 +888,9 @@
                                     android:entries="@array/type_of_consultations"
                                     android:gravity="center_vertical"
                                     android:hint="@string/select_consultation_type"
-                                    android:paddingStart="@dimen/fu_margin_start"
                                     android:paddingTop="@dimen/margin_10"
-                                    android:paddingBottom="@dimen/margin_10" />
+                                    android:paddingBottom="@dimen/margin_10"
+                                    />
                             </RelativeLayout>
                         </androidx.cardview.widget.CardView>
                     </FrameLayout>
@@ -1027,7 +1025,6 @@
                                     android:entries="@array/speciality_values"
                                     android:gravity="center_vertical"
                                     android:hint="@string/select_speciality"
-                                    android:paddingStart="@dimen/fu_margin_start"
                                     android:paddingTop="@dimen/margin_10"
                                     android:paddingBottom="@dimen/margin_10" />
                             </RelativeLayout>
@@ -1163,7 +1160,6 @@
                                     android:entries="@array/speciality_values"
                                     android:gravity="center_vertical"
                                     android:hint="@string/select_speciality"
-                                    android:paddingStart="@dimen/fu_margin_start"
                                     android:paddingTop="@dimen/margin_10"
                                     android:paddingBottom="@dimen/margin_10" />
                             </RelativeLayout>
