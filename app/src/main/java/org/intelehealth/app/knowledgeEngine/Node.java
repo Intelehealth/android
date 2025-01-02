@@ -154,6 +154,28 @@ public class Node implements Serializable {
     private String imagePath;
 
     private boolean enableSubmit;
+    private String placeholder;
+
+    public List<NodeValidation> getNodeValidationList() {
+        return nodeValidationList;
+    }
+
+    public void setNodeValidationList(List<NodeValidation> nodeValidationList) {
+        this.nodeValidationList = nodeValidationList;
+    }
+
+    private List<NodeValidation> nodeValidationList = new ArrayList<>();
+
+    public void setPlaceholder(String placeholder) {
+        this.placeholder = placeholder;
+    }
+
+    public String getPlaceholder() {
+        return placeholder;
+    }
+
+    private boolean needToShowAlert = false;
+
 
     /**
      * Nodes refer to the structure that is used for a decision tree or mindmap.
@@ -179,6 +201,19 @@ public class Node implements Serializable {
      */
     public Node(JSONObject jsonNode) {
         try {
+            this.placeholder = jsonNode.optString("placeholder");
+            JSONArray validationArray = jsonNode.optJSONArray("validation");
+            if (validationArray == null) {
+                this.nodeValidationList = null;
+            } else {
+                for (int i = 0; i < validationArray.length(); i++) {
+                    JSONObject validationObject = validationArray.getJSONObject(i);
+                    NodeValidation nodeValidation = new NodeValidation(validationObject.optString("type"),
+                            validationObject.optDouble("min"), validationObject.optDouble("max"), validationObject.optString("checkValues"));
+                    this.nodeValidationList.add(nodeValidation);
+                }
+            }
+
             this.engineVersion = jsonNode.optString("engineVersion");
             this.id = jsonNode.getString("id");
 
@@ -375,6 +410,9 @@ public class Node implements Serializable {
      * @param source source knowledgeEngine to copy into a new knowledgeEngine. Will always default as unselected.
      */
     public Node(Node source) {
+        this.needToShowAlert = source.needToShowAlert;
+        this.nodeValidationList = source.nodeValidationList;
+        this.placeholder = source.placeholder;
         this.engineVersion = source.engineVersion;
         this.id = source.id;
         this.isMultiChoice = source.isMultiChoice;
@@ -1947,7 +1985,11 @@ public class Node implements Serializable {
                             } else if (node_opt.getLanguage().substring(0, 1).equals("%")) {
                                 raw = raw + (bullet + " " + node_opt.getLanguage().substring(1) + " - " + node_opt.formLanguage()) + next_line;
                             } else {
+                                //if (node_opt.isNeedToShowAlert()) {
+                                //  raw = raw + (bullet + " " + node_opt.getLanguage() + " - <span style='color:red'>" + node_opt.formLanguage()) + "</span>" + next_line;
+                                //} else {
                                 raw = raw + (bullet + " " + node_opt.getLanguage() + " - " + node_opt.formLanguage()) + next_line;
+                                //}
                             }
                         }
                     }
@@ -2263,7 +2305,11 @@ public class Node implements Serializable {
                         } else if (test.substring(0, 1).equals("%")) {
                             stringsList.add(test.substring(1));
                         } else {
-                            stringsList.add(test);
+                            if (mOptions.get(i).isTerminal() && mOptions.get(i).isNeedToShowAlert()) {
+                                stringsList.add("<span style='color:red'>" + test + "</span>");
+                            } else {
+                                stringsList.add(test);
+                            }
                         }
                     }
 
@@ -3864,7 +3910,7 @@ public class Node implements Serializable {
     }
 
     public boolean isFoundCompareAttribute() {
-        CustomLog.v(TAG, "isFoundCompareAttribute - " + getText());
+        //CustomLog.v(TAG, "isFoundCompareAttribute - " + getText());
         if (compareDuplicateNode != null && !compareDuplicateNode.isEmpty()) return true;
         if (optionsList != null) {
             for (int i = 0; i < optionsList.size(); i++) {
@@ -3888,6 +3934,59 @@ public class Node implements Serializable {
 
     public boolean isShowCalendarHeader() {
         return showCalendarHeader;
+    }
+
+    public boolean isNeedToShowAlert() {
+        return needToShowAlert;
+    }
+
+    public void setNeedToShowAlert(boolean needToShowAlert) {
+        this.needToShowAlert = needToShowAlert;
+    }
+
+    // create method for check validation using nodeValidationList parameter
+    public boolean checkCustomValidation(String val, List<NodeValidation> nodeValidationList, boolean idForNumericValidation, int age, String gender) {
+        if (nodeValidationList == null || nodeValidationList.isEmpty()) {
+            return false;
+        }
+
+        String _gender = gender.equalsIgnoreCase("M") ? "male" : "female";
+        boolean isAlert = false;
+        for (NodeValidation nodeValidation : nodeValidationList) {
+            if (idForNumericValidation) {
+                double value = Double.parseDouble(val);
+                String type = nodeValidation.getType();
+                if (type.equalsIgnoreCase("any")) {
+                    if (value < nodeValidation.getMin() || value > nodeValidation.getMax()) {
+                        isAlert = true;
+                    }
+                    break;
+                } else if (age < 18 && nodeValidation.getType().equalsIgnoreCase("children")) {
+                    if (value < nodeValidation.getMin() || value > nodeValidation.getMax()) {
+                        isAlert = true;
+                    }
+                    break;
+                } else {
+                    if (nodeValidation.getType().equalsIgnoreCase(_gender)) {
+                        if (value < nodeValidation.getMin() || value > nodeValidation.getMax()) {
+                            isAlert = true;
+                        }
+                        break;
+                    }
+
+                }
+
+            } else {
+                if (nodeValidation.getCheckValues().toLowerCase().contains(val.toLowerCase())) {
+                    isAlert = true;
+                    break;
+                }
+
+            }
+
+        }
+        CustomLog.v(TAG, "checkCustomValidation - isAlert - " + isAlert);
+        return isAlert;
     }
 
     /*End*/

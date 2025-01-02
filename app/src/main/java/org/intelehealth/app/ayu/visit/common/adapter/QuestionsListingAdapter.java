@@ -45,6 +45,7 @@ import com.google.gson.Gson;
 
 import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
+import org.intelehealth.app.ayu.visit.VisitCreationActivity;
 import org.intelehealth.app.ayu.visit.common.OnItemSelection;
 import org.intelehealth.app.ayu.visit.common.VisitUtils;
 import org.intelehealth.app.ayu.visit.model.ComplainBasicInfo;
@@ -385,7 +386,11 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     break;
                 case "number":
                     // askNumber(questionNode, context, adapter);
-                    addNumberView(mItemList.get(position), genericViewHolder, position);
+                    addNumberView(mItemList.get(position), genericViewHolder, position, false);
+                    break;
+                case "decimal":
+                    // askNumber(questionNode, context, adapter);
+                    addNumberView(mItemList.get(position), genericViewHolder, position, true);
                     break;
                 case "area":
                     // askArea(questionNode, context, adapter);
@@ -906,7 +911,11 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     break;
                 case "number":
                     // askNumber(questionNode, context, adapter);
-                    addNumberView(options.get(0), holder, index);
+                    addNumberView(options.get(0), holder, index, false);
+                    break;
+                case "decimal":
+                    // askNumber(questionNode, context, adapter);
+                    addNumberView(options.get(0), holder, index, true);
                     break;
                 case "area":
                     // askArea(questionNode, context, adapter);
@@ -1481,7 +1490,13 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                                 holder.submitButton.setVisibility(View.GONE);
                                 holder.skipButton.setVisibility(View.GONE);
                                 // askNumber(questionNode, context, adapter);
-                                addNumberView(node, holder, index);
+                                addNumberView(node, holder, index, false);
+                                break;
+                            case "decimal":
+                                holder.submitButton.setVisibility(View.GONE);
+                                holder.skipButton.setVisibility(View.GONE);
+                                // askNumber(questionNode, context, adapter);
+                                addNumberView(node, holder, index, true);
                                 break;
                             case "area":
                                 holder.submitButton.setVisibility(View.GONE);
@@ -1615,7 +1630,11 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     break;
                 case "number":
                     // askNumber(questionNode, context, adapter);
-                    addNumberView(options.get(0), holder, index);
+                    addNumberView(options.get(0), holder, index, false);
+                    break;
+                case "decimal":
+                    // askNumber(questionNode, context, adapter);
+                    addNumberView(options.get(0), holder, index, true);
                     break;
                 case "area":
                     // askArea(questionNode, context, adapter);
@@ -1802,6 +1821,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 public void onImageRemoved(int nodeIndex, int imageIndex, String image) {
 
                 }
+
                 @Override
                 public void onTerminalNodeAnsweredForParentUpdate(String parentNodeId) {
                     selectedNode.setDataCaptured(true);
@@ -2032,7 +2052,13 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                                 holder.submitButton.setVisibility(View.GONE);
                                 holder.skipButton.setVisibility(View.GONE);
                                 // askNumber(questionNode, context, adapter);
-                                addNumberView(node, holder, index);
+                                addNumberView(node, holder, index, false);
+                                break;
+                            case "decimal":
+                                holder.submitButton.setVisibility(View.GONE);
+                                holder.skipButton.setVisibility(View.GONE);
+                                // askNumber(questionNode, context, adapter);
+                                addNumberView(node, holder, index, true);
                                 break;
                             case "area":
                                 // askArea(questionNode, context, adapter);
@@ -2440,7 +2466,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
     }
 
 
-    private void addNumberView(Node node, GenericViewHolder holder, int index) {
+    private void addNumberView(Node node, GenericViewHolder holder, int index, boolean isDecimalAllowed) {
         holder.singleComponentContainer.removeAllViews();
         holder.singleComponentContainer.setVisibility(View.VISIBLE);
         View view = View.inflate(mContext, R.layout.visit_reason_input_text, null);
@@ -2450,6 +2476,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
         final EditText editText = view.findViewById(R.id.actv_reasons);
         editText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(10)});
+
         Button skipButton = view.findViewById(R.id.btn_skip);
 
         if (node.isSkipped()) {
@@ -2495,6 +2522,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         skipButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                node.setNeedToShowAlert(false);
                 node.setSelected(false);
                 node.setDataCaptured(false);
                 //holder.node.setDataCaptured(true);
@@ -2514,7 +2542,9 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (editText.getText().toString().trim().isEmpty()) {
+                String val = editText.getText().toString().trim();
+                node.setNeedToShowAlert(false);
+                if (val.isEmpty()) {
                     Toast.makeText(mContext, mContext.getString(R.string.please_enter_the_value), Toast.LENGTH_SHORT).show();
                 } else {
                     if (!editText.getText().toString().equalsIgnoreCase("")) {
@@ -2529,6 +2559,9 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
                         node.setDataCaptured(true);
                         holder.node.setDataCaptured(true);
+                        int age = ((VisitCreationActivity) mContext).getAgeInYear();
+                        String gender = ((VisitCreationActivity) mContext).getPatientGender();
+                        node.setNeedToShowAlert(node.checkCustomValidation(val, node.getNodeValidationList(), true, age, gender));
                     } else {
                         node.setDataCaptured(false);
                         holder.node.setDataCaptured(false);
@@ -2562,8 +2595,15 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             }
         });
 
-        editText.setInputType(InputType.TYPE_CLASS_NUMBER);
         editText.setHint(mContext.getString(R.string.describe_hint_txt));
+        if (isDecimalAllowed) {
+            editText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+            if (node.getPlaceholder() != null && !node.getPlaceholder().isEmpty())
+                editText.setHint(node.getPlaceholder());
+        } else {
+            editText.setInputType(InputType.TYPE_CLASS_NUMBER);
+
+        }
         /*if (node.isDataCaptured() && node.isDataCaptured()) {
             submitButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_check_24_white, 0, 0, 0);
         } else {
@@ -2633,6 +2673,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         skipButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                node.setNeedToShowAlert(false);
                 node.setSelected(false);
                 node.setDataCaptured(false);
                 node.setSkipped(true);
@@ -2650,7 +2691,9 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (editText.getText().toString().trim().isEmpty()) {
+                node.setNeedToShowAlert(false);
+                String val = editText.getText().toString().trim();
+                if (val.isEmpty()) {
                     Toast.makeText(mContext, mContext.getString(R.string.please_enter_the_value), Toast.LENGTH_SHORT).show();
                 } else {
 
@@ -2665,6 +2708,10 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
                         node.setDataCaptured(true);
                         holder.node.setDataCaptured(true);
+
+                        int age = ((VisitCreationActivity) mContext).getAgeInYear();
+                        String gender = ((VisitCreationActivity) mContext).getPatientGender();
+                        node.setNeedToShowAlert(node.checkCustomValidation(val, node.getNodeValidationList(), false, age, gender));
 
                     } else {
                         node.setDataCaptured(false);
