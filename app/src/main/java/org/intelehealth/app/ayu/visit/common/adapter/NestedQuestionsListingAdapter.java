@@ -926,11 +926,11 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                                                 if (node.getText().equalsIgnoreCase(n.getText())) {
                                                     found = true;
                                                     // remove all the next nodes of the selected node - nested options.
-                                                    while (mItemList.size() > i) {
+                                                    //while (mItemList.size() > i) {
                                                         mItemList.remove(i);
                                                         notifyItemRemoved(i);
-                                                    }
-                                                    break;
+                                                    //}
+                                                    //break;
                                                 }
                                             }
                                             if (!found)
