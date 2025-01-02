@@ -13,6 +13,7 @@ import org.intelehealth.app.activities.identificationActivity.model.StateData
 import org.intelehealth.app.activities.identificationActivity.model.StateDistMaster
 import org.intelehealth.app.activities.identificationActivity.model.Village
 import org.intelehealth.app.app.IntelehealthApplication
+import java.io.File
 import java.util.Locale
 
 /**
@@ -68,8 +69,11 @@ object LanguageUtils {
     @JvmStatic
     fun getProvincesAndCities(): ProvincesAndCities {
         val context = IntelehealthApplication.getAppContext()
+        val file = File(context.filesDir, PROVINCE_AND_CITIES_JSON)
+        if (!file.exists()) {
+            return ProvincesAndCities() // Return an empty ProvincesAndCities object or some other default behavior
+        }
         val jsonObject = FileUtils.encodeJSON(context, PROVINCE_AND_CITIES_JSON)
-
         return Gson().fromJson(
             jsonObject.toString(),
             ProvincesAndCities::class.java
