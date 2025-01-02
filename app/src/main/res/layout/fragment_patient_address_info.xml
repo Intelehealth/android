@@ -596,7 +596,7 @@
                             style="@style/AppTheme.InputBox.Phone"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="@string/enter_household_number"
+                            android:hint="@string/hint_household_number"
                             android:inputType="number"
                             android:maxLength="50"
                             android:text="@={patient.address1}" />

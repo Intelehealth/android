@@ -417,7 +417,7 @@
     <string name="spo2">SpO2 (%)</string>
     <string name="respiratory_rate_breaths_min">Respiratory Rate (breaths/min)</string>
     <string name="temperature_f_new">Temperature (F)</string>
-    <string name="confirm">Confirm</string>
+    <string name="confirm">पुष्टी करा</string>
     <string name="ui2_physical_exam_summay_title">%1$d/%2$d Physical examination summary</string>
     <string name="ui2_medical_hist_title_text">%1$d/%2$d Medical history summary</string>
     <string name="select_any_one">Select any one</string>
@@ -525,8 +525,8 @@
     <string name="sending_otp">Sending OTP...</string>
     <string name="province">Province</string>
     <string name="select_province">Select Province</string>
-    <string name="city">City</string>
-    <string name="select_city">Select City</string>
+    <string name="city">शहर</string>
+    <string name="select_city">शहर निवडा</string>
     <string name="registration_address_of_health_facility">Registration Address of Health Facility</string>
     <string name="enter_registration_address">Enter Registration Address</string>
     <string name="name_of_primary_respondent">माहिती देणाऱ्याचे नाव*</string>
@@ -724,10 +724,10 @@
     <string name="surveyDialogTitle">यशस्वीरित्या सेव्ह झाले</string>
     <string name="surveyDialogMessage">सर्वे यशस्वीरित्या जोडला गेला</string>
 
-    <string name="family_members">Family Members</string>
-    <string name="no_family_member_registered">No family member registered</string>
+    <string name="family_members">कुटुंबातील सदस्य</string>
+    <string name="no_family_member_registered">कुटुंबातील एकही सदस्य नोंदणीकृत नाही</string>
     <string name="fill_required_fields">कृपया सर्व आवश्यक फील्ड भरा</string>
-    <string name="draft_survey">Draft Survey</string>
+    <string name="draft_survey">सर्वे पूर्ण करा</string>
     <string name="what_is_your_education_status">तुमची शिक्षणाची स्थिती काय आहे?*</string>
     <string name="what_is_your_marital_status">तुमची वैवाहिक स्थिती काय आहे?*</string>
     <string name="nas_occupation">व्यवसाय*</string>
@@ -747,7 +747,7 @@
     <string name="confirm_button">पुष्टी</string>
     <string name="enter_reason">कारण प्रविष्ट करा</string>
     <string name="print_button">छापा</string>
-    <string name="enter_reason_toast">बिल न भरण्याचे कारण एंटर करा.</string>
+    <string name="enter_reason_toast">बिल न भरण्याचे कारण प्रविष्ट करा.</string>
     <string name="bill_generated_success">बिल यशस्वीरित्या व्युत्पन्न झाले!</string>
     <string name="select_payment_information">पेमेंट माहिती निवडलेली नाही.</string>
     <string name="download_bill">प्रथम शेअर करण्यासाठी बिल डाउनलोड करा.</string>
@@ -851,26 +851,25 @@
     <string name="household_no_survey">घर क्रमांक*</string>
     <string name="result_of_visit">भेटीचा परिणाम*</string>
 
-
     <!-- hints newly added in NAS 5.0 for household survey -->
-    <string name="hint_name_of_primary_respondent">माहिती देणाऱ्याचे नाव एंटर करा</string>
-    <string name="hint_household_number">घर क्रमांक एंटर करा</string>
-    <string name="hint_name_of_member_common">नाव एंटर करा</string>
-    <string name="hint_number_common">नंबर एंटर करा</string>
-    <string name="hint_number_of_smartphones">स्मार्टफोनची संख्या एंटर करा</string>
-    <string name="hint_number_of_feature_phones">फीचर फोनची संख्या एंटर करा</string>
-    <string name="hint_number_of_earning_members">कमावणाऱ्या सदस्यांची संख्या एंटर करा</string>
+    <string name="hint_name_of_primary_respondent">माहिती देणाऱ्याचे नाव प्रविष्ट करा</string>
+    <string name="hint_household_number">घर क्रमांक प्रविष्ट करा</string>
+    <string name="hint_name_of_member_common">नाव प्रविष्ट करा</string>
+    <string name="hint_number_common">नंबर प्रविष्ट करा</string>
+    <string name="hint_number_of_smartphones">स्मार्टफोनची संख्या प्रविष्ट करा</string>
+    <string name="hint_number_of_feature_phones">फीचर फोनची संख्या प्रविष्ट करा</string>
+    <string name="hint_number_of_earning_members">कमावणाऱ्या सदस्यांची संख्या प्रविष्ट करा</string>
     <string name="hint_other_sources_of_income">इतर उत्पन्न स्रोत प्रविष्ट करा</string>
     <string name="hint_load_shedding_hrs_no">तासांची संख्या प्रविष्ट करा</string>
     <string name="hint_load_shedding_per_week">दिवसांची संख्या प्रविष्ट करा</string>
-    <string name="hint_enter_hours">दिवसात किती तास एंटर करा</string>
-    <string name="hint_days_per_week">दर आठवड्याला दिवस एंटर करा</string>
+    <string name="hint_enter_hours">दिवसात किती तास प्रविष्ट करा</string>
+    <string name="hint_days_per_week">दर आठवड्याला दिवस प्रविष्ट करा</string>
     <string name="hint_amount_of_cultivated_land">लागवडीयोग्य जमिनीचे प्रमाण</string>
-    <string name="hint_other_fuel_type">इतर इंधन प्रकार एंटर करा</string>
+    <string name="hint_other_fuel_type">इतर इंधन प्रकार प्रविष्ट करा</string>
     <string name="title_other_fuel_type">इतर इंधन प्रकार</string>
     <string name="hint_other_lighting_source">इतर प्रकाश स्रोत प्रविष्ट करा</string>
     <string name="title_other_lighting_source">इतर प्रकाश स्रोत</string>
-    <string name="hint_other_water_purification">इतर पद्धत एंटर करा</string>
+    <string name="hint_other_water_purification">इतर पद्धत प्रविष्ट करा</string>
     <string name="title_other_water_purification">इतर जल शुध्दीकरण पद्धती</string>
     <string name="enter_other_water_sources">इतर जलस्रोत प्रविष्ट करा</string>
     <string name="hint_drop_down_select">निवडा</string>
@@ -921,4 +920,34 @@
     <string name="have_you_had_any_pregnancy_outcomes_in_the_past_2_years">मागच्या २ वर्षात तुम्ही गरोदर होता का ?*</string>
     <string name="no_of_pregnancy_outcomes_in_the_past_2_years">मागच्या २ वर्षात तुम्ही कितीवेळा गरोदर होता ?</string>
     <string name="please_add_pregnancy_outcome">कृपया गर्भधारणा परिणाम जोडा</string>
+    <string name="identification_screen_prompt_district">जिल्हा</string>
+    <string name="identification_screen_prompt_block">ब्लॉक</string>
+    <string name="hint_drop_down_village">गाव निवडा</string>
+    <string name="hint_drop_down_block">ब्लॉक निवडा</string>
+    <string name="enter_block">ब्लॉक प्रविष्ट करा</string>
+    <string name="complete_patient_details">रुग्णाची संपूर्ण माहिती</string>
+    <string name="continue_to_enter_roster">रोस्टर तपशील प्रविष्ट करणे सुरू ठेवा.</string>
+    <string name="enter">प्रविष्ट करा</string>
+    <string name="pregnancy_outcome">गर्भधारणा परिणाम</string>
+    <string name="enter_date_of_birth">जन्मतारीख टाका</string>
+    <string name="village_town_city">गाव / नगर / शहर</string>
+    <string name="household_survey">घर/ कुटुंब सर्वेक्षण</string>
+    <string name="glucose_random_eg">उदा., १००</string>
+    <string name="glucose_fasting_eg">उदा., ७०</string>
+    <string name="glucose_post_prandial_eg">उदा., १२०</string>
+    <string name="hemoglobin_eg">उदा., १० mg/dL</string>
+    <string name="cholestrol_eg">उदा., १००</string>
+    <string name="glucose_non_fasting_eg">उदा., ६०</string>
+    <string name="uric_acid_eg">उदा., ७</string>
+    <string name="cholesterol_eg">उदा., १००</string>
+    <string name="glucose_random_error">रक्तातील ग्लुकोज (रँडम) दरम्यान असावी %1$s आणि %2$s</string>
+    <string name="glucose_fasting_error">रक्तातील ग्लुकोज (उपाशीपोटी) दरम्यान असावी %1$s आणि %2$s</string>
+    <string name="glucose_non_fasting_error">रक्तातील ग्लुकोज (जेवल्यानंतर) दरम्यान असावी %1$s आणि %2$s</string>
+    <string name="post_prandial_error">रक्तातील ग्लुकोज (जेवल्यानंतर) दरम्यान असावी %1$s आणि %2$s</string>
+    <string name="uric_acid_error">यूरिक ऍसिड दरम्यान असावे %1$s आणि %2$s</string>
+    <string name="cholestrol_acid_error">एकूण कोलेस्ट्रॉल दरम्यान असावे %1$s आणि %2$s</string>
+    <string name="_diagnostics_summary">%1$d/%2$d निदान सारांश</string>
+    <string name="details">तपशील</string>
+    <string name="change">संपादित करा</string>
+
 </resources>
