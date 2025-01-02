@@ -400,7 +400,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
             loadPhysicalExam();
 
         //we don't need patient history for unfpa
-        if(BuildConfig.FLAVOR_client != FlavorKeys.UNFPA){
+        if (BuildConfig.FLAVOR_client != FlavorKeys.UNFPA) {
             if (!sessionManager.getVisitEditCache(SessionManager.PATIENT_HISTORY + visitUuid).isEmpty())
                 mPastMedicalHistoryNode = new Gson().fromJson(sessionManager.getVisitEditCache(SessionManager.PATIENT_HISTORY + visitUuid), Node.class);
             else
@@ -495,7 +495,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
 
             case STEP_2_VISIT_REASON_QUESTION:
                 //on UNFPA, we are directly jump into the visit reason question without going to the VisitReasonCaptureFragment
-                if(BuildConfig.FLAVOR_client == FlavorKeys.UNFPA){
+                if (BuildConfig.FLAVOR_client == FlavorKeys.UNFPA) {
                     getSupportFragmentManager().popBackStack();
                     mSummaryFrameLayout.setVisibility(View.GONE);
                 }
@@ -627,7 +627,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
 
     private void showFamilyHistoryFragment(boolean isEditMode) {
         mStep4ProgressBar.setProgress(50);
-        if(BuildConfig.FLAVOR_client == FlavorKeys.UNFPA){
+        if (BuildConfig.FLAVOR_client == FlavorKeys.UNFPA) {
             mStep3ProgressBar.setProgress(100);
         }
         mSummaryFrameLayout.setVisibility(View.GONE);
@@ -638,7 +638,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         }
 
         getSupportFragmentManager().beginTransaction().
-                replace (R.id.fl_steps_body, FamilyHistoryFragment.newInstance(mCommonVisitData, isEditMode, mFamilyHistoryNode), FAMILY_HISTORY_SUMMARY_FRAGMENT).
+                replace(R.id.fl_steps_body, FamilyHistoryFragment.newInstance(mCommonVisitData, isEditMode, mFamilyHistoryNode), FAMILY_HISTORY_SUMMARY_FRAGMENT).
                 commit();
         setTitle(STEP_5_FAMILY_HISTORY);
     }
@@ -792,6 +792,9 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
     private void loadChiefComplainNodeForSelectedNames(List<ReasonData> selectedComplains) {
         for (int i = 0; i < selectedComplains.size(); i++) {
             String fileName = selectedComplains.get(i).getReasonName() + ".json";
+            if (BuildConfig.FLAVOR_client == FlavorKeys.UNFPA) {
+                fileName = selectedComplains.get(i).getDefaultReasonName() + ".json";
+            }
             String fileLocation = "engines/" + fileName;
             JSONObject currentFile = null;
 
@@ -804,6 +807,11 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
 
 
             Node mainNode = new Node(currentFile);
+            if (BuildConfig.FLAVOR_client == FlavorKeys.UNFPA) {
+                mainNode.setDisplay(selectedComplains.get(i).getReasonName());
+                mainNode.setText(selectedComplains.get(i).getReasonName());
+                mainNode.setCompareDuplicateNode(selectedComplains.get(i).getReasonName());
+            }
             List<Node> optionList = new ArrayList<>();
             Node associateSymptoms = null;
             CustomLog.v(TAG, "optionList  mainNode- " + mainNode.getText());
@@ -873,12 +881,15 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         } else if (screenId == STEP_2_VISIT_REASON_QUESTION) {
             currentScreenIndex = featureActiveStatus.getVitalSection() ? 2 : 1;
             title = getResources().getString(R.string.visit_reason, currentScreenIndex, totalScreen) + " : " + mSelectedComplainList.get(0).getReasonNameLocalized();
+            if (BuildConfig.FLAVOR_client == FlavorKeys.UNFPA) {
+                title = getString(R.string.visit_reason, currentScreenIndex, totalScreen);
+            }
         } else if (screenId == STEP_3_PHYSICAL_EXAMINATION) {
             currentScreenIndex = featureActiveStatus.getVitalSection() ? 3 : 2;
             String titleStr = getString(R.string._phy_examination, currentScreenIndex, totalScreen);
-            if(BuildConfig.FLAVOR_client == FlavorKeys.KCDO){
-                titleStr =  getString(R.string._relapse, currentScreenIndex, totalScreen);
-            }else if(BuildConfig.FLAVOR_client == FlavorKeys.UNFPA){
+            if (BuildConfig.FLAVOR_client == FlavorKeys.KCDO) {
+                titleStr = getString(R.string._relapse, currentScreenIndex, totalScreen);
+            } else if (BuildConfig.FLAVOR_client == FlavorKeys.UNFPA) {
                 titleStr = getString(R.string._obstetric_history, currentScreenIndex, totalScreen);
             }
             title = titleStr;
@@ -1250,7 +1261,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
      */
     private boolean savePastHistoryData() {
         //for UNFPA, saving only family history
-        if(BuildConfig.FLAVOR_client == FlavorKeys.UNFPA){
+        if (BuildConfig.FLAVOR_client == FlavorKeys.UNFPA) {
             return saveOnlyFamilyHistory();
         }
         // save to cache
@@ -1342,6 +1353,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
 
     /**
      * here we are proccesing only family history for UNFPA
+     *
      * @return
      */
     private boolean saveOnlyFamilyHistory() {
@@ -1457,7 +1469,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
 
             //sometimes we will send patientHistory as null
             //because some flavor doesn't required this
-            if(patientHistory != null){
+            if (patientHistory != null) {
                 String uuidOBS = obsDAO.getObsuuid(encounterAdultIntials, UuidDictionary.RHK_MEDICAL_HISTORY_BLURB);
                 CustomLog.i(TAG, "insertDbPastHistory patientHistory : uuidOBS - " + uuidOBS);
 
@@ -1478,7 +1490,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                 }
             }
 
-            if(familyHistory != null){
+            if (familyHistory != null) {
                 String uuidOBS1 = obsDAO.getObsuuid(encounterAdultIntials, UuidDictionary.RHK_FAMILY_HISTORY_BLURB);
                 CustomLog.i(TAG, "insertDbPastHistory familyHistory : uuidOBS - " + uuidOBS1);
                 obsDTO = new ObsDTO();

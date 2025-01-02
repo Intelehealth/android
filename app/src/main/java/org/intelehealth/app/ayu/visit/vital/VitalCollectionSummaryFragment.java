@@ -122,7 +122,7 @@ public class VitalCollectionSummaryFragment extends Fragment {
 
         mBloodGroupLinearLayout.setVisibility(View.GONE);
         for (PatientVital patientVital : mPatientVitalList) {
-            CustomLog.v(TAG,patientVital.getName() + "\t" + patientVital.getVitalKey());
+            CustomLog.v(TAG, patientVital.getName() + "\t" + patientVital.getVitalKey());
 
             if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.HEIGHT)) {
                 mHeightLinearLayout.setVisibility(View.VISIBLE);
@@ -232,19 +232,7 @@ public class VitalCollectionSummaryFragment extends Fragment {
                     getActivity().setResult(Activity.RESULT_OK);
                     getActivity().finish();
                 } else {
-                    if(BuildConfig.FLAVOR_client == FlavorKeys.UNFPA){
-                        ArrayList<ReasonData> list = new ArrayList<>();
-                        ReasonData data = new ReasonData();
-                        data.setReasonName("Visit Reason");
-                        data.setReasonNameLocalized(NodeAdapterUtils.getTheChiefComplainNameWRTLocale(getActivity(), "Visit Reason"));
-                        list.add(data);
-
-                        mActionListener.onFormSubmitted(VisitCreationActivity.STEP_2_VISIT_REASON_QUESTION, false, list); // send the selected mms
-
-                    }else {
-                        mActionListener.onFormSubmitted(VisitCreationActivity.STEP_2_VISIT_REASON, mIsEditMode, mVitalsObject);
-                    }
-
+                    mActionListener.onFormSubmitted(VisitCreationActivity.STEP_2_VISIT_REASON, mIsEditMode, mVitalsObject);
                 }
             }
         });
@@ -284,7 +272,7 @@ public class VitalCollectionSummaryFragment extends Fragment {
         List<ReasonData> reasonDataList = new ArrayList<ReasonData>();
         try {
             String[] temp = null;
-            CustomLog.e("MindMapURL", "Successfully get MindMap URL"+sessionManager.getLicenseKey());
+            CustomLog.e("MindMapURL", "Successfully get MindMap URL" + sessionManager.getLicenseKey());
             if (!sessionManager.getLicenseKey().isEmpty()) {
                 File base_dir = new File(requireActivity().getFilesDir().getAbsolutePath() + File.separator + AppConstants.JSON_FOLDER);
                 File[] files = base_dir.listFiles();
