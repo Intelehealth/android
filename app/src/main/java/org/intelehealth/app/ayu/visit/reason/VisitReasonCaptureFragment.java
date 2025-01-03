@@ -2,12 +2,18 @@ package org.intelehealth.app.ayu.visit.reason;
 
 import android.content.Context;
 import android.os.Bundle;
+
+import org.intelehealth.app.utilities.CustomLog;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +47,7 @@ import org.intelehealth.app.utilities.FileUtils;
 import org.intelehealth.app.utilities.FlavorKeys;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.WindowsUtils;
+import org.intelehealth.config.room.entity.FeatureActiveStatus;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -78,6 +85,7 @@ public class VisitReasonCaptureFragment extends Fragment {
     private List<String> mFinalEnabledMMList = new ArrayList<>();
     private List<ReasonData> mRawReasonDataList = new ArrayList<>();
     private boolean mIsEditMode = false;
+    private Button btnCancel, btnSubmit;
 
     public VisitReasonCaptureFragment() {
         // Required empty public constructor
@@ -151,7 +159,16 @@ public class VisitReasonCaptureFragment extends Fragment {
         view.findViewById(R.id.btn_cancel).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mActionListener.onFormSubmitted(VisitCreationActivity.STEP_1_VITAL_SUMMARY, false, null);
+                //mActionListener.onFormSubmitted(VisitCreationActivity.STEP_2_DIAGNOSTICS_SUMMARY, false, null);
+                boolean diagnosticsActiveStatus = ((VisitCreationActivity) requireActivity()).getFeatureActiveStatus().getActiveStatusDiagnosticsSection();
+                boolean vitalsActiveStatus = ((VisitCreationActivity) requireActivity()).getFeatureActiveStatus().getVitalSection();
+                if (diagnosticsActiveStatus) {
+                    mActionListener.onFormSubmitted(VisitCreationActivity.STEP_2_DIAGNOSTICS_SUMMARY, false, null);
+                } else if (vitalsActiveStatus) {
+                    mActionListener.onFormSubmitted(VisitCreationActivity.STEP_1_VITAL_SUMMARY, false, null);
+                } else {
+
+                }
             }
         });
 
@@ -287,9 +304,15 @@ public class VisitReasonCaptureFragment extends Fragment {
                 }
             });
             recyclerView.setAdapter(mReasonListingAdapter);
+
+            btnCancel = view.findViewById(R.id.btn_cancel);
+            btnSubmit = view.findViewById(R.id.btn_submit);
+            manageBackButtonVisibility();
+
         }
         return view;
     }
+
 
     private void showConfirmDialog() {
         DialogUtils dialogUtils = new DialogUtils();
@@ -297,7 +320,7 @@ public class VisitReasonCaptureFragment extends Fragment {
             @Override
             public void onDialogActionDone(int action) {
                 if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
-                    mActionListener.onFormSubmitted(VisitCreationActivity.STEP_2_VISIT_REASON_QUESTION, false, new ArrayList<ReasonData>(mSelectedComplains)); // send the selected mms
+                    mActionListener.onFormSubmitted(VisitCreationActivity.STEP_3_VISIT_REASON_QUESTION, false, new ArrayList<ReasonData>(mSelectedComplains)); // send the selected mms
                 }
             }
         });
@@ -443,6 +466,24 @@ public class VisitReasonCaptureFragment extends Fragment {
 
 
         return itemList;
+    }
+    private void manageBackButtonVisibility() {
+        boolean vitalsActiveStatus = ((VisitCreationActivity) requireActivity()).getFeatureActiveStatus().getVitalSection();
+        boolean diagnosticsActiveStatus = ((VisitCreationActivity) requireActivity()).getFeatureActiveStatus().getActiveStatusDiagnosticsSection();
+        btnCancel.setVisibility((vitalsActiveStatus || diagnosticsActiveStatus) ? View.VISIBLE : View.GONE);
+        if (btnCancel.getVisibility() == View.GONE) {
+            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) btnSubmit.getLayoutParams();
+            params.width = LinearLayout.LayoutParams.MATCH_PARENT;
+            params.weight = 0f;
+            params.setMargins(0, params.topMargin, params.rightMargin, params.bottomMargin);
+            btnSubmit.setLayoutParams(params);
+        } else {
+            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) btnSubmit.getLayoutParams();
+            params.width = 0;
+            params.weight = 1f;
+            params.setMargins(16, params.topMargin, params.rightMargin, params.bottomMargin);
+            btnSubmit.setLayoutParams(params);
+        }
     }
 
 

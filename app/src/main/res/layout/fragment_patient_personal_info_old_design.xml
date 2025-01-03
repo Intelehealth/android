@@ -258,7 +258,6 @@
                     <com.google.android.material.button.MaterialButtonToggleGroup
                         android:id="@+id/toggleGender"
                         gender="@{patient.gender}"
-                        android:clickable="false"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/margin_4"
