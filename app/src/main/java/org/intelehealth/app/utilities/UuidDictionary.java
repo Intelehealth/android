@@ -82,6 +82,8 @@ public class UuidDictionary {
     public static final String FOLLOWUP_ENCOUNTER_ID = "b4fcf4dd-7f9c-4c0e-b874-2113963291f0";
     public static final String HW_FOLLOWUP_CONCEPT_ID = "596c7f50-ec12-4ad8-b92a-7491ad80341b";
     public static final String VISIT_UPLOAD_TIME = "e76eee5e-9d73-4d07-8f30-16b77e626ccf";
+    public static final String DIAGNOSIS = "672b025f-2d21-4dfb-8230-ffbc50c255d8";
+    public static final String CONSULTATION_TYPE = "262632db-8cfe-47dd-b3b6-a8ed65d489cd";
 
     //Bill - NAS
     public static final String BILL_DATE = "caa20b34-48a2-4f79-b08e-7be82f379e49";

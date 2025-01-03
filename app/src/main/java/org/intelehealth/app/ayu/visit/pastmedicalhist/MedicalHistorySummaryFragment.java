@@ -11,6 +11,8 @@ import android.content.Context;
 import android.os.Bundle;
 
 import org.intelehealth.app.ayu.visit.common.ManageSummaryScreenTitles;
+
+import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.utilities.CustomLog;
 
 import android.view.LayoutInflater;
@@ -34,6 +36,7 @@ import org.intelehealth.app.ayu.visit.common.adapter.SummaryViewAdapter;
 import org.intelehealth.app.ayu.visit.model.CommonVisitData;
 import org.intelehealth.app.ayu.visit.model.VisitSummaryData;
 import org.intelehealth.app.knowledgeEngine.Node;
+import org.intelehealth.app.utilities.FlavorKeys;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.config.room.entity.FeatureActiveStatus;
@@ -120,7 +123,11 @@ public class MedicalHistorySummaryFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 mIsEditMode = true;
-                mActionListener.onFormSubmitted(VisitCreationActivity.FROM_SUMMARY_RESUME_BACK_FOR_EDIT, mIsEditMode, VisitCreationActivity.STEP_5_PAST_MEDICAL_HISTORY);
+                if(BuildConfig.FLAVOR_client == FlavorKeys.UNFPA){
+                    mActionListener.onFormSubmitted(VisitCreationActivity.FROM_SUMMARY_RESUME_BACK_FOR_EDIT, mIsEditMode, VisitCreationActivity.STEP_6_FAMILY_HISTORY);
+                }else {
+                    mActionListener.onFormSubmitted(VisitCreationActivity.FROM_SUMMARY_RESUME_BACK_FOR_EDIT, mIsEditMode, VisitCreationActivity.STEP_5_PAST_MEDICAL_HISTORY);
+                }
             }
         });
         view.findViewById(R.id.img_btn_cancel).setOnClickListener(new View.OnClickListener() {

@@ -1207,6 +1207,7 @@
 
                     <TextView
                         style="@style/text_title_style"
+                        android:id="@+id/physical_exam_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
@@ -1251,6 +1252,7 @@
 
                         <TextView
                             style="@style/vs_title_head_14sp"
+                            android:id="@+id/physical_exam_info_tv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:lineSpacingExtra="-3sp"

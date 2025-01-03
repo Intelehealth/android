@@ -103,12 +103,9 @@ public class PatientsDAO {
 
             values.put("guardian_type", patient.getGuardianType());
             values.put("guardian_name", patient.getGuardianName());
-
-
-
-//            values.put("contact_type", patient.getContactType());
-//            values.put("em_contact_name", patient.getEmContactName());
-//            values.put("em_contact_num", patient.getEmContactNumber());
+            values.put("contact_type", patient.getContactType());
+            values.put("em_contact_name", patient.getEmContactName());
+            values.put("em_contact_num", patient.getEmContactNumber());
 
             values.put("dead", patient.getDead());
             values.put("sync", patient.getSyncd());
@@ -316,10 +313,12 @@ public class PatientsDAO {
             if (cursor.moveToFirst()) {
                 while (!cursor.isAfterLast()) {
                     attribute = new Attribute();
-                    attribute.setAttributeType(cursor.getString(cursor.getColumnIndex("person_attribute_type_uuid")));
+                    String attributeType = cursor.getString(cursor.getColumnIndex("person_attribute_type_uuid"));
+                    attribute.setAttributeType(attributeType);
                     attribute.setValue(cursor.getString(cursor.getColumnIndex("value")));
-                    if(attribute.getAttributeType()!=null && !attribute.getAttributeType().isEmpty())
+                    if(attributeType !=null && !attributeType.isEmpty()){
                         patientAttributesList.add(attribute);
+                    }
                     cursor.moveToNext();
                 }
             }
@@ -446,7 +445,6 @@ public class PatientsDAO {
     }
 
     public boolean insertPatientAttributes(List<PatientAttributesDTO> patientAttributesDTOS, SQLiteDatabase db) throws DAOException {
-        Log.d("devKZchk", "insertPatientAttributes:attrs kz :  "+new Gson().toJson(patientAttributesDTOS));
         if (patientAttributesDTOS == null) return false;
         boolean isInserted = true;
         ContentValues values = new ContentValues();
@@ -503,7 +501,6 @@ public class PatientsDAO {
     }
 
     public String getUuidForAttribute(String attr) {
-        Log.d("devchk", "getUuidForAttribute: attr : "+attr);
         String attributeUuid = "";
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         Cursor cursor = db.rawQuery("SELECT uuid FROM tbl_patient_attribute_master where name = ? COLLATE NOCASE", new String[]{attr});
@@ -512,8 +509,6 @@ public class PatientsDAO {
                 attributeUuid = cursor.getString(cursor.getColumnIndexOrThrow("uuid"));
             }
         }
-        Log.d("devchk", "getUuidForAttribute: attributeUuid : "+attributeUuid);
-
         cursor.close();
 
         return attributeUuid;
@@ -1167,9 +1162,9 @@ public class PatientsDAO {
                 patientDTO.setPatientPhoto(cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")));
                 patientDTO.setGuardianType(cursor.getString(cursor.getColumnIndexOrThrow("guardian_type")));
                 patientDTO.setGuardianName(cursor.getString(cursor.getColumnIndexOrThrow("guardian_name")));
-                patientDTO.setContactType(getValueByUuid(attributes, "5fde1411-801c-49b9-93d4-abeefd8e1164"));
-                patientDTO.setEmContactName(getValueByUuid(attributes, "9b37e244-2cf5-4bd8-af32-b85ed4f919aa"));
-                patientDTO.setEmContactNumber(getValueByUuid(attributes, "6c25becf-1bdd-4b2e-98dd-558a4becf4a4"));
+                patientDTO.setContactType(cursor.getString(cursor.getColumnIndexOrThrow("contact_type")));
+                patientDTO.setEmContactName(cursor.getString(cursor.getColumnIndexOrThrow("em_contact_name")));
+                patientDTO.setEmContactNumber(cursor.getString(cursor.getColumnIndexOrThrow("em_contact_num")));
 
                 // Attributes
                 patientDTO.setPhonenumber(cursor.getString(cursor.getColumnIndexOrThrow("telephone")));

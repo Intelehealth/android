@@ -27,6 +27,7 @@ import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.app.ui.filter.FirstLetterUpperCaseInputFilter
 import org.intelehealth.app.ui.patient.activity.PatientRegistrationActivity
 import org.intelehealth.app.utilities.ArrayAdapterUtils
+import org.intelehealth.app.utilities.FlavorKeys
 import org.intelehealth.app.utilities.LanguageUtils
 import org.intelehealth.app.utilities.PatientRegFieldsUtils
 import org.intelehealth.app.utilities.PatientRegStage
@@ -97,7 +98,6 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
             binding.addOnRebindCallback(onRebindCallback)
         }
     }
-
 
     private fun setClickListener() {
         binding.frag2BtnBack.setOnClickListener {
@@ -330,7 +330,7 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
         Timber.d { "Final patient =>${Gson().toJson(patient)}" }
         val error = R.string.this_field_is_mandatory
         binding.addressInfoConfig?.let {
-            val bPostalCode = if (it.postalCode!!.isEnabled && it.postalCode!!.isMandatory) {
+            val bPostalCode = if (it.postalCode?.isEnabled == true && it.postalCode?.isMandatory == true) {
                 binding.textInputLayPostalCode.validate(binding.textInputPostalCode, error).and(
                     binding.textInputLayPostalCode.validateDigit(
                         binding.textInputPostalCode, R.string.postal_code_6_dig_invalid_txt, 6
@@ -340,26 +340,26 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
             } else true
 
 
-            val bCountry = if (it.country!!.isEnabled && it.country!!.isMandatory) {
+            val bCountry = if (it.country?.isEnabled == true && it.country?.isMandatory == true) {
                 binding.textInputLayCountry.validateDropDowb(
                     binding.autoCompleteCountry, error
                 )
             } else true
 
-            val bState = if (it.state!!.isEnabled && it.state!!.isMandatory) {
+            val bState = if (it.state?.isEnabled == true && it.state?.isMandatory == true) {
                 binding.textInputLayState.validateDropDowb(
                     binding.autoCompleteState, error
                 )
             } else true
 
-            val bDistrict = if (it.district!!.isEnabled && it.district!!.isMandatory) {
+            val bDistrict = if (it.district?.isEnabled == true && it.district?.isMandatory == true) {
                 binding.textInputLayDistrict.validateDropDowb(
                     binding.autoCompleteState, error
                 )
             } else true
 
             val bCityVillage =
-                if (it.cityVillage!!.isEnabled && it.cityVillage!!.isMandatory && !it.block!!.isEnabled) {
+                if (it.cityVillage?.isEnabled == true && it.cityVillage?.isMandatory == true && !it.block!!.isEnabled) {
                     binding.textInputLayCityVillage.validate(binding.textInputCityVillage, error)
                         .and(
                             binding.textInputLayCityVillage.validateDigit(
@@ -393,21 +393,21 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
                 } else true
 
 
-            val bAddress1 = if (it.address1!!.isEnabled && it.address1!!.isMandatory) {
+            val bAddress1 = if (it.address1?.isEnabled == true && it.address1?.isMandatory == true) {
                 binding.textInputLayAddress1.validate(binding.textInputAddress1, error)
             } else true
 
-            val bAddress2 = if (it.address2!!.isEnabled && it.address2!!.isMandatory) {
+            val bAddress2 = if (it.address2?.isEnabled == true && it.address2?.isMandatory == true) {
                 binding.textInputLayAddress2.validate(binding.textInputAddress2, error)
             } else true
 
-            val bBlock = if (it.block!!.isEnabled && it.block!!.isMandatory) {
+            val bBlock =if (it.block?.isEnabled == true && it.block?.isMandatory == true) {
                 binding.textInputLayBlock.validateDropDowb(
                     binding.autoCompleteBlock, error
                 )
             } else true
 
-            val bVillageField = if (it.block!!.isEnabled && it.block!!.isMandatory) {
+            val bVillageField = if (it.block?.isEnabled == true && it.block?.isMandatory == true) {
                 if (binding.autoCompleteBlock.text.toString()
                         .contains("Other", ignoreCase = true)
                 ) {
@@ -421,7 +421,7 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
             } else true
 
             val bHouseholdNumber =
-                if (it.householdNumber!!.isEnabled && it.householdNumber!!.isMandatory) {
+                if (it.householdNumber?.isEnabled == true && it.householdNumber?.isMandatory == true) {
                     binding.textInputLayHouseholdNumber.validate(
                         binding.textInputHouseholdNumber, error
                     )
@@ -552,10 +552,13 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
             //  resetAdaptersAndFieldData();
             setupCountries()
             setupStates()
-            setupProvinceAndCities()
+            //setupProvinceAndCities()
             applyFilter()
             setInputTextChangListener()
             setClickListener()
+            if(BuildConfig.FLAVOR_client == FlavorKeys.UNFPA){
+                setupProvinceAndCities()
+            }
         }
     }
 

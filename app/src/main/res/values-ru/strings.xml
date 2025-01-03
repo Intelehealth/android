@@ -505,6 +505,10 @@
     <string name="enter_registration_address">Enter Registration Address</string>
     <string name="processing_personal_data">Обработка персональных данных</string>
     <string name="accept_new">Принять</string>
+    <string name="type_of_consultation">Type Of Consultation</string>
+    <string name="select_consultation_type">Select Consulation Type</string>
+    <string name="enter_diagnosis">Enter Diagnosis</string>
+    <string name="diagnosis_required">Diagnosis Required</string>
     <string name="family_members">Family Members</string>
     <string name="no_family_member_registered">No family member registered</string>
     <string name="draft_survey">Draft Survey</string>

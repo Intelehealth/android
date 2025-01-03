@@ -147,4 +147,8 @@
     <string name="average_cost_incurred_on_consultation_fee_per_episode">Average cost incurred on consultation fee per episode</string>
     <string name="average_cost_incurred_on_medicines_per_episode">Average cost incurred on medicines per episode</string>
     <string name="score_for_experience_of_treatment">Score for experience of treatment</string>
+    <string name="type_of_consultation">Type Of Consultation</string>
+    <string name="select_consultation_type">Select Consulation Type</string>
+    <string name="enter_diagnosis">Enter Diagnosis</string>
+    <string name="diagnosis_required">Diagnosis Required</string>
 </resources>

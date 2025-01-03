@@ -3,7 +3,6 @@ package org.intelehealth.app.ayu.visit.physicalexam;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +23,7 @@ import org.intelehealth.app.ayu.visit.model.CommonVisitData;
 import org.intelehealth.app.ayu.visit.model.ComplainBasicInfo;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.knowledgeEngine.PhysicalExam;
+import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.DialogUtils;
 
 import java.util.HashMap;
@@ -193,6 +193,11 @@ public class PhysicalExaminationFragment extends Fragment {
                 @Override
                 public void onImageRemoved(int nodeIndex, int imageIndex, String image) {
                     mActionListener.onImageRemoved(nodeIndex, imageIndex, image);
+                }
+
+                @Override
+                public void onTerminalNodeAnsweredForParentUpdate(String parentNodeId) {
+
                 }
             });
 

@@ -419,6 +419,10 @@
     <string name="select_city">Select City</string>
     <string name="registration_address_of_health_facility">Registration Address of Health Facility</string>
     <string name="enter_registration_address">Enter Registration Address</string>
+    <string name="type_of_consultation">Type Of Consultation</string>
+    <string name="select_consultation_type">Select Consulation Type</string>
+    <string name="enter_diagnosis">Enter Diagnosis</string>
+    <string name="diagnosis_required">Diagnosis Required</string>
     <string name="what_was_the_outcome_of_your_pregnancy">What was the outcome of your pregnancy?*</string>
     <string name="what_was_the_year_of_pregnancy_outcome_a_for_pregnant_ladies_mention_the_date_when_conceived_b_in_case_of_other_options_mention_the_date_of_delivery_miscarriage">What was the year of pregnancy outcome? ((a) for pregnant ladies, mention the date when conceived (b) in case of other options mention the date of delivery/miscarriage)</string>
     <string name="how_many_months_did_this_pregnancy_last">How many months did this pregnancy last?</string>

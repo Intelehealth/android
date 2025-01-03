@@ -152,6 +152,7 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
     private fun applyFilter() {
 //        binding.textInputNationalId.addFilter(FirstLetterUpperCaseInputFilter())
         binding.textInputOccupation.addFilter(FirstLetterUpperCaseInputFilter())
+        binding.textInputDepartment.addFilter(FirstLetterUpperCaseInputFilter())
     }
 
     private fun setInputTextChangListener() {
@@ -202,11 +203,11 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
         Timber.d { "Final patient =>${Gson().toJson(patient)}" }
         val error = R.string.this_field_is_mandatory
         binding.otherInfoConfig?.let {
-            val bNationalId = if (it.nationalId!!.isEnabled && it.nationalId!!.isMandatory) {
+            val bNationalId = if (it.nationalId?.isEnabled == true && it.nationalId?.isMandatory == true) {
                 binding.textInputLayNationalId.validate(binding.textInputNationalId, error)
             } else true
 
-            val bOccuptions = if (it.occuptions!!.isEnabled && it.occuptions!!.isMandatory) {
+            val bOccuptions = if (it.occuptions?.isEnabled == true && it.occuptions?.isMandatory == true) {
                 binding.textInputLayOccupation.validate(binding.textInputOccupation, error)
             } else true
 
@@ -234,19 +235,19 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
             } else true
 
 
-            val bSocialCategory = if (it.socialCategory!!.isEnabled && it.socialCategory!!.isMandatory) {
+            val bSocialCategory = if (it.socialCategory?.isEnabled == true && it.socialCategory?.isMandatory == true) {
                 binding.textInputLaySocialCategory.validateDropDowb(
                     binding.autoCompleteSocialCategory, error
                 )
             } else true
 
-            val bEducation = if (it.education!!.isEnabled && it.education!!.isMandatory) {
+            val bEducation = if (it.education?.isEnabled == true && it.education?.isMandatory == true) {
                 binding.textInputLayEducation.validateDropDowb(
                     binding.autoCompleteEducation, error
                 )
             } else true
 
-            val bEconomic = if (it.economicCategory!!.isEnabled && it.economicCategory!!.isMandatory) {
+            val bEconomic = if (it.economicCategory?.isEnabled == true && it.economicCategory?.isMandatory == true) {
                 binding.textInputLayEconomicCategory.validateDropDowb(
                     binding.autoCompleteEconomicCategory, error
                 )

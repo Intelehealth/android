@@ -21,14 +21,22 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
+
+import org.checkerframework.checker.units.qual.A;
+import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
+import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.ayu.visit.VisitCreationActionListener;
 import org.intelehealth.app.ayu.visit.VisitCreationActivity;
 import org.intelehealth.app.ayu.visit.common.ManageSummaryScreenTitles;
 import org.intelehealth.app.ayu.visit.common.VisitUtils;
+import org.intelehealth.app.ayu.visit.common.adapter.NodeAdapterUtils;
+import org.intelehealth.app.ayu.visit.model.ReasonData;
 import org.intelehealth.app.models.VitalsObject;
 import org.intelehealth.app.utilities.ConfigUtils;
 import org.intelehealth.app.utilities.CustomLog;
+import org.intelehealth.app.utilities.FlavorKeys;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.config.presenter.fields.data.PatientVitalRepository;
@@ -39,6 +47,11 @@ import org.intelehealth.config.room.entity.FeatureActiveStatus;
 import org.intelehealth.config.room.entity.PatientVital;
 import org.intelehealth.config.utility.PatientVitalConfigKeys;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import timber.log.Timber;
@@ -268,4 +281,35 @@ public class VitalCollectionSummaryFragment extends Fragment {
     }
 
     private ObjectAnimator syncAnimator;
+
+    private List<ReasonData> getVisitReasonFilesNamesOnly() {
+        List<ReasonData> reasonDataList = new ArrayList<ReasonData>();
+        try {
+            String[] temp = null;
+            CustomLog.e("MindMapURL", "Successfully get MindMap URL" + sessionManager.getLicenseKey());
+            if (!sessionManager.getLicenseKey().isEmpty()) {
+                File base_dir = new File(requireActivity().getFilesDir().getAbsolutePath() + File.separator + AppConstants.JSON_FOLDER);
+                File[] files = base_dir.listFiles();
+                temp = new String[files.length];
+                for (int i = 0; i < files.length; i++) {
+                    temp[i] = files[i].getName();
+                }
+            } else {
+                temp = getActivity().getApplicationContext().getAssets().list("engines");
+
+            }
+            for (String s : temp) {
+                String fileName = s.split(".json")[0];
+                //Timber.tag("VisitReasonCaptureFragment").d("File name=>%s", fileName);
+                ReasonData reasonData = new ReasonData();
+                reasonData.setReasonName(fileName);
+                reasonData.setReasonNameLocalized(NodeAdapterUtils.getTheChiefComplainNameWRTLocale(getActivity(), fileName));
+                reasonDataList.add(reasonData);
+            }
+        } catch (IOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+        return reasonDataList;
+    }
+
 }

@@ -2466,11 +2466,18 @@
     </string-array>
 
     <string-array name="health_facility_name">
-        <item>Select</item>
+        <item>Select Facility Name</item>
         <item>Maternity department of Chui Regional United Hospital</item>
         <item>Maternity department of Issyk-Kul Regional United Hospital</item>
         <item>Maternity hospital of Jalal-Abad Regional United Hospital</item>
         <item>Maternity hospital of Osh Interregional Clinical Hospital</item>
+    </string-array>
+
+    <string-array name="type_of_consultations">
+        <item>Select Consultation</item>
+        <item>In emergency form – from 30 minutes to 2 hours</item>
+        <item>In urgent form - from 3 to 24 hours</item>
+        <item>In planned form – for a day or more</item>
     </string-array>
     <string-array name="householdHeadReligion_en">
         <item>@string/religion_hindu</item>

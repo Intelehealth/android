@@ -2,12 +2,14 @@ package org.intelehealth.app.ayu.visit.common
 
 import android.content.Context
 import android.util.Log
+import org.intelehealth.app.BuildConfig
 import org.intelehealth.app.R
 import org.intelehealth.app.ayu.visit.VisitCreationActivity.STEP_1_VITAL_SUMMARY
 import org.intelehealth.app.ayu.visit.VisitCreationActivity.STEP_2_DIAGNOSTICS_SUMMARY
 import org.intelehealth.app.ayu.visit.VisitCreationActivity.STEP_3_VISIT_REASON_QUESTION_SUMMARY
 import org.intelehealth.app.ayu.visit.VisitCreationActivity.STEP_4_PHYSICAL_SUMMARY_EXAMINATION
 import org.intelehealth.app.ayu.visit.VisitCreationActivity.STEP_6_HISTORY_SUMMARY
+import org.intelehealth.app.utilities.FlavorKeys
 import org.intelehealth.config.room.entity.FeatureActiveStatus
 
 class ManageSummaryScreenTitles {
@@ -70,6 +72,17 @@ class ManageSummaryScreenTitles {
                         currentScreenIndex,
                         adjustedTotalScreen
                     )
+                    if (BuildConfig.FLAVOR_client === FlavorKeys.KCDO) {
+                        title = context.getString(
+                            R.string.ui2_relapse_summary_title,
+                            currentScreenIndex,
+                            adjustedTotalScreen)
+                    } else if (BuildConfig.FLAVOR_client === FlavorKeys.UNFPA) {
+                        title = context.getString(
+                            R.string.ui2_obstetric_history_summary_title,
+                            currentScreenIndex,
+                            adjustedTotalScreen)
+                    }
                 }
                 STEP_6_HISTORY_SUMMARY -> {
                     currentScreenIndex = visitReasonScreenIndex + 2
