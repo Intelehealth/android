@@ -33,7 +33,6 @@ import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
-import org.intelehealth.app.utilities.CustomLog;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -44,7 +43,6 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -65,7 +63,6 @@ import com.github.ajalt.timberkt.Timber;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
-import com.google.gson.Gson;
 import com.hbb20.CountryCodePicker;
 
 import org.intelehealth.app.BuildConfig;
@@ -90,6 +87,7 @@ import org.intelehealth.app.networkApiCalls.ApiInterface;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.ui2.calendarviewcustom.SendSelectedDateInterface;
 import org.intelehealth.app.utilities.BitmapUtils;
+import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.DownloadFilesUtils;
@@ -797,14 +795,14 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
     private AlertDialog mImagePickerAlertDialog;
 
     private final ActivityResultLauncher<Intent> cameraIntentLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-        Timber.tag(TAG).d("Camera result=>%s", new Gson().toJson(result));
+        //Timber.tag(TAG).d("Camera result=>%s", new Gson().toJson(result));
         if (result.getResultCode() == RESULT_OK) {
             if (result.getData() != null) captureImage(result.getData());
         }
     });
 
     private final ActivityResultLauncher<Intent> galleryIntentLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-        Timber.tag(TAG).d("Gallery result=>%s", new Gson().toJson(result));
+        //Timber.tag(TAG).d("Gallery result=>%s", new Gson().toJson(result));
         if (result.getResultCode() == RESULT_OK) {
             if (result.getData() != null) pickImage(result.getData());
         }
@@ -1164,7 +1162,7 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
             @Override
             public void onNext(Profile profile) {
                 if (profile != null) {
-                    Timber.tag(TAG).d("Profile =>%s", new Gson().toJson(profile));
+                    //Timber.tag(TAG).d("Profile =>%s", new Gson().toJson(profile));
                     CustomLog.d(TAG, "fetchUserDetails: " + profile.getResults().get(0).getPerson().getPreferredName().getMiddleName());
 
                     personUuid = profile.getResults().get(0).getPerson().getUuid();

@@ -28,7 +28,7 @@ class PatientQueryBuilder : QueryBuilder() {
                     + buildPatientAttributesQuery(PatientAttributesDTO.Column.REQUEST_ID.value) + " requestId,"
                     + buildPatientAttributesQuery(PatientAttributesDTO.Column.DISCIPLINE.value) + " discipline,"
                     + buildPatientAttributesQuery(PatientAttributesDTO.Column.RELATIVE_PHONE_NUMBER.value) + " relativePhoneNumber,"
-                    + buildPatientAttributesQuery(PatientAttributesDTO.Column.DEPARTMENT.value) + " department "
+                    //+ buildPatientAttributesQuery(PatientAttributesDTO.Column.DEPARTMENT.value) + " department "
                     + buildPatientAttributesQuery(PatientAttributesDTO.Column.CREATED_DATE.value) + " createdDate,"
 
                     + buildPatientAttributesQuery(PatientAttributesDTO.Column.PROVINCES.value) + " provinces,"
