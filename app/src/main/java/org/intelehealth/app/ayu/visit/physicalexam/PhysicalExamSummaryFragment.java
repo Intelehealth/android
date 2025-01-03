@@ -91,13 +91,6 @@ public class PhysicalExamSummaryFragment extends Fragment {
         String title = ManageSummaryScreenTitles.setScreenTitle(requireActivity(), status, STEP_4_PHYSICAL_SUMMARY_EXAMINATION);
         TextView tvTitle = view.findViewById(R.id.tv_sub_title);
         tvTitle.setText(title);
-        String title = getString(R.string.ui2_physical_exam_summay_title, index, total);
-        if(BuildConfig.FLAVOR_client == FlavorKeys.KCDO){
-            title =  getString(R.string.ui2_relapse_summary_title, index, total);
-        }else if(BuildConfig.FLAVOR_client == FlavorKeys.UNFPA){
-            title =  getString(R.string.ui2_obstetric_history_summary_title, index, total);
-        }
-        tvTitle.setText(title);
     }
 
     @Override
@@ -114,7 +107,7 @@ public class PhysicalExamSummaryFragment extends Fragment {
                     requireActivity().finish();
                 } else{
                     if(BuildConfig.FLAVOR_client == FlavorKeys.UNFPA){
-                        mActionListener.onFormSubmitted(VisitCreationActivity.FROM_SUMMARY_RESUME_BACK_FOR_EDIT, mIsEditMode, VisitCreationActivity.STEP_5_FAMILY_HISTORY);
+                        mActionListener.onFormSubmitted(VisitCreationActivity.FROM_SUMMARY_RESUME_BACK_FOR_EDIT, mIsEditMode, VisitCreationActivity.STEP_6_FAMILY_HISTORY);
                     }else {
                         mActionListener.onFormSubmitted(VisitCreationActivity.STEP_5_PAST_MEDICAL_HISTORY, mIsEditMode, null);
                     }

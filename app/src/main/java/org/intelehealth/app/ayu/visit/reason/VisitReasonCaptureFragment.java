@@ -297,19 +297,22 @@ public class VisitReasonCaptureFragment extends Fragment {
                         }
                     }
                     mReasonListingAdapter.refresh(mVisitReasonItemList);*/
-                    //TODO: EDN
-                } else {
-                    Toast.makeText(getActivity(), getString(R.string.already_selected_lbl), Toast.LENGTH_SHORT).show();
+                        //TODO: EDN
+                    } else {
+                        Toast.makeText(getActivity(), getString(R.string.already_selected_lbl), Toast.LENGTH_SHORT).show();
+                    }
                 }
-            }
-        });
-        recyclerView.setAdapter(mReasonListingAdapter);
+            });
+            recyclerView.setAdapter(mReasonListingAdapter);
 
-         btnCancel = view.findViewById(R.id.btn_cancel);
-         btnSubmit = view.findViewById(R.id.btn_submit);
-        manageBackButtonVisibility();
+            btnCancel = view.findViewById(R.id.btn_cancel);
+            btnSubmit = view.findViewById(R.id.btn_submit);
+            manageBackButtonVisibility();
+
+        }
         return view;
     }
+
 
     private void showConfirmDialog() {
         DialogUtils dialogUtils = new DialogUtils();

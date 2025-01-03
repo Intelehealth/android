@@ -34,8 +34,7 @@ data class FeatureActiveStatus(
     val diagnosisAtSecondaryLevel: Boolean = false,
 
     @SerializedName("type_of_consultation")
-    val typeOfConsultation: Boolean = false
-    val visitSummeryHwFollowUp: Boolean,
+    val typeOfConsultation: Boolean = false,
     @SerializedName("generate_bill_button")
     val generateBillButton: Boolean,
     @SerializedName("restrict_end_visit_till_prescription_download")

@@ -99,21 +99,6 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
         }
     }
 
-    private val onRebindCallback = object : OnRebindCallback<FragmentPatientAddressInfoBinding>() {
-        override fun onBound(binding: FragmentPatientAddressInfoBinding?) {
-            super.onBound(binding)
-            setupCountries()
-            setupStates()
-            applyFilter()
-            setInputTextChangListener()
-            setClickListener()
-            //province and cities required only for unfpa
-            if(BuildConfig.FLAVOR_client == FlavorKeys.UNFPA){
-                setupProvinceAndCities()
-            }
-        }
-    }
-
     private fun setClickListener() {
         binding.frag2BtnBack.setOnClickListener {
             setOtherBlockData()
@@ -374,7 +359,7 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
             } else true
 
             val bCityVillage =
-                if (it.cityVillage!!.isEnabled && it.cityVillage!!.isMandatory && !it.block!!.isEnabled) {
+                if (it.cityVillage?.isEnabled == true && it.cityVillage?.isMandatory == true && !it.block!!.isEnabled) {
                     binding.textInputLayCityVillage.validate(binding.textInputCityVillage, error)
                         .and(
                             binding.textInputLayCityVillage.validateDigit(
@@ -400,7 +385,7 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
             } else true
 
             val bRelativeAddressOfHf =
-                if (it.registrationAddressOfHf!!.isEnabled && it.registrationAddressOfHf!!.isMandatory) {
+                if (it.registrationAddressOfHf?.isEnabled == true && it.registrationAddressOfHf?.isMandatory == true) {
                     binding.textInputLayRegistrationAddressOfHf.validate(
                         binding.textInputRegistrationAddressOfHf,
                         R.string.error_field_required,
@@ -416,13 +401,13 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
                 binding.textInputLayAddress2.validate(binding.textInputAddress2, error)
             } else true
 
-            val bBlock = if (it.block!!.isEnabled && it.block!!.isMandatory) {
+            val bBlock =if (it.block?.isEnabled == true && it.block?.isMandatory == true) {
                 binding.textInputLayBlock.validateDropDowb(
                     binding.autoCompleteBlock, error
                 )
             } else true
 
-            val bVillageField = if (it.block!!.isEnabled && it.block!!.isMandatory) {
+            val bVillageField = if (it.block?.isEnabled == true && it.block?.isMandatory == true) {
                 if (binding.autoCompleteBlock.text.toString()
                         .contains("Other", ignoreCase = true)
                 ) {
@@ -436,7 +421,7 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
             } else true
 
             val bHouseholdNumber =
-                if (it.householdNumber!!.isEnabled && it.householdNumber!!.isMandatory) {
+                if (it.householdNumber?.isEnabled == true && it.householdNumber?.isMandatory == true) {
                     binding.textInputLayHouseholdNumber.validate(
                         binding.textInputHouseholdNumber, error
                     )
@@ -567,10 +552,13 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
             //  resetAdaptersAndFieldData();
             setupCountries()
             setupStates()
-            setupProvinceAndCities()
+            //setupProvinceAndCities()
             applyFilter()
             setInputTextChangListener()
             setClickListener()
+            if(BuildConfig.FLAVOR_client == FlavorKeys.UNFPA){
+                setupProvinceAndCities()
+            }
         }
     }
 

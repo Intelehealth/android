@@ -1903,6 +1903,9 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
             case STEP_3_VISIT_REASON:
                 currentScreenIndex = visitReasonScreenIndex;
                 title = getString(R.string.visit_reason, currentScreenIndex, adjustedTotalScreen);
+                if (BuildConfig.FLAVOR_client == FlavorKeys.UNFPA) {
+                    title = getString(R.string.visit_reason, currentScreenIndex, totalScreen);
+                }
                 break;
 
             case STEP_3_VISIT_REASON_QUESTION:
@@ -1919,6 +1922,11 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
             case STEP_4_PHYSICAL_EXAMINATION:
                 currentScreenIndex = visitReasonScreenIndex + 1;
                 title = getString(R.string._phy_examination, currentScreenIndex, adjustedTotalScreen);
+                if (BuildConfig.FLAVOR_client == FlavorKeys.KCDO) {
+                    title = getString(R.string._relapse, currentScreenIndex, totalScreen);
+                } else if (BuildConfig.FLAVOR_client == FlavorKeys.UNFPA) {
+                    title = getString(R.string._obstetric_history, currentScreenIndex, totalScreen);
+                }
                 break;
 
             case STEP_5_PAST_MEDICAL_HISTORY:
