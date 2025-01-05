@@ -548,11 +548,6 @@ class PatientPersonalInfoFragment :
                     }
                 }
 
-            CustomLog.d(
-                "EMMMMM",
-                "" + bEmPhone + "  " + it.emergencyContactNumber!!.isEnabled + "   " + it.emergencyContactNumber!!.isMandatory
-            )
-
             val bEmContactType =
                 if (it.emergencyContactType!!.isEnabled && it.emergencyContactType!!.isMandatory) {
                     binding.textInputLayEmContactType.validateDropDowb(
