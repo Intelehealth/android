@@ -26,6 +26,7 @@ import org.intelehealth.app.ui.dialog.CalendarDialog
 import org.intelehealth.app.ui.filter.FirstLetterUpperCaseInputFilter
 import org.intelehealth.app.utilities.AgeUtils
 import org.intelehealth.app.utilities.ArrayAdapterUtils
+import org.intelehealth.app.utilities.CustomLog
 import org.intelehealth.app.utilities.DateAndTimeUtils
 import org.intelehealth.app.utilities.FlavorKeys
 import org.intelehealth.app.utilities.LanguageUtils
@@ -167,9 +168,9 @@ class PatientPersonalInfoFragment :
         Timber.d { "onPatientDataLoaded" }
         Timber.d { Gson().toJson(patient) }
         fetchPersonalInfoConfig()
-        if(BuildConfig.FLAVOR_client == FlavorKeys.UNFPA){
+        if (BuildConfig.FLAVOR_client == FlavorKeys.UNFPA) {
             patient.apply {
-                gender = gender?:"F"
+                gender = gender ?: "F"
             }
         }
         binding.patient = patient
@@ -253,7 +254,7 @@ class PatientPersonalInfoFragment :
     }
 
     private fun setGender() {
-        if(BuildConfig.FLAVOR_client == FlavorKeys.UNFPA){
+        if (BuildConfig.FLAVOR_client == FlavorKeys.UNFPA) {
             binding.btnMale.isCheckable = false
             binding.btnFemale.isCheckable = false
             binding.btnOther.isCheckable = false
@@ -264,7 +265,7 @@ class PatientPersonalInfoFragment :
         }
     }
 
-    private fun bindGenderValue(){
+    private fun bindGenderValue() {
         patient.gender = when (binding.toggleGender.checkedButtonId) {
             R.id.btnMale -> "M"
             R.id.btnFemale -> "F"
@@ -518,8 +519,39 @@ class PatientPersonalInfoFragment :
                         valid
                     } ?: false)
 
+                }
+                // comparing em-contact number with phone number only
+                // when field is not mandatory
+                else {
+                    binding.textInputETEMPhoneNumber.let {etEm->
+                        // checking emergency contact number entered or not
+                        // if entered, then checking the 10 digits validation and
+                        // comparing with phone number
+                        if(etEm.text?.isNotEmpty() == true){
+                            binding.textInputLayEMPhoneNumber.validateDigit(
+                                binding.textInputETEMPhoneNumber,
+                                R.string.enter_10_digits,
+                                10
+                            ).and(binding.textInputETPhoneNumber.text?.let { phone ->
+                                val valid =
+                                    phone.toString() != binding.textInputETEMPhoneNumber.text.toString()
+                                if (!valid) {
+                                    binding.textInputLayEMPhoneNumber.error = getString(
+                                        R.string.phone_number_and_emergency_number_can_not_be_the_same
+                                    )
+                                }
+                                valid
+                            } ?: false)
+                        }else{
+                            false
+                        }
+                    }
+                }
 
-                } else true
+            CustomLog.d(
+                "EMMMMM",
+                "" + bEmPhone + "  " + it.emergencyContactNumber!!.isEnabled + "   " + it.emergencyContactNumber!!.isMandatory
+            )
 
             val bEmContactType =
                 if (it.emergencyContactType!!.isEnabled && it.emergencyContactType!!.isMandatory) {
