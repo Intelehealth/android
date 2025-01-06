@@ -45,6 +45,7 @@ import com.google.android.material.slider.Slider;
 import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.ayu.visit.VisitCreationActivity;
 import org.intelehealth.app.ayu.visit.common.OnItemSelection;
 import org.intelehealth.app.ayu.visit.common.VisitUtils;
 import org.intelehealth.app.ayu.visit.model.ComplainBasicInfo;
@@ -346,7 +347,10 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                 addTextEnterView(parentNode, currentNode, genericViewHolder.singleComponentContainer, position);
                 break;
             case "number":
-                addNumberView(parentNode, currentNode, genericViewHolder.singleComponentContainer, position);
+                addNumberView(parentNode, currentNode, genericViewHolder.singleComponentContainer, position, false);
+                break;
+            case "decimal":
+                addNumberView(parentNode, currentNode, genericViewHolder.singleComponentContainer, position, true);
                 break;
             case "area":
                 // askArea(questionNode, context, adapter);
@@ -926,11 +930,11 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                                                 if (node.getText().equalsIgnoreCase(n.getText())) {
                                                     found = true;
                                                     // remove all the next nodes of the selected node - nested options.
-                                                    while (mItemList.size() > i) {
-                                                        mItemList.remove(i);
-                                                        notifyItemRemoved(i);
-                                                    }
-                                                    break;
+                                                    //while (mItemList.size() > i) {
+                                                    mItemList.remove(i);
+                                                    notifyItemRemoved(i);
+                                                    //}
+                                                    //break;
                                                 }
                                             }
                                             if (!found)
@@ -1111,6 +1115,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
             public void onImageRemoved(int nodeIndex, int imageIndex, String image) {
 
             }
+
             @Override
             public void onTerminalNodeAnsweredForParentUpdate(String parentNodeId) {
                 mParentNode.setDataCaptured(true);
@@ -1222,6 +1227,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                 public void onImageRemoved(int nodeIndex, int imageIndex, String image) {
 
                 }
+
                 @Override
                 public void onTerminalNodeAnsweredForParentUpdate(String parentNodeId) {
                     mParentNode.setDataCaptured(true);
@@ -1657,7 +1663,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
     }
 
 
-    private void addNumberView(Node parentNode, Node node, LinearLayout containerLayout, int index) {
+    private void addNumberView(Node parentNode, Node node, LinearLayout containerLayout, int index, boolean isDecimalAllowed) {
         containerLayout.removeAllViews();
         View view = View.inflate(mContext, R.layout.visit_reason_input_text, null);
         Button submitButton = view.findViewById(R.id.btn_submit);
@@ -1708,7 +1714,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         skipButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                node.setNeedToShowAlert(false);
                 node.setSelected(false);
                 node.setDataCaptured(false);
                 //holder.node.setDataCaptured(true);
@@ -1733,12 +1739,13 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                if (editText.getText().toString().trim().isEmpty()) {
+                node.setNeedToShowAlert(false);
+                String val = editText.getText().toString().trim();
+                if (val.isEmpty()) {
                     Toast.makeText(mContext, mContext.getString(R.string.please_enter_the_value), Toast.LENGTH_SHORT).show();
                 } else {
 
-                    if (!editText.getText().toString().equalsIgnoreCase("")) {
+                    if (!val.equalsIgnoreCase("")) {
                         if (node.getLanguage().contains("_")) {
                             node.setLanguage(node.getLanguage().replace("_", editText.getText().toString()));
                         } else {
@@ -1751,7 +1758,11 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                         parentNode.setSelected(true);
                         parentNode.setDataCaptured(true);
                         //holder.node.setDataCaptured(true);
+                        int age = ((VisitCreationActivity) mContext).getAgeInYear();
+                        String gender = ((VisitCreationActivity) mContext).getPatientGender();
+                        node.setNeedToShowAlert(node.checkCustomValidation(val, node.getNodeValidationList(), true, age, gender));
                     } else {
+
                         node.setDataCaptured(false);
                         //holder.node.setDataCaptured(false);
 
@@ -1789,8 +1800,16 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
             }
         });
 
-        editText.setInputType(InputType.TYPE_CLASS_NUMBER);
         editText.setHint(mContext.getString(R.string.describe_hint_txt));
+        if (isDecimalAllowed) {
+            editText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+            if (node.getPlaceholder() != null && !node.getPlaceholder().isEmpty())
+                editText.setHint(node.getPlaceholder());
+        } else {
+            editText.setInputType(InputType.TYPE_CLASS_NUMBER);
+
+        }
+
         /*if (node.isDataCaptured() && node.isDataCaptured()) {
             submitButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_check_24_white, 0, 0, 0);
         } else {
@@ -1853,7 +1872,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         skipButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                node.setNeedToShowAlert(false);
                 node.setSelected(false);
                 node.setDataCaptured(false);
 
@@ -1878,7 +1897,9 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (editText.getText().toString().trim().isEmpty()) {
+                node.setNeedToShowAlert(false);
+                String val = editText.getText().toString().trim();
+                if (val.isEmpty()) {
                     Toast.makeText(mContext, mContext.getString(R.string.please_enter_the_value), Toast.LENGTH_SHORT).show();
                 } else {
 
@@ -1896,6 +1917,10 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
 
                         parentNode.setSelected(true);
                         parentNode.setDataCaptured(true);
+
+                        int age = ((VisitCreationActivity) mContext).getAgeInYear();
+                        String gender = ((VisitCreationActivity) mContext).getPatientGender();
+                        node.setNeedToShowAlert(node.checkCustomValidation(val, node.getNodeValidationList(), false, age, gender));
 
                     } else {
                         node.setDataCaptured(false);

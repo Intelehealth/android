@@ -166,6 +166,14 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
     private boolean mHasLicence = false;
     private FeatureActiveStatus featureActiveStatus;
 
+    public int getAgeInYear() {
+        return Integer.parseInt(mAgeAndMonth.split(" ")[0]);
+    }
+
+    public String getPatientGender() {
+        return patientGender;
+    }
+
 
     private void startVisit() {
         // before starting, we determine if it is new visit for a returning patient

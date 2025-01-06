@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -33,7 +34,8 @@
             android:textAllCaps="false"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/common_button_text_size"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            app:backgroundTint="@null" />
 
         <Button
             android:id="@+id/btn_submit"
@@ -62,7 +64,6 @@
         android:layout_height="match_parent"
         android:layout_above="@+id/ll_footer"
         android:padding="@dimen/margin_24" />
-
 
 
 </RelativeLayout>

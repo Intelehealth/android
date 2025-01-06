@@ -16,18 +16,22 @@
     <string name="visit_uploaded_failed">Patient\'s visit has been successfully saved.</string>
 
 
-<!--    <string name="tmh_case_number">TMH Case Number</string>-->
-<!--    <string name="enter_tmh_case_number">Enter TMH Case Number</string>-->
-<!--    <string name="request_id">Request ID</string>-->
-<!--    <string name="discipline">Discipline (Specialty)</string>-->
+    <!--    <string name="tmh_case_number">TMH Case Number</string>-->
+    <!--    <string name="enter_tmh_case_number">Enter TMH Case Number</string>-->
+    <!--    <string name="request_id">Request ID</string>-->
+    <!--    <string name="discipline">Discipline (Specialty)</string>-->
 
-<!--    <string name="enter_request_id">Enter Request ID</string>-->
-<!--    <string name="enter_discipline">Enter Discipline</string>-->
-<!--    <string name="department">Department</string>-->
-<!--    <string name="enter_department">Enter Department</string>-->
-<!--    <string name="relative_phone_number">Relative Phone Number</string>-->
+    <!--    <string name="enter_request_id">Enter Request ID</string>-->
+    <!--    <string name="enter_discipline">Enter Discipline</string>-->
+    <!--    <string name="department">Department</string>-->
+    <!--    <string name="enter_department">Enter Department</string>-->
+    <!--    <string name="relative_phone_number">Relative Phone Number</string>-->
 
-<!--    <string name="visit_left_action_btn_label">@string/preview</string>-->
-<!--    <string name="visit_right_action_btn_label">@string/save_visit_button</string>-->
-<!--    <string name="visit_save_and_upload_status">@string/visit_saving</string>-->
+    <!--    <string name="visit_left_action_btn_label">@string/preview</string>-->
+    <!--    <string name="visit_right_action_btn_label">@string/save_visit_button</string>-->
+    <!--    <string name="visit_save_and_upload_status">@string/visit_saving</string>-->
+
+    <string name="additional_notes">Reasons for teleconsultation</string>
+    <string name="leave_a_note_for_doctor">Add the reason for teleconsultation</string>
+    <string name="no_notes_added_for_doctor">Reasons for teleconsultation not added!</string>
 </resources>

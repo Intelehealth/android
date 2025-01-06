@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.ayu.visit.VisitCreationActionListener;
 import org.intelehealth.app.ayu.visit.VisitCreationActivity;
@@ -203,7 +204,11 @@ public class PhysicalExaminationFragment extends Fragment {
 
             recyclerView.setAdapter(mQuestionsListingAdapter);
             mQuestionsListingAdapter.addItem(physicalExam.getExamNode(mCurrentComplainNodeOptionsIndex).getOption(0), physicalExam.getEngineVersion());
-            showSanityDialog();
+            if (!BuildConfig.FLAVOR_client.equals("kcdo")) {
+                showSanityDialog();
+            }
+
+
             if (mIsEditMode) {
                 while (true) {
                     if (mCurrentComplainNodeOptionsIndex < physicalExam.getTotalNumberOfExams() - 1) {

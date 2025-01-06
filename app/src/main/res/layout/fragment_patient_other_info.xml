@@ -288,7 +288,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/enter_tmh_case_number"
-                            android:inputType="numberDecimal"
+                            android:inputType="text"
                             android:text="@{patient.tmhCaseNumber}" />
                     </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
                 </LinearLayout>
