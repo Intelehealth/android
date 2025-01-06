@@ -52,4 +52,6 @@
     <string name="rndocrine_surgeon">Эндокринный хирург</string>
     <string name="pediatric_orthopedician">Детский ортопед</string>
     <string name="respiratory_medicine">Респираторная медицина</string>
+    <string name="medical_oncology_adult_haematology">Медицинская онкология: Взрослая гематология</string>
+    <string name="surgical_oncology_adult_haematology">Хирургическая онкология: Взрослая гематология</string>
 </resources>

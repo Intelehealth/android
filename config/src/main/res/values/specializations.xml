@@ -52,4 +52,6 @@
     <string name="rndocrine_surgeon">Endocrine Surgeon</string>
     <string name="pediatric_orthopedician">Pediatric Orthopedician</string>
     <string name="respiratory_medicine">Respiratory Medicine</string>
+    <string name="medical_oncology_adult_haematology">Medical Oncology : Adult Haematology</string>
+    <string name="surgical_oncology_adult_haematology">Surgical Oncology : Adult Haematology</string>
 </resources>
