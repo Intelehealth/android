@@ -1962,11 +1962,12 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
 
         editText.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
         editText.setFilters(new InputFilter[]{new FirstLetterUpperCaseInputFilter()});
-        editText.setMinLines(5);
-        editText.setLines(5);
         editText.setHorizontallyScrolling(false);
-        editText.setHint(mContext.getString(R.string.describe_hint_txt));
-        editText.setMinHeight(320);
+        editText.setHint(node.getHint());
+        editText.setMinLines(node.minLines());
+        editText.setLines(node.maxLines());
+        if (!node.isDateType())
+            editText.setMinHeight(320);
 
         /*if (node.isDataCaptured() && node.isDataCaptured()) {
             submitButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_check_24_white, 0, 0, 0);

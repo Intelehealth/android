@@ -3989,6 +3989,37 @@ public class Node implements Serializable {
         return isAlert;
     }
 
+    public String getHint() {
+        if (hasPlaceholder()) return placeholder;
+        if (getInputType().equals("text") && getText().contains("[") && getText().contains("]")) {
+            String hint = getText().substring(getText().indexOf("[") + 1, getText().indexOf("]"));
+            return hint;
+        }
+        return getText();
+    }
+
+    public int getInputTypeFlag() {
+        if (isDateType()) return InputType.TYPE_CLASS_TEXT;
+        return InputType.TYPE_TEXT_FLAG_MULTI_LINE;
+    }
+
+    public int minLines() {
+        return isDateType() ? 1 : 5;
+    }
+
+    public int maxLines() {
+        return isDateType() ? 1 : 5;
+    }
+
+    public boolean isDateType() {
+        return (getPlaceholder() != null && !getPlaceholder().isEmpty()
+                && getPlaceholder().contains("dd/mm/yyyy"));
+    }
+
+    private boolean hasPlaceholder() {
+        return (getPlaceholder() != null && !getPlaceholder().isEmpty());
+    }
+
     /*End*/
 }
 
