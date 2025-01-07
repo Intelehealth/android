@@ -6,6 +6,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.UUID;
 
 public class PatientDTO implements Serializable {
 
@@ -133,9 +134,9 @@ public class PatientDTO implements Serializable {
         return department;
     }
 
-    public void setDepartment(String department) {
-        this.department = department;
-    }
+//    public void setDepartment(String department) {
+//        this.department = department;
+//    }
 
     public String getPatientImageFromDownload() {
         return patientImageFromDownload;
@@ -164,6 +165,79 @@ public class PatientDTO implements Serializable {
 
     public void setGenderAgeString(String genderAgeString) {
         this.genderAgeString = genderAgeString;
+    }
+
+    //for unfpa
+    private String province;
+    private String city;
+    private String registrationAddressOfHf;
+    private String inn;
+    private String codeOfHealthFacility;
+    private String healthFacilityName;
+    private String codeOfDepartment;
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public String getInn() {
+        return inn;
+    }
+
+    public void setInn(String inn) {
+        this.inn = inn;
+    }
+
+    public String getCodeOfHealthFacility() {
+        return codeOfHealthFacility;
+    }
+
+    public void setCodeOfHealthFacility(String codeOfHealthFacility) {
+        this.codeOfHealthFacility = codeOfHealthFacility;
+    }
+
+    public String getHealthFacilityName() {
+        return healthFacilityName;
+    }
+
+    public void setHealthFacilityName(String healthFacilityName) {
+        this.healthFacilityName = healthFacilityName;
+    }
+
+    public String getCodeOfDepartment() {
+        return codeOfDepartment;
+    }
+
+    public void setCodeOfDepartment(String codeOfDepartment) {
+        this.codeOfDepartment = codeOfDepartment;
+    }
+
+//    public String getDepartment() {
+//        return department;
+//    }
+
+    public void setDepartment(String department) {
+        this.department = department;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getRegistrationAddressOfHf() {
+        return registrationAddressOfHf;
+    }
+
+    public void setRegistrationAddressOfHf(String registrationAddressOfHf) {
+        this.registrationAddressOfHf = registrationAddressOfHf;
     }
 
     public String getUuid() {
@@ -497,15 +571,15 @@ public class PatientDTO implements Serializable {
     }
 
     private String splitVillageAndDistrict(int index) {
-       try{
-           if (cityvillage != null && !cityvillage.isEmpty() && cityvillage.contains(":")) {
-               return cityvillage.split(":")[index];
-           }
-           if (index == 1) return cityvillage;
-           else return null;
-       }catch (Exception e){
-           return null;
-       }
+        try {
+            if (cityvillage != null && !cityvillage.isEmpty() && cityvillage.contains(":")) {
+                return cityvillage.split(":")[index];
+            }
+            if (index == 1) return cityvillage;
+            else return null;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
@@ -541,4 +615,55 @@ public class PatientDTO implements Serializable {
                 ", emContactNumber=" + emContactNumber +
                 '}';
     }
+
+    private String block;
+    private String householdLinkingUUIDlinking;
+
+    public String getBlock() {
+        return block;
+    }
+
+    public void setBlock(String block) {
+        this.block = block;
+    }
+
+    public String getHouseholdLinkingUUIDlinking() {
+        return householdLinkingUUIDlinking;
+    }
+
+    public void setHouseholdLinkingUUIDlinking(String householdLinkingUUIDlinking) {
+        this.householdLinkingUUIDlinking = householdLinkingUUIDlinking;
+    }
+    private String reportDateOfPatientCreated;
+
+    public String getReportDateOfPatientCreated() {
+        return reportDateOfPatientCreated;
+    }
+
+    public void setReportDateOfPatientCreated(String reportDateOfPatientCreated) {
+        this.reportDateOfPatientCreated = reportDateOfPatientCreated;
+    }
+/* public String getHouseholdNumber() {
+        return householdNumber;
+    }
+
+    public void setHouseholdNumber(String householdNumber) {
+        this.householdNumber = householdNumber;
+    }*/
+
+   /* public String getAddress3() {
+        return address3;
+    }
+
+    public void setAddress3(String address3) {
+        this.address3 = address3;
+    }*/
+
+  /*  @SerializedName("address3")
+    @Expose
+    private String address3;*/
+   /* @SerializedName("HouseHold")
+    @Expose
+    private String householdNumber;*/
+
 }

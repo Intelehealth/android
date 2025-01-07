@@ -1,8 +1,5 @@
 package org.intelehealth.app.database.dao;
 
-import static org.intelehealth.app.database.dao.EncounterDAO.getStartVisitNoteEncounterByVisitUUID;
-import static org.intelehealth.app.database.dao.PatientsDAO.isVisitPresentForPatient_fetchVisitValues;
-import static org.intelehealth.app.utilities.StringUtils.setGenderAgeLocal;
 import static org.intelehealth.klivekit.data.PreferenceHelper.CONFIG_VERSION;
 
 import android.content.Context;
@@ -10,12 +7,10 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
-import org.intelehealth.app.activities.searchPatientActivity.SearchPatientActivity_New;
-import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.utilities.CustomLog;
 
-import com.github.ajalt.timberkt.Timber;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
@@ -26,6 +21,7 @@ import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.appointment.dao.AppointmentDAO;
 import org.intelehealth.app.database.InteleHealthDatabaseHelper;
 import org.intelehealth.app.models.ActivePatientModel;
+import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.models.dto.ResponseDTO;
 import org.intelehealth.app.models.dto.VisitDTO;
 import org.intelehealth.app.models.pushRequestApiCall.PushRequestApiCall;
@@ -33,7 +29,6 @@ import org.intelehealth.app.models.pushResponseApiCall.PushResponseApiCall;
 import org.intelehealth.app.services.InitialSyncIntentService;
 import org.intelehealth.app.syncModule.SyncProgress;
 import org.intelehealth.app.utilities.CustomLog;
-import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DownloadFilesUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
@@ -95,23 +90,43 @@ public class SyncDAO {
         try {
             Logger.logD(TAG, "pull sync started");
             saveConfig(responseDTO.getData().getConfigResponse());
-            patientsDAO.insertPatients(responseDTO.getData().getPatientDTO());
-            patientsDAO.patientAttributes(responseDTO.getData().getPatientAttributesDTO());
+
             patientsDAO.patinetAttributeMaster(responseDTO.getData().getPatientAttributeTypeMasterDTO());
+            Logger.logD(TAG, "patinetAttributeMaster = "+responseDTO.getData().getPatientAttributeTypeMasterDTO().size());
+
+            patientsDAO.insertPatients(responseDTO.getData().getPatientDTO());
+            Logger.logD(TAG, "insertPatients = "+responseDTO.getData().getPatientDTO().size());
+
+            patientsDAO.patientAttributes(responseDTO.getData().getPatientAttributesDTO());
+            Logger.logD(TAG, "insertPatientAttributes = "+responseDTO.getData().getPatientAttributesDTO().size());
+
             visitsDAO.insertVisit(responseDTO.getData().getVisitDTO());
+            Logger.logD(TAG, "insertVisit = "+responseDTO.getData().getVisitDTO().size());
+
             encounterDAO.insertEncounter(responseDTO.getData().getEncounterDTO());
+            Logger.logD(TAG, "insertEncounter = "+responseDTO.getData().getEncounterDTO().size());
+
             obsDAO.insertObsTemp(responseDTO.getData().getObsDTO());
+            Logger.logD(TAG, "insertObsTemp = "+responseDTO.getData().getObsDTO().size());
+
             locationDAO.insertLocations(responseDTO.getData().getLocationDTO());
+            Logger.logD(TAG, "insertLocations = "+responseDTO.getData().getLocationDTO().size());
+
             providerDAO.insertProviders(responseDTO.getData().getProviderlist());
+            Logger.logD(TAG, "insertProviders = "+responseDTO.getData().getProviderlist().size());
+
             providerAttributeLIstDAO.insertProvidersAttributeList
                     (responseDTO.getData().getProviderAttributeList());
+            Logger.logD(TAG, "insertProvidersAttributeList = "+responseDTO.getData().getProviderAttributeList().size());
+
             visitAttributeListDAO.insertProvidersAttributeList(responseDTO.getData().getVisitAttributeList());
+            Logger.logD(TAG, "insertVisitAttributeList = "+responseDTO.getData().getVisitAttributeList().size());
 
             //downloading images if not found
             downloadPatientImages(responseDTO.getData().getPatientDTO());
 //           visitsDAO.insertVisitAttribToDB(responseDTO.getData().getVisitAttributeList())
 
-            Logger.logD(TAG, "Pull ENCOUNTER: " + responseDTO.getData().getEncounterDTO());
+            //Logger.logD(TAG, "Pull ENCOUNTER: " + responseDTO.getData().getEncounterDTO());
             Logger.logD(TAG, "Pull sync ended");
             sessionManager.setFirstTimeSyncExecute(false);
             IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
@@ -225,6 +240,7 @@ public class SyncDAO {
         sessionManager = new SessionManager(context);
         String encoded = sessionManager.getEncoded();
         String oldDate = sessionManager.getPullExcutedTime();
+        Log.d(TAG, "pullData_Background: encoded : "+encoded);
         String url = BuildConfig.SERVER_URL + "/EMR-Middleware/webapi/pull/pulldata/" +
                 sessionManager.getLocationUuid() + "/" + sessionManager.getPullExcutedTime() +
                 "/" + pageNo + "/" + AppConstants.PAGE_LIMIT;
@@ -244,10 +260,21 @@ public class SyncDAO {
 
                     //handling response data from background thread
                     //to prevent lagging
+                    /*Single.fromCallable(() -> populatePullSuccessBackground(response, context))
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe();*/
                     Single.fromCallable(() -> populatePullSuccessBackground(response, context))
                             .subscribeOn(Schedulers.io())
                             .observeOn(Schedulers.io())
-                            .subscribe();
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(result -> {
+                                // Handle success here, `result` is the output of `populatePullSuccessBackground`
+                            }, throwable -> {
+                                // Handle error here, `throwable` will contain the exception
+                                Log.e("RxJavaError", "Error occurred in populatePullSuccessBackground", throwable);
+                                // You can also take additional action like showing a user-friendly error message or retrying the operation
+                            });
                 }
 
                 Logger.logD("End Pull request", "Ended");

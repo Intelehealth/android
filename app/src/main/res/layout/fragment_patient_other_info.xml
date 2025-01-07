@@ -30,8 +30,8 @@
             android:id="@+id/scroll_view"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:fillViewport="true"
             android:layout_marginBottom="@dimen/margin_10"
+            android:fillViewport="true"
             app:layout_constraintBottom_toTopOf="@+id/frag2_btn_next"
             app:layout_constraintTop_toTopOf="parent"
             tools:layout_editor_absoluteX="16dp">
@@ -285,10 +285,10 @@
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/textInputTmhCaseNumber"
                             style="@style/AppTheme.InputBox.Address"
-                            android:inputType="numberDecimal"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/enter_tmh_case_number"
+                            android:inputType="numberDecimal"
                             android:text="@{patient.tmhCaseNumber}" />
                     </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
                 </LinearLayout>
@@ -329,10 +329,10 @@
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/textInputRequestId"
                             style="@style/AppTheme.InputBox.Address"
-                            android:inputType="text"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/enter_request_id"
+                            android:inputType="text"
                             android:text="@{patient.requestId}" />
                     </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
                 </LinearLayout>
@@ -397,10 +397,10 @@
                                 style="@style/AppTheme.InputBox.Phone"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:inputType="phone"
                                 android:cursorVisible="true"
-                                android:text="@{patient.relativePhoneNumber}"
-                                android:hint="@string/relative_phone_number" />
+                                android:hint="@string/relative_phone_number"
+                                android:inputType="phone"
+                                android:text="@{patient.relativePhoneNumber}" />
                         </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </LinearLayout>
@@ -448,6 +448,174 @@
                     </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
                 </LinearLayout>
 
+                <LinearLayout
+                    android:id="@+id/llInn"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/std_12dp"
+                    android:orientation="vertical"
+                    android:visibility="@{otherInfoConfig.inn.enabled ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/llDiscipline"
+                    tools:visibility="visible">
+
+                    <TextView
+                        android:id="@+id/lblInn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingExtra="3sp"
+                        android:text="@{ otherInfoConfig.inn.mandatory ? @string/inn + ` *` : @string/inn}"
+                        android:textAppearance="@style/blur_txtview"
+                        android:textSize="@null"
+                        tools:text="@string/inn" />
+
+                    <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
+                        android:id="@+id/textInputLayInn"
+                        style="@style/AppTheme.OutlineInputBox"
+                        config="@{otherInfoConfig.inn}"
+                        editMode="@{isEditMode}"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_4"
+                        app:hintEnabled="false">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/textInputInn"
+                            style="@style/AppTheme.InputBox.Address"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/enter_inn"
+                            android:text="@{patient.inn}" />
+                    </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llCodeOfHealthyFacility"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/std_12dp"
+                    android:orientation="vertical"
+                    android:visibility="@{otherInfoConfig.codeOfHealthyFacility.enabled ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/llInn"
+                    tools:visibility="visible">
+
+                    <TextView
+                        android:id="@+id/lblCodeOfHealthyFacility"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingExtra="3sp"
+                        android:text="@{ otherInfoConfig.codeOfHealthyFacility.mandatory ? @string/code_of_the_health_facility + ` *` : @string/code_of_the_health_facility}"
+                        android:textAppearance="@style/blur_txtview"
+                        android:textSize="@null"
+                        tools:text="@string/code_of_the_health_facility" />
+
+                    <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
+                        android:id="@+id/textInputLayCodeOfHealthyFacility"
+                        style="@style/AppTheme.OutlineInputBox"
+                        config="@{otherInfoConfig.codeOfHealthyFacility}"
+                        editMode="@{isEditMode}"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_4"
+                        app:hintEnabled="false">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/textInputCodeOfHealthyFacility"
+                            style="@style/AppTheme.InputBox.Address"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/enter_code"
+                            android:text="@{patient.codeOfHealthFacility}" />
+                    </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llHealthFacilityName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/std_12dp"
+                    android:orientation="vertical"
+                    android:visibility="@{otherInfoConfig.healthFacilityName.enabled ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/llCodeOfHealthyFacility"
+                    tools:visibility="visible">
+
+                    <TextView
+                        android:id="@+id/lblHealthFacilityName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingExtra="3sp"
+                        android:text="@{ otherInfoConfig.healthFacilityName.mandatory ? @string/health_facility_name + ` *` : @string/health_facility_name}"
+                        android:textAppearance="@style/blur_txtview"
+                        android:textSize="@null"
+                        tools:text="@string/health_facility_name" />
+
+                    <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
+                        android:id="@+id/textInputLayHealthFacilityName"
+                        style="@style/AppTheme.OutlineInputBox.DropDown"
+                        config="@{otherInfoConfig.healthFacilityName}"
+                        editMode="@{isEditMode}"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_4"
+                        app:hintEnabled="false">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/autoCompleteHealthFacilityName"
+                            style="@style/AppTheme.InputBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/enter_name"
+                            android:inputType="none" />
+                    </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llCodeOfDepartment"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/std_12dp"
+                    android:orientation="vertical"
+                    android:visibility="@{otherInfoConfig.codeOfDepartment.enabled ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/llHealthFacilityName"
+                    tools:visibility="visible">
+
+                    <TextView
+                        android:id="@+id/lblCodeOfDepartment"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingExtra="3sp"
+                        android:text="@{ otherInfoConfig.codeOfDepartment.mandatory ? @string/code_of_the_department + ` *` : @string/code_of_the_department}"
+                        android:textAppearance="@style/blur_txtview"
+                        android:textSize="@null"
+                        tools:text="@string/code_of_the_department" />
+
+                    <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
+                        android:id="@+id/textInputLayCodeOfDepartment"
+                        style="@style/AppTheme.OutlineInputBox"
+                        config="@{otherInfoConfig.codeOfDepartment}"
+                        editMode="@{isEditMode}"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_4"
+                        app:hintEnabled="false">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/textInputCodeOfDepartment"
+                            style="@style/AppTheme.InputBox.Address1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/enter_code"
+                            android:text="@{patient.codeOfDepartment}" />
+                    </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
+                </LinearLayout>
+
                 <!--department-->
                 <LinearLayout
                     android:id="@+id/llDepartment"
@@ -458,7 +626,7 @@
                     android:visibility="@{otherInfoConfig.department.enabled ? View.VISIBLE : View.GONE}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/llDiscipline"
+                    app:layout_constraintTop_toBottomOf="@id/llCodeOfDepartment"
                     tools:visibility="visible">
 
                     <TextView
@@ -483,9 +651,10 @@
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/textInputDepartment"
-                            style="@style/AppTheme.InputBox.Address"
+                            style="@style/AppTheme.InputBox.Department"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:inputType="text"
                             android:hint="@string/enter_department"
                             android:text="@{patient.department}" />
                     </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
