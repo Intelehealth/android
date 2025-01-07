@@ -683,6 +683,7 @@ public class ScheduleAppointmentActivity_New extends BaseActivity implements Net
         tvInfo.setText(Html.fromHtml(infoText));
 
         alertDialog = alertdialogBuilder.create();
+        alertDialog.setCancelable(false);
         alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg);
         alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
         int width = context.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);
@@ -730,6 +731,7 @@ public class ScheduleAppointmentActivity_New extends BaseActivity implements Net
         }
         if (NetworkConnection.isOnline(getApplication())) {
             mSyncAlertDialog = new DialogUtils().showCommonLoadingDialog(this, getResources().getString(R.string.booking_appointment), getResources().getString(R.string.please_wait));
+            mSyncAlertDialog.setCancelable(false);
             final Handler handler = new Handler();
             handler.postDelayed(() -> {
                 SyncUtils syncUtils = new SyncUtils();
