@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="16dp"
+    card_view:cardCornerRadius="10dp"
+    card_view:cardElevation="8dp"
+    android:layout_marginTop="48dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/card_bg_prescription_notification"
+        android:paddingTop="@dimen/padding_10"
+        android:paddingBottom="@dimen/padding_10"
+        android:paddingStart="@dimen/padding_15"
+        android:paddingEnd="@dimen/padding_15"
+        android:id="@+id/notificationCard"
+        android:clipToPadding="false">
+
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_prescription_notification"
+            android:layout_marginEnd="16dp" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_prescription_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                android:layout_marginBottom="@dimen/padding_10"
+                android:text="32 prescriptions are pending to be sent to the patient."/>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_prescription_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="View prescriptions"
+                android:backgroundTint="@color/violet_light"
+                android:textColor="@color/violet3" />
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
+

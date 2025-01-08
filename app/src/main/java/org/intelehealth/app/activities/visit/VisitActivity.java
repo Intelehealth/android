@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageButton;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -126,6 +127,14 @@ public class VisitActivity extends BaseActivity implements
         syncAnimator = ObjectAnimator.ofFloat(refresh, View.ROTATION, 0f, 359f).setDuration(1200);
         syncAnimator.setRepeatCount(ValueAnimator.INFINITE);
         syncAnimator.setInterpolator(new LinearInterpolator());
+
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                Intent intent = new Intent(VisitActivity.this, HomeScreenActivity_New.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -157,6 +166,10 @@ public class VisitActivity extends BaseActivity implements
         super.onDestroy();
         unregisterReceiver(mBroadcastReceiver);
         notificationReceiver.unregisterNotificationReceiver(this);
+    }
+
+    private boolean shouldHandleBackPress() {
+        return true;
     }
 
     public void configureTabLayout() {

@@ -171,6 +171,13 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+
+        <activity
+            android:name=".activities.vitalActivity.VitalsActivity"
+            android:configChanges="uiMode"
+            android:label="@string/title_activity_vitals"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.patientDetailActivity.PatientDetailActivity2"
             android:exported="false"
@@ -351,6 +358,22 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustNothing" />
         <activity
+            android:name=".activities.familyHistoryActivity.FamilyHistoryActivity"
+            android:configChanges="uiMode"
+            android:label="@string/title_activity_family_history"
+            android:parentActivityName=".activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustNothing" />
+        <activity
+            android:name=".activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity"
+            android:configChanges="uiMode"
+            android:label="@string/title_activity_past_medical_history"
+            android:parentActivityName=".activities.questionNodeActivity.QuestionNodeActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustNothing" />
+        <activity
             android:name=".activities.questionNodeActivity.QuestionNodeActivity"
             android:configChanges="uiMode"
             android:label="@string/title_activity_question_node"
@@ -364,6 +387,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
+
         <activity
             android:name=".activities.videoLibraryActivity.VideoLibraryActivity"
             android:configChanges="uiMode"
@@ -471,6 +495,7 @@
             </intent-filter>
         </receiver>
         <receiver android:name=".notificationScheduler.ScheduleNotificationReceiver" />
+        <receiver android:name=".ayu.visit.notification.ReminderReceiver" android:exported="true"/>
 
         <meta-data
             android:name="firebase_crashlytics_collection_enabled"

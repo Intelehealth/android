@@ -1,14 +1,22 @@
 package org.intelehealth.app.shared;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.ViewModelProvider;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.github.ajalt.timberkt.Timber;
 import com.google.gson.Gson;
 
+import org.intelehealth.app.activities.visit.VisitActivity;
+import org.intelehealth.app.ayu.visit.notification.MyNotificationManager;
 import org.intelehealth.app.database.dao.ProviderDAO;
 import org.intelehealth.app.database.dao.RTCConnectionDAO;
 import org.intelehealth.app.models.dto.ProviderDTO;
@@ -17,10 +25,6 @@ import org.intelehealth.app.ui.language.activity.LanguageActivity;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.app.webrtc.activity.IDAChatActivity;
 import org.intelehealth.app.webrtc.notification.AppNotification;
-import org.intelehealth.config.presenter.feature.data.FeatureActiveStatusRepository;
-import org.intelehealth.config.presenter.feature.factory.FeatureActiveStatusViewModelFactory;
-import org.intelehealth.config.presenter.feature.viewmodel.FeatureActiveStatusViewModel;
-import org.intelehealth.config.room.ConfigDatabase;
 import org.intelehealth.config.room.entity.FeatureActiveStatus;
 import org.intelehealth.klivekit.model.ChatMessage;
 import org.intelehealth.klivekit.model.RtcArgs;
@@ -36,12 +40,45 @@ import java.util.UUID;
 public class BaseActivity extends LanguageActivity implements SocketManager.NotificationListener {
     private static final String TAG = "BaseActivity";
     private FeatureActiveStatus featureActiveStatus;
+    private MyNotificationManager notificationManager;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         SocketManager.getInstance().setNotificationListener(this);
+        notificationManager = new MyNotificationManager(this);
+
+        Intent intent = getIntent();
+        if (intent != null && intent.getBooleanExtra("SHOW_DOCTOR_PRESCRIPTION_NOTIFICATION_BACKGROUND", false)) {
+            String title = intent.getStringExtra("PRESCRIPTION_NOTIFICATION_TITLE");
+            String subtitle = intent.getStringExtra("PRESCRIPTION_NOTIFICATION_SUBTITLE");
+
+            if (title == null) title = "";
+            if (subtitle == null) subtitle = "";
+
+            showGlobalNotification(title, subtitle);
+        }
+
+        LocalBroadcastManager.getInstance(this).registerReceiver(
+                prescriptionNotificationReceiver,
+                new IntentFilter("SHOW_DOCTOR_PRESCRIPTION_NOTIFICATION_FOREGROUND")
+        );
     }
+
+    private final BroadcastReceiver prescriptionNotificationReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent != null) {
+                String title = intent.getStringExtra("PRESCRIPTION_NOTIFICATION_TITLE");
+                String subtitle = intent.getStringExtra("PRESCRIPTION_NOTIFICATION_SUBTITLE");
+
+                if (title == null) title = "";
+                if (subtitle == null) subtitle = "";
+
+                showGlobalNotification(title, subtitle);
+            }
+        }
+    };
 
     /**
      * This method will load the active/deactivate status of overall application feature
@@ -56,6 +93,21 @@ public class BaseActivity extends LanguageActivity implements SocketManager.Noti
 //            if (featureActiveStatus != null) onFeatureActiveStatusLoaded(featureActiveStatus);
 //        });
         onFeatureActiveStatusLoaded(FeatureActiveStatus.Companion.getDefaultFeatureStatus());
+    }
+
+    public void showGlobalNotification(String title, String subTitle) {
+        if (notificationManager != null) {
+            notificationManager.showNotification(
+                    title,
+                    subTitle,
+                    () -> {
+                        Intent intent = new Intent(this, VisitActivity.class);
+                        startActivity(intent);
+                        unregisterPrescriptionNotificationReceiver();
+                        return null;
+                    }
+            );
+        }
     }
 
     @Override
@@ -103,4 +155,14 @@ public class BaseActivity extends LanguageActivity implements SocketManager.Noti
         featureActiveStatus = activeStatus;
         Timber.tag(TAG).d("Active feature status=>%s", new Gson().toJson(activeStatus));
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
+    protected void unregisterPrescriptionNotificationReceiver() {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(prescriptionNotificationReceiver);
+    }
+
 }

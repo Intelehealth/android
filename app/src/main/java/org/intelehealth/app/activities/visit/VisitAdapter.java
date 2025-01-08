@@ -6,8 +6,12 @@ import static org.intelehealth.app.utilities.UuidDictionary.PRESCRIPTION_LINK;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+
+import org.intelehealth.app.app.IntelehealthApplication;
+import org.intelehealth.app.ayu.visit.notification.LocalPrescriptionInfo;
 import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,6 +37,8 @@ import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.followuppatients.FollowUpPatientAdapter_New;
@@ -51,6 +57,7 @@ import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.exception.DAOException;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -311,6 +318,7 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
                 CustomLog.v("whatsappMessage", whatsappMessage);
                 context.startActivity(new Intent(Intent.ACTION_VIEW,
                         Uri.parse(whatsappMessage)));
+                updateLocalPrescriptionInformations(model.getVisitUuid());
             } else {
                 Toast.makeText(context, context.getResources().getString(R.string.please_enter_mobile_number),
                         Toast.LENGTH_SHORT).show();
@@ -324,6 +332,25 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
         int width = context.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
         alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
         alertDialog.show();
+    }
+
+    private void updateLocalPrescriptionInformations(String visituuid) {
+        List<LocalPrescriptionInfo> prescriptionDataList = new ArrayList<>();
+        Gson gson = new Gson();
+        SharedPreferences sharedPreference = IntelehealthApplication.getAppContext().getSharedPreferences(IntelehealthApplication.getAppContext().getString(R.string.prescription_share_key), Context.MODE_PRIVATE);
+        String prescriptionListJson = sharedPreference.getString(AppConstants.PRESCRIPTION_DATA_LIST, "");
+        if(!prescriptionListJson.isEmpty()){
+            Type type = new TypeToken<List<LocalPrescriptionInfo>>() {}.getType();
+            prescriptionDataList = gson.fromJson(prescriptionListJson, type);
+            for(LocalPrescriptionInfo lpi: prescriptionDataList){
+                if(lpi.getVisitUUID().equals(visituuid)){
+                    lpi.setShareStatus(true);
+                }
+            }
+        }
+        String prescriptionDataListJson = gson.toJson(prescriptionDataList);
+        sharedPreference.edit().putString(AppConstants.PRESCRIPTION_DATA_LIST, prescriptionDataListJson).apply();
+        sharedPreference.edit().putBoolean(AppConstants.SHARED_ANY_PRESCRIPTION, true).apply();
     }
 
 }

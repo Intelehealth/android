@@ -36,6 +36,8 @@ public class AppConstants {
     public static final String IMAGE_PATH = IntelehealthApplication.getAppContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES) + File.separator;
     public static final String MESSAGE_PROGRESS = "message_progress";
 
+    public static final String DOCTOR_NOT_NEEDED = "Specialist doctor not needed";
+
     public static final int PAGE_LIMIT = 50;
 
     public static final long FOLLOW_UP_SCHEDULE_ONE_DURATION = 2;
@@ -254,4 +256,14 @@ public class AppConstants {
     public static final String INTENT_IS_DIFFERENT_LOCATION_PRESCRIPTION = "isDifferentLocationPrescriptionReceived";
     public static final String INTENT_PATIENT_ID = "patientId";
     public static final String INTENT_VISIT_UUID = "visitUuid";
+
+    public static final String SECOND_NOTIFICATION_FIRED = "second_notification_fired";
+
+    public static final String PRESCRIPTION_DATA_LIST = "prescriptionDataList";
+    public static final String SHARED_ANY_PRESCRIPTION = "sharedAnyPrescription";
+    public static final String UNSHARED_PRESCRIPTION_COUNT = "unshared_prescription_count";
+
+    public static final int PRESCRIPTION_SHARED = 999;
+    public static final int PRESCRIPTION_NOT_SHARED = 998;
+
 }

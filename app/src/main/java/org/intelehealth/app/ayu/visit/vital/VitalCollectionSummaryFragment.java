@@ -6,7 +6,9 @@ import static org.intelehealth.app.syncModule.SyncUtils.syncNow;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,19 +18,32 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
+
 import org.intelehealth.app.R;
+import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
+import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity2;
 import org.intelehealth.app.activities.visit.staticEnabledFields.VitalsEnabledFieldsHelper;
+import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.ayu.visit.VisitCreationActionListener;
 import org.intelehealth.app.ayu.visit.VisitCreationActivity;
 import org.intelehealth.app.ayu.visit.common.VisitUtils;
+import org.intelehealth.app.ayu.visit.model.VitalsWrapper;
+import org.intelehealth.app.database.dao.VisitAttributeListDAO;
+import org.intelehealth.app.database.dao.VisitsDAO;
 import org.intelehealth.app.models.VitalsObject;
+import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.ConfigUtils;
 import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.config.presenter.fields.data.PatientVitalRepository;
 import org.intelehealth.config.presenter.fields.factory.PatientVitalViewModelFactory;
 import org.intelehealth.config.presenter.fields.viewmodel.PatientVitalViewModel;
@@ -36,7 +51,11 @@ import org.intelehealth.config.room.ConfigDatabase;
 import org.intelehealth.config.room.entity.PatientVital;
 import org.intelehealth.config.utility.PatientVitalConfigKeys;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
 
 import timber.log.Timber;
 
@@ -53,6 +72,11 @@ public class VitalCollectionSummaryFragment extends Fragment {
     private VitalsObject mVitalsObject;
     private boolean mIsEditMode = false;
     private List<PatientVital> mPatientVitalList;
+
+    private long mLastClickTime = 0;
+    private String visitUuid;
+
+
     private LinearLayout mHeightLinearLayout, mWeightLinearLayout, mBMILinearLayout, mBPLinearLayout, mPulseLinearLayout, mTemperatureLinearLayout, mSpo2LinearLayout, mRespiratoryRateLinearLayout, mHaemoglobinLinearLayout, mSugarRandomLinearLayout, mBloodGroupLinearLayout;
 
     public VitalCollectionSummaryFragment() {
@@ -60,9 +84,10 @@ public class VitalCollectionSummaryFragment extends Fragment {
     }
 
 
-    public static VitalCollectionSummaryFragment newInstance(VitalsObject result, boolean isEditMode) {
+    public static VitalCollectionSummaryFragment newInstance(VitalsWrapper result, boolean isEditMode) {
         VitalCollectionSummaryFragment fragment = new VitalCollectionSummaryFragment();
-        fragment.mVitalsObject = result;
+        fragment.mVitalsObject = result.getVitalsObject();
+        fragment.visitUuid = result.getVisitUUID();
         fragment.mIsEditMode = isEditMode;
         return fragment;
     }
@@ -241,7 +266,37 @@ public class VitalCollectionSummaryFragment extends Fragment {
                     getActivity().setResult(Activity.RESULT_OK);
                     getActivity().finish();
                 } else {
-                    mActionListener.onFormSubmitted(VisitCreationActivity.STEP_2_VISIT_REASON, mIsEditMode, mVitalsObject);
+                    MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(requireActivity());
+                    alertDialogBuilder.setMessage(getResources().getString(R.string.doctor_advice_alert_msg));
+
+                    alertDialogBuilder.setNegativeButton(getResources().getString(R.string.vital_alert_save_button), (dialogInterface, i) -> {
+                        dialogInterface.dismiss();
+                        VisitAttributeListDAO speciality_attributes = new VisitAttributeListDAO();
+                        try {
+                            // avoiding multi-click by checking if click is within 1000ms than avoid it.
+                            if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                                return;
+                            }
+                            mLastClickTime = SystemClock.elapsedRealtime();
+
+                            speciality_attributes.insertVisitAttributes(visitUuid,"", AppConstants.DOCTOR_NOT_NEEDED);
+                            // speciality_attributes.insertVisitAttributes(visitUuid, " Specialist doctor not needed");
+                        } catch (DAOException e) {
+                            e.printStackTrace();
+                        }
+
+                        //-------End Visit----------
+                        SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());
+                        Date todayDate = new Date();
+                        String endDate = currentDate.format(todayDate);
+                        endVisit(visitUuid, mVitalsObject.getPatientUuid(), endDate);
+                    });
+                    alertDialogBuilder.setPositiveButton(getResources().getString(R.string.vital_alert_continue_button), (dialog, which) -> {
+                        mActionListener.onFormSubmitted(VisitCreationActivity.STEP_2_VISIT_REASON, mIsEditMode, mVitalsObject);
+                        dialog.dismiss();
+                    });
+                    AlertDialog alertDialog = alertDialogBuilder.show();
+                    IntelehealthApplication.setAlertDialogCustomTheme(getActivity(), alertDialog);
                 }
             }
         });
@@ -273,6 +328,20 @@ public class VitalCollectionSummaryFragment extends Fragment {
             }
         });
         return view;
+    }
+
+    private void endVisit(String visitUuid, String patientUuid, String endTime) {
+        VisitsDAO visitsDAO = new VisitsDAO();
+        try {
+            visitsDAO.updateVisitEnddate(visitUuid, endTime);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+        new SyncUtils().syncForeground("");
+        sessionManager.removeVisitSummary(patientUuid, visitUuid);
+        Intent intent = new Intent(getContext(), HomeScreenActivity_New.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 
     private ObjectAnimator syncAnimator;

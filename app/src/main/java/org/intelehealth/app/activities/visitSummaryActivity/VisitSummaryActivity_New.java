@@ -70,6 +70,7 @@ import android.util.DisplayMetrics;
 
 import org.intelehealth.app.activities.visit.staticEnabledFields.SpecializationsEnabledFieldsHelper;
 import org.intelehealth.app.activities.visit.staticEnabledFields.VitalsEnabledFieldsHelper;
+import org.intelehealth.app.ayu.visit.notification.LocalPrescriptionInfo;
 import org.intelehealth.app.database.dao.VisitsDAO;
 import org.intelehealth.app.utilities.CustomLog;
 
@@ -124,6 +125,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
@@ -208,6 +210,7 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -2818,6 +2821,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                         Log.d("DEBUG", "File size: " + pdfFile.length());
                         Log.d("DEBUG", "URI: " + uri.toString());
                         startActivity(intent);
+                        updateLocalPrescriptionInformations(visitUUID);
                     } catch (ActivityNotFoundException exception) {
                         Toast.makeText(VisitSummaryActivity_New.this, getString(R.string.please_install_whatsapp), Toast.LENGTH_LONG).show();
                     }
@@ -2873,6 +2877,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             }
         });
 
+
         // Bottom Buttons - end
         refresh.setOnClickListener(v -> {
             syncNow(VisitSummaryActivity_New.this, refresh, syncAnimator);
@@ -2920,6 +2925,25 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             in.putExtra("requestCode", AppConstants.EVENT_APPOINTMENT_BOOKING_FROM_VISIT_SUMMARY);
             mStartForScheduleAppointment.launch(in);
         });
+    }
+
+    private void updateLocalPrescriptionInformations(String visituuid) {
+        List<LocalPrescriptionInfo> prescriptionDataList = new ArrayList<>();
+        Gson gson = new Gson();
+        SharedPreferences sharedPreference = IntelehealthApplication.getAppContext().getSharedPreferences(IntelehealthApplication.getAppContext().getString(R.string.prescription_share_key), Context.MODE_PRIVATE);
+        String prescriptionListJson = sharedPreference.getString(AppConstants.PRESCRIPTION_DATA_LIST, "");
+        if(!prescriptionListJson.isEmpty()){
+            Type type = new TypeToken<List<LocalPrescriptionInfo>>() {}.getType();
+            prescriptionDataList = gson.fromJson(prescriptionListJson, type);
+            for(LocalPrescriptionInfo lpi: prescriptionDataList){
+                if(lpi.getVisitUUID().equals(visituuid)){
+                    lpi.setShareStatus(true);
+                }
+            }
+        }
+        String prescriptionDataListJson = gson.toJson(prescriptionDataList);
+        sharedPreference.edit().putString(AppConstants.PRESCRIPTION_DATA_LIST, prescriptionDataListJson).apply();
+        sharedPreference.edit().putBoolean(AppConstants.SHARED_ANY_PRESCRIPTION, true).apply();
     }
 
     private void getVisitStartDate() {

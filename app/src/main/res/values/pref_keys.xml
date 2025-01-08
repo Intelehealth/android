@@ -9,4 +9,6 @@
     <string name="admin_login_shared_preference_key" translatable="false">PREF_ADMIN_LOGIN</string>
     <string name="admin_login_password_key" translatable="false">PREF_KEY_ADMIN_PASS</string>
     <string name="admin_login_salt_key" translatable="false">PREF_KEY_ADMIN_SALT</string>
+
+    <string name="prescription_share_key" translatable="false">PREF_KEY_PRESCRIPTION_SHARE</string>
 </resources>

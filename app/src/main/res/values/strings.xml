@@ -126,6 +126,7 @@
 
     //Visit Summary Screen
     <string name="title_activity_family_history">Family History</string>
+    <string name="title_activity_past_medical_history" translatable="false">PastMedicalHistoryActivity</string>
     <string name="title_activity_physical_exam">Physical Exam</string>
     <string name="visit_summary_temperature">Temperature(C)</string>
     <string name="visit_summary_bmi">BMI</string>
@@ -1229,6 +1230,12 @@
     <string name="start_doctor_visit">Start Doctor Visit</string>
     <string name="haemoglobin">Haemoglobin</string>
     <string name="sugar_random">Sugar Level - Random</string>
+
+    <string name="start_newadvice_confirmation_msg">Are you sure you want to start a Sevika advice?</string>
+    <string name="sevika_doctor_advice_confirmation_msg">Are you sure you want to start doctor consultation?</string>
+    <string name="doctor_advice_alert_msg">Do you want tele-consultation from Doctor?</string>
+    <string name="vital_alert_continue_button">Yes, Continue</string>
+    <string name="vital_alert_save_button">Save</string>
 
 
     <string name="hint_drop_down_hb_check">Select Duration</string>
