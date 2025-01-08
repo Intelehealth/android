@@ -186,14 +186,15 @@ public class ScheduleAppointmentActivity_New extends BaseActivity implements Net
                 CustomLog.v(TAG, "onReceive JOB =  " + intent.getIntExtra("JOB", -1));
                 if (mIsPendingForAppointmentSave) {
                     mStatusCount = 0;
-                    broadcasterReceiverStatusMap.add(intent.getIntExtra("JOB", -1));
+                    int receiverStatus = intent.getIntExtra("JOB", -1);
+                    broadcasterReceiverStatusMap.add(receiverStatus);
                     //sometimes the broadcaster receiver returning same status multipple times
                     //that's why added those values on SET then calculating
                     for (int status : broadcasterReceiverStatusMap) {
                         mStatusCount += status;
                     }
                     //mStatusCount = mStatusCount + intent.getIntExtra("JOB", -1);
-                    if (mStatusCount == AppConstants.SYNC_PULL_PUSH_APPOINTMENT_PULL_DATA_DONE) {
+                    if (receiverStatus == AppConstants.SYNC_PULL_DATA_DONE) {
                         if (mSyncAlertDialog != null && mSyncAlertDialog.isShowing()) {
                             if (!isFinishing() && !isDestroyed()) {
                                 mSyncAlertDialog.dismiss();
