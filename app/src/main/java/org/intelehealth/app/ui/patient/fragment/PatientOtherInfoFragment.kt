@@ -7,6 +7,7 @@ import androidx.navigation.fragment.findNavController
 import com.github.ajalt.timberkt.Timber
 import com.google.gson.Gson
 import org.intelehealth.app.R
+import org.intelehealth.app.app.AppConstants
 import org.intelehealth.app.databinding.FragmentPatientOtherInfoBinding
 import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.app.ui.filter.FirstLetterUpperCaseInputFilter
@@ -22,6 +23,7 @@ import org.intelehealth.app.utilities.extensions.hideErrorOnTextChang
 import org.intelehealth.app.utilities.extensions.validate
 import org.intelehealth.app.utilities.extensions.validateDigit
 import org.intelehealth.app.utilities.extensions.validateDropDowb
+import java.io.File
 
 /**
  * Created by Vaghela Mithun R. on 27-06-2024 - 13:42.
@@ -122,8 +124,26 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
         PatientOtherInfoFragmentDirections.navigationOtherToDetails(
             patient.uuid, "searchPatient", "false"
         ).also {
+            deleteUnusedImages()
             findNavController().navigate(it)
             requireActivity().finish()
+        }
+    }
+
+    /**
+     * after moving the image from unSavedImage folder to main folder
+     * we are deleting moved image
+     */
+    private fun deleteUnusedImages() {
+        try {
+            val source =
+                File(AppConstants.IMAGE_PATH + AppConstants.UNSAVED_IMAGE_DIRECTORY + File.separator + patient.uuid + ".jpg")
+
+            if (source.exists() && source.path.contains(AppConstants.UNSAVED_IMAGE_DIRECTORY)) {
+                source.delete()
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 

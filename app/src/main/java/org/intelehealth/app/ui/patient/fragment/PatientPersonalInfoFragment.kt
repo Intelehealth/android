@@ -2,7 +2,9 @@ package org.intelehealth.app.ui.patient.fragment
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import androidx.activity.result.ActivityResult
@@ -11,6 +13,7 @@ import androidx.core.view.isVisible
 import androidx.databinding.OnRebindCallback
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.github.ajalt.timberkt.Timber
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.gson.Gson
@@ -22,6 +25,7 @@ import org.intelehealth.app.databinding.FragmentPatientOtherInfoBinding
 import org.intelehealth.app.databinding.FragmentPatientPersonalInfoBinding
 import org.intelehealth.app.databinding.FragmentPatientPersonalInfoOldDesignBinding
 import org.intelehealth.app.models.dto.PatientDTO
+import org.intelehealth.app.ui.binding.bindProfileImage
 import org.intelehealth.app.ui.dialog.CalendarDialog
 import org.intelehealth.app.ui.filter.FirstLetterUpperCaseInputFilter
 import org.intelehealth.app.utilities.AgeUtils
@@ -43,6 +47,7 @@ import org.intelehealth.app.utilities.extensions.validateDropDowb
 import org.intelehealth.core.registry.PermissionRegistry
 import org.intelehealth.core.registry.PermissionRegistry.Companion.CAMERA
 import org.intelehealth.ihutils.ui.CameraActivity
+import org.intelehealth.ihutils.ui.CameraActivityForPatientImage
 import org.intelehealth.klivekit.utils.DateTimeUtils
 import org.joda.time.LocalDate
 import org.joda.time.Period
@@ -221,6 +226,7 @@ class PatientPersonalInfoFragment :
             emContactNumber = binding.ccpEmContactPhone.fullNumberWithPlus
 
             patientViewModel.updatedPatient(this)
+            copyProfileImage()
             if (patientViewModel.isEditMode) {
                 saveAndNavigateToDetails()
             } else {
@@ -237,6 +243,44 @@ class PatientPersonalInfoFragment :
         }
     }
 
+
+    /**
+     * before saving profile data keeping the profile photo to unsaved directory
+     * to prevent existing image replacement
+     * after clicking on save button deleting the image from unSavedImages directory
+     * and adding to main Picture directory
+     */
+    private fun copyProfileImage() {
+        try {
+            val destination = File(AppConstants.IMAGE_PATH + patient.uuid + ".jpg")
+            val source = File(patient.patientPhoto)
+
+            if (source.exists() && source.path.contains(AppConstants.UNSAVED_IMAGE_DIRECTORY)) {
+                source.copyTo(destination, overwrite = true)
+                patient.patientPhoto = destination.path
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    /**
+     * after moving the image from unSavedImage folder to main folder
+     * we are deleting moved image
+     */
+    private fun deleteUnusedImages() {
+        try {
+            val source =
+                File(AppConstants.IMAGE_PATH + AppConstants.UNSAVED_IMAGE_DIRECTORY + File.separator + patient.uuid + ".jpg")
+
+            if (source.exists() && source.path.contains(AppConstants.UNSAVED_IMAGE_DIRECTORY)) {
+                source.delete()
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
     private fun saveAndNavigateToDetails() {
         patientViewModel.savePatient().observe(viewLifecycleOwner) {
             it ?: return@observe
@@ -248,6 +292,7 @@ class PatientPersonalInfoFragment :
         PatientPersonalInfoFragmentDirections.navigationPersonalToDetails(
             patient.uuid, "searchPatient", "false"
         ).apply {
+            deleteUnusedImages()
             findNavController().navigate(this)
             requireActivity().finish()
         }
@@ -288,7 +333,7 @@ class PatientPersonalInfoFragment :
             filePath.mkdir()
         }
 
-        val cameraIntent = Intent(activity, CameraActivity::class.java)
+        val cameraIntent = Intent(activity, CameraActivityForPatientImage::class.java)
         cameraIntent.putExtra(CameraActivity.SET_IMAGE_NAME, patient.uuid)
         cameraIntent.putExtra(CameraActivity.SET_IMAGE_PATH, filePath.toString())
         cameraActivityResult.launch(cameraIntent)
@@ -300,8 +345,11 @@ class PatientPersonalInfoFragment :
         if (result.resultCode == Activity.RESULT_OK) {
             patient.patientPhoto = result.data!!.getStringExtra("RESULT")
             binding.patient = patient
-            if (!patient.patientPhoto.isNullOrEmpty()) binding.profileImageError.isVisible = false
-            Timber.d { "Profile path => ${patient.patientPhoto}" }
+            if (!patient.patientPhoto.isNullOrEmpty()) {
+                binding.profileImageError.isVisible = false
+                binding.patientImgview.invalidate()
+            }
+            Timber.d { "Profile path => ${patient.patientPhoto}  ${result.data!!.getStringExtra("RESULT")}" }
         }
     }
 
@@ -523,11 +571,11 @@ class PatientPersonalInfoFragment :
                 // comparing em-contact number with phone number only
                 // when field is not mandatory
                 else {
-                    binding.textInputETEMPhoneNumber.let {etEm->
+                    binding.textInputETEMPhoneNumber.let { etEm ->
                         // checking emergency contact number entered or not
                         // if entered, then checking the 10 digits validation and
                         // comparing with phone number
-                        if(etEm.text?.isNotEmpty() == true){
+                        if (etEm.text?.isNotEmpty() == true) {
                             binding.textInputLayEMPhoneNumber.validateDigit(
                                 binding.textInputETEMPhoneNumber,
                                 R.string.enter_10_digits,
@@ -542,9 +590,7 @@ class PatientPersonalInfoFragment :
                                 }
                                 valid
                             } ?: false)
-                        }else{
-                            false
-                        }
+                        } else true
                     }
                 }
 
