@@ -159,7 +159,7 @@ public class VisitAttributeListDAO {
     }
 
     public void updateSharedPrefForPrescriptionData() {
-        if(prescriptionDataList.size() == prevVisitIdList.size()){
+        if(prescriptionDataList.size() > prevVisitIdList.size()){
             Gson gson = new Gson();
             String prescriptionDataListJson = gson.toJson(prescriptionDataList);
             mSharedPreference.edit().putString(AppConstants.PRESCRIPTION_DATA_LIST, prescriptionDataListJson).apply();
