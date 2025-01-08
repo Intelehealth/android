@@ -48,6 +48,10 @@ class RosterQuestionnaireMainActivity : BaseActivity() {
         binding = ActivityRosterQuestionnaireMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 //        manageTitleVisibilityOnScrolling()
+
+        if (intent != null) {
+            rosterViewModel.patientUuid = intent.getStringExtra("patientUuid")
+        }
         extractAndBindUI()
         setupActionBar()
 
@@ -139,7 +143,7 @@ class RosterQuestionnaireMainActivity : BaseActivity() {
         fun startRosterQuestionnaire(
             context: Context,
             patientId: String? = null,
-            stage: RosterQuestionnaireStage = RosterQuestionnaireStage.GENERAL_ROSTER
+            stage: RosterQuestionnaireStage = RosterQuestionnaireStage.GENERAL_ROSTER,
         ) {
             Intent(context, RosterQuestionnaireMainActivity::class.java).apply {
                 putExtra(PATIENT_UUID, patientId)
@@ -151,7 +155,7 @@ class RosterQuestionnaireMainActivity : BaseActivity() {
         fun handleBackEventFromRosterToPatientReg(
             context: Context,
             patientId: String? = null,
-            stage: PatientRegStage = PatientRegStage.OTHER
+            stage: PatientRegStage = PatientRegStage.OTHER,
         ) {
             Intent(context, PatientRegistrationActivity::class.java).apply {
                 putExtra(PATIENT_UUID, patientId)
@@ -165,17 +169,21 @@ class RosterQuestionnaireMainActivity : BaseActivity() {
             RosterQuestionnaireStage.GENERAL_ROSTER -> {
                 binding.patientTab.tvIndicatorGeneralRoster.isSelected = true
             }
+
             RosterQuestionnaireStage.PREGNANCY_ROSTER -> {
                 binding.patientTab.tvIndicatorGeneralRoster.isActivated = true
                 binding.patientTab.tvIndicatorPregnancyRoster.isSelected = true
             }
+
             RosterQuestionnaireStage.HEALTH_SERVICE -> {
                 binding.patientTab.tvIndicatorGeneralRoster.isActivated = true
                 binding.patientTab.tvIndicatorPregnancyRoster.isActivated = true
                 binding.patientTab.tvIndicatorHealthService.isSelected = true
             }
         }
-    }  override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_sync, menu)
         menu?.findItem(R.id.action_sync)?.actionView?.let {
             actionRefresh = it.findViewById(R.id.refresh)

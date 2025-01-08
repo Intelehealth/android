@@ -7,30 +7,31 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import org.intelehealth.app.ui.rosterquestionnaire.model.HealthServiceModel
 import org.intelehealth.app.ui.rosterquestionnaire.model.PregnancyOutComeModel
 import org.intelehealth.app.ui.rosterquestionnaire.model.RoasterViewQuestion
-import org.intelehealth.app.ui.rosterquestionnaire.model.RosterModel
-import org.intelehealth.app.ui.rosterquestionnaire.usecase.AddHealthServiceUseCase
-import org.intelehealth.app.ui.rosterquestionnaire.usecase.AddOutComeUseCase
+import org.intelehealth.app.ui.rosterquestionnaire.usecase.GetGeneralQuestionUseCase
+import org.intelehealth.app.ui.rosterquestionnaire.usecase.GetHealthServiceQuestionUseCase
+import org.intelehealth.app.ui.rosterquestionnaire.usecase.GetOutComeQuestionUseCase
 import org.intelehealth.app.ui.rosterquestionnaire.utilities.RosterQuestionnaireStage
 import javax.inject.Inject
 
 @HiltViewModel
 class RosterViewModel @Inject constructor(
-    private val addHealthServiceUseCase: AddHealthServiceUseCase,
-    private val addOutComeUseCase: AddOutComeUseCase,
+    private val getHealthServiceQuestionUseCase: GetHealthServiceQuestionUseCase,
+    private val getOutComeQuestionUseCase: GetOutComeQuestionUseCase,
+    private val getGeneralQuestionUseCase: GetGeneralQuestionUseCase,
 ) : ViewModel() {
 
 
-    private var mutableLivePatient = MutableLiveData<RosterModel>()
-    val rosterAttributesData: LiveData<RosterModel> get() = mutableLivePatient
-
+    var patientUuid: String? = null
     private var mutableLiveRosterStage = MutableLiveData(RosterQuestionnaireStage.GENERAL_ROSTER)
     val rosterStageData: LiveData<RosterQuestionnaireStage> get() = mutableLiveRosterStage
 
     var isEditMode: Boolean = false
 
+    private val _generalLiveList = MutableLiveData<ArrayList<RoasterViewQuestion>>(arrayListOf())
+    val generalLiveList: LiveData<ArrayList<RoasterViewQuestion>> = _generalLiveList
+
     private val _outComeLiveList = MutableLiveData<ArrayList<PregnancyOutComeModel>>(arrayListOf())
     val outComeLiveList: LiveData<ArrayList<PregnancyOutComeModel>> = _outComeLiveList
-
 
     private val _healthServiceLiveList =
         MutableLiveData<ArrayList<HealthServiceModel>>(arrayListOf())
@@ -80,6 +81,7 @@ class RosterViewModel @Inject constructor(
         _outComeLiveList.postValue(list as ArrayList<PregnancyOutComeModel>?)
 
     }
+
     fun deleteHealthService(position: Int) {
         val list = _healthServiceLiveList.value ?: mutableListOf()
         list.removeAt(position)
@@ -88,8 +90,12 @@ class RosterViewModel @Inject constructor(
     }
 
     fun getOutcomeQuestionList(): ArrayList<RoasterViewQuestion> =
-        addOutComeUseCase.getOutComeList(existingRoasterQuestionList)
+        getOutComeQuestionUseCase(existingRoasterQuestionList)
 
     fun getHealthServiceList(): ArrayList<RoasterViewQuestion> =
-        addHealthServiceUseCase.getHealthServiceList(existingRoasterQuestionList)
+        getHealthServiceQuestionUseCase(existingRoasterQuestionList)
+
+    fun getGeneralQuestionList() {
+        _generalLiveList.postValue(getGeneralQuestionUseCase(_generalLiveList.value))
+    }
 }

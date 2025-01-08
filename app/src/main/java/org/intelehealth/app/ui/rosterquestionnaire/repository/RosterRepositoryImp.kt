@@ -10,6 +10,96 @@ import javax.inject.Inject
 
 class RosterRepositoryImp @Inject constructor() : RosterRepository {
     private var context: Context = IntelehealthApplication.getAppContext()
+
+
+    override fun getGeneralQuestionList(): ArrayList<RoasterViewQuestion> {
+        val list = ArrayList<RoasterViewQuestion>()
+        list.apply {
+            add(
+                RoasterViewQuestion(
+                    layoutId = RoasterQuestionView.SPINNER,
+                    question = context.getString(R.string.txt_what_is_your_relationship_with_head_of_household),
+                    spinnerItem = context.resources.getStringArray(R.array.relationshipHoH)
+                        .toList(),
+                    errorMessage = context.getString(R.string.this_field_is_mandatory)
+                )
+            )
+            add(
+                RoasterViewQuestion(
+                    layoutId = RoasterQuestionView.SPINNER,
+                    question = context.getString(R.string.what_is_your_marital_status),
+                    spinnerItem = context.resources.getStringArray(R.array.maritual)
+                        .toList(),
+                    errorMessage = context.getString(R.string.this_field_is_mandatory)
+                )
+            )
+            add(
+                RoasterViewQuestion(
+                    layoutId = RoasterQuestionView.SPINNER,
+                    question = context.getString(R.string.what_is_your_education_status),
+                    spinnerItem = context.resources.getStringArray(R.array.education_nas)
+                        .toList(),
+                    errorMessage = context.getString(R.string.this_field_is_mandatory)
+                )
+            )
+            add(
+                RoasterViewQuestion(
+                    layoutId = RoasterQuestionView.SPINNER,
+                    question = context.getString(R.string.nas_occupation),
+                    spinnerItem = context.resources.getStringArray(R.array.occupation_identification)
+                        .toList(),
+                    errorMessage = context.getString(R.string.this_field_is_mandatory)
+                )
+            )
+            add(
+                RoasterViewQuestion(
+                    layoutId = RoasterQuestionView.SPINNER,
+                    question = context.getString(R.string.txt_phone_ownership),
+                    spinnerItem = context.resources.getStringArray(R.array.phoneownership)
+                        .toList(),
+                    errorMessage = context.getString(R.string.this_field_is_mandatory)
+                )
+            )
+            add(
+                RoasterViewQuestion(
+                    layoutId = RoasterQuestionView.SPINNER,
+                    question = context.getString(R.string.txt_when_was_the_last_time_you_got_your_bp_checked),
+                    spinnerItem = context.resources.getStringArray(R.array.bp)
+                        .toList(),
+                    errorMessage = context.getString(R.string.this_field_is_mandatory)
+                )
+            )
+            add(
+                RoasterViewQuestion(
+                    layoutId = RoasterQuestionView.SPINNER,
+                    question = context.getString(R.string.txt_when_was_the_last_time_you_got_your_sugar_level_checked),
+                    spinnerItem = context.resources.getStringArray(R.array.sugar)
+                        .toList(),
+                    errorMessage = context.getString(R.string.this_field_is_mandatory)
+                )
+            )
+            add(
+                RoasterViewQuestion(
+                    layoutId = RoasterQuestionView.SPINNER,
+                    question = context.getString(R.string.txt_when_was_the_last_time_you_got_your_hb_level_tested),
+                    spinnerItem = context.resources.getStringArray(R.array.hb)
+                        .toList(),
+                    errorMessage = context.getString(R.string.this_field_is_mandatory)
+                )
+            )
+            add(
+                RoasterViewQuestion(
+                    layoutId = RoasterQuestionView.SPINNER,
+                    question = context.getString(R.string.txt_bmi_height_and_weight_checked),
+                    spinnerItem = context.resources.getStringArray(R.array.bmi)
+                        .toList(),
+                    errorMessage = context.getString(R.string.this_field_is_mandatory)
+                )
+            )
+        }
+        return list
+    }
+
     override fun getOutcomeQuestionList(): ArrayList<RoasterViewQuestion> {
         val list = ArrayList<RoasterViewQuestion>()
         list.apply {
@@ -163,7 +253,8 @@ class RosterRepositoryImp @Inject constructor() : RosterRepository {
                 RoasterViewQuestion(
                     layoutId = RoasterQuestionView.SPINNER,
                     question = context.getString(R.string.score_for_experience_of_treatment),
-                    spinnerItem = context.resources.getStringArray(R.array.score_experience_en).toList(),
+                    spinnerItem = context.resources.getStringArray(R.array.score_experience_en)
+                        .toList(),
                     errorMessage = context.getString(R.string.this_field_is_mandatory)
                 )
             )
