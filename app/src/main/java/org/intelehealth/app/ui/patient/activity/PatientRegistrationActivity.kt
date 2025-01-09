@@ -16,6 +16,7 @@ import androidx.core.content.IntentCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentManager
 import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import com.github.ajalt.timberkt.Timber
 import com.google.gson.Gson
@@ -45,6 +46,7 @@ import java.util.UUID
  * Mob   : +919727206702
  **/
 class PatientRegistrationActivity : BaseActivity() {
+    private var currentStage: PatientRegStage = PatientRegStage.PERSONAL
     private lateinit var binding: ActivityPatientRegistrationBinding
     private val patientViewModel by lazy {
         return@lazy PatientViewModelFactory.create(this, this)
@@ -195,6 +197,7 @@ class PatientRegistrationActivity : BaseActivity() {
             binding.patientTab.tvIndicatorPatientAddress.isActivated = true
             binding.patientTab.tvIndicatorPatientOther.isSelected = true
         }
+        currentStage = stage
     }
 
     override fun onFeatureActiveStatusLoaded(activeStatus: FeatureActiveStatus?) {
@@ -206,10 +209,37 @@ class PatientRegistrationActivity : BaseActivity() {
 
             if (it.activeStatusPatientOther.not() && it.activeStatusPatientAddress.not()) {
                 binding.patientTab.root.isVisible = false
+                //going to the personal fragment if address and others segment are disabled
+                findNavController(R.id.navHostPatientReg).navigate(R.id.fragmentPatientPersonalInfo)
             } else {
                 binding.patientTab.root.isVisible = true
                 binding.addressActiveStatus = it.activeStatusPatientAddress
                 binding.otherActiveStatus = it.activeStatusPatientOther
+
+                //======================= These logic will trigger while user click on the sync icon ============================
+
+                //updating the fragment based on the active status
+                //like if other section has been disabled from the web, we will redirect to the address
+                //same goes for address
+                if(currentStage == PatientRegStage.ADDRESS){
+                    //if the current stage is address
+                    //checking address are active or not
+                    //if not, hiding address fragment
+                    //and navigating to personal info fragment
+                    if(it.activeStatusPatientAddress.not()){
+                        //navigating to personal info fragment
+                        findNavController(R.id.navHostPatientReg).navigate(R.id.fragmentPatientPersonalInfo)
+                    }
+
+                }
+                else if (currentStage == PatientRegStage.OTHER){
+                    //if the current stage is other means last fragment
+                    //then checking other are active or not
+                    //if not, hiding other fragment and going to the address fragment if its active
+                    if(it.activeStatusPatientOther.not() && it.activeStatusPatientAddress){
+                        findNavController(R.id.navHostPatientReg).navigate(R.id.fragmentPatientAddressInfo)
+                    }
+                }
             }
         }
     }
