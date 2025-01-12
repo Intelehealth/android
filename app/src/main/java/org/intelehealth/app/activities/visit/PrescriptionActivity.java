@@ -204,6 +204,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_prescription2);
+        loadFeatureActiveStatus();
 
         // Status Bar color -> White
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
