@@ -234,7 +234,7 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
         Timber.d { "Final patient =>${Gson().toJson(patient)}" }
         val error = R.string.this_field_is_mandatory
         binding.addressInfoConfig?.let {
-            val bPostalCode = if (it.postalCode!!.isEnabled && it.postalCode!!.isMandatory) {
+            val bPostalCode = if (it.postalCode!!.isEnabled) {
                 binding.textInputLayPostalCode.validate(binding.textInputPostalCode, error).and(
                     binding.textInputLayPostalCode.validateDigit(
                         binding.textInputPostalCode, R.string.postal_code_6_dig_invalid_txt, 6
