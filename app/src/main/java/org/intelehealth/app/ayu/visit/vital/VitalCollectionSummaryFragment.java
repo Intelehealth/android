@@ -225,13 +225,13 @@ public class VitalCollectionSummaryFragment extends Fragment {
             if (mVitalsObject.getHaemoglobin() != null && !mVitalsObject.getHaemoglobin().isEmpty()) {
                 ((TextView) view.findViewById(R.id.tv_haemoglobin)).setText(mVitalsObject.getHaemoglobin());
             } else {
-                ((TextView) view.findViewById(R.id.tv_haemoglobin)).setText(mVitalsObject.getSugarRandom());
+                ((TextView) view.findViewById(R.id.tv_haemoglobin)).setText(getString(R.string.ui2_no_information));
             }
 
             if (mVitalsObject.getSugarRandom() != null && !mVitalsObject.getSugarRandom().isEmpty()) {
                 ((TextView) view.findViewById(R.id.tv_sugar_random)).setText(mVitalsObject.getSugarRandom());
             } else {
-                ((TextView) view.findViewById(R.id.tv_sugar_random)).setText(mVitalsObject.getSugarRandom());
+                ((TextView) view.findViewById(R.id.tv_sugar_random)).setText(getString(R.string.ui2_no_information));
             }
         }
         view.findViewById(R.id.btn_submit).setOnClickListener(new View.OnClickListener() {

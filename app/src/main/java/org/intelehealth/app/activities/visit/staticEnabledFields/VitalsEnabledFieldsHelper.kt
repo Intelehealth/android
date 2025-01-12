@@ -77,7 +77,7 @@ object VitalsEnabledFieldsHelper {
             name = "",
             vitalKey = PatientVitalConfigKeys.SPO2,
             uuid = UuidDictionary.SPO2,
-            isMandatory = true
+            isMandatory = false
         )
         fields.add(currentField)
 
@@ -86,7 +86,7 @@ object VitalsEnabledFieldsHelper {
             name = "",
             vitalKey = PatientVitalConfigKeys.RESPIRATORY_RATE,
             uuid = UuidDictionary.RESPIRATORY,
-            isMandatory = true
+            isMandatory = false
         )
         fields.add(currentField)
 
@@ -95,7 +95,7 @@ object VitalsEnabledFieldsHelper {
             name = "",
             vitalKey = PatientVitalConfigKeys.BLOOD_TYPE,
             uuid = UuidDictionary.BLOOD_GROUP,
-            isMandatory = true
+            isMandatory = false
         )
         fields.add(currentField)
 
@@ -104,7 +104,7 @@ object VitalsEnabledFieldsHelper {
             name = "",
             vitalKey = PatientVitalConfigKeys.HAEMOGLOBIN,
             uuid = UuidDictionary.HAEMOGLOBIN,
-            isMandatory = true
+            isMandatory = false
         )
         fields.add(currentField)
 
@@ -113,7 +113,7 @@ object VitalsEnabledFieldsHelper {
             name = "",
             vitalKey = PatientVitalConfigKeys.SUGAR_RANDOM,
             uuid = UuidDictionary.SUGAR_LEVEL_RANDOM,
-            isMandatory = true
+            isMandatory = false
         )
         fields.add(currentField)
 
