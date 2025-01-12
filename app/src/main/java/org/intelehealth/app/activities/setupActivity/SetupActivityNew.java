@@ -1,5 +1,6 @@
 package org.intelehealth.app.activities.setupActivity;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
@@ -10,6 +11,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -44,6 +46,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -133,6 +139,18 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
 
     CustomProgressDialog cpd;
     private Handler mHandler = new Handler();
+
+    ActivityResultLauncher<Intent> getContent = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), o -> {
+        if (o.getResultCode() == Activity.RESULT_OK) {
+            Intent data = o.getData();
+            if (data != null) {
+                String returnedData = data.getStringExtra(AppConstants.INTENT_PRIMARY_VILLAGE);
+                if (returnedData != null && !returnedData.isBlank()) {
+                    autotvLocations.setHint(returnedData);
+                }
+            }
+        }
+    });
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -248,12 +266,13 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
 
     }
 
+
     private void redirectToLocationSurveyScreen() {
         if (isUrlValid) {
             mLocationErrorTextView.setVisibility(View.GONE);
             Intent intent = new Intent(SetupActivityNew.this, LocationSurveyActivity.class);
             intent.putExtra(AppConstants.INTENT_SERVER_URL, baseUrl);
-            startActivity(intent);
+            getContent.launch(intent);
         } else {
             displayCheckUrlToast();
         }
@@ -583,7 +602,7 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
                     @Override
                     public void onError(Throwable e) {
                         cpd.dismiss();
-                        if(Objects.requireNonNull(e.getMessage()).contains("Unable to resolve host")){
+                        if (Objects.requireNonNull(e.getMessage()).contains("Unable to resolve host")) {
                             showServerErrorDialog();
                         } else {
                             showErrorDialog();

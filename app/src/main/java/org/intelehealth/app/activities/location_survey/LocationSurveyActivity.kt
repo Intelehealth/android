@@ -1,5 +1,7 @@
 package org.intelehealth.app.activities.location_survey
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.webkit.URLUtil
 import android.widget.AdapterView
@@ -581,6 +583,12 @@ class LocationSurveyActivity : AppCompatActivity() {
 
             sessionManager?.let {
                 if (LocationValidationUtils.areLocationFieldsValid(it)) {
+                    val intent = Intent()
+                    intent.putExtra(
+                        AppConstants.INTENT_PRIMARY_VILLAGE,
+                        sessionManager?.currentLocationName
+                    )
+                    setResult(Activity.RESULT_OK, intent)
                     finish()
                 } else {
                     Toast.makeText(

@@ -254,4 +254,6 @@ public class AppConstants {
     public static final String INTENT_IS_DIFFERENT_LOCATION_PRESCRIPTION = "isDifferentLocationPrescriptionReceived";
     public static final String INTENT_PATIENT_ID = "patientId";
     public static final String INTENT_VISIT_UUID = "visitUuid";
+
+    public static final String INTENT_PRIMARY_VILLAGE = "primary_village";
 }
