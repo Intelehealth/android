@@ -482,39 +482,39 @@ class PatientPersonalInfoFragment :
     private fun validateForm(block: () -> Unit) {
         val error = R.string.this_field_is_mandatory
         binding.personalConfig?.let {
-            val bProfile = if (it.profilePic!!.isEnabled && it.profilePic!!.isMandatory) {
+            val bProfile = if (it.profilePic?.isEnabled == true && it.profilePic?.isMandatory == true) {
                 !patient.patientPhoto.isNullOrEmpty()
             } else true
 
             binding.profileImageError.isVisible = bProfile.not()
 
-            val bFName = if (it.firstName!!.isEnabled && it.firstName!!.isMandatory) {
+            val bFName = if (it.firstName?.isEnabled == true && it.firstName?.isMandatory == true) {
                 binding.textInputLayFName.validate(binding.textInputETFName, error)
             } else true
 
-            val bMName = if (it.middleName!!.isEnabled && it.middleName!!.isMandatory) {
+            val bMName = if (it.middleName?.isEnabled == true && it.middleName?.isMandatory == true) {
                 binding.textInputLayMName.validate(binding.textInputETMName, error)
             } else true
 
-            val bLName = if (it.lastName!!.isEnabled && it.lastName!!.isMandatory) {
+            val bLName = if (it.lastName?.isEnabled == true && it.lastName?.isMandatory == true) {
                 binding.textInputLayLName.validate(binding.textInputETLName, error)
             } else true
 
-            val bGender = if (it.gender!!.isEnabled && it.gender!!.isMandatory) {
+            val bGender = if (it.gender?.isEnabled == true && it.gender?.isMandatory == true) {
                 !patient.gender.isNullOrEmpty()
             } else true
 
             binding.tvGenderError.isVisible = bGender.not()
 
-            val bDob = if (it.dob!!.isEnabled && it.dob!!.isMandatory) {
+            val bDob = if (it.dob?.isEnabled == true && it.dob?.isMandatory == true) {
                 binding.textInputLayDob.validate(binding.textInputETDob, error)
             } else true
 
-            val bAge = if (it.age!!.isEnabled && it.age!!.isMandatory) {
+            val bAge = if (it.age?.isEnabled == true && it.age?.isMandatory == true) {
                 binding.textInputLayAge.validate(binding.textInputETAge, error)
             } else true
 
-            val bPhone = if (it.phone!!.isEnabled && it.phone!!.isMandatory) {
+            val bPhone = if (it.phone?.isEnabled == true && it.phone?.isMandatory == true) {
                 binding.textInputLayPhoneNumber.validate(binding.textInputETPhoneNumber, error).and(
                     binding.textInputLayPhoneNumber.validateDigit(
                         binding.textInputETPhoneNumber,
@@ -525,14 +525,14 @@ class PatientPersonalInfoFragment :
 
             } else true
 
-            val bGuardianType = if (it.guardianType!!.isEnabled && it.guardianType!!.isMandatory) {
+            val bGuardianType = if (it.guardianType?.isEnabled == true && it.guardianType?.isMandatory == true) {
                 binding.textInputLayGuardianType.validateDropDowb(
                     binding.autoCompleteGuardianType,
                     error
                 )
             } else true
 
-            val bGName = if (it.guardianName!!.isEnabled && it.guardianName!!.isMandatory) {
+            val bGName = if (it.guardianName?.isEnabled == true && it.guardianName?.isMandatory == true) {
                 binding.textInputLayGuardianName.validate(
                     binding.textInputETGuardianName,
                     error
@@ -540,12 +540,12 @@ class PatientPersonalInfoFragment :
             } else true
 
             val bEmName =
-                if (it.emergencyContactName!!.isEnabled && it.emergencyContactName!!.isMandatory) {
+                if (it.emergencyContactName?.isEnabled == true && it.emergencyContactName?.isMandatory == true) {
                     binding.textInputLayECName.validate(binding.textInputETECName, error)
                 } else true
 
             val bEmPhone =
-                if (it.emergencyContactNumber!!.isEnabled && it.emergencyContactNumber!!.isMandatory) {
+                if (it.emergencyContactNumber?.isEnabled == true && it.emergencyContactNumber?.isMandatory == true) {
                     Timber.d { "Emergency validation" }
                     binding.textInputLayEMPhoneNumber.validate(
                         binding.textInputETEMPhoneNumber,
@@ -595,7 +595,7 @@ class PatientPersonalInfoFragment :
                 }
 
             val bEmContactType =
-                if (it.emergencyContactType!!.isEnabled && it.emergencyContactType!!.isMandatory) {
+                if (it.emergencyContactType?.isEnabled == true && it.emergencyContactType?.isMandatory == true) {
                     binding.textInputLayEmContactType.validateDropDowb(
                         binding.autoCompleteEmContactType,
                         error
