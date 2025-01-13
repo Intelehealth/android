@@ -701,7 +701,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 mCommonVisitData = new CommonVisitData();
                 mCommonVisitData.setVisitUuid(visitUuid);
 
-                encounterVitals = intent.getStringExtra("encounterUuidVitals");
+                encounterVitals = intent.getStringExtra(    "encounterUuidVitals");
                 mCommonVisitData.setEncounterUuidVitals(encounterVitals);
                 encounterUuidAdultIntial = intent.getStringExtra("encounterUuidAdultIntial");
                 mCommonVisitData.setEncounterUuidAdultIntial(encounterUuidAdultIntial);
@@ -2801,8 +2801,6 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                     getVisitStartDate();
 
                     String fileNamePatientName = patientName.replace(" ", "-");
-                    String fileNameOpenMrsId = patient.getOpenmrs_id();
-                    String fileNameVisitID = visitUuid.substring(visitUuid.length() - 5);
                     String prescriptionString = "Prescription";
 
                     String fileName = fileNamePatientName.concat("-").concat(prescriptionString).concat("-").concat(visitStartDate).concat(".pdf");

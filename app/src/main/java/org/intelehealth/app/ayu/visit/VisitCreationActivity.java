@@ -475,8 +475,14 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                 mStep4ProgressBar.setProgress(0);
                 mSummaryFrameLayout.setVisibility(View.GONE);
                 setTitle(nextAction);
+                VitalsObject vo;
+                if(isEditMode){
+                    vo = (VitalsObject) object;
+                } else {
+                    vo = mVitalsObject;
+                }
                 getSupportFragmentManager().beginTransaction().
-                        replace(R.id.fl_steps_body, VitalCollectionFragment.newInstance(mCommonVisitData, isEditMode, mVitalsObject), VITAL_FRAGMENT).
+                        replace(R.id.fl_steps_body, VitalCollectionFragment.newInstance(mCommonVisitData, isEditMode, vo), VITAL_FRAGMENT).
                         commit();
                 break;
             case STEP_2_VISIT_REASON:

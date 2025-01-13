@@ -49,6 +49,8 @@ public class IntelehealthApplication extends MultiDexApplication implements Defa
     private Activity currentActivity;
     SessionManager sessionManager;
 
+    private String visitType;
+
     public static Context getAppContext() {
         return mContext;
     }
@@ -199,5 +201,13 @@ public class IntelehealthApplication extends MultiDexApplication implements Defa
 
     public void disconnectSocket() {
         socketManager.disconnect();
+    }
+
+    public String getVisitType() {
+        return visitType;
+    }
+
+    public void setVisitType(String visitType) {
+        this.visitType = visitType;
     }
 }

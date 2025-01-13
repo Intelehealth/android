@@ -41,6 +41,7 @@ import org.intelehealth.app.models.VitalsObject;
 import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.ConfigUtils;
 import org.intelehealth.app.utilities.CustomLog;
+import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.exception.DAOException;
@@ -266,7 +267,42 @@ public class VitalCollectionSummaryFragment extends Fragment {
                     getActivity().setResult(Activity.RESULT_OK);
                     getActivity().finish();
                 } else {
-                    MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(requireActivity());
+                    String visitType = IntelehealthApplication.getInstance().getVisitType();
+                    if(visitType.equals("sevika")){
+                        new DialogUtils().showCommonDialog(
+                                requireContext(), R.drawable.ic_doctor_service_start, getResources().getString(R.string.doctor_advice_alert_title),
+                                getResources().getString(R.string.doctor_advice_alert_msg), false, getResources().getString(R.string.alert_start_button), getResources().getString(R.string.alert_save_and_exit_button),
+                                action -> {
+                                    if (action == DialogUtils.CustomDialogListener.NEGATIVE_CLICK) {
+                                        VisitAttributeListDAO speciality_attributes = new VisitAttributeListDAO();
+                                        try {
+                                            // avoiding multi-click by checking if click is within 1000ms than avoid it.
+                                            if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                                                return;
+                                            }
+                                            mLastClickTime = SystemClock.elapsedRealtime();
+
+                                            speciality_attributes.insertVisitAttributes(visitUuid,"", AppConstants.DOCTOR_NOT_NEEDED);
+                                            // speciality_attributes.insertVisitAttributes(visitUuid, " Specialist doctor not needed");
+                                        } catch (DAOException e) {
+                                            e.printStackTrace();
+                                        }
+
+                                        //-------End Visit----------
+                                        SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());
+                                        Date todayDate = new Date();
+                                        String endDate = currentDate.format(todayDate);
+                                        endVisit(visitUuid, mVitalsObject.getPatientUuid(), endDate);
+                                    } else if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
+                                        mActionListener.onFormSubmitted(VisitCreationActivity.STEP_2_VISIT_REASON, mIsEditMode, mVitalsObject);
+                                    }
+                                }
+                        );
+                    } else {
+                        mActionListener.onFormSubmitted(VisitCreationActivity.STEP_2_VISIT_REASON, mIsEditMode, mVitalsObject);
+                    }
+
+                    /*MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(requireActivity());
                     alertDialogBuilder.setMessage(getResources().getString(R.string.doctor_advice_alert_msg));
 
                     alertDialogBuilder.setNegativeButton(getResources().getString(R.string.vital_alert_save_button), (dialogInterface, i) -> {
@@ -296,14 +332,14 @@ public class VitalCollectionSummaryFragment extends Fragment {
                         dialog.dismiss();
                     });
                     AlertDialog alertDialog = alertDialogBuilder.show();
-                    IntelehealthApplication.setAlertDialogCustomTheme(getActivity(), alertDialog);
+                    IntelehealthApplication.setAlertDialogCustomTheme(getActivity(), alertDialog);*/
                 }
             }
         });
         view.findViewById(R.id.tv_change).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mActionListener.onFormSubmitted(VisitCreationActivity.STEP_1_VITAL, mIsEditMode, mVitalsObject);
+                mActionListener.onFormSubmitted(VisitCreationActivity.STEP_1_VITAL, true, mVitalsObject);
             }
         });
         view.findViewById(R.id.btn_cancel).setOnClickListener(new View.OnClickListener() {

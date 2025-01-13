@@ -363,6 +363,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                                 commonVisitData.setPrivacyNote(privacy_value_selected);
                                 in.putExtra("CommonVisitData", commonVisitData);
                                 startActivity(in);
+                                IntelehealthApplication.getInstance().setVisitType("doctor");
                                 // startVisit();
                                 // mStartForConsentApproveResult.launch(new Intent(PatientDetailActivity2.this, TeleconsultationConsentActivity.class));
                             }
@@ -484,24 +485,20 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         }
 
         startSevikaVisitBtn.setOnClickListener(view -> {
-            MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(PatientDetailActivity2.this);
-            alertDialogBuilder.setMessage(getResources().getString(R.string.start_newadvice_confirmation_msg));
+            new DialogUtils().showCommonDialog(
+                    this, R.drawable.ic_sevika_service_start, getResources().getString(R.string.start_newadvice_confirmation_title),
+                    getResources().getString(R.string.start_newadvice_confirmation_msg), false, getResources().getString(R.string.generic_yes), getResources().getString(R.string.generic_no),
+                    action -> {
+                        if (action == DialogUtils.CustomDialogListener.NEGATIVE_CLICK) {
+                            //
+                        } else if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
+                            //
+                            startVisit();
+                            IntelehealthApplication.getInstance().setVisitType("sevika");
+                        }
+                    }
+            );
 
-            alertDialogBuilder.setNegativeButton(getResources().getString(R.string.generic_no), (dialogInterface, i) -> dialogInterface.dismiss());
-            alertDialogBuilder.setPositiveButton(getResources().getString(R.string.generic_yes), (dialog, which) -> {
-                dialog.dismiss();
-                /*Intent in = new Intent(PatientDetailActivity2.this, TeleconsultationConsentActivity.class);
-                CommonVisitData commonVisitData = new CommonVisitData();
-                commonVisitData.setPatientUuid(patientDTO.getUuid());
-                commonVisitData.setPrivacyNote(privacy_value_selected);
-                in.putExtra("CommonVisitData", commonVisitData);
-                startActivity(in);*/
-//                startNewVisit();
-                startVisit();
-            });
-            AlertDialog alertDialog = alertDialogBuilder.show();
-            //alertDialog.show();
-            IntelehealthApplication.setAlertDialogCustomTheme(PatientDetailActivity2.this, alertDialog);
         });
 
         populateBaselineSurveys();
@@ -2510,6 +2507,8 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                         String[] previsitArgs = {encounterlocalAdultintial, UuidDictionary.CURRENT_COMPLAINT};
                         String[] previsitColumms = {"value", " conceptuuid", "encounteruuid"};
                         Cursor previsitCursor = db.query("tbl_obs", previsitColumms, previsitSelection, previsitArgs, null, null, null);
+                        SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+
                         if (previsitCursor != null && previsitCursor.moveToLast()) {
 
                             String visitValue = previsitCursor.getString(previsitCursor.getColumnIndexOrThrow("value"));
@@ -2607,12 +2606,9 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                                     visitValue = stringBuilder.toString();
 
                                 }
-                                SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
                                 try {
-
                                     Date formatted = currentDate.parse(date);
                                     String visitDate = currentDate.format(formatted);
-                                    //createOldVisit(visitDate, visit_id, end_date, visitValue, encountervitalsLocal, encounterlocalAdultintial);
                                     PastVisitData pastVisitData = new PastVisitData();
                                     pastVisitData.setVisitDate(visitDate);
                                     pastVisitData.setVisitUUID(visit_id);
@@ -2620,14 +2616,25 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                                     pastVisitData.setEncounterVitals(encountervitalsLocal);
                                     pastVisitData.setEncounterAdultInitial(encounterlocalAdultintial);
                                     mPastVisitDataList.add(pastVisitData);
-                                    CustomLog.v(TAG, new Gson().toJson(mPastVisitDataList));
-
                                 } catch (ParseException e) {
                                     FirebaseCrashlytics.getInstance().recordException(e);
                                 }
                             }
+                        } else {
+                            try {
+                                Date formatted = currentDate.parse(date);
+                                String visitDate = currentDate.format(formatted);
+                                PastVisitData pastVisitData = new PastVisitData();
+                                pastVisitData.setVisitDate(visitDate);
+                                pastVisitData.setVisitUUID(visit_id);
+                                pastVisitData.setChiefComplain("Sevika Visit");
+                                pastVisitData.setEncounterVitals(encountervitalsLocal);
+                                pastVisitData.setEncounterAdultInitial("");
+                                mPastVisitDataList.add(pastVisitData);
+                            } catch (ParseException e) {
+                                FirebaseCrashlytics.getInstance().recordException(e);
+                            }
                         }
-
 
                     }
                 } while (visitCursor.moveToPrevious());

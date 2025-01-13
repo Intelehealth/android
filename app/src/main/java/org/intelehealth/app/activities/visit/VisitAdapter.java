@@ -4,15 +4,21 @@ import static org.intelehealth.app.database.dao.PatientsDAO.phoneNumber;
 import static org.intelehealth.app.utilities.StringUtils.setGenderAgeLocal;
 import static org.intelehealth.app.utilities.UuidDictionary.PRESCRIPTION_LINK;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 
+import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity_New;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.ayu.visit.notification.LocalPrescriptionInfo;
 import org.intelehealth.app.utilities.CustomLog;
+
+import android.os.Environment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +36,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -57,9 +64,11 @@ import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.exception.DAOException;
 
+import java.io.File;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -80,10 +89,17 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
     String profileImage = "";
     String profileImage1 = "";
     SessionManager sessionManager;
+    private OnVisitClickListener listener;
 
-    public VisitAdapter(Context context, List<PrescriptionModel> list) {
+
+    public interface OnVisitClickListener {
+        void onShareIconClicked(PrescriptionModel model);
+    }
+
+    public VisitAdapter(Context context, List<PrescriptionModel> list, OnVisitClickListener listener) {
         this.context = context;
         this.list.addAll(list);
+        this.listener = listener;
         sessionManager = new SessionManager(context);
     }
 
@@ -199,7 +215,10 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
             holder.shareicon.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    sharePresc(model);
+                    /*if (listener != null) {
+                        listener.onShareIconClicked(model);
+                    }*/
+//                    sharePresc(model);
                 }
             });
         }
@@ -288,6 +307,7 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
                 }
                 });
     }
+
 
     private void sharePresc(final PrescriptionModel model) {
         MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(context);

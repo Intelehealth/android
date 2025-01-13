@@ -1,20 +1,29 @@
 package org.intelehealth.app.activities.visit;
 
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE;
+import static org.webrtc.ContextUtils.getApplicationContext;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.LocaleList;
 import android.text.Html;
 import android.util.DisplayMetrics;
+
+import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity_New;
+import org.intelehealth.app.models.pushRequestApiCall.Visit;
 import org.intelehealth.app.utilities.CustomLog;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +39,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -43,10 +53,12 @@ import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.VisitsDAO;
 import org.intelehealth.app.models.PrescriptionModel;
+import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.VisitCountInterface;
 import org.intelehealth.app.utilities.exception.DAOException;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -56,7 +68,8 @@ import java.util.Locale;
  * Github : @prajwalmw
  * Email: prajwalwaingankar@gmail.com
  */
-public class VisitPendingFragment extends Fragment {
+// Handle the share icon click
+public class VisitPendingFragment extends Fragment implements VisitAdapter.OnVisitClickListener{
     private RecyclerView recycler_recent, recycler_older /*, recycler_month*/;
     private CardView visit_pending_card_header;
     private List<PrescriptionModel> model;
@@ -119,6 +132,9 @@ public class VisitPendingFragment extends Fragment {
         res.updateConfiguration(conf, dm);
         return context;
     }
+
+    @Override
+    public void onShareIconClicked(PrescriptionModel model) {}
 
     private void initUI(View view) {
         progress = view.findViewById(R.id.progress);
@@ -225,7 +241,7 @@ public class VisitPendingFragment extends Fragment {
         // pagination - start
         olderList = olderVisits(olderLimit, olderStart);
         CustomLog.d("TAG", "setPendingOlderMoreDataIntoRecyclerView: " + olderList.size());
-        older_adapter = new VisitAdapter(getActivity(), olderList);
+        older_adapter = new VisitAdapter(getActivity(), olderList, this);
         recycler_older.setNestedScrollingEnabled(false);
         recycler_older.setAdapter(older_adapter);
 
@@ -243,7 +259,7 @@ public class VisitPendingFragment extends Fragment {
     private void fetchRecentData() {
         recentList = recentVisits(recentLimit, recentStart);
         // pagination - start
-        recent_adapter = new VisitAdapter(getActivity(), recentList);
+        recent_adapter = new VisitAdapter(getActivity(), recentList, this);
         recycler_recent.setNestedScrollingEnabled(false);
         recycler_recent.setAdapter(recent_adapter);
 
@@ -388,7 +404,7 @@ public class VisitPendingFragment extends Fragment {
             recent_nodata.setVisibility(View.VISIBLE);
         else
             recent_nodata.setVisibility(View.GONE);
-        recent_adapter = new VisitAdapter(getActivity(), prio_todays);
+        recent_adapter = new VisitAdapter(getActivity(), prio_todays, this);
         recycler_recent.setNestedScrollingEnabled(false);
         recycler_recent.setAdapter(recent_adapter);
         // todays - end
@@ -404,7 +420,7 @@ public class VisitPendingFragment extends Fragment {
             older_nodata.setVisibility(View.VISIBLE);
         else
             older_nodata.setVisibility(View.GONE);
-        older_adapter = new VisitAdapter(getActivity(), prio_weeks);
+        older_adapter = new VisitAdapter(getActivity(), prio_weeks, this);
         recycler_older.setNestedScrollingEnabled(false);
         recycler_older.setAdapter(older_adapter);
         // weeks - end
@@ -970,11 +986,11 @@ public class VisitPendingFragment extends Fragment {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            recent_adapter = new VisitAdapter(getActivity(), recent);
+                            recent_adapter = new VisitAdapter(getActivity(), recent, VisitPendingFragment.this);
                             recycler_recent.setNestedScrollingEnabled(false);
                             recycler_recent.setAdapter(recent_adapter);
 
-                            older_adapter = new VisitAdapter(getActivity(), older);
+                            older_adapter = new VisitAdapter(getActivity(), older, VisitPendingFragment.this);
                             recycler_older.setNestedScrollingEnabled(false);
                             recycler_older.setAdapter(older_adapter);
 
@@ -1041,11 +1057,11 @@ public class VisitPendingFragment extends Fragment {
         recent_older_visibility(recentList, olderList);
         CustomLog.d("TAG", "resetData: " + recentList.size() + ", " + olderList.size());
 
-        recent_adapter = new VisitAdapter(getActivity(), recentList);
+        recent_adapter = new VisitAdapter(getActivity(), recentList, this);
       //  recycler_recent.setNestedScrollingEnabled(false);
         recycler_recent.setAdapter(recent_adapter);
 
-        older_adapter = new VisitAdapter(getActivity(), olderList);
+        older_adapter = new VisitAdapter(getActivity(), olderList, this);
      //   recycler_older.setNestedScrollingEnabled(false);
         recycler_older.setAdapter(older_adapter);
     }
