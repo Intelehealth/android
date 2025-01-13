@@ -41,7 +41,7 @@ object VitalsEnabledFieldsHelper {
             name = "",
             vitalKey = PatientVitalConfigKeys.SBP,
             uuid = UuidDictionary.SYSTOLIC_BP,
-            isMandatory = true
+            isMandatory = false
         )
         fields.add(currentField)
 
@@ -50,7 +50,7 @@ object VitalsEnabledFieldsHelper {
             name = "",
             vitalKey = PatientVitalConfigKeys.DBP,
             uuid = UuidDictionary.DIASTOLIC_BP,
-            isMandatory = true
+            isMandatory = false
         )
         fields.add(currentField)
 
@@ -59,7 +59,7 @@ object VitalsEnabledFieldsHelper {
             name = "",
             vitalKey = PatientVitalConfigKeys.PULSE,
             uuid = UuidDictionary.PULSE,
-            isMandatory = true
+            isMandatory = false
         )
         fields.add(currentField)
 
@@ -68,7 +68,7 @@ object VitalsEnabledFieldsHelper {
             name = "",
             vitalKey = PatientVitalConfigKeys.TEMPERATURE,
             uuid = UuidDictionary.TEMPERATURE,
-            isMandatory = true
+            isMandatory = false
         )
         fields.add(currentField)
 

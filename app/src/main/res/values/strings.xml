@@ -1195,5 +1195,10 @@
     <string name="enter_number">Enter number</string>
     <string name="baseline_survey_completed">Baseline Survey Completed</string>
 
+    <string name="bullet">\u2022</string>
+    <string name="fields_not_filled">Fields Not Filled</string>
+    <string name="following_fields_are_not_filled">Following fields are not filled:</string>
+    <string name="do_you_still_want_to_continue">Do you still want to continue?</string>
+    <string name="at_least_one_of_the_fields_is_mandatory">At least one of the following fields is mandatory: </string>
 
 </resources>

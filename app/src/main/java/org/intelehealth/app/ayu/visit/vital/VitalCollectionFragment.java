@@ -53,6 +53,7 @@ import org.intelehealth.app.models.VitalsObject;
 import org.intelehealth.app.models.dto.ObsDTO;
 import org.intelehealth.app.utilities.ConfigUtils;
 import org.intelehealth.app.utilities.DecimalDigitsInputFilter;
+import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
@@ -66,8 +67,8 @@ import org.intelehealth.config.utility.PatientVitalConfigKeys;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class VitalCollectionFragment extends Fragment implements View.OnClickListener {
     private static final String TAG = VitalCollectionFragment.class.getSimpleName();
@@ -470,7 +471,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
     }
 
     private boolean isValidaForm() {
-        boolean isValid = true;
+        AtomicBoolean isValid = new AtomicBoolean(true);
 
         //if (editText.getId() == R.id.etv_height) {
         String heightVal = mHeightEditText.getText().toString().trim();
@@ -902,8 +903,33 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
             mBloodGroupTextView.setBackgroundResource(R.drawable.bg_input_fieldnew);
         }
 
+        return isValid.get();
+    }
 
-        return isValid;
+    private boolean isVitalValid(String vital) {
+        return !vital.isBlank();
+    }
+
+    private String getInvalidVitals(String pulse, String temperature, String bpSystolic, String bpDiastolic) {
+        String invalidVitalsList = "";
+
+        if (bpSystolic.isBlank()) {
+            invalidVitalsList = invalidVitalsList.concat(getString(R.string.bp_sys)).concat("\n");
+        }
+
+        if (bpDiastolic.isBlank()) {
+            invalidVitalsList = invalidVitalsList.concat(getString(R.string.bp_dia)).concat("\n");
+        }
+
+        if (pulse.isBlank()) {
+            invalidVitalsList = invalidVitalsList.concat(getString(R.string.pulse_bpm)).concat("\n");
+        }
+
+        if (temperature.isBlank()) {
+            invalidVitalsList = invalidVitalsList.concat(getString(R.string.temperature_f_new)).concat("\n");
+        }
+
+        return invalidVitalsList;
     }
 
     private void setDisabledSubmit(boolean disableNow) {
@@ -921,16 +947,66 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btn_submit) {//validate
-            mSubmitButton.setClickable(false);
-            boolean isValid = isValidaForm();
-            setDisabledSubmit(!isValid);
-            if (isValid) {
-                isDataReadyForSaving();
-                mActionListener.onProgress(100);
-                results.setPatientUuid(patientUuid);
-                VitalsWrapper vw = new VitalsWrapper(results, visitUuid);
-                mActionListener.onFormSubmitted(VisitCreationActivity.STEP_1_VITAL_SUMMARY, mIsEditMode, vw);
+            if (IntelehealthApplication.getInstance().getVisitType().equalsIgnoreCase(AppConstants.VISIT_TYPE_SEVIKA)) {
+                validateSevikaVitals();
+            } else {
+                saveAndProceed();
             }
+        }
+    }
+
+    private void saveAndProceed() {
+        mSubmitButton.setClickable(false);
+        boolean isValid = isValidaForm();
+        setDisabledSubmit(!isValid);
+
+        if (isValid) {
+            isDataReadyForSaving();
+            mActionListener.onProgress(100);
+            results.setPatientUuid(patientUuid);
+            VitalsWrapper vw = new VitalsWrapper(results, visitUuid);
+            mActionListener.onFormSubmitted(VisitCreationActivity.STEP_1_VITAL_SUMMARY, mIsEditMode, vw);
+        }
+    }
+
+    private void validateSevikaVitals() {
+        String pulse = mPulseEditText.getText().toString();
+        String temperature = mTemperatureEditText.getText().toString();
+        String bpSystolic = mBpSysEditText.getText().toString();
+        String bpDiastolic = mBpDiaEditText.getText().toString();
+
+        boolean isPulseValid = isVitalValid(pulse);
+        boolean isTemperatureValid = isVitalValid(temperature);
+        boolean isBpSystolicValid = isVitalValid(bpSystolic);
+        boolean isBpDiastolicValid = isVitalValid(bpDiastolic);
+
+        DialogUtils dialogUtils = new DialogUtils();
+        String title = getString(R.string.fields_not_filled);
+        String message = "";
+
+        if (!isPulseValid && !isTemperatureValid && !isBpSystolicValid && !isBpDiastolicValid) {
+            message = getString(R.string.at_least_one_of_the_fields_is_mandatory).concat("\n");
+            message = message.concat(getString(R.string.bp_sys)).concat("\n");
+            message = message.concat(getString(R.string.bp_dia)).concat("\n");
+            message = message.concat(getString(R.string.pulse_bpm)).concat("\n");
+            message = message.concat(getString(R.string.temperature_f_new)).concat("\n");
+
+            dialogUtils.showCommonDialog(requireActivity(), R.drawable.close_patient_svg, title, message, true, getString(R.string.generic_ok), "", action -> {
+            });
+
+            return;
+        }
+
+        if (!isPulseValid || !isTemperatureValid) {
+            message = message.concat(getString(R.string.following_fields_are_not_filled)).concat("\n");
+            message = message.concat(getInvalidVitals(pulse, temperature, bpSystolic, bpDiastolic)).concat("\n\n");
+            message = message.concat(getString(R.string.do_you_still_want_to_continue));
+
+            dialogUtils.showCommonDialog(requireActivity(), R.drawable.close_patient_svg, title, message, false, getString(R.string.yes), getString(R.string.no), action -> {
+                if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
+                    saveAndProceed();
+                }
+            });
         }
     }
 
