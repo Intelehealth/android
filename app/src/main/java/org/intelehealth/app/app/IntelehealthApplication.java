@@ -15,6 +15,8 @@ import androidx.lifecycle.DefaultLifecycleObserver;
 import androidx.lifecycle.ProcessLifecycleOwner;
 import androidx.multidex.MultiDex;
 import androidx.multidex.MultiDexApplication;
+import androidx.work.Configuration;
+import androidx.work.WorkManager;
 
 import com.github.ajalt.timberkt.Timber;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
@@ -46,6 +48,8 @@ public class IntelehealthApplication extends MultiDexApplication implements Defa
     private static String androidId;
     private Activity currentActivity;
     SessionManager sessionManager;
+
+    private String visitType;
 
     public static Context getAppContext() {
         return mContext;
@@ -197,5 +201,13 @@ public class IntelehealthApplication extends MultiDexApplication implements Defa
 
     public void disconnectSocket() {
         socketManager.disconnect();
+    }
+
+    public String getVisitType() {
+        return visitType;
+    }
+
+    public void setVisitType(String visitType) {
+        this.visitType = visitType;
     }
 }

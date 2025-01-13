@@ -52,6 +52,7 @@ import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
@@ -65,9 +66,12 @@ import android.os.Bundle;
 import android.os.LocaleList;
 import android.util.DisplayMetrics;
 
+import org.apache.commons.lang3.time.DateUtils;
+import org.intelehealth.app.activities.vitalActivity.VitalsActivity;
 import org.intelehealth.app.enums.ListTypeEnum;
 import org.intelehealth.app.models.BaselineSurveyItem;
 import org.intelehealth.app.models.FamilyMemberRes;
+import org.intelehealth.app.models.Patient;
 import org.intelehealth.app.ui.baseline_survey.activity.BaselineSurveyActivity;
 import org.intelehealth.app.utilities.BaselineSurveySource;
 import org.intelehealth.app.utilities.BaselineSurveyStage;
@@ -234,6 +238,9 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     private List<FamilyMemberRes> familyMemberList;
     private List<String> bsItemList;
 
+    Patient patient_new = new Patient();
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -356,6 +363,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                                 commonVisitData.setPrivacyNote(privacy_value_selected);
                                 in.putExtra("CommonVisitData", commonVisitData);
                                 startActivity(in);
+                                IntelehealthApplication.getInstance().setVisitType("doctor");
                                 // startVisit();
                                 // mStartForConsentApproveResult.launch(new Intent(PatientDetailActivity2.this, TeleconsultationConsentActivity.class));
                             }
@@ -476,8 +484,133 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             populateFamilyMembers(houseHoldValue);
         }
 
+        startSevikaVisitBtn.setOnClickListener(view -> {
+            new DialogUtils().showCommonDialog(
+                    this, R.drawable.ic_sevika_service_start, getResources().getString(R.string.start_newadvice_confirmation_title),
+                    getResources().getString(R.string.start_newadvice_confirmation_msg), false, getResources().getString(R.string.generic_yes), getResources().getString(R.string.generic_no),
+                    action -> {
+                        if (action == DialogUtils.CustomDialogListener.NEGATIVE_CLICK) {
+                            //
+                        } else if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
+                            //
+                            startVisit();
+                            IntelehealthApplication.getInstance().setVisitType("sevika");
+                        }
+                    }
+            );
+
+        });
+
         populateBaselineSurveys();
     }
+
+    private void startNewVisit() {
+        // before starting, we determine if it is new visit for a returning patient
+        // extract both FH and PMH
+        SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.ENGLISH);
+        Date todayDate = new Date();
+        todayDate = DateUtils.addMinutes(todayDate, -5);
+        String thisDate = currentDate.format(todayDate);
+
+        String uuid = UUID.randomUUID().toString();
+        EncounterDAO encounterDAO = new EncounterDAO();
+        encounterDTO = new EncounterDTO();
+        encounterDTO.setUuid(UUID.randomUUID().toString());
+        encounterDTO.setEncounterTypeUuid(encounterDAO.getEncounterTypeUuid("ENCOUNTER_VITALS"));
+        encounterDTO.setEncounterTime(thisDate);
+        encounterDTO.setVisituuid(uuid);
+        encounterDTO.setSyncd(false);
+        encounterDTO.setProvideruuid(sessionManager.getProviderID());
+        Log.d("DTO", "DTO:detail " + encounterDTO.getProvideruuid());
+        encounterDTO.setVoided(0);
+        encounterDTO.setPrivacynotice_value(privacy_value_selected);//privacy value added.
+
+        try {
+            encounterDAO.createEncountersToDB(encounterDTO);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+        InteleHealthDatabaseHelper mDatabaseHelper = new InteleHealthDatabaseHelper(PatientDetailActivity2.this);
+        SQLiteDatabase sqLiteDatabase = mDatabaseHelper.getReadableDatabase();
+
+        String CREATOR_ID = sessionManager.getCreatorID();
+        returning = false;
+        sessionManager.setReturning(returning);
+
+        String[] cols = {"value"};
+        Cursor cursor = sqLiteDatabase.query("tbl_obs", cols, "encounteruuid=? and conceptuuid=?",// querying for PMH (Past Medical History)
+                new String[]{encounterAdultIntials, UuidDictionary.RHK_MEDICAL_HISTORY_BLURB},
+                null, null, null);
+
+        if (cursor.moveToFirst()) {
+            // rows present
+            do {
+                // so that null data is not appended
+                phistory = phistory + cursor.getString(0);
+
+            }
+            while (cursor.moveToNext());
+            returning = true;
+            sessionManager.setReturning(returning);
+        }
+        cursor.close();
+
+        Cursor cursor1 = sqLiteDatabase.query("tbl_obs", cols, "encounteruuid=? and conceptuuid=?",// querying for FH (Family History)
+                new String[]{encounterAdultIntials, UuidDictionary.RHK_FAMILY_HISTORY_BLURB},
+                null, null, null);
+        if (cursor1.moveToFirst()) {
+            // rows present
+            do {
+                fhistory = fhistory + cursor1.getString(0);
+            }
+            while (cursor1.moveToNext());
+            returning = true;
+            sessionManager.setReturning(returning);
+        }
+        cursor1.close();
+
+        // Will display data for patient as it is present in database
+        // Toast.makeText(PatientDetailActivity.this,"PMH: "+phistory,Toast.LENGTH_SHORT).sƒhow();
+        // Toast.makeText(PatientDetailActivity.this,"FH: "+fhistory,Toast.LENGTH_SHORT).show();
+
+        Intent intent2 = new Intent(PatientDetailActivity2.this, VitalsActivity.class);
+        int age = DateAndTimeUtils.getAgeInYear(patientDTO.getDateofbirth(), context);
+//        int age = DateAndTimeUtils.getAgeInYear(patient_new.getDate_of_birth(), context);
+        String fullName = patientDTO.getFirstname() + " " + patientDTO.getLastname();
+//        String fullName = patient_new.getFirst_name() + " " + patient_new.getLast_name();
+        intent2.putExtra("patientUuid", patientDTO.getUuid());
+        VisitDTO visitDTO = new VisitDTO();
+        visitDTO.setUuid(uuid);
+        visitDTO.setPatientuuid(patientDTO.getUuid());
+//        visitDTO.setPatientuuid(patient_new.getUuid());
+        visitDTO.setStartdate(thisDate);
+        visitDTO.setVisitTypeUuid(UuidDictionary.VISIT_TELEMEDICINE);
+        visitDTO.setLocationuuid(sessionManager.getCurrentLocationUuid());
+        visitDTO.setSyncd(false);
+        visitDTO.setCreatoruuid(sessionManager.getCreatorID());//static
+        VisitsDAO visitsDAO = new VisitsDAO();
+        try {
+            visitsDAO.insertPatientToDB(visitDTO);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+        intent2.putExtra("patientUuid", patientDTO.getUuid());
+        intent2.putExtra("visitUuid", uuid);
+        intent2.putExtra("encounterUuidVitals", encounterDTO.getUuid());
+        intent2.putExtra("encounterUuidAdultIntial", "");
+        intent2.putExtra("EncounterAdultInitial_LatestVisit", encounterAdultIntials);
+        intent2.putExtra("name", fullName);
+        intent2.putExtra("age", age);
+        intent2.putExtra("tag", "new");
+
+        intent2.putExtra("advicefrom", "Sevika");
+
+        intent2.putExtra("float_ageYear_Month", float_ageYear_Month);
+        startActivity(intent2);
+    }
+
 
     private void populateFamilyMembers(String hid) {
         try {
@@ -676,6 +809,12 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         intent2.putExtra("gender", mGender);
         intent2.putExtra("tag", "new");
         intent2.putExtra("float_ageYear_Month", float_ageYear_Month);
+
+        CommonVisitData commonVisitData = new CommonVisitData();
+        commonVisitData.setPatientUuid(patientDTO.getUuid());
+        commonVisitData.setPrivacyNote(privacy_value_selected);
+        intent2.putExtra("CommonVisitData", commonVisitData);
+
         startActivity(intent2);
         finish();
     }
@@ -2368,6 +2507,8 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                         String[] previsitArgs = {encounterlocalAdultintial, UuidDictionary.CURRENT_COMPLAINT};
                         String[] previsitColumms = {"value", " conceptuuid", "encounteruuid"};
                         Cursor previsitCursor = db.query("tbl_obs", previsitColumms, previsitSelection, previsitArgs, null, null, null);
+                        SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+
                         if (previsitCursor != null && previsitCursor.moveToLast()) {
 
                             String visitValue = previsitCursor.getString(previsitCursor.getColumnIndexOrThrow("value"));
@@ -2465,12 +2606,9 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                                     visitValue = stringBuilder.toString();
 
                                 }
-                                SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
                                 try {
-
                                     Date formatted = currentDate.parse(date);
                                     String visitDate = currentDate.format(formatted);
-                                    //createOldVisit(visitDate, visit_id, end_date, visitValue, encountervitalsLocal, encounterlocalAdultintial);
                                     PastVisitData pastVisitData = new PastVisitData();
                                     pastVisitData.setVisitDate(visitDate);
                                     pastVisitData.setVisitUUID(visit_id);
@@ -2478,14 +2616,25 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                                     pastVisitData.setEncounterVitals(encountervitalsLocal);
                                     pastVisitData.setEncounterAdultInitial(encounterlocalAdultintial);
                                     mPastVisitDataList.add(pastVisitData);
-                                    CustomLog.v(TAG, new Gson().toJson(mPastVisitDataList));
-
                                 } catch (ParseException e) {
                                     FirebaseCrashlytics.getInstance().recordException(e);
                                 }
                             }
+                        } else {
+                            try {
+                                Date formatted = currentDate.parse(date);
+                                String visitDate = currentDate.format(formatted);
+                                PastVisitData pastVisitData = new PastVisitData();
+                                pastVisitData.setVisitDate(visitDate);
+                                pastVisitData.setVisitUUID(visit_id);
+                                pastVisitData.setChiefComplain("Sevika Visit");
+                                pastVisitData.setEncounterVitals(encountervitalsLocal);
+                                pastVisitData.setEncounterAdultInitial("");
+                                mPastVisitDataList.add(pastVisitData);
+                            } catch (ParseException e) {
+                                FirebaseCrashlytics.getInstance().recordException(e);
+                            }
                         }
-
 
                     }
                 } while (visitCursor.moveToPrevious());

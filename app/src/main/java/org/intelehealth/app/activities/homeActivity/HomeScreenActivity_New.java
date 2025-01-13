@@ -19,6 +19,7 @@ import android.animation.ValueAnimator;
 import android.app.ActivityManager;
 import android.app.AlarmManager;
 import android.app.Dialog;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
@@ -45,6 +46,8 @@ import android.text.Html;
 import android.util.DisplayMetrics;
 
 import org.intelehealth.app.activities.homeActivity.heartbeatApi.HeartbeatApi;
+import org.intelehealth.app.ayu.visit.notification.NotificationHelper;
+import org.intelehealth.app.ayu.visit.notification.ReminderReceiver;
 import org.intelehealth.app.utilities.CustomLog;
 
 import android.view.LayoutInflater;
@@ -199,6 +202,8 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
     private static final String TAG_ACHIEVEMENT = "TAG_ACHIEVEMENT";
     private static final String TAG_HELP = "TAG_HELP";
     private NotificationReceiver notificationReceiver;
+    private NotificationHelper notificationHelper;
+
 
     private ActivityResultLauncher<Intent> scheduleExactAlarmPermissionLauncher;
     private String notificationPatientUuid = null, notificationVisitUuid = null, clickAction = null;
@@ -326,6 +331,8 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             saveToken();
             return Unit.INSTANCE;
         });
+        /*notificationHelper = new NotificationHelper(this);
+        notificationHelper.createNotificationChannel();*/
 //        catchFCMMessageData();
 
 
@@ -709,7 +716,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         tvAppVersion.setText(getString(R.string.app_version_string, "4.0 - Beta"));
 
         setLocale(HomeScreenActivity_New.this);
-
+//        scheduleNotification();
     }
 
     /**

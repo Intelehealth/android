@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 
+import org.intelehealth.app.ayu.visit.model.VitalsWrapper;
 import org.intelehealth.app.utilities.CustomLog;
 
 import android.view.View;
@@ -385,11 +386,9 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
     private void makeReadyForEdit() {
         findViewById(R.id.ll_progress_steps).setVisibility(View.GONE);
         // init all resources
-        mSelectedComplainList = new Gson().fromJson(sessionManager.getVisitEditCache(SessionManager.CHIEF_COMPLAIN_LIST + visitUuid), new TypeToken<List<ReasonData>>() {
-        }.getType());
+        mSelectedComplainList = new Gson().fromJson(sessionManager.getVisitEditCache(SessionManager.CHIEF_COMPLAIN_LIST + visitUuid), new TypeToken<List<ReasonData>>() {}.getType());
 
-        mChiefComplainRootNodeList = new Gson().fromJson(sessionManager.getVisitEditCache(SessionManager.CHIEF_COMPLAIN_QUESTION_NODE + visitUuid), new TypeToken<List<Node>>() {
-        }.getType());
+        mChiefComplainRootNodeList = new Gson().fromJson(sessionManager.getVisitEditCache(SessionManager.CHIEF_COMPLAIN_QUESTION_NODE + visitUuid), new TypeToken<List<Node>>() {}.getType());
 
         if (!sessionManager.getVisitEditCache(SessionManager.PHY_EXAM + visitUuid).isEmpty()) {
             physicalExamMap = new Gson().fromJson(sessionManager.getVisitEditCache(SessionManager.PHY_EXAM + visitUuid), PhysicalExam.class);
@@ -449,6 +448,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
     }
 
     private VitalsObject mVitalsObject;
+    private VitalsWrapper mVitalWrapper;
 
     @Override
     public void onFormSubmitted(int nextAction, boolean isEditMode, Object object) {
@@ -457,13 +457,13 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         switch (nextAction) {
             case STEP_1_VITAL_SUMMARY:
                 if (object != null)
-                    mVitalsObject = (VitalsObject) object;
-                if (mVitalsObject != null) {
+                    mVitalWrapper = (VitalsWrapper) object;
+                if (mVitalWrapper != null) {
                     //Toast.makeText(this, "Show vital summary", Toast.LENGTH_SHORT).show();
                     mSummaryFrameLayout.setVisibility(View.VISIBLE);
                     mStep1ProgressBar.setProgress(100);
                     getSupportFragmentManager().beginTransaction().
-                            replace(R.id.fl_steps_summary, VitalCollectionSummaryFragment.newInstance(mVitalsObject, isEditMode), VITAL_SUMMARY_FRAGMENT).
+                            replace(R.id.fl_steps_summary, VitalCollectionSummaryFragment.newInstance(mVitalWrapper, isEditMode), VITAL_SUMMARY_FRAGMENT).
                             commit();
                 }
                 break;
@@ -475,8 +475,14 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                 mStep4ProgressBar.setProgress(0);
                 mSummaryFrameLayout.setVisibility(View.GONE);
                 setTitle(nextAction);
+                VitalsObject vo;
+                if(isEditMode){
+                    vo = (VitalsObject) object;
+                } else {
+                    vo = mVitalsObject;
+                }
                 getSupportFragmentManager().beginTransaction().
-                        replace(R.id.fl_steps_body, VitalCollectionFragment.newInstance(mCommonVisitData, isEditMode, mVitalsObject), VITAL_FRAGMENT).
+                        replace(R.id.fl_steps_body, VitalCollectionFragment.newInstance(mCommonVisitData, isEditMode, vo), VITAL_FRAGMENT).
                         commit();
                 break;
             case STEP_2_VISIT_REASON:

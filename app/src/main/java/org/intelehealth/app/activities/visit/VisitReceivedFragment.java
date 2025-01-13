@@ -1,20 +1,35 @@
 package org.intelehealth.app.activities.visit;
 
+import static org.intelehealth.app.ayu.visit.common.VisitUtils.convertCtoFNew;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_COMPLETE;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE;
+import static org.webrtc.ContextUtils.getApplicationContext;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.LocaleList;
 import android.text.Html;
 import android.util.DisplayMetrics;
+
+import org.intelehealth.app.activities.prescription.PrescriptionBuilder;
+import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity_New;
+import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.ayu.visit.notification.LocalPrescriptionInfo;
+import org.intelehealth.app.models.Patient;
+import org.intelehealth.app.models.VitalsObject;
+import org.intelehealth.app.models.dto.EncounterDTO;
+import org.intelehealth.app.models.dto.ObsDTO;
 import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,12 +46,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.onboarding.PrivacyPolicyActivity_New;
@@ -44,10 +62,15 @@ import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.VisitsDAO;
 import org.intelehealth.app.models.PrescriptionModel;
+import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.VisitCountInterface;
 import org.intelehealth.app.utilities.exception.DAOException;
 
+import java.io.File;
+import java.lang.reflect.Field;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -57,7 +80,7 @@ import java.util.Locale;
  * Github : @prajwalmw
  * Email: prajwalwaingankar@gmail.com
  */
-public class VisitReceivedFragment extends Fragment {
+public class VisitReceivedFragment extends Fragment implements VisitAdapter.OnVisitClickListener{
     private RecyclerView recycler_recent, recycler_older /*, recycler_month*/;
     private CardView visit_received_card_header;
     private static SQLiteDatabase db;
@@ -117,6 +140,227 @@ public class VisitReceivedFragment extends Fragment {
         }
         res.updateConfiguration(conf, dm);
         return context;
+    }
+
+    public void onShareIconClicked(PrescriptionModel model) {
+        SessionManager sessionManager = new SessionManager(requireContext());
+        String language = sessionManager.getAppLanguage();
+
+        if (!language.equalsIgnoreCase("")) {
+            Locale locale = new Locale(language);
+            Locale.setDefault(locale);
+            Configuration config = new Configuration();
+            config.locale = locale;
+            requireContext().getResources().updateConfiguration(config, requireContext().getResources().getDisplayMetrics());
+        }
+
+        String[] columnsToReturn = {"startdate"};
+        String visitIdOrderBy = "startdate";
+        String visitIDSelection = "uuid = ?";
+        String[] visitIDArgs = {model.getVisitUuid()};
+        db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+
+        final Cursor visitIDCursor = db.query("tbl_visit", columnsToReturn, visitIDSelection, visitIDArgs, null, null, visitIdOrderBy);
+        visitIDCursor.moveToLast();
+        String startDateTime = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("startdate"));
+        /*visitIDCursor.close();*/
+
+        String[] eColumns = {"visituuid", "encounter_type_uuid"};
+        String[] eValues = {model.getVisitUuid(), UuidDictionary.ENCOUNTER_VITALS};
+        EncounterDTO mEncounter = queryAndGetRowAsObject("tbl_encounter", eColumns, eValues, EncounterDTO.class);
+
+        String[] pColumns = {"uuid"};
+        String[] pValues = {model.getPatientUuid()};
+        Patient mPatient = queryAndGetRowAsObject("tbl_patient", pColumns, pValues, Patient.class);
+
+        String visitStartDate = DateAndTimeUtils.SimpleDatetoLongDate(startDateTime);
+
+        String fileNamePatientName = mPatient.getFirst_name() + mPatient.getMiddle_name() + mPatient.getLast_name();
+        String prescriptionString = "Prescription";
+
+        String fileName = fileNamePatientName.concat("-").concat(prescriptionString).concat("-").concat(visitStartDate).concat(".pdf");
+
+        /*buildAndSavePrescription(fileName, mPatient, visitStartDate, mEncounter);
+
+        try {
+            File pdfFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), fileName);
+            Uri uri = FileProvider.getUriForFile(requireContext(), getApplicationContext().getPackageName() + ".provider", pdfFile);
+
+            Intent intent = new Intent(Intent.ACTION_SEND);
+            intent.setType("application/pdf");
+            intent.putExtra(Intent.EXTRA_STREAM, uri);
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            intent.setPackage("com.whatsapp");
+            startActivity(intent);
+            updateLocalPrescriptionInformations(model.getVisitUuid());
+        } catch (ActivityNotFoundException exception) {
+            Toast.makeText(requireContext(), getString(R.string.please_install_whatsapp), Toast.LENGTH_LONG).show();
+        }*/
+    }
+
+    public <T> T queryAndGetRowAsObject(String tableName, String[] conditionColumns, String[] conditionValues, Class<T> targetClass) {
+        if (conditionColumns == null || conditionValues == null || conditionColumns.length != conditionValues.length) {
+            throw new IllegalArgumentException("Condition columns and values must not be null and must have the same length.");
+        }
+
+        // Build the WHERE clause
+        StringBuilder selectionBuilder = new StringBuilder();
+        String[] selectionArgs = new String[conditionValues.length];
+
+        for (int i = 0; i < conditionColumns.length; i++) {
+            if (i > 0) {
+                selectionBuilder.append(" AND ");
+            }
+            selectionBuilder.append(conditionColumns[i]).append(" = ?");
+            selectionArgs[i] = conditionValues[i];
+        }
+
+        String selection = selectionBuilder.toString();
+
+        // Query the database
+        Cursor cursor = db.query(tableName, null, selection, selectionArgs, null, null, null);
+        T obj = null;
+        if (cursor != null && cursor.moveToFirst()) {
+            obj = mapCursorToObject(cursor, targetClass);
+            cursor.close();
+        }
+
+        return obj;
+    }
+    public <T> T mapCursorToObject(Cursor cursor, Class<T> targetClass) {
+        try {
+            T obj = targetClass.newInstance();
+            for (Field field : targetClass.getDeclaredFields()) {
+                field.setAccessible(true);
+                String columnName = field.getName();
+                int columnIndex = cursor.getColumnIndex(columnName);
+                if (columnIndex != -1 && !cursor.isNull(columnIndex)) {
+                    Class<?> fieldType = field.getType();
+                    if (fieldType == int.class || fieldType == Integer.class) {
+                        field.set(obj, cursor.getInt(columnIndex));
+                    } else if (fieldType == long.class || fieldType == Long.class) {
+                        field.set(obj, cursor.getLong(columnIndex));
+                    } else if (fieldType == float.class || fieldType == Float.class) {
+                        field.set(obj, cursor.getFloat(columnIndex));
+                    } else if (fieldType == double.class || fieldType == Double.class) {
+                        field.set(obj, cursor.getDouble(columnIndex));
+                    } else if (fieldType == String.class) {
+                        field.set(obj, cursor.getString(columnIndex));
+                    } else if (fieldType == boolean.class || fieldType == Boolean.class) {
+                        field.set(obj, cursor.getInt(columnIndex) != 0);
+                    }
+                }
+            }
+
+            return obj;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private void buildAndSavePrescription(String fileName, Patient patient, String visitStartDate, EncounterDTO mEncounter) {
+        /*PrescriptionBuilder builder = new PrescriptionBuilder(this);
+        builder.setPatientData(patient, visitStartDate);
+        builder.setVitals(getVitals(mEncounter));
+        builder.setComplaintData(formatComplaintData(complaint.getValue()));
+        builder.setDiagnosis(diagnosisReturned);
+        builder.setMedication(rxReturned);
+        builder.setTests(testsReturned);
+        builder.setAdvice(medicalAdvice_string);
+        builder.setFollowUp(followUpDate);
+        builder.setDoctorData(objClsDoctorDetails);
+        builder.build(fileName);*/
+    }
+
+    private VitalsObject getVitals(EncounterDTO mEncounter) {
+        VitalsObject vitalsObject = new VitalsObject();
+        String[] oColumns = {"encounteruuid, conceptuuid"};
+
+        String[] oValues = {mEncounter.getUuid(), UuidDictionary.HEIGHT};
+        ObsDTO hObs = queryAndGetRowAsObject("tbl_obs", oColumns, oValues, ObsDTO.class);
+        vitalsObject.setHeight(checkAndReturnVitalsValue(hObs));
+
+        oValues = new String[]{mEncounter.getUuid(), UuidDictionary.WEIGHT};
+        hObs = queryAndGetRowAsObject("tbl_obs", oColumns, oValues, ObsDTO.class);
+        vitalsObject.setWeight(checkAndReturnVitalsValue(hObs));
+
+        /*oValues = new String[]{mEncounter.getUuid(), UuidDictionary.};
+        ObsDTO hObs = queryAndGetRowAsObject("tbl_obs", oColumns, oValues, ObsDTO.class);
+        vitalsObject.setBmi(mBMI);*/
+
+        oValues = new String[]{mEncounter.getUuid(), UuidDictionary.SYSTOLIC_BP};
+        hObs = queryAndGetRowAsObject("tbl_obs", oColumns, oValues, ObsDTO.class);
+        vitalsObject.setBpsys(checkAndReturnVitalsValue(hObs));
+
+        oValues = new String[]{mEncounter.getUuid(), UuidDictionary.WEIGHT};
+        hObs = queryAndGetRowAsObject("tbl_obs", oColumns, oValues, ObsDTO.class);
+        vitalsObject.setBpdia(checkAndReturnVitalsValue(hObs));
+
+        oValues = new String[]{mEncounter.getUuid(), UuidDictionary.WEIGHT};
+        hObs = queryAndGetRowAsObject("tbl_obs", oColumns, oValues, ObsDTO.class);
+        vitalsObject.setPulse(checkAndReturnVitalsValue(hObs));
+
+        oValues = new String[]{mEncounter.getUuid(), UuidDictionary.RESPIRATORY};
+        hObs = queryAndGetRowAsObject("tbl_obs", oColumns, oValues, ObsDTO.class);
+        vitalsObject.setTemperature(checkAndReturnTemperatureValue(hObs));
+        vitalsObject.setResp(checkAndReturnVitalsValue(hObs));
+
+        oValues = new String[]{mEncounter.getUuid(), UuidDictionary.WEIGHT};
+        hObs = queryAndGetRowAsObject("tbl_obs", oColumns, oValues, ObsDTO.class);
+        vitalsObject.setHaemoglobin(checkAndReturnVitalsValue(hObs));
+
+        oValues = new String[]{mEncounter.getUuid(), UuidDictionary.WEIGHT};
+        hObs = queryAndGetRowAsObject("tbl_obs", oColumns, oValues, ObsDTO.class);
+        vitalsObject.setBloodGroup(checkAndReturnVitalsValue(hObs));
+//        vitalsObject.setSugarfasting(checkAndReturnVitalsValue(sugarfasting));
+
+        oValues = new String[]{mEncounter.getUuid(), UuidDictionary.WEIGHT};
+        hObs = queryAndGetRowAsObject("tbl_obs", oColumns, oValues, ObsDTO.class);
+        vitalsObject.setSugarRandom(checkAndReturnVitalsValue(hObs));
+
+        oValues = new String[]{mEncounter.getUuid(), UuidDictionary.WEIGHT};
+        hObs = queryAndGetRowAsObject("tbl_obs", oColumns, oValues, ObsDTO.class);
+        vitalsObject.setSpo2(checkAndReturnVitalsValue(hObs));
+        return vitalsObject;
+    }
+
+
+    public String checkAndReturnVitalsValue(ObsDTO dto) {
+        if (dto == null) {
+            return "NA";
+        } else if (dto.getValue() == null || dto.getValue().equalsIgnoreCase("0")) {
+            return "NA";
+        } else {
+            return dto.getValue();
+        }
+    }
+
+    public String checkAndReturnTemperatureValue(ObsDTO dto) {
+        if (dto == null || dto.getValue() == null || dto.getValue().isEmpty()) {
+            return "NA";
+        } else {
+            return convertCtoFNew(dto.getValue());
+        }
+    }
+
+    private void updateLocalPrescriptionInformations(String visituuid) {
+        List<LocalPrescriptionInfo> prescriptionDataList = new ArrayList<>();
+        Gson gson = new Gson();
+        SharedPreferences sharedPreference = IntelehealthApplication.getAppContext().getSharedPreferences(IntelehealthApplication.getAppContext().getString(R.string.prescription_share_key), Context.MODE_PRIVATE);
+        String prescriptionListJson = sharedPreference.getString(AppConstants.PRESCRIPTION_DATA_LIST, "");
+        if(!prescriptionListJson.isEmpty()){
+            Type type = new TypeToken<List<LocalPrescriptionInfo>>() {}.getType();
+            prescriptionDataList = gson.fromJson(prescriptionListJson, type);
+            for(LocalPrescriptionInfo lpi: prescriptionDataList){
+                if(lpi.getVisitUUID().equals(visituuid)){
+                    lpi.setShareStatus(true);
+                }
+            }
+        }
+        String prescriptionDataListJson = gson.toJson(prescriptionDataList);
+        sharedPreference.edit().putString(AppConstants.PRESCRIPTION_DATA_LIST, prescriptionDataListJson).apply();
+        sharedPreference.edit().putBoolean(AppConstants.SHARED_ANY_PRESCRIPTION, true).apply();
     }
 
     private void initUI(View view) {
@@ -209,7 +453,7 @@ public class VisitReceivedFragment extends Fragment {
         // Older vistis
         // pagination - start
         mOlderList = olderVisits(olderLimit, olderStart);
-        older_adapter = new VisitAdapter(getActivity(), mOlderList);
+        older_adapter = new VisitAdapter(getActivity(), mOlderList, this);
         recycler_older.setNestedScrollingEnabled(false);
         recycler_older.setAdapter(older_adapter);
 
@@ -227,7 +471,7 @@ public class VisitReceivedFragment extends Fragment {
     private void fetchRecentData() {
         mRecentList = recentVisits(recentLimit, recentStart);
         // pagination - start
-        recent_adapter = new VisitAdapter(getActivity(), mRecentList);
+        recent_adapter = new VisitAdapter(getActivity(), mRecentList, this);
         recycler_recent.setNestedScrollingEnabled(false);
         recycler_recent.setAdapter(recent_adapter);
         recentStart = recentEnd;
@@ -352,11 +596,11 @@ public class VisitReceivedFragment extends Fragment {
         recent_older_visibility(mRecentList, mOlderList);
         CustomLog.d("TAG", "resetData: " + mRecentList.size() + ", " + mOlderList.size());
 
-        recent_adapter = new VisitAdapter(getActivity(), mRecentList);
+        recent_adapter = new VisitAdapter(getActivity(), mRecentList, this);
         recycler_recent.setNestedScrollingEnabled(false);
         recycler_recent.setAdapter(recent_adapter);
 
-        older_adapter = new VisitAdapter(getActivity(), mOlderList);
+        older_adapter = new VisitAdapter(getActivity(), mOlderList, this);
         recycler_older.setNestedScrollingEnabled(false);
         recycler_older.setAdapter(older_adapter);
     }
@@ -452,11 +696,11 @@ public class VisitReceivedFragment extends Fragment {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            recent_adapter = new VisitAdapter(getActivity(), mRecentPrescriptionModelList);
+                            recent_adapter = new VisitAdapter(getActivity(), mRecentPrescriptionModelList, VisitReceivedFragment.this);
                             recycler_recent.setNestedScrollingEnabled(false);
                             recycler_recent.setAdapter(recent_adapter);
 
-                            older_adapter = new VisitAdapter(getActivity(), mOlderPrescriptionModelList);
+                            older_adapter = new VisitAdapter(getActivity(), mOlderPrescriptionModelList, VisitReceivedFragment.this);
                             recycler_older.setNestedScrollingEnabled(false);
                             recycler_older.setAdapter(older_adapter);
 
@@ -500,7 +744,7 @@ public class VisitReceivedFragment extends Fragment {
             recent_nodata.setVisibility(View.VISIBLE);
         else
             recent_nodata.setVisibility(View.GONE);
-        recent_adapter = new VisitAdapter(getActivity(), prio_todays);
+        recent_adapter = new VisitAdapter(getActivity(), prio_todays, this);
         recycler_recent.setNestedScrollingEnabled(false);
         recycler_recent.setAdapter(recent_adapter);
         // todays - end
@@ -516,7 +760,7 @@ public class VisitReceivedFragment extends Fragment {
             older_nodata.setVisibility(View.VISIBLE);
         else
             older_nodata.setVisibility(View.GONE);
-        older_adapter = new VisitAdapter(getActivity(), prio_weeks);
+        older_adapter = new VisitAdapter(getActivity(), prio_weeks, this);
         recycler_older.setNestedScrollingEnabled(false);
         recycler_older.setAdapter(older_adapter);
         // weeks - end

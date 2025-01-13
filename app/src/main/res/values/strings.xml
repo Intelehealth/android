@@ -126,6 +126,7 @@
 
     //Visit Summary Screen
     <string name="title_activity_family_history">Family History</string>
+    <string name="title_activity_past_medical_history" translatable="false">PastMedicalHistoryActivity</string>
     <string name="title_activity_physical_exam">Physical Exam</string>
     <string name="visit_summary_temperature">Temperature(C)</string>
     <string name="visit_summary_bmi">BMI</string>
@@ -1161,5 +1162,38 @@
     <string name="lbl_clear_all">Clear All</string>
     <string name="sync">Refresh</string>
     <string name="sending_otp">Sending OTP...</string>
+
+    <string name="setup_select_state_str">Select State</string>
+    <string name="setup_select_dropdown_state_msg">Select State from dropdown</string>
+    <string name="setup_select_district_str">Select District</string>
+    <string name="setup_select_dropdown_district_msg">Select District from dropdown</string>
+    <string name="setup_select_sanch_str">Select Sanch</string>
+    <string name="setup_select_dropdown_sanch_msg">Select Sanch from dropdown</string>
+    <string name="setup_select_village_str">Select Village</string>
+    <string name="setup_select_primary_village_str">Select Primary Village</string>
+    <string name="setup_select_secondary_village_str">Select Secondary Village</string>
+    <string name="setup_select_dropdown_village_msg">Select Village from dropdown</string>
+    <string name="switch_location">Switch Location</string>
+    <string name="no_network_sync">You are not connected to the internet. Please try again later.</string>
+    <string name="confirm_switch_location">You are currently logged into the \'%1$s\' village. Are you sure that you wish to switch to the \'%2$s\' village?</string>
+    <string name="start_sevika_visit">Start Sevika Visit</string>
+    <string name="start_doctor_visit">Start Doctor Visit</string>
+    <string name="haemoglobin">Haemoglobin</string>
+    <string name="sugar_random">Sugar Level - Random</string>
+
+    <string name="start_newadvice_confirmation_msg">Are you sure you want to start a Sevika advice?</string>
+    <string name="start_newadvice_confirmation_title">Begin Sevika advice</string>
+    <string name="doctor_advice_alert_title">Begin Tele-consultation</string>
+    <string name="doctor_advice_alert_msg">Do you want tele-consultation from Doctor?</string>
+    <string name="vital_alert_continue_button">Yes, Continue</string>
+    <string name="vital_alert_save_button">Save</string>
+    <string name="alert_save_and_exit_button">Save &amp; Exit</string>
+    <string name="alert_start_button">Start</string>
+
+
+    <string name="hint_drop_down_hb_check">Select Duration</string>
+    <string name="enter_number">Enter number</string>
+    <string name="baseline_survey_completed">Baseline Survey Completed</string>
+
 
 </resources>

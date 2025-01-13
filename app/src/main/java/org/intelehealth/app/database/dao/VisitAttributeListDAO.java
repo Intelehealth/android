@@ -4,16 +4,35 @@ import static org.intelehealth.app.utilities.UuidDictionary.ADDITIONAL_NOTES;
 import static org.intelehealth.app.utilities.UuidDictionary.PRESCRIPTION_LINK;
 import static org.intelehealth.app.utilities.UuidDictionary.SPECIALITY;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.ContentValues;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import org.intelehealth.app.R;
+import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.ayu.visit.notification.LocalPrescriptionInfo;
+import org.intelehealth.app.ayu.visit.notification.ReminderReceiver;
+import org.intelehealth.app.ayu.visit.notification.ReminderWorker;
 import org.intelehealth.app.utilities.CustomLog;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
-import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.models.dto.VisitAttributeDTO;
 import org.intelehealth.app.utilities.exception.DAOException;
@@ -29,6 +48,12 @@ public class VisitAttributeListDAO {
     private long createdRecordsCount = 0;
     private static final String TAG = "VisitAttributeListDAO";
 
+    private List<LocalPrescriptionInfo> prescriptionDataList = new ArrayList<>();
+    private List<String> prevVisitIdList = new ArrayList<>();
+    private int unsharedPrescriptionCount;
+    SharedPreferences mSharedPreference;
+
+
     public boolean insertProvidersAttributeList(List<VisitAttributeDTO> visitAttributeDTOS)
             throws DAOException {
 
@@ -36,9 +61,18 @@ public class VisitAttributeListDAO {
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         try {
+            mSharedPreference = IntelehealthApplication.getAppContext().getSharedPreferences(IntelehealthApplication.getAppContext().getString(R.string.prescription_share_key), Context.MODE_PRIVATE);
+            String prescriptionListJson = mSharedPreference.getString(AppConstants.PRESCRIPTION_DATA_LIST, "");
+            if(!prescriptionListJson.isEmpty()){
+                Gson gson = new Gson();
+                Type type = new TypeToken<List<LocalPrescriptionInfo>>() {}.getType();
+                prescriptionDataList = gson.fromJson(prescriptionListJson, type);
+                getUnsharedPrescriptionCount();
+            }
             for (VisitAttributeDTO visitDTO : visitAttributeDTOS) {
                 createVisitAttributeList(visitDTO, db);
             }
+            updateSharedPrefForPrescriptionData();
             db.setTransactionSuccessful();
         } catch (SQLException e) {
             isInserted = false;
@@ -77,7 +111,12 @@ public class VisitAttributeListDAO {
                 } else {
                     CustomLog.d("SPECI", "SIZEVISTATTR: " + createdRecordsCount);
                 }
+
+                if(visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(PRESCRIPTION_LINK)){
+                    updatePrescriptionList(visitDTO);
+                }
             }
+
         } catch (SQLException e) {
             isCreated = false;
             CustomLog.e(TAG,e.getMessage());
@@ -87,6 +126,63 @@ public class VisitAttributeListDAO {
         }
 
         return isCreated;
+    }
+
+    public void scheduleReminder() {
+        OneTimeWorkRequest workRequest = new OneTimeWorkRequest.Builder(ReminderWorker.class)
+                .setInitialDelay(10, TimeUnit.SECONDS)
+                .build();
+
+        WorkManager.getInstance(IntelehealthApplication.getAppContext()).enqueue(workRequest);
+    }
+
+    public void getUnsharedPrescriptionCount() {
+        for (LocalPrescriptionInfo lpi : prescriptionDataList) {
+            prevVisitIdList.add(lpi.getVisitUUID());
+            if(!lpi.getShareStatus()){
+                unsharedPrescriptionCount++;
+            }
+        }
+    }
+
+    public void updatePrescriptionList(VisitAttributeDTO visitDTO) {
+        boolean isNew = true;
+        if(!prevVisitIdList.isEmpty()){
+            if(prevVisitIdList.contains(visitDTO.getVisit_uuid())){
+                isNew = false;
+            }
+        }
+        if(isNew){
+            prescriptionDataList.add(new LocalPrescriptionInfo(visitDTO.getVisit_uuid(), false, System.currentTimeMillis()));
+            unsharedPrescriptionCount++;
+        }
+    }
+
+    public void updateSharedPrefForPrescriptionData() {
+        if(prescriptionDataList.size() > prevVisitIdList.size()){
+            Gson gson = new Gson();
+            String prescriptionDataListJson = gson.toJson(prescriptionDataList);
+            mSharedPreference.edit().putString(AppConstants.PRESCRIPTION_DATA_LIST, prescriptionDataListJson).apply();
+            scheduleNotification();
+        }
+    }
+
+     public void scheduleNotification() {
+        AlarmManager alarmManager = (AlarmManager) IntelehealthApplication.getAppContext().getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(IntelehealthApplication.getAppContext(), ReminderReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                IntelehealthApplication.getAppContext(),
+                0,
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
+        );
+
+        long triggerTime = System.currentTimeMillis() + 2 * 60 * 60 * 1000;
+        if (alarmManager != null) {
+            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent);
+            mSharedPreference.edit().putBoolean(AppConstants.SHARED_ANY_PRESCRIPTION, false).apply();
+            mSharedPreference.edit().putBoolean(AppConstants.SECOND_NOTIFICATION_FIRED, false).apply();
+        }
     }
 
     public String getVisitAttributesList_specificVisit(String VISITUUID, String visit_attribute_type_uuid) {

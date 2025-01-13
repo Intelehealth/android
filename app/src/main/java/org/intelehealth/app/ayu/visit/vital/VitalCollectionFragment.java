@@ -12,6 +12,7 @@ import android.text.InputFilter;
 import android.text.TextWatcher;
 
 import org.intelehealth.app.activities.visit.staticEnabledFields.VitalsEnabledFieldsHelper;
+import org.intelehealth.app.ayu.visit.model.VitalsWrapper;
 import org.intelehealth.app.utilities.CustomLog;
 
 import android.view.LayoutInflater;
@@ -65,6 +66,7 @@ import org.intelehealth.config.utility.PatientVitalConfigKeys;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 public class VitalCollectionFragment extends Fragment implements View.OnClickListener {
@@ -926,7 +928,9 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
             if (isValid) {
                 isDataReadyForSaving();
                 mActionListener.onProgress(100);
-                mActionListener.onFormSubmitted(VisitCreationActivity.STEP_1_VITAL_SUMMARY, mIsEditMode, results);
+                results.setPatientUuid(patientUuid);
+                VitalsWrapper vw = new VitalsWrapper(results, visitUuid);
+                mActionListener.onFormSubmitted(VisitCreationActivity.STEP_1_VITAL_SUMMARY, mIsEditMode, vw);
             }
         }
     }
