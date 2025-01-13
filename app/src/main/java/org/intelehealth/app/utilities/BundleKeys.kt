@@ -28,6 +28,7 @@ class BundleKeys {
         const val FLOAT_AGE_YEAR_MONTH = "float_ageYear_Month"
         const val HOUSEHOLD_CURRENT_STAGE = "household_current_stage"
         const val ROSTER_CURRENT_STAGE = "roster_current_stage"
+        const val IS_EDIT_MODE = "isEditMode"
 
     }
 }

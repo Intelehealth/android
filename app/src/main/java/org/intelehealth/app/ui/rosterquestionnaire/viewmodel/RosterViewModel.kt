@@ -4,19 +4,28 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
+import org.intelehealth.app.models.dto.PatientAttributesDTO
 import org.intelehealth.app.ui.rosterquestionnaire.di.IoDispatcher
 import org.intelehealth.app.ui.rosterquestionnaire.model.HealthServiceModel
 import org.intelehealth.app.ui.rosterquestionnaire.model.PregnancyOutComeModel
+import org.intelehealth.app.ui.rosterquestionnaire.model.PregnancyRosterData
 import org.intelehealth.app.ui.rosterquestionnaire.model.RoasterViewQuestion
 import org.intelehealth.app.ui.rosterquestionnaire.usecase.GetGeneralQuestionUseCase
 import org.intelehealth.app.ui.rosterquestionnaire.usecase.GetHealthServiceQuestionUseCase
 import org.intelehealth.app.ui.rosterquestionnaire.usecase.GetOutComeQuestionUseCase
+import org.intelehealth.app.ui.rosterquestionnaire.usecase.GetRoasterDataUseCase
 import org.intelehealth.app.ui.rosterquestionnaire.usecase.InsertRoasterUseCase
+import org.intelehealth.app.ui.rosterquestionnaire.utilities.NO_OF_PREGNANCY_OUTCOME_TWO_YEARS
+import org.intelehealth.app.ui.rosterquestionnaire.utilities.NO_OF_TIME_PREGNANT
+import org.intelehealth.app.ui.rosterquestionnaire.utilities.PREGNANCY_OUTCOME_REPORTED
+import org.intelehealth.app.ui.rosterquestionnaire.utilities.PREGNANCY_PAST_TWO_YEARS
 import org.intelehealth.app.ui.rosterquestionnaire.utilities.RosterQuestionnaireStage
+import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
@@ -25,6 +34,7 @@ class RosterViewModel @Inject constructor(
     private val getOutComeQuestionUseCase: GetOutComeQuestionUseCase,
     private val getGeneralQuestionUseCase: GetGeneralQuestionUseCase,
     private val insertRoasterUseCase: InsertRoasterUseCase,
+    private val getRoasterDataUseCase: GetRoasterDataUseCase,
     @IoDispatcher
     private val ioDispatcher: CoroutineDispatcher,
 ) : ViewModel() {
@@ -110,7 +120,7 @@ class RosterViewModel @Inject constructor(
         getHealthServiceQuestionUseCase(existingRoasterQuestionList)
 
     fun getGeneralQuestionList() {
-        _generalLiveList.postValue(getGeneralQuestionUseCase(_generalLiveList.value))
+        _generalLiveList.postValue(getGeneralQuestionUseCase())
     }
 
     fun insertRoster() {
@@ -127,4 +137,41 @@ class RosterViewModel @Inject constructor(
             _isDataInserted.postValue(true)
         }
     }
+
+    fun getRoasterData() {
+        viewModelScope.launch(ioDispatcher) {
+
+            val allAttributeData = getRoasterDataUseCase.fetchAllData(patientUuid)
+
+            val generalList =
+                getRoasterDataUseCase.getGeneralData(allAttributeData, getGeneralQuestionUseCase())
+            _generalLiveList.postValue(generalList)
+
+
+            val matchingPregnancyCount = allAttributeData.find {
+                it.personAttributeTypeUuid == NO_OF_TIME_PREGNANT
+            }
+            pregnancyCount = matchingPregnancyCount?.value ?: ""
+
+            val matchingPregnancyOutcome = allAttributeData.find {
+                it.personAttributeTypeUuid == PREGNANCY_PAST_TWO_YEARS
+            }
+            pregnancyOutcome = matchingPregnancyOutcome?.value ?: ""
+
+            val matchingPregnancyOutcomeCount = allAttributeData.find {
+                it.personAttributeTypeUuid == NO_OF_PREGNANCY_OUTCOME_TWO_YEARS
+            }
+            pregnancyOutcomeCount = matchingPregnancyOutcomeCount?.value ?: ""
+
+            val pregnancyOutcomeModel =
+                getRoasterDataUseCase.getPregnancyData(allAttributeData, getOutcomeQuestionList())
+            _outComeLiveList.postValue(pregnancyOutcomeModel)
+
+            val healthServiceModelList =
+                getRoasterDataUseCase.getHealthServiceData(allAttributeData, getHealthServiceList())
+            _healthServiceLiveList.postValue(healthServiceModelList)
+        }
+    }
+
+
 }

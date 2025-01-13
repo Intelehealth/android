@@ -22,6 +22,7 @@ import org.intelehealth.app.syncModule.SyncUtils
 import org.intelehealth.app.ui.patient.activity.PatientRegistrationActivity
 import org.intelehealth.app.ui.rosterquestionnaire.utilities.RosterQuestionnaireStage
 import org.intelehealth.app.ui.rosterquestionnaire.viewmodel.RosterViewModel
+import org.intelehealth.app.utilities.BundleKeys.Companion.IS_EDIT_MODE
 import org.intelehealth.app.utilities.BundleKeys.Companion.PATIENT_CURRENT_STAGE
 import org.intelehealth.app.utilities.BundleKeys.Companion.PATIENT_UUID
 import org.intelehealth.app.utilities.BundleKeys.Companion.ROSTER_CURRENT_STAGE
@@ -51,11 +52,18 @@ class RosterQuestionnaireMainActivity : BaseActivity() {
 
         if (intent != null) {
             rosterViewModel.patientUuid = intent.getStringExtra("patientUuid")?:""
+            rosterViewModel.isEditMode = intent.getBooleanExtra(IS_EDIT_MODE, false)
         }
         extractAndBindUI()
         setupActionBar()
 
         observeCurrentRosterStage()
+
+        if (rosterViewModel.isEditMode) {
+            rosterViewModel.getRoasterData()
+        } else {
+            rosterViewModel.getGeneralQuestionList()
+        }
     }
 
     private fun observeCurrentRosterStage() {
@@ -144,10 +152,13 @@ class RosterQuestionnaireMainActivity : BaseActivity() {
             context: Context,
             patientId: String? = null,
             stage: RosterQuestionnaireStage = RosterQuestionnaireStage.GENERAL_ROSTER,
+            isEditMode : Boolean = false
         ) {
             Intent(context, RosterQuestionnaireMainActivity::class.java).apply {
                 putExtra(PATIENT_UUID, patientId)
                 putExtra(ROSTER_CURRENT_STAGE, stage)
+                putExtra(IS_EDIT_MODE, isEditMode)
+
             }.also { context.startActivity(it) }
         }
 

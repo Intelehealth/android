@@ -279,5 +279,8 @@ class RosterRepositoryImp @Inject constructor() : RosterRepository {
         patientDao.insertPatientAttributes(attributeList)
     }
 
+    override fun getAllRoasterData(patientUuid: String): ArrayList<PatientAttributesDTO> {
+        return patientDao.getPatientRoaster(patientUuid)
+    }
 
 }

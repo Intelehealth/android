@@ -23,22 +23,23 @@ class GeneralRosterFragment : BaseRosterFragment(R.layout.fragment_general_roste
     private lateinit var _binding: FragmentGeneralRosterBinding
     private var patientUuid: String? = null
     private lateinit var generalQuestionAdapter: MultiViewAdapter
-    private lateinit var generalQuestionList: ArrayList<RoasterViewQuestion>
+    private   var generalQuestionList= ArrayList<RoasterViewQuestion>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentGeneralRosterBinding.bind(view)
         rosterViewModel = ViewModelProvider.create(requireActivity())[RosterViewModel::class]
         rosterViewModel.updateRosterStage(RosterQuestionnaireStage.GENERAL_ROSTER)
-        rosterViewModel.getGeneralQuestionList()
+        setAdapter()
         clickListeners()
         observeLiveData()
     }
 
     private fun observeLiveData() {
         rosterViewModel.generalLiveList.observe(viewLifecycleOwner) { generalList ->
-            generalQuestionList = generalList
-            setAdapter()
+            generalQuestionList.clear()
+            generalQuestionList.addAll(generalList)
+            generalQuestionAdapter.notifyDataSetChanged()
         }
     }
 

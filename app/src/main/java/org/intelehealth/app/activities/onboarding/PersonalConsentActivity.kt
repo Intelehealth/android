@@ -88,17 +88,15 @@ class PersonalConsentActivity : AppCompatActivity(), WebViewStatus {
 //                IdentificationActivity_New::class.java
 //            )
 //        )
+       PatientRegistrationActivity.startPatientRegistration(this)
+      setResult(AppConstants.PERSONAL_CONSENT_ACCEPT)
+       finish()
 
-
-//       PatientRegistrationActivity.startPatientRegistration(this)
-//      setResult(AppConstants.PERSONAL_CONSENT_ACCEPT)
-//       finish()
-
-        startRosterQuestionnaire(
+       /* startRosterQuestionnaire(
             this,
-           "patient.uuid",
+           " patient.uuid",
             RosterQuestionnaireStage.GENERAL_ROSTER
-        )
+        )*/
 
       /*  startRosterQuestionnaire(
             this,

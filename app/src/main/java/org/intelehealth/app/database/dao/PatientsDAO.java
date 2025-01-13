@@ -334,6 +334,43 @@ public class PatientsDAO {
         return patientAttributesList;
     }
 
+
+    public ArrayList<PatientAttributesDTO> getPatientRoaster(String patientuuid) throws DAOException {
+        ArrayList<PatientAttributesDTO> patientAttributesList = new ArrayList<>();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        //db.beginTransaction();
+        try {
+            String query = "SELECT * from tbl_patient_attribute WHERE patientuuid= '" + patientuuid + "'";
+            Cursor cursor = db.rawQuery(query, null, null);
+            PatientAttributesDTO attribute ;
+            if (cursor.moveToFirst()) {
+                while (!cursor.isAfterLast()) {
+                    attribute = new PatientAttributesDTO();
+                    String attributeType = cursor.getString(cursor.getColumnIndex("person_attribute_type_uuid"));
+                    attribute.setPersonAttributeTypeUuid(attributeType);
+                    attribute.setValue(cursor.getString(cursor.getColumnIndex("value")));
+                    attribute.setUuid(cursor.getString(cursor.getColumnIndex("uuid")));
+                    attribute.setPatientuuid(patientuuid);
+                    if(attributeType !=null && !attributeType.isEmpty()){
+                        patientAttributesList.add(attribute);
+                    }
+                    cursor.moveToNext();
+                }
+            }
+            cursor.close();
+            //db.setTransactionSuccessful();
+        } catch (SQLException e) {
+            CustomLog.e(TAG,e.getMessage());
+            throw new DAOException(e.getMessage());
+        } finally {
+            //db.endTransaction();
+
+        }
+        return patientAttributesList;
+    }
+
+
+
     //Fetch householdID value using Patient UUID
     public String getHouseHoldValue(String patientuuid) throws DAOException {
         String houseHoldID = "";
