@@ -231,18 +231,17 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
     }
 
     private fun validateForm(block: () -> Unit) {
-        Timber.d { "Final patient =>${Gson().toJson(patient)}" }
         val error = R.string.this_field_is_mandatory
+
         binding.addressInfoConfig?.let {
-            val bPostalCode = if (it.postalCode!!.isEnabled) {
-                binding.textInputLayPostalCode.validate(binding.textInputPostalCode, error).and(
-                    binding.textInputLayPostalCode.validateDigit(
-                        binding.textInputPostalCode, R.string.postal_code_6_dig_invalid_txt, 6
-                    )
+            val isPostalCodeEntered = !binding.textInputPostalCode.text.isNullOrEmpty()
+            val bPostalCode = if (it.postalCode!!.isEnabled && isPostalCodeEntered) {
+                binding.textInputLayPostalCode.validateDigit(
+                    binding.textInputPostalCode,
+                    R.string.postal_code_6_dig_invalid_txt,
+                    minDigit = 6
                 )
-
             } else true
-
 
             val bCountry = if (it.country!!.isEnabled && it.country!!.isMandatory) {
                 binding.textInputLayCountry.validateDropDowb(

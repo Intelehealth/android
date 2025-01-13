@@ -1775,7 +1775,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         // end - city and district
 
         // setting postal code
-        if (patientDTO.getPostalcode() != null) {
+        if (patientDTO.getPostalcode() != null && !patientDTO.getPostalcode().isBlank()) {
             postalcode.setText(patientDTO.getPostalcode());
         } else {
             postalcode.setText(getResources().getString(R.string.no_postal_code_added));
