@@ -216,4 +216,23 @@
     <string name="enter_number">Enter number</string>
     <string name="baseline_survey_completed">Baseline Survey Completed</string>
 
+    <string name="bullet">\u2022</string>
+    <string name="fields_not_filled">Fields Not Filled</string>
+    <string name="following_fields_are_not_filled">Following fields are not filled:</string>
+    <string name="do_you_still_want_to_continue">Do you still want to continue?</string>
+    <string name="at_least_one_of_the_fields_is_mandatory">At least one of the following fields is mandatory: </string>
+
+    <string name="weight_loss_alert_msg">According to your height your weight is less.</string>
+    <string name="weight_gain_alert_msg">According to your height your weight is more</string>
+    <string name="vital_alert_bp_dia_button">Your diastolic BP is not Normal.</string>
+    <string name="vital_alert_bp_sys_button">Your Systolic BP is not Normal.</string>
+    <string name="vital_alert_spo2_button">Your SpO2 is not Normal.</string>
+    <string name="vital_alert_pulse_button">Your Pulse is not Normal.</string>
+    <string name="vital_alert_resp_button">Your Respiratory rate is not Normal.</string>
+    <string name="vital_alert_temperature_button">Your Temperature is not Normal.</string>
+    <string name="vital_alert_hgb_button">Your HGB is not Normal.</string>
+    <string name="vital_alert_sugar_random_button">Your Sugar Random level is not Normal.</string>
+    <string name="vital_alert_sugar_fasting_button">Your Sugar Fasting level is not Normal.</string>
+    <string name="vital_alert_sugar_aftermeal_button">Your Sugar After Meal level is not Normal.</string>
+
 </resources>

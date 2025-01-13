@@ -108,6 +108,28 @@ public class AppConstants {
     public static final String MAXIMUM_SUGAR = "500";
     public static final String MINIMUM_SUGAR = "60";
 
+    public static final int RISK_LIMIT_SPO2 = 95;
+
+    public static final int RISK_LIMIT_PULSE_UPPER_200 = 200;
+    public static final int RISK_LIMIT_PULSE_LOWER_60 = 60;
+    public static final int RISK_LIMIT_PULSE_UPPER_150 = 150;
+    public static final int RISK_LIMIT_PULSE_LOWER_58 = 58;
+    public static final int RISK_LIMIT_PULSE_UPPER_140 = 140;
+    public static final int RISK_LIMIT_PULSE_LOWER_40 = 40;
+
+    public static final int RISK_LIMIT_RESPIRATORY_UPPER = 25;
+    public static final int RISK_LIMIT_RESPIRATORY_LOWER = 12;
+
+    public static final double RISK_LIMIT_TEMPERATURE_UPPER_100 = 100.4;
+    public static final double RISK_LIMIT_TEMPERATURE_UPPER_103 = 103;
+    public static final double RISK_LIMIT_TEMPERATURE_LOWER_95 = 95;
+
+    public static final double RISK_LIMIT_HAEMOGLOBIN_LOWER = 7.0;
+    public static final double RISK_LIMIT_HAEMOGLOBIN_UPPER = 20.0;
+
+    public static final int RISK_LIMIT_SUGAR_RANDOM_LOWER = 80;
+    public static final int RISK_LIMIT_SUGAR_RANDOM_UPPER = 130;
+
     //functions constants
 
     public static final String UNIQUE_WORK_NAME = "intelehealth_workmanager";

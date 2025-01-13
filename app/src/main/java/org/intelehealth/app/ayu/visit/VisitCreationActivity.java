@@ -165,7 +165,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
     private boolean mIsEditTriggerFromVisitSummary = false;
     private int mEditFor = 0; // STEP_1_VITAL , STEP_2_VISIT_REASON, STEP_3_PHYSICAL_EXAMINATION, STEP_4_PAST_MEDICAL_HISTORY
     private String privacy_value_selected = "";
-    private PatientDTO patientDTO;
+    public PatientDTO patientDTO;
     private CommonVisitData mCommonVisitData;
 
     private boolean mHasLicence = false;
@@ -386,9 +386,11 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
     private void makeReadyForEdit() {
         findViewById(R.id.ll_progress_steps).setVisibility(View.GONE);
         // init all resources
-        mSelectedComplainList = new Gson().fromJson(sessionManager.getVisitEditCache(SessionManager.CHIEF_COMPLAIN_LIST + visitUuid), new TypeToken<List<ReasonData>>() {}.getType());
+        mSelectedComplainList = new Gson().fromJson(sessionManager.getVisitEditCache(SessionManager.CHIEF_COMPLAIN_LIST + visitUuid), new TypeToken<List<ReasonData>>() {
+        }.getType());
 
-        mChiefComplainRootNodeList = new Gson().fromJson(sessionManager.getVisitEditCache(SessionManager.CHIEF_COMPLAIN_QUESTION_NODE + visitUuid), new TypeToken<List<Node>>() {}.getType());
+        mChiefComplainRootNodeList = new Gson().fromJson(sessionManager.getVisitEditCache(SessionManager.CHIEF_COMPLAIN_QUESTION_NODE + visitUuid), new TypeToken<List<Node>>() {
+        }.getType());
 
         if (!sessionManager.getVisitEditCache(SessionManager.PHY_EXAM + visitUuid).isEmpty()) {
             physicalExamMap = new Gson().fromJson(sessionManager.getVisitEditCache(SessionManager.PHY_EXAM + visitUuid), PhysicalExam.class);
@@ -476,7 +478,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                 mSummaryFrameLayout.setVisibility(View.GONE);
                 setTitle(nextAction);
                 VitalsObject vo;
-                if(isEditMode){
+                if (isEditMode) {
                     vo = (VitalsObject) object;
                 } else {
                     vo = mVitalsObject;

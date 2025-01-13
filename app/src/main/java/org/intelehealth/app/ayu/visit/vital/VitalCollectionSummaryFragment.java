@@ -1,5 +1,6 @@
 package org.intelehealth.app.ayu.visit.vital;
 
+import static org.intelehealth.app.app.AppConstants.RISK_LIMIT_SPO2;
 import static org.intelehealth.app.ayu.visit.common.VisitUtils.convertCtoF;
 import static org.intelehealth.app.syncModule.SyncUtils.syncNow;
 
@@ -35,12 +36,14 @@ import org.intelehealth.app.ayu.visit.VisitCreationActionListener;
 import org.intelehealth.app.ayu.visit.VisitCreationActivity;
 import org.intelehealth.app.ayu.visit.common.VisitUtils;
 import org.intelehealth.app.ayu.visit.model.VitalsWrapper;
+import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.database.dao.VisitAttributeListDAO;
 import org.intelehealth.app.database.dao.VisitsDAO;
 import org.intelehealth.app.models.VitalsObject;
 import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.ConfigUtils;
 import org.intelehealth.app.utilities.CustomLog;
+import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
@@ -269,35 +272,7 @@ public class VitalCollectionSummaryFragment extends Fragment {
                 } else {
                     String visitType = IntelehealthApplication.getInstance().getVisitType();
                     if (visitType.equals(AppConstants.VISIT_TYPE_SEVIKA)) {
-                        new DialogUtils().showCommonDialog(
-                                requireContext(), R.drawable.ic_doctor_service_start, getResources().getString(R.string.doctor_advice_alert_title),
-                                getResources().getString(R.string.doctor_advice_alert_msg), false, getResources().getString(R.string.alert_start_button), getResources().getString(R.string.alert_save_and_exit_button),
-                                action -> {
-                                    if (action == DialogUtils.CustomDialogListener.NEGATIVE_CLICK) {
-                                        VisitAttributeListDAO speciality_attributes = new VisitAttributeListDAO();
-                                        try {
-                                            // avoiding multi-click by checking if click is within 1000ms than avoid it.
-                                            if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
-                                                return;
-                                            }
-                                            mLastClickTime = SystemClock.elapsedRealtime();
-
-                                            speciality_attributes.insertVisitAttributes(visitUuid, "", AppConstants.DOCTOR_NOT_NEEDED);
-                                            // speciality_attributes.insertVisitAttributes(visitUuid, " Specialist doctor not needed");
-                                        } catch (DAOException e) {
-                                            e.printStackTrace();
-                                        }
-
-                                        //-------End Visit----------
-                                        SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());
-                                        Date todayDate = new Date();
-                                        String endDate = currentDate.format(todayDate);
-                                        endVisit(visitUuid, mVitalsObject.getPatientUuid(), endDate);
-                                    } else if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
-                                        mActionListener.onFormSubmitted(VisitCreationActivity.STEP_2_VISIT_REASON, mIsEditMode, mVitalsObject);
-                                    }
-                                }
-                        );
+                        saveSevikaVisitAndProceed();
                     } else {
                         mActionListener.onFormSubmitted(VisitCreationActivity.STEP_2_VISIT_REASON, mIsEditMode, mVitalsObject);
                     }
@@ -364,6 +339,100 @@ public class VitalCollectionSummaryFragment extends Fragment {
             }
         });
         return view;
+    }
+
+    private void saveSevikaVisitAndProceed() {
+        String title = getString(R.string.doctor_advice_alert_title);
+        String message = getString(R.string.doctor_advice_alert_msg);
+        String startButtonString = getString(R.string.alert_start_button);
+        String saveAndExitButtonString = getResources().getString(R.string.alert_save_and_exit_button);
+
+        String riskAlertMessage = getRiskProneVitals();
+        if (!riskAlertMessage.isEmpty()) {
+            message = riskAlertMessage.concat("\n").concat(message);
+        }
+
+        new DialogUtils().showCommonDialog(requireContext(), R.drawable.ic_doctor_service_start, title, message, false, startButtonString, saveAndExitButtonString, action -> {
+                    if (action == DialogUtils.CustomDialogListener.NEGATIVE_CLICK) {
+                        VisitAttributeListDAO speciality_attributes = new VisitAttributeListDAO();
+                        try {
+                            // avoiding multi-click by checking if click is within 1000ms than avoid it.
+                            if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                                return;
+                            }
+                            mLastClickTime = SystemClock.elapsedRealtime();
+
+                            speciality_attributes.insertVisitAttributes(visitUuid, "", AppConstants.DOCTOR_NOT_NEEDED);
+                            // speciality_attributes.insertVisitAttributes(visitUuid, " Specialist doctor not needed");
+                        } catch (DAOException e) {
+                            e.printStackTrace();
+                        }
+
+                        //-------End Visit----------
+                        SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());
+                        Date todayDate = new Date();
+                        String endDate = currentDate.format(todayDate);
+                        endVisit(visitUuid, mVitalsObject.getPatientUuid(), endDate);
+                    } else if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
+                        mActionListener.onFormSubmitted(VisitCreationActivity.STEP_2_VISIT_REASON, mIsEditMode, mVitalsObject);
+                    }
+                }
+        );
+    }
+
+    private String getRiskProneVitals() {
+        String riskProneMessage = "";
+
+        String spo2 = mVitalsObject.getSpo2();
+        if (spo2 != null && !spo2.isEmpty() && Integer.parseInt(spo2) < RISK_LIMIT_SPO2) {
+            riskProneMessage = riskProneMessage.concat(getString(R.string.vital_alert_spo2_button)).concat("\n");
+        }
+
+        String pulse = mVitalsObject.getPulse();
+        String patientDateOfBirth = ((VisitCreationActivity) requireActivity()).patientDTO.getDateofbirth();
+        float ageYearMonth = DateAndTimeUtils.getFloat_Age_Year_Month(patientDateOfBirth);
+        if (ageYearMonth < 35) {
+            if (pulse != null && !pulse.isEmpty() && (Integer.parseInt(pulse) < AppConstants.RISK_LIMIT_PULSE_LOWER_60 || Integer.parseInt(pulse) > AppConstants.RISK_LIMIT_PULSE_UPPER_200)) {
+                riskProneMessage = riskProneMessage.concat(getString(R.string.vital_alert_pulse_button)).concat("\n");
+            }
+        } else if (ageYearMonth >= 35 && ageYearMonth < 50) {
+            if (pulse != null && !pulse.isEmpty() && (Integer.parseInt(pulse) < AppConstants.RISK_LIMIT_PULSE_LOWER_58 || Integer.parseInt(pulse) > AppConstants.RISK_LIMIT_PULSE_UPPER_150)) {
+                riskProneMessage = riskProneMessage.concat(getString(R.string.vital_alert_pulse_button)).concat("\n");
+            }
+        } else {
+            if (pulse != null && !pulse.isEmpty() && (Integer.parseInt(pulse) < AppConstants.RISK_LIMIT_PULSE_LOWER_40 || Integer.parseInt(pulse) > AppConstants.RISK_LIMIT_PULSE_UPPER_140)) {
+                riskProneMessage = riskProneMessage.concat(getString(R.string.vital_alert_pulse_button)).concat("\n");
+            }
+        }
+
+        String respiratory = mVitalsObject.getResp();
+        if (respiratory != null && !respiratory.isEmpty() && (Integer.parseInt(respiratory) < AppConstants.RISK_LIMIT_RESPIRATORY_LOWER || Integer.parseInt(respiratory) > AppConstants.RISK_LIMIT_RESPIRATORY_UPPER)) {
+            riskProneMessage = riskProneMessage.concat(getString(R.string.vital_alert_resp_button)).concat("\n");
+        }
+
+        String temperature = mVitalsObject.getTemperature();
+        if (ageYearMonth < 1) {
+            if (temperature != null && !temperature.isEmpty() && (Double.parseDouble(temperature) < AppConstants.RISK_LIMIT_TEMPERATURE_LOWER_95 || Double.parseDouble(temperature) < AppConstants.RISK_LIMIT_TEMPERATURE_UPPER_100)) {
+                riskProneMessage = riskProneMessage.concat(getString(R.string.vital_alert_temperature_button)).concat("\n");
+            }
+        } else {
+            if (temperature != null && !temperature.isEmpty() && (Double.parseDouble(temperature) < AppConstants.RISK_LIMIT_TEMPERATURE_LOWER_95 || Double.parseDouble(temperature) < AppConstants.RISK_LIMIT_TEMPERATURE_UPPER_103)) {
+                riskProneMessage = riskProneMessage.concat(getString(R.string.vital_alert_temperature_button)).concat("\n");
+            }
+        }
+
+        String haemoglobin = mVitalsObject.getHaemoglobin();
+        if (haemoglobin != null && !haemoglobin.isEmpty() && (Double.parseDouble(haemoglobin) < AppConstants.RISK_LIMIT_HAEMOGLOBIN_LOWER || Double.parseDouble(haemoglobin) > AppConstants.RISK_LIMIT_HAEMOGLOBIN_UPPER)) {
+            riskProneMessage = riskProneMessage.concat(getString(R.string.vital_alert_hgb_button)).concat("\n");
+        }
+
+        String sugarRandom = mVitalsObject.getSugarRandom();
+        if (sugarRandom != null && !sugarRandom.isEmpty() && (Integer.parseInt(sugarRandom) < AppConstants.RISK_LIMIT_SUGAR_RANDOM_LOWER || Integer.parseInt(sugarRandom) > AppConstants.RISK_LIMIT_SUGAR_RANDOM_UPPER)) {
+            riskProneMessage = riskProneMessage.concat(getString(R.string.vital_alert_sugar_random_button)).concat("\n");
+
+        }
+
+        return riskProneMessage;
     }
 
     private void endVisit(String visitUuid, String patientUuid, String endTime) {

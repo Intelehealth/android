@@ -1007,6 +1007,8 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                     saveAndProceed();
                 }
             });
+        } else {
+            saveAndProceed();
         }
     }
 
