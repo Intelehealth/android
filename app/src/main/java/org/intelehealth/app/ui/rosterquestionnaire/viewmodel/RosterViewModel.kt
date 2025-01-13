@@ -3,13 +3,19 @@ package org.intelehealth.app.ui.rosterquestionnaire.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.launch
+import org.intelehealth.app.ui.rosterquestionnaire.di.IoDispatcher
 import org.intelehealth.app.ui.rosterquestionnaire.model.HealthServiceModel
 import org.intelehealth.app.ui.rosterquestionnaire.model.PregnancyOutComeModel
 import org.intelehealth.app.ui.rosterquestionnaire.model.RoasterViewQuestion
 import org.intelehealth.app.ui.rosterquestionnaire.usecase.GetGeneralQuestionUseCase
 import org.intelehealth.app.ui.rosterquestionnaire.usecase.GetHealthServiceQuestionUseCase
 import org.intelehealth.app.ui.rosterquestionnaire.usecase.GetOutComeQuestionUseCase
+import org.intelehealth.app.ui.rosterquestionnaire.usecase.InsertRoasterUseCase
 import org.intelehealth.app.ui.rosterquestionnaire.utilities.RosterQuestionnaireStage
 import javax.inject.Inject
 
@@ -18,10 +24,15 @@ class RosterViewModel @Inject constructor(
     private val getHealthServiceQuestionUseCase: GetHealthServiceQuestionUseCase,
     private val getOutComeQuestionUseCase: GetOutComeQuestionUseCase,
     private val getGeneralQuestionUseCase: GetGeneralQuestionUseCase,
+    private val insertRoasterUseCase: InsertRoasterUseCase,
+    @IoDispatcher
+    private val ioDispatcher: CoroutineDispatcher,
 ) : ViewModel() {
 
-
-    var patientUuid: String? = null
+    var pregnancyOutcomeCount: String = ""
+    var pregnancyOutcome: String = ""
+    var pregnancyCount: String = ""
+    var patientUuid: String = ""
     private var mutableLiveRosterStage = MutableLiveData(RosterQuestionnaireStage.GENERAL_ROSTER)
     val rosterStageData: LiveData<RosterQuestionnaireStage> get() = mutableLiveRosterStage
 
@@ -39,6 +50,9 @@ class RosterViewModel @Inject constructor(
 
     var existingRoasterQuestionList: ArrayList<RoasterViewQuestion>? = null
     var existPregnancyOutComePosition = 0
+
+    private val _isDataInserted = MutableLiveData(false)
+    val isDataInserted: LiveData<Boolean> = _isDataInserted
 
     fun updateRosterStage(stage: RosterQuestionnaireStage) {
         mutableLiveRosterStage.postValue(stage)
@@ -97,5 +111,20 @@ class RosterViewModel @Inject constructor(
 
     fun getGeneralQuestionList() {
         _generalLiveList.postValue(getGeneralQuestionUseCase(_generalLiveList.value))
+    }
+
+    fun insertRoster() {
+        viewModelScope.launch(ioDispatcher) {
+            insertRoasterUseCase(
+                patientUuid,
+                generalLiveList.value,
+                outComeLiveList.value,
+                _healthServiceLiveList.value,
+                pregnancyOutcome,
+                pregnancyCount,
+                pregnancyOutcomeCount,
+            )
+            _isDataInserted.postValue(true)
+        }
     }
 }

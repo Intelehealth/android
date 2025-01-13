@@ -50,7 +50,10 @@ class HealthServiceRosterFragment : BaseRosterFragment(R.layout.fragment_health_
             findNavController().popBackStack()
         }
         binding.tvAddHealthService.setOnClickListener {
-            AddHealthServiceDialog().show(childFragmentManager, AddHealthServiceDialog::class.simpleName)
+            AddHealthServiceDialog().show(
+                childFragmentManager,
+                AddHealthServiceDialog::class.simpleName
+            )
         }
     }
 
@@ -65,6 +68,17 @@ class HealthServiceRosterFragment : BaseRosterFragment(R.layout.fragment_health_
             }
             healthServiceAdapter?.notifyDataSetChanged()
         }
+        rosterViewModel.isDataInserted.observe(viewLifecycleOwner)
+        { isDataInserted ->
+            if (isDataInserted) {
+                HealthServiceRosterFragmentDirections.navigationHealthServiceToDetails(
+                    patientUuid, "reg", "false"
+                ).apply {
+                    findNavController().navigate(this)
+                    requireActivity().finish()
+                }
+            }
+        }
     }
 
     /**
@@ -73,7 +87,8 @@ class HealthServiceRosterFragment : BaseRosterFragment(R.layout.fragment_health_
     private fun setupHealthServiceAdapter() {
         binding.rvHealthService.apply {
             layoutManager = LinearLayoutManager(requireContext())
-            healthServiceAdapter = HealthServiceAdapter(healthServiceList, this@HealthServiceRosterFragment)
+            healthServiceAdapter =
+                HealthServiceAdapter(healthServiceList, this@HealthServiceRosterFragment)
             addItemDecoration(SpacingItemDecoration(16)) // Adds spacing between items
             adapter = healthServiceAdapter
         }
@@ -84,12 +99,8 @@ class HealthServiceRosterFragment : BaseRosterFragment(R.layout.fragment_health_
      */
     private fun navigateToDetails() {
         if (healthServiceList.isNotEmpty()) {
-            HealthServiceRosterFragmentDirections.navigationHealthServiceToDetails(
-                patientUuid, "reg", "false"
-            ).apply {
-                findNavController().navigate(this)
-                requireActivity().finish()
-            }
+            rosterViewModel.insertRoster()
+
         } else {
             ToastUtil.showShortToast(
                 requireContext(),
@@ -126,7 +137,10 @@ class HealthServiceRosterFragment : BaseRosterFragment(R.layout.fragment_health_
     override fun onClickEdit(view: View, position: Int, item: HealthServiceModel) {
         rosterViewModel.existPregnancyOutComePosition = position
         rosterViewModel.existingRoasterQuestionList = ArrayList(item.roasterViewQuestion)
-        AddHealthServiceDialog().show(childFragmentManager, AddHealthServiceDialog::class.simpleName)
+        AddHealthServiceDialog().show(
+            childFragmentManager,
+            AddHealthServiceDialog::class.simpleName
+        )
     }
 
     /**

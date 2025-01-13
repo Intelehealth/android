@@ -2,6 +2,7 @@ package org.intelehealth.app.ui.rosterquestionnaire.ui
 
 import android.os.Bundle
 import android.view.View
+import android.widget.RadioButton
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,7 +17,6 @@ import org.intelehealth.app.ui.rosterquestionnaire.viewmodel.RosterViewModel
 import org.intelehealth.app.utilities.SpacingItemDecoration
 import org.intelehealth.app.utilities.ToastUtil
 import org.intelehealth.app.utilities.extensions.validate
-import org.intelehealth.app.utilities.extensions.validateDropDowb
 
 @AndroidEntryPoint
 class PregnancyRosterFragment : BaseRosterFragment(R.layout.fragment_pregnancy_roster),
@@ -95,6 +95,13 @@ class PregnancyRosterFragment : BaseRosterFragment(R.layout.fragment_pregnancy_r
                     getString(R.string.please_select_pregnancy_outcome)
                 )
                 return@setOnClickListener
+            } else {
+                rosterViewModel.pregnancyCount = binding.tilEtPregnancyCount.text.toString()
+                val selectedRadioButton: RadioButton =
+                    requireActivity().findViewById(binding.rgPregnancyOutcome.checkedRadioButtonId)
+                rosterViewModel.pregnancyOutcome = selectedRadioButton.getText().toString()
+                rosterViewModel.pregnancyOutcomeCount =
+                    binding.tilEtPregnancyOutcomeCount.text.toString()
             }
             if (pregnancyOutComeList.isEmpty()) {
                 ToastUtil.showShortToast(

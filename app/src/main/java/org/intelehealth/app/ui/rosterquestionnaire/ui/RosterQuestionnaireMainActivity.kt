@@ -33,7 +33,7 @@ import org.intelehealth.app.utilities.PatientRegStage
 
 @AndroidEntryPoint
 class RosterQuestionnaireMainActivity : BaseActivity() {
-    public lateinit var binding: ActivityRosterQuestionnaireMainBinding
+    private lateinit var binding: ActivityRosterQuestionnaireMainBinding
     private lateinit var rosterViewModel: RosterViewModel
 
     private lateinit var syncAnimator: ObjectAnimator
@@ -50,7 +50,7 @@ class RosterQuestionnaireMainActivity : BaseActivity() {
 //        manageTitleVisibilityOnScrolling()
 
         if (intent != null) {
-            rosterViewModel.patientUuid = intent.getStringExtra("patientUuid")
+            rosterViewModel.patientUuid = intent.getStringExtra("patientUuid")?:""
         }
         extractAndBindUI()
         setupActionBar()

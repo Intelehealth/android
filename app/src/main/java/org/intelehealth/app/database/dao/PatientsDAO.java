@@ -444,6 +444,38 @@ public class PatientsDAO {
         return name;
     }
 
+    public boolean insertPatientAttributes(List<PatientAttributesDTO> patientAttributesDTOS) throws DAOException {
+        if (patientAttributesDTOS == null) return false;
+        boolean isInserted = true;
+        ContentValues values = new ContentValues();
+        SQLiteDatabase db = null;
+        db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        db.beginTransaction();
+        try {
+            for (int i = 0; i < patientAttributesDTOS.size(); i++) {
+                values.put("uuid", patientAttributesDTOS.get(i).getUuid());
+                values.put("person_attribute_type_uuid", patientAttributesDTOS.get(i).getPersonAttributeTypeUuid());
+                values.put("patientuuid", patientAttributesDTOS.get(i).getPatientuuid());
+                values.put("value", patientAttributesDTOS.get(i).getValue());
+                values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
+                values.put("sync", false);
+                db.insertWithOnConflict("tbl_patient_attribute", null, values, SQLiteDatabase.CONFLICT_REPLACE);
+            }
+            db.setTransactionSuccessful();
+        } catch (SQLException e) {
+            isInserted = false;
+            FirebaseCrashlytics.getInstance().recordException(e);
+            CustomLog.e(TAG,e.getMessage());
+            throw new DAOException(e.getMessage(), e);
+        } finally {
+            db.endTransaction();
+        }
+
+        return isInserted;
+
+    }
+
+
     public boolean insertPatientAttributes(List<PatientAttributesDTO> patientAttributesDTOS, SQLiteDatabase db) throws DAOException {
         if (patientAttributesDTOS == null) return false;
         boolean isInserted = true;

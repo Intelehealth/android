@@ -11,6 +11,6 @@ data class RoasterViewQuestion(
     var spinnerPosition: Int?= null,
     var answer: String?= null,
     val errorMessage: String= "",
-    val inputType : Int = InputType.TYPE_CLASS_TEXT
+    val inputType : Int = InputType.TYPE_CLASS_TEXT,
+    var attribute : String = ""
 )
-
