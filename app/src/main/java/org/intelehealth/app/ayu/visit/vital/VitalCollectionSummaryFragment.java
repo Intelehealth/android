@@ -268,7 +268,7 @@ public class VitalCollectionSummaryFragment extends Fragment {
                     getActivity().finish();
                 } else {
                     String visitType = IntelehealthApplication.getInstance().getVisitType();
-                    if(visitType.equals("sevika")){
+                    if (visitType.equals(AppConstants.VISIT_TYPE_SEVIKA)) {
                         new DialogUtils().showCommonDialog(
                                 requireContext(), R.drawable.ic_doctor_service_start, getResources().getString(R.string.doctor_advice_alert_title),
                                 getResources().getString(R.string.doctor_advice_alert_msg), false, getResources().getString(R.string.alert_start_button), getResources().getString(R.string.alert_save_and_exit_button),
@@ -282,7 +282,7 @@ public class VitalCollectionSummaryFragment extends Fragment {
                                             }
                                             mLastClickTime = SystemClock.elapsedRealtime();
 
-                                            speciality_attributes.insertVisitAttributes(visitUuid,"", AppConstants.DOCTOR_NOT_NEEDED);
+                                            speciality_attributes.insertVisitAttributes(visitUuid, "", AppConstants.DOCTOR_NOT_NEEDED);
                                             // speciality_attributes.insertVisitAttributes(visitUuid, " Specialist doctor not needed");
                                         } catch (DAOException e) {
                                             e.printStackTrace();

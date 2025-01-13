@@ -363,7 +363,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                                 commonVisitData.setPrivacyNote(privacy_value_selected);
                                 in.putExtra("CommonVisitData", commonVisitData);
                                 startActivity(in);
-                                IntelehealthApplication.getInstance().setVisitType("doctor");
+                                IntelehealthApplication.getInstance().setVisitType(AppConstants.VISIT_TYPE_DOCTOR);
                                 // startVisit();
                                 // mStartForConsentApproveResult.launch(new Intent(PatientDetailActivity2.this, TeleconsultationConsentActivity.class));
                             }
@@ -486,15 +486,20 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
         startSevikaVisitBtn.setOnClickListener(view -> {
             new DialogUtils().showCommonDialog(
-                    this, R.drawable.ic_sevika_service_start, getResources().getString(R.string.start_newadvice_confirmation_title),
-                    getResources().getString(R.string.start_newadvice_confirmation_msg), false, getResources().getString(R.string.generic_yes), getResources().getString(R.string.generic_no),
+                    this,
+                    R.drawable.ic_sevika_service_start,
+                    getResources().getString(R.string.start_newadvice_confirmation_title),
+                    getResources().getString(R.string.start_newadvice_confirmation_msg),
+                    false,
+                    getResources().getString(R.string.generic_yes),
+                    getResources().getString(R.string.generic_no),
                     action -> {
                         if (action == DialogUtils.CustomDialogListener.NEGATIVE_CLICK) {
                             //
                         } else if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
                             //
                             startVisit();
-                            IntelehealthApplication.getInstance().setVisitType("sevika");
+                            IntelehealthApplication.getInstance().setVisitType(AppConstants.VISIT_TYPE_SEVIKA);
                         }
                     }
             );

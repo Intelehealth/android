@@ -769,7 +769,6 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                     mTemperatureEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
                 }
             }
-
         }
         //}
 
