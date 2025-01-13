@@ -209,37 +209,10 @@ class PatientRegistrationActivity : BaseActivity() {
 
             if (it.activeStatusPatientOther.not() && it.activeStatusPatientAddress.not()) {
                 binding.patientTab.root.isVisible = false
-                //going to the personal fragment if address and others segment are disabled
-                findNavController(R.id.navHostPatientReg).navigate(R.id.fragmentPatientPersonalInfo)
             } else {
                 binding.patientTab.root.isVisible = true
                 binding.addressActiveStatus = it.activeStatusPatientAddress
                 binding.otherActiveStatus = it.activeStatusPatientOther
-
-                //======================= These logic will trigger while user click on the sync icon ============================
-
-                //updating the fragment based on the active status
-                //like if other section has been disabled from the web, we will redirect to the address
-                //same goes for address
-                if(currentStage == PatientRegStage.ADDRESS){
-                    //if the current stage is address
-                    //checking address are active or not
-                    //if not, hiding address fragment
-                    //and navigating to personal info fragment
-                    if(it.activeStatusPatientAddress.not()){
-                        //navigating to personal info fragment
-                        findNavController(R.id.navHostPatientReg).navigate(R.id.fragmentPatientPersonalInfo)
-                    }
-
-                }
-                else if (currentStage == PatientRegStage.OTHER){
-                    //if the current stage is other means last fragment
-                    //then checking other are active or not
-                    //if not, hiding other fragment and going to the address fragment if its active
-                    if(it.activeStatusPatientOther.not() && it.activeStatusPatientAddress){
-                        findNavController(R.id.navHostPatientReg).navigate(R.id.fragmentPatientAddressInfo)
-                    }
-                }
             }
         }
     }
