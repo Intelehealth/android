@@ -48,7 +48,11 @@ class GetRoasterDataUseCase @Inject constructor(private val repository: RosterRe
         val pregnancyList =
             parseJsonToPregnancyRosterData(matchingPregnancyOutcomeReported?.value ?: "")
         pregnancyList.forEach {
-            val pregnancyOutComeQuestion = ArrayList<RoasterViewQuestion>(outcomeQuestionList)
+            val pregnancyOutComeQuestion = ArrayList<RoasterViewQuestion>()
+            outcomeQuestionList.forEach { outcome ->
+                pregnancyOutComeQuestion.add(outcome.copy())
+            }
+
             val pregnancyOutComeModel = PregnancyOutComeModel(
                 title = it.pregnancyOutcome,
                 roasterViewQuestion = pregnancyOutComeQuestion
@@ -84,7 +88,11 @@ class GetRoasterDataUseCase @Inject constructor(private val repository: RosterRe
         }
         val healthIssuesList = parseJsonToHealthRosterData(matchingHealthIssues?.value ?: "")
         healthIssuesList.forEach {
-            val healthServiceQuestionList = ArrayList<RoasterViewQuestion>(healthServiceList)
+            val healthServiceQuestionList = ArrayList<RoasterViewQuestion>()
+            healthServiceList.forEach { healthItem->
+                healthServiceQuestionList.add(healthItem.copy())
+            }
+
             val healthServiceModel = HealthServiceModel(
                 title = it.healthIssueReported,
                 roasterViewQuestion = healthServiceQuestionList

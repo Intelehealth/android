@@ -88,7 +88,7 @@
                     app:layout_constraintTop_toBottomOf="@id/tvPregnancyOutcome">
 
                     <RadioButton
-                        android:id="@+id/rvYes"
+                        android:id="@+id/rbYes"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="@dimen/margin_16"
@@ -98,7 +98,7 @@
 
 
                     <RadioButton
-                        android:id="@+id/rvNo"
+                        android:id="@+id/rbNo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/no"

@@ -13,6 +13,7 @@ import org.intelehealth.app.ui.rosterquestionnaire.model.PregnancyOutComeModel
 import org.intelehealth.app.ui.rosterquestionnaire.ui.adapter.PregnancyOutcomeAdapter
 import org.intelehealth.app.ui.rosterquestionnaire.ui.listeners.PregnancyOutcomeClickListener
 import org.intelehealth.app.ui.rosterquestionnaire.utilities.RosterQuestionnaireStage
+import org.intelehealth.app.ui.rosterquestionnaire.utilities.YES
 import org.intelehealth.app.ui.rosterquestionnaire.viewmodel.RosterViewModel
 import org.intelehealth.app.utilities.SpacingItemDecoration
 import org.intelehealth.app.utilities.ToastUtil
@@ -43,6 +44,19 @@ class PregnancyRosterFragment : BaseRosterFragment(R.layout.fragment_pregnancy_r
         setupOutcomeAdapter()
         setupClickListeners()
         observeLiveData()
+        setExistingData()
+    }
+
+    private fun setExistingData() {
+        binding.tilEtPregnancyCount.setText(rosterViewModel.pregnancyCount)
+        binding.tilEtPregnancyOutcomeCount.setText(rosterViewModel.pregnancyOutcomeCount)
+        if (rosterViewModel.pregnancyOutcome.isNotEmpty()) {
+            if (rosterViewModel.pregnancyOutcome == YES) {
+                binding.rbYes.isChecked = true
+            } else {
+                binding.rbNo.isChecked = true
+            }
+        }
     }
 
     /**
