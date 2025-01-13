@@ -201,6 +201,11 @@ public class PastMedicalHistoryFragment extends Fragment {
             public void onTerminalNodeAnsweredForParentUpdate(String parentNodeId) {
 
             }
+
+            @Override
+            public void hideBelowToIndex(int index) {
+
+            }
         });
 
         recyclerView.setAdapter(mQuestionsListingAdapter);

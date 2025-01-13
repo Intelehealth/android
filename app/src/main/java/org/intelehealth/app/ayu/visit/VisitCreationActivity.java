@@ -1171,10 +1171,10 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
 
             for (int i = 0; i < physicalExamMap.getTotalNumberOfExams(); i++) {
                 Node l1Node = physicalExamMap.getExamNode(i);
-                CustomLog.v(TAG, "savePhysicalExamData, l1Node " + new Gson().toJson(l1Node));
+                //CustomLog.v(TAG, "savePhysicalExamData, l1Node " + new Gson().toJson(l1Node));
                 for (int j = 0; j < l1Node.getOptionsList().size(); j++) {
                     Node l2Node = l1Node.getOptionsList().get(j);
-                    CustomLog.v(TAG, "savePhysicalExamData, l2Node " + new Gson().toJson(l2Node));
+                    //CustomLog.v(TAG, "savePhysicalExamData, l2Node " + new Gson().toJson(l2Node));
                     List<String> imagePathList = l2Node.getImagePathList();
                     CustomLog.v(TAG, "savePhysicalExamData, imagePathList " + imagePathList);
                     if (imagePathList != null && imagePathList.size() > 0) {

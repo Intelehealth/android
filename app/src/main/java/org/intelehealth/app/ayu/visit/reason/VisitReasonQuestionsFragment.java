@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
-import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +26,7 @@ import org.intelehealth.app.ayu.visit.model.CommonVisitData;
 import org.intelehealth.app.ayu.visit.model.ComplainBasicInfo;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.models.AnswerResult;
+import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.SessionManager;
 
 import java.util.ArrayList;
@@ -368,6 +368,11 @@ public class VisitReasonQuestionsFragment extends Fragment {
 
         @Override
         public void onTerminalNodeAnsweredForParentUpdate(String parentNodeId) {
+
+        }
+
+        @Override
+        public void hideBelowToIndex(int index) {
 
         }
     }

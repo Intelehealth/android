@@ -1,8 +1,7 @@
 package org.intelehealth.app.knowledgeEngine;
 
-import org.intelehealth.app.utilities.CustomLog;
-
 import org.apache.commons.lang3.StringUtils;
+import org.intelehealth.app.utilities.CustomLog;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -247,7 +246,7 @@ public class PhysicalExam extends Node {
         int total = this.totalExams;
         for (int i = 0; i < total; i++) {
             Node node = getExamNode(i);
-            if (node.isRequired() && !node.anySubSelected()) {
+            if (!node.isNeedToHide() && node.isRequired() && !node.anySubSelected()) {
                 allAnswered = false;
                 break;
             }
@@ -255,18 +254,30 @@ public class PhysicalExam extends Node {
         return allAnswered;
     }
 
+    public void hideBelowToIndex(int index) {
+        int total = this.totalExams;
+        for (int i = index+1; i < total; i++) {
+            Node node = getExamNode(i);
+            node.setNeedToHide(true);
+            node.setSelected(false);
+            node.setDataCaptured(false);
+
+        }
+    }
+
+
     /**
-     *
      * @param node
      */
-    private void cleanUpTheImages(Node node){
-        if(!node.isDataCaptured()){
+    private void cleanUpTheImages(Node node) {
+        if (!node.isDataCaptured()) {
             for (int i = 0; i < node.getImagePathList().size(); i++) {
                 String image = node.getImagePathList().get(i);
                 getImagePathList().remove(image);
             }
         }
     }
+
     //TODO: Physical exam map needs to modified to make language generation easier.
     public String generateFindings() {
         String mLanguage = "";
@@ -280,7 +291,7 @@ public class PhysicalExam extends Node {
             String title = getTitle(i);
             String[] split = title.split(" : ");
             String levelOne = split[0];
-            if ((node.isSelected() | node.anySubSelected())) {
+            if (!node.isNeedToHide() && (node.isSelected() | node.anySubSelected())) {
                 boolean checkSet = rootStrings.add(levelOne);
                 cleanUpTheImages(node);
                 if (checkSet)
@@ -344,7 +355,7 @@ public class PhysicalExam extends Node {
             String[] split = title.split(" : ");
             String levelOne = split[0];
             CustomLog.v(TAG, "levelOne - " + levelOne);
-            if ((node.isSelected() | node.anySubSelected())) {
+            if (!node.isNeedToHide() && (node.isSelected() | node.anySubSelected())) {
                 cleanUpTheImages(node);
                 boolean checkSet = rootStrings.add(levelOne);
                 CustomLog.i(TAG, "rootStrings: " + rootStrings);
@@ -418,6 +429,7 @@ public class PhysicalExam extends Node {
     public void setPageTitlesLocale(List<String> pageTitlesLocale) {
         this.pageTitlesLocale = pageTitlesLocale;
     }
+
     /*Node Engine - 3.0 support with new UI*/
     public String getEngineVersion() {
         return engineVersionRoot;

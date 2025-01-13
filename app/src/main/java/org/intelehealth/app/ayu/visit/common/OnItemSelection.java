@@ -15,4 +15,5 @@ public interface OnItemSelection {
     void onTerminalNodeAnsweredForParentUpdate(String parentNodeId);
 
 
+    void hideBelowToIndex(int index);
 }

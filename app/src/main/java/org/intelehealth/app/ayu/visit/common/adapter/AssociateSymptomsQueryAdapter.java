@@ -222,6 +222,11 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
                             public void onTerminalNodeAnsweredForParentUpdate(String parentNodeId) {
 
                             }
+
+                            @Override
+                            public void hideBelowToIndex(int index) {
+
+                            }
                         });
                         genericViewHolder.questionsListingAdapter.setAssociateSymptomNestedQueryFlag(true);
                         genericViewHolder.recyclerView.setAdapter(genericViewHolder.questionsListingAdapter);

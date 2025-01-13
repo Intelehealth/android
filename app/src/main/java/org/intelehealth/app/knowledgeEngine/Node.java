@@ -175,6 +175,15 @@ public class Node implements Serializable {
     }
 
     private boolean needToShowAlert = false;
+    private boolean flowEnd = false;
+
+    public boolean isFlowEnd() {
+        return flowEnd;
+    }
+
+    public void setFlowEnd(boolean flowEnd) {
+        this.flowEnd = flowEnd;
+    }
 
 
     /**
@@ -201,6 +210,8 @@ public class Node implements Serializable {
      */
     public Node(JSONObject jsonNode) {
         try {
+            this.flowEnd = jsonNode.optBoolean("flowEnd");
+
             this.placeholder = jsonNode.optString("placeholder");
             JSONArray validationArray = jsonNode.optJSONArray("validation");
             if (validationArray == null) {
@@ -410,6 +421,7 @@ public class Node implements Serializable {
      * @param source source knowledgeEngine to copy into a new knowledgeEngine. Will always default as unselected.
      */
     public Node(Node source) {
+        this.flowEnd = source.flowEnd;
         this.needToShowAlert = source.needToShowAlert;
         this.nodeValidationList = source.nodeValidationList;
         this.placeholder = source.placeholder;

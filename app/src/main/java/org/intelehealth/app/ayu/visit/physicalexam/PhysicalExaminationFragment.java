@@ -130,6 +130,7 @@ public class PhysicalExaminationFragment extends Fragment {
                 @Override
                 public void onSelect(Node node, int index, boolean isSkipped, Node parentNode) {
                     // avoid the scroll for old data change
+                    CustomLog.v("onSelect", "mCurrentComplainNodeOptionsIndex - " + mCurrentComplainNodeOptionsIndex);
                     if (mCurrentComplainNodeOptionsIndex - index >= 1) {
                         return;
                     }
@@ -200,6 +201,14 @@ public class PhysicalExaminationFragment extends Fragment {
                 public void onTerminalNodeAnsweredForParentUpdate(String parentNodeId) {
 
                 }
+
+                @Override
+                public void hideBelowToIndex(int index) {
+                    physicalExam.hideBelowToIndex(index);
+                    mQuestionsListingAdapter.removeItemsFromSpecificIndexToEnd(index + 1);
+                    mCurrentComplainNodeOptionsIndex = index;
+
+                }
             });
 
             recyclerView.setAdapter(mQuestionsListingAdapter);
@@ -213,8 +222,9 @@ public class PhysicalExaminationFragment extends Fragment {
                 while (true) {
                     if (mCurrentComplainNodeOptionsIndex < physicalExam.getTotalNumberOfExams() - 1) {
                         mCurrentComplainNodeOptionsIndex++;
-                        mQuestionsListingAdapter.addItem(physicalExam.getExamNode(mCurrentComplainNodeOptionsIndex).getOption(0), physicalExam.getEngineVersion());
-
+                        if (!physicalExam.getExamNode(mCurrentComplainNodeOptionsIndex).getOption(0).isNeedToHide()) {
+                            mQuestionsListingAdapter.addItem(physicalExam.getExamNode(mCurrentComplainNodeOptionsIndex).getOption(0), physicalExam.getEngineVersion());
+                        }
 
                     } else {
                         break;

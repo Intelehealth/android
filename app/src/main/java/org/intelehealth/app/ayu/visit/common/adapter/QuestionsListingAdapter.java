@@ -210,6 +210,14 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         notifyItemInserted(key);
     }
 
+    public void removeItemsFromSpecificIndexToEnd(int startIndex) {
+        CustomLog.v(TAG, "removeItem() index - " + engineVersion);
+        int endIndex = mItemList.size();
+        mItemList.subList(startIndex, endIndex).clear();
+        notifyItemRangeRemoved(startIndex, endIndex);
+
+    }
+
     public void addItemAll(List<Node> nodes) {
         mItemList = nodes;
 
@@ -1112,6 +1120,11 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 public void onTerminalNodeAnsweredForParentUpdate(String parentNodeId) {
                     selectedNode.setDataCaptured(true);
                 }
+
+                @Override
+                public void hideBelowToIndex(int index) {
+
+                }
             });
             holder.nestedQuestionsListingAdapter.setLoadedIds(mLoadedIds);
             holder.nestedRecyclerView.setAdapter(holder.nestedQuestionsListingAdapter);
@@ -1240,6 +1253,18 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                         mItemList.get(index), options, new OptionsChipsGridAdapter.OnItemSelection() {
                     @Override
                     public void onSelect(Node node, boolean isLoadingForNestedEditData) {
+                        // check for flow end
+                        if (node.isSelected() && node.isFlowEnd()) {
+                            CustomLog.v(TAG, "optionsChipsGridAdapter - question index - " + index);
+                            // hide the other questions
+                            mOnItemSelection.hideBelowToIndex(index);
+                            mItemList.get(index).setSelected(true);
+                            mItemList.get(index).setDataCaptured(true);
+                            mOnItemSelection.onAllAnswered(true);
+
+
+                            return;
+                        }
 
                         if (!isLoadingForNestedEditData)
                             VisitUtils.scrollNow(mRecyclerView, 1000, 0, 300, mIsEditMode, mLoadedIds.contains(mItemList.get(index).getId()));
@@ -1825,6 +1850,11 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 @Override
                 public void onTerminalNodeAnsweredForParentUpdate(String parentNodeId) {
                     selectedNode.setDataCaptured(true);
+                }
+
+                @Override
+                public void hideBelowToIndex(int index) {
+
                 }
             });
             holder.nestedQuestionsListingAdapter.setLoadedIds(mLoadedIds);

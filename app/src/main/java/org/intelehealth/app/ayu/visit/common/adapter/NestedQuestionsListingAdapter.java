@@ -1121,6 +1121,11 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                 mParentNode.setDataCaptured(true);
                 selectedNode.setDataCaptured(true);
             }
+
+            @Override
+            public void hideBelowToIndex(int index) {
+
+            }
         });
         holder.nestedQuestionsListingAdapter.setEngineVersion(getEngineVersion());
         holder.superNestedRecyclerView.setAdapter(holder.nestedQuestionsListingAdapter);
@@ -1232,6 +1237,11 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                 public void onTerminalNodeAnsweredForParentUpdate(String parentNodeId) {
                     mParentNode.setDataCaptured(true);
                     selectedNode.setDataCaptured(true);
+                }
+
+                @Override
+                public void hideBelowToIndex(int index) {
+
                 }
             });
             holder.superNestedRecyclerView.setAdapter(holder.nestedQuestionsListingAdapter);
