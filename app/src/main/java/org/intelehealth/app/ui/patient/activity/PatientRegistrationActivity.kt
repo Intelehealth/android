@@ -62,6 +62,7 @@ class PatientRegistrationActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityPatientRegistrationBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        loadFeatureActiveStatusFromSuspended()
 //        manageTitleVisibilityOnScrolling()
         extractAndBindUI()
         setupActionBar()
@@ -200,8 +201,8 @@ class PatientRegistrationActivity : BaseActivity() {
         currentStage = stage
     }
 
-    override fun onFeatureActiveStatusLoaded(activeStatus: FeatureActiveStatus?) {
-        super.onFeatureActiveStatusLoaded(activeStatus)
+    override fun onFeatureActiveStatusLoadedFromSuspended(activeStatus: FeatureActiveStatus?) {
+        super.onFeatureActiveStatusLoadedFromSuspended(activeStatus)
         if (::syncAnimator.isInitialized) syncAnimator.cancel()
         activeStatus?.let {
             patientViewModel.activeStatusAddressSection = it.activeStatusPatientAddress
@@ -215,6 +216,11 @@ class PatientRegistrationActivity : BaseActivity() {
                 binding.otherActiveStatus = it.activeStatusPatientOther
             }
         }
+    }
+
+    override fun onFeatureActiveStatusLoaded(activeStatus: FeatureActiveStatus?) {
+        super.onFeatureActiveStatusLoaded(activeStatus)
+        if (::syncAnimator.isInitialized) syncAnimator.cancel()
     }
 
     override fun onResume() {
