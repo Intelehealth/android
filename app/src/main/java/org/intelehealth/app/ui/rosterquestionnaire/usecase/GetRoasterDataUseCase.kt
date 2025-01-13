@@ -38,38 +38,32 @@ class GetRoasterDataUseCase @Inject constructor(private val repository: RosterRe
     }
 
     fun getPregnancyData(
-        allAttributeData: ArrayList<PatientAttributesDTO>,
-        outcomeQuestionList: ArrayList<RoasterViewQuestion>,
-    ): ArrayList<PregnancyOutComeModel> {
-        val matchingPregnancyOutcomeReported = allAttributeData.find {
-            it.personAttributeTypeUuid == PREGNANCY_OUTCOME_REPORTED
-        }
-        val pregnancyOutComeModelList = ArrayList<PregnancyOutComeModel>()
-        val pregnancyList =
-            parseJsonToPregnancyRosterData(matchingPregnancyOutcomeReported?.value ?: "")
-        pregnancyList.forEach {
-            val pregnancyOutComeQuestion = ArrayList<RoasterViewQuestion>()
-            outcomeQuestionList.forEach { outcome ->
-                pregnancyOutComeQuestion.add(outcome.copy())
+        allAttributeData: List<PatientAttributesDTO>,
+        outcomeQuestionList: List<RoasterViewQuestion>
+    ): List<PregnancyOutComeModel> {
+        // Find matching pregnancy outcome data
+        val pregnancyDataJson = allAttributeData.find { it.personAttributeTypeUuid == PREGNANCY_OUTCOME_REPORTED }?.value ?: ""
+        val pregnancyList = parseJsonToPregnancyRosterData(pregnancyDataJson)
+
+        // Build the PregnancyOutComeModel list
+        return pregnancyList.map { pregnancy ->
+            val pregnancyOutComeQuestion = outcomeQuestionList.map { it.copy() }.apply {
+                if (size >= 7) {
+                    this[0].answer = pregnancy.pregnancyOutcome
+                    this[1].answer = pregnancy.yearOfPregnancyOutcome
+                    this[2].answer = pregnancy.monthsOfPregnancy
+                    this[3].answer = pregnancy.placeOfDelivery
+                    this[4].answer = pregnancy.typeOfDelivery
+                    this[5].answer = pregnancy.pregnancyPlanned
+                    this[6].answer = pregnancy.highRiskPregnancy
+                }
             }
 
-            val pregnancyOutComeModel = PregnancyOutComeModel(
-                title = it.pregnancyOutcome,
+            PregnancyOutComeModel(
+                title = pregnancy.pregnancyOutcome,
                 roasterViewQuestion = pregnancyOutComeQuestion
             )
-
-            pregnancyOutComeQuestion[0].answer = it.pregnancyOutcome
-            pregnancyOutComeQuestion[1].answer = it.yearOfPregnancyOutcome
-            pregnancyOutComeQuestion[2].answer = it.monthsOfPregnancy
-            pregnancyOutComeQuestion[3].answer = it.placeOfDelivery
-            pregnancyOutComeQuestion[4].answer = it.typeOfDelivery
-            pregnancyOutComeQuestion[5].answer = it.pregnancyPlanned
-            pregnancyOutComeQuestion[6].answer = it.highRiskPregnancy
-
-            pregnancyOutComeModelList.add(pregnancyOutComeModel)
-
         }
-        return pregnancyOutComeModelList
     }
 
     private fun parseJsonToPregnancyRosterData(jsonString: String): List<PregnancyRosterData> {
@@ -79,39 +73,35 @@ class GetRoasterDataUseCase @Inject constructor(private val repository: RosterRe
     }
 
     fun getHealthServiceData(
-        allAttributeData: ArrayList<PatientAttributesDTO>,
-        healthServiceList: ArrayList<RoasterViewQuestion>,
-    ): ArrayList<HealthServiceModel> {
-        val healthServiceModelList = ArrayList<HealthServiceModel>()
-        val matchingHealthIssues = allAttributeData.find {
-            it.personAttributeTypeUuid == HEALTH_ISSUE_REPORTED
-        }
-        val healthIssuesList = parseJsonToHealthRosterData(matchingHealthIssues?.value ?: "")
-        healthIssuesList.forEach {
-            val healthServiceQuestionList = ArrayList<RoasterViewQuestion>()
-            healthServiceList.forEach { healthItem->
-                healthServiceQuestionList.add(healthItem.copy())
+        allAttributeData: List<PatientAttributesDTO>,
+        healthServiceList: List<RoasterViewQuestion>
+    ): List<HealthServiceModel> {
+        // Find the matching health issues data
+        val healthIssuesJson = allAttributeData.find { it.personAttributeTypeUuid == HEALTH_ISSUE_REPORTED }?.value ?: ""
+        val healthIssuesList = parseJsonToHealthRosterData(healthIssuesJson)
+
+        // Build the HealthServiceModel list
+        return healthIssuesList.map { healthIssue ->
+            val healthServiceQuestionList = healthServiceList.map { it.copy() }.apply {
+                if (size >= 10) {
+                    this[0].answer = healthIssue.healthIssueReported
+                    this[1].answer = healthIssue.numberOfEpisodesInTheLastYear
+                    this[2].answer = healthIssue.primaryHealthcareProviderValue
+                    this[3].answer = healthIssue.firstLocationOfVisit
+                    this[4].answer = healthIssue.referredTo
+                    this[5].answer = healthIssue.modeOfTransportation
+                    this[6].answer = healthIssue.averageCostOfTravelAndStayPerEpisode
+                    this[7].answer = healthIssue.averageCostOfConsultation
+                    this[8].answer = healthIssue.averageCostOfMedicine
+                    this[9].answer = healthIssue.scoreForExperienceOfTreatment
+                }
             }
 
-            val healthServiceModel = HealthServiceModel(
-                title = it.healthIssueReported,
+            HealthServiceModel(
+                title = healthIssue.healthIssueReported,
                 roasterViewQuestion = healthServiceQuestionList
             )
-
-            healthServiceQuestionList[0].answer = it.healthIssueReported
-            healthServiceQuestionList[1].answer = it.numberOfEpisodesInTheLastYear
-            healthServiceQuestionList[2].answer = it.primaryHealthcareProviderValue
-            healthServiceQuestionList[3].answer = it.firstLocationOfVisit
-            healthServiceQuestionList[4].answer = it.referredTo
-            healthServiceQuestionList[5].answer = it.modeOfTransportation
-            healthServiceQuestionList[6].answer = it.averageCostOfTravelAndStayPerEpisode
-            healthServiceQuestionList[7].answer = it.averageCostOfConsultation
-            healthServiceQuestionList[8].answer = it.averageCostOfMedicine
-            healthServiceQuestionList[9].answer = it.scoreForExperienceOfTreatment
-
-            healthServiceModelList.add(healthServiceModel)
         }
-        return healthServiceModelList
     }
 
     private fun parseJsonToHealthRosterData(jsonString: String): List<HealthIssues> {

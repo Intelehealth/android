@@ -140,38 +140,38 @@ class RosterViewModel @Inject constructor(
 
     fun getRoasterData() {
         viewModelScope.launch(ioDispatcher) {
-
             val allAttributeData = getRoasterDataUseCase.fetchAllData(patientUuid)
 
-            val generalList =
+            // Fetch and post general data
+            _generalLiveList.postValue(
                 getRoasterDataUseCase.getGeneralData(allAttributeData, getGeneralQuestionUseCase())
-            _generalLiveList.postValue(generalList)
+            )
 
+            // Extract pregnancy-related data
+            val pregnancyDataMap = mapOf(
+                NO_OF_TIME_PREGNANT to { value: String -> pregnancyCount = value },
+                PREGNANCY_PAST_TWO_YEARS to { value: String -> pregnancyOutcome = value },
+                NO_OF_PREGNANCY_OUTCOME_TWO_YEARS to { value: String -> pregnancyOutcomeCount = value }
+            )
 
-            val matchingPregnancyCount = allAttributeData.find {
-                it.personAttributeTypeUuid == NO_OF_TIME_PREGNANT
+            pregnancyDataMap.forEach { (key, setter) ->
+                allAttributeData.find { it.personAttributeTypeUuid == key }?.value?.let(setter)
             }
-            pregnancyCount = matchingPregnancyCount?.value ?: ""
 
-            val matchingPregnancyOutcome = allAttributeData.find {
-                it.personAttributeTypeUuid == PREGNANCY_PAST_TWO_YEARS
-            }
-            pregnancyOutcome = matchingPregnancyOutcome?.value ?: ""
-
-            val matchingPregnancyOutcomeCount = allAttributeData.find {
-                it.personAttributeTypeUuid == NO_OF_PREGNANCY_OUTCOME_TWO_YEARS
-            }
-            pregnancyOutcomeCount = matchingPregnancyOutcomeCount?.value ?: ""
-
-            val pregnancyOutcomeModel =
+            // Fetch and post pregnancy outcome models
+            _outComeLiveList.postValue(
                 getRoasterDataUseCase.getPregnancyData(allAttributeData, getOutcomeQuestionList())
-            _outComeLiveList.postValue(pregnancyOutcomeModel)
+                        as ArrayList<PregnancyOutComeModel>?
+            )
 
-            val healthServiceModelList =
+            // Fetch and post health service models
+            _healthServiceLiveList.postValue(
                 getRoasterDataUseCase.getHealthServiceData(allAttributeData, getHealthServiceList())
-            _healthServiceLiveList.postValue(healthServiceModelList)
+                        as ArrayList<HealthServiceModel>?
+            )
         }
     }
+
 
 
 }
