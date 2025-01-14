@@ -3155,13 +3155,15 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         if (speciality_selected == null || speciality_selected.isEmpty()) {
             showSelectSpeciliatyErrorDialog();
         }
+        //temporary its commented. because due to this condition unableto proceed in nas app for visit upload
+        //as this  functionality is configurable in app but  not in validations.
 
-        if (mBinding.diagnosisTextInput.getText().toString().isEmpty() ||
+        /*if (mBinding.diagnosisTextInput.getText().toString().isEmpty() ||
                 selectedConsultationType.isEmpty() ||
                 (speciality_selected == null || speciality_selected.isEmpty())
         ) {
             return;
-        }
+        }*/
         MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(context);
         final LayoutInflater inflater = LayoutInflater.from(context);
         View convertView = inflater.inflate(R.layout.dialog_patient_registration, null);

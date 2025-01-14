@@ -43,9 +43,8 @@ import android.provider.Settings;
 import android.text.Html;
 import android.util.DisplayMetrics;
 
-import org.intelehealth.app.activities.onboarding.PersonalConsentActivity;
+import org.intelehealth.app.ui.draftsurvey.DraftSurveyActivity;
 import org.intelehealth.app.utilities.AddPatientUtils;
-import org.intelehealth.app.activities.draftSurvey.DraftSurveyActivity;
 
 import org.intelehealth.app.utilities.CustomLog;
 
@@ -82,7 +81,6 @@ import androidx.work.WorkManager;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.github.ajalt.timberkt.Timber;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.navigation.NavigationBarView;
@@ -98,7 +96,6 @@ import org.intelehealth.app.activities.help.activities.HelpFragment_New;
 import org.intelehealth.app.activities.informativeVideos.fragments.InformativeVideosFragment_New;
 import org.intelehealth.app.activities.loginActivity.LoginActivityNew;
 import org.intelehealth.app.activities.notification.view.NotificationActivity;
-import org.intelehealth.app.activities.onboarding.PrivacyPolicyActivity_New;
 import org.intelehealth.app.activities.settingsActivity.Language_ProtocolsActivity;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
@@ -111,11 +108,9 @@ import org.intelehealth.app.models.CheckAppUpdateRes;
 import org.intelehealth.app.models.dto.ProviderAttributeDTO;
 import org.intelehealth.app.models.dto.ProviderDTO;
 import org.intelehealth.app.profile.MyProfileActivity;
-import org.intelehealth.app.services.MyIntentService;
 import org.intelehealth.app.services.firebase_services.DeviceInfoUtils;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
-import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.DownloadFilesUtils;
@@ -992,6 +987,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         super.onFeatureActiveStatusLoaded(activeStatus);
         if (mNavigationView != null) {
             mNavigationView.getMenu().findItem(R.id.menu_view_call_log).setVisible(activeStatus.getVideoSection());
+            mNavigationView.getMenu().findItem(R.id.menu_draft_survey).setVisible(activeStatus.getActiveStatusPatientDraftSurvey());
         }
     }
 
