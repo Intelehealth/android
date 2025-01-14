@@ -13,7 +13,7 @@ import org.intelehealth.app.ui.rosterquestionnaire.utilities.HEALTH_ISSUE_REPORT
 import org.intelehealth.app.ui.rosterquestionnaire.utilities.PREGNANCY_OUTCOME_REPORTED
 import javax.inject.Inject
 
-class GetRoasterDataUseCase @Inject constructor(private val repository: RosterRepository) {
+class GetAllRoasterDataUseCase @Inject constructor(private val repository: RosterRepository) {
     fun fetchAllData(patientId: String): ArrayList<PatientAttributesDTO> {
         return repository.getAllRoasterData(patientId)
     }
