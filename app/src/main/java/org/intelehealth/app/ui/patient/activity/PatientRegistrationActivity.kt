@@ -46,7 +46,6 @@ import java.util.UUID
  * Mob   : +919727206702
  **/
 class PatientRegistrationActivity : BaseActivity() {
-    private var currentStage: PatientRegStage = PatientRegStage.PERSONAL
     private lateinit var binding: ActivityPatientRegistrationBinding
     private val patientViewModel by lazy {
         return@lazy PatientViewModelFactory.create(this, this)
@@ -198,7 +197,6 @@ class PatientRegistrationActivity : BaseActivity() {
             binding.patientTab.tvIndicatorPatientAddress.isActivated = true
             binding.patientTab.tvIndicatorPatientOther.isSelected = true
         }
-        currentStage = stage
     }
 
     override fun onFeatureActiveStatusLoadedFromSuspended(activeStatus: FeatureActiveStatus?) {
