@@ -449,6 +449,8 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                     node.setSelected(true);
                     parentNode.setSelected(true);
                     parentNode.setDataCaptured(true);
+                    mParentNode.setSelected(true);
+                    mParentNode.setDataCaptured(true);
                     notifyItemChanged(index);
                     mOnItemSelection.onSelect(node, mRootIndex, false, parentNode);
                 }
@@ -1601,6 +1603,8 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
 
                 parentNode.setSelected(true);
                 parentNode.setDataCaptured(true);
+                mParentNode.setSelected(true);
+                mParentNode.setDataCaptured(true);
 
                 //notifyDataSetChanged();
                 AdapterUtils.setToDisable(skipButton);
@@ -1767,6 +1771,8 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                         node.setDataCaptured(true);
                         parentNode.setSelected(true);
                         parentNode.setDataCaptured(true);
+                        mParentNode.setSelected(true);
+                        mParentNode.setDataCaptured(true);
                         //holder.node.setDataCaptured(true);
                         int age = ((VisitCreationActivity) mContext).getAgeInYear();
                         String gender = ((VisitCreationActivity) mContext).getPatientGender();
@@ -1927,7 +1933,8 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
 
                         parentNode.setSelected(true);
                         parentNode.setDataCaptured(true);
-
+                        mParentNode.setSelected(true);
+                        mParentNode.setDataCaptured(true);
                         int age = ((VisitCreationActivity) mContext).getAgeInYear();
                         String gender = ((VisitCreationActivity) mContext).getPatientGender();
                         node.setNeedToShowAlert(node.checkCustomValidation(val, node.getNodeValidationList(), false, age, gender));
@@ -2171,7 +2178,8 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                     //holder.node.setDataCaptured(true);
                     parentNode.setSelected(true);
                     parentNode.setDataCaptured(true);
-
+                    mParentNode.setSelected(true);
+                    mParentNode.setDataCaptured(true);
                     //notifyDataSetChanged();
                     AdapterUtils.setToDisable(skipButton);
                     node.setSkipped(false);

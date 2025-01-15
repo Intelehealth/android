@@ -1254,8 +1254,9 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     @Override
                     public void onSelect(Node node, boolean isLoadingForNestedEditData) {
                         // check for flow end
+                        CustomLog.v(TAG, "optionsChipsGridAdapter - question index - " + index);
                         if (node.isSelected() && node.isFlowEnd()) {
-                            CustomLog.v(TAG, "optionsChipsGridAdapter - question index - " + index);
+
                             // hide the other questions
                             mOnItemSelection.hideBelowToIndex(index);
                             mItemList.get(index).setSelected(true);

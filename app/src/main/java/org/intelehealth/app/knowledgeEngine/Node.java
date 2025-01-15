@@ -3961,7 +3961,10 @@ public class Node implements Serializable {
         if (nodeValidationList == null || nodeValidationList.isEmpty()) {
             return false;
         }
-
+        CustomLog.v(TAG, "checkCustomValidation - val - " + val);
+        CustomLog.v(TAG, "checkCustomValidation - idForNumericValidation - " + idForNumericValidation);
+        CustomLog.v(TAG, "checkCustomValidation - age - " + age);
+        CustomLog.v(TAG, "checkCustomValidation - gender - " + gender);
         String _gender = gender.equalsIgnoreCase("M") ? "male" : "female";
         boolean isAlert = false;
         for (NodeValidation nodeValidation : nodeValidationList) {
@@ -3979,7 +3982,7 @@ public class Node implements Serializable {
                     }
                     break;
                 } else {
-                    if (nodeValidation.getType().equalsIgnoreCase(_gender)) {
+                    if (age >= 18 && nodeValidation.getType().equalsIgnoreCase(_gender)) {
                         if (value < nodeValidation.getMin() || value > nodeValidation.getMax()) {
                             isAlert = true;
                         }
@@ -3989,10 +3992,17 @@ public class Node implements Serializable {
                 }
 
             } else {
-                if (nodeValidation.getCheckValues().toLowerCase().contains(val.toLowerCase())) {
-                    isAlert = true;
-                    break;
+                isAlert = true;
+                // split nodeValidation by "," and convert to list anc check val contains or not
+                List<String> stringList = Arrays.asList(nodeValidation.getCheckValues().split(","));
+                for (int i = 0; i < stringList.size() ; i++) {
+                    // check contains value by ignoring case
+                    if (stringList.get(i).trim().equalsIgnoreCase(val.trim())) {
+                        isAlert = false;
+                        break;
+                    }
                 }
+
 
             }
 

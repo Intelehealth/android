@@ -150,7 +150,7 @@ public class PhysicalExaminationFragment extends Fragment {
 
                         //}
 
-
+                        physicalExam.getExamNode(mCurrentComplainNodeOptionsIndex).setNeedToHide(false);
                         mQuestionsListingAdapter.addItem(physicalExam.getExamNode(mCurrentComplainNodeOptionsIndex).getOption(0), physicalExam.getEngineVersion());
                    /* recyclerView.postDelayed(new Runnable() {
                         @Override
@@ -207,6 +207,7 @@ public class PhysicalExaminationFragment extends Fragment {
                     physicalExam.hideBelowToIndex(index);
                     mQuestionsListingAdapter.removeItemsFromSpecificIndexToEnd(index + 1);
                     mCurrentComplainNodeOptionsIndex = index;
+                    mActionListener.onProgress(100);
 
                 }
             });
@@ -222,8 +223,9 @@ public class PhysicalExaminationFragment extends Fragment {
                 while (true) {
                     if (mCurrentComplainNodeOptionsIndex < physicalExam.getTotalNumberOfExams() - 1) {
                         mCurrentComplainNodeOptionsIndex++;
-                        if (!physicalExam.getExamNode(mCurrentComplainNodeOptionsIndex).getOption(0).isNeedToHide()) {
-                            mQuestionsListingAdapter.addItem(physicalExam.getExamNode(mCurrentComplainNodeOptionsIndex).getOption(0), physicalExam.getEngineVersion());
+                        Node _node = physicalExam.getExamNode(mCurrentComplainNodeOptionsIndex).getOption(0);
+                        if (!_node.isNeedToHide()) {
+                            mQuestionsListingAdapter.addItem(_node, physicalExam.getEngineVersion());
                         }
 
                     } else {

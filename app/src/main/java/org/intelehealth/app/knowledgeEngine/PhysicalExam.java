@@ -261,6 +261,7 @@ public class PhysicalExam extends Node {
             node.setNeedToHide(true);
             node.setSelected(false);
             node.setDataCaptured(false);
+            node.unselectAllNestedNode();
 
         }
     }
@@ -348,10 +349,10 @@ public class PhysicalExam extends Node {
         int total = this.totalExams;
         for (int i = 0; i < total; i++) {
             Node node = getExamNode(i);
-            CustomLog.v(TAG, "getExamNode - " + node.toString());
+            //CustomLog.v(TAG, "getExamNode - " + node.toString());
 
             String title = getPageTitlesLocale().get(i);
-            CustomLog.v(TAG, "getPageTitlesLocale - " + node.toString());
+            CustomLog.v(TAG, "getPageTitlesLocale - " + title);
             String[] split = title.split(" : ");
             String levelOne = split[0];
             CustomLog.v(TAG, "levelOne - " + levelOne);
