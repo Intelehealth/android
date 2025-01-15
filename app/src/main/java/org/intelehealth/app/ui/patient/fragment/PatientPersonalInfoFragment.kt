@@ -247,6 +247,7 @@ class PatientPersonalInfoFragment :
 
     private fun setGender() {
         binding.toggleGender.addOnButtonCheckedListener { group, checkedId, isChecked ->
+            if (!isChecked) return@addOnButtonCheckedListener
             binding.tvGenderError.isVisible = false
             patient.gender = when (checkedId) {
                 R.id.btnMale -> "M"

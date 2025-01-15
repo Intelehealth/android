@@ -1,5 +1,6 @@
 package org.intelehealth.app.activities.visit;
 
+import static org.intelehealth.app.ayu.visit.common.VisitUtils.convertCtoFNew;
 import static org.intelehealth.app.database.dao.VisitsDAO.allNotEndedVisits;
 import static org.intelehealth.app.database.dao.VisitsDAO.thisMonths_NotEndedVisits;
 import static org.intelehealth.app.database.dao.VisitsDAO.olderNotEndedVisits;
@@ -9,22 +10,39 @@ import static org.intelehealth.app.syncModule.SyncUtils.syncNow;
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.animation.ObjectAnimator;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.LocaleList;
 import android.util.DisplayMetrics;
+
+import org.intelehealth.app.activities.prescription.PrescriptionBuilder;
+import org.intelehealth.app.ayu.visit.notification.LocalPrescriptionInfo;
+import org.intelehealth.app.knowledgeEngine.Node;
+import org.intelehealth.app.models.ClsDoctorDetails;
+import org.intelehealth.app.models.Patient;
+import org.intelehealth.app.models.VitalsObject;
+import org.intelehealth.app.models.dto.EncounterDTO;
+import org.intelehealth.app.models.dto.ObsDTO;
 import org.intelehealth.app.utilities.CustomLog;
+
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -32,6 +50,9 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.followuppatients.FollowUpPatientActivity_New;
@@ -42,14 +63,19 @@ import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.models.PrescriptionModel;
 import org.intelehealth.app.shared.BaseActivity;
+import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.UuidDictionary;
 
+import java.io.File;
+import java.lang.reflect.Field;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class EndVisitActivity extends BaseActivity implements NetworkUtils.InternetCheckUpdateInterface {
+public class EndVisitActivity extends BaseActivity implements NetworkUtils.InternetCheckUpdateInterface, EndVisitAdapter.OnVisitClickListener {
     RecyclerView recycler_recent, recycler_older, recycler_month;
     NestedScrollView nestedscrollview;
     private static SQLiteDatabase db;
@@ -74,7 +100,35 @@ public class EndVisitActivity extends BaseActivity implements NetworkUtils.Inter
     private RelativeLayout no_patient_found_block, main_block;
     List<PrescriptionModel> recent = new ArrayList<>();
     List<PrescriptionModel> older = new ArrayList<>();
+    ObsDTO complaint = new ObsDTO();
+    ObsDTO famHistory = new ObsDTO();
+    ObsDTO patHistory = new ObsDTO();
+    ObsDTO phyExam = new ObsDTO();
+    ObsDTO height = new ObsDTO();
+    ObsDTO weight = new ObsDTO();
+    ObsDTO pulse = new ObsDTO();
+    ObsDTO bpSys = new ObsDTO();
+    ObsDTO bpDias = new ObsDTO();
+    ObsDTO temperature = new ObsDTO();
+    ObsDTO spO2 = new ObsDTO();
+    ObsDTO mBloodGroupObsDTO = new ObsDTO();
+    ObsDTO haemoglobinDTO = new ObsDTO();
+    ObsDTO sugarRandomDTO = new ObsDTO();
+    ObsDTO resp = new ObsDTO();
 
+    String mHeight, mWeight, mBMI, mBP, mPulse, mTemp, mSPO2, mresp;
+
+    String diagnosisReturned = "";
+    String rxReturned = "";
+    String testsReturned = "";
+    String adviceReturned = "";
+    String doctorName = "";
+    String additionalReturned = "";
+    String followUpDate = "";
+    String referredSpeciality = "";
+
+    String appLanguage, patientUuid, visitUuid, state, patientName, patientGender, intentTag, visitUUID, medicalAdvice_string = "", medicalAdvice_HyperLink = "", isSynedFlag = "";
+    ClsDoctorDetails objClsDoctorDetails;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -221,10 +275,10 @@ public class EndVisitActivity extends BaseActivity implements NetworkUtils.Inter
         recent_older_visibility(recentCloseVisitsList, olderCloseVisitsList);
         CustomLog.d("TAG", "recentCloseVisitsList size: " + "B: " + recentCloseVisitsList.size());
         CustomLog.d("TAG", "resetData: " + recentCloseVisitsList.size() + ", " + olderCloseVisitsList.size());
-        recentVisitsAdapter = new EndVisitAdapter(this, recentCloseVisitsList);
+        recentVisitsAdapter = new EndVisitAdapter(this, recentCloseVisitsList, this);
         recycler_recent.setNestedScrollingEnabled(false); // Note: use NestedScrollView in xml and in xml add nestedscrolling to false as well as in java for Recyclerview in case you are recyclerview and scrollview together.
         recycler_recent.setAdapter(recentVisitsAdapter);
-        olderVisitsAdapter = new EndVisitAdapter(this, olderCloseVisitsList);
+        olderVisitsAdapter = new EndVisitAdapter(this, olderCloseVisitsList, this);
         recycler_older.setNestedScrollingEnabled(false);
         recycler_older.setAdapter(olderVisitsAdapter);
     }
@@ -246,7 +300,7 @@ public class EndVisitActivity extends BaseActivity implements NetworkUtils.Inter
     private void recentCloseVisits() {
         recentCloseVisitsList = recentNotEndedVisits(recentLimit, recentStart);
         CustomLog.d("TAG", "recentCloseVisitsList size: " + "C: " + recentCloseVisitsList.size());
-        recentVisitsAdapter = new EndVisitAdapter(this, recentCloseVisitsList);
+        recentVisitsAdapter = new EndVisitAdapter(this, recentCloseVisitsList, this);
         recycler_recent.setNestedScrollingEnabled(false); // Note: use NestedScrollView in xml and in xml add nestedscrolling to false as well as in java for Recyclerview in case you are recyclerview and scrollview together.
         recycler_recent.setAdapter(recentVisitsAdapter);
 
@@ -262,7 +316,7 @@ public class EndVisitActivity extends BaseActivity implements NetworkUtils.Inter
 
     private void olderCloseVisits() {
         olderCloseVisitsList = olderNotEndedVisits(olderLimit, olderStart);
-        olderVisitsAdapter = new EndVisitAdapter(this, olderCloseVisitsList);
+        olderVisitsAdapter = new EndVisitAdapter(this, olderCloseVisitsList, this);
         recycler_older.setNestedScrollingEnabled(false);
         recycler_older.setAdapter(olderVisitsAdapter);
 
@@ -323,7 +377,7 @@ public class EndVisitActivity extends BaseActivity implements NetworkUtils.Inter
 
     private void thisMonths_EndVisits() {
         List<PrescriptionModel> arrayList = thisMonths_NotEndedVisits();
-        EndVisitAdapter adapter_new = new EndVisitAdapter(this, arrayList);
+        EndVisitAdapter adapter_new = new EndVisitAdapter(this, arrayList, this);
         recycler_month.setNestedScrollingEnabled(false);
         recycler_month.setAdapter(adapter_new);
         months_count = arrayList.size();
@@ -359,6 +413,453 @@ public class EndVisitActivity extends BaseActivity implements NetworkUtils.Inter
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
         }
+    }
+
+    public void onShareIconClicked(PrescriptionModel model) {
+        SessionManager sessionManager = new SessionManager(this);
+        String language = sessionManager.getAppLanguage();
+
+        if (!language.equalsIgnoreCase("")) {
+            Locale locale = new Locale(language);
+            Locale.setDefault(locale);
+            Configuration config = new Configuration();
+            config.locale = locale;
+            getResources().updateConfiguration(config, getResources().getDisplayMetrics());
+        }
+
+        String[] columnsToReturn = {"startdate"};
+        String visitIdOrderBy = "startdate";
+        String visitIDSelection = "uuid = ?";
+        String[] visitIDArgs = {model.getVisitUuid()};
+        db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+
+        final Cursor visitIDCursor = db.query("tbl_visit", columnsToReturn, visitIDSelection, visitIDArgs, null, null, visitIdOrderBy);
+        visitIDCursor.moveToLast();
+        String startDateTime = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("startdate"));
+        /*visitIDCursor.close();*/
+
+        String[] eColumns = {"visituuid", "encounter_type_uuid"};
+        String[] eValues = {model.getVisitUuid(), UuidDictionary.ENCOUNTER_VITALS};
+        EncounterDTO mEncounter = queryAndGetRowAsObject("tbl_encounter", eColumns, eValues, EncounterDTO.class);
+
+        preparePrescriptionVitals(mEncounter.getUuid());
+
+        String[] pColumns = {"uuid"};
+        String[] pValues = {model.getPatientUuid()};
+        Patient mPatient = queryAndGetRowAsObject("tbl_patient", pColumns, pValues, Patient.class);
+
+        String visitStartDate = DateAndTimeUtils.SimpleDatetoLongDate(startDateTime);
+
+        String fileNamePatientName = mPatient.getFirst_name() + mPatient.getMiddle_name() + mPatient.getLast_name();
+        String prescriptionString = "Prescription";
+
+        String fileName = fileNamePatientName.concat("-").concat(prescriptionString).concat("-").concat(visitStartDate).concat(".pdf");
+
+
+        buildAndSavePrescription(fileName, mPatient, visitStartDate);
+
+        try {
+            File pdfFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), fileName);
+            Uri uri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".provider", pdfFile);
+
+            Intent intent = new Intent(Intent.ACTION_SEND);
+            intent.setType("application/pdf");
+            intent.putExtra(Intent.EXTRA_STREAM, uri);
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            intent.setPackage("com.whatsapp");
+            startActivity(intent);
+            updateLocalPrescriptionInformations(model.getVisitUuid());
+        } catch (ActivityNotFoundException exception) {
+            Toast.makeText(this, getString(R.string.please_install_whatsapp), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public <T> T queryAndGetRowAsObject(String tableName, String[] conditionColumns, String[] conditionValues, Class<T> targetClass) {
+        if (conditionColumns == null || conditionValues == null || conditionColumns.length != conditionValues.length) {
+            throw new IllegalArgumentException("Condition columns and values must not be null and must have the same length.");
+        }
+
+        // Build the WHERE clause
+        StringBuilder selectionBuilder = new StringBuilder();
+        String[] selectionArgs = new String[conditionValues.length];
+
+        for (int i = 0; i < conditionColumns.length; i++) {
+            if (i > 0) {
+                selectionBuilder.append(" AND ");
+            }
+            selectionBuilder.append(conditionColumns[i]).append(" = ?");
+            selectionArgs[i] = conditionValues[i];
+        }
+
+        String selection = selectionBuilder.toString();
+
+        // Query the database
+        Cursor cursor = db.query(tableName, null, selection, selectionArgs, null, null, null);
+        T obj = null;
+        if (cursor != null && cursor.moveToFirst()) {
+            obj = mapCursorToObject(cursor, targetClass);
+            cursor.close();
+        }
+
+        return obj;
+    }
+    public <T> T mapCursorToObject(Cursor cursor, Class<T> targetClass) {
+        try {
+            T obj = targetClass.newInstance();
+            for (Field field : targetClass.getDeclaredFields()) {
+                field.setAccessible(true);
+                String columnName = field.getName();
+                int columnIndex = cursor.getColumnIndex(columnName);
+                if (columnIndex != -1 && !cursor.isNull(columnIndex)) {
+                    Class<?> fieldType = field.getType();
+                    if (fieldType == int.class || fieldType == Integer.class) {
+                        field.set(obj, cursor.getInt(columnIndex));
+                    } else if (fieldType == long.class || fieldType == Long.class) {
+                        field.set(obj, cursor.getLong(columnIndex));
+                    } else if (fieldType == float.class || fieldType == Float.class) {
+                        field.set(obj, cursor.getFloat(columnIndex));
+                    } else if (fieldType == double.class || fieldType == Double.class) {
+                        field.set(obj, cursor.getDouble(columnIndex));
+                    } else if (fieldType == String.class) {
+                        field.set(obj, cursor.getString(columnIndex));
+                    } else if (fieldType == boolean.class || fieldType == Boolean.class) {
+                        field.set(obj, cursor.getInt(columnIndex) != 0);
+                    }
+                }
+            }
+
+            return obj;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public void preparePrescriptionVitals(String mEncounterUUID) {
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
+        String[] columns = {"value", " conceptuuid"};
+        String visitSelection = "encounteruuid = ? and voided = ? and sync = ?";
+        String[] visitArgs = {mEncounterUUID, "0", "TRUE"};
+        Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
+        if (visitCursor.moveToFirst()) {
+            do {
+                String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
+                String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
+                parseData(dbConceptID, dbValue);
+            } while (visitCursor.moveToNext());
+        }
+        visitCursor.close();
+    }
+
+    private void buildAndSavePrescription(String fileName, Patient patient, String visitStartDate) {
+        PrescriptionBuilder builder = new PrescriptionBuilder(this);
+        builder.setPatientData(patient, visitStartDate);
+        builder.setVitals(getVitals());
+        builder.setComplaintData(formatComplaintData(complaint.getValue()));
+        builder.setDiagnosis(diagnosisReturned);
+        builder.setMedication(rxReturned);
+        builder.setTests(testsReturned);
+        builder.setAdvice(medicalAdvice_string);
+        builder.setFollowUp(followUpDate);
+        builder.setDoctorData(objClsDoctorDetails);
+        builder.build(fileName);
+    }
+
+    private VitalsObject getVitals() {
+        VitalsObject vitalsObject = new VitalsObject();
+        vitalsObject.setHeight(checkAndReturnVitalsValue(height));
+        vitalsObject.setWeight(checkAndReturnVitalsValue(weight));
+        if (weight.getValue() != null) {
+            String mWeight = weight.getValue().split(" ")[0];
+            String mHeight = height.getValue().split(" ")[0];
+            if ((mHeight != null && mWeight != null) && !mHeight.isEmpty() && !mWeight.isEmpty()) {
+                double numerator = Double.parseDouble(mWeight) * 10000;
+                double denominator = Double.parseDouble(mHeight) * Double.parseDouble(mHeight);
+                double bmi_value = numerator / denominator;
+                mBMI = String.format(Locale.ENGLISH, "%.2f", bmi_value);
+            } else {
+                mBMI = "";
+            }
+        }
+        vitalsObject.setBmi(mBMI);
+        vitalsObject.setBpsys(checkAndReturnVitalsValue(bpSys));
+        vitalsObject.setBpdia(checkAndReturnVitalsValue(bpDias));
+        vitalsObject.setPulse(checkAndReturnVitalsValue(pulse));
+        vitalsObject.setTemperature(checkAndReturnTemperatureValue(temperature));
+        vitalsObject.setResp(checkAndReturnVitalsValue(resp));
+        vitalsObject.setHaemoglobin(checkAndReturnVitalsValue(haemoglobinDTO));
+        vitalsObject.setBloodGroup(checkAndReturnVitalsValue(mBloodGroupObsDTO));
+        vitalsObject.setSugarRandom(checkAndReturnVitalsValue(sugarRandomDTO));
+        vitalsObject.setSpo2(checkAndReturnVitalsValue(spO2));
+        return vitalsObject;
+    }
+
+    private void parseData(String concept_id, String value) {
+        switch (concept_id) {
+            case UuidDictionary.CURRENT_COMPLAINT: {
+                complaint.setValue(value.replace("?<b>", Node.bullet_arrow));
+                break;
+            }
+            case UuidDictionary.PHYSICAL_EXAMINATION: {
+                phyExam.setValue(value);
+                break;
+            }
+            case UuidDictionary.HEIGHT:
+            {
+                height.setValue(value);
+                break;
+            }
+            case UuidDictionary.WEIGHT:
+            {
+                weight.setValue(value);
+                break;
+            }
+            case UuidDictionary.PULSE:
+            {
+                pulse.setValue(value);
+                break;
+            }
+            case UuidDictionary.SYSTOLIC_BP:
+            {
+                bpSys.setValue(value);
+                break;
+            }
+            case UuidDictionary.DIASTOLIC_BP:
+            {
+                bpDias.setValue(value);
+                break;
+            }
+            case UuidDictionary.TEMPERATURE:
+            {
+                temperature.setValue(value);
+                break;
+            }
+            case UuidDictionary.RESPIRATORY:
+            {
+                resp.setValue(value);
+                break;
+            }
+            case UuidDictionary.SPO2:
+            {
+                spO2.setValue(value);
+                break;
+            }
+            case UuidDictionary.BLOOD_GROUP:
+            {
+                mBloodGroupObsDTO.setValue(value);
+                break;
+            }
+            case UuidDictionary.HAEMOGLOBIN: {
+                haemoglobinDTO.setValue(value);
+                break;
+            }
+            case UuidDictionary.SUGAR_LEVEL_RANDOM: {
+                sugarRandomDTO.setValue(value);
+                break;
+            }
+            case UuidDictionary.TELEMEDICINE_DIAGNOSIS: {
+                if (!diagnosisReturned.isEmpty()) {
+                    diagnosisReturned = diagnosisReturned + ",\n" + value;
+                } else {
+                    diagnosisReturned = value;
+                }
+              /*  if (diagnosisCard.getVisibility() != View.VISIBLE) {
+                    diagnosisCard.setVisibility(View.VISIBLE);
+                }
+                diagnosisTextView.setText(diagnosisReturned);*/
+                //checkForDoctor();
+                break;
+            }
+            case UuidDictionary.JSV_MEDICATIONS: {
+                if (!rxReturned.trim().isEmpty()) {
+                    rxReturned = rxReturned + "\n" + value;
+                } else {
+                    rxReturned = value;
+                }
+               /* if (prescriptionCard.getVisibility() != View.VISIBLE) {
+                    prescriptionCard.setVisibility(View.VISIBLE);
+                }
+                prescriptionTextView.setText(rxReturned);*/
+                //checkForDoctor();
+                break;
+            }
+            case UuidDictionary.MEDICAL_ADVICE: {
+                if (!adviceReturned.isEmpty()) {
+                    adviceReturned = adviceReturned + "\n" + value;
+                    CustomLog.d("GAME", "GAME: " + adviceReturned);
+                } else {
+                    adviceReturned = value;
+                    CustomLog.d("GAME", "GAME_2: " + adviceReturned);
+                }
+              /*  if (medicalAdviceCard.getVisibility() != View.VISIBLE) {
+                    medicalAdviceCard.setVisibility(View.VISIBLE);
+                }*/
+                //medicalAdviceTextView.setText(adviceReturned);
+                CustomLog.d("Hyperlink", "hyper_global: " + medicalAdvice_string);
+
+                int j = adviceReturned.indexOf('<');
+                int i = adviceReturned.lastIndexOf('>');
+                if (i >= 0 && j >= 0) {
+                    medicalAdvice_HyperLink = adviceReturned.substring(j, i + 1);
+                } else {
+                    medicalAdvice_HyperLink = "";
+                }
+
+                CustomLog.d("Hyperlink", "Hyperlink: " + medicalAdvice_HyperLink);
+
+                medicalAdvice_string = adviceReturned.replaceAll(medicalAdvice_HyperLink, "");
+                CustomLog.d("Hyperlink", "hyper_string: " + medicalAdvice_string);
+
+                /*
+                 * variable a contains the hyperlink sent from webside.
+                 * variable b contains the string data (medical advice) of patient.
+                 * */
+               /* medicalAdvice_string = medicalAdvice_string.replace("\n\n", "\n");
+                medicalAdviceTextView.setText(Html.fromHtml(medicalAdvice_HyperLink +
+                        medicalAdvice_string.replaceAll("\n", "<br><br>")));*/
+
+                adviceReturned = adviceReturned.replaceAll("\n", "<br><br>");
+                //  medicalAdviceTextView.setText(Html.fromHtml(adviceReturned));
+               /* medicalAdviceTextView.setText(Html.fromHtml(adviceReturned.replace("Doctor_", "Doctor")));
+                medicalAdviceTextView.setMovementMethod(LinkMovementMethod.getInstance());
+                CustomLog.d("hyper_textview", "hyper_textview: " + medicalAdviceTextView.getText().toString());*/
+                //checkForDoctor();
+                break;
+            }
+            case UuidDictionary.REQUESTED_TESTS: {
+                if (!testsReturned.isEmpty()) {
+                    testsReturned = testsReturned + "\n\n" + Node.bullet + " " + value;
+                } else {
+                    testsReturned = Node.bullet + " " + value;
+                }
+              /*  if (requestedTestsCard.getVisibility() != View.VISIBLE) {
+                    requestedTestsCard.setVisibility(View.VISIBLE);
+                }
+                requestedTestsTextView.setText(testsReturned);*/
+                //checkForDoctor();
+                break;
+            }
+
+            case UuidDictionary.REFERRED_SPECIALIST: {
+                if (!referredSpeciality.isEmpty() && !referredSpeciality.contains(value)) {
+                    referredSpeciality = referredSpeciality + "\n\n" + Node.bullet + " " + value;
+                } else {
+                    referredSpeciality = Node.bullet + " " + value;
+                }
+            }
+
+            case UuidDictionary.ADDITIONAL_COMMENTS: {
+
+//                additionalCommentsCard.setVisibility(View.GONE);
+
+                if (!additionalReturned.isEmpty()) {
+                    additionalReturned = additionalReturned + "," + value;
+                } else {
+                    additionalReturned = value;
+                }
+////                if (additionalCommentsCard.getVisibility() != View.VISIBLE) {
+////                    additionalCommentsCard.setVisibility(View.VISIBLE);
+////                }
+//                additionalCommentsTextView.setText(additionalReturned);
+                //checkForDoctor();
+                break;
+            }
+            case UuidDictionary.FOLLOW_UP_VISIT: {
+                if (!followUpDate.isEmpty()) {
+                    followUpDate = followUpDate + "," + value;
+                } else {
+                    followUpDate = value;
+                }
+              /*  if (followUpDateCard.getVisibility() != View.VISIBLE) {
+                    followUpDateCard.setVisibility(View.VISIBLE);
+                }
+                followUpDateTextView.setText(followUpDate);*/
+                //checkForDoctor();
+                break;
+            }
+
+            default:
+                break;
+        }
+    }
+
+    private String formatComplaintData(String mComplaint) {
+        String[] mComplaints = org.apache.commons.lang3.StringUtils.split(mComplaint, Node.bullet_arrow);
+        String[] complaints = {mComplaints[1]};
+        StringBuilder formattedData = new StringBuilder();
+        String colon = ":";
+
+        if (complaints != null) {
+            for (String value : complaints) {
+                if (value == null || value.trim().isEmpty()) {
+                    continue;
+                }
+
+                if (value.contains("Associated symptoms")) {
+                    continue;
+                }
+
+                try {
+                    int colonIndex = value.indexOf(colon);
+                    if (colonIndex > 0) {
+                        String formattedValue = value.substring(0, colonIndex).trim();
+                        formattedData.append(Node.big_bullet).append(" ").append(formattedValue).append("\n");
+                    }
+                } catch (Exception e) {
+                    Log.e("FormatComplaint", "Error formatting complaint data", e);
+                }
+            }
+
+            if (formattedData.length() > 0) {
+                String result = formattedData.toString()
+                        .replaceAll("<b>", "")
+                        .replaceAll("</b>", "");
+
+                if (result.endsWith("\n")) {
+                    result = result.substring(0, result.lastIndexOf("\n"));
+                }
+                return result;
+            }
+        }
+
+        return "";
+    }
+
+    public String checkAndReturnVitalsValue(ObsDTO dto) {
+        if (dto == null) {
+            return "NA";
+        } else if (dto.getValue() == null || dto.getValue().equalsIgnoreCase("0")) {
+            return "NA";
+        } else {
+            return dto.getValue();
+        }
+    }
+
+    public String checkAndReturnTemperatureValue(ObsDTO dto) {
+        if (dto == null || dto.getValue() == null || dto.getValue().isEmpty()) {
+            return "NA";
+        } else {
+            return convertCtoFNew(dto.getValue());
+        }
+    }
+
+    private void updateLocalPrescriptionInformations(String visituuid) {
+        List<LocalPrescriptionInfo> prescriptionDataList = new ArrayList<>();
+        Gson gson = new Gson();
+        SharedPreferences sharedPreference = IntelehealthApplication.getAppContext().getSharedPreferences(IntelehealthApplication.getAppContext().getString(R.string.prescription_share_key), Context.MODE_PRIVATE);
+        String prescriptionListJson = sharedPreference.getString(AppConstants.PRESCRIPTION_DATA_LIST, "");
+        if(!prescriptionListJson.isEmpty()){
+            Type type = new TypeToken<List<LocalPrescriptionInfo>>() {}.getType();
+            prescriptionDataList = gson.fromJson(prescriptionListJson, type);
+            for(LocalPrescriptionInfo lpi: prescriptionDataList){
+                if(lpi.getVisitUUID().equals(visituuid)){
+                    lpi.setShareStatus(true);
+                }
+            }
+        }
+        String prescriptionDataListJson = gson.toJson(prescriptionDataList);
+        sharedPreference.edit().putString(AppConstants.PRESCRIPTION_DATA_LIST, prescriptionDataListJson).apply();
+        sharedPreference.edit().putBoolean(AppConstants.SHARED_ANY_PRESCRIPTION, true).apply();
     }
 
 
@@ -452,11 +953,11 @@ public class EndVisitActivity extends BaseActivity implements NetworkUtils.Inter
                                 }
                             }
 
-                            recentVisitsAdapter = new EndVisitAdapter(context, recent);
+                            recentVisitsAdapter = new EndVisitAdapter(context, recent, EndVisitActivity.this);
                             recycler_recent.setNestedScrollingEnabled(false);
                             recycler_recent.setAdapter(recentVisitsAdapter);
 
-                            olderVisitsAdapter = new EndVisitAdapter(context, older);
+                            olderVisitsAdapter = new EndVisitAdapter(context, older, EndVisitActivity.this);
                             recycler_older.setNestedScrollingEnabled(false);
                             recycler_older.setAdapter(olderVisitsAdapter);
 
