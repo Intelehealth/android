@@ -11,15 +11,18 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.databinding.OnRebindCallback
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.github.ajalt.timberkt.Timber
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.gson.Gson
+import kotlinx.coroutines.launch
 import org.intelehealth.app.BuildConfig
 import org.intelehealth.app.R
 import org.intelehealth.app.app.AppConstants
+import org.intelehealth.app.ayu.visit.vital.CoroutineProvider
 import org.intelehealth.app.databinding.Dialog2NumbersPickerBinding
 import org.intelehealth.app.databinding.FragmentPatientOtherInfoBinding
 import org.intelehealth.app.databinding.FragmentPatientPersonalInfoBinding
@@ -44,6 +47,7 @@ import org.intelehealth.app.utilities.extensions.hideErrorOnTextChang
 import org.intelehealth.app.utilities.extensions.validate
 import org.intelehealth.app.utilities.extensions.validateDigit
 import org.intelehealth.app.utilities.extensions.validateDropDowb
+import org.intelehealth.config.room.entity.PatientRegistrationFields
 import org.intelehealth.core.registry.PermissionRegistry
 import org.intelehealth.core.registry.PermissionRegistry.Companion.CAMERA
 import org.intelehealth.ihutils.ui.CameraActivity
@@ -183,7 +187,7 @@ class PatientPersonalInfoFragment :
     }
 
     private fun fetchPersonalInfoConfig() {
-        patientViewModel.fetchPersonalRegFields().observe(viewLifecycleOwner) {
+        /*patientViewModel.fetchPersonalRegFields().observe(viewLifecycleOwner) {
             binding.personalConfig = PatientRegFieldsUtils.buildPatientPersonalInfoConfig(it)
             setupGuardianType()
             setupEmContactType()
@@ -194,6 +198,20 @@ class PatientPersonalInfoFragment :
             setClickListener()
             setInputTextChangListener()
 //            binding.addOnRebindCallback(onRebindCallback)
+        }*/
+
+        lifecycleScope.launch {
+            patientViewModel.fetchPersonalRegFieldsSuspended().let {
+                binding.personalConfig = PatientRegFieldsUtils.buildPatientPersonalInfoConfig(it)
+                setupGuardianType()
+                setupEmContactType()
+                setupDOB()
+                setupAge()
+                applyFilter()
+                setGender()
+                setClickListener()
+                setInputTextChangListener()
+            }
         }
     }
 
