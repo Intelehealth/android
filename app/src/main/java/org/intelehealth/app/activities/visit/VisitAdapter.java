@@ -215,9 +215,9 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
             holder.shareicon.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    /*if (listener != null) {
+                    if (listener != null) {
                         listener.onShareIconClicked(model);
-                    }*/
+                    }
 //                    sharePresc(model);
                 }
             });

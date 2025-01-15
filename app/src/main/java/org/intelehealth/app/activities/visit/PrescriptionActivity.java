@@ -1,6 +1,7 @@
 package org.intelehealth.app.activities.visit;
 
 import static org.intelehealth.app.app.AppConstants.CONFIG_FILE_NAME;
+import static org.intelehealth.app.ayu.visit.common.VisitUtils.convertCtoFNew;
 import static org.intelehealth.app.ayu.visit.common.VisitUtils.getTranslatedAssociatedSymptomQString;
 import static org.intelehealth.app.ayu.visit.common.VisitUtils.getTranslatedPatientDenies;
 import static org.intelehealth.app.database.dao.EncounterDAO.fetchEncounterUuidForEncounterAdultInitials;
@@ -15,11 +16,13 @@ import static org.intelehealth.app.utilities.VisitUtils.endVisit;
 import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
+import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -45,8 +48,13 @@ import android.print.PrintManager;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 
+import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity_New;
+import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.ayu.visit.notification.LocalPrescriptionInfo;
+import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.utilities.CustomLog;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -69,6 +77,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.databinding.DataBindingUtil;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -80,6 +89,7 @@ import com.github.ajalt.timberkt.Timber;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
@@ -128,6 +138,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.lang.reflect.Field;
+import java.lang.reflect.Type;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -199,6 +211,15 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
     private FrameLayout filter_framelayout;
     private View hl_2;
     public static final String FILTER = "io.intelehealth.client.activities.visit_summary_activity.REQUEST_PROCESSED";
+    ObsDTO mBloodGroupObsDTO = new ObsDTO();
+    ObsDTO haemoglobinDTO = new ObsDTO();
+    ObsDTO sugarRandomDTO = new ObsDTO();
+
+    String visitStartDate = "";
+
+    ClsDoctorDetails objClsDoctorDetails;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -1966,111 +1987,244 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
     // presc share - start
     private void sharePresc() {
-        if (hasPrescription) {
-            MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(PrescriptionActivity.this);
-            final LayoutInflater inflater = LayoutInflater.from(PrescriptionActivity.this);
-            View convertView = inflater.inflate(R.layout.dialog_sharepresc, null);
-            alertdialogBuilder.setView(convertView);
+        if(hasPrescription){
+            getVisitStartDate();
 
-            EditText editText = convertView.findViewById(R.id.editText_mobileno);
-            Button sharebtn = convertView.findViewById(R.id.sharebtn);
+            String[] eColumns = {"visituuid", "encounter_type_uuid"};
+            String[] eValues = {visitID, UuidDictionary.ENCOUNTER_VITALS};
+            EncounterDTO mEncounter = queryAndGetRowAsObject("tbl_encounter", eColumns, eValues, EncounterDTO.class);
 
-           /* AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-            EditText editText = new EditText(this);
-            editText.setInputType(InputType.TYPE_CLASS_PHONE);
+            preparePrescriptionVitals(mEncounter.getUuid());
 
-            InputFilter inputFilter = new InputFilter() {
-                @Override
-                public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
-                    return null;
-                }
-            };*/
+            String fileNamePatientName = patientName.replace(" ", "-");
+            String prescriptionString = "Prescription";
 
-            String partial_whatsapp_presc_url = new UrlModifiers().setwhatsappPresciptionUrl();
-            String prescription_link = new VisitAttributeListDAO().getVisitAttributesList_specificVisit(visitID, PRESCRIPTION_LINK);
-            String whatsapp_url = partial_whatsapp_presc_url.concat(prescription_link);
-            editText.setText(patient.getPhone_number());
+            String fileName = fileNamePatientName.concat("-").concat(prescriptionString).concat("-").concat(visitStartDate).concat(".pdf");
+            buildAndSavePrescription(fileName);
+            try {
+                File pdfFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), fileName);
+                Uri uri = FileProvider.getUriForFile(PrescriptionActivity.this, getApplicationContext().getPackageName() + ".provider", pdfFile);
 
-//                    Spanned hyperlink_whatsapp = HtmlCompat.fromHtml("<a href=" + whatsapp_url + ">Click Here</a>", HtmlCompat.FROM_HTML_MODE_COMPACT);
-
-            //  editText.setFilters(new InputFilter[]{inputFilter, new InputFilter.LengthFilter(15)});
-           /* LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams
-                    (ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            editText.setLayoutParams(layoutParams);
-            alertDialog.setView(editText);
-*/
-            //   alertDialog.setMessage(getResources().getString(R.string.enter_mobile_number_to_share_prescription));
-            sharebtn.setOnClickListener(v -> {
-                if (!editText.getText().toString().equalsIgnoreCase("")) {
-                    String phoneNumber = /*"+91" +*/ editText.getText().toString();
-                    String whatsappMessage = String.format("https://api.whatsapp.com/send?phone=%s&text=%s", phoneNumber, getResources().getString(R.string.hello_thankyou_for_using_intelehealth_app_to_download_click_here) + partial_whatsapp_presc_url + Uri.encode("#") + prescription_link + getString(R.string.and_enter_your_patient_id) + openmrsID_txt.getText().toString());
-                    CustomLog.v("whatsappMessage", whatsappMessage);
-                    // Toast.makeText(context, R.string.whatsapp_presc_toast, Toast.LENGTH_LONG).show();
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(whatsappMessage)));
-
-                    // isreturningWhatsapp = true;
-
-                } else {
-                    Toast.makeText(PrescriptionActivity.this, getResources().getString(R.string.please_enter_mobile_number), Toast.LENGTH_SHORT).show();
-                }
-
-            });
-
-            AlertDialog alertDialog = alertdialogBuilder.create();
-            alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
-            alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
-            int width = PrescriptionActivity.this.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
-            alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
-            alertDialog.show();
-
-//            alertDialog.setPositiveButton(getResources().getString(R.string.share),
-//                    new DialogInterface.OnClickListener() {
-//                        public void onClick(DialogInterface dialog, int which) {
-//
-//                            if (!editText.getText().toString().equalsIgnoreCase("")) {
-//                                String phoneNumber = /*"+91" +*/ editText.getText().toString();
-//                                String whatsappMessage = getResources().getString(R.string.hello_thankyou_for_using_intelehealth_app_to_download_click_here)
-//                                        + whatsapp_url + getString(R.string.and_enter_your_patient_id) + idView.getText().toString();
-//
-//                                // Toast.makeText(context, R.string.whatsapp_presc_toast, Toast.LENGTH_LONG).show();
-//                                startActivity(new Intent(Intent.ACTION_VIEW,
-//                                        Uri.parse(
-//                                                String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
-//                                                        phoneNumber, whatsappMessage))));
-//
-//                                // isreturningWhatsapp = true;
-//
-//                            } else {
-//                                Toast.makeText(context, getResources().getString(R.string.please_enter_mobile_number),
-//                                        Toast.LENGTH_SHORT).show();
-//                            }
-//                        }
-//                    });
-
-           /* AlertDialog dialog = alertDialog.show();
-            Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-            positiveButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
-            //alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-            IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);*/
-        } else {
-            /*AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-            alertDialog.setMessage(getResources().getString(R.string.download_prescription_first_before_sharing));
-            alertDialog.setPositiveButton(getResources().getString(R.string.ok),
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            Dialog.dismiss();
-                        }
-                    });
-
-            AlertDialog dialog = alertDialog.show();
-            Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-            positiveButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
-            //alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-            IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);*/
-
-            Toast.makeText(PrescriptionActivity.this, getResources().getString(R.string.download_prescription_first_before_sharing), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("application/pdf");
+                intent.putExtra(Intent.EXTRA_STREAM, uri);
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                intent.setPackage("com.whatsapp");
+                Log.d("DEBUG", "File path: " + pdfFile.getAbsolutePath());
+                Log.d("DEBUG", "File exists: " + pdfFile.exists());
+                Log.d("DEBUG", "File size: " + pdfFile.length());
+                Log.d("DEBUG", "URI: " + uri.toString());
+                startActivity(intent);
+                updateLocalPrescriptionInformations(visitID);
+            } catch (ActivityNotFoundException exception) {
+                Toast.makeText(PrescriptionActivity.this, getString(R.string.please_install_whatsapp), Toast.LENGTH_LONG).show();
+            }
         }
     }
+
+    public void preparePrescriptionVitals(String mEncounterUUID) {
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
+        String[] columns = {"value", " conceptuuid"};
+        String visitSelection = "encounteruuid = ? and voided = ? and sync = ?";
+        String[] visitArgs = {mEncounterUUID, "0", "TRUE"};
+        Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
+        if (visitCursor.moveToFirst()) {
+            do {
+                String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
+                String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
+                parseData(dbConceptID, dbValue);
+            } while (visitCursor.moveToNext());
+        }
+        visitCursor.close();
+    }
+
+    public <T> T queryAndGetRowAsObject(String tableName, String[] conditionColumns, String[] conditionValues, Class<T> targetClass) {
+        if (conditionColumns == null || conditionValues == null || conditionColumns.length != conditionValues.length) {
+            throw new IllegalArgumentException("Condition columns and values must not be null and must have the same length.");
+        }
+
+        // Build the WHERE clause
+        StringBuilder selectionBuilder = new StringBuilder();
+        String[] selectionArgs = new String[conditionValues.length];
+
+        for (int i = 0; i < conditionColumns.length; i++) {
+            if (i > 0) {
+                selectionBuilder.append(" AND ");
+            }
+            selectionBuilder.append(conditionColumns[i]).append(" = ?");
+            selectionArgs[i] = conditionValues[i];
+        }
+
+        String selection = selectionBuilder.toString();
+
+        // Query the database
+        Cursor cursor = db.query(tableName, null, selection, selectionArgs, null, null, null);
+        T obj = null;
+        if (cursor != null && cursor.moveToFirst()) {
+            obj = mapCursorToObject(cursor, targetClass);
+            cursor.close();
+        }
+
+        return obj;
+    }
+    public <T> T mapCursorToObject(Cursor cursor, Class<T> targetClass) {
+        try {
+            T obj = targetClass.newInstance();
+            for (Field field : targetClass.getDeclaredFields()) {
+                field.setAccessible(true);
+                String columnName = field.getName();
+                int columnIndex = cursor.getColumnIndex(columnName);
+                if (columnIndex != -1 && !cursor.isNull(columnIndex)) {
+                    Class<?> fieldType = field.getType();
+                    if (fieldType == int.class || fieldType == Integer.class) {
+                        field.set(obj, cursor.getInt(columnIndex));
+                    } else if (fieldType == long.class || fieldType == Long.class) {
+                        field.set(obj, cursor.getLong(columnIndex));
+                    } else if (fieldType == float.class || fieldType == Float.class) {
+                        field.set(obj, cursor.getFloat(columnIndex));
+                    } else if (fieldType == double.class || fieldType == Double.class) {
+                        field.set(obj, cursor.getDouble(columnIndex));
+                    } else if (fieldType == String.class) {
+                        field.set(obj, cursor.getString(columnIndex));
+                    } else if (fieldType == boolean.class || fieldType == Boolean.class) {
+                        field.set(obj, cursor.getInt(columnIndex) != 0);
+                    }
+                }
+            }
+
+            return obj;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private void getVisitStartDate() {
+        String[] columnsToReturn = {"startdate"};
+        String visitIdOrderBy = "startdate";
+        String visitIDSelection = "uuid = ?";
+        String[] visitIDArgs = {visitID};
+        db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+
+        final Cursor visitIDCursor = db.query("tbl_visit", columnsToReturn, visitIDSelection, visitIDArgs, null, null, visitIdOrderBy);
+        visitIDCursor.moveToLast();
+        String startDateTime = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("startdate"));
+        visitIDCursor.close();
+
+        visitStartDate = DateAndTimeUtils.SimpleDatetoLongDate(startDateTime);
+    }
+
+    private void buildAndSavePrescription(String fileName) {
+        PrescriptionBuilder builder = new PrescriptionBuilder(this);
+        builder.setPatientData(patient, visitStartDate);
+        builder.setVitals(getVitals());
+        builder.setComplaintData(formatComplaintData(complaint.getValue()));
+        builder.setDiagnosis(diagnosisReturned);
+        builder.setMedication(rxReturned);
+        builder.setTests(testsReturned);
+        builder.setAdvice(medicalAdvice_string);
+        builder.setFollowUp(followUpDate);
+        builder.setDoctorData(objClsDoctorDetails);
+        builder.build(fileName);
+    }
+
+    private String formatComplaintData(String mComplaint) {
+        String[] mComplaints = org.apache.commons.lang3.StringUtils.split(mComplaint, Node.bullet_arrow);
+        String[] complaints = {mComplaints[1]};
+        StringBuilder formattedData = new StringBuilder();
+        String colon = ":";
+
+        if (complaints != null) {
+            for (String value : complaints) {
+                if (value == null || value.trim().isEmpty()) {
+                    continue;
+                }
+
+                if (value.contains("Associated symptoms")) {
+                    continue;
+                }
+
+                try {
+                    int colonIndex = value.indexOf(colon);
+                    if (colonIndex > 0) {
+                        String formattedValue = value.substring(0, colonIndex).trim();
+                        formattedData.append(Node.big_bullet).append(" ").append(formattedValue).append("\n");
+                    }
+                } catch (Exception e) {
+                    Log.e("FormatComplaint", "Error formatting complaint data", e);
+                }
+            }
+
+            if (formattedData.length() > 0) {
+                String result = formattedData.toString()
+                        .replaceAll("<b>", "")
+                        .replaceAll("</b>", "");
+
+                if (result.endsWith("\n")) {
+                    result = result.substring(0, result.lastIndexOf("\n"));
+                }
+                return result;
+            }
+        }
+
+        return "";
+    }
+
+
+    private VitalsObject getVitals() {
+        VitalsObject vitalsObject = new VitalsObject();
+        vitalsObject.setHeight(checkAndReturnVitalsValue(height));
+        vitalsObject.setWeight(checkAndReturnVitalsValue(weight));
+        vitalsObject.setBmi(mBMI);
+        vitalsObject.setBpsys(checkAndReturnVitalsValue(bpSys));
+        vitalsObject.setBpdia(checkAndReturnVitalsValue(bpDias));
+        vitalsObject.setPulse(checkAndReturnVitalsValue(pulse));
+        vitalsObject.setTemperature(checkAndReturnTemperatureValue(temperature));
+        vitalsObject.setResp(checkAndReturnVitalsValue(resp));
+        vitalsObject.setHaemoglobin(checkAndReturnVitalsValue(haemoglobinDTO));
+        vitalsObject.setBloodGroup(checkAndReturnVitalsValue(mBloodGroupObsDTO));
+        vitalsObject.setSugarRandom(checkAndReturnVitalsValue(sugarRandomDTO));
+        vitalsObject.setSpo2(checkAndReturnVitalsValue(spO2));
+        return vitalsObject;
+    }
+
+    public String checkAndReturnVitalsValue(ObsDTO dto) {
+        if (dto == null) {
+            return "NA";
+        } else if (dto.getValue() == null || dto.getValue().equalsIgnoreCase("0")) {
+            return "NA";
+        } else {
+            return dto.getValue();
+        }
+    }
+
+    public String checkAndReturnTemperatureValue(ObsDTO dto) {
+        if (dto == null || dto.getValue() == null || dto.getValue().isEmpty()) {
+            return "NA";
+        } else {
+            return convertCtoFNew(dto.getValue());
+        }
+    }
+
+    private void updateLocalPrescriptionInformations(String visituuid) {
+        List<LocalPrescriptionInfo> prescriptionDataList = new ArrayList<>();
+        Gson gson = new Gson();
+        SharedPreferences sharedPreference = IntelehealthApplication.getAppContext().getSharedPreferences(IntelehealthApplication.getAppContext().getString(R.string.prescription_share_key), Context.MODE_PRIVATE);
+        String prescriptionListJson = sharedPreference.getString(AppConstants.PRESCRIPTION_DATA_LIST, "");
+        if(!prescriptionListJson.isEmpty()){
+            Type type = new TypeToken<List<LocalPrescriptionInfo>>() {}.getType();
+            prescriptionDataList = gson.fromJson(prescriptionListJson, type);
+            for(LocalPrescriptionInfo lpi: prescriptionDataList){
+                if(lpi.getVisitUUID().equals(visituuid)){
+                    lpi.setShareStatus(true);
+                }
+            }
+        }
+        String prescriptionDataListJson = gson.toJson(prescriptionDataList);
+        sharedPreference.edit().putString(AppConstants.PRESCRIPTION_DATA_LIST, prescriptionDataListJson).apply();
+        sharedPreference.edit().putBoolean(AppConstants.SHARED_ANY_PRESCRIPTION, true).apply();
+    }
+
 
 //    private void sharePresc() {
 //        if (hasPrescription.equalsIgnoreCase("true")) {

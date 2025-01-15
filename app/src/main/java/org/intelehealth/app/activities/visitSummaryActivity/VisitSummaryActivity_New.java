@@ -2975,7 +2975,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     }
 
     private String formatComplaintData(String mComplaint) {
-        String[] complaints = org.apache.commons.lang3.StringUtils.split(mComplaint, Node.bullet_arrow);
+        String[] mComplaints = org.apache.commons.lang3.StringUtils.split(mComplaint, Node.bullet_arrow);
+        String[] complaints = {mComplaints[1]};
         String formattedData = "";
         String colon = ":";
 

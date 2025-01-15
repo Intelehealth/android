@@ -138,7 +138,8 @@ class PatientRepository(
         attrName: String,
         value: String?
     ): PatientAttributesDTO {
-        val sid = SessionManager.instance.householdUuid
+        val sessionManager = SessionManager(IntelehealthApplication.getAppContext())
+        val sid = sessionManager.householdUuid
         val hid = if (sid.equals("")) { UUID.randomUUID().toString() } else { sid }
         return PatientAttributesDTO().apply {
             uuid = UUID.randomUUID().toString()
