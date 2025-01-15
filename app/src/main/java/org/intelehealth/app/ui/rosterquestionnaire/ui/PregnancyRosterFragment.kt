@@ -97,7 +97,10 @@ class PregnancyRosterFragment : BaseRosterFragment(R.layout.fragment_pregnancy_r
      */
     private fun setupClickListeners() {
         binding.tvAddPregnancyOutcome.setOnClickListener {
-            AddOutcomeDialog().show(childFragmentManager, AddOutcomeDialog::class.simpleName)
+            AddOutcomeDialog().apply {
+                setPregnancyOutcomeList(rosterViewModel.getOutcomeQuestionList())
+            }.show(childFragmentManager, AddOutcomeDialog::class.simpleName)
+
         }
 
         binding.frag2BtnNext.setOnClickListener {
@@ -160,10 +163,9 @@ class PregnancyRosterFragment : BaseRosterFragment(R.layout.fragment_pregnancy_r
      * @param item The pregnancy outcome model to edit
      */
     override fun onClickEdit(view: View, position: Int, item: PregnancyOutComeModel) {
-        rosterViewModel.existPregnancyOutComePosition = position
-        rosterViewModel.existingRoasterQuestionList =
-            ArrayList(item.roasterViewQuestion)
-        AddOutcomeDialog().show(childFragmentManager, AddOutcomeDialog::class.simpleName)
+        AddOutcomeDialog().apply {
+            setPregnancyOutcomeList(item.roasterViewQuestion, position)
+        }.show(childFragmentManager, AddOutcomeDialog::class.simpleName)
     }
 
     /**

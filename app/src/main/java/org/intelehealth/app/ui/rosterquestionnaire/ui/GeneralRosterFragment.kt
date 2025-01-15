@@ -21,9 +21,10 @@ import org.intelehealth.app.utilities.SpacingItemDecoration
 class GeneralRosterFragment : BaseRosterFragment(R.layout.fragment_general_roster),
     MultiViewListener {
     private lateinit var _binding: FragmentGeneralRosterBinding
-    private var patientUuid: String? = null
-    private lateinit var generalQuestionAdapter: MultiViewAdapter
-    private   var generalQuestionList= ArrayList<RoasterViewQuestion>()
+    private val generalQuestionAdapter: MultiViewAdapter by lazy {
+        MultiViewAdapter(listener = this@GeneralRosterFragment)
+    }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -35,34 +36,22 @@ class GeneralRosterFragment : BaseRosterFragment(R.layout.fragment_general_roste
         observeLiveData()
     }
 
+    /**
+     * Method to observe LiveData and update the adapter with new data when available
+     */
     private fun observeLiveData() {
         rosterViewModel.generalLiveList.observe(viewLifecycleOwner) { generalList ->
-            generalQuestionList.clear()
-            generalQuestionList.addAll(generalList)
-            generalQuestionAdapter.notifyDataSetChanged()
+            // If the list is not null or empty, notify the adapter to refresh the list
+            if (!generalList.isNullOrEmpty()) generalQuestionAdapter.notifyList(generalList)
         }
     }
 
     private fun setAdapter() {
         _binding.rvGeneralQuestion.apply {
             layoutManager = LinearLayoutManager(requireContext())
-            generalQuestionAdapter = MultiViewAdapter(
-                generalQuestionList,
-                this@GeneralRosterFragment
-            )
             adapter = generalQuestionAdapter
             addItemDecoration(SpacingItemDecoration(16))
         }
-    }
-
-    private fun isValidList(): Boolean {
-        generalQuestionList.forEach {
-            if (it.answer.isNullOrEmpty()) {
-                generalQuestionAdapter.updateErrorMessage(true)
-                return false
-            }
-        }
-        return true
     }
 
 
@@ -72,38 +61,34 @@ class GeneralRosterFragment : BaseRosterFragment(R.layout.fragment_general_roste
             // Handle back button click
             handleBackEventFromRosterToPatientReg(
                 requireActivity(),
-                patientUuid,
-
+                rosterViewModel.patientUuid,
                 PatientRegStage.OTHER
             )
         }
 
         _binding.frag2BtnNext.setOnClickListener {
-            if (isValidList()) {
-                navigateToDetails()
-            }
+            rosterViewModel.validateGeneralList()?.let {
+                _binding.rvGeneralQuestion.smoothScrollToPosition(it)
+                generalQuestionAdapter.updateErrorMessage(it)
+            } ?: run { navigateToPregnancy() }
+
         }
 
     }
 
-    private fun navigateToDetails() {
-        /*  if (rosterViewModel.isEditMode) {
-              GeneralRosterFragmentDirections.navigationGeneralToDetails(
-                  patientUuid, "roster", "false"
-              ).also {
-                  findNavController().navigate(it)
-                  requireActivity().finish()
-              }
-          } else {*/
+    /**
+     * Navigate to Pregnancy Roster Fragment
+     */
+    private fun navigateToPregnancy() {
         GeneralRosterFragmentDirections.navigationGeneralToPregnancyRoster().apply {
             findNavController().navigate(this)
         }
-        // }
     }
 
+    /**
+     * Method for handling item clicks on the RecyclerView (currently not implemented)
+     */
     override fun onItemClick(item: RoasterViewQuestion, position: Int, view: View) {
-
+        // Handle item click
     }
-
-
 }

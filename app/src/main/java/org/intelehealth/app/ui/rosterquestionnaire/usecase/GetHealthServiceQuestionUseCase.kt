@@ -5,11 +5,7 @@ import org.intelehealth.app.ui.rosterquestionnaire.repository.RosterRepository
 import javax.inject.Inject
 
 class GetHealthServiceQuestionUseCase @Inject constructor(private val rosterRepository: RosterRepository) {
-   operator fun invoke(existingRoasterQuestionList: ArrayList<RoasterViewQuestion>?): ArrayList<RoasterViewQuestion> {
-        return if (existingRoasterQuestionList.isNullOrEmpty()) {
-            rosterRepository.getHealthServiceQuestionList()
-        } else {
-            existingRoasterQuestionList
-        }
+    operator fun invoke(): ArrayList<RoasterViewQuestion> {
+        return rosterRepository.getHealthServiceQuestionList()
     }
 }

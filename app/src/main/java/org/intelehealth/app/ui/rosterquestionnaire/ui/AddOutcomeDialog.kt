@@ -1,7 +1,6 @@
 package org.intelehealth.app.ui.rosterquestionnaire.ui
 
 import android.app.Dialog
-import android.content.DialogInterface
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
@@ -20,14 +19,16 @@ import org.intelehealth.app.utilities.SpacingItemDecoration
 
 class AddOutcomeDialog : DialogFragment(), MultiViewListener {
 
-    private lateinit var pregnancyAdapter: MultiViewAdapter
     private lateinit var _binding: FragmentAddPregnancyOutcomeBinding
     private lateinit var rosterViewModel: RosterViewModel
-    private var pregnancyOutcomeList: ArrayList<RoasterViewQuestion> = arrayListOf()
+    private lateinit var pregnancyOutcomeList: ArrayList<RoasterViewQuestion>
+    private var editPosition: Int = -1
+    private val pregnancyAdapter: MultiViewAdapter by lazy {
+        MultiViewAdapter(listener = this@AddOutcomeDialog)
+    }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         // Inflate the binding
-
         rosterViewModel = ViewModelProvider.create(requireActivity())[RosterViewModel::class]
         val dialog = Dialog(requireContext())
         _binding = FragmentAddPregnancyOutcomeBinding.inflate(layoutInflater)
@@ -40,13 +41,16 @@ class AddOutcomeDialog : DialogFragment(), MultiViewListener {
 
             // Set the dialog width and height with margins
             val metrics = requireContext().resources.displayMetrics
-            val horizontalMargin = requireContext().resources.getDimensionPixelSize(R.dimen.dialog_margin)
-            val verticalMargin = requireContext().resources.getDimensionPixelSize(R.dimen.dialog_margin_vertical)
-            val dialogWidth = metrics.widthPixels - (horizontalMargin * 2) // Screen width minus horizontal margins
-            val dialogHeight = metrics.heightPixels - (verticalMargin * 2) // Screen height minus vertical margins
+            val horizontalMargin =
+                requireContext().resources.getDimensionPixelSize(R.dimen.dialog_margin)
+            val verticalMargin =
+                requireContext().resources.getDimensionPixelSize(R.dimen.dialog_margin_vertical)
+            val dialogWidth =
+                metrics.widthPixels - (horizontalMargin * 2) // Screen width minus horizontal margins
+            val dialogHeight =
+                metrics.heightPixels - (verticalMargin * 2) // Screen height minus vertical margins
             clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM)
             setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
-
             setLayout(dialogWidth, dialogHeight)
         }
         return dialog
@@ -61,43 +65,29 @@ class AddOutcomeDialog : DialogFragment(), MultiViewListener {
 
     private fun setClickListeners() {
         _binding.btnSave.setOnClickListener {
-            if (isValidList(pregnancyOutcomeList)) {
-                rosterViewModel.addPregnancyOutcome(pregnancyOutcomeList)
+            rosterViewModel.validatePregnancyOutcomeList(pregnancyOutcomeList)?.let {
+                _binding.rvOutcomeQuestions.smoothScrollToPosition(it)
+                pregnancyAdapter.updateErrorMessage(it)
+            } ?: run {
+                rosterViewModel.addPregnancyOutcome(pregnancyOutcomeList,editPosition)
                 dismiss()
             }
+
         }
         _binding.btnCancel.setOnClickListener { dismiss() }
     }
 
-    private fun isValidList(pregnancyOutcomeList: ArrayList<RoasterViewQuestion>): Boolean {
-        pregnancyOutcomeList.forEach {
-            if (it.answer.isNullOrEmpty()) {
-                pregnancyAdapter.updateErrorMessage(true)
-                return false
-            }
-        }
-        return true
-    }
-
 
     private fun setAdapter() {
-        pregnancyOutcomeList.addAll(rosterViewModel.getOutcomeQuestionList())
-
         _binding.rvOutcomeQuestions.apply {
             layoutManager = LinearLayoutManager(requireContext())
-            pregnancyAdapter = MultiViewAdapter(
-                pregnancyOutcomeList,
-                this@AddOutcomeDialog
-            )
             adapter = pregnancyAdapter
             addItemDecoration(SpacingItemDecoration(16))
         }
+        pregnancyAdapter.notifyList(pregnancyOutcomeList)
     }
 
-    override fun onDismiss(dialog: DialogInterface) {
-        super.onDismiss(dialog)
-        rosterViewModel.existingRoasterQuestionList = null
-    }
+
     override fun onItemClick(item: RoasterViewQuestion, position: Int, view: View) {
         CalendarDialog.showDatePickerDialog(object : CalendarDialog.OnDatePickListener {
             override fun onDatePick(day: Int, month: Int, year: Int, value: String?) {
@@ -108,5 +98,8 @@ class AddOutcomeDialog : DialogFragment(), MultiViewListener {
         }, childFragmentManager)
     }
 
-
+    fun setPregnancyOutcomeList(list: List<RoasterViewQuestion>, editPosition: Int = -1) {
+        pregnancyOutcomeList = list as ArrayList<RoasterViewQuestion>
+        this.editPosition = editPosition
+    }
 }

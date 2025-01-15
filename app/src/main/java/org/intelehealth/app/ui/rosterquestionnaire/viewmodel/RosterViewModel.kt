@@ -52,9 +52,6 @@ class RosterViewModel @Inject constructor(
         MutableLiveData<ArrayList<HealthServiceModel>>(arrayListOf())
     val healthServiceLiveList: LiveData<ArrayList<HealthServiceModel>> = _healthServiceLiveList
 
-    var existingRoasterQuestionList: ArrayList<RoasterViewQuestion>? = null
-    var existPregnancyOutComePosition = 0
-
     private val _isDataInserted = MutableLiveData(false)
     val isDataInserted: LiveData<Boolean> = _isDataInserted
 
@@ -62,34 +59,32 @@ class RosterViewModel @Inject constructor(
         mutableLiveRosterStage.postValue(stage)
     }
 
-    fun addPregnancyOutcome(questionList: List<RoasterViewQuestion>) {
+    fun addPregnancyOutcome(questionList: List<RoasterViewQuestion>, editPosition: Int = -1) {
         val pregnancyOutComeModel = PregnancyOutComeModel(
             title = questionList[0].answer ?: "",
             roasterViewQuestion = questionList
         )
         val list = _outComeLiveList.value ?: mutableListOf()
-        if (existingRoasterQuestionList == null) {
+        if (editPosition < 0) {
             list.add(pregnancyOutComeModel)
         } else {
-            list[existPregnancyOutComePosition] = pregnancyOutComeModel
-            existingRoasterQuestionList = null
+            list[editPosition] = pregnancyOutComeModel
         }
-        _outComeLiveList.postValue(list as ArrayList<PregnancyOutComeModel>?)
+        _outComeLiveList.value = ArrayList(list)
     }
 
-    fun addHealthService(questionList: List<RoasterViewQuestion>) {
+    fun addHealthService(questionList: List<RoasterViewQuestion>, editPosition: Int = -1) {
         val healthServiceModel = HealthServiceModel(
             title = questionList[0].answer ?: "",
             roasterViewQuestion = questionList
         )
         val list = _healthServiceLiveList.value ?: mutableListOf()
-        if (existingRoasterQuestionList == null) {
+        if (editPosition < 0) {
             list.add(healthServiceModel)
         } else {
-            list[existPregnancyOutComePosition] = healthServiceModel
-            existingRoasterQuestionList = null
+            list[editPosition] = healthServiceModel
         }
-        _healthServiceLiveList.postValue(list as ArrayList<HealthServiceModel>?)
+        _healthServiceLiveList.value = ArrayList(list)
     }
 
 
@@ -107,11 +102,9 @@ class RosterViewModel @Inject constructor(
 
     }
 
-    fun getOutcomeQuestionList(): ArrayList<RoasterViewQuestion> =
-        getOutComeQuestionUseCase(existingRoasterQuestionList)
+    fun getOutcomeQuestionList(): ArrayList<RoasterViewQuestion> = getOutComeQuestionUseCase()
 
-    fun getHealthServiceList(): ArrayList<RoasterViewQuestion> =
-        getHealthServiceQuestionUseCase(existingRoasterQuestionList)
+    fun getHealthServiceList(): ArrayList<RoasterViewQuestion> = getHealthServiceQuestionUseCase()
 
     fun getGeneralQuestionList() {
         _generalLiveList.postValue(getGeneralQuestionUseCase())
@@ -138,14 +131,19 @@ class RosterViewModel @Inject constructor(
 
             // Fetch and post general data
             _generalLiveList.postValue(
-                getAllRoasterDataUseCase.getGeneralData(allAttributeData, getGeneralQuestionUseCase())
+                getAllRoasterDataUseCase.getGeneralData(
+                    allAttributeData,
+                    getGeneralQuestionUseCase()
+                )
             )
 
             // Extract pregnancy-related data
             val pregnancyDataMap = mapOf(
                 NO_OF_TIME_PREGNANT to { value: String -> pregnancyCount = value },
                 PREGNANCY_PAST_TWO_YEARS to { value: String -> pregnancyOutcome = value },
-                NO_OF_PREGNANCY_OUTCOME_TWO_YEARS to { value: String -> pregnancyOutcomeCount = value }
+                NO_OF_PREGNANCY_OUTCOME_TWO_YEARS to { value: String ->
+                    pregnancyOutcomeCount = value
+                }
             )
 
             pregnancyDataMap.forEach { (key, setter) ->
@@ -154,18 +152,31 @@ class RosterViewModel @Inject constructor(
 
             // Fetch and post pregnancy outcome models
             _outComeLiveList.postValue(
-                getAllRoasterDataUseCase.getPregnancyData(allAttributeData, getOutcomeQuestionList())
+                getAllRoasterDataUseCase.getPregnancyData(
+                    allAttributeData,
+                    getOutcomeQuestionList()
+                )
                         as ArrayList<PregnancyOutComeModel>?
             )
 
             // Fetch and post health service models
             _healthServiceLiveList.postValue(
-                getAllRoasterDataUseCase.getHealthServiceData(allAttributeData, getHealthServiceList())
+                getAllRoasterDataUseCase.getHealthServiceData(
+                    allAttributeData,
+                    getHealthServiceList()
+                )
                         as ArrayList<HealthServiceModel>?
             )
         }
     }
 
+    fun validateGeneralList(): Int? {
+        return _generalLiveList.value?.indexOfFirst { it.answer.isNullOrEmpty() }
+            .takeIf { it != -1 }
+    }
 
+    fun validatePregnancyOutcomeList(questions: List<RoasterViewQuestion>): Int? {
+        return questions.indexOfFirst { it.answer.isNullOrEmpty() }.takeIf { it != -1 }
+    }
 
 }

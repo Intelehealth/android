@@ -50,7 +50,9 @@ class HealthServiceRosterFragment : BaseRosterFragment(R.layout.fragment_health_
             findNavController().popBackStack()
         }
         binding.tvAddHealthService.setOnClickListener {
-            AddHealthServiceDialog().show(
+            AddHealthServiceDialog().apply {
+                setHealthServiceData(rosterViewModel.getHealthServiceList())
+            }.show(
                 childFragmentManager,
                 AddHealthServiceDialog::class.simpleName
             )
@@ -135,12 +137,14 @@ class HealthServiceRosterFragment : BaseRosterFragment(R.layout.fragment_health_
      * @param item The HealthServiceModel to edit
      */
     override fun onClickEdit(view: View, position: Int, item: HealthServiceModel) {
-        rosterViewModel.existPregnancyOutComePosition = position
-        rosterViewModel.existingRoasterQuestionList = ArrayList(item.roasterViewQuestion)
-        AddHealthServiceDialog().show(
+        AddHealthServiceDialog().apply {
+            setHealthServiceData(item.roasterViewQuestion,position)
+        }.show(
             childFragmentManager,
             AddHealthServiceDialog::class.simpleName
         )
+
+
     }
 
     /**

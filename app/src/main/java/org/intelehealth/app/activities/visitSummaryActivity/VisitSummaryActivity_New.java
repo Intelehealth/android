@@ -3156,7 +3156,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             showSelectSpeciliatyErrorDialog();
         }
 
-        if (mBinding.diagnosisTextInput.getText().toString().isEmpty() ||
+        if (mBinding.flDiagnosisCard.getVisibility() == View.VISIBLE && mBinding.diagnosisTextInput.getText().toString().isEmpty() ||
                 selectedConsultationType.isEmpty() ||
                 (speciality_selected == null || speciality_selected.isEmpty())
         ) {

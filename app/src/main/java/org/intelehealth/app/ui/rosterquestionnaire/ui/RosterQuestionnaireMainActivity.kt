@@ -22,6 +22,7 @@ import org.intelehealth.app.syncModule.SyncUtils
 import org.intelehealth.app.ui.patient.activity.PatientRegistrationActivity
 import org.intelehealth.app.ui.rosterquestionnaire.utilities.RosterQuestionnaireStage
 import org.intelehealth.app.ui.rosterquestionnaire.viewmodel.RosterViewModel
+import org.intelehealth.app.utilities.BundleKeys
 import org.intelehealth.app.utilities.BundleKeys.Companion.IS_EDIT_MODE
 import org.intelehealth.app.utilities.BundleKeys.Companion.PATIENT_CURRENT_STAGE
 import org.intelehealth.app.utilities.BundleKeys.Companion.PATIENT_UUID
@@ -31,6 +32,7 @@ import org.intelehealth.app.utilities.DialogUtils.CustomDialogListener
 import org.intelehealth.app.utilities.NetworkConnection
 import org.intelehealth.app.utilities.NetworkUtils
 import org.intelehealth.app.utilities.PatientRegStage
+import org.intelehealth.app.utilities.constatnt.BundleConstants
 
 @AndroidEntryPoint
 class RosterQuestionnaireMainActivity : BaseActivity() {
@@ -48,10 +50,8 @@ class RosterQuestionnaireMainActivity : BaseActivity() {
         rosterViewModel = ViewModelProvider.create(this)[RosterViewModel::class]
         binding = ActivityRosterQuestionnaireMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-//        manageTitleVisibilityOnScrolling()
-
         if (intent != null) {
-            rosterViewModel.patientUuid = intent.getStringExtra("patientUuid")?:""
+            rosterViewModel.patientUuid = intent.getStringExtra(PATIENT_UUID) ?: ""
             rosterViewModel.isEditMode = intent.getBooleanExtra(IS_EDIT_MODE, false)
         }
         extractAndBindUI()
@@ -152,7 +152,7 @@ class RosterQuestionnaireMainActivity : BaseActivity() {
             context: Context,
             patientId: String? = null,
             stage: RosterQuestionnaireStage = RosterQuestionnaireStage.GENERAL_ROSTER,
-            isEditMode : Boolean = false
+            isEditMode: Boolean = false,
         ) {
             Intent(context, RosterQuestionnaireMainActivity::class.java).apply {
                 putExtra(PATIENT_UUID, patientId)

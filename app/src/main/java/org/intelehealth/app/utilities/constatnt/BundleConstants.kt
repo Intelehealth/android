@@ -1,8 +1,10 @@
-package org.intelehealth.app.utilities.constatnt;
+package org.intelehealth.app.utilities.constatnt
 
-public interface BundleConstants {
-    String SELECTED_DATE = "selectedDate";
-    String WHICH_DATE = "whichDate";
-    String FROM_DATE = "fromdate";
-    String TO_DATE = "todate";
+interface BundleConstants {
+    companion object {
+        const val SELECTED_DATE: String = "selectedDate"
+        const val WHICH_DATE: String = "whichDate"
+        const val FROM_DATE: String = "fromdate"
+        const val TO_DATE: String = "todate"
+    }
 }

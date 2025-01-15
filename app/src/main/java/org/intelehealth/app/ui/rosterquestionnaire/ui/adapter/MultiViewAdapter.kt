@@ -1,5 +1,6 @@
 package org.intelehealth.app.ui.rosterquestionnaire.ui.adapter
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -20,10 +21,12 @@ import org.intelehealth.app.utilities.extensions.showDropDownError
 import org.intelehealth.app.utilities.extensions.validate
 
 class MultiViewAdapter(
-    private val items: List<RoasterViewQuestion>,
+    private var items: ArrayList<RoasterViewQuestion> = ArrayList(),
     private val listener: MultiViewListener,
     private var isResulCheck: Boolean = false,
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    private var errorPosition = -1
 
     override fun getItemViewType(position: Int): Int {
         return items[position].layoutId.lavout
@@ -86,7 +89,7 @@ class MultiViewAdapter(
                             )
                         }
 
-                        if (isResulCheck && data.answer.isNullOrEmpty()) {
+                        if (bindingAdapterPosition == errorPosition && data.answer.isNullOrEmpty()) {
                             binding.textInputLayRelation.showDropDownError(
                                 data.answer,
                                 data.errorMessage
@@ -105,7 +108,7 @@ class MultiViewAdapter(
                 is ItemDatePickerViewBinding -> {
                     binding.tvDatePickerQuestion.text = data.question
                     binding.textInputETDob.setText(data.answer ?: "")
-                    if (isResulCheck && data.answer.isNullOrEmpty()) {
+                    if (bindingAdapterPosition == errorPosition  && data.answer.isNullOrEmpty()) {
                         binding.textInputLayDob.validate(binding.textInputETDob, data.errorMessage)
                     } else {
                         binding.textInputLayDob.hideError()
@@ -123,7 +126,7 @@ class MultiViewAdapter(
                         data.answer = text.toString()
                         binding.tilAnswer.hideError()
                     }
-                    if (isResulCheck && data.answer.isNullOrEmpty()) {
+                    if (bindingAdapterPosition == errorPosition  && data.answer.isNullOrEmpty()) {
                         binding.tilAnswer.validate(binding.tilEtAnswer, data.errorMessage)
                     } else {
                         binding.tilAnswer.hideError()
@@ -144,8 +147,16 @@ class MultiViewAdapter(
         }
     }
 
-    fun updateErrorMessage(status: Boolean) {
-        isResulCheck = status
+    fun updateErrorMessage(position: Int) {
+        isResulCheck = true
+        errorPosition = position
+        notifyItemChanged(position)
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun notifyList(list: ArrayList<RoasterViewQuestion>) {
+        items.clear()
+        items.addAll(list)
         notifyDataSetChanged()
     }
 

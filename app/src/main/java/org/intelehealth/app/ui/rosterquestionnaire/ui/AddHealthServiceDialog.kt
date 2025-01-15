@@ -1,7 +1,6 @@
 package org.intelehealth.app.ui.rosterquestionnaire.ui
 
 import android.app.Dialog
-import android.content.DialogInterface
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
@@ -20,10 +19,14 @@ import org.intelehealth.app.utilities.SpacingItemDecoration
 
 class AddHealthServiceDialog : DialogFragment(), MultiViewListener {
 
-    private lateinit var pregnancyAdapter: MultiViewAdapter
+    private var editPosition: Int = -1
+
     private lateinit var _binding: DialogAddHealthServiceBinding
     private lateinit var rosterViewModel: RosterViewModel
-    private var healthServiceQuestionList: ArrayList<RoasterViewQuestion> = arrayListOf()
+    private lateinit var healthServiceQuestionList: ArrayList<RoasterViewQuestion>
+    private val pregnancyAdapter: MultiViewAdapter by lazy {
+        MultiViewAdapter(listener = this@AddHealthServiceDialog)
+    }
 
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -43,10 +46,14 @@ class AddHealthServiceDialog : DialogFragment(), MultiViewListener {
 
             // Set the dialog width and height with margins
             val metrics = requireContext().resources.displayMetrics
-            val horizontalMargin = requireContext().resources.getDimensionPixelSize(R.dimen.dialog_margin)
-            val verticalMargin = requireContext().resources.getDimensionPixelSize(R.dimen.dialog_margin_vertical)
-            val dialogWidth = metrics.widthPixels - (horizontalMargin * 2) // Screen width minus horizontal margins
-            val dialogHeight = metrics.heightPixels - (verticalMargin * 2) // Screen height minus vertical margins
+            val horizontalMargin =
+                requireContext().resources.getDimensionPixelSize(R.dimen.dialog_margin)
+            val verticalMargin =
+                requireContext().resources.getDimensionPixelSize(R.dimen.dialog_margin_vertical)
+            val dialogWidth =
+                metrics.widthPixels - (horizontalMargin * 2) // Screen width minus horizontal margins
+            val dialogHeight =
+                metrics.heightPixels - (verticalMargin * 2) // Screen height minus vertical margins
             clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM)
             setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
 
@@ -64,8 +71,12 @@ class AddHealthServiceDialog : DialogFragment(), MultiViewListener {
 
     private fun setClickListeners() {
         _binding.btnSave.setOnClickListener {
-            if (isValidList(healthServiceQuestionList)) {
-                rosterViewModel.addHealthService(healthServiceQuestionList)
+
+            rosterViewModel.validatePregnancyOutcomeList(healthServiceQuestionList)?.let {
+                _binding.rvHealthServiceQuestions.smoothScrollToPosition(it)
+                pregnancyAdapter.updateErrorMessage(it)
+            } ?: run {
+                rosterViewModel.addHealthService(healthServiceQuestionList, editPosition)
                 dismiss()
             }
 
@@ -75,29 +86,13 @@ class AddHealthServiceDialog : DialogFragment(), MultiViewListener {
 
 
     private fun setAdapter() {
-        healthServiceQuestionList.addAll(rosterViewModel.getHealthServiceList())
-
         _binding.rvHealthServiceQuestions.apply {
             layoutManager = LinearLayoutManager(requireContext())
-            pregnancyAdapter = MultiViewAdapter(
-                healthServiceQuestionList,
-                this@AddHealthServiceDialog
-            )
             adapter = pregnancyAdapter
             addItemDecoration(SpacingItemDecoration(16))
         }
+        pregnancyAdapter.notifyList(healthServiceQuestionList)
     }
-
-    private fun isValidList(healthServiceQuestionList: ArrayList<RoasterViewQuestion>): Boolean {
-        healthServiceQuestionList.forEach {
-            if (it.answer.isNullOrEmpty()) {
-                pregnancyAdapter.updateErrorMessage(true)
-                return false
-            }
-        }
-        return true
-    }
-
 
     override fun onItemClick(item: RoasterViewQuestion, position: Int, view: View) {
         CalendarDialog.showDatePickerDialog(object : CalendarDialog.OnDatePickListener {
@@ -109,9 +104,9 @@ class AddHealthServiceDialog : DialogFragment(), MultiViewListener {
         }, childFragmentManager)
     }
 
-    override fun onDismiss(dialog: DialogInterface) {
-        super.onDismiss(dialog)
-        rosterViewModel.existingRoasterQuestionList = null
-    }
 
+    fun setHealthServiceData(list: List<RoasterViewQuestion>, editPosition: Int = -1) {
+        healthServiceQuestionList = list as ArrayList<RoasterViewQuestion>
+        this.editPosition = editPosition
+    }
 }
