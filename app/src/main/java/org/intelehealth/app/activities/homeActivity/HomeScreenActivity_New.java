@@ -45,6 +45,7 @@ import android.provider.Settings;
 import android.text.Html;
 import android.util.DisplayMetrics;
 
+import org.intelehealth.app.activities.homeActivity.callback.CountCallback;
 import org.intelehealth.app.activities.homeActivity.heartbeatApi.HeartbeatApi;
 import org.intelehealth.app.ayu.visit.notification.NotificationHelper;
 import org.intelehealth.app.ayu.visit.notification.ReminderReceiver;
@@ -204,6 +205,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
     private NotificationReceiver notificationReceiver;
     private NotificationHelper notificationHelper;
 
+    private CountCallback callback;
 
     private ActivityResultLauncher<Intent> scheduleExactAlarmPermissionLauncher;
     private String notificationPatientUuid = null, notificationVisitUuid = null, clickAction = null;
@@ -213,6 +215,10 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         // save fcm reg. token for chat (Video)
         FirebaseUtils.saveToken(this, sessionManager.getProviderID(), IntelehealthApplication.getInstance().refreshedFCMTokenID, sessionManager.getAppLanguage());
         VideoLibraryManager.setBaseUrl(sessionManager.getServerUrl());
+    }
+
+    public void setCallback(CountCallback callback) {
+        this.callback = callback;
     }
 
     @Override
