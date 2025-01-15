@@ -383,6 +383,15 @@ public class VitalCollectionSummaryFragment extends Fragment {
     private String getRiskProneVitals() {
         String riskProneMessage = "";
 
+        String bmi = mVitalsObject.getBmi();
+        if (bmi != null && !bmi.isEmpty()) {
+            if (Double.parseDouble(bmi) < 18.5) {
+                riskProneMessage = riskProneMessage.concat(getResources().getString(R.string.weight_loss_alert_msg)).concat("\n");
+            } else if (Double.parseDouble(bmi) > 25.0) {
+                riskProneMessage = riskProneMessage.concat(getResources().getString(R.string.weight_gain_alert_msg)).concat("\n");
+            }
+        }
+
         String spo2 = mVitalsObject.getSpo2();
         if (spo2 != null && !spo2.isEmpty() && Integer.parseInt(spo2) < RISK_LIMIT_SPO2) {
             riskProneMessage = riskProneMessage.concat(getString(R.string.vital_alert_spo2_button)).concat("\n");
