@@ -1553,7 +1553,7 @@
     <string name="enter_date">Enter Date</string>
     <string name="health_service">Health Service</string>
     <string name="please_add_health_service">Please add health service</string>
-    <string name="please_add_pregnancy_outcome">Please add pregnancy outcome</string>
+    <string name="please_add_pregnancy_outcome">Please add %1$s pregnancy outcome</string>
     <string name="please_select_pregnancy_outcome">Please select pregnancy outcome\n</string>
     <string name="_diagnostics_summary">%1$d/%2$d Diagnostics summary</string>
     <string name="physical_exam_screen_title">@string/physical_examination</string>
@@ -1575,4 +1575,5 @@
     <string name="average_cost_incurred_on_consultation_fee_per_episode">Average cost incurred on consultation fee per episode</string>
     <string name="average_cost_incurred_on_medicines_per_episode">Average cost incurred on medicines per episode</string>
     <string name="score_for_experience_of_treatment">Score for experience of treatment</string>
+    <string name="please_delete_pregnancy_outcome">Please delete %1$s pregnancy outcome</string>
 </resources>

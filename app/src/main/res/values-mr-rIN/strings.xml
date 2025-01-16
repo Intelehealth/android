@@ -919,7 +919,7 @@
     <string name="how_many_times_have_you_been_pregnant">तुम्ही किती वेळा गरोदर आहात?*</string>
     <string name="have_you_had_any_pregnancy_outcomes_in_the_past_2_years">मागच्या २ वर्षात तुम्ही गरोदर होता का ?*</string>
     <string name="no_of_pregnancy_outcomes_in_the_past_2_years">मागच्या २ वर्षात तुम्ही कितीवेळा गरोदर होता ?</string>
-    <string name="please_add_pregnancy_outcome">कृपया गर्भधारणा परिणाम जोडा</string>
+    <string name="please_add_pregnancy_outcome">कृपया %1$s गर्भधारणा परिणाम जोडा</string>
     <string name="identification_screen_prompt_district">जिल्हा</string>
     <string name="identification_screen_prompt_block">ब्लॉक</string>
     <string name="hint_drop_down_village">गाव निवडा</string>
@@ -954,4 +954,5 @@
     <string name="select_consultation_type">Select Consulation Type</string>
     <string name="enter_diagnosis">Enter Diagnosis</string>
     <string name="diagnosis_required">Diagnosis Required</string>
+    <string name="please_delete_pregnancy_outcome">कृपया %1$s गर्भधारणेचा परिणाम हटवा</string>
 </resources>

@@ -3,6 +3,7 @@ package org.intelehealth.app.ui.rosterquestionnaire.ui
 import android.os.Bundle
 import android.view.View
 import android.widget.RadioButton
+import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,6 +13,7 @@ import org.intelehealth.app.databinding.FragmentPregnancyRosterBinding
 import org.intelehealth.app.ui.rosterquestionnaire.model.PregnancyOutComeModel
 import org.intelehealth.app.ui.rosterquestionnaire.ui.adapter.PregnancyOutcomeAdapter
 import org.intelehealth.app.ui.rosterquestionnaire.ui.listeners.PregnancyOutcomeClickListener
+import org.intelehealth.app.ui.rosterquestionnaire.utilities.NO
 import org.intelehealth.app.ui.rosterquestionnaire.utilities.RosterQuestionnaireStage
 import org.intelehealth.app.ui.rosterquestionnaire.utilities.YES
 import org.intelehealth.app.ui.rosterquestionnaire.viewmodel.RosterViewModel
@@ -25,7 +27,7 @@ class PregnancyRosterFragment : BaseRosterFragment(R.layout.fragment_pregnancy_r
 
     private var pregnancyAdapter: PregnancyOutcomeAdapter? = null
     private lateinit var binding: FragmentPregnancyRosterBinding
-    private var patientUuid: String? = null
+
     private val pregnancyOutComeList = ArrayList<PregnancyOutComeModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -40,9 +42,8 @@ class PregnancyRosterFragment : BaseRosterFragment(R.layout.fragment_pregnancy_r
         // Update the current roster stage
         rosterViewModel.updateRosterStage(RosterQuestionnaireStage.PREGNANCY_ROSTER)
 
-        initViews()
         setupOutcomeAdapter()
-        setupClickListeners()
+        setListeners()
         observeLiveData()
         setExistingData()
     }
@@ -59,6 +60,7 @@ class PregnancyRosterFragment : BaseRosterFragment(R.layout.fragment_pregnancy_r
         }
     }
 
+
     /**
      * Observes LiveData for updates to the pregnancy outcome list and refreshes the adapter.
      */
@@ -72,12 +74,6 @@ class PregnancyRosterFragment : BaseRosterFragment(R.layout.fragment_pregnancy_r
         }
     }
 
-    /**
-     * Initializes necessary data and extracts the patient UUID from the intent.
-     */
-    private fun initViews() {
-        patientUuid = requireActivity().intent?.getStringExtra("patientUuid")
-    }
 
     /**
      * Sets up the RecyclerView adapter for displaying the list of pregnancy outcomes.
@@ -95,7 +91,7 @@ class PregnancyRosterFragment : BaseRosterFragment(R.layout.fragment_pregnancy_r
     /**
      * Configures click listeners for UI actions like adding outcomes, navigating forward, and going back.
      */
-    private fun setupClickListeners() {
+    private fun setListeners() {
         binding.tvAddPregnancyOutcome.setOnClickListener {
             AddOutcomeDialog().apply {
                 setPregnancyOutcomeList(rosterViewModel.getOutcomeQuestionList())
@@ -104,34 +100,36 @@ class PregnancyRosterFragment : BaseRosterFragment(R.layout.fragment_pregnancy_r
         }
 
         binding.frag2BtnNext.setOnClickListener {
-            if (!isValidRoaster()) {
-                return@setOnClickListener
-            } else if (!isValidOutcome()) {
-                ToastUtil.showShortToast(
-                    requireContext(),
-                    getString(R.string.please_select_pregnancy_outcome)
-                )
-                return@setOnClickListener
-            } else {
-                rosterViewModel.pregnancyCount = binding.tilEtPregnancyCount.text.toString()
-                val selectedRadioButton: RadioButton =
-                    requireActivity().findViewById(binding.rgPregnancyOutcome.checkedRadioButtonId)
-                rosterViewModel.pregnancyOutcome = selectedRadioButton.getText().toString()
-                rosterViewModel.pregnancyOutcomeCount =
-                    binding.tilEtPregnancyOutcomeCount.text.toString()
-            }
-            if (pregnancyOutComeList.isEmpty()) {
-                ToastUtil.showShortToast(
-                    requireContext(),
-                    getString(R.string.please_add_pregnancy_outcome)
-                )
-            } else {
-                navigateToHealthService()
-            }
+            handleNextButtonClick()
         }
 
         binding.frag2BtnBack.setOnClickListener {
             findNavController().popBackStack()
+        }
+        binding.rgPregnancyOutcome.setOnCheckedChangeListener { group, checkedId ->
+            val selectedRadioButton = group.findViewById<RadioButton>(checkedId)
+            if (selectedRadioButton.text.equals(YES)) {
+                binding.groupPregnancyOutcome.visibility = View.VISIBLE
+                rosterViewModel.pregnancyOutcome = YES
+            } else {
+                rosterViewModel.pregnancyOutcome = NO
+                binding.groupPregnancyOutcome.visibility = View.GONE
+                rosterViewModel.pregnancyOutcomeCount = ""
+                binding.tilEtPregnancyOutcomeCount.setText("")
+            }
+        }
+
+        binding.tilEtPregnancyOutcomeCount.addTextChangedListener { editable ->
+            rosterViewModel.pregnancyOutcomeCount = editable.toString()
+        }
+    }
+
+    private fun handleNextButtonClick() {
+
+        if (isValidPregnancy()) {
+            rosterViewModel.pregnancyOutcomeCount =
+                binding.tilEtPregnancyOutcomeCount.text.toString()
+            navigateToHealthService()
         }
     }
 
@@ -179,16 +177,40 @@ class PregnancyRosterFragment : BaseRosterFragment(R.layout.fragment_pregnancy_r
         pregnancyAdapter?.notifyItemChanged(position)
     }
 
-    private fun isValidRoaster(): Boolean {
-        return binding.tilPregnancyCount.validate(
-            binding.tilEtPregnancyCount,
-            R.string.this_field_is_mandatory
-        ) && binding.tilPregnancyOutcomeCount.validate(
-            binding.tilEtPregnancyOutcomeCount,
-            R.string.this_field_is_mandatory
-        )
-    }
 
-    private fun isValidOutcome(): Boolean = binding.rgPregnancyOutcome.checkedRadioButtonId != -1
+    private fun isValidPregnancy(): Boolean {
+        if (!binding.tilPregnancyCount.validate(
+                binding.tilEtPregnancyCount,
+                R.string.this_field_is_mandatory
+            )
+        ) {
+            return false
+        } else if (rosterViewModel.pregnancyOutcome == YES && !binding.tilPregnancyOutcomeCount.validate(
+                binding.tilEtPregnancyOutcomeCount,
+                R.string.this_field_is_mandatory
+            )
+        ) {
+            return false
+        } else if (rosterViewModel.pregnancyOutcome == YES && pregnancyOutComeList.size != rosterViewModel.pregnancyOutcomeCount.toInt()) {
+            if (pregnancyOutComeList.size < rosterViewModel.pregnancyOutcomeCount.toInt()) {
+                val count =
+                    rosterViewModel.pregnancyOutcomeCount.toInt() - pregnancyOutComeList.size
+                ToastUtil.showShortToast(
+                    requireContext(),
+                    getString(R.string.please_add_pregnancy_outcome, count.toString())
+                )
+                return false
+            } else {
+                val count =
+                    pregnancyOutComeList.size - rosterViewModel.pregnancyOutcomeCount.toInt()
+                ToastUtil.showShortToast(
+                    requireContext(),
+                    getString(R.string.please_delete_pregnancy_outcome, count.toString())
+                )
+                return false
+            }
+        }
+        return true
+    }
 
 }

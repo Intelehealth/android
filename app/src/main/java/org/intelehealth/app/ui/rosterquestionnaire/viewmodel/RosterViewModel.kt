@@ -11,11 +11,12 @@ import org.intelehealth.app.ui.rosterquestionnaire.di.IoDispatcher
 import org.intelehealth.app.ui.rosterquestionnaire.model.HealthServiceModel
 import org.intelehealth.app.ui.rosterquestionnaire.model.PregnancyOutComeModel
 import org.intelehealth.app.ui.rosterquestionnaire.model.RoasterViewQuestion
+import org.intelehealth.app.ui.rosterquestionnaire.usecase.GetAllRoasterDataUseCase
 import org.intelehealth.app.ui.rosterquestionnaire.usecase.GetGeneralQuestionUseCase
 import org.intelehealth.app.ui.rosterquestionnaire.usecase.GetHealthServiceQuestionUseCase
 import org.intelehealth.app.ui.rosterquestionnaire.usecase.GetOutComeQuestionUseCase
-import org.intelehealth.app.ui.rosterquestionnaire.usecase.GetAllRoasterDataUseCase
 import org.intelehealth.app.ui.rosterquestionnaire.usecase.InsertRoasterUseCase
+import org.intelehealth.app.ui.rosterquestionnaire.utilities.NO
 import org.intelehealth.app.ui.rosterquestionnaire.utilities.NO_OF_PREGNANCY_OUTCOME_TWO_YEARS
 import org.intelehealth.app.ui.rosterquestionnaire.utilities.NO_OF_TIME_PREGNANT
 import org.intelehealth.app.ui.rosterquestionnaire.utilities.PREGNANCY_PAST_TWO_YEARS
@@ -34,7 +35,7 @@ class RosterViewModel @Inject constructor(
 ) : ViewModel() {
 
     var pregnancyOutcomeCount: String = ""
-    var pregnancyOutcome: String = ""
+    var pregnancyOutcome: String = NO
     var pregnancyCount: String = ""
     var patientUuid: String = ""
     private var mutableLiveRosterStage = MutableLiveData(RosterQuestionnaireStage.GENERAL_ROSTER)
