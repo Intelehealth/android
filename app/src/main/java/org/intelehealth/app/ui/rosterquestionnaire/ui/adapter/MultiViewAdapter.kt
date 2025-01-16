@@ -108,7 +108,7 @@ class MultiViewAdapter(
                 is ItemDatePickerViewBinding -> {
                     binding.tvDatePickerQuestion.text = data.question
                     binding.textInputETDob.setText(data.answer ?: "")
-                    if (bindingAdapterPosition == errorPosition  && data.answer.isNullOrEmpty()) {
+                    if (bindingAdapterPosition == errorPosition && data.answer.isNullOrEmpty()) {
                         binding.textInputLayDob.validate(binding.textInputETDob, data.errorMessage)
                     } else {
                         binding.textInputLayDob.hideError()
@@ -126,7 +126,7 @@ class MultiViewAdapter(
                         data.answer = text.toString()
                         binding.tilAnswer.hideError()
                     }
-                    if (bindingAdapterPosition == errorPosition  && data.answer.isNullOrEmpty()) {
+                    if (bindingAdapterPosition == errorPosition && data.answer.isNullOrEmpty()) {
                         binding.tilAnswer.validate(binding.tilEtAnswer, data.errorMessage)
                     } else {
                         binding.tilAnswer.hideError()

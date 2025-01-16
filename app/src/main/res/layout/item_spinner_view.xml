@@ -38,38 +38,20 @@
                 android:inputType="none" />
         </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
 
-        <LinearLayout
-            android:id="@+id/llOther"
+        <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
+            android:id="@+id/tilOtherText"
+            style="@style/AppTheme.OutlineInputBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/radio_group_margin_top"
-            android:orientation="vertical"
-            android:visibility="gone">
+            app:hintEnabled="false">
 
-            <TextView
-                android:id="@+id/tvOtherHeader"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etOther"
+                style="@style/AppTheme.InputBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:lineSpacingExtra="3sp"
-                android:text="@string/other_relation"
-                android:textAppearance="@style/blur_txtview"
-                android:textSize="@null" />
-
-            <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
-                android:id="@+id/tilOtherText"
-                style="@style/AppTheme.OutlineInputBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:hintEnabled="false">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etOther"
-                    style="@style/AppTheme.InputBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/enter_value" />
-            </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
-        </LinearLayout>
+                android:hint="@string/enter_value" />
+        </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
 
     </LinearLayout>
 </layout>
