@@ -957,4 +957,5 @@
     <string name="please_delete_pregnancy_outcome">कृपया %1$s गर्भधारणेचा परिणाम हटवा</string>
     <string name="hba1c_error">HbA1c should be in between %1$s and %2$s</string>
     <string name="hba1c">HbA1c</string>
+    <string name="percentage_sign">%</string>
 </resources>

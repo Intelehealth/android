@@ -90,8 +90,8 @@ public class AppConstants {
     public static final String MAXIMUM_PULSE = "240";
     public static final String MINIMUM_PULSE = "30";
 
-    public static final String MAXIMUM_HbA1c = "240";
-    public static final String MINIMUM_HbA1c = "30";
+    public static final String MAXIMUM_HbA1c = "16";
+    public static final String MINIMUM_HbA1c = "3";
 
     public static final String MAXIMUM_TEMPERATURE_CELSIUS = "43";
     public static final String MINIMUM_TEMPERATURE_CELSIUS = "25";

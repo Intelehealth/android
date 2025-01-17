@@ -212,7 +212,7 @@ public class VitalCollectionSummaryFragment extends Fragment {
                 ((TextView) view.findViewById(R.id.tv_pulse)).setText(getString(R.string.ui2_no_information));
             // HbA1c
             if (mVitalsObject.getHba1c() != null && !mVitalsObject.getHba1c().isEmpty())
-                ((TextView) view.findViewById(R.id.tv_hba1c)).setText(mVitalsObject.getHba1c()/* + " " + getResources().getString(R.string.bpm)*/); // TODO: handle this if required.
+                ((TextView) view.findViewById(R.id.tv_hba1c)).setText(mVitalsObject.getHba1c() + " " + getString(R.string.percentage_sign)/*getResources().getString(R.string.bpm)*/); // TODO: handle this if required.
             else
                 ((TextView) view.findViewById(R.id.tv_hba1c)).setText(getString(R.string.ui2_no_information));
 
