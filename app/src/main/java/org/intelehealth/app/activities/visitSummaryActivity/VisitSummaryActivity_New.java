@@ -3086,12 +3086,23 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             showSelectSpeciliatyErrorDialog();
         }
 
-        if (mBinding.diagnosisTextInput.getText().toString().isEmpty() ||
-                selectedConsultationType.isEmpty() ||
-                (speciality_selected == null || speciality_selected.isEmpty())
-        ) {
+        if (mFeatureActiveStatus.getDiagnosisAtSecondaryLevel() && mBinding.diagnosisTextInput.getText().toString().isEmpty()) {
+            Timber.tag(TAG).d("DiagnosisAtSecondaryLevel");
             return;
-        }
+        } else if (mFeatureActiveStatus.getTypeOfConsultation() && selectedConsultationType.isEmpty()) {
+            Timber.tag(TAG).d("TypeOfConsultation");
+            return;
+        } else if (mFeatureActiveStatus.getVisitSummeryDoctorSpeciality() && (speciality_selected == null || speciality_selected.isEmpty())) {
+            Timber.tag(TAG).d("DoctorSpeciality");
+            return;
+        } else Timber.tag(TAG).d("visitSendDialog: success");
+
+//        if (mBinding.diagnosisTextInput.getText().toString().isEmpty() ||
+//                selectedConsultationType.isEmpty() ||
+//                (speciality_selected == null || speciality_selected.isEmpty())
+//        ) {
+//
+//        }
         MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(context);
         final LayoutInflater inflater = LayoutInflater.from(context);
         View convertView = inflater.inflate(R.layout.dialog_patient_registration, null);
