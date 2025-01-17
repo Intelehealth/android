@@ -209,7 +209,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
     private String notificationPatientUuid = null, notificationVisitUuid = null, clickAction = null;
 
     private void saveToken() {
-        Manager.getInstance().setBaseUrl(BuildConfig.SERVER_URL);
+        Manager.getInstance().setBaseUrl(SessionManager.getInstance(this).getServerUrl());
         // save fcm reg. token for chat (Video)
         FirebaseUtils.saveToken(this, sessionManager.getProviderID(), IntelehealthApplication.getInstance().refreshedFCMTokenID, sessionManager.getAppLanguage());
         VideoLibraryManager.setBaseUrl(sessionManager.getServerUrl());

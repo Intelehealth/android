@@ -84,7 +84,6 @@ open class CallViewModel(
 //        adaptiveStream = true
 //    )
 
-    private var audioHandler = AudioSwitchHandler(application)
 //    val room = LiveKit.create(
 //        appContext = application.applicationContext,
 //        options = options,
@@ -100,6 +99,8 @@ open class CallViewModel(
 //    )
 
     val room = RtcEngine.create(application.applicationContext)
+
+    private var audioHandler = room.audioHandler as AudioSwitchHandler
 
     private val mutableError = MutableStateFlow<Throwable?>(null)
     val error = mutableError.hide()
