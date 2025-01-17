@@ -1,0 +1,153 @@
+package org.intelehealth.app.ui.rosterquestionnaire.usecase
+
+import com.google.gson.Gson
+import org.intelehealth.app.database.dao.SyncDAO
+import org.intelehealth.app.models.dto.PatientAttributesDTO
+import org.intelehealth.app.ui.rosterquestionnaire.model.HealthIssues
+import org.intelehealth.app.ui.rosterquestionnaire.model.HealthServiceModel
+import org.intelehealth.app.ui.rosterquestionnaire.model.PregnancyOutComeModel
+import org.intelehealth.app.ui.rosterquestionnaire.model.PregnancyRosterData
+import org.intelehealth.app.ui.rosterquestionnaire.model.RoasterViewQuestion
+import org.intelehealth.app.ui.rosterquestionnaire.repository.RosterRepository
+import org.intelehealth.app.ui.rosterquestionnaire.utilities.HEALTH_ISSUE_REPORTED
+import org.intelehealth.app.ui.rosterquestionnaire.utilities.NO_OF_PREGNANCY_OUTCOME_TWO_YEARS
+import org.intelehealth.app.ui.rosterquestionnaire.utilities.NO_OF_TIME_PREGNANT
+import org.intelehealth.app.ui.rosterquestionnaire.utilities.PREGNANCY_OUTCOME_REPORTED
+import org.intelehealth.app.ui.rosterquestionnaire.utilities.PREGNANCY_PAST_TWO_YEARS
+import java.util.UUID
+import javax.inject.Inject
+
+class InsertRoasterUseCase @Inject constructor(private val repository: RosterRepository) {
+    operator fun invoke(
+        uuid: String,
+        generalQuestionList: ArrayList<RoasterViewQuestion>?,
+        pregnancyOutcomeList: ArrayList<PregnancyOutComeModel>?,
+        healthServiceModelList: ArrayList<HealthServiceModel>?,
+        pregnancyOutcome: String,
+        pregnancyCount: String,
+        pregnancyOutcomeCount: String,
+    ) {
+        val patientAttributesDTOList = ArrayList<PatientAttributesDTO>()
+
+        // Add Patient General
+        prepareGeneralData(generalQuestionList, uuid, patientAttributesDTOList)
+
+        // Add Patient Outcome
+        preparePregnancyData(
+            uuid,
+            pregnancyOutcome,
+            pregnancyCount,
+            pregnancyOutcomeCount,
+            patientAttributesDTOList,
+            pregnancyOutcomeList
+        )
+
+        // Add Health Service
+        prepareHealthService(healthServiceModelList, uuid, patientAttributesDTOList)
+
+        repository.insertRoaster(patientAttributesDTOList)
+        val syncDAO = SyncDAO()
+        syncDAO.pushDataApi()
+    }
+
+    private fun prepareHealthService(
+        healthServiceModelList: ArrayList<HealthServiceModel>?,
+        uuid: String,
+        patientAttributesDTOList: ArrayList<PatientAttributesDTO>,
+    ) {
+        val healthIssueModelList = ArrayList<HealthIssues>()
+        healthServiceModelList?.forEach {
+            val healthServiceModel = it.roasterViewQuestion
+            val healthIssueModel = HealthIssues(
+                healthIssueReported = healthServiceModel[0].answer ?: "",
+                numberOfEpisodesInTheLastYear = healthServiceModel[1].answer ?: "",
+                primaryHealthcareProviderValue = healthServiceModel[2].answer ?: "",
+                firstLocationOfVisit = healthServiceModel[3].answer ?: "",
+                referredTo = healthServiceModel[4].answer ?: "",
+                modeOfTransportation = healthServiceModel[5].answer ?: "",
+                averageCostOfTravelAndStayPerEpisode = healthServiceModel[6].answer ?: "",
+                averageCostOfConsultation = healthServiceModel[7].answer ?: "",
+                averageCostOfMedicine = healthServiceModel[8].answer ?: "",
+                scoreForExperienceOfTreatment = healthServiceModel[9].answer ?: "",
+            )
+            healthIssueModelList.add(healthIssueModel)
+            val patientAttributesDTO = PatientAttributesDTO()
+            patientAttributesDTO.uuid = UUID.randomUUID().toString()
+            patientAttributesDTO.patientuuid = uuid
+            patientAttributesDTO.personAttributeTypeUuid = HEALTH_ISSUE_REPORTED
+            patientAttributesDTO.value = Gson().toJson(healthIssueModelList)
+            patientAttributesDTOList.add(patientAttributesDTO)
+        }
+    }
+
+    private fun prepareGeneralData(
+        generalQuestionList: ArrayList<RoasterViewQuestion>?,
+        uuid: String,
+        patientAttributesDTOList: ArrayList<PatientAttributesDTO>,
+    ) {
+        generalQuestionList?.forEach {
+            val patientAttributesDTO = PatientAttributesDTO()
+            patientAttributesDTO.uuid = it.uuid ?: UUID.randomUUID().toString()
+            patientAttributesDTO.patientuuid = uuid
+            patientAttributesDTO.personAttributeTypeUuid = it.attribute
+            patientAttributesDTO.value = it.answer
+            patientAttributesDTOList.add(patientAttributesDTO)
+        }
+
+    }
+
+    private fun preparePregnancyData(
+        uuid: String,
+        pregnancyOutcome: String,
+        pregnancyCount: String,
+        pregnancyOutcomeCount: String,
+        patientAttributesDTOList: ArrayList<PatientAttributesDTO>,
+        pregnancyOutcomeList: ArrayList<PregnancyOutComeModel>?,
+    ) {
+        var patientAttributesDTO = PatientAttributesDTO()
+        patientAttributesDTO.uuid = UUID.randomUUID().toString()
+        patientAttributesDTO.patientuuid = uuid
+        patientAttributesDTO.personAttributeTypeUuid = NO_OF_TIME_PREGNANT
+        patientAttributesDTO.value = pregnancyCount
+        patientAttributesDTOList.add(patientAttributesDTO)
+
+        patientAttributesDTO = PatientAttributesDTO()
+        patientAttributesDTO.uuid = UUID.randomUUID().toString()
+        patientAttributesDTO.patientuuid = uuid
+        patientAttributesDTO.personAttributeTypeUuid = PREGNANCY_PAST_TWO_YEARS
+        patientAttributesDTO.value = pregnancyOutcome
+        patientAttributesDTOList.add(patientAttributesDTO)
+
+
+        patientAttributesDTO = PatientAttributesDTO()
+        patientAttributesDTO.uuid = UUID.randomUUID().toString()
+        patientAttributesDTO.patientuuid = uuid
+        patientAttributesDTO.personAttributeTypeUuid = NO_OF_PREGNANCY_OUTCOME_TWO_YEARS
+        patientAttributesDTO.value = pregnancyOutcomeCount
+        patientAttributesDTOList.add(patientAttributesDTO)
+
+        val pregnancyRosterList = ArrayList<PregnancyRosterData>()
+        pregnancyOutcomeList?.forEach {
+            val pregnancyOutComeQuestion = it.roasterViewQuestion
+            val pregnancyRosterData = PregnancyRosterData(
+                pregnancyOutcome = pregnancyOutComeQuestion[0].answer ?: "",
+                yearOfPregnancyOutcome = pregnancyOutComeQuestion[1].answer ?: "",
+                monthsOfPregnancy = pregnancyOutComeQuestion[2].answer ?: "",
+                placeOfDelivery = pregnancyOutComeQuestion[3].answer ?: "",
+                typeOfDelivery = pregnancyOutComeQuestion[4].answer ?: "",
+                pregnancyPlanned = pregnancyOutComeQuestion[5].answer ?: "",
+                highRiskPregnancy = pregnancyOutComeQuestion[6].answer ?: "",
+            )
+            pregnancyRosterList.add(pregnancyRosterData)
+        }
+        patientAttributesDTO = PatientAttributesDTO()
+        patientAttributesDTO.uuid = UUID.randomUUID().toString()
+        patientAttributesDTO.patientuuid = uuid
+        patientAttributesDTO.personAttributeTypeUuid = PREGNANCY_OUTCOME_REPORTED
+        patientAttributesDTO.value = Gson().toJson(pregnancyRosterList)
+        patientAttributesDTOList.add(patientAttributesDTO)
+
+    }
+
+
+}

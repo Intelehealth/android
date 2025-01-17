@@ -143,6 +143,9 @@ object PatientRegFieldsUtils {
                     PatientRegConfigKeys.PROVINCES -> province = it
                     PatientRegConfigKeys.CITIES -> city = it
                     PatientRegConfigKeys.REGISTRATION_ADDRESS_OF_HF -> registrationAddressOfHf = it
+                    PatientRegConfigKeys.BLOCK -> block = it
+                    PatientRegConfigKeys.HOUSEHOLD_NUMBER -> householdNumber = it
+
                 }
             }
         }

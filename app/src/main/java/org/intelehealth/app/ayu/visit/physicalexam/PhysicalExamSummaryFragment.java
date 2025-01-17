@@ -1,10 +1,15 @@
 package org.intelehealth.app.ayu.visit.physicalexam;
 
+import static org.intelehealth.app.ayu.visit.VisitCreationActivity.STEP_3_VISIT_REASON_QUESTION_SUMMARY;
+import static org.intelehealth.app.ayu.visit.VisitCreationActivity.STEP_4_PHYSICAL_SUMMARY_EXAMINATION;
+
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 
 import org.intelehealth.app.BuildConfig;
+
+import org.intelehealth.app.ayu.visit.common.ManageSummaryScreenTitles;
 import org.intelehealth.app.utilities.CustomLog;
 
 import android.util.Log;
@@ -77,16 +82,14 @@ public class PhysicalExamSummaryFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        FeatureActiveStatus status = ((VisitCreationActivity) requireActivity()).getFeatureActiveStatus();
-        int index = status.getVitalSection() ? 3 : 2;
-        int total = status.getVitalSection() ? 4 : 3;
+       /* FeatureActiveStatus status = ((VisitCreationActivity) requireActivity()).getFeatureActiveStatus();
+        int index = status.getVitalSection() ? 4 : 3;
+        int total = status.getVitalSection() ? 5 : 4;
         TextView tvTitle = view.findViewById(R.id.tv_sub_title);
-        String title = getString(R.string.ui2_physical_exam_summay_title, index, total);
-        if(BuildConfig.FLAVOR_client == FlavorKeys.KCDO){
-            title =  getString(R.string.ui2_relapse_summary_title, index, total);
-        }else if(BuildConfig.FLAVOR_client == FlavorKeys.UNFPA){
-            title =  getString(R.string.ui2_obstetric_history_summary_title, index, total);
-        }
+        tvTitle.setText(getString(R.string.ui2_relapse_summary_title, index, total));*/
+        FeatureActiveStatus status = ((VisitCreationActivity) requireActivity()).getFeatureActiveStatus();
+        String title = ManageSummaryScreenTitles.setScreenTitle(requireActivity(), status, STEP_4_PHYSICAL_SUMMARY_EXAMINATION);
+        TextView tvTitle = view.findViewById(R.id.tv_sub_title);
         tvTitle.setText(title);
     }
 
@@ -104,9 +107,9 @@ public class PhysicalExamSummaryFragment extends Fragment {
                     requireActivity().finish();
                 } else{
                     if(BuildConfig.FLAVOR_client == FlavorKeys.UNFPA){
-                        mActionListener.onFormSubmitted(VisitCreationActivity.FROM_SUMMARY_RESUME_BACK_FOR_EDIT, mIsEditMode, VisitCreationActivity.STEP_5_FAMILY_HISTORY);
+                        mActionListener.onFormSubmitted(VisitCreationActivity.FROM_SUMMARY_RESUME_BACK_FOR_EDIT, mIsEditMode, VisitCreationActivity.STEP_6_FAMILY_HISTORY);
                     }else {
-                        mActionListener.onFormSubmitted(VisitCreationActivity.STEP_4_PAST_MEDICAL_HISTORY, mIsEditMode, null);
+                        mActionListener.onFormSubmitted(VisitCreationActivity.STEP_5_PAST_MEDICAL_HISTORY, mIsEditMode, null);
                     }
                 }
 
@@ -116,13 +119,13 @@ public class PhysicalExamSummaryFragment extends Fragment {
         view.findViewById(R.id.btn_cancel).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mActionListener.onFormSubmitted(VisitCreationActivity.FROM_SUMMARY_RESUME_BACK_FOR_EDIT, true, VisitCreationActivity.STEP_3_PHYSICAL_EXAMINATION);
+                mActionListener.onFormSubmitted(VisitCreationActivity.FROM_SUMMARY_RESUME_BACK_FOR_EDIT, true, VisitCreationActivity.STEP_4_PHYSICAL_EXAMINATION);
             }
         });
         view.findViewById(R.id.img_btn_cancel).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mActionListener.onFormSubmitted(VisitCreationActivity.FROM_SUMMARY_RESUME_BACK_FOR_EDIT, true, VisitCreationActivity.STEP_3_PHYSICAL_EXAMINATION);
+                mActionListener.onFormSubmitted(VisitCreationActivity.FROM_SUMMARY_RESUME_BACK_FOR_EDIT, true, VisitCreationActivity.STEP_4_PHYSICAL_EXAMINATION);
             }
         });
         view.findViewById(R.id.imb_btn_refresh).setOnClickListener(new View.OnClickListener() {
@@ -177,7 +180,7 @@ public class PhysicalExamSummaryFragment extends Fragment {
                 view.findViewById(R.id.tv_change).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        mActionListener.onFormSubmitted(VisitCreationActivity.FROM_SUMMARY_RESUME_BACK_FOR_EDIT, true, VisitCreationActivity.STEP_3_PHYSICAL_EXAMINATION);
+                        mActionListener.onFormSubmitted(VisitCreationActivity.FROM_SUMMARY_RESUME_BACK_FOR_EDIT, true, VisitCreationActivity.STEP_4_PHYSICAL_EXAMINATION);
                     }
                 });
                 RecyclerView recyclerView = view.findViewById(R.id.rcv_qa);

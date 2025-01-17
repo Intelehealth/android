@@ -7,6 +7,7 @@ import org.intelehealth.app.database.dao.ImagesDAO
 import org.intelehealth.app.database.dao.ImagesPushDAO
 import org.intelehealth.app.database.dao.PatientsDAO
 import org.intelehealth.app.database.dao.SyncDAO
+import org.intelehealth.app.models.dto.PatientAttributeTypeMasterDTO
 import org.intelehealth.app.models.dto.PatientAttributesDTO
 import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.app.utilities.NetworkConnection
@@ -24,6 +25,7 @@ class PatientRepository(
     private val sqlHelper: SQLiteOpenHelper,
     regFieldDao: PatientRegFieldDao
 ) : RegFieldRepository(regFieldDao) {
+
     fun createNewPatient(patient: PatientDTO): Boolean {
         bindPatientAttributes(patient).let {
             val flag = patientsDao.insertPatientToDB(it, it.uuid)
@@ -224,6 +226,48 @@ class PatientRepository(
                     patient.uuid,
                     PatientAttributesDTO.Column.DEPARTMENT.value,
                     patient.department
+                )
+            )
+            add(
+                createPatientAttribute(
+                    patient.uuid,
+                    PatientAttributesDTO.Column.BLOCK.value,
+                    patient.block
+                )
+            )
+            add(
+                createPatientAttribute(
+                    patient.uuid,
+                    PatientAttributesDTO.Column.HOUSEHOLD_UUID_LINKING.value,
+                    patient.householdLinkingUUIDlinking
+                )
+            )
+            add(
+                createPatientAttribute(
+                    patient.uuid,
+                    PatientAttributesDTO.Column.REPORT_DATE_OF_PATIENT_CREATED.value,
+                    patient.reportDateOfPatientCreated
+                )
+            )
+            add(
+                createPatientAttribute(
+                    patient.uuid,
+                    PatientAttributesDTO.Column.EMERGENCY_CONTACT_NAME.value,
+                    patient.emContactName
+                )
+            )
+            add(
+                createPatientAttribute(
+                    patient.uuid,
+                    PatientAttributesDTO.Column.EMERGENCY_CONTACT_NUMBER.value,
+                    patient.emContactNumber
+                )
+            )
+            add(
+                createPatientAttribute(
+                    patient.uuid,
+                    PatientAttributesDTO.Column.EMERGENCY_CONTACT_TYPE.value,
+                    patient.contactType
                 )
             )
         }
