@@ -63,6 +63,8 @@ data class FeatureActiveStatus(
             visitSummerySeverityOfCase = false,
             visitSummeryHwFollowUp = false
         ).apply {
+            chatSection = true
+            videoSection = true
             activeStatusAbha = false
             activeStatusPatientOther = false
         }

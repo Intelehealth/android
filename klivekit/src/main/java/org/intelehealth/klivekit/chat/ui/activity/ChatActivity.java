@@ -66,6 +66,7 @@ import org.intelehealth.klivekit.chat.model.DayHeader;
 import org.intelehealth.klivekit.chat.model.ItemHeader;
 import org.intelehealth.klivekit.chat.model.MessageStatus;
 import org.intelehealth.klivekit.chat.ui.adapter.ChatListingAdapter;
+import org.intelehealth.klivekit.data.PreferenceHelper;
 import org.intelehealth.klivekit.model.ChatMessage;
 import org.intelehealth.klivekit.model.ChatResponse;
 import org.intelehealth.klivekit.model.RtcArgs;
@@ -89,7 +90,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import io.socket.emitter.Emitter;
@@ -117,6 +120,7 @@ public class ChatActivity extends AppCompatActivity {
     protected EditText mMessageEditText;
     protected TextView mEmptyTextView;
 
+    private PreferenceHelper preferenceHelper;
 
     protected void setupActionBar() {
         if (getSupportActionBar() != null) {
@@ -300,6 +304,8 @@ public class ChatActivity extends AppCompatActivity {
             openMrsId = getIntent().getStringExtra("openMrsId");
         }
 
+        preferenceHelper = new PreferenceHelper(ChatActivity.this);
+
         SocketManager.getInstance().setActiveRoomId(getRoomId());
         Log.v("mPatientUUid", String.valueOf(mPatientUUid));
         Log.v("mFromUUId", String.valueOf(mFromUUId));
@@ -421,6 +427,7 @@ public class ChatActivity extends AppCompatActivity {
                 url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
+                Log.v(TAG, "getAllMessages - new response - " + response.toString());
                 Log.v(TAG, "getAllMessages -response - " + response.toString());
                 mEmptyTextView.setText(getString(R.string.you_have_no_messages_start_sending_messages_now));
                 ChatResponse chatResponse = new Gson().fromJson(response.toString(), ChatResponse.class);
@@ -432,7 +439,13 @@ public class ChatActivity extends AppCompatActivity {
                 Log.v(TAG, "getAllMessages - onErrorResponse - " + error.getMessage());
                 mEmptyTextView.setText(getString(R.string.you_have_no_messages_start_sending_messages_now));
             }
-        });
+        }) {
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Authorization", "Bearer " + preferenceHelper.getString(PreferenceHelper.AUTH_TOKEN));
+                return headers;
+            }
+        };
         mRequestQueue.add(jsonObjectRequest);
     }
 
@@ -558,7 +571,13 @@ public class ChatActivity extends AppCompatActivity {
             }, error -> {
                 Log.e(TAG, "postMessages - onErrorResponse - " + error.getMessage());
                 mLoadingLinearLayout.setVisibility(View.GONE);
-            });
+            }) {
+                public Map<String, String> getHeaders() {
+                    HashMap<String, String> headers = new HashMap<String, String>();
+                    headers.put("Authorization", "Bearer " + preferenceHelper.getString(PreferenceHelper.AUTH_TOKEN));
+                    return headers;
+                }
+            };
             mRequestQueue.add(objectRequest);
         } catch (JSONException e) {
             throw new RuntimeException(e);
@@ -574,7 +593,13 @@ public class ChatActivity extends AppCompatActivity {
 //            getAllMessages(true);
 //            SocketManager.getInstance().emit(SocketManager.EVENT_IS_READ, null);
 //                if (mSocket != null) mSocket.emit("isread");
-        }, error -> Log.v(TAG, "setReadStatus - onErrorResponse - " + error.getMessage()));
+        }, error -> Log.v(TAG, "setReadStatus - onErrorResponse - " + error.getMessage())) {
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Authorization", "Bearer " + preferenceHelper.getString(PreferenceHelper.AUTH_TOKEN));
+                return headers;
+            }
+        };
         mRequestQueue.add(jsonObjectRequest);
     }
 
@@ -805,7 +830,8 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == MY_CAMERA_REQUEST_CODE) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {

@@ -3,7 +3,6 @@ package org.intelehealth.app.webrtc.receiver
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import com.github.ajalt.timberkt.Timber
 import com.google.firebase.messaging.RemoteMessage
 import com.google.gson.Gson
@@ -17,15 +16,16 @@ import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New
 import org.intelehealth.app.app.AppConstants
 import org.intelehealth.app.database.dao.PatientsDAO
 import org.intelehealth.app.database.dao.ProviderDAO
+import org.intelehealth.app.database.dao.RTCConnectionDAO
 import org.intelehealth.app.models.FollowUpNotificationData
 import org.intelehealth.app.models.dto.ProviderDTO
+import org.intelehealth.app.models.dto.RTCConnectionDTO
 import org.intelehealth.app.utilities.NotificationSchedulerUtils
 import org.intelehealth.app.utilities.NotificationUtils
 import org.intelehealth.app.utilities.OfflineLogin
 import org.intelehealth.app.utilities.SessionManager
 import org.intelehealth.app.utilities.exception.DAOException
 import org.intelehealth.app.webrtc.activity.IDAChatActivity
-import org.intelehealth.app.webrtc.activity.IDAVideoActivity
 import org.intelehealth.app.webrtc.notification.AppNotification
 import org.intelehealth.config.presenter.feature.data.FeatureActiveStatusRepository
 import org.intelehealth.config.room.ConfigDatabase
@@ -38,6 +38,7 @@ import org.intelehealth.klivekit.call.utils.CallType
 import org.intelehealth.klivekit.call.utils.IntentUtils
 import org.intelehealth.klivekit.model.RtcArgs
 import org.intelehealth.klivekit.utils.extensions.fromJson
+import java.util.UUID
 
 /**
  * Created by Vaghela Mithun R. on 18-09-2023 - 10:14.
@@ -50,7 +51,8 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
         notification: RemoteMessage.Notification?,
         data: HashMap<String, String>
     ) {
-        Timber.tag(TAG).d("onMessageReceived: ")
+        Timber.tag(TAG).d("onMessageReceived: Notification - $notification")
+        Timber.tag(TAG).d("onMessageReceived: Data - $data")
         val sessionManager = SessionManager(context)
         if (sessionManager.isLogout) return
         context?.let {
@@ -77,7 +79,9 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
                 }
 //                }
             } else {
-                if (data.isNotEmpty() && notification == null) {
+                if (data.containsKey("type") && data["type"].equals("text")) {
+                    showChatNotification(context, data)
+                } else if (data.isNotEmpty() && notification == null) {
                     sendNotificationFromBody(data, context)
                     if ((data["title"] ?: "").lowercase().contains("prescription")) {
                         NotificationSchedulerUtils.scheduleFollowUpNotification(
@@ -92,12 +96,9 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
                     } else {
 
                     }
-                } else if (data.containsKey("type") && data["type"].equals("text")) {
-                    showChatNotification(context, data)
                 } else {
                     parseMessage(notification, context, data)
                 }
-
             }
         }
     }
@@ -241,6 +242,9 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
                 args.doctorUuid,
                 ProviderDTO.Columns.PROVIDER_UUID.value
             )
+
+            saveChatInfoLog(args.visitId, args.doctorUuid)
+
             AppNotification.Builder(context)
                 .title(title)
                 .body(data["message"])
@@ -249,6 +253,14 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
         } catch (e: DAOException) {
             throw RuntimeException(e)
         }
+    }
+
+    private fun saveChatInfoLog(visitId: String?, doctorId: String?) {
+        val rtcDto = RTCConnectionDTO()
+        rtcDto.uuid = UUID.randomUUID().toString()
+        rtcDto.visitUUID = visitId
+        rtcDto.connectionInfo = doctorId
+        RTCConnectionDAO().insert(rtcDto)
     }
 
     companion object {

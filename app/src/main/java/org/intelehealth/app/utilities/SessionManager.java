@@ -7,6 +7,7 @@ import android.preference.PreferenceManager;
 import org.intelehealth.app.utilities.CustomLog;
 
 import org.intelehealth.app.BuildConfig;
+import org.intelehealth.klivekit.data.PreferenceHelper;
 
 import java.util.Set;
 
@@ -747,6 +748,7 @@ public class SessionManager {
      */
     // get the visit edit cache data as json string
     public void setJwtAuthToken(String token) {
+        new PreferenceHelper(_context).save(PreferenceHelper.AUTH_TOKEN, token);
         editor.putString(JWT_AUTH_TOKEN, token);
         editor.commit();
     }
