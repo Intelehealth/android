@@ -17,9 +17,7 @@ import org.intelehealth.app.ui.rosterquestionnaire.usecase.GetHealthServiceQuest
 import org.intelehealth.app.ui.rosterquestionnaire.usecase.GetOutComeQuestionUseCase
 import org.intelehealth.app.ui.rosterquestionnaire.usecase.InsertRoasterUseCase
 import org.intelehealth.app.ui.rosterquestionnaire.utilities.NO
-import org.intelehealth.app.ui.rosterquestionnaire.utilities.NO_OF_PREGNANCY_OUTCOME_TWO_YEARS
-import org.intelehealth.app.ui.rosterquestionnaire.utilities.NO_OF_TIME_PREGNANT
-import org.intelehealth.app.ui.rosterquestionnaire.utilities.PREGNANCY_PAST_TWO_YEARS
+import org.intelehealth.app.ui.rosterquestionnaire.utilities.RoasterAttribute
 import org.intelehealth.app.ui.rosterquestionnaire.utilities.RosterQuestionnaireStage
 import javax.inject.Inject
 
@@ -140,9 +138,11 @@ class RosterViewModel @Inject constructor(
 
             // Extract pregnancy-related data
             val pregnancyDataMap = mapOf(
-                NO_OF_TIME_PREGNANT to { value: String -> pregnancyCount = value },
-                PREGNANCY_PAST_TWO_YEARS to { value: String -> pregnancyOutcome = value },
-                NO_OF_PREGNANCY_OUTCOME_TWO_YEARS to { value: String ->
+                RoasterAttribute.NO_OF_TIME_PREGNANT.attributeName to { value: String ->
+                    pregnancyCount = value
+                },
+                RoasterAttribute.PREGNANCY_PAST_TWO_YEARS.attributeName to { value: String -> pregnancyOutcome = value },
+                RoasterAttribute.NO_OF_PREGNANCY_OUTCOME_TWO_YEARS.attributeName to { value: String ->
                     pregnancyOutcomeCount = value
                 }
             )

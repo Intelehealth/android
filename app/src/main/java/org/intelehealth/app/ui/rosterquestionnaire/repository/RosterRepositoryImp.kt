@@ -7,6 +7,7 @@ import org.intelehealth.app.app.IntelehealthApplication
 import org.intelehealth.app.database.dao.PatientsDAO
 import org.intelehealth.app.models.dto.PatientAttributesDTO
 import org.intelehealth.app.ui.rosterquestionnaire.model.RoasterViewQuestion
+import org.intelehealth.app.ui.rosterquestionnaire.utilities.RoasterAttribute
 import org.intelehealth.app.ui.rosterquestionnaire.utilities.RoasterQuestionView
 import javax.inject.Inject
 
@@ -26,7 +27,7 @@ class RosterRepositoryImp @Inject constructor() : RosterRepository {
                     spinnerItem = context.resources.getStringArray(R.array.relationshipHoH)
                         .toList(),
                     errorMessage = context.getString(R.string.this_field_is_mandatory),
-                    attribute = "RelationshipStatusHOH"
+                    attribute = RoasterAttribute.RELATIONSHIP_STATUS_HOH.attributeName
                 )
             )
             add(
@@ -36,7 +37,7 @@ class RosterRepositoryImp @Inject constructor() : RosterRepository {
                     spinnerItem = context.resources.getStringArray(R.array.maritual)
                         .toList(),
                     errorMessage = context.getString(R.string.this_field_is_mandatory),
-                    attribute = "MaritualStatus"
+                    attribute = RoasterAttribute.MARITAL_STATUS.attributeName
                 )
             )
             add(
@@ -46,7 +47,7 @@ class RosterRepositoryImp @Inject constructor() : RosterRepository {
                     spinnerItem = context.resources.getStringArray(R.array.education_nas)
                         .toList(),
                     errorMessage = context.getString(R.string.this_field_is_mandatory),
-                    attribute = "Education Level"
+                    attribute = RoasterAttribute.EDUCATION_LEVEL.attributeName
                 )
             )
             add(
@@ -56,7 +57,7 @@ class RosterRepositoryImp @Inject constructor() : RosterRepository {
                     spinnerItem = context.resources.getStringArray(R.array.occupation_identification)
                         .toList(),
                     errorMessage = context.getString(R.string.this_field_is_mandatory),
-                    attribute = "occupation"
+                    attribute = RoasterAttribute.OCCUPATION.attributeName
                 )
             )
             add(
@@ -66,7 +67,7 @@ class RosterRepositoryImp @Inject constructor() : RosterRepository {
                     spinnerItem = context.resources.getStringArray(R.array.phoneownership)
                         .toList(),
                     errorMessage = context.getString(R.string.this_field_is_mandatory),
-                    attribute = "PhoneOwnership"
+                    attribute = RoasterAttribute.PHONE_OWNERSHIP.attributeName
                 )
             )
             add(
@@ -76,7 +77,7 @@ class RosterRepositoryImp @Inject constructor() : RosterRepository {
                     spinnerItem = context.resources.getStringArray(R.array.bp)
                         .toList(),
                     errorMessage = context.getString(R.string.this_field_is_mandatory),
-                    attribute = "BPchecked"
+                    attribute = RoasterAttribute.BP_CHECKED.attributeName
                 )
             )
             add(
@@ -86,7 +87,7 @@ class RosterRepositoryImp @Inject constructor() : RosterRepository {
                     spinnerItem = context.resources.getStringArray(R.array.sugar)
                         .toList(),
                     errorMessage = context.getString(R.string.this_field_is_mandatory),
-                    attribute = "Sugarchecked"
+                    attribute = RoasterAttribute.SUGAR_CHECKED.attributeName
                 )
             )
             add(
@@ -96,7 +97,7 @@ class RosterRepositoryImp @Inject constructor() : RosterRepository {
                     spinnerItem = context.resources.getStringArray(R.array.hb)
                         .toList(),
                     errorMessage = context.getString(R.string.this_field_is_mandatory),
-                    attribute = "HBtest"
+                    attribute = RoasterAttribute.HB_TEST.attributeName
                 )
             )
             add(
@@ -106,7 +107,7 @@ class RosterRepositoryImp @Inject constructor() : RosterRepository {
                     spinnerItem = context.resources.getStringArray(R.array.bmi)
                         .toList(),
                     errorMessage = context.getString(R.string.this_field_is_mandatory),
-                    attribute = "BMI"
+                    attribute = RoasterAttribute.BMI.attributeName
                 )
             )
         }

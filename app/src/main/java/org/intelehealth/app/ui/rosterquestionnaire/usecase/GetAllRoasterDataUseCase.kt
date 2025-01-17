@@ -9,8 +9,8 @@ import org.intelehealth.app.ui.rosterquestionnaire.model.PregnancyOutComeModel
 import org.intelehealth.app.ui.rosterquestionnaire.model.PregnancyRosterData
 import org.intelehealth.app.ui.rosterquestionnaire.model.RoasterViewQuestion
 import org.intelehealth.app.ui.rosterquestionnaire.repository.RosterRepository
-import org.intelehealth.app.ui.rosterquestionnaire.utilities.HEALTH_ISSUE_REPORTED
-import org.intelehealth.app.ui.rosterquestionnaire.utilities.PREGNANCY_OUTCOME_REPORTED
+import org.intelehealth.app.ui.rosterquestionnaire.utilities.RoasterAttribute
+
 import javax.inject.Inject
 
 class GetAllRoasterDataUseCase @Inject constructor(private val repository: RosterRepository) {
@@ -42,7 +42,7 @@ class GetAllRoasterDataUseCase @Inject constructor(private val repository: Roste
         outcomeQuestionList: List<RoasterViewQuestion>
     ): List<PregnancyOutComeModel> {
         // Find matching pregnancy outcome data
-        val pregnancyDataJson = allAttributeData.find { it.personAttributeTypeUuid == PREGNANCY_OUTCOME_REPORTED }?.value ?: ""
+        val pregnancyDataJson = allAttributeData.find { it.personAttributeTypeUuid == RoasterAttribute.PREGNANCY_OUTCOME_REPORTED.attributeName }?.value ?: ""
         val pregnancyList = parseJsonToPregnancyRosterData(pregnancyDataJson)
 
         // Build the PregnancyOutComeModel list
@@ -77,7 +77,7 @@ class GetAllRoasterDataUseCase @Inject constructor(private val repository: Roste
         healthServiceList: List<RoasterViewQuestion>
     ): List<HealthServiceModel> {
         // Find the matching health issues data
-        val healthIssuesJson = allAttributeData.find { it.personAttributeTypeUuid == HEALTH_ISSUE_REPORTED }?.value ?: ""
+        val healthIssuesJson = allAttributeData.find { it.personAttributeTypeUuid == RoasterAttribute.HEALTH_ISSUE_REPORTED.attributeName }?.value ?: ""
         val healthIssuesList = parseJsonToHealthRosterData(healthIssuesJson)
 
         // Build the HealthServiceModel list

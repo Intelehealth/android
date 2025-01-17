@@ -9,11 +9,8 @@ import org.intelehealth.app.ui.rosterquestionnaire.model.PregnancyOutComeModel
 import org.intelehealth.app.ui.rosterquestionnaire.model.PregnancyRosterData
 import org.intelehealth.app.ui.rosterquestionnaire.model.RoasterViewQuestion
 import org.intelehealth.app.ui.rosterquestionnaire.repository.RosterRepository
-import org.intelehealth.app.ui.rosterquestionnaire.utilities.HEALTH_ISSUE_REPORTED
-import org.intelehealth.app.ui.rosterquestionnaire.utilities.NO_OF_PREGNANCY_OUTCOME_TWO_YEARS
-import org.intelehealth.app.ui.rosterquestionnaire.utilities.NO_OF_TIME_PREGNANT
-import org.intelehealth.app.ui.rosterquestionnaire.utilities.PREGNANCY_OUTCOME_REPORTED
-import org.intelehealth.app.ui.rosterquestionnaire.utilities.PREGNANCY_PAST_TWO_YEARS
+
+import org.intelehealth.app.ui.rosterquestionnaire.utilities.RoasterAttribute
 import java.util.UUID
 import javax.inject.Inject
 
@@ -74,7 +71,8 @@ class InsertRoasterUseCase @Inject constructor(private val repository: RosterRep
             val patientAttributesDTO = PatientAttributesDTO()
             patientAttributesDTO.uuid = UUID.randomUUID().toString()
             patientAttributesDTO.patientuuid = uuid
-            patientAttributesDTO.personAttributeTypeUuid = HEALTH_ISSUE_REPORTED
+            patientAttributesDTO.personAttributeTypeUuid =
+                RoasterAttribute.HEALTH_ISSUE_REPORTED.attributeName
             patientAttributesDTO.value = Gson().toJson(healthIssueModelList)
             patientAttributesDTOList.add(patientAttributesDTO)
         }
@@ -107,14 +105,16 @@ class InsertRoasterUseCase @Inject constructor(private val repository: RosterRep
         var patientAttributesDTO = PatientAttributesDTO()
         patientAttributesDTO.uuid = UUID.randomUUID().toString()
         patientAttributesDTO.patientuuid = uuid
-        patientAttributesDTO.personAttributeTypeUuid = NO_OF_TIME_PREGNANT
+        patientAttributesDTO.personAttributeTypeUuid =
+            RoasterAttribute.NO_OF_TIME_PREGNANT.attributeName
         patientAttributesDTO.value = pregnancyCount
         patientAttributesDTOList.add(patientAttributesDTO)
 
         patientAttributesDTO = PatientAttributesDTO()
         patientAttributesDTO.uuid = UUID.randomUUID().toString()
         patientAttributesDTO.patientuuid = uuid
-        patientAttributesDTO.personAttributeTypeUuid = PREGNANCY_PAST_TWO_YEARS
+        patientAttributesDTO.personAttributeTypeUuid =
+            RoasterAttribute.PREGNANCY_PAST_TWO_YEARS.attributeName
         patientAttributesDTO.value = pregnancyOutcome
         patientAttributesDTOList.add(patientAttributesDTO)
 
@@ -122,7 +122,8 @@ class InsertRoasterUseCase @Inject constructor(private val repository: RosterRep
         patientAttributesDTO = PatientAttributesDTO()
         patientAttributesDTO.uuid = UUID.randomUUID().toString()
         patientAttributesDTO.patientuuid = uuid
-        patientAttributesDTO.personAttributeTypeUuid = NO_OF_PREGNANCY_OUTCOME_TWO_YEARS
+        patientAttributesDTO.personAttributeTypeUuid =
+            RoasterAttribute.NO_OF_PREGNANCY_OUTCOME_TWO_YEARS.attributeName
         patientAttributesDTO.value = pregnancyOutcomeCount
         patientAttributesDTOList.add(patientAttributesDTO)
 
@@ -143,7 +144,8 @@ class InsertRoasterUseCase @Inject constructor(private val repository: RosterRep
         patientAttributesDTO = PatientAttributesDTO()
         patientAttributesDTO.uuid = UUID.randomUUID().toString()
         patientAttributesDTO.patientuuid = uuid
-        patientAttributesDTO.personAttributeTypeUuid = PREGNANCY_OUTCOME_REPORTED
+        patientAttributesDTO.personAttributeTypeUuid =
+            RoasterAttribute.PREGNANCY_OUTCOME_REPORTED.attributeName
         patientAttributesDTO.value = Gson().toJson(pregnancyRosterList)
         patientAttributesDTOList.add(patientAttributesDTO)
 

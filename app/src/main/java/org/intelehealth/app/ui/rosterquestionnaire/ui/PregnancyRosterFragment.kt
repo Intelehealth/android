@@ -15,7 +15,6 @@ import org.intelehealth.app.ui.rosterquestionnaire.ui.adapter.PregnancyOutcomeAd
 import org.intelehealth.app.ui.rosterquestionnaire.ui.listeners.PregnancyOutcomeClickListener
 import org.intelehealth.app.ui.rosterquestionnaire.utilities.NO
 import org.intelehealth.app.ui.rosterquestionnaire.utilities.RosterQuestionnaireStage
-import org.intelehealth.app.ui.rosterquestionnaire.utilities.YES
 import org.intelehealth.app.ui.rosterquestionnaire.viewmodel.RosterViewModel
 import org.intelehealth.app.utilities.SpacingItemDecoration
 import org.intelehealth.app.utilities.ToastUtil
@@ -52,7 +51,7 @@ class PregnancyRosterFragment : BaseRosterFragment(R.layout.fragment_pregnancy_r
         binding.tilEtPregnancyCount.setText(rosterViewModel.pregnancyCount)
         binding.tilEtPregnancyOutcomeCount.setText(rosterViewModel.pregnancyOutcomeCount)
         if (rosterViewModel.pregnancyOutcome.isNotEmpty()) {
-            if (rosterViewModel.pregnancyOutcome == YES) {
+            if (rosterViewModel.pregnancyOutcome == getString(R.string.yes)) {
                 binding.rbYes.isChecked = true
             } else {
                 binding.rbNo.isChecked = true
@@ -108,9 +107,9 @@ class PregnancyRosterFragment : BaseRosterFragment(R.layout.fragment_pregnancy_r
         }
         binding.rgPregnancyOutcome.setOnCheckedChangeListener { group, checkedId ->
             val selectedRadioButton = group.findViewById<RadioButton>(checkedId)
-            if (selectedRadioButton.text.equals(YES)) {
+            if (selectedRadioButton.text.toString().equals(getString(R.string.yes), ignoreCase = true)) {
                 binding.groupPregnancyOutcome.visibility = View.VISIBLE
-                rosterViewModel.pregnancyOutcome = YES
+                rosterViewModel.pregnancyOutcome = getString(R.string.yes)
             } else {
                 rosterViewModel.pregnancyOutcome = NO
                 binding.groupPregnancyOutcome.visibility = View.GONE
@@ -185,13 +184,13 @@ class PregnancyRosterFragment : BaseRosterFragment(R.layout.fragment_pregnancy_r
             )
         ) {
             return false
-        } else if (rosterViewModel.pregnancyOutcome == YES && !binding.tilPregnancyOutcomeCount.validate(
+        } else if (rosterViewModel.pregnancyOutcome == getString(R.string.yes) && !binding.tilPregnancyOutcomeCount.validate(
                 binding.tilEtPregnancyOutcomeCount,
                 R.string.this_field_is_mandatory
             )
         ) {
             return false
-        } else if (rosterViewModel.pregnancyOutcome == YES && pregnancyOutComeList.size != rosterViewModel.pregnancyOutcomeCount.toInt()) {
+        } else if (rosterViewModel.pregnancyOutcome == getString(R.string.yes) && pregnancyOutComeList.size != rosterViewModel.pregnancyOutcomeCount.toInt()) {
             if (pregnancyOutComeList.size < rosterViewModel.pregnancyOutcomeCount.toInt()) {
                 val count =
                     rosterViewModel.pregnancyOutcomeCount.toInt() - pregnancyOutComeList.size
