@@ -905,4 +905,6 @@
     <string name="average_cost_incurred_on_consultation_fee_per_episode">Average cost incurred on consultation fee per episode</string>
     <string name="average_cost_incurred_on_medicines_per_episode">Average cost incurred on medicines per episode</string>
     <string name="score_for_experience_of_treatment">Score for experience of treatment</string>
+    <string name="hba1c_error">HbA1c should be in between %1$s and %2$s</string>
+    <string name="hba1c">HbA1c</string>
 </resources>

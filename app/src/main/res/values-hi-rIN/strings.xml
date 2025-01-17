@@ -1068,4 +1068,6 @@
     <string name="select_consultation_type">Select Consulation Type</string>
     <string name="enter_diagnosis">Enter Diagnosis</string>
     <string name="diagnosis_required">Diagnosis Required</string>
+    <string name="hba1c_error">HbA1c should be in between %1$s and %2$s</string>
+    <string name="hba1c">HbA1c</string>
 </resources>

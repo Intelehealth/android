@@ -281,6 +281,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     ObsDTO height = new ObsDTO();
     ObsDTO weight = new ObsDTO();
     ObsDTO pulse = new ObsDTO();
+    ObsDTO hba1c = new ObsDTO();
     ObsDTO bpSys = new ObsDTO();
     ObsDTO bpDias = new ObsDTO();
     ObsDTO temperature = new ObsDTO();
@@ -320,7 +321,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     TextView visitView;
     TextView heightView;
     TextView weightView;
-    TextView pulseView;
+    TextView pulseView, hba1cView;
     TextView bpView;
     TextView tempView;
     TextView spO2View;
@@ -347,7 +348,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     File obsImgdir;
     String gender_tv;
     String mFileName = CONFIG_FILE_NAME;
-    String mHeight, mWeight, mBMI, mBP, mPulse, mTemp, mSPO2, mresp;
+    String mHeight, mWeight, mBMI, mBP, mPulse, mHbA1c, mTemp, mSPO2, mresp;
     String speciality_selected = "", selectedConsultationType = "";
     private TextView physcialExaminationDownloadText, vd_special_value;
     NetworkChangeReceiver receiver;
@@ -551,7 +552,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     }
 
     private List<PatientVital> mPatientVitalList;
-    private LinearLayout mHeightLinearLayout, mWeightLinearLayout, mBMILinearLayout, mBPLinearLayout, mPulseLinearLayout, mTemperatureLinearLayout, mSpo2LinearLayout, mRespiratoryRateLinearLayout, mBloodGroupLinearLayout;
+    private LinearLayout mHeightLinearLayout, mWeightLinearLayout, mBMILinearLayout, mBPLinearLayout,
+            mPulseLinearLayout, mHbA1cLinearLayout, mTemperatureLinearLayout, mSpo2LinearLayout, mRespiratoryRateLinearLayout, mBloodGroupLinearLayout;
     private LinearLayout mRandomGlucoseLinearLayout, mFastingGlucoseLinearLayout, mPostPrandialLinearLayout, mHemoglobinLinearLayout, mUricAcidLinearLayout, mCholestrolLinearLayout;
     private List<Diagnostics> mPatientDiagnosticsList;
 
@@ -561,6 +563,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         mBMILinearLayout = findViewById(R.id.ll_bmi);
         mBPLinearLayout = findViewById(R.id.ll_bp_container);
         mPulseLinearLayout = findViewById(R.id.ll_pulse_container);
+        mHbA1cLinearLayout = findViewById(R.id.ll_hba1c_container);
         mTemperatureLinearLayout = findViewById(R.id.ll_temperature_container);
         mSpo2LinearLayout = findViewById(R.id.ll_spo2_container);
         mRespiratoryRateLinearLayout = findViewById(R.id.ll_respiratory_rate_container);
@@ -584,6 +587,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         mBMILinearLayout.setVisibility(View.GONE);
         mBPLinearLayout.setVisibility(View.GONE);
         mPulseLinearLayout.setVisibility(View.GONE);
+        mHbA1cLinearLayout.setVisibility(View.GONE);
         mTemperatureLinearLayout.setVisibility(View.GONE);
         mSpo2LinearLayout.setVisibility(View.GONE);
         mRespiratoryRateLinearLayout.setVisibility(View.GONE);
@@ -604,10 +608,13 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
             } else if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.SBP) || patientVital.getVitalKey().equals(PatientVitalConfigKeys.DBP)) {
                 mBPLinearLayout.setVisibility(View.VISIBLE);
-            } else if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.PULSE)) {
+            }
+            else if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.PULSE)) {
                 mPulseLinearLayout.setVisibility(View.VISIBLE);
-
-            } else if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.TEMPERATURE)) {
+            }else if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.HbA1c)) {
+                mHbA1cLinearLayout.setVisibility(View.VISIBLE);
+            }
+            else if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.TEMPERATURE)) {
                 mTemperatureLinearLayout.setVisibility(View.VISIBLE);
 
             } else if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.SPO2)) {
@@ -1318,6 +1325,12 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 pulseView.setText(getResources().getString(R.string.no_information));
             else pulseView.setText(pulse.getValue());
         } else pulseView.setText(getResources().getString(R.string.no_information));
+
+        if (hba1c.getValue() != null) { // HbA1c
+            if (hba1c.getValue().trim().isEmpty() || hba1c.getValue().trim().equals("0"))
+                hba1cView.setText(getResources().getString(R.string.no_information));
+            else hba1cView.setText(hba1c.getValue());
+        } else hba1cView.setText(getResources().getString(R.string.no_information));
 
         if (spO2.getValue() != null) {
             if (spO2.getValue().trim().isEmpty() || spO2.getValue().trim().equals("0"))
@@ -2774,6 +2787,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         heightView = findViewById(R.id.textView_height_value);
         weightView = findViewById(R.id.textView_weight_value);
         pulseView = findViewById(R.id.textView_pulse_value);
+        hba1cView = findViewById(R.id.textView_hba1c_value);
         bpView = findViewById(R.id.textView_bp_value);
         tempView = findViewById(R.id.textView_temp_value);
 
@@ -3641,6 +3655,10 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             case UuidDictionary.PULSE: //Pulse
             {
                 pulse.setValue(value);
+                break;
+            }case UuidDictionary.HbA1c: //HbA1c
+            {
+                hba1c.setValue(value);
                 break;
             }
             case UuidDictionary.SYSTOLIC_BP: //Systolic BP
@@ -4540,6 +4558,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         mWeight = weight.getValue();
         mBP = bpSys.getValue() + "/" + bpDias.getValue();
         mPulse = pulse.getValue();
+        mHbA1c = hba1c.getValue();
         try {
             JSONObject obj = null;
             if (hasLicense) {
@@ -4788,7 +4807,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                             "<b><p id=\"complaints_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Presenting complaint(s)</p></b>" + para_open + "%s" + para_close + "<br><br>" + "<u><b><p id=\"diagnosis_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Diagnosis</p></b></u>" + "%s<br>" + "<u><b><p id=\"rx_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Medication(s) plan</p></b></u>" + "%s<br>" + "<u><b><p id=\"tests_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Recommended Investigation(s)</p></b></u>" + "%s<br>" + "<u><b><p id=\"advice_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">General Advice</p></b></u>" + "%s<br>" + "<u><b><p id=\"follow_up_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Follow Up Date</p></b></u>" + "%s<br>" + "<div style=\"text-align:right;margin-right:50px;margin-top:0px;\">" +
                             //  "<span style=\"font-size:80pt;font-family: MyFont;padding: 0px;\">" + doctorSign + "</span>" +
                             "<img src=" + sign_url + " alt=\"Dr Signature\">" + // doctor signature...
-                            doctorDetailStr + "<p style=\"font-size:12pt; margin-top:-0px; padding: 0px;\">" + doctrRegistartionNum + "</p>" + "</div>", heading, heading2, heading3, mPatientName, age, mGender, /*mSdw*/ address, mPatientOpenMRSID, mDate, (!TextUtils.isEmpty(mHeight)) ? mHeight : "", (!TextUtils.isEmpty(mWeight)) ? mWeight : "", (!TextUtils.isEmpty(mBMI)) ? mBMI : "", (!TextUtils.isEmpty(bp)) ? bp : "", (!TextUtils.isEmpty(mPulse)) ? mPulse : "", (!TextUtils.isEmpty(mTemp)) ? mTemp : "", (!TextUtils.isEmpty(mresp)) ? mresp : "", (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "",
+                            doctorDetailStr + "<p style=\"font-size:12pt; margin-top:-0px; padding: 0px;\">" + doctrRegistartionNum + "</p>" + "</div>", heading, heading2, heading3, mPatientName, age, mGender, /*mSdw*/ address, mPatientOpenMRSID, mDate, (!TextUtils.isEmpty(mHeight)) ? mHeight : "", (!TextUtils.isEmpty(mWeight)) ? mWeight : "", (!TextUtils.isEmpty(mBMI)) ? mBMI : "", (!TextUtils.isEmpty(bp)) ? bp : "", (!TextUtils.isEmpty(mPulse)) ? mPulse : "", (!TextUtils.isEmpty(mHbA1c)) ? mHbA1c : "", (!TextUtils.isEmpty(mTemp)) ? mTemp : "", (!TextUtils.isEmpty(mresp)) ? mresp : "", (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "",
                     /*pat_hist, fam_hist,*/ mComplaint, diagnosis_web, rx_web, tests_web, advice_web/*""*/, followUp_web, doctor_web);
             webView.loadDataWithBaseURL(null, prescriptionString, "text/HTML", "UTF-8", null);
         } else {
@@ -4797,7 +4816,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                                     "<p id=\"patient_history\" style=\"font-size:11pt;margin:0px; padding: 0px;\"> %s</p><br>" +
                                     "<b><p id=\"family_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Family History</p></b>" +
                                     "<p id=\"family_history\" style=\"font-size:11pt;margin: 0px; padding: 0px;\"> %s</p><br>" +*/
-                            "<b><p id=\"complaints_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Presenting complaint(s)</p></b>" + para_open + "%s" + para_close + "<br><br>" + "<u><b><p id=\"diagnosis_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Diagnosis</p></b></u>" + "%s<br>" + "<u><b><p id=\"rx_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Medication(s) plan</p></b></u>" + "%s<br>" + "<u><b><p id=\"tests_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Recommended Investigation(s)</p></b></u>" + "%s<br>" + "<u><b><p id=\"advice_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">General Advice</p></b></u>" + "%s<br>" + "<u><b><p id=\"follow_up_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Follow Up Date</p></b></u>" + "%s<br>" + "<div style=\"text-align:right;margin-right:50px;margin-top:0px;\">" + "<span style=\"font-size:80pt;font-family: MyFont;padding: 0px;\">" + doctorSign + "</span><br>" + doctorDetailStr + "<span style=\"font-size:12pt; margin-top:5px; padding: 0px;\">" + doctrRegistartionNum + "</span>" + "</div>", heading, heading2, heading3, mPatientName, age, mGender, /*mSdw*/ address, mPatientOpenMRSID, mDate, (!TextUtils.isEmpty(mHeight)) ? mHeight : "", (!TextUtils.isEmpty(mWeight)) ? mWeight : "", (!TextUtils.isEmpty(mBMI)) ? mBMI : "", (!TextUtils.isEmpty(bp)) ? bp : "", (!TextUtils.isEmpty(mPulse)) ? mPulse : "", (!TextUtils.isEmpty(mTemp)) ? mTemp : "", (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "",
+                            "<b><p id=\"complaints_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Presenting complaint(s)</p></b>" + para_open + "%s" + para_close + "<br><br>" + "<u><b><p id=\"diagnosis_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Diagnosis</p></b></u>" + "%s<br>" + "<u><b><p id=\"rx_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Medication(s) plan</p></b></u>" + "%s<br>" + "<u><b><p id=\"tests_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Recommended Investigation(s)</p></b></u>" + "%s<br>" + "<u><b><p id=\"advice_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">General Advice</p></b></u>" + "%s<br>" + "<u><b><p id=\"follow_up_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Follow Up Date</p></b></u>" + "%s<br>" + "<div style=\"text-align:right;margin-right:50px;margin-top:0px;\">" + "<span style=\"font-size:80pt;font-family: MyFont;padding: 0px;\">" + doctorSign + "</span><br>" + doctorDetailStr + "<span style=\"font-size:12pt; margin-top:5px; padding: 0px;\">" + doctrRegistartionNum + "</span>" + "</div>", heading, heading2, heading3, mPatientName, age, mGender, /*mSdw*/ address, mPatientOpenMRSID, mDate, (!TextUtils.isEmpty(mHeight)) ? mHeight : "", (!TextUtils.isEmpty(mWeight)) ? mWeight : "", (!TextUtils.isEmpty(mBMI)) ? mBMI : "", (!TextUtils.isEmpty(bp)) ? bp : "", (!TextUtils.isEmpty(mPulse)) ? mPulse : "", (!TextUtils.isEmpty(mHbA1c)) ? mHbA1c : "", (!TextUtils.isEmpty(mTemp)) ? mTemp : "", (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "",
                     /*pat_hist, fam_hist,*/ mComplaint, diagnosis_web, rx_web, tests_web, /*advice_web*/"", followUp_web, doctor_web);
             webView.loadDataWithBaseURL(null, prescriptionString, "text/HTML", "UTF-8", null);
         }
@@ -4819,6 +4838,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         vitalsObject.setHeight(height.getValue());
         vitalsObject.setWeight(weight.getValue());
         vitalsObject.setPulse(pulse.getValue());
+        vitalsObject.setHba1c(hba1c.getValue());
         vitalsObject.setResp(resp.getValue());
         vitalsObject.setSpo2(spO2.getValue());
         vitalsObject.setTemperature(temperature.getValue());
@@ -4974,6 +4994,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         mWeight = weight.getValue();
         mBP = bpSys.getValue() + "/" + bpDias.getValue();
         mPulse = pulse.getValue();
+        mHbA1c = hba1c.getValue();
         try {
             JSONObject obj = null;
             if (hasLicense) {
@@ -5194,7 +5215,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                     "<p id=\"patient_name\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">%s</p></b>" + "<p id=\"patient_details\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Age: %s | Gender: %s  </p>" + "<p id=\"address_and_contact\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Address and Contact: %s</p>" + "<p id=\"visit_details\" style=\"font-size:12pt; margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient Id: %s | Date of visit: %s </p><br>" + "<b><p id=\"vitals_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px;; padding: 0px;\">Vitals</p></b>" + "<p id=\"vitals\" style=\"font-size:12pt;margin:0px; padding: 0px;\">Height(cm): %s | Weight(kg): %s | BMI: %s | Blood Pressure: %s | Pulse(bpm): %s | %s | Respiratory Rate: %s |  %s </p><br>" + "<b><p id=\"patient_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient History</p></b>" + "<p id=\"patient_history\" style=\"font-size:11pt;margin:0px; padding: 0px;\"> %s</p><br>" + "<b><p id=\"family_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Family History</p></b>" + "<p id=\"family_history\" style=\"font-size:11pt;margin: 0px; padding: 0px;\"> %s</p><br>" + "<b><p id=\"complaints_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Presenting complaint(s)</p></b>" + para_open + "%s" + para_close + "<br><br>" + "<u><b><p id=\"diagnosis_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Diagnosis</p></b></u>" + "%s<br>" + "<u><b><p id=\"rx_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Medication(s) plan</p></b></u>" + "%s<br>" + "<u><b><p id=\"tests_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Recommended Investigation(s)</p></b></u>" + "%s<br>" + "<u><b><p id=\"advice_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">General Advice</p></b></u>" + "%s<br>" + "<u><b><p id=\"follow_up_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Follow Up Date</p></b></u>" + "%s<br>" + "<div style=\"text-align:right;margin-right:50px;margin-top:0px;\">" +
                     //  "<span style=\"font-size:80pt;font-family: MyFont;padding: 0px;\">" + doctorSign + "</span>" +
                     "<img src=" + sign_url + " alt=\"Dr Signature\">" + // doctor signature...
-                    doctorDetailStr + "<p style=\"font-size:12pt; margin-top:-0px; padding: 0px;\">" + doctrRegistartionNum + "</p>" + "</div>", heading, heading2, heading3, mPatientName, age, mGender, /*mSdw*/ address, mPatientOpenMRSID, mDate, (!TextUtils.isEmpty(mHeight)) ? mHeight : "", (!TextUtils.isEmpty(mWeight)) ? mWeight : "", (!TextUtils.isEmpty(mBMI)) ? mBMI : "", (!TextUtils.isEmpty(bp)) ? bp : "", (!TextUtils.isEmpty(mPulse)) ? mPulse : "", (!TextUtils.isEmpty(mTemp)) ? mTemp : "", (!TextUtils.isEmpty(mresp)) ? mresp : "", (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "", pat_hist, fam_hist, mComplaint, diagnosis_web, rx_web, tests_web, advice_web/*""*/, followUp_web, doctor_web);
+                    doctorDetailStr + "<p style=\"font-size:12pt; margin-top:-0px; padding: 0px;\">" + doctrRegistartionNum + "</p>" + "</div>", heading, heading2, heading3, mPatientName, age, mGender, /*mSdw*/ address, mPatientOpenMRSID, mDate, (!TextUtils.isEmpty(mHeight)) ? mHeight : "", (!TextUtils.isEmpty(mWeight)) ? mWeight : "", (!TextUtils.isEmpty(mBMI)) ? mBMI : "", (!TextUtils.isEmpty(bp)) ? bp : "", (!TextUtils.isEmpty(mPulse)) ? mPulse : "", (!TextUtils.isEmpty(mHbA1c)) ? mHbA1c : "", (!TextUtils.isEmpty(mTemp)) ? mTemp : "", (!TextUtils.isEmpty(mresp)) ? mresp : "", (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "", pat_hist, fam_hist, mComplaint, diagnosis_web, rx_web, tests_web, advice_web/*""*/, followUp_web, doctor_web);
             webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
         } else {
             String htmlDocument = String.format(font_face + "<b><p id=\"heading_1\" style=\"font-size:16pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<p id=\"heading_2\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<p id=\"heading_3\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<hr style=\"font-size:12pt;\">" + "<br/>" + "<p id=\"patient_name\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">%s</p></b>" + "<p id=\"patient_details\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Age: %s | Gender: %s </p>" + "<p id=\"address_and_contact\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Address and Contact: %s</p>" + "<p id=\"visit_details\" style=\"font-size:12pt; margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient Id: %s | Date of visit: %s </p><br>" + "<b><p id=\"vitals_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px;; padding: 0px;\">Vitals</p></b>" + "<p id=\"vitals\" style=\"font-size:12pt;margin:0px; padding: 0px;\">Height(cm): %s | Weight(kg): %s | BMI: %s | Blood Pressure: %s | Pulse(bpm): %s | %s | %s </p><br>" +
@@ -5202,7 +5223,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                                     "<p id=\"patient_history\" style=\"font-size:11pt;margin:0px; padding: 0px;\"> %s</p><br>" +
                                     "<b><p id=\"family_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Family History</p></b>" +
                                     "<p id=\"family_history\" style=\"font-size:11pt;margin: 0px; padding: 0px;\"> %s</p><br>" +*/
-                            "<b><p id=\"complaints_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Presenting complaint(s)</p></b>" + para_open + "%s" + para_close + "<br><br>" + "<u><b><p id=\"diagnosis_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Diagnosis</p></b></u>" + "%s<br>" + "<u><b><p id=\"rx_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Medication(s) plan</p></b></u>" + "%s<br>" + "<u><b><p id=\"tests_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Recommended Investigation(s)</p></b></u>" + "%s<br>" + "<u><b><p id=\"advice_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">General Advice</p></b></u>" + "%s<br>" + "<u><b><p id=\"follow_up_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Follow Up Date</p></b></u>" + "%s<br>" + "<div style=\"text-align:right;margin-right:50px;margin-top:0px;\">" + "<span style=\"font-size:80pt;font-family: MyFont;padding: 0px;\">" + doctorSign + "</span><br>" + doctorDetailStr + "<span style=\"font-size:12pt; margin-top:5px; padding: 0px;\">" + doctrRegistartionNum + "</span>" + "</div>", heading, heading2, heading3, mPatientName, age, mGender, /*mSdw*/ address, mPatientOpenMRSID, mDate, (!TextUtils.isEmpty(mHeight)) ? mHeight : "", (!TextUtils.isEmpty(mWeight)) ? mWeight : "", (!TextUtils.isEmpty(mBMI)) ? mBMI : "", (!TextUtils.isEmpty(bp)) ? bp : "", (!TextUtils.isEmpty(mPulse)) ? mPulse : "", (!TextUtils.isEmpty(mTemp)) ? mTemp : "", (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "",
+                            "<b><p id=\"complaints_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Presenting complaint(s)</p></b>" + para_open + "%s" + para_close + "<br><br>" + "<u><b><p id=\"diagnosis_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Diagnosis</p></b></u>" + "%s<br>" + "<u><b><p id=\"rx_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Medication(s) plan</p></b></u>" + "%s<br>" + "<u><b><p id=\"tests_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Recommended Investigation(s)</p></b></u>" + "%s<br>" + "<u><b><p id=\"advice_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">General Advice</p></b></u>" + "%s<br>" + "<u><b><p id=\"follow_up_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Follow Up Date</p></b></u>" + "%s<br>" + "<div style=\"text-align:right;margin-right:50px;margin-top:0px;\">" + "<span style=\"font-size:80pt;font-family: MyFont;padding: 0px;\">" + doctorSign + "</span><br>" + doctorDetailStr + "<span style=\"font-size:12pt; margin-top:5px; padding: 0px;\">" + doctrRegistartionNum + "</span>" + "</div>", heading, heading2, heading3, mPatientName, age, mGender, /*mSdw*/ address, mPatientOpenMRSID, mDate, (!TextUtils.isEmpty(mHeight)) ? mHeight : "", (!TextUtils.isEmpty(mWeight)) ? mWeight : "", (!TextUtils.isEmpty(mBMI)) ? mBMI : "", (!TextUtils.isEmpty(bp)) ? bp : "", (!TextUtils.isEmpty(mPulse)) ? mPulse : "", (!TextUtils.isEmpty(mHbA1c)) ? mHbA1c : "", (!TextUtils.isEmpty(mTemp)) ? mTemp : "", (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "",
                     /*pat_hist, fam_hist,*/ mComplaint, diagnosis_web, rx_web, tests_web, /*advice_web*/"", followUp_web, doctor_web);
             webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
         }

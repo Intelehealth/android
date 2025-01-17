@@ -15,6 +15,7 @@ class PatientVitalConfigKeys {
         const val SBP = "bp_systolic"
         const val DBP = "bp_diastolic"
         const val PULSE = "pulse_bpm"
+        const val HbA1c = "hba1c"
         const val TEMPERATURE = "temprature_f"
         const val SPO2 = "spo2"
         const val RESPIRATORY_RATE = "respiratory_rate"

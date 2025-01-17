@@ -89,8 +89,8 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
     private EditText mHeightEditText, mWeightEditText;
     private TextView mBMITextView, mBmiStatusTextView;
     //private LinearLayout mBMILinearLayout;
-    TextView mHeightErrorTextView, mWeightErrorTextView, mPulseErrorTextView, mSpo2ErrorTextView, mRespErrorTextView, mBpSysErrorTextView, mBpDiaErrorTextView, mTemperatureErrorTextView, mBloodGroupErrorTextView;
-    EditText mPulseEditText, mBpSysEditText, mBpDiaEditText, mTemperatureEditText, mSpo2EditText, mRespEditText;
+    TextView mHeightErrorTextView, mWeightErrorTextView, mPulseErrorTextView, mHba1cErrorTextView, mSpo2ErrorTextView, mRespErrorTextView, mBpSysErrorTextView, mBpDiaErrorTextView, mTemperatureErrorTextView, mBloodGroupErrorTextView;
+    EditText mPulseEditText, mHba1cEditText, mBpSysEditText, mBpDiaEditText, mTemperatureEditText, mSpo2EditText, mRespEditText;
     private Button mSubmitButton;
 
     private String heightvalue = "";
@@ -106,7 +106,8 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
     private TextView mBloodGroupTextView;
     private AlertDialog mBloodGroupAlertDialog;
     private View mRootView;
-    private CardView mHeightCardView, mWeightCardView, mBMICardView, mSBPCardView, mDBPCardView, mPulseCardView, mTemperatureCardView, mSpo2CardView, mRespiratoryCardView, mBloodGroupCardView;
+    private CardView mHeightCardView, mWeightCardView, mBMICardView, mSBPCardView, mDBPCardView,
+            mPulseCardView, mHba1cCardView, mTemperatureCardView, mSpo2CardView, mRespiratoryCardView, mBloodGroupCardView;
 
     private List<PatientVital> mPatientVitalList;
     private VitalPreference vitalPref;
@@ -204,6 +205,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
 
         mSpo2EditText = mRootView.findViewById(R.id.etv_spo2);
         mPulseEditText = mRootView.findViewById(R.id.etv_pulse);
+        mHba1cEditText = mRootView.findViewById(R.id.etv_hba1c);
         mRespEditText = mRootView.findViewById(R.id.etv_respiratory_rate);
         mTemperatureEditText = mRootView.findViewById(R.id.etv_temperature);
         mTemperatureEditText.setFilters(new InputFilter[]{new DecimalDigitsInputFilter(3, 0)});
@@ -217,6 +219,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         mSpo2ErrorTextView = mRootView.findViewById(R.id.etv_spo2_error);
 
         mPulseErrorTextView = mRootView.findViewById(R.id.etv_pulse_error);
+        mHba1cErrorTextView = mRootView.findViewById(R.id.etv_hba1ce_error);
 
         mRespErrorTextView = mRootView.findViewById(R.id.etv_respiratory_rate_error);
 
@@ -229,6 +232,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         mBpDiaErrorTextView.setVisibility(View.GONE);
         mSpo2ErrorTextView.setVisibility(View.GONE);
         mPulseErrorTextView.setVisibility(View.GONE);
+        mHba1cErrorTextView.setVisibility(View.GONE);
         mRespErrorTextView.setVisibility(View.GONE);
         mTemperatureErrorTextView.setVisibility(View.GONE);
         mBloodGroupErrorTextView.setVisibility(View.GONE);
@@ -240,6 +244,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         mBpDiaEditText.addTextChangedListener(new MyTextWatcher(mBpDiaEditText));
         mSpo2EditText.addTextChangedListener(new MyTextWatcher(mSpo2EditText));
         mPulseEditText.addTextChangedListener(new MyTextWatcher(mPulseEditText));
+        mHba1cEditText.addTextChangedListener(new MyTextWatcher(mHba1cEditText));
         mRespEditText.addTextChangedListener(new MyTextWatcher(mRespEditText));
         mTemperatureEditText.addTextChangedListener(new MyTextWatcher(mTemperatureEditText));
 
@@ -257,6 +262,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         mDBPCardView = mRootView.findViewById(R.id.ll_dbp_container);
 
         mPulseCardView = mRootView.findViewById(R.id.ll_pulse_container);
+        mHba1cCardView = mRootView.findViewById(R.id.ll_hba1c_container);
 
         mTemperatureCardView = mRootView.findViewById(R.id.ll_temperature_container);
 
@@ -397,6 +403,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         mSBPCardView.setVisibility(View.GONE);
         mDBPCardView.setVisibility(View.GONE);
         mPulseCardView.setVisibility(View.GONE);
+        mHba1cCardView.setVisibility(View.GONE);
         mTemperatureCardView.setVisibility(View.GONE);
         mSpo2CardView.setVisibility(View.GONE);
         mRespiratoryCardView.setVisibility(View.GONE);
@@ -437,7 +444,13 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                 mPulseCardView.setVisibility(View.VISIBLE);
                 mPulseCardView.setTag(patientVital);
                 appendMandatorySing(patientVital.isMandatory(), mRootView.findViewById(R.id.tv_pulse_lbl));
-            } else if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.TEMPERATURE)) {
+            }
+            else if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.HbA1c)) {
+                mHba1cCardView.setVisibility(View.VISIBLE);
+                mHba1cCardView.setTag(patientVital);
+                appendMandatorySing(patientVital.isMandatory(), mRootView.findViewById(R.id.tv_hba1c_lbl));
+            }
+            else if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.TEMPERATURE)) {
                 mTemperatureCardView.setVisibility(View.VISIBLE);
                 mTemperatureCardView.setTag(patientVital);
                 appendMandatorySing(patientVital.isMandatory(), mRootView.findViewById(R.id.tv_temperature_lbl));
@@ -764,9 +777,38 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                 mPulseErrorTextView.setVisibility(View.GONE);
                 mPulseEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
             }
-
         }
-        // } 
+
+        // Hba1c - valdiation - start
+        String hba1cVal = mHba1cEditText.getText().toString().trim();
+        if (hba1cVal.isEmpty()) {
+            if (mHba1cCardView.getTag() != null && ((PatientVital) mHba1cCardView.getTag()).isMandatory()) {
+                mHba1cErrorTextView.setText(getString(R.string.error_field_required));
+                mHba1cErrorTextView.setVisibility(View.VISIBLE);
+                mHba1cEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                return false;
+            } else {
+                mHba1cErrorTextView.setVisibility(View.GONE);
+                mHba1cEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+            }
+
+        } else {
+            if ((Double.parseDouble(hba1cVal) > Double.parseDouble(AppConstants.MAXIMUM_HbA1c)) ||  // TODO: handle validation here.
+                    (Double.parseDouble(hba1cVal) < Double.parseDouble(AppConstants.MINIMUM_HbA1c))) {
+
+                mHba1cErrorTextView.setText(getString(R.string.hba1c_error, AppConstants.MINIMUM_HbA1c, AppConstants.MAXIMUM_HbA1c));
+                mHba1cErrorTextView.setVisibility(View.VISIBLE);
+                mHba1cEditText.requestFocus();
+                mHba1cEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                return false;
+            } 
+            else {
+                mHba1cErrorTextView.setVisibility(View.GONE);
+                mHba1cEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+            }
+        }
+        // Hba1c - valdiation - end
+
 
         //if (editText.getId() == R.id.etv_temperature) {
         String temperatureVal = mTemperatureEditText.getText().toString().trim();
@@ -890,13 +932,9 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         if (mBloodGroupCardView.getTag() != null && ((PatientVital) mBloodGroupCardView.getTag()).isMandatory() && bloodGroup.isEmpty()) {
             mBloodGroupErrorTextView.setText(getString(R.string.error_field_required));
             mBloodGroupErrorTextView.setVisibility(View.VISIBLE);
-            //mPulseEditText.requestFocus();
             mBloodGroupTextView.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
             return false;
         } else {
-                    /*mPulseErrorTextView.setVisibility(View.VISIBLE);
-                    mPulseErrorTextView.setText(getString(R.string.error_field_required));
-                    mPulseEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);*/
             mBloodGroupErrorTextView.setVisibility(View.GONE);
             mBloodGroupTextView.setBackgroundResource(R.drawable.bg_input_fieldnew);
         }
@@ -965,6 +1003,9 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
 
             if (results.getPulse() != null && !results.getPulse().isEmpty())
                 mPulseEditText.setText(results.getPulse());
+            
+            if (results.getHba1c() != null && !results.getHba1c().isEmpty())
+                mHba1cEditText.setText(results.getHba1c());
 
             if (results.getTemperature() != null && !results.getTemperature().isEmpty()) {
                 if (new ConfigUtils(getActivity()).fahrenheit()) {
@@ -1106,6 +1147,10 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
             case UuidDictionary.PULSE: //Pulse
                 if (value != null && !value.isEmpty())
                     mPulseEditText.setText(value);
+                break;
+            case UuidDictionary.HbA1c: //HbA1c
+                if (value != null && !value.isEmpty())
+                    mHba1cEditText.setText(value);
                 break;
             case UuidDictionary.SYSTOLIC_BP: //Systolic BP
                 if (value != null && !value.isEmpty())
@@ -1459,6 +1504,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
             }
             results.setWeight(weight);
             results.setPulse((mPulseEditText.getText().toString()));
+            results.setHba1c((mHba1cEditText.getText().toString()));
             results.setBpdia((mBpDiaEditText.getText().toString()));
             results.setBpsys((mBpSysEditText.getText().toString()));
             if (!mTemperatureEditText.getText().toString().isEmpty()) {
@@ -1538,9 +1584,21 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                     //obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.PULSE));
                     obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, patientVital.getUuid()));
                     obsDTO.setConceptsetuuid(UuidDictionary.OBS_TYPE_VITAL_SET);
-
                     obsDAO.updateObs(obsDTO);
                 }
+                // HbA1c - start
+                patientVital = (PatientVital) mHba1cCardView.getTag();
+                if ((patientVital != null && patientVital.isMandatory()) || !results.getHba1c().isEmpty()) {
+                    obsDTO = new ObsDTO();
+                    obsDTO.setConceptuuid(UuidDictionary.HbA1c);
+                    obsDTO.setEncounteruuid(encounterVitals);
+                    obsDTO.setCreator(sessionManager.getCreatorID());
+                    obsDTO.setValue(results.getHba1c());
+                    obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, patientVital.getUuid()));
+                    obsDTO.setConceptsetuuid(UuidDictionary.OBS_TYPE_VITAL_SET);    // TODO: later this will be Diagnostics when we move this to Diagnostics screen.
+                    obsDAO.updateObs(obsDTO);
+                }
+                // HbA1c - end
 
                 patientVital = (PatientVital) mSBPCardView.getTag();
                 if ((patientVital != null && patientVital.isMandatory()) || !results.getBpsys().isEmpty()) {
@@ -1710,6 +1768,23 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                     FirebaseCrashlytics.getInstance().recordException(e);
                 }
             }
+            // Hba1c insert - start
+            patientVital = (PatientVital) mHba1cCardView.getTag();
+            if ((patientVital != null && patientVital.isMandatory()) || (patientVital != null && !results.getHba1c().isEmpty())) {
+                obsDTO = new ObsDTO();
+                obsDTO.setConceptuuid(patientVital.getUuid());
+                obsDTO.setEncounteruuid(encounterVitals);
+                obsDTO.setCreator(sessionManager.getCreatorID());
+                obsDTO.setValue(results.getHba1c());
+                obsDTO.setConceptsetuuid(UuidDictionary.OBS_TYPE_VITAL_SET);    // TODO: later this will be Diagnostics when we move this to Diagnostics screen.
+
+                try {
+                    obsDAO.insertObs(obsDTO);
+                } catch (DAOException e) {
+                    FirebaseCrashlytics.getInstance().recordException(e);
+                }
+            }
+            // Hba1c insert - end
 
             patientVital = (PatientVital) mSBPCardView.getTag();
             if ((patientVital != null && patientVital.isMandatory()) || (patientVital != null && !results.getBpsys().isEmpty())) {

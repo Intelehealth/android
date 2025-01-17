@@ -14,6 +14,7 @@ public class UuidDictionary {
     public static final String HEIGHT = "5090AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
     public static final String WEIGHT = "5089AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
     public static final String PULSE = "5087AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+    public static final String HbA1c = "f0631271-e0b3-48ca-a4e5-70959a7b76d9";
     public static final String SYSTOLIC_BP = "5085AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
     public static final String DIASTOLIC_BP = "5086AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
     public static final String TEMPERATURE = "5088AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";

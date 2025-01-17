@@ -69,7 +69,8 @@ public class VitalCollectionSummaryFragment extends Fragment {
     private VitalsObject mVitalsObject;
     private boolean mIsEditMode = false;
     private List<PatientVital> mPatientVitalList;
-    private LinearLayout mHeightLinearLayout, mWeightLinearLayout, mBMILinearLayout, mBPLinearLayout, mPulseLinearLayout, mTemperatureLinearLayout, mSpo2LinearLayout, mRespiratoryRateLinearLayout, mBloodGroupLinearLayout;
+    private LinearLayout mHeightLinearLayout, mWeightLinearLayout, mBMILinearLayout, mBPLinearLayout,
+            mPulseLinearLayout, mHbA1cLinearLayout, mTemperatureLinearLayout, mSpo2LinearLayout, mRespiratoryRateLinearLayout, mBloodGroupLinearLayout;
 
     public VitalCollectionSummaryFragment() {
         // Required empty public constructor
@@ -124,6 +125,7 @@ public class VitalCollectionSummaryFragment extends Fragment {
         mBMILinearLayout.setVisibility(View.GONE);
         mBPLinearLayout.setVisibility(View.GONE);
         mPulseLinearLayout.setVisibility(View.GONE);
+        mHbA1cLinearLayout.setVisibility(View.GONE);
         mTemperatureLinearLayout.setVisibility(View.GONE);
         mSpo2LinearLayout.setVisibility(View.GONE);
         mRespiratoryRateLinearLayout.setVisibility(View.GONE);
@@ -145,7 +147,8 @@ public class VitalCollectionSummaryFragment extends Fragment {
                 mBPLinearLayout.setVisibility(View.VISIBLE);
             } else if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.PULSE)) {
                 mPulseLinearLayout.setVisibility(View.VISIBLE);
-
+            } else if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.HbA1c)) {
+                mHbA1cLinearLayout.setVisibility(View.VISIBLE);
             } else if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.TEMPERATURE)) {
                 mTemperatureLinearLayout.setVisibility(View.VISIBLE);
 
@@ -174,6 +177,7 @@ public class VitalCollectionSummaryFragment extends Fragment {
         mBMILinearLayout = view.findViewById(R.id.ll_bmi);
         mBPLinearLayout = view.findViewById(R.id.ll_bp_container);
         mPulseLinearLayout = view.findViewById(R.id.ll_pulse_container);
+        mHbA1cLinearLayout = view.findViewById(R.id.ll_hba1c_container);
         mTemperatureLinearLayout = view.findViewById(R.id.ll_temperature_container);
         mSpo2LinearLayout = view.findViewById(R.id.ll_spo2_container);
         mRespiratoryRateLinearLayout = view.findViewById(R.id.ll_respiratory_rate_container);
@@ -201,11 +205,18 @@ public class VitalCollectionSummaryFragment extends Fragment {
                 ((TextView) view.findViewById(R.id.tv_bp)).setText(mVitalsObject.getBpsys() + "/" + mVitalsObject.getBpdia());
             else
                 ((TextView) view.findViewById(R.id.tv_bp)).setText(getString(R.string.ui2_no_information));
+
             if (mVitalsObject.getPulse() != null && !mVitalsObject.getPulse().isEmpty())
                 ((TextView) view.findViewById(R.id.tv_pulse)).setText(mVitalsObject.getPulse() + " " + getResources().getString(R.string.bpm));
             else
                 ((TextView) view.findViewById(R.id.tv_pulse)).setText(getString(R.string.ui2_no_information));
+            // HbA1c
+            if (mVitalsObject.getHba1c() != null && !mVitalsObject.getHba1c().isEmpty())
+                ((TextView) view.findViewById(R.id.tv_hba1c)).setText(mVitalsObject.getHba1c()/* + " " + getResources().getString(R.string.bpm)*/); // TODO: handle this if required.
+            else
+                ((TextView) view.findViewById(R.id.tv_hba1c)).setText(getString(R.string.ui2_no_information));
 
+            // Temperature
             if (mVitalsObject.getTemperature() != null && !mVitalsObject.getTemperature().isEmpty()) {
                 if (new ConfigUtils(getActivity()).fahrenheit()) {
                     ((TextView) view.findViewById(R.id.tv_temperature)).setText(convertCtoF(TAG, mVitalsObject.getTemperature()));
@@ -233,6 +244,7 @@ public class VitalCollectionSummaryFragment extends Fragment {
             else
                 ((TextView) view.findViewById(R.id.tv_respiratory_rate)).setText(getString(R.string.ui2_no_information));
         }
+
         view.findViewById(R.id.btn_submit).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -268,6 +280,7 @@ public class VitalCollectionSummaryFragment extends Fragment {
                 mActionListener.onFormSubmitted(VisitCreationActivity.STEP_1_VITAL, mIsEditMode, mVitalsObject);
             }
         });
+
         ImageButton refresh = view.findViewById(R.id.imb_btn_refresh);
         refresh.setOnClickListener(new View.OnClickListener() {
             @Override

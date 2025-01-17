@@ -9,6 +9,7 @@ public class VitalsObject {
     private String bpsys;
     private String bpdia;
     private String pulse;
+    private String hba1c;
     private String temperature;
     private String spo2;
     private String resp;
@@ -100,5 +101,13 @@ public class VitalsObject {
 
     public void setBloodGroup(String bloodGroup) {
         this.bloodGroup = bloodGroup;
+    }
+
+    public String getHba1c() {
+        return hba1c;
+    }
+
+    public void setHba1c(String hba1c) {
+        this.hba1c = hba1c;
     }
 }
