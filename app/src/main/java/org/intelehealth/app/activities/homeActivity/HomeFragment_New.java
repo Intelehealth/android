@@ -92,6 +92,8 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
     private int todaysCount = 0;
     private int tomorrowsCount = 0;
 
+    private boolean isPrescriptionCountLoaded = false;
+
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -363,7 +365,7 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
         super.onResume();
         setLocale(getContext());
         initUI();
-
+        fetchAndSetPrescriptionCount(true);
     }
 
     @Override
@@ -552,10 +554,13 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
 
     @Override
     public void fetchCount() {
-        fetchAndSetPrescriptionCount();
+        fetchAndSetPrescriptionCount(false);
     }
 
-    private void fetchAndSetPrescriptionCount() {
+    private void fetchAndSetPrescriptionCount(boolean calledFromOnResume) {
+        if (isPrescriptionCountLoaded && calledFromOnResume)
+            return;
+
         TextView prescriptionCountTextView = view.findViewById(R.id.textview_received_no);
         Executors.newSingleThreadExecutor().execute(() -> {
             int pendingCountTotalVisits = new VisitsDAO().getVisitCountsByStatus(false);
@@ -572,6 +577,7 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
                         prescCountText = total + " मे से " + countReceivedPrescription + " प्राप्त हुये";
                     }
                     prescriptionCountTextView.setText(prescCountText);
+                    isPrescriptionCountLoaded = true;
                 });
             }
         });

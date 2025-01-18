@@ -1740,6 +1740,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
                         @Override
                         public void run() {
                             mSyncAlertDialog.dismiss();
+                            callback.fetchCount();
                         }
                     }, 2000);
                 }
