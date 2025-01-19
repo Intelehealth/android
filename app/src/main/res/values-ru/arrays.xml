@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="guardian_type">
+        <item>Mother</item>
+        <item>Father</item>
+        <item>Grandparent</item>
+        <item>Spouse</item>
+    </string-array>
+
+    <string-array name="contact_type">
+        <item>Личный</item>
+        <item>Члена семьи</item>
+    </string-array>
+</resources>

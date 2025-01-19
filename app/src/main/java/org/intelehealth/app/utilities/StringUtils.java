@@ -2368,7 +2368,25 @@ public final class StringUtils {
                 default:
                     return val;
             }
-
+        }else if (locale.equalsIgnoreCase("ru")) {
+            //these string will change after getting updated string
+            if(val == null || val.isEmpty()) return "";
+            switch (val) {
+                case "Telemedicine Clinic 1":
+                    val = "Название больницы 1";
+                    break;
+                case "Telemedicine Clinic 2":
+                    val = "Название больницы 2";
+                    break;
+                case "Telemedicine Clinic 3":
+                    val = "Название больницы 3";
+                    break;
+                case "Remote":
+                    val = "Remote";
+                    break;
+                default:
+                    return val;
+            }
         }
         return val;
     }

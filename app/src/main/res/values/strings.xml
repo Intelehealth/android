@@ -618,6 +618,7 @@
     <string name="spo2">SpO2 (%)</string>
     <string name="respiratory_rate_breaths_min">Respiratory Rate (breaths/min)</string>
     <string name="temperature_f_new">Temperature (F)</string>
+    <string name="temperature_c_new">Temperature (C)</string>
     <string name="confirm">Confirm</string>
     <string name="ui2_physical_exam_summay_title">%1$d/%2$d. Physical examination summary</string>
     <string name="ui2_medical_hist_title_text">%1$d/%2$d. Medical history summary</string>

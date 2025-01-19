@@ -37,12 +37,22 @@ object LanguageUtils {
 
     @JvmStatic
     fun getProvince(province: String): String? {
-        return getProvincesAndCities().provinces.find { it == province }
+        val locations = getProvincesAndCities()
+        val index =  getProvincesAndCities().provinces.indexOf(province)
+        return when(getLocalLang()){
+            "ru"-> locations.provinces_ru[index]
+            else -> locations.provinces[index]
+        }
     }
 
     @JvmStatic
     fun getCity(city: String): String? {
-        return getProvincesAndCities().cities.find { it == city }
+        val locations = getProvincesAndCities()
+        val index =  getProvincesAndCities().cities.indexOf(city)
+        return when(getLocalLang()){
+            "ru"-> locations.cities_ru[index]
+            else -> locations.cities[index]
+        }
     }
 
     @JvmStatic
@@ -146,5 +156,19 @@ object LanguageUtils {
             return if (index > 0) array[index]
             else ""
         } else dbString
+    }
+
+    fun getProvinceByLocal(it: ProvincesAndCities): List<String> {
+        return when(getLocalLang()){
+            "ru"-> it.provinces_ru
+            else -> it.provinces
+        }
+    }
+
+    fun getCityByLocal(it: ProvincesAndCities): List<String> {
+        return when(getLocalLang()){
+            "ru"-> it.cities_ru
+            else -> it.cities
+        }
     }
 }
