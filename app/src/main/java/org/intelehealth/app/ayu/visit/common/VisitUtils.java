@@ -1,6 +1,10 @@
 package org.intelehealth.app.ayu.visit.common;
 
+import org.intelehealth.app.database.dao.ObsDAO;
+import org.intelehealth.app.database.dao.VisitsDAO;
+import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.utilities.CustomLog;
+import org.intelehealth.app.utilities.DateAndTimeUtils;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -69,7 +73,7 @@ AB NEGATIVE = 1231*/
 
     public static boolean checkNodeValidByGenderAndAge(String patientGender, float floatAgeYearMonth, String nodeGender, String minAge, String maxAge) {
 
-        if(nodeGender==null || nodeGender.isEmpty()){
+        if (nodeGender == null || nodeGender.isEmpty()) {
             return true;
         }
         float minAgeF = minAge != null && !minAge.isEmpty() ? Float.parseFloat(minAge) : 0f;
@@ -405,5 +409,22 @@ AB NEGATIVE = 1231*/
 
     }
 
-
+    public static void prefillNodeValues(Node node, String type, String visitUuid) {
+        if (type.equalsIgnoreCase(Node.AUTO_POPULATE_TYPE_PREVIOUS_VISIT_DATE)) {
+            String previousVisitDate = VisitsDAO.getPreviousVisitDate(visitUuid);
+            String formattedDate = DateAndTimeUtils.date_formatter(previousVisitDate, DateAndTimeUtils.D_FORMAT_ISO8601, DateAndTimeUtils.D_FORMAT_DD_MM_YYYY);
+            node.getOption(0).setLanguage(formattedDate);
+            node.setSelected(true);
+            node.setDataCaptured(true);
+            node.getOption(0).setSelected(true);
+            node.getOption(0).setDataCaptured(true);
+        } else if (type.equalsIgnoreCase(Node.AUTO_POPULATE_TYPE_PREVIOUS_VISIT_REASON)) {
+            String previousVisitReason = ObsDAO.getPreviousVisitReason(visitUuid);
+            node.getOption(0).setLanguage(previousVisitReason);
+            node.setSelected(true);
+            node.setDataCaptured(true);
+            node.getOption(0).setSelected(true);
+            node.getOption(0).setDataCaptured(true);
+        }
+    }
 }

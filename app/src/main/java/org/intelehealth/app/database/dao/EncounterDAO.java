@@ -828,4 +828,19 @@ public class EncounterDAO {
 
         return list;
     }
+
+    public static String getEncounterAdultInitials(String visitUUID) {
+        String encounterUuid = "";
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
+        String query = "SELECT uuid FROM tbl_encounter WHERE visitUUID = ? AND encounter_type_uuid = ?";
+
+        Cursor cursor = db.rawQuery(query, new String[]{visitUUID, UuidDictionary.ENCOUNTER_ADULTINITIAL});
+        if (cursor.getCount() != 0) {
+            while (cursor.moveToNext()) {
+                encounterUuid = cursor.getString(cursor.getColumnIndexOrThrow("uuid"));
+            }
+        }
+        cursor.close();
+        return encounterUuid;
+    }
 }

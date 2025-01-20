@@ -14,7 +14,11 @@ import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+
+import org.intelehealth.app.database.dao.ObsDAO;
+import org.intelehealth.app.database.dao.VisitsDAO;
 import org.intelehealth.app.utilities.CustomLog;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -1782,13 +1786,16 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         Button submitButton = view.findViewById(R.id.btn_submit);
         submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, node.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
         submitButton.setBackgroundResource(node.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
+
         final EditText editText = view.findViewById(R.id.actv_reasons);
         Button skipButton = view.findViewById(R.id.btn_skip);
+
         if (node.isSkipped()) {
             skipButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_check_18_white, 0);
             skipButton.setBackgroundResource(R.drawable.ui2_common_primary_bg);
             AdapterUtils.setToDisable(submitButton);
         }
+
         Timber.tag(TAG).d("Input =>%s", node.getLanguage());
         if (node.isSelected() && node.getLanguage() != null && node.isDataCaptured()) {
             if (node.getLanguage().contains(" : "))
@@ -1797,6 +1804,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                 editText.setText(node.getLanguage());
 
         }
+
         String oldValue = editText.getText().toString().trim();
         editText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -2129,7 +2137,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                             //holder.node.setDataCaptured(true);
                             tempGenericViewHolder.node.setSelected(false);
                             tempGenericViewHolder.node.setDataCaptured(false);
-                            if(tempGenericViewHolder.node.getOptionsList()!=null && tempGenericViewHolder.node.getOptionsList().size()>0) {
+                            if (tempGenericViewHolder.node.getOptionsList() != null && tempGenericViewHolder.node.getOptionsList().size() > 0) {
                                 tempGenericViewHolder.node.getOptionsList().get(0).addLanguage("");
                                 //knowledgeEngine.setText(knowledgeEngine.getLanguage());
                                 //}

@@ -824,6 +824,13 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
 
                 //optionList.add(associateSymptoms);
             }*/
+
+            for (Node options : optionList) {
+                if (options.isAutoPopulateField()) {
+                    VisitUtils.prefillNodeValues(options, options.getAutoPopulateDataType(), visitUuid);
+                }
+            }
+
             mainNode.setOptionsList(optionList);
             mChiefComplainRootNodeList.add(mainNode);
 

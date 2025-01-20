@@ -1046,6 +1046,34 @@ public class VisitsDAO {
         return visitId;
     }
 
+    public static String getPreviousVisitDate(String currentVisitUuid) {
+        String previousVisitDate = "";
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
+        String query = "SELECT startdate FROM tbl_visit WHERE patientuuid = (SELECT patientuuid FROM tbl_visit WHERE uuid = ?) AND sync = 1 ORDER BY startdate DESC LIMIT 1 OFFSET 1 ";
+        Cursor cursor = db.rawQuery(query, new String[]{currentVisitUuid});
+        if (cursor.getCount() != 0) {
+            while (cursor.moveToNext()) {
+                previousVisitDate = cursor.getString(cursor.getColumnIndexOrThrow("startdate"));
+            }
+        }
+        cursor.close();
+        return previousVisitDate;
+    }
+
+    public static String getPreviousVisitUuid(String currentVisitUuid) {
+        String previousVisitUuid = "";
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
+        String query = "SELECT uuid FROM tbl_visit WHERE patientuuid = (SELECT patientuuid FROM tbl_visit WHERE uuid = ?) AND sync = 1 ORDER BY startdate DESC LIMIT 1 OFFSET 1 ";
+        Cursor cursor = db.rawQuery(query, new String[]{currentVisitUuid});
+        if (cursor.getCount() != 0) {
+            while (cursor.moveToNext()) {
+                previousVisitUuid = cursor.getString(cursor.getColumnIndexOrThrow("uuid"));
+            }
+        }
+        cursor.close();
+        return previousVisitUuid;
+    }
+
     //visit count to retry db operation
     //sometimes app crash cause of db lock
     //that's why added the retry mechanism whenever db will be lock
