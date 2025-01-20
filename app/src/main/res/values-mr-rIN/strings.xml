@@ -1032,4 +1032,5 @@
     <string name="enter_date">तारीख प्रविष्ट करा</string>
     <string name="physical_exam_screen_title">@string/physical_examination</string>
     <string name="physical_exam_screen_header">@string/general_exams</string>
+    <string name="share_the_file">Share the file…</string>
 </resources>

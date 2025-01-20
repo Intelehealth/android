@@ -19,5 +19,5 @@ data class BillTestsChargeModel (
     var bpChargeAmount: String = "",
     var glucoseRandomVisible: Boolean = false,
     var glucoseRandomAmount: String = "",
-    var totalChargeAmount: String = ""
+    var totalChargeAmount: String = "0"
 )

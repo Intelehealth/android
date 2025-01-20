@@ -2,9 +2,6 @@ package org.intelehealth.app.ui.billgeneration.activity
 
 import android.content.Intent
 import android.content.res.Configuration
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.pdf.PdfDocument
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -15,19 +12,16 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.content.FileProvider
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
 import org.intelehealth.app.R
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New
 import org.intelehealth.app.databinding.ActivityBillCreationBinding
 import org.intelehealth.app.ui.billgeneration.models.BillDetails
+import org.intelehealth.app.ui.billgeneration.utils.PaymentStatus
 import org.intelehealth.app.ui.billgeneration.viewmodel.BillGenerationViewModel
 import org.intelehealth.app.utilities.DialogUtils
 import org.intelehealth.app.utilities.SessionManager
-import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
 import java.util.Locale
 
 class BillCreationActivity : AppCompatActivity() {
@@ -43,25 +37,32 @@ class BillCreationActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         sessionManager = SessionManager(this)
-        setupActionBar()
         setupUI()
         observeViewModel()
 
         // Fetch initial data
         intent?.let { billDetails = getBillDetailsFromIntent(it)!! }
-        showAddedBillDetails()
+        setupActionBar()
+        showBillDetails()
     }
 
-    private fun showAddedBillDetails() {
+    private fun showBillDetails() {
+        billDetails.billEncounterUUID.let {
+            if (it.isNotEmpty()) {
+                viewModel.isBillGenerated = true
+                binding.contentGenerateBill.isBillGenerated = viewModel.isBillGenerated
+                viewModel.updatePaymentStatusValue(billDetails.billType)
+            }
+        }
         binding.contentGenerateBill.patientDetailsTV.text = viewModel.setPatientDetails(billDetails)
-        manageCardView()
-        viewModel.manageTestsData(binding,billDetails.selectedTestsList, billDetails)
-        setupPaymentStatus()
+        viewModel.manageTestsData(binding, billDetails.selectedTestsList, billDetails)
     }
 
     private fun setupActionBar() {
-        setSupportActionBar(binding.toolbar)
-        binding.toolbar.setNavigationOnClickListener { finish() }
+        val toolbar = binding.toolbar
+        toolbar.title = billDetails.patientName + " : " + billDetails.receiptNum
+        setSupportActionBar(toolbar)
+        toolbar.setNavigationOnClickListener { finish() }
     }
 
     private fun setupUI() {
@@ -73,36 +74,31 @@ class BillCreationActivity : AppCompatActivity() {
     private fun setupReasonTextWatcher() {
         binding.contentGenerateBill.reasonET.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                handleReasonTextChanged(s)
+                with(binding.contentGenerateBill) {
+                    if (!s.isNullOrEmpty()) {
+                        val isEmpty = reasonET.text.isNullOrEmpty()
+                        tvReasonErrorNotPay.visibility = if (isEmpty) View.VISIBLE else View.GONE
+                        reasonET.background = ContextCompat.getDrawable(
+                            this@BillCreationActivity,
+                            if (isEmpty) R.drawable.input_field_error_bg_ui2 else R.drawable.bg_input_fieldnew
+                        )
+                    }
+                }
             }
 
             override fun afterTextChanged(s: Editable?) {}
         })
     }
 
-    private fun handleReasonTextChanged(s: CharSequence?) {
-        with(binding.contentGenerateBill) {
-            if (!s.isNullOrEmpty()) {
-                val isEmpty = reasonET.text.isNullOrEmpty()
-                tvReasonErrorNotPay.visibility = if (isEmpty) View.VISIBLE else View.GONE
-                reasonET.background = ContextCompat.getDrawable(
-                    this@BillCreationActivity,
-                    if (isEmpty) R.drawable.input_field_error_bg_ui2 else R.drawable.bg_input_fieldnew
-                )
-            }
-        }
-    }
-
     private fun setupPaymentButtons() {
         binding.contentGenerateBill.yesPayBill.setOnClickListener {
             toggleReasonVisibility(false)
-            paidOrUnpaid = "Paid"
+            paidOrUnpaid = PaymentStatus.PAID.value
         }
         binding.contentGenerateBill.noPayBill.setOnClickListener {
             toggleReasonVisibility(true)
-            paidOrUnpaid = "Unpaid"
+            paidOrUnpaid = PaymentStatus.UNPAID.value
         }
     }
 
@@ -118,17 +114,26 @@ class BillCreationActivity : AppCompatActivity() {
         with(binding.contentGenerateBill) {
             buttonConfirmBill.setOnClickListener { handleBillConfirmation() }
             buttonPrint.setOnClickListener { viewModel.printBill() }
-            buttonDownload.setOnClickListener { viewModel.generatePdf(binding) }
-            buttonShare.setOnClickListener { viewModel.shareFile() }
+            buttonDownload.setOnClickListener { viewModel.createPdf(billDetails, binding) }
+            buttonShare.setOnClickListener {
+                viewModel.shareFile(
+                    billDetails,
+                    activity = this@BillCreationActivity
+                )
+            }
         }
     }
 
     private fun handleBillConfirmation() {
         if (isValidBill()) {
             lifecycleScope.launch {
+                val reason = binding.contentGenerateBill.reasonET.text.toString()
+                billDetails.billType =
+                    if (binding.contentGenerateBill.yesPayBill.isChecked) PaymentStatus.PAID.value else PaymentStatus.UNPAID.value
+                viewModel.updatePaymentStatusValue(if (binding.contentGenerateBill.yesPayBill.isChecked) PaymentStatus.PAID.value else "Unpaid - $reason")
+
                 val result = viewModel.confirmBill(billDetails)
                 if (result) {
-                    updatePaymentStatus(viewModel.paymentStatus.value.toString())
                     onBillCreated()
                     viewModel.syncOnServer()
                 }
@@ -136,52 +141,10 @@ class BillCreationActivity : AppCompatActivity() {
         }
     }
 
-    private fun updatePaymentStatus(paymentStatus: String) {
-        with(binding.contentGenerateBill.paymentStatus) {
-            visibility = View.VISIBLE
-            text = if (paymentStatus == "Paid") getString(R.string.paid)
-            else getString(R.string.unpaid)
-        }
-    }
-
-    private fun manageViewsVisibility(optionButtonsVisibility: Boolean) {
-        val visibility = if (optionButtonsVisibility) View.VISIBLE else View.GONE
-        with(binding.contentGenerateBill) {
-            buttonPrint.visibility = visibility
-            buttonDownload.visibility = visibility
-            buttonShare.visibility = visibility
-        }
-    }
-
     private fun onBillCreated() {
         Toast.makeText(this, getString(R.string.bill_generated_success), Toast.LENGTH_LONG).show()
-        with(binding.contentGenerateBill) {
-            llBillNotPayingReason.visibility = View.GONE
-            buttonConfirmBill.visibility = View.GONE
-        }
-        manageViewsVisibility(true)
-    }
-
-    private fun manageCardView() {
-        val selectedTests = billDetails.selectedTestsList
-        val viewMap = mapOf(
-            R.string.blood_glucose_non_fasting to binding.contentGenerateBill.glucoseNfChargesCV,
-            R.string.blood_glucose_fasting to binding.contentGenerateBill.glucoseFChargesCV,
-            R.string.blood_glucose_post_prandial to binding.contentGenerateBill.glucosePpnChargesCV,
-            R.string.blood_glucose_random to binding.contentGenerateBill.glucoseRanChargesCV,
-            R.string.uric_acid to binding.contentGenerateBill.uricAcidChargesCV,
-            R.string.total_cholestrol to binding.contentGenerateBill.cholestrolChargesCV,
-            R.string.haemoglobin to binding.contentGenerateBill.haemeoChargesCV,
-            R.string.visit_summary_bp to binding.contentGenerateBill.bpChargesCV
-        )
-
-        viewMap.forEach { (stringRes, view) ->
-            if (selectedTests.contains(getString(stringRes))) {
-                view.visibility = View.VISIBLE
-            }
-        }
-
-
+        viewModel.isBillGenerated = true
+        binding.contentGenerateBill.isBillGenerated = viewModel.isBillGenerated
     }
 
     private fun isValidBill(): Boolean {
@@ -204,31 +167,46 @@ class BillCreationActivity : AppCompatActivity() {
                         text = getString(R.string.enter_reason_toast)
                     }
                     return false
-                } else {
-                    viewModel.updatePaymentStatus(if (yesPayBill.isChecked) "Paid" else "Unpaid - $reason")
                 }
             }
             return true
         }
     }
+
     private fun observeViewModel() {
         viewModel.apply {
             patientDetails.observe(this@BillCreationActivity) {
                 binding.contentGenerateBill.patientDetailsTV.text = it
             }
-
-            paymentStatus.observe(this@BillCreationActivity) {
+            paymentStatusValue.observe(this@BillCreationActivity) { paymentStatus ->
                 binding.contentGenerateBill.paymentStatus.apply {
-                    visibility = if (it.isEmpty()) View.GONE else View.VISIBLE
-                    text = it
+                    if (!paymentStatus.isNullOrEmpty() && billDetails.billType != "NA") {
+                        visibility = View.VISIBLE
+                        text = when {
+                            paymentStatus.contains(
+                                PaymentStatus.UNPAID.value,
+                                ignoreCase = true
+                            ) -> {
+                                paymentStatus.split("-", limit = 2)[0].trim()
+                            }
+
+                            else -> paymentStatus
+                        }
+                    } else {
+                        visibility = View.GONE
+                        text = ""
+                    }
                 }
             }
 
-            totalAmount.observe(this@BillCreationActivity) {
-                binding.contentGenerateBill.totalChargesTV.text = it.toString()
+        }
+        viewModel.toastMessage.observe(this) { message ->
+            if (message.isNotEmpty()) {
+                viewModel.showToast(message)
             }
         }
     }
+
     private fun getBillDetailsFromIntent(intent: Intent): BillDetails? {
         val bundle = intent.getBundleExtra("BUNDLE")
         billDetails = bundle?.getSerializable("billDetails") as? BillDetails
@@ -238,33 +216,6 @@ class BillCreationActivity : AppCompatActivity() {
         return billDetails
     }
 
-    private fun setupPaymentStatus() {
-        if (billDetails.billType != "NA") {
-            when {
-                billDetails.billType == "Paid" -> {
-                    binding.contentGenerateBill.paymentStatus.visibility = View.VISIBLE
-                    binding.contentGenerateBill.paymentStatus.text = getString(R.string.paid)
-                    // paymentStatusTV.setBackgroundColor(Color.GREEN)
-                }
-                billDetails.billType.contains("Unpaid", ignoreCase = true) -> {
-                    binding.contentGenerateBill.paymentStatus.visibility = View.VISIBLE
-                    binding.contentGenerateBill.paymentStatus.text = getString(R.string.unpaid)
-                    // paymentStatusTV.setBackgroundColor(Color.RED)
-                }
-            }
-            binding.contentGenerateBill.llBillNotPayingReason.visibility = View.GONE
-            binding.contentGenerateBill.buttonConfirmBill.visibility = View.GONE
-            manageViewsVisibility(true)
-
-        }
-    }
-
-    private fun loadBitmap(view: View, width: Int, height: Int): Bitmap {
-        val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
-        val canvas = Canvas(bitmap)
-        view.draw(canvas)
-        return bitmap
-    }
 
     fun setLocale(language: String) {
         val locale = Locale(language)
@@ -273,10 +224,12 @@ class BillCreationActivity : AppCompatActivity() {
         config.locale = locale
         resources.updateConfiguration(config, resources.displayMetrics)
     }
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.toolbar_menu, menu)
         return true
     }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_home_menu -> {
@@ -287,7 +240,19 @@ class BillCreationActivity : AppCompatActivity() {
                 startActivity(intent)
                 true
             }
+
             else -> super.onOptionsItemSelected(item)
         }
     }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        val intent = Intent(
+            this@BillCreationActivity,
+            HomeScreenActivity_New::class.java
+        )
+        startActivity(intent)
+    }
 }
+
+

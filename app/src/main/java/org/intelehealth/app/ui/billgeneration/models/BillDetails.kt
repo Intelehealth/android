@@ -13,6 +13,8 @@ data class BillDetails(
     var receiptNum: String= "",
     var billDateString: String= "",
     var billType: String= "",
-    var selectedTestsList: ArrayList<String?> = ArrayList()
+    var selectedTestsList: ArrayList<String?> = ArrayList(),
+    var patientDetails: String= "",
+    var billEncounterUUID: String= "",
 
 ): Serializable

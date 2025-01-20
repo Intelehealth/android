@@ -10,8 +10,13 @@ enum class BillRate(val value: Int) {
     CONSULTATION(15),
     FOLLOW_UP(10),
     GLUCOSE_RANDOM(15),
+    GLUCOSE_NON_FASTING(15)
 }
 enum class VisitType(val value: String) {
     CONSULTATION("Consultation"),
     FOLLOW_UP("Follow-Up"),
+}
+enum class PaymentStatus(val value: String) {
+    PAID("Paid"),
+    UNPAID("Unpaid"),
 }

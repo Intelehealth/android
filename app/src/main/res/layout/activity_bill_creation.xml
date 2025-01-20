@@ -22,15 +22,12 @@
                 android:id="@+id/toolbar"
                 style="@style/AppTheme.AppBarOverlay"
                 android:layout_width="match_parent"
-                android:paddingStart="0dp"
-                android:paddingEnd="0dp"
                 android:layout_height="?attr/actionBarSize"
+                android:paddingStart="16dp"
+                app:contentInsetStart="16dp"
+                app:contentInsetEnd="16dp"
                 app:layout_collapseMode="pin"
-                app:contentInsetEnd="0dp"
-                app:menu="@menu/toolbar_menu"
-                app:contentInsetStart="0dp"
-                app:contentInsetStartWithNavigation="0dp"
-                />
+                app:menu="@menu/toolbar_menu" />
         </com.google.android.material.appbar.AppBarLayout>
 
         <!-- Main content layout -->

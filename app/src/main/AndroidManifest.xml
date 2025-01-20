@@ -436,6 +436,11 @@
             android:theme="@style/AppThemeMaterialNew"
             android:windowSoftInputMode="adjustPan" />
         <activity
+            android:name=".ui.billgeneration.activity.BillCreationActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
             android:name=".webrtc.activity.IDACallLogActivity"
             android:exported="true"
             android:theme="@style/AppThemeMaterialNew"

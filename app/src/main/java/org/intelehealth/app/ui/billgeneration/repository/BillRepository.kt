@@ -16,6 +16,7 @@ import org.intelehealth.app.database.dao.SyncDAO
 import org.intelehealth.app.models.dto.EncounterDTO
 import org.intelehealth.app.models.dto.ObsDTO
 import org.intelehealth.app.ui.billgeneration.models.BillDetails
+import org.intelehealth.app.ui.billgeneration.utils.BillRate
 import org.intelehealth.app.utilities.NetworkConnection
 import org.intelehealth.app.utilities.SessionManager
 import org.intelehealth.app.utilities.UuidDictionary
@@ -35,10 +36,14 @@ class BillRepository(private val sessionManager: SessionManager, private val con
 
     fun confirmBill(billDetails: BillDetails, paymentStatus: String): Boolean {
         // Save bill data to the server or database
-        paymentStatusValue = paymentStatus;
+        paymentStatusValue =paymentStatus
         val encounterUuid = getEncounterUuid(billDetails)
         if (encounterUuid.isNotEmpty()) {
-           val listOfBillObs =  createObservations(encounterUuid, billDetails)
+            Log.d("billkz", "confirmBill: billDetails insert : "+Gson().toJson(billDetails))
+            Log.d("billkz", "confirmBill: billtype : "+billDetails.billType)
+            Log.d("billkz", "confirmBill: paymentStatus : "+paymentStatus)
+
+            val listOfBillObs =  createObservations(encounterUuid, billDetails)
             val obsDAO = ObsDAO()
             try {
                 listOfBillObs.forEach { obsDTO ->
@@ -49,6 +54,7 @@ class BillRepository(private val sessionManager: SessionManager, private val con
                 FirebaseCrashlytics.getInstance().recordException(e)
             }
             return true
+
         }
         return false
     }
@@ -57,23 +63,24 @@ class BillRepository(private val sessionManager: SessionManager, private val con
         arrayListOf<ObsDTO>()
             .apply {
                 add(createObs(UuidDictionary.BILL_DATE, encounterUuid, billDetails.billDateString))
-               add(createObs(UuidDictionary.BILL_VISIT_TYPE, encounterUuid, billDetails.visitType))
-                add(createObs(UuidDictionary.BILL_PAYMENT_STATUS, encounterUuid, paymentStatusValue))
+               add(createObs(UuidDictionary.BILL_VISIT_TYPE, encounterUuid, billDetails.visitType)) //consultation or follow up
+                add(createObs(UuidDictionary.BILL_PAYMENT_STATUS, encounterUuid, paymentStatusValue)) //paid or unpaid
                 add(createObs(UuidDictionary.BILL_NUM, encounterUuid, billDetails.receiptNum))
-                if(billDetails.selectedTestsList.contains(context.getString(R.string.blood_glucose_non_fasting)))  add(createObs(UuidDictionary.BILL_PRICE_BLOOD_GLUCOSE_ID, encounterUuid, "15"))
-                if(billDetails.selectedTestsList.contains(context.getString(R.string.blood_glucose_fasting)))add(createObs(UuidDictionary.BILL_PRICE_BLOOD_GLUCOSE_FASTING_ID, encounterUuid, "15"))
-                if(billDetails.selectedTestsList.contains(context.getString(R.string.blood_glucose_post_prandial))) add(createObs(UuidDictionary.BILL_PRICE_BLOOD_GLUCOSE_POST_PRANDIAL_ID, encounterUuid, "15"))
-                if(billDetails.selectedTestsList.contains(context.getString(R.string.blood_glucose_random)))add(createObs(UuidDictionary.BILL_PRICE_BLOOD_GLUCOSE_RANDOM_ID, encounterUuid, "15"))
-                if(billDetails.selectedTestsList.contains(context.getString(R.string.uric_acid))) add(createObs(UuidDictionary.BILL_PRICE_URIC_ACID_ID, encounterUuid, "30"))
-                if(billDetails.selectedTestsList.contains(context.getString(R.string.total_cholestrol)))add(createObs(UuidDictionary.BILL_PRICE_TOTAL_CHOLESTEROL_ID, encounterUuid, "80"))
-                if(billDetails.selectedTestsList.contains(context.getString(R.string.haemoglobin)))add(createObs(UuidDictionary.BILL_PRICE_HEMOGLOBIN_ID, encounterUuid, "20"))
-                if(billDetails.selectedTestsList.contains(context.getString(R.string.visit_summary_bp)))add(createObs(UuidDictionary.BILL_PRICE_BP_ID, encounterUuid, "5"))
+                if(billDetails.selectedTestsList.contains(context.getString(R.string.blood_glucose_non_fasting)))  add(createObs(UuidDictionary.BILL_PRICE_BLOOD_GLUCOSE_ID, encounterUuid,  BillRate.GLUCOSE_NON_FASTING.value.toString()))
+                if(billDetails.selectedTestsList.contains(context.getString(R.string.blood_glucose_fasting)))add(createObs(UuidDictionary.BILL_PRICE_BLOOD_GLUCOSE_FASTING_ID, encounterUuid,  BillRate.GLUCOSE_FASTING.value.toString()))
+                if(billDetails.selectedTestsList.contains(context.getString(R.string.blood_glucose_post_prandial))) add(createObs(UuidDictionary.BILL_PRICE_BLOOD_GLUCOSE_POST_PRANDIAL_ID, encounterUuid,  BillRate.GLUCOSE_POST_PRANDIAL.value.toString()))
+                if(billDetails.selectedTestsList.contains(context.getString(R.string.blood_glucose_random)))add(createObs(UuidDictionary.BILL_PRICE_BLOOD_GLUCOSE_RANDOM_ID, encounterUuid,  BillRate.GLUCOSE_RANDOM.value.toString()))
+                if(billDetails.selectedTestsList.contains(context.getString(R.string.uric_acid))) add(createObs(UuidDictionary.BILL_PRICE_URIC_ACID_ID, encounterUuid,  BillRate.URIC_ACID.value.toString()))
+                if(billDetails.selectedTestsList.contains(context.getString(R.string.total_cholestrol)))add(createObs(UuidDictionary.BILL_PRICE_TOTAL_CHOLESTEROL_ID, encounterUuid,  BillRate.CHOLESTEROL.value.toString()))
+                if(billDetails.selectedTestsList.contains(context.getString(R.string.haemoglobin)))add(createObs(UuidDictionary.BILL_PRICE_HEMOGLOBIN_ID, encounterUuid,  BillRate.HEMOGLOBIN.value.toString()))
+                if(billDetails.selectedTestsList.contains(context.getString(R.string.visit_summary_bp)))add(createObs(UuidDictionary.BILL_PRICE_BP_ID, encounterUuid,  BillRate.BP.value.toString()))
             }
 
     private fun createObs(
         conceptUuid: String,
         encounterUuid: String,
         value: String?
+
     ) = ObsDTO().apply {
         val updatedValue = when (conceptUuid) {
             UuidDictionary.BILL_VISIT_TYPE ->

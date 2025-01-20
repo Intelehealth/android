@@ -70,6 +70,7 @@ import android.util.DisplayMetrics;
 
 import org.intelehealth.app.activities.bill.VisitSummaryBillModel;
 import org.intelehealth.app.activities.bill.VisitSummaryBillUtils;
+import org.intelehealth.app.ui.billgeneration.models.BillDetails;
 import org.intelehealth.app.utilities.CustomLog;
 
 import android.util.Log;
@@ -6327,9 +6328,9 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     private void generateAndViewBillData() {
         if (complaintView.getText().toString().contains("Follow up visit"))
             visitType = "Follow-Up";
-        VisitSummaryBillModel billModel = new VisitSummaryBillModel();
-        billModel.setVisitUuid(visitUuid);
-        billModel.setHideVisitUUID(showVisitID());
+        BillDetails billModel = new BillDetails();
+        billModel.setPatientVisitID(visitUuid);
+        billModel.setPatientHideVisitID(showVisitID());
         billModel.setVisitType(visitType);
         //billModel.setReceiptPaymentStatus();
         Log.d(TAG, "kkgenerateAndViewBillData: visitUuid : " + visitUuid);
@@ -6345,7 +6346,6 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         String billEncounterUuid = billUtils.checkForOldBill();
         Log.d(TAG, "generateAndViewBillData: billEncounterUuid : " + billEncounterUuid);
         if (!billEncounterUuid.equals("")) {
-            editVitals.setVisibility(View.GONE);
             //mBinding.editDiagnostics.setVisibility(View.GONE);//temp
             mBinding.btnGenerateBill.setText(getResources().getString(R.string.view_bill));
         }
