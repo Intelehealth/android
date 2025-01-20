@@ -1049,7 +1049,7 @@ public class VisitsDAO {
     public static String getPreviousVisitDate(String currentVisitUuid) {
         String previousVisitDate = "";
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
-        String query = "SELECT startdate FROM tbl_visit WHERE patientuuid = (SELECT patientuuid FROM tbl_visit WHERE uuid = ?) AND sync = 1 ORDER BY startdate DESC LIMIT 1 OFFSET 1 ";
+        String query = "SELECT startdate FROM tbl_visit WHERE patientuuid = (SELECT patientuuid FROM tbl_visit WHERE uuid = ?) AND sync = 1 ORDER BY startdate DESC LIMIT 1";
         Cursor cursor = db.rawQuery(query, new String[]{currentVisitUuid});
         if (cursor.getCount() != 0) {
             while (cursor.moveToNext()) {
@@ -1063,7 +1063,7 @@ public class VisitsDAO {
     public static String getPreviousVisitUuid(String currentVisitUuid) {
         String previousVisitUuid = "";
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
-        String query = "SELECT uuid FROM tbl_visit WHERE patientuuid = (SELECT patientuuid FROM tbl_visit WHERE uuid = ?) AND sync = 1 ORDER BY startdate DESC LIMIT 1 OFFSET 1 ";
+        String query = "SELECT uuid FROM tbl_visit WHERE patientuuid = (SELECT patientuuid FROM tbl_visit WHERE uuid = ?) AND sync = 1 ORDER BY startdate DESC LIMIT 1";
         Cursor cursor = db.rawQuery(query, new String[]{currentVisitUuid});
         if (cursor.getCount() != 0) {
             while (cursor.moveToNext()) {
