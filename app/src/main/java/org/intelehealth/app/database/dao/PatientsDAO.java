@@ -139,7 +139,7 @@ public class PatientsDAO {
             values.put("sync", false);
             patientAttributesList = patientDTO.getPatientAttributesDTOList();
             if (patientAttributesList != null)
-                insertPatientAttributes(patientAttributesList, db);
+                insertPatientAttributes(patientAttributesList);
             Logger.logD("pulldata", "datadumper" + values);
             createdRecordsCount1 = db.insert("tbl_patient", null, values);
             db.setTransactionSuccessful();
@@ -191,7 +191,7 @@ public class PatientsDAO {
             values.put("dead", false);
             values.put("sync", false);
 
-            insertPatientAttributes(patientDTO.getPatientAttributesDTOList(), db);
+            insertPatientAttributes(patientDTO.getPatientAttributesDTOList());
             Logger.logD("pulldata", "datadumper" + values);
             createdRecordsCount1 = db.update("tbl_patient", values, whereclause, new String[]{uuid});
             db.setTransactionSuccessful();
@@ -237,7 +237,7 @@ public class PatientsDAO {
             values.put("dead", false);
             values.put("sync", false);
 
-            insertPatientAttributes(patientAttributesDTOS, db);
+            insertPatientAttributes(patientAttributesDTOS);
             Logger.logD("pulldata", "datadumper" + values);
             createdRecordsCount1 = db.update("tbl_patient", values, whereclause, new String[]{uuid});
             db.setTransactionSuccessful();
@@ -498,9 +498,10 @@ public class PatientsDAO {
         return name;
     }
 
-    public boolean insertPatientAttributes(List<PatientAttributesDTO> patientAttributesDTOS, SQLiteDatabase db) throws DAOException {
+    public boolean insertPatientAttributes(List<PatientAttributesDTO> patientAttributesDTOS) throws DAOException {
         if (patientAttributesDTOS == null) return false;
         boolean isInserted = true;
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         ContentValues values = new ContentValues();
         db.beginTransaction();
         try {
@@ -1181,5 +1182,23 @@ public class PatientsDAO {
 
         cursor.close();
         return isBaselineSurveyCompleted;
+    }
+
+    public void updatePatientSync(boolean value, String patientId) {
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+        ContentValues values = new ContentValues();
+        String whereClause = "uuid=?";
+        String[] whereArgs = {patientId};
+
+        db.beginTransaction();
+        try {
+            values.put("sync", value);
+            db.update("tbl_patient", values, whereClause, whereArgs);
+            db.setTransactionSuccessful();
+        } catch (SQLException sqlException) {
+            CustomLog.e("visit", "updated" + sqlException.getMessage());
+        } finally {
+            db.endTransaction();
+        }
     }
 }
