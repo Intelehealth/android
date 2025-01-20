@@ -43,7 +43,7 @@
     <string name="identification_screen_prompt_age">Возраст:</string>
     <string name="identification_screen_prompt_city">Село/Город</string>
     <string name="identification_screen_prompt_state">Область</string>
-    <string name="identification_screen_prompt_country" translatable="false">Страна *</string>
+    <string name="identification_screen_prompt_country" translatable="false">Страна</string>
     <string name="identification_screen_prompt_postal_code" translatable="false">Почтовый индекс</string>
     <string name="identification_screen_text_years" translatable="false"> лет/годы(-а) </string>
     <string name="identification_screen_text_months" translatable="false"> месяцы(-а)</string>
@@ -365,8 +365,8 @@
     <!--Prescription-->
     <string name="prescription_pulse">Пульс (уд / мин)</string>
 
-    <string name="prescription_systolic_blood_pressure">Systolic Blood Pressure</string>
-    <string name="prescription_diastolic_blood_pressure">Diastolic Blood Pressure</string>
+    <string name="prescription_systolic_blood_pressure">Систолическое артериальное давление</string>
+    <string name="prescription_diastolic_blood_pressure">Диастолическое артериальное давление</string>
 
     <string name="prescription_wt">Вес (кг)</string>
     <string name="prescription_ht">Высота (см)</string>
@@ -805,8 +805,8 @@
     <string name="prescription_up_to_date">Prescription is up to date.</string>
     <string name="select_all_answers">Select all the answers</string>
     <string name="some_issue_with_mindmap">Some issue with the mindmaps.</string>
-    <string name="of">of</string>
-    <string name="questions">questions</string>
+    <string name="of">из</string>
+    <string name="questions">вопросов</string>
     <string name="visit_reason">%1$d/%2$d Visit reason</string>
     <string name="please_select_range">Please select the range!</string>
     <string name="level">Level %1$d</string>
@@ -889,7 +889,6 @@
     <string name="no_visit_found">Не найдено консультаций</string>
     <string name="what_is_reason_for_this_visit">Причина запроса на консультацию?</string>
     <string name="select_one_or_multiple_reasons">Select one or multiple reasons</string>
-    <string name="enter_one_or_multiple_reasons">Enter one or multiple reasons</string>
     <string name="selected_reasons">Selected reasons</string>
     <string name="recently_searched">Recently searched</string>
     <string name="not_searched_anything_yet">Not searched anything yet!</string>
@@ -1118,5 +1117,10 @@
     <string name="select_consultation_type">Select Consultation Type</string>
     <string name="enter_diagnosis">Введите диагноз</string>
     <string name="diagnosis_required">Diagnosis Required</string>
+    <string name="blackout">Blackout</string>
+    <string name="to_disable_notification_between_below_time_period_switch_on_the_blackout_period">To disable notification between below time period. switch on the blackout period</string>
+    <string name="signature">Signature</string>
+    <string name="generate">Generate</string>
+    <string name="type_name_to_generate_signature">Type name to generate signature.</string>
     <!-- UNFPA Strings end  -->
 </resources>

@@ -37,6 +37,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
+import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.complaintNodeActivity.CustomArrayAdapter;
 import org.intelehealth.app.activities.questionNodeActivity.QuestionsAdapter;
@@ -44,7 +45,9 @@ import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.ayu.visit.common.VisitUtils;
 import org.intelehealth.app.models.AnswerResult;
 import org.intelehealth.app.utilities.CustomLog;
+import org.intelehealth.app.utilities.FlavorKeys;
 import org.intelehealth.app.utilities.InputFilterMinMax;
+import org.intelehealth.app.utilities.ProtocolKeys;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.ihutils.ui.CameraActivity;
 import org.json.JSONArray;
@@ -1623,7 +1626,7 @@ public class Node implements Serializable {
 
 //        String locale = Locale.getDefault().getLanguage();
         String locale = sessionManager.getCurrentLang();
-        CustomLog.i(TAG, "findDisplay:"+locale);
+        CustomLog.i(TAG, "findDisplay:" + locale);
         switch (locale) {
             case "en": {
                 //CustomLog.i(TAG, "findDisplay: eng");
@@ -1769,6 +1772,13 @@ public class Node implements Serializable {
             }
             case "ru": {
                 if (display_russian != null && !display_russian.isEmpty()) {
+                    if (display_russian.equals(ProtocolKeys.VISIT_REASON) && BuildConfig.FLAVOR_client == FlavorKeys.UNFPA) {
+                        if (display == null || display.isEmpty()) {
+                            return text;
+                        } else {
+                            return display;
+                        }
+                    }
                     return display_russian;
                 } else {
                     if (display == null || display.isEmpty()) {
