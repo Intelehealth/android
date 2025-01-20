@@ -1333,6 +1333,9 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
                     //ui2.0 update user details in  nav header
                     updateNavHeaderUserDetails();
                     hideSyncProgressBar(true);
+                    if (callback != null) {
+                        callback.fetchCount();
+                    }
                 }
             }
 
