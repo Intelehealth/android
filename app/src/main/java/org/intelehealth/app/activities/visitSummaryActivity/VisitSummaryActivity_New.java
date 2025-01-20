@@ -17,6 +17,7 @@ import static org.intelehealth.app.utilities.UuidDictionary.ADDITIONAL_NOTES;
 import static org.intelehealth.app.utilities.UuidDictionary.CONSULTATION_TYPE;
 import static org.intelehealth.app.utilities.UuidDictionary.DIAGNOSIS;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_ADULTINITIAL;
+import static org.intelehealth.app.utilities.UuidDictionary.E_SIGNATURE;
 import static org.intelehealth.app.utilities.UuidDictionary.FACILITY;
 import static org.intelehealth.app.utilities.UuidDictionary.HW_FOLLOWUP_CONCEPT_ID;
 import static org.intelehealth.app.utilities.UuidDictionary.PRESCRIPTION_LINK;
@@ -177,6 +178,7 @@ import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.PatientRegStage;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.SignatureGeneratorUtils;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.TooltipWindow;
 import org.intelehealth.app.utilities.UrlModifiers;
@@ -662,6 +664,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             setupTypeOfConsultationSpinner();
             setFacilityToVisitSpinner();
             setSeveritySpinner();
+            setSignature();
             String followupValue = fetchValueFromLocalDb(visitUUID);
             if (!TextUtils.isEmpty(followupValue)) {
                 mBinding.tvViewFollowUpDateTime.setText(followupValue);
@@ -2238,6 +2241,13 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         });
     }
 
+    private void setSignature() {
+        String signature = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, E_SIGNATURE);
+        if (!TextUtils.isEmpty(signature)) {
+            mBinding.signatureIm.setImageBitmap(SignatureGeneratorUtils.generateSignature(signature,SignatureGeneratorUtils.getSIGNATURE_FONT()));
+        }
+    }
+
     private void setSeveritySpinner() {
         if (severityList == null || severityList.isEmpty()) {
             severityList = getSeverityList();
@@ -2871,6 +2881,15 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             in.putExtra("requestCode", AppConstants.EVENT_APPOINTMENT_BOOKING_FROM_VISIT_SUMMARY);
             mStartForScheduleAppointment.launch(in);
         });
+
+        mBinding.btnSignatureGenerate.setOnClickListener(v -> {
+            if (mBinding.signatureTextInput.getText().length() > 0) {
+                mBinding.signatureIm.setImageBitmap(SignatureGeneratorUtils.generateSignature(mBinding.signatureTextInput.getText().toString(), SignatureGeneratorUtils.getSIGNATURE_FONT()));
+            }else {
+                Toast.makeText(VisitSummaryActivity_New.this, getString(R.string.type_name_to_generate_signature),Toast.LENGTH_SHORT).show();
+            }
+
+        });
     }
 
 
@@ -3172,6 +3191,10 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
                 if (!selectedConsultationType.isEmpty()) {
                     visitAttributeListDAO.insertVisitAttributes(visitUuid, selectedConsultationType, CONSULTATION_TYPE);
+                }
+
+                if (!mBinding.signatureTextInput.getText().toString().isEmpty()) {
+                    visitAttributeListDAO.insertVisitAttributes(visitUuid, mBinding.signatureTextInput.getText().toString(), E_SIGNATURE);
                 }
 
 
