@@ -463,6 +463,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
             mBinding.flDiagnosisCard.setVisibility(activeStatus.getDiagnosisAtSecondaryLevel() ? View.VISIBLE : View.GONE);
             mBinding.flConsultationTypeCard.setVisibility(activeStatus.getTypeOfConsultation() ? View.VISIBLE : View.GONE);
+            mBinding.flSignatureCard.setVisibility(activeStatus.getMobileESignature() ? View.VISIBLE : View.GONE);
 //            if (!activeStatus.getVisitSummeryAppointment()) {
             Button btn = findViewById(R.id.btn_vs_appointment);
             boolean isAppointment = btn.getText().toString().equals(getString(R.string.appointment));
@@ -664,7 +665,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             setupTypeOfConsultationSpinner();
             setFacilityToVisitSpinner();
             setSeveritySpinner();
-            setSignature();
+            setupSignature();
             String followupValue = fetchValueFromLocalDb(visitUUID);
             if (!TextUtils.isEmpty(followupValue)) {
                 mBinding.tvViewFollowUpDateTime.setText(followupValue);
@@ -825,6 +826,9 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
                     mBinding.typeOfConsultationCard.setVisibility(View.GONE);
                     mBinding.consultationTypeVdCard.setVisibility(View.VISIBLE);
+
+                    mBinding.signatureCard.setVisibility(View.GONE);
+                    mBinding.signatureVdCard.setVisibility(View.VISIBLE);
                 }
 
                 btn_bottom_printshare.setVisibility(View.VISIBLE);
@@ -886,6 +890,9 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
                     mBinding.typeOfConsultationCard.setVisibility(View.VISIBLE);
                     mBinding.consultationTypeVdCard.setVisibility(View.GONE);
+
+                    mBinding.signatureCard.setVisibility(View.VISIBLE);
+                    mBinding.signatureVdCard.setVisibility(View.GONE);
                 }
 
                 doc_speciality_card.setVisibility(View.VISIBLE);
@@ -930,6 +937,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
         setupDiagnosisData();
         setupTypeOfConsultationSpinner();
+        setupSignature();
     }
 
     private void updateUIState() {
@@ -940,6 +948,9 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
                 mBinding.typeOfConsultationCard.setVisibility(View.GONE);
                 mBinding.consultationTypeVdCard.setVisibility(View.VISIBLE);
+
+                mBinding.signatureCard.setVisibility(View.GONE);
+                mBinding.signatureVdCard.setVisibility(View.VISIBLE);
             }
             doc_speciality_card.setVisibility(View.GONE);
             special_vd_card.setVisibility(View.VISIBLE);
@@ -1168,6 +1179,22 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             } else {
                 mOpenCount++;
                 mBinding.vdConsultationTypeHeaderExpandview.setVisibility(View.VISIBLE);
+                openall_btn.setText(getResources().getString(R.string.close_all));
+                openall_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_up_24, 0);
+            }
+        });
+
+        mBinding.signatureVdHeaderRelative.setOnClickListener(v -> {
+            if (mBinding.vdSignatureHeaderExpandview.getVisibility() == View.VISIBLE) {
+                mBinding.vdSignatureHeaderExpandview.setVisibility(View.GONE);
+                mOpenCount--;
+                if (mOpenCount == 0) {
+                    openall_btn.setText(getResources().getString(R.string.open_all));
+                    openall_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_down_24, 0);
+                }
+            } else {
+                mOpenCount++;
+                mBinding.vdSignatureHeaderExpandview.setVisibility(View.VISIBLE);
                 openall_btn.setText(getResources().getString(R.string.close_all));
                 openall_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_up_24, 0);
             }
@@ -2241,10 +2268,10 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         });
     }
 
-    private void setSignature() {
+    private void setupSignature() {
         String signature = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, E_SIGNATURE);
         if (!TextUtils.isEmpty(signature)) {
-            mBinding.signatureIm.setImageBitmap(SignatureGeneratorUtils.generateSignature(signature,SignatureGeneratorUtils.getSIGNATURE_FONT()));
+            mBinding.signatureVdText.setText(signature);
         }
     }
 
@@ -2882,13 +2909,21 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             mStartForScheduleAppointment.launch(in);
         });
 
-        mBinding.btnSignatureGenerate.setOnClickListener(v -> {
-            if (mBinding.signatureTextInput.getText().length() > 0) {
-                mBinding.signatureIm.setImageBitmap(SignatureGeneratorUtils.generateSignature(mBinding.signatureTextInput.getText().toString(), SignatureGeneratorUtils.getSIGNATURE_FONT()));
-            }else {
-                Toast.makeText(VisitSummaryActivity_New.this, getString(R.string.type_name_to_generate_signature),Toast.LENGTH_SHORT).show();
+        mBinding.signatureTextInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
             }
 
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                mBinding.signatureText.setText(s.toString());
+            }
         });
     }
 
@@ -3094,6 +3129,11 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         if (mBinding.diagnosisTextInput.getText().toString().isEmpty()) {
             mBinding.diagnosisTextInput.setError(getString(R.string.enter_diagnosis));
         }
+
+        if (mBinding.signatureTextInput.getText().toString().isEmpty()) {
+            mBinding.signatureTextInput.setError(getString(R.string.enter_signature));
+        }
+
         if (selectedConsultationType.isEmpty()) {
             TextView view = (TextView) mBinding.typeOfConsultationSpinner.getSelectedView();
             if (view != null) {

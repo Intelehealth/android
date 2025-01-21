@@ -1406,7 +1406,7 @@
                             android:id="@+id/signature_vd_card"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:visibility="gone"
+                            android:visibility="visible"
                             android:layout_marginStart="@dimen/toolbar_margin_left"
                             android:layout_marginTop="@dimen/margin_5"
                             android:layout_marginEnd="@dimen/toolbar_margin_left"
@@ -1471,11 +1471,14 @@
                                         android:layout_marginBottom="@dimen/fu_card_margin_updown"
                                         android:background="@color/notifi_divider_color" />
 
-                                    <ImageView
-                                        android:layout_width="wrap_content"
+                                    <TextView
+                                        android:id="@+id/signature_vd_text"
+                                        android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
-                                        android:minHeight="100dp"
-                                        android:layout_margin="@dimen/margin_12"
+                                        android:padding="10dp"
+                                        app:fontFamily="@font/notera_font"
+                                        android:textSize="@dimen/text_50sp"
+                                        android:gravity="center"
                                         android:layout_below="@+id/signature_divider"
                                         />
 
@@ -1490,7 +1493,7 @@
                             android:id="@+id/signature_card"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:visibility="visible"
+                            android:visibility="gone"
                             android:layout_marginStart="@dimen/toolbar_margin_left"
                             android:layout_marginTop="@dimen/margin_5"
                             android:layout_marginEnd="@dimen/toolbar_margin_left"
@@ -1524,10 +1527,10 @@
                                         android:id="@+id/signatureTextInput"
                                         android:layout_width="0dp"
                                         android:layout_height="wrap_content"
-                                        android:layout_weight="7"
+                                        android:layout_weight="10"
                                         android:background="@drawable/input_edittext_border"
                                         android:gravity="top"
-                                        android:digits="@string/validation_latter_only"
+                                        android:digits="@string/validation_latter_with_space_only"
                                         android:inputType="text"
                                         android:minLines="1"
                                         android:padding="@dimen/fu_margin_start"
@@ -1535,10 +1538,11 @@
                                         android:textSize="@dimen/find_patient_hint_size" />
 
                                     <Button
-                                        android:id="@+id/btnSignatureGenerate"
+                                        android:id="@+id/signature_generate_bt"
                                         android:layout_width="0dp"
                                         android:layout_height="wrap_content"
                                         android:layout_weight="3"
+                                        android:visibility="gone"
                                         android:layout_marginBottom="@dimen/margin_5"
                                         android:layout_marginHorizontal="@dimen/margin_10"
                                         android:background="@drawable/ui2_common_primary_bg"
@@ -1548,12 +1552,14 @@
                                         />
                                 </LinearLayout>
 
-
-                                <ImageView
-                                    android:id="@+id/signatureIm"
+                                <TextView
+                                    android:id="@+id/signature_text"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_margin="@dimen/margin_12"
+                                    android:padding="10dp"
+                                    app:fontFamily="@font/notera_font"
+                                    android:textSize="@dimen/text_50sp"
+                                    android:gravity="center"
                                     android:layout_below="@+id/signature_generation_lay"
                                     />
                             </RelativeLayout>
