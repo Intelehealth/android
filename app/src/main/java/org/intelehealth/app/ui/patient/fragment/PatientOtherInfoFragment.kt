@@ -60,6 +60,9 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
         super.onPatientDataLoaded(patient)
         Timber.d { "onPatientDataLoaded" }
         Timber.d { Gson().toJson(patient) }
+        if (!patientViewModel.isEditMode){
+            patient.codeOfHealthFacility = LanguageUtils.getCodeOfHf(patient.province)
+        }
         binding.patient = patient
         binding.isEditMode = patientViewModel.isEditMode
         fetchPersonalInfoConfig()
@@ -67,16 +70,16 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
 
     private fun fetchPersonalInfoConfig() {
 
-       /* patientViewModel.fetchOtherRegFields().observe(viewLifecycleOwner) {
-            binding.otherInfoConfig = PatientRegFieldsUtils.buildPatientOtherInfoConfig(it)
-            setupSocialCategory()
-            setupEducations()
-            setupHealthFacility()
-            setupEconomicCategory()
-            applyFilter()
-            setInputTextChangListener()
-            setClickListener()
-        }*/
+        /* patientViewModel.fetchOtherRegFields().observe(viewLifecycleOwner) {
+             binding.otherInfoConfig = PatientRegFieldsUtils.buildPatientOtherInfoConfig(it)
+             setupSocialCategory()
+             setupEducations()
+             setupHealthFacility()
+             setupEconomicCategory()
+             applyFilter()
+             setInputTextChangListener()
+             setClickListener()
+         }*/
 
         lifecycleScope.launch {
             patientViewModel.fetchOtherRegFieldsSuspended().let {

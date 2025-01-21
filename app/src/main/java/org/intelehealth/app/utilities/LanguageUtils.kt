@@ -56,6 +56,13 @@ object LanguageUtils {
     }
 
     @JvmStatic
+    fun getCodeOfHf(province: String): String? {
+        if(province.isEmpty()) return ""
+        val codeMap =  getProvincesAndCities().code_of_hf.find { it.contains(province) }
+        return codeMap?.split(":")?.last()
+    }
+
+    @JvmStatic
     fun getStateList(): List<StateData>? {
         return parseStatesJson().stateDataList
     }

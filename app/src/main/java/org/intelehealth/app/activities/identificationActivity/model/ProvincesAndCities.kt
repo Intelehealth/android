@@ -5,5 +5,7 @@ data class ProvincesAndCities(
     var cities: ArrayList<String> = arrayListOf(),
 
     var provinces_ru: ArrayList<String> = arrayListOf(),
-    var cities_ru: ArrayList<String> = arrayListOf()
+    var cities_ru: ArrayList<String> = arrayListOf(),
+
+    var code_of_hf: ArrayList<String> = arrayListOf()
 )
