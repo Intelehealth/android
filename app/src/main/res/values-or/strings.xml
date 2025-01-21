@@ -412,4 +412,5 @@
     <string name="signature">Signature</string>
     <string name="generate">Generate</string>
     <string name="type_name_to_generate_signature">Type name to generate signature.</string>
+    <string name="enter_signature">Enter Signature</string>
 </resources>
