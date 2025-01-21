@@ -996,6 +996,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 vd_addnotes_header_expandview.setVisibility(View.VISIBLE);
                 mBinding.vdDiagnosisHeaderExpandview.setVisibility(View.VISIBLE);
                 mBinding.vdConsultationTypeHeaderExpandview.setVisibility(View.VISIBLE);
+                mBinding.vdSignatureHeaderExpandview.setVisibility(View.VISIBLE);
                 mOpenCount = 6;
             } else {
                 openall_btn.setText(getResources().getString(R.string.open_all));
@@ -1008,6 +1009,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 vd_addnotes_header_expandview.setVisibility(View.GONE);
                 mBinding.vdDiagnosisHeaderExpandview.setVisibility(View.GONE);
                 mBinding.vdConsultationTypeHeaderExpandview.setVisibility(View.GONE);
+                mBinding.vdSignatureHeaderExpandview.setVisibility(View.GONE);
                 mOpenCount = 0;
             }
 
