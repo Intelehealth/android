@@ -8,6 +8,7 @@ import org.intelehealth.app.R
 import org.intelehealth.app.activities.patientDetailActivity.StaticPatientRegistrationEnabledFieldsHelper
 import org.intelehealth.app.databinding.FragmentBaselineSurveyGeneralBinding
 import org.intelehealth.app.ui.baseline_survey.model.Baseline
+import org.intelehealth.app.ui.patient.fragment.PatientPersonalInfoFragmentDirections
 import org.intelehealth.app.utilities.ArrayAdapterUtils
 import org.intelehealth.app.utilities.BaselineSurveyStage
 import org.intelehealth.app.utilities.LanguageUtils

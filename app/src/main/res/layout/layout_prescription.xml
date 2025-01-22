@@ -281,18 +281,6 @@
             app:layout_constraintTop_toBottomOf="@id/tv_vitals_haemoglobin" />
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/tv_vitals_sugar_fasting"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
-            android:fontFamily="@font/lato_bold"
-            android:text="@string/prescription_sugar_fasting"
-            android:textSize="@dimen/data_title_size"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_vitals_blood_group" />
-
-        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_vitals_sugar_random"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -302,7 +290,7 @@
             android:textSize="@dimen/data_title_size"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_vitals_sugar_fasting" />
+            app:layout_constraintTop_toBottomOf="@id/tv_vitals_blood_group" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_diagnosis"

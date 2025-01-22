@@ -44,6 +44,7 @@ import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.config.presenter.fields.data.PatientVitalRepository;
 import org.intelehealth.config.presenter.fields.factory.PatientVitalViewModelFactory;
@@ -282,7 +283,7 @@ public class VitalCollectionSummaryFragment extends Fragment {
                                             }
                                             mLastClickTime = SystemClock.elapsedRealtime();
 
-                                            speciality_attributes.insertVisitAttributes(visitUuid,"", AppConstants.DOCTOR_NOT_NEEDED);
+                                            speciality_attributes.insertVisitAttributes(visitUuid, AppConstants.DOCTOR_NOT_NEEDED, UuidDictionary.SPECIALITY);
                                             // speciality_attributes.insertVisitAttributes(visitUuid, " Specialist doctor not needed");
                                         } catch (DAOException e) {
                                             e.printStackTrace();

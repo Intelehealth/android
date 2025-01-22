@@ -266,4 +266,6 @@ public class AppConstants {
     public static final int PRESCRIPTION_SHARED = 999;
     public static final int PRESCRIPTION_NOT_SHARED = 998;
 
+    public static final String COMPLAINT_SEVIKA_VISIT = "Sevika Visit";
+
 }

@@ -11,6 +11,7 @@ import org.intelehealth.app.R
 import org.intelehealth.app.activities.identificationActivity.model.DistData
 import org.intelehealth.app.activities.identificationActivity.model.StateData
 import org.intelehealth.app.activities.patientDetailActivity.StaticPatientRegistrationEnabledFieldsHelper
+import org.intelehealth.app.app.IntelehealthApplication
 import org.intelehealth.app.databinding.FragmentPatientAddressInfoBinding
 import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.app.ui.filter.CorrespondingAddressInputFilter
@@ -124,8 +125,7 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
         patient.apply {
             postalcode = binding.textInputPostalCode.text?.toString()
             val village = binding.textInputCityVillage.text?.toString()
-            cityvillage = if (district.isNullOrEmpty().not()) "${district}:$village"
-            else village
+            cityvillage = if (district.isNullOrEmpty().not()) "${district}:$village" else village
             address1 = binding.textInputAddress1.text?.toString()
             address2 = binding.textInputAddress2.text?.toString()
             stateprovince = SessionManager.getInstance(requireContext()).stateName

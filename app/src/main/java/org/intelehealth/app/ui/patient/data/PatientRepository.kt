@@ -1,7 +1,9 @@
 package org.intelehealth.app.ui.patient.data
 
 import android.database.sqlite.SQLiteOpenHelper
+import android.util.Log
 import com.github.ajalt.timberkt.Timber
+import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity2
 import org.intelehealth.app.app.IntelehealthApplication
 import org.intelehealth.app.database.dao.ImagesDAO
 import org.intelehealth.app.database.dao.ImagesPushDAO
@@ -140,6 +142,7 @@ class PatientRepository(
     ): PatientAttributesDTO {
         val sessionManager = SessionManager(IntelehealthApplication.getAppContext())
         val sid = sessionManager.householdUuid
+        print("houseHoldValue: createPatientAttribute -> patient repository $sid")
         val hid = if (sid.equals("")) { UUID.randomUUID().toString() } else { sid }
         return PatientAttributesDTO().apply {
             uuid = UUID.randomUUID().toString()

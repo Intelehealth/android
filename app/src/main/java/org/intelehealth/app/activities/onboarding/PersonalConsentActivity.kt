@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import org.intelehealth.app.R
 import org.intelehealth.app.app.AppConstants
+import org.intelehealth.app.app.IntelehealthApplication
 import org.intelehealth.app.ui.patient.activity.PatientRegistrationActivity
 import org.intelehealth.app.utilities.ConfigUtils
 import org.intelehealth.app.utilities.DialogUtils
@@ -80,14 +81,10 @@ class PersonalConsentActivity : AppCompatActivity(), WebViewStatus {
     }
 
     fun acceptCon(view: View?) {
-//        startActivity(
-//            Intent(
-//                this,
-//                IdentificationActivity_New::class.java
-//            )
-//        )
         PatientRegistrationActivity.startPatientRegistration(this)
         setResult(AppConstants.PERSONAL_CONSENT_ACCEPT)
+        val sessionManager = SessionManager(IntelehealthApplication.getAppContext())
+        sessionManager.householdUuid = ""
         finish()
     }
 

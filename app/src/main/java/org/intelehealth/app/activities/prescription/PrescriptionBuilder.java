@@ -26,6 +26,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.ayu.visit.common.VisitUtils;
 import org.intelehealth.app.databinding.LayoutPrescriptionBinding;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.models.ClsDoctorDetails;
@@ -301,7 +302,7 @@ public class PrescriptionBuilder {
     }
 
     private String generateVitalsData(VitalsObject vitalsData) {
-        if (!mFeatureActiveStatus.getVitalSection())  return "";
+//        if (!mFeatureActiveStatus.getVitalSection())  return "";
         String finalVitalsData = "";
         String openingDivTag = "<div class=\"col-md-12 px-3 mb-3\">\n";
         String openingDataSectionTag = "<div class=\"data-section\">\n";
@@ -1094,13 +1095,13 @@ public class PrescriptionBuilder {
         String bpSys = checkValueAndReturnNA(vitalsObject.getBpsys());
         String bpDia = checkValueAndReturnNA(vitalsObject.getBpdia());
         String bloodPressure = getOrganizedDataWithBullets(activityContext.getString(R.string.prescription_bp, bpSys.concat(" / ").concat(bpDia)));
-        String pulse = getOrganizedDataWithBullets(activityContext.getString(R.string.prescription_pulse, checkValueAndReturnNA(vitalsObject.getPulse())));
+        String pulse = getOrganizedDataWithBullets(activityContext.getString(R.string.prescription_pulse_value, checkValueAndReturnNA(vitalsObject.getPulse())));
         String temperature = getOrganizedDataWithBullets(activityContext.getString(R.string.prescription_temperature, checkValueAndReturnNA(vitalsObject.getTemperature())));
         String respiratoryRate = getOrganizedDataWithBullets(activityContext.getString(R.string.prescription_respiratory_rate, checkValueAndReturnNA(vitalsObject.getResp())));
         String spO2 = getOrganizedDataWithBullets(activityContext.getString(R.string.prescription_spo2, checkValueAndReturnNA(vitalsObject.getSpo2())));
         String haemoglobin = getOrganizedDataWithBullets(activityContext.getString(R.string.prescription_haemoglobin, checkValueAndReturnNA(vitalsObject.getHaemoglobin())));
-        String bloodGroup = getOrganizedDataWithBullets(activityContext.getString(R.string.prescription_blood_group, checkValueAndReturnNA(vitalsObject.getBloodGroup())));
-//        String sugarFasting = getOrganizedDataWithBullets(activityContext.getString(R.string.prescription_sugar_fasting, checkValueAndReturnNA(vitalsObject.getSugarfasting())));
+        String bloodGroup = getOrganizedDataWithBullets(activityContext.getString(R.string.prescription_blood_group, checkValueAndReturnNA(VisitUtils.getBloodPressureEnStringFromCode(vitalsObject.getBloodGroup()))));
+//        String sugarFasting = getOrganizedDataWithBullets(activityContext.getString(R.string.prescription_sugar_fasting, "NA"));
         String sugarRandom = getOrganizedDataWithBullets(activityContext.getString(R.string.prescription_sugar_random, checkValueAndReturnNA(vitalsObject.getSugarRandom())));
 
         binding.tvVitalsHeight.setText(height);

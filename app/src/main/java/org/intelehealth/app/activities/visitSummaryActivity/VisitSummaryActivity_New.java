@@ -256,7 +256,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     private float float_ageYear_Month;
     String encounterVitals, encounterUuidAdultIntial, EncounterAdultInitial_LatestVisit;
     SharedPreferences mSharedPreference;
-    Boolean isPastVisit = false, isVisitSpecialityExists = false;
+    Boolean isPastVisit = false, isVisitSpecialityExists = false, isSevikaVisit = false;
     Boolean isReceiverRegistered = false;
     ArrayList<String> physicalExams;
     VisitSummaryActivity_New.DownloadPrescriptionService downloadPrescriptionService;
@@ -469,11 +469,23 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             findViewById(R.id.flSeverity).setVisibility(activeStatus.getVisitSummerySeverityOfCase() ? View.VISIBLE : View.GONE);
             findViewById(R.id.fabStartChat).setVisibility(activeStatus.getChatSection() ? View.VISIBLE : View.GONE);
             findViewById(R.id.vitalsCard).setVisibility(activeStatus.getVitalSection() ? View.VISIBLE : View.GONE);
-            findViewById(R.id.add_notes_relative).setVisibility(activeStatus.getVisitSummeryNote() ? View.VISIBLE : View.GONE);
-            findViewById(R.id.add_doc_relative).setVisibility(activeStatus.getVisitSummeryAttachment() ? View.VISIBLE : View.GONE);
+            findViewById(R.id.add_notes_relative).setVisibility(isSevikaVisit ? View.GONE : activeStatus.getVisitSummeryNote() ? View.VISIBLE : View.GONE);
+            findViewById(R.id.add_doc_relative).setVisibility(isSevikaVisit ? View.GONE : activeStatus.getVisitSummeryAttachment() ? View.VISIBLE : View.GONE);
+            findViewById(R.id.relative_speciality_block).setVisibility(isSevikaVisit ? View.GONE : View.VISIBLE);
+
+            // visit reason header
+            findViewById(R.id.vs_visitreason_header_expandview).setVisibility(isSevikaVisit ? View.GONE : View.VISIBLE);
+            findViewById(R.id.btn_up_visitreason_header).setVisibility(isSevikaVisit ? View.GONE : View.VISIBLE);
+            // physical examination header
+            findViewById(R.id.vs_phyexam_header_expandview).setVisibility(isSevikaVisit ? View.GONE : View.VISIBLE);
+            findViewById(R.id.btn_up_phyexam_header).setVisibility(isSevikaVisit ? View.GONE : View.VISIBLE);
+            // medical history header
+            findViewById(R.id.vs_medhist_header_expandview).setVisibility(isSevikaVisit ? View.GONE : View.VISIBLE);
+            findViewById(R.id.btn_up_medhist_header).setVisibility(isSevikaVisit ? View.GONE : View.VISIBLE);
+
             findViewById(R.id.flVdCard).setVisibility(activeStatus.getVisitSummeryDoctorSpeciality() ? View.VISIBLE : View.GONE);
-            findViewById(R.id.cardPriorityVisit).setVisibility(activeStatus.getVisitSummeryPriorityVisit() ? View.VISIBLE : View.GONE);
-            findViewById(R.id.cvFollowup).setVisibility(activeStatus.getVisitSummeryHwFollowUp() ? View.VISIBLE : View.GONE);
+            findViewById(R.id.cardPriorityVisit).setVisibility(isSevikaVisit ? View.GONE : activeStatus.getVisitSummeryPriorityVisit() ? View.VISIBLE : View.GONE);
+            findViewById(R.id.cvFollowup).setVisibility(isSevikaVisit ? View.GONE : activeStatus.getVisitSummeryHwFollowUp() ? View.VISIBLE : View.GONE);
 //            if (!activeStatus.getVisitSummeryAppointment()) {
             Button btn = findViewById(R.id.btn_vs_appointment);
             boolean isAppointment = btn.getText().toString().equals(getString(R.string.appointment));
@@ -723,8 +735,15 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
                 isPastVisit = intent.getBooleanExtra("pastVisit", false);
                 mCommonVisitData.setPastVisit(isPastVisit);
-            }
 
+            }
+            isSevikaVisit = intent.getBooleanExtra("is_sevika_visit", false);
+            if(isSevikaVisit) {
+                mBinding.addNotesRelative.setVisibility(View.GONE);
+                mBinding.addDocRelative.setVisibility(View.GONE);
+                mBinding.relativeSpecialityBlock.setVisibility(View.GONE);
+                mBinding.bottomBtnRelative.setVisibility(View.GONE);
+            }
 
             mSharedPreference = this.getSharedPreferences("visit_summary", Context.MODE_PRIVATE);
             try {
@@ -993,52 +1012,58 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
 
         chiefcomplaint_header_relative.setOnClickListener(v -> {
-            if (vs_visitreason_header_expandview.getVisibility() == View.VISIBLE) {
-                vs_visitreason_header_expandview.setVisibility(View.GONE);
-                mOpenCount--;
-                if (mOpenCount == 0) {
-                    openall_btn.setText(getResources().getString(R.string.open_all));
-                    openall_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_down_24, 0);
+            if(!isSevikaVisit){
+                if (vs_visitreason_header_expandview.getVisibility() == View.VISIBLE) {
+                    vs_visitreason_header_expandview.setVisibility(View.GONE);
+                    mOpenCount--;
+                    if (mOpenCount == 0) {
+                        openall_btn.setText(getResources().getString(R.string.open_all));
+                        openall_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_down_24, 0);
+                    }
+                } else {
+                    mOpenCount++;
+                    vs_visitreason_header_expandview.setVisibility(View.VISIBLE);
+                    openall_btn.setText(getResources().getString(R.string.close_all));
+                    openall_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_up_24, 0);
                 }
-            } else {
-                mOpenCount++;
-                vs_visitreason_header_expandview.setVisibility(View.VISIBLE);
-                openall_btn.setText(getResources().getString(R.string.close_all));
-                openall_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_up_24, 0);
             }
         });
 
 
         physExam_header_relative.setOnClickListener(v -> {
-            if (vs_phyexam_header_expandview.getVisibility() == View.VISIBLE) {
-                vs_phyexam_header_expandview.setVisibility(View.GONE);
-                mOpenCount--;
-                if (mOpenCount == 0) {
-                    openall_btn.setText(getResources().getString(R.string.open_all));
-                    openall_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_down_24, 0);
+            if(!isSevikaVisit){
+                if (vs_phyexam_header_expandview.getVisibility() == View.VISIBLE) {
+                    vs_phyexam_header_expandview.setVisibility(View.GONE);
+                    mOpenCount--;
+                    if (mOpenCount == 0) {
+                        openall_btn.setText(getResources().getString(R.string.open_all));
+                        openall_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_down_24, 0);
+                    }
+                } else {
+                    mOpenCount++;
+                    vs_phyexam_header_expandview.setVisibility(View.VISIBLE);
+                    openall_btn.setText(getResources().getString(R.string.close_all));
+                    openall_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_up_24, 0);
                 }
-            } else {
-                mOpenCount++;
-                vs_phyexam_header_expandview.setVisibility(View.VISIBLE);
-                openall_btn.setText(getResources().getString(R.string.close_all));
-                openall_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_up_24, 0);
             }
         });
 
 
         pathistory_header_relative.setOnClickListener(v -> {
-            if (vs_medhist_header_expandview.getVisibility() == View.VISIBLE) {
-                vs_medhist_header_expandview.setVisibility(View.GONE);
-                mOpenCount--;
-                if (mOpenCount == 0) {
-                    openall_btn.setText(getResources().getString(R.string.open_all));
-                    openall_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_down_24, 0);
+            if(!isSevikaVisit){
+                if (vs_medhist_header_expandview.getVisibility() == View.VISIBLE) {
+                    vs_medhist_header_expandview.setVisibility(View.GONE);
+                    mOpenCount--;
+                    if (mOpenCount == 0) {
+                        openall_btn.setText(getResources().getString(R.string.open_all));
+                        openall_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_down_24, 0);
+                    }
+                } else {
+                    mOpenCount++;
+                    vs_medhist_header_expandview.setVisibility(View.VISIBLE);
+                    openall_btn.setText(getResources().getString(R.string.close_all));
+                    openall_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_up_24, 0);
                 }
-            } else {
-                mOpenCount++;
-                vs_medhist_header_expandview.setVisibility(View.VISIBLE);
-                openall_btn.setText(getResources().getString(R.string.close_all));
-                openall_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_up_24, 0);
             }
         });
 
@@ -4841,6 +4866,18 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         VitalsObject vitalsObject = new VitalsObject();
         vitalsObject.setHeight(checkAndReturnVitalsValue(height));
         vitalsObject.setWeight(checkAndReturnVitalsValue(weight));
+        if (weight.getValue() != null) {
+            String mWeight = weight.getValue().split(" ")[0];
+            String mHeight = height.getValue().split(" ")[0];
+            if ((mHeight != null && mWeight != null) && !mHeight.isEmpty() && !mWeight.isEmpty()) {
+                double numerator = Double.parseDouble(mWeight) * 10000;
+                double denominator = Double.parseDouble(mHeight) * Double.parseDouble(mHeight);
+                double bmi_value = numerator / denominator;
+                mBMI = String.format(Locale.ENGLISH, "%.2f", bmi_value);
+            } else {
+                mBMI = "";
+            }
+        }
         vitalsObject.setBmi(mBMI);
         vitalsObject.setBpsys(checkAndReturnVitalsValue(bpSys));
         vitalsObject.setBpdia(checkAndReturnVitalsValue(bpDias));
