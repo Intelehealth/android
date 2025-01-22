@@ -28,6 +28,11 @@ class BaselineSurveyViewModel(
     var baselineEditMode: Boolean = false
     lateinit var patientId: String
 
+
+    var baselineActiveMedicalSection = true
+    var baselineActiveOtherSection = true
+    var isEditMode: Boolean = false
+
     fun loadBaselineData(
         patientId: String
     ) = executeLocalQuery {

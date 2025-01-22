@@ -3,7 +3,6 @@ package org.intelehealth.app.activities.visit;
 import static org.intelehealth.app.ayu.visit.common.VisitUtils.convertCtoFNew;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_COMPLETE;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE;
-import static org.webrtc.ContextUtils.getApplicationContext;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
@@ -23,7 +22,6 @@ import android.text.Html;
 import android.util.DisplayMetrics;
 
 import org.intelehealth.app.activities.prescription.PrescriptionBuilder;
-import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity_New;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.ayu.visit.notification.LocalPrescriptionInfo;
 import org.intelehealth.app.knowledgeEngine.Node;
@@ -199,12 +197,12 @@ public class VisitReceivedFragment extends Fragment implements VisitAdapter.OnVi
         final Cursor visitIDCursor = db.query("tbl_visit", columnsToReturn, visitIDSelection, visitIDArgs, null, null, visitIdOrderBy);
         visitIDCursor.moveToLast();
         String startDateTime = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("startdate"));
-        /*visitIDCursor.close();*/
 
         String[] eColumns = {"visituuid", "encounter_type_uuid"};
         String[] eValues = {model.getVisitUuid(), UuidDictionary.ENCOUNTER_VITALS};
         EncounterDTO mEncounter = queryAndGetRowAsObject("tbl_encounter", eColumns, eValues, EncounterDTO.class);
 
+        preparePrescriptionDiagnosisInfo(model.getVisitUuid());
         preparePrescriptionVitals(mEncounter.getUuid());
 
         String[] pColumns = {"uuid"};
@@ -298,11 +296,41 @@ public class VisitReceivedFragment extends Fragment implements VisitAdapter.OnVi
         }
     }
 
-    public void preparePrescriptionVitals(String mEncounterUUID) {
+    public void preparePrescriptionDiagnosisInfo(String visitUuid) {
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
+        String visitnote = "";
+        EncounterDAO encounterDAO = new EncounterDAO();
+        String encounterIDSelection = "visituuid = ? AND voided = ?";
+        String[] encounterIDArgs = {visitUuid, "0"};
+        Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
+        if (encounterCursor != null && encounterCursor.moveToFirst()) {
+            do {
+                if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_VISIT_NOTE").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+                    visitnote = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
+                }
+            } while (encounterCursor.moveToNext());
+
+        }
+        encounterCursor.close();
+
         String[] columns = {"value", " conceptuuid"};
         String visitSelection = "encounteruuid = ? and voided = ? and sync = ?";
-        String[] visitArgs = {mEncounterUUID, "0", "TRUE"};
+        String[] visitArgs = {visitnote, "0", "TRUE"};
+        Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
+        if (visitCursor.moveToFirst()) {
+            do {
+                String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
+                String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
+                parseData(dbConceptID, dbValue);
+            } while (visitCursor.moveToNext());
+        }
+        visitCursor.close();
+    }
+
+    public void preparePrescriptionVitals(String encounterId) {
+        String[] columns = {"value", " conceptuuid"};
+        String visitSelection = "encounteruuid = ? and voided = ? and sync = ?";
+        String[] visitArgs = {encounterId, "0", "TRUE"};
         Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
         if (visitCursor.moveToFirst()) {
             do {
@@ -548,11 +576,11 @@ public class VisitReceivedFragment extends Fragment implements VisitAdapter.OnVi
 
     private String formatComplaintData(String mComplaint) {
         String[] mComplaints = org.apache.commons.lang3.StringUtils.split(mComplaint, Node.bullet_arrow);
-        String[] complaints = {mComplaints[1]};
-        StringBuilder formattedData = new StringBuilder();
-        String colon = ":";
+        if(mComplaints != null && mComplaints.length > 0){
+            String[] complaints = {mComplaints[1]};
+            StringBuilder formattedData = new StringBuilder();
+            String colon = ":";
 
-        if (complaints != null) {
             for (String value : complaints) {
                 if (value == null || value.trim().isEmpty()) {
                     continue;
@@ -584,7 +612,6 @@ public class VisitReceivedFragment extends Fragment implements VisitAdapter.OnVi
                 return result;
             }
         }
-
         return "";
     }
 

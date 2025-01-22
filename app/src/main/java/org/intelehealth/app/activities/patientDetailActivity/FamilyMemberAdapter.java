@@ -1,7 +1,9 @@
 package org.intelehealth.app.activities.patientDetailActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Paint;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.intelehealth.app.R;
@@ -35,10 +38,17 @@ public class FamilyMemberAdapter extends RecyclerView.Adapter<FamilyMemberAdapte
 
     @Override
     public void onBindViewHolder(@NonNull FamilyMemberAdapter.FamilyMemberViewHolder holder, int position) {
-
+        String patientUUID = listPatientNames.get(position).getUuid();
         holder.tvFamilyName.setText(listPatientNames.get(position).getName());
         holder.tvOpenMRSID.setText(listPatientNames.get(position).getOpenMRSID());
         holder.tvOpenMRSID.setPaintFlags(holder.tvOpenMRSID.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+
+        holder.tvOpenMRSID.setOnClickListener(view -> {
+            Intent intent = new Intent(context, PatientDetailActivity2.class);
+            intent.putExtra("patientUuid", patientUUID);
+            intent.putExtra("tag", "familyMember");
+            context.startActivity(intent);
+        });
     }
 
     @Override

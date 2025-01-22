@@ -1359,6 +1359,22 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                 break;
             }
 
+            case UuidDictionary.HAEMOGLOBIN: //haemoglobin
+            {
+                haemoglobinDTO.setValue(value);
+                break;
+            }
+            case UuidDictionary.SUGAR_LEVEL_RANDOM: //sugar level (random)
+            {
+                sugarRandomDTO.setValue(value);
+                break;
+            }
+            case UuidDictionary.BLOOD_GROUP: //blood group
+            {
+                mBloodGroupObsDTO.setValue(value);
+                break;
+            }
+
             case UuidDictionary.TELEMEDICINE_DIAGNOSIS: {
                 if (!diagnosisReturned.isEmpty() && !diagnosisReturned.contains(value)) {
                     diagnosisReturned = diagnosisReturned + ",\n" + value;
@@ -2176,6 +2192,18 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         VitalsObject vitalsObject = new VitalsObject();
         vitalsObject.setHeight(checkAndReturnVitalsValue(height));
         vitalsObject.setWeight(checkAndReturnVitalsValue(weight));
+        if (weight.getValue() != null) {
+            String mWeight = weight.getValue().split(" ")[0];
+            String mHeight = height.getValue().split(" ")[0];
+            if ((mHeight != null && mWeight != null) && !mHeight.isEmpty() && !mWeight.isEmpty()) {
+                double numerator = Double.parseDouble(mWeight) * 10000;
+                double denominator = Double.parseDouble(mHeight) * Double.parseDouble(mHeight);
+                double bmi_value = numerator / denominator;
+                mBMI = String.format(Locale.ENGLISH, "%.2f", bmi_value);
+            } else {
+                mBMI = "";
+            }
+        }
         vitalsObject.setBmi(mBMI);
         vitalsObject.setBpsys(checkAndReturnVitalsValue(bpSys));
         vitalsObject.setBpdia(checkAndReturnVitalsValue(bpDias));

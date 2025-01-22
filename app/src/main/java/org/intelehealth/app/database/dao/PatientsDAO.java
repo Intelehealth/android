@@ -346,7 +346,7 @@ public class PatientsDAO {
             Cursor idCursor = db.rawQuery("SELECT value FROM tbl_patient_attribute where patientuuid = ? AND person_attribute_type_uuid=? AND voided='0' COLLATE NOCASE", new String[]{patientuuid, "10720d1a-1471-431b-be28-285d64767093"});
 
             if (idCursor.getCount() != 0) {
-                while (idCursor.moveToNext()) {
+                if (idCursor.moveToLast()) {
                     houseHoldID = idCursor.getString(idCursor.getColumnIndexOrThrow("value"));
                 }
             }
@@ -439,7 +439,7 @@ public class PatientsDAO {
         List<FamilyMemberRes> listPatientNames = new ArrayList<>();
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
 
-        StringBuilder queryBuilder = new StringBuilder("SELECT openmrs_id, first_name, middle_name, last_name FROM tbl_patient WHERE uuid IN (");
+        StringBuilder queryBuilder = new StringBuilder("SELECT openmrs_id, uuid, first_name, middle_name, last_name FROM tbl_patient WHERE uuid IN (");
         String[] queryArgs = new String[patientuuids.size()];
 
         for (int i = 0; i < patientuuids.size(); i++) {
@@ -457,6 +457,7 @@ public class PatientsDAO {
                 while (cursor.moveToNext()) {
                     FamilyMemberRes familyMemberRes = new FamilyMemberRes();
                     familyMemberRes.setOpenMRSID(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
+                    familyMemberRes.setUuid(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
                     familyMemberRes.setName(cursor.getString(cursor.getColumnIndexOrThrow("first_name")) + " " +
                             cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
                     listPatientNames.add(familyMemberRes);

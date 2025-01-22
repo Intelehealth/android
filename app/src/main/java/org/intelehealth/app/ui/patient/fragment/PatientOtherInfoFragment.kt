@@ -123,7 +123,6 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
         PatientOtherInfoFragmentDirections.navigationOtherToDetails(
             patient.uuid, "searchPatient", "false"
         ).also {
-            SessionManager.instance.householdUuid = ""
             findNavController().navigate(it)
             requireActivity().finish()
         }

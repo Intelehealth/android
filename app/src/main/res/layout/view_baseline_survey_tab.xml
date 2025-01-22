@@ -24,7 +24,7 @@
         app:layout_collapseMode="parallax">
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/tvIndicatorPatientPersonal"
+            android:id="@+id/tvIndicatorBaselineGeneral"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawablePadding="@dimen/std_8dp"
@@ -44,13 +44,13 @@
             android:contentDescription="@string/general_to_medical_info"
             android:src="@drawable/line_11"
             android:visibility="@{activeBaselineMedical ? View.VISIBLE : View.GONE}"
-            app:layout_constraintBottom_toBottomOf="@id/tvIndicatorPatientPersonal"
-            app:layout_constraintEnd_toStartOf="@id/tvIndicatorPatientAddress"
-            app:layout_constraintStart_toEndOf="@id/tvIndicatorPatientPersonal"
-            app:layout_constraintTop_toTopOf="@id/tvIndicatorPatientPersonal" />
+            app:layout_constraintBottom_toBottomOf="@id/tvIndicatorBaselineGeneral"
+            app:layout_constraintEnd_toStartOf="@id/tvIndicatorBaselineMedical"
+            app:layout_constraintStart_toEndOf="@id/tvIndicatorBaselineGeneral"
+            app:layout_constraintTop_toTopOf="@id/tvIndicatorBaselineGeneral" />
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/tvIndicatorPatientAddress"
+            android:id="@+id/tvIndicatorBaselineMedical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawablePadding="@dimen/std_8dp"
@@ -71,13 +71,13 @@
             android:contentDescription="@string/medical_to_other_info"
             android:src="@drawable/line_11"
             android:visibility="@{activeBaselineOther ? View.VISIBLE : View.GONE}"
-            app:layout_constraintBottom_toBottomOf="@id/tvIndicatorPatientPersonal"
-            app:layout_constraintEnd_toStartOf="@id/tvIndicatorPatientOther"
-            app:layout_constraintStart_toEndOf="@id/tvIndicatorPatientAddress"
-            app:layout_constraintTop_toTopOf="@id/tvIndicatorPatientPersonal" />
+            app:layout_constraintBottom_toBottomOf="@id/tvIndicatorBaselineGeneral"
+            app:layout_constraintEnd_toStartOf="@id/tvIndicatorBaselineOther"
+            app:layout_constraintStart_toEndOf="@id/tvIndicatorBaselineMedical"
+            app:layout_constraintTop_toTopOf="@id/tvIndicatorBaselineGeneral" />
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/tvIndicatorPatientOther"
+            android:id="@+id/tvIndicatorBaselineOther"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawablePadding="@dimen/std_8dp"
@@ -85,7 +85,7 @@
             android:text="@string/other_identification"
             android:textAppearance="@style/personal_txtview"
             android:visibility="@{activeBaselineOther ? View.VISIBLE : View.GONE}"
-            app:drawableTopCompat="@drawable/addresslocation_icon_unselected"
+            app:drawableTopCompat="@drawable/ic_baseline_other"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/line_2"
             app:layout_constraintTop_toTopOf="parent" />

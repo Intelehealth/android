@@ -12,6 +12,10 @@ public class FamilyMemberRes {
     @Expose
     private String name;
 
+    @SerializedName("uuid")
+    @Expose
+    private String uuid;
+
     public String getOpenMRSID() {
         return openMRSID;
     }
@@ -26,5 +30,13 @@ public class FamilyMemberRes {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 }

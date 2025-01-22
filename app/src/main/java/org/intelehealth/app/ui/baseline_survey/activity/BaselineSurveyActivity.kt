@@ -189,17 +189,22 @@ class BaselineSurveyActivity : BaseActivity() {
         return true
     }
 
-
     private fun changeIconStatus(stage: BaselineSurveyStage) {
-        if (stage == BaselineSurveyStage.GENERAL) {
-            binding.baselineSurveyTab.tvIndicatorPatientPersonal.isSelected = true
-        } else if (stage == BaselineSurveyStage.MEDICAL) {
-            binding.baselineSurveyTab.tvIndicatorPatientPersonal.isActivated = true
-            binding.baselineSurveyTab.tvIndicatorPatientAddress.isSelected = true
-        } else if (stage == BaselineSurveyStage.OTHER) {
-            binding.baselineSurveyTab.tvIndicatorPatientPersonal.isActivated = true
-            binding.baselineSurveyTab.tvIndicatorPatientAddress.isActivated = true
-            binding.baselineSurveyTab.tvIndicatorPatientOther.isSelected = true
+        binding.baselineSurveyTab.apply {
+            when (stage) {
+                BaselineSurveyStage.GENERAL -> {
+                    tvIndicatorBaselineGeneral.isSelected = true
+                }
+                BaselineSurveyStage.MEDICAL -> {
+                    tvIndicatorBaselineGeneral.isActivated = true
+                    tvIndicatorBaselineMedical.isSelected = true
+                }
+                BaselineSurveyStage.OTHER -> {
+                    tvIndicatorBaselineGeneral.isActivated = true
+                    tvIndicatorBaselineMedical.isActivated = true
+                    tvIndicatorBaselineOther.isSelected = true
+                }
+            }
         }
     }
 
@@ -207,6 +212,8 @@ class BaselineSurveyActivity : BaseActivity() {
         super.onFeatureActiveStatusLoaded(activeStatus)
         if (::syncAnimator.isInitialized) syncAnimator.cancel()
         activeStatus?.let {
+            baselineSurveyViewModel.baselineActiveMedicalSection = it.baselineMedicalSection
+            baselineSurveyViewModel.baselineActiveOtherSection = it.baselineOtherSection
 
             if (it.baselineMedicalSection.not() && it.baselineOtherSection.not()) {
                 binding.baselineSurveyTab.root.isVisible = false

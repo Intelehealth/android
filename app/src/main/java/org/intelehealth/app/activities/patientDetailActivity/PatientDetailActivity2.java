@@ -166,8 +166,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -212,6 +214,8 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     //private String encounterAdultIntials = "";
     //String phistory = "";
 
+    List<Map<String, Boolean>> visitStatusList = new ArrayList<>();
+
     String privacy_value_selected;
     String phistory = "";
     String fhistory = "";
@@ -237,8 +241,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     private BaselineSurveyAdapter baselineSurveyAdapter;
     private List<FamilyMemberRes> familyMemberList;
     private List<String> bsItemList;
-
-    Patient patient_new = new Patient();
+    String houseHoldValue = "";
 
 
     @Override
@@ -430,25 +433,6 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             }
         });
 
-
-        ivAddFamilyMember.setOnClickListener(view -> {
-            String houseHoldValue = "";
-            try {
-                houseHoldValue = patientsDAO.getHouseHoldValue(patientDTO.getUuid());
-            } catch (DAOException e) {
-                FirebaseCrashlytics.getInstance().recordException(e);
-            }
-
-            if (houseHoldValue != null && !houseHoldValue.isEmpty()) {
-                sessionManager.setHouseholdUuid(houseHoldValue);
-            } else {
-                sessionManager.setHouseholdUuid("");
-            }
-
-            PatientRegistrationActivity.startPatientRegistration(this, patientDTO.getUuid(), PatientRegStage.PERSONAL, PatientRegSource.HOUSEHOLD);
-            finish();
-        });
-
         ivAddBaselineSurvey.setOnClickListener(view -> {
             BaselineSurveyActivity.startBaselineSurvey(this, patientDTO.getUuid(), BaselineSurveyStage.GENERAL, BaselineSurveySource.PATIENT_DETAIL);
             finish();
@@ -459,12 +443,22 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             finish();
         });
 
-        String houseHoldValue = "";
         try {
             houseHoldValue = patientsDAO.getHouseHoldValue(patientDTO.getUuid());
+            if (houseHoldValue != null && !houseHoldValue.isEmpty()) {
+                sessionManager.setHouseholdUuid(houseHoldValue);
+            } else {
+                sessionManager.setHouseholdUuid("");
+            }
+            Log.d(TAG, "houseHoldValue: " + houseHoldValue);
         } catch (DAOException e) {
-            throw new RuntimeException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
         }
+
+        ivAddFamilyMember.setOnClickListener(view -> {
+            PatientRegistrationActivity.startPatientRegistration(this, patientDTO.getUuid(), PatientRegStage.PERSONAL, PatientRegSource.HOUSEHOLD);
+            finish();
+        });
 
         isBaselineSurveyCompleted = new PatientsDAO().checkIfBaselineSurveyCompleted(patientDTO.getUuid());
 
@@ -1307,6 +1301,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                                 pastVisitData.setEncounterVitals(encountervitalsLocal);
                                 pastVisitData.setEncounterAdultInitial(encounterlocalAdultintial);
                                 mCurrentVisitDataList.add(pastVisitData);
+                                processVisitStatus(visit_id, false);
                                 CustomLog.v(TAG, new Gson().toJson(mCurrentVisitDataList));
 
                             } catch (ParseException e) {
@@ -1331,12 +1326,10 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             mCurrentVisitsRecyclerView.setAdapter(pastVisitListingAdapter);
         }
 
-        if (mCurrentVisitDataList.isEmpty()) {
-            findViewById(R.id.cv_open_visits).setVisibility(View.GONE);
-            startVisitBtn.setVisibility(View.VISIBLE);
-        } else {
+        if (!mCurrentVisitDataList.isEmpty()) {
             findViewById(R.id.cv_open_visits).setVisibility(View.VISIBLE);
-            startVisitBtn.setVisibility(View.GONE);
+        } else {
+            findViewById(R.id.cv_open_visits).setVisibility(View.GONE);
         }
         // }
     }
@@ -1354,6 +1347,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         in.putExtra("encounterUuidAdultIntial", pastVisitData.getEncounterAdultInitial());
         in.putExtra("float_ageYear_Month", float_ageYear_Month);
         in.putExtra("tag", "VisitDetailsActivity");
+        in.putExtra("is_sevika_visit", getVisitStatus(pastVisitData));
         startActivity(in);
     }
 
@@ -1366,6 +1360,17 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         } else {
             patientName = patientDTO.getFirstname() + " " + patientDTO.getMiddlename() + " " + patientDTO.getLastname();
         }
+    }
+
+    private boolean getVisitStatus(PastVisitData pastVisitData) {
+        boolean isSevikaVisit = false;
+        for (Map<String, Boolean> map : visitStatusList) {
+            if (map.containsKey(pastVisitData.getVisitUUID())) {
+                isSevikaVisit = map.get(pastVisitData.getVisitUUID());
+                break;
+            }
+        }
+        return isSevikaVisit;
     }
 
     public void setDisplay(String dataString) {
@@ -2621,6 +2626,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                                     pastVisitData.setEncounterVitals(encountervitalsLocal);
                                     pastVisitData.setEncounterAdultInitial(encounterlocalAdultintial);
                                     mPastVisitDataList.add(pastVisitData);
+                                    processVisitStatus(visit_id, false);
                                 } catch (ParseException e) {
                                     FirebaseCrashlytics.getInstance().recordException(e);
                                 }
@@ -2632,10 +2638,11 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                                 PastVisitData pastVisitData = new PastVisitData();
                                 pastVisitData.setVisitDate(visitDate);
                                 pastVisitData.setVisitUUID(visit_id);
-                                pastVisitData.setChiefComplain("Sevika Visit");
+                                pastVisitData.setChiefComplain(AppConstants.COMPLAINT_SEVIKA_VISIT);
                                 pastVisitData.setEncounterVitals(encountervitalsLocal);
                                 pastVisitData.setEncounterAdultInitial("");
                                 mPastVisitDataList.add(pastVisitData);
+                                processVisitStatus(visit_id, true);
                             } catch (ParseException e) {
                                 FirebaseCrashlytics.getInstance().recordException(e);
                             }
@@ -2658,6 +2665,21 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             } else {
                 findViewById(R.id.cv_past_visits).setVisibility(View.GONE);
             }
+        }
+    }
+
+    void processVisitStatus(String visitId, boolean isSevikaVisit){
+        boolean keyExists = false;
+        for (Map<String, Boolean> map : visitStatusList) {
+            if (map.containsKey(visitId)) {
+                keyExists = true;
+                break;
+            }
+        }
+        if (!keyExists) {
+            Map<String, Boolean> newMap = new HashMap<>();
+            newMap.put(visitId, isSevikaVisit);
+            visitStatusList.add(newMap);
         }
     }
 

@@ -33,9 +33,9 @@ class BaselineRepository(
             patientsDAO
         )
 
-        flag = patientsDAO.insertPatientAttributes(generalAttributesList)
-        flag = patientsDAO.insertPatientAttributes(medicalAttributesList)
-        flag = patientsDAO.insertPatientAttributes(otherAttributesList)
+        flag = patientsDAO.patientAttributes(generalAttributesList)
+        flag = patientsDAO.patientAttributes(medicalAttributesList)
+        flag = patientsDAO.patientAttributes(otherAttributesList)
         patientsDAO.updatePatientSync(false, patientId)
         syncOnServer()
         return flag

@@ -292,4 +292,6 @@ public class AppConstants {
     public static final String INTENT_PRIMARY_VILLAGE = "primary_village";
     public static final String VISIT_TYPE_SEVIKA = "sevika";
     public static final String VISIT_TYPE_DOCTOR = "doctor";
+    public static final String COMPLAINT_SEVIKA_VISIT = "Sevika Visit";
+
 }
