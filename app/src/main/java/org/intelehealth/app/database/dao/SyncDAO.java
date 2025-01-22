@@ -96,6 +96,7 @@ public class SyncDAO {
 
             patientsDAO.insertPatients(responseDTO.getData().getPatientDTO());
             Logger.logD(TAG, "insertPatients = "+responseDTO.getData().getPatientDTO().size());
+            Logger.logD(TAG, "insertPatients = "+new Gson().toJson(responseDTO.getData().getPatientDTO()));
 
             patientsDAO.patientAttributes(responseDTO.getData().getPatientAttributesDTO());
             Logger.logD(TAG, "insertPatientAttributes = "+responseDTO.getData().getPatientAttributesDTO().size());

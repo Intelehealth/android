@@ -144,7 +144,9 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "department TEXT," +
             "voided TEXT DEFAULT '0'," +
             "sync TEXT DEFAULT 'false', " +
-            "address3 TEXT" +
+            "address3 TEXT," +
+            "address6 TEXT," +
+            "countyDistrict TEXT" +
             ")";
 
     public static final String CREATE_ATTRIB_MAIN = "CREATE TABLE IF NOT EXISTS tbl_patient_attribute (" +

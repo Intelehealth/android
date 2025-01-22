@@ -228,13 +228,13 @@ class PatientRepository(
                     patient.department
                 )
             )
-            add(
+          /*  add(
                 createPatientAttribute(
                     patient.uuid,
                     PatientAttributesDTO.Column.BLOCK.value,
-                    patient.block
+                    patient.address3
                 )
-            )
+            )*/
             add(
                 createPatientAttribute(
                     patient.uuid,

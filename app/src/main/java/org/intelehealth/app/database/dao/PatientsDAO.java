@@ -83,6 +83,8 @@ public class PatientsDAO {
         return null; // Return null if no match is found
     }
     public boolean createPatients(PatientDTO patient, SQLiteDatabase db) throws DAOException {
+        Logger.logD(TAG, "createPatients = "+new Gson().toJson(patient));
+
         boolean isCreated = true;
         ContentValues values = new ContentValues();
         try {
@@ -106,6 +108,10 @@ public class PatientsDAO {
             values.put("contact_type", patient.getContactType());
             values.put("em_contact_name", patient.getEmContactName());
             values.put("em_contact_num", patient.getEmContactNumber());
+
+            values.put("address3", patient.getAddress3());
+            values.put("address6", patient.getAddress6());
+            values.put("countyDistrict", patient.getDistrict());
 
             values.put("dead", patient.getDead());
             values.put("sync", patient.getSyncd());
@@ -152,6 +158,10 @@ public class PatientsDAO {
             values.put("contact_type", patientDTO.getContactType());
             values.put("em_contact_name", patientDTO.getEmContactName());
             values.put("em_contact_num", patientDTO.getEmContactNumber());
+
+            values.put("countyDistrict", patientDTO.getDistrict());
+            values.put("address3", patientDTO.getAddress3());
+            values.put("address6", patientDTO.getAddress6());
 
             values.put("dead", patientDTO.getDead());
             values.put("sync", false);
@@ -210,6 +220,10 @@ public class PatientsDAO {
             values.put("request_id", patientDTO.getRequestId());
             values.put("discipline", patientDTO.getDiscipline());
             values.put("department", patientDTO.getDepartment());
+
+            values.put("countyDistrict", patientDTO.getDistrict());
+            values.put("address3", patientDTO.getAddress3());
+            values.put("address6", patientDTO.getAddress6());
 
             values.put("dead", false);
             values.put("sync", false);
@@ -642,6 +656,10 @@ public class PatientsDAO {
                     patientDTO.setContactType(idCursor.getString(idCursor.getColumnIndexOrThrow("contact_type")));
                     patientDTO.setEmContactName(idCursor.getString(idCursor.getColumnIndexOrThrow("em_contact_name")));
                     patientDTO.setEmContactNumber(idCursor.getString(idCursor.getColumnIndexOrThrow("em_contact_num")));
+
+                    patientDTO.setAddress3(idCursor.getString(idCursor.getColumnIndexOrThrow("address3")));
+                    patientDTO.setAddress6(idCursor.getString(idCursor.getColumnIndexOrThrow("address6")));
+                    patientDTO.setDistrict(idCursor.getString(idCursor.getColumnIndexOrThrow("countyDistrict")));
                     patientDTOList.add(patientDTO);
 
                 }
@@ -906,7 +924,7 @@ public class PatientsDAO {
             if (patientUUID_List.size() != 0) {
                 for (int i = 0; i < patientUUID_List.size(); i++) {
                     final Cursor searchCursor = db.rawQuery("SELECT * FROM " + table +
-                            " WHERE first_name LIKE " + "'%" + search + "%' OR middle_name LIKE '%" + search + "%' OR address1 LIKE '%" + search + "%' OR uuid = ? " +
+                            " WHERE first_name LIKE " + "'%" + search + "%' OR middle_name LIKE '%" + search + "%' OR address3 LIKE '%" + search + "%' OR uuid = ? " +
                             "OR last_name LIKE '%" + search + "%' OR (first_name || middle_name) " +
                             "LIKE '%" + search + "%' OR (middle_name || last_name) LIKE '%" + search + "%' OR " +
                             "(first_name || last_name) LIKE '%" + search + "%'" +
@@ -943,7 +961,7 @@ public class PatientsDAO {
                 }
             } else { // no mobile number was added in search text.
                 final Cursor searchCursor = db.rawQuery("SELECT * FROM " + table + " WHERE first_name LIKE " + "'%" + search + "%' " +
-                        "OR middle_name LIKE '%" + search +  "%'  OR  address1 LIKE '%" + search + "%' OR last_name LIKE '%" + search + "%' OR " +
+                        "OR middle_name LIKE '%" + search +  "%'  OR  address3 LIKE '%" + search + "%' OR last_name LIKE '%" + search + "%' OR " +
                         "(first_name || middle_name) LIKE '%" + search + "%' OR (middle_name || last_name) " +
                         "LIKE '%" + search + "%' OR (first_name || last_name) LIKE '%" + search + "%'" +
                         "OR first_name || ' ' || middle_name LIKE" + "'%" + search + "%' OR first_name || ' ' || middle_name || ' ' || last_name LIKE" + "'%" + search + "%' " +
@@ -1260,8 +1278,12 @@ public class PatientsDAO {
                 patientDTO.setCodeOfHealthFacility(cursor.getString(cursor.getColumnIndexOrThrow("codeOfHealthFacility")));
                 patientDTO.setHealthFacilityName(cursor.getString(cursor.getColumnIndexOrThrow("healthFacilityName")));
                 patientDTO.setCodeOfDepartment(cursor.getString(cursor.getColumnIndexOrThrow("codeOfDepartment")));
-                patientDTO.setBlock(cursor.getString(cursor.getColumnIndexOrThrow("blockSurvey")));
                 patientDTO.setHouseholdLinkingUUIDlinking(cursor.getString(cursor.getColumnIndexOrThrow("HouseHold")));
+
+                patientDTO.setAddress3(cursor.getString(cursor.getColumnIndexOrThrow("address3")));
+                patientDTO.setAddress6(cursor.getString(cursor.getColumnIndexOrThrow("address6")));
+                patientDTO.setDistrict(cursor.getString(cursor.getColumnIndexOrThrow("countyDistrict")));
+
             } while (cursor.moveToNext());
         }
         cursor.close();
