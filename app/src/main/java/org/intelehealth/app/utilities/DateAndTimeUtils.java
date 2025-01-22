@@ -29,6 +29,8 @@ import java.util.regex.Pattern;
 public class DateAndTimeUtils {
     private static final String TAG = "DateAndTimeUtils";
     public static final String D_FORMAT_dd_M_yyyy = "dd/M/yyyy";
+    public static final String D_FORMAT_ISO8601 = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
+    public static final String D_FORMAT_DD_MM_YYYY = "DD-MM-YYYY";
 
     public static float getFloat_Age_Year_Month(String date_of_birth) {
         float year_month = 0;
@@ -123,9 +125,9 @@ public class DateAndTimeUtils {
         age = tyears + " " + tmonth + " " + tdays;
 
         int roundOffAge = period.getYears();
-        if(period.getYears() == 2 && period.getMonths() == 0 && period.getDays() == 0)
+        if (period.getYears() == 2 && period.getMonths() == 0 && period.getDays() == 0)
             roundOffAge = 2;
-        else if(period.getYears() == 2 && (period.getMonths() > 0 || period.getDays() > 0))
+        else if (period.getYears() == 2 && (period.getMonths() > 0 || period.getDays() > 0))
             roundOffAge = 3;
 
         return roundOffAge;

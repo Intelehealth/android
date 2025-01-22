@@ -947,11 +947,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btn_submit) {//validate
-            if (IntelehealthApplication.getInstance().getVisitType().equalsIgnoreCase(AppConstants.VISIT_TYPE_SEVIKA)) {
-                validateSevikaVitals();
-            } else {
-                saveAndProceed();
-            }
+            validateVitals();
         }
     }
 
@@ -969,7 +965,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         }
     }
 
-    private void validateSevikaVitals() {
+    private void validateVitals() {
         String pulse = mPulseEditText.getText().toString();
         String temperature = mTemperatureEditText.getText().toString();
         String bpSystolic = mBpSysEditText.getText().toString();
@@ -997,7 +993,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
             return;
         }
 
-        if (!isPulseValid || !isTemperatureValid) {
+        if (!isPulseValid || !isTemperatureValid || !isBpSystolicValid || !isBpDiastolicValid) {
             message = message.concat(getString(R.string.following_fields_are_not_filled)).concat("\n");
             message = message.concat(getInvalidVitals(pulse, temperature, bpSystolic, bpDiastolic)).concat("\n\n");
             message = message.concat(getString(R.string.do_you_still_want_to_continue));

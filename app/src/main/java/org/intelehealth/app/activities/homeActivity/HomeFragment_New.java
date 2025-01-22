@@ -19,6 +19,7 @@ import android.os.Handler;
 import android.os.LocaleList;
 import android.util.DisplayMetrics;
 
+import org.intelehealth.app.activities.homeActivity.callback.CountCallback;
 import org.intelehealth.app.utilities.CustomLog;
 
 import android.view.LayoutInflater;
@@ -78,7 +79,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
-public class HomeFragment_New extends BaseFragment implements NetworkUtils.InternetCheckUpdateInterface, LifecycleObserver {
+public class HomeFragment_New extends BaseFragment implements NetworkUtils.InternetCheckUpdateInterface, LifecycleObserver, CountCallback {
     private static final String TAG = "HomeFragment_New";
     View view;
     SessionManager sessionManager;
@@ -90,6 +91,8 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
     private Executor initUIExecutor = Executors.newSingleThreadExecutor();
     private int todaysCount = 0;
     private int tomorrowsCount = 0;
+
+    private boolean isPrescriptionCountLoaded = false;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -225,7 +228,7 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        ((HomeScreenActivity_New) requireActivity()).setCallback(this);
     }
 
     private void initUI() {
@@ -307,26 +310,6 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
             }
         });
 
-//        TextView prescriptionCountTextView = view.findViewById(R.id.textview_received_no);
-//        Executors.newSingleThreadExecutor().execute(() -> {
-//            int pendingCountTotalVisits = new VisitsDAO().getVisitCountsByStatus(false);
-//            int countReceivedPrescription = new VisitsDAO().getVisitCountsByStatus(true);
-////            int pendingCountTotalVisits = getCurrentMonthsVisits(false);
-////            int countReceivedPrescription = getCurrentMonthsVisits(true);
-//
-//            int total = pendingCountTotalVisits + countReceivedPrescription;
-//
-//            if (isAdded()) {
-//                activity.runOnUiThread(() -> {
-//                    String prescCountText = countReceivedPrescription + " " + activity.getString(R.string.out_of) + " " + total + " " + activity.getString(R.string.received).toLowerCase();
-//                    if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-//                        prescCountText = total + " मे से " + countReceivedPrescription + " प्राप्त हुये";
-//                    }
-//                    prescriptionCountTextView.setText(prescCountText);
-//                });
-//            }
-//        });
-
         //  int countPendingCloseVisits = getThisMonthsNotEndedVisits();    // error: IDA: 1337 - fetching wrong data.
 //        TextView countPendingCloseVisitsTextView = view.findViewById(R.id.textview_close_visit_no);
 //        new Thread(() -> {
@@ -382,7 +365,7 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
         super.onResume();
         setLocale(getContext());
         initUI();
-
+        fetchAndSetPrescriptionCount(true);
     }
 
     @Override
@@ -413,7 +396,6 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
     @Override
     public void onStart() {
         super.onStart();
-
         //register receiver for internet check
         networkUtils.callBroadcastReceiver();
     }
@@ -568,6 +550,37 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
         super.onFeatureStatusLoaded(status);
         view.findViewById(R.id.cardView4_appointment)
                 .setVisibility(status.getVisitSummeryAppointment() ? View.VISIBLE : View.GONE);
+    }
+
+    @Override
+    public void fetchCount() {
+        fetchAndSetPrescriptionCount(false);
+    }
+
+    private void fetchAndSetPrescriptionCount(boolean calledFromOnResume) {
+        if (isPrescriptionCountLoaded && calledFromOnResume)
+            return;
+
+        TextView prescriptionCountTextView = view.findViewById(R.id.textview_received_no);
+        Executors.newSingleThreadExecutor().execute(() -> {
+            int pendingCountTotalVisits = new VisitsDAO().getVisitCountsByStatus(false);
+            int countReceivedPrescription = new VisitsDAO().getVisitCountsByStatus(true);
+//            int pendingCountTotalVisits = getCurrentMonthsVisits(false);
+//            int countReceivedPrescription = getCurrentMonthsVisits(true);
+
+            int total = pendingCountTotalVisits + countReceivedPrescription;
+
+            if (isAdded()) {
+                requireActivity().runOnUiThread(() -> {
+                    String prescCountText = countReceivedPrescription + " " + getString(R.string.out_of) + " " + total + " " + getString(R.string.received).toLowerCase();
+                    if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                        prescCountText = total + " मे से " + countReceivedPrescription + " प्राप्त हुये";
+                    }
+                    prescriptionCountTextView.setText(prescCountText);
+                    isPrescriptionCountLoaded = true;
+                });
+            }
+        });
     }
 }
 

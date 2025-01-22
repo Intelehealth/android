@@ -45,6 +45,7 @@ import android.provider.Settings;
 import android.text.Html;
 import android.util.DisplayMetrics;
 
+import org.intelehealth.app.activities.homeActivity.callback.CountCallback;
 import org.intelehealth.app.activities.homeActivity.heartbeatApi.HeartbeatApi;
 import org.intelehealth.app.ayu.visit.notification.NotificationHelper;
 import org.intelehealth.app.ayu.visit.notification.ReminderReceiver;
@@ -204,15 +205,20 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
     private NotificationReceiver notificationReceiver;
     private NotificationHelper notificationHelper;
 
+    private CountCallback callback;
 
     private ActivityResultLauncher<Intent> scheduleExactAlarmPermissionLauncher;
     private String notificationPatientUuid = null, notificationVisitUuid = null, clickAction = null;
 
     private void saveToken() {
-        Manager.getInstance().setBaseUrl(BuildConfig.SERVER_URL);
+        Manager.getInstance().setBaseUrl(SessionManager.getInstance(this).getServerUrl());
         // save fcm reg. token for chat (Video)
         FirebaseUtils.saveToken(this, sessionManager.getProviderID(), IntelehealthApplication.getInstance().refreshedFCMTokenID, sessionManager.getAppLanguage());
         VideoLibraryManager.setBaseUrl(sessionManager.getServerUrl());
+    }
+
+    public void setCallback(CountCallback callback) {
+        this.callback = callback;
     }
 
     @Override
@@ -1327,6 +1333,9 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
                     //ui2.0 update user details in  nav header
                     updateNavHeaderUserDetails();
                     hideSyncProgressBar(true);
+                    if (callback != null) {
+                        callback.fetchCount();
+                    }
                 }
             }
 
@@ -1734,6 +1743,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
                         @Override
                         public void run() {
                             mSyncAlertDialog.dismiss();
+                            callback.fetchCount();
                         }
                     }, 2000);
                 }

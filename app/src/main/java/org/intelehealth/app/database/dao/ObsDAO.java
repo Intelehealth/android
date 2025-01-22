@@ -10,6 +10,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+
 import org.intelehealth.app.utilities.CustomLog;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
@@ -20,6 +21,7 @@ import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.models.dto.ObsDTO;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
 
@@ -203,9 +205,9 @@ public class ObsDAO {
                 obsDTO.setEncounteruuid(idCursor.getString(idCursor.getColumnIndexOrThrow("encounteruuid")));
                 obsDTO.setConceptuuid(idCursor.getString(idCursor.getColumnIndexOrThrow("conceptuuid")));
                 obsDTO.setValue(idCursor.getString(idCursor.getColumnIndexOrThrow("value")));
-                if(idCursor.getColumnIndex("comments") < 0){
+                if (idCursor.getColumnIndex("comments") < 0) {
                     obsDTO.setComments(idCursor.getString(idCursor.getColumnIndexOrThrow("comments")));
-                }else {
+                } else {
                     obsDTO.setComments("");
                 }
                 obsDTOList.add(obsDTO);
@@ -371,7 +373,7 @@ public class ObsDAO {
         encounterCursor.close();
 
         String[] columns = {"value", " conceptuuid"};
-        String visitSelection = "encounteruuid = ? and voided!='1' and conceptuuid!='"+ HW_FOLLOWUP_CONCEPT_ID +"'";
+        String visitSelection = "encounteruuid = ? and voided!='1' and conceptuuid!='" + HW_FOLLOWUP_CONCEPT_ID + "'";
         String[] visitArgs = {visitnote};
         Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
         if (visitCursor.moveToFirst()) {
@@ -388,6 +390,7 @@ public class ObsDAO {
         return dbValue;
         // fetch dr details from local db - end
     }
+
     public static String fetchValueFromLocalDb(String visitUuid) {
         // fetch dr details from local db - start
         String dbValue = null;
@@ -451,5 +454,29 @@ public class ObsDAO {
             String deleteClause = "encounteruuid = ?";
             db.delete("tbl_obs", deleteClause, new String[]{encounterUuid});
         }
+    }
+
+    public static String getPreviousVisitReason(String currentVisitUuid) {
+        String visitReason = "";
+        String previousVisitUuid = VisitsDAO.getPreviousVisitUuid(currentVisitUuid);
+        String encounterUuid = EncounterDAO.getEncounterAdultInitials(previousVisitUuid);
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
+        String query = "SELECT value FROM tbl_obs WHERE encounteruuid = ? AND conceptuuid = ?";
+
+        Cursor cursor = db.rawQuery(query, new String[]{encounterUuid, UuidDictionary.CURRENT_COMPLAINT});
+        if (cursor.getCount() != 0) {
+            while (cursor.moveToNext()) {
+                visitReason = cursor.getString(cursor.getColumnIndexOrThrow("value"));
+            }
+        }
+        cursor.close();
+
+        if (!visitReason.isEmpty()) {
+            visitReason = StringUtils.getVisitReasonData(visitReason);
+        } else {
+            visitReason = "";
+        }
+
+        return visitReason;
     }
 }

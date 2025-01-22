@@ -10,7 +10,9 @@ import android.os.Build;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.util.DisplayMetrics;
+
 import org.intelehealth.app.utilities.CustomLog;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -143,6 +145,8 @@ public class Node implements Serializable {
     private boolean subPopUp;
     private boolean showCalendarHeader = false;
 
+    private boolean isAutoPopulateField = false;
+    private String autoPopulateDataType;
 
     //• = \u2022, ● = \u25CF, ○ = \u25CB, ▪ = \u25AA, ■ = \u25A0, □ = \u25A1, ► = \u25BA
     private int associated_symptoms = 0;
@@ -153,6 +157,9 @@ public class Node implements Serializable {
     private String imagePath;
 
     private boolean enableSubmit;
+
+    public static String AUTO_POPULATE_TYPE_PREVIOUS_VISIT_DATE = "previous_visit_date";
+    public static String AUTO_POPULATE_TYPE_PREVIOUS_VISIT_REASON = "previous_visit_reason";
 
     /**
      * Nodes refer to the structure that is used for a decision tree or mindmap.
@@ -363,6 +370,10 @@ public class Node implements Serializable {
             this.isExclusiveOption = jsonNode.optBoolean("is-exclusive-option");
             this.compareDuplicateNode = jsonNode.optString("compare-duplicate-node");
             this.enableSubmit = jsonNode.optBoolean("submit");
+
+            this.isAutoPopulateField = jsonNode.optBoolean("is-auto-populate-field");
+            this.autoPopulateDataType = jsonNode.optString("auto-populate-data-type");
+
         } catch (JSONException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
@@ -423,6 +434,8 @@ public class Node implements Serializable {
         this.isExclusiveOption = source.isExclusiveOption;
         this.compareDuplicateNode = source.compareDuplicateNode;
         this.needToHide = source.needToHide;
+        this.isAutoPopulateField = source.isAutoPopulateField;
+        this.autoPopulateDataType = source.autoPopulateDataType;
     }
 
     public static void subLevelQuestion(final Node node, final Activity context, final QuestionsAdapter callingAdapter,
@@ -2595,6 +2608,22 @@ public class Node implements Serializable {
         isExcludedFromMultiChoice = excludedFromMultiChoice;
     }
 
+    public boolean isAutoPopulateField() {
+        return isAutoPopulateField;
+    }
+
+    public void setAutoPopulateField(boolean autoPopulateField) {
+        isAutoPopulateField = autoPopulateField;
+    }
+
+    public String getAutoPopulateDataType() {
+        return autoPopulateDataType;
+    }
+
+    public void setAutoPopulateDataType(String autoPopulateDataType) {
+        this.autoPopulateDataType = autoPopulateDataType;
+    }
+
     private String generateAssociatedSymptomsOrHistory(Node associatedSymptomNode, boolean isForAssociatedSymptoms) {
 
         List<String> positiveAssociations = new ArrayList<>();
@@ -2822,21 +2851,19 @@ public class Node implements Serializable {
                     }
 
 
+                    Timber.tag(TAG).i("ipt: nested question %s", question);
+                    Timber.tag(TAG).i("ipt: nested answer stringsList%s", stringsList);
+                    String temp1 = mOptions.get(i).formQuestionAnswer(level + 1, isAssociateSymptomsType);
 
-
-                Timber.tag(TAG).i("ipt: nested question %s", question);
-                Timber.tag(TAG).i("ipt: nested answer stringsList%s", stringsList);
-                String temp1 = mOptions.get(i).formQuestionAnswer(level + 1, isAssociateSymptomsType);
-
-                Timber.tag(TAG).i("ipt: nested answer %s", temp1);
-                temp1 = temp1.replaceAll("<br/>•", ",");
-                if (level == 0)
-                    if (temp1.startsWith("▻") && temp1.chars().filter(ch -> ch == '▻').count() > 1)
-                        temp1 = bullet_hollow + " " + temp1.substring(1);
-                Timber.tag(TAG).v("ipt: nested answer %s", temp1);
-                stringsList.add(temp1);
-                // cleanup duplicate text
-                String lastVal = "";
+                    Timber.tag(TAG).i("ipt: nested answer %s", temp1);
+                    temp1 = temp1.replaceAll("<br/>•", ",");
+                    if (level == 0)
+                        if (temp1.startsWith("▻") && temp1.chars().filter(ch -> ch == '▻').count() > 1)
+                            temp1 = bullet_hollow + " " + temp1.substring(1);
+                    Timber.tag(TAG).v("ipt: nested answer %s", temp1);
+                    stringsList.add(temp1);
+                    // cleanup duplicate text
+                    String lastVal = "";
                     /*for (int j = 0; j < stringsList.size(); j++) {
                         String v = stringsList.get(j).replaceAll(right_pointing, "").trim().replaceAll(bullet_hollow, "").trim();
                         Log.v(TAG, "ipt: nested answer v" + v);
@@ -2845,102 +2872,94 @@ public class Node implements Serializable {
                         }
                         lastVal = v;
                     }*/
-                if (stringsList.contains(bullet_hollow + NOT_ANSWERED + next_line) || stringsList.contains(right_pointing + NOT_ANSWERED + next_line)) {
-                    //stringsList.clear();
-                    stringsList.remove(stringsList.size() - 1);
+                    if (stringsList.contains(bullet_hollow + NOT_ANSWERED + next_line) || stringsList.contains(right_pointing + NOT_ANSWERED + next_line)) {
+                        //stringsList.clear();
+                        stringsList.remove(stringsList.size() - 1);
+                    }
+                    Timber.tag(TAG).i("ipt: stringsList %s", stringsList);
+                    Timber.tag(TAG).i("ipt: ******************END********************************* %s", level);
                 }
-                Timber.tag(TAG).i("ipt: stringsList %s", stringsList);
-                Timber.tag(TAG).i("ipt: ******************END********************************* %s", level);
-            }
-        } else if (mOptions.get(i).getText() != null &&
-                ((mOptions.get(i).getText().equalsIgnoreCase(Node.ASSOCIATE_SYMPTOMS))
-                        || (mOptions.get(i).getText().equalsIgnoreCase("जुड़े लक्षण"))
-                        || (mOptions.get(i).getText().equalsIgnoreCase("అనుబంధ లక్షణాలు"))
-                        || (mOptions.get(i).getText().equalsIgnoreCase("জড়িত লক্ষণগুলি"))
-                        || (mOptions.get(i).getText().equalsIgnoreCase("தொடர்புடைய அறிகுறிகள்"))
-                        || (mOptions.get(i).getText().equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")) || (mOptions.get(i).getText().equalsIgnoreCase("સંકળાયેલ લક્ષણો")))) {
+            } else if (mOptions.get(i).getText() != null &&
+                    ((mOptions.get(i).getText().equalsIgnoreCase(Node.ASSOCIATE_SYMPTOMS))
+                            || (mOptions.get(i).getText().equalsIgnoreCase("जुड़े लक्षण"))
+                            || (mOptions.get(i).getText().equalsIgnoreCase("అనుబంధ లక్షణాలు"))
+                            || (mOptions.get(i).getText().equalsIgnoreCase("জড়িত লক্ষণগুলি"))
+                            || (mOptions.get(i).getText().equalsIgnoreCase("தொடர்புடைய அறிகுறிகள்"))
+                            || (mOptions.get(i).getText().equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")) || (mOptions.get(i).getText().equalsIgnoreCase("સંકળાયેલ લક્ષણો")))) {
 
-            if (!mOptions.get(i).isTerminal()) {
-                stringsList.add(big_bullet + " " + mOptions.get(i).findDisplay() + next_line);
-                stringsList.add(mOptions.get(i).formQuestionAnswer(level + 1, isAssociateSymptomsType));
-            }
+                if (!mOptions.get(i).isTerminal()) {
+                    stringsList.add(big_bullet + " " + mOptions.get(i).findDisplay() + next_line);
+                    stringsList.add(mOptions.get(i).formQuestionAnswer(level + 1, isAssociateSymptomsType));
+                }
 
-            if (mOptions.get(i).getOptionsList().size() > 0) {
+                if (mOptions.get(i).getOptionsList().size() > 0) {
 
-                for (int j = 0; j < mOptions.get(i).getOptionsList().size(); j++) {
+                    for (int j = 0; j < mOptions.get(i).getOptionsList().size(); j++) {
 
-                    if (mOptions.get(i).getOptionsList().get(j).isSelected()
-                            || mOptions.get(i).getOptionsList().get(j).isNoSelected()) {
+                        if (mOptions.get(i).getOptionsList().get(j).isSelected()
+                                || mOptions.get(i).getOptionsList().get(j).isNoSelected()) {
 
-                        if (!mOptions.get(i).isTerminal()) {
-                            stringsList.add(big_bullet + " " + mOptions.get(i).findDisplay() + next_line);
-                            stringsList.add(mOptions.get(i).formQuestionAnswer(level + 1, isAssociateSymptomsType));
+                            if (!mOptions.get(i).isTerminal()) {
+                                stringsList.add(big_bullet + " " + mOptions.get(i).findDisplay() + next_line);
+                                stringsList.add(mOptions.get(i).formQuestionAnswer(level + 1, isAssociateSymptomsType));
+                            }
                         }
                     }
                 }
+            } else {
+                //in case of weird null exception...
             }
-        } else {
-            //in case of weird null exception...
-        }
 
-        // to add Patient denies entry
-        if (mOptions.get(i).isNoSelected()) {
-            if (!flag) {
-                flag = true;
-                stringsListNoSelected.add("Patient denies -" + next_line);
+            // to add Patient denies entry
+            if (mOptions.get(i).isNoSelected()) {
+                if (!flag) {
+                    flag = true;
+                    stringsListNoSelected.add("Patient denies -" + next_line);
+                }
+                stringsListNoSelected.add(bullet_hollow + mOptions.get(i).findDisplay() + next_line);
+                Timber.tag(TAG).e("ipt: %s", stringsListNoSelected);
             }
-            stringsListNoSelected.add(bullet_hollow + mOptions.get(i).findDisplay() + next_line);
-            Timber.tag(TAG).e("ipt: %s", stringsListNoSelected);
+
         }
 
-    }
 
-
-        if(stringsListNoSelected.size()>0)
-
-    {
-        stringsList.addAll(stringsListNoSelected);
-    }
-        Timber.tag(TAG).
-
-    i("ipt: stringsList: %s",stringsList);
-
-    String mLanguage = "";
-        for(
-    int i = 0; i<stringsList.size();i++)
-
-    {
-
-        if (!stringsList.get(i).isEmpty()) {
-            mLanguage = mLanguage.concat(stringsList.get(i));
+        if (stringsListNoSelected.size() > 0) {
+            stringsList.addAll(stringsListNoSelected);
         }
-
-    }
         Timber.tag(TAG).
 
-    i("ipt: formQuestionAnswer: %s",mLanguage);
+                i("ipt: stringsList: %s", stringsList);
 
-    mLanguage =mLanguage.replaceAll(",<br/>•",",");
-        if(mLanguage.endsWith(","))
+        String mLanguage = "";
+        for (
+                int i = 0; i < stringsList.size(); i++) {
 
-    {
-        mLanguage = mLanguage.substring(0, mLanguage.length() - 1);
-    }
+            if (!stringsList.get(i).isEmpty()) {
+                mLanguage = mLanguage.concat(stringsList.get(i));
+            }
+
+        }
         Timber.tag(TAG).
 
-    i("ipt: formQuestionAnswer: %s",mLanguage);
+                i("ipt: formQuestionAnswer: %s", mLanguage);
 
-        if(mLanguage.equalsIgnoreCase(""))
-
-    {
-        mLanguage = (level == 0 ? bullet_hollow : right_pointing) + NOT_ANSWERED + next_line;
-    }
+        mLanguage = mLanguage.replaceAll(",<br/>•", ",");
+        if (mLanguage.endsWith(",")) {
+            mLanguage = mLanguage.substring(0, mLanguage.length() - 1);
+        }
         Timber.tag(TAG).
 
-    i("ipt: +++++++++++++++++++++++++++++++++++END+++++++++++++++++++++++++++++++++++++++++++++");
+                i("ipt: formQuestionAnswer: %s", mLanguage);
+
+        if (mLanguage.equalsIgnoreCase("")) {
+            mLanguage = (level == 0 ? bullet_hollow : right_pointing) + NOT_ANSWERED + next_line;
+        }
+        Timber.tag(TAG).
+
+                i("ipt: +++++++++++++++++++++++++++++++++++END+++++++++++++++++++++++++++++++++++++++++++++");
 
         return mLanguage;
-}
+    }
 
     @Override
     public String toString() {
