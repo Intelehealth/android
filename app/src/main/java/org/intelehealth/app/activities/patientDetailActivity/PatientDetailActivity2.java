@@ -434,15 +434,15 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         });
 
         binding.rosterDetails.generalEdit.setOnClickListener(v -> {
-            RosterQuestionnaireMainActivity.startRosterQuestionnaire(this, patientDTO.getUuid(), RosterQuestionnaireStage.GENERAL_ROSTER,true);
+            RosterQuestionnaireMainActivity.startRosterQuestionnaire(this, patientDTO.getUuid(), RosterQuestionnaireStage.GENERAL_ROSTER,false,true);
             finish();
         });
         binding.rosterDetails.pregnancyEdit.setOnClickListener(v -> {
-            RosterQuestionnaireMainActivity.startRosterQuestionnaire(this, patientDTO.getUuid(), RosterQuestionnaireStage.PREGNANCY_ROSTER,true);
+            RosterQuestionnaireMainActivity.startRosterQuestionnaire(this, patientDTO.getUuid(), RosterQuestionnaireStage.PREGNANCY_ROSTER,true,true);
             finish();
         });
         binding.rosterDetails.healthServiceEdit.setOnClickListener(v -> {
-            RosterQuestionnaireMainActivity.startRosterQuestionnaire(this, patientDTO.getUuid(), RosterQuestionnaireStage.HEALTH_SERVICE,true);
+            RosterQuestionnaireMainActivity.startRosterQuestionnaire(this, patientDTO.getUuid(), RosterQuestionnaireStage.HEALTH_SERVICE,false,true);
             finish();
         });
 

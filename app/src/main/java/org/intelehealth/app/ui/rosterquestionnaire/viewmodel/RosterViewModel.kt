@@ -32,6 +32,7 @@ class RosterViewModel @Inject constructor(
     private val ioDispatcher: CoroutineDispatcher,
 ) : ViewModel() {
 
+    var isPregnancyVisible: Boolean = true
     var pregnancyOutcomeCount: String = ""
     var pregnancyOutcome: String = NO
     var pregnancyCount: String = ""
@@ -141,7 +142,9 @@ class RosterViewModel @Inject constructor(
                 RoasterAttribute.NO_OF_TIME_PREGNANT.attributeName to { value: String ->
                     pregnancyCount = value
                 },
-                RoasterAttribute.PREGNANCY_PAST_TWO_YEARS.attributeName to { value: String -> pregnancyOutcome = value },
+                RoasterAttribute.PREGNANCY_PAST_TWO_YEARS.attributeName to { value: String ->
+                    pregnancyOutcome = value
+                },
                 RoasterAttribute.NO_OF_PREGNANCY_OUTCOME_TWO_YEARS.attributeName to { value: String ->
                     pregnancyOutcomeCount = value
                 }

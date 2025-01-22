@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <import type="android.view.View" />
 
         <variable
@@ -15,53 +16,12 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvGeneralQuestion"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:paddingHorizontal="@dimen/margin_16"
-            android:layout_marginTop="@dimen/margin_16"
-            android:layout_marginBottom="@dimen/margin_16" />
+            android:layout_height="match_parent" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/layoutButtonsNavigation"
-            android:layout_width="match_parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_height="wrap_content">
-
-            <Button
-                android:id="@+id/frag2_btn_back"
-                style="@style/AppTheme.OutlinedButton.White"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/std_16dp"
-                android:layout_marginBottom="@dimen/std_16dp"
-                android:text="@string/generic_back"
-                android:visibility="@{isEditMode ? View.GONE : View.VISIBLE}"
-                android:textColor="@color/primary_text"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/frag2_btn_next"
-                app:layout_constraintStart_toStartOf="parent" />
-
-            <Button
-                android:id="@+id/frag2_btn_next"
-                style="@style/AppTheme.OutlinedButton.Primary"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/std_16dp"
-                android:layout_marginEnd="@dimen/std_16dp"
-                android:layout_marginBottom="@dimen/std_16dp"
-                android:text="@string/next"
-                app:icon="@drawable/ui2_ic_baseline_arrow_forward_24"
-                app:iconGravity="end"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/frag2_btn_back" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 </layout>

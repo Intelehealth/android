@@ -2,19 +2,15 @@ package org.intelehealth.app.ui.patient.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
-import androidx.lifecycle.viewModelScope
 import com.github.ajalt.timberkt.Timber
 import com.google.gson.Gson
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.app.ui.patient.data.PatientRepository
+import org.intelehealth.app.ui.rosterquestionnaire.utilities.FEMALE
 import org.intelehealth.app.utilities.PatientRegStage
-import org.intelehealth.config.presenter.fields.data.RegFieldRepository
 import org.intelehealth.config.presenter.fields.viewmodel.RegFieldViewModel
-import org.intelehealth.core.shared.ui.viewmodel.BaseViewModel
+import org.intelehealth.klivekit.utils.Constants
 
 /**
  * Created by Vaghela Mithun R. on 02-07-2024 - 13:49.
@@ -22,7 +18,7 @@ import org.intelehealth.core.shared.ui.viewmodel.BaseViewModel
  * Mob   : +919727206702
  **/
 class PatientViewModel(
-    private val repository: PatientRepository
+    private val repository: PatientRepository,
 ) : RegFieldViewModel(repository) {
 
     private var mutableLivePatient = MutableLiveData<PatientDTO>()
@@ -35,7 +31,7 @@ class PatientViewModel(
     var activeStatusRosterSection = false
 
     fun loadPatientDetails(
-        patientId: String
+        patientId: String,
     ) = executeLocalQuery {
         repository.fetchPatient(patientId)
     }.asLiveData()
@@ -60,5 +56,9 @@ class PatientViewModel(
     val addressInfoConfigCityVillageEnabled: LiveData<Boolean> get() = _addressInfoConfigCityVillageEnabled
     fun setCityVillageEnabled(enabled: Boolean) {
         _addressInfoConfigCityVillageEnabled.value = enabled
+    }
+
+    fun getPregnancyVisibility(): Boolean {
+        return patientData.equals(FEMALE)
     }
 }
