@@ -2923,7 +2923,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
             @Override
             public void afterTextChanged(Editable s) {
-                mBinding.signatureText.setText(s.toString());
+                mBinding.signatureText.setText(s.toString().trim());
             }
         });
     }
@@ -3131,7 +3131,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             mBinding.diagnosisTextInput.setError(getString(R.string.enter_diagnosis));
         }
 
-        if (mBinding.signatureTextInput.getText().toString().isEmpty()) {
+        if (mBinding.signatureTextInput.getText().toString().trim().isEmpty()) {
             mBinding.signatureTextInput.setError(getString(R.string.enter_signature));
         }
 
@@ -3154,6 +3154,9 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             return;
         } else if (mFeatureActiveStatus.getVisitSummeryDoctorSpeciality() && (speciality_selected == null || speciality_selected.isEmpty())) {
             Timber.tag(TAG).d("DoctorSpeciality");
+            return;
+        }else if (mFeatureActiveStatus.getMobileESignature() &&  mBinding.signatureTextInput.getText().toString().trim().isEmpty()) {
+            Timber.tag(TAG).d("Signature");
             return;
         } else Timber.tag(TAG).d("visitSendDialog: success");
 
@@ -3234,8 +3237,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                     visitAttributeListDAO.insertVisitAttributes(visitUuid, selectedConsultationType, CONSULTATION_TYPE);
                 }
 
-                if (!mBinding.signatureTextInput.getText().toString().isEmpty()) {
-                    visitAttributeListDAO.insertVisitAttributes(visitUuid, mBinding.signatureTextInput.getText().toString(), E_SIGNATURE);
+                if (!mBinding.signatureTextInput.getText().toString().trim().isEmpty()) {
+                    visitAttributeListDAO.insertVisitAttributes(visitUuid, mBinding.signatureTextInput.getText().toString().trim(), E_SIGNATURE);
                 }
 
 
