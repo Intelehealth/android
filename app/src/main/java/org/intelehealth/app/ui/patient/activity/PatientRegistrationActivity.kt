@@ -105,7 +105,7 @@ class PatientRegistrationActivity : BaseActivity() {
             } else PatientRegStage.PERSONAL
 
             patientId?.let { id ->
-                if(source == PatientRegSource.HOUSEHOLD){
+                if (source == PatientRegSource.HOUSEHOLD) {
                     lifecycleScope.launch {
                         generatePatientIdUnderHousehold()
                         patientViewModel.patientData.value?.householdID = id
@@ -155,7 +155,8 @@ class PatientRegistrationActivity : BaseActivity() {
             PatientDTO().apply {
                 uuid = UUID.randomUUID().toString()
                 createdDate = DateAndTimeUtils.getTodaysDateInRequiredFormat("dd MMMM, yyyy")
-                providerUUID = SessionManager.getInstance(this@PatientRegistrationActivity).providerID
+                providerUUID =
+                    SessionManager.getInstance(this@PatientRegistrationActivity).providerID
             }.also { patientViewModel.updatedPatient(it) }
         }
     }
@@ -255,13 +256,13 @@ class PatientRegistrationActivity : BaseActivity() {
         }
     }
 
-    override fun onStart() {
-        super.onStart()
+    override fun onResume() {
+        super.onResume()
         networkUtil.callBroadcastReceiver()
     }
 
-    override fun onStop() {
-        super.onStop()
+    override fun onPause() {
+        super.onPause()
         networkUtil.unregisterNetworkReceiver()
     }
 

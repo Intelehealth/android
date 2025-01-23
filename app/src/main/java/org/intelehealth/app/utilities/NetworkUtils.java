@@ -7,10 +7,13 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkInfo;
+import android.util.Log;
 
 import org.intelehealth.app.utilities.CustomLog;
 
 import androidx.core.content.ContextCompat;
+
+import com.github.ajalt.timberkt.Timber;
 
 public class NetworkUtils {
     Boolean isReceiverRegistered = false;
@@ -76,8 +79,12 @@ public class NetworkUtils {
     }
 
     public void unregisterNetworkReceiver() {
-        if (receiver != null) {
-            context.unregisterReceiver(receiver);
+        try {
+            if (receiver != null) {
+                context.unregisterReceiver(receiver);
+            }
+        } catch (Exception e) {
+            Timber.tag("TAG").d("unregisterNetworkReceiver: %s", e.getMessage());
         }
     }
 
