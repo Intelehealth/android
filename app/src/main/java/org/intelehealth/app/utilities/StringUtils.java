@@ -1768,6 +1768,22 @@ public final class StringUtils {
                     .replace("Otp incorrect!", "ओटीपी गलत है।")
                     .replace("Password reset successful.", "पासवर्ड रीसेट सफल रहा।")
                     .replace("No user exists!", "कोई उपयोगकर्ता मौजूद नहीं है!");
+        }else if(locale.equalsIgnoreCase("ru")){
+            if (locale.equalsIgnoreCase("hi")) {
+                message = message
+                        .replace("Otp sent successfully!", "Раозвый пароль отправлен успешно!")
+                        .replace("Пользователя с таким номером телефона/электронной почтой/именем нет.",
+                                "इस फ़ोन नंबर/ईमेल के साथ कोई उपयोगकर्ता मौजूद नहीं है।")
+                        .replace("Для данного пользователя нет обновленного номера телефона/электронной почты.",
+                                "इस उपयोगकर्ता नाम के लिए कोई फ़ोन नंबर/ईमेल अपडेट नहीं किया गया है।")
+                        .replace("Пользователя с таким именем нет.",
+                                "इस उपयोगकर्ता नाम के साथ कोई उपयोगकर्ता मौजूद नहीं है।")
+                        .replace("Otp verified successfully!", "Верификация разового пароля прошла успешно!")
+                        .replace("Otp expired!", "Время разового пароля истекло!")
+                        .replace("Otp incorrect!", "Неверный разовый пароль!")
+                        .replace("Password reset successful.", "Сброс пароля прошел успешно!")
+                        .replace("No user exists!", "Такого пользователя нет!");
+            }
         }
         return message;
     }
@@ -4496,5 +4512,21 @@ public final class StringUtils {
         double roundOff = Math.round(b * 100.0) / 100.0;
         resultVal = nf.format(roundOff);
         return resultVal;
+    }
+
+    public static String getTypeOfConsultation(String consultationType,String lan) {
+        if(consultationType == null || consultationType.isEmpty()) return "";
+        if(lan.equalsIgnoreCase("ru")){
+            switch (consultationType) {
+                case "In emergency form – from 30 minutes to 2 hours" -> consultationType = "Экстренная консультация от 30 минут до 3 часов";
+                case "In urgent form - from 3 to 24 hours" -> consultationType = "Срочная консультация от 3 до 24 часов";
+                case "In planned form – for a day or more" -> consultationType = "Запланированная консультация";
+                default -> {
+                    return consultationType;
+                }
+            }
+        }
+
+        return consultationType;
     }
 }

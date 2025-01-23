@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="guardian_type">
-        <item>Mother</item>
-        <item>Father</item>
-        <item>Grandparent</item>
-        <item>Spouse</item>
+        <item>Мать</item>
+        <item>Отец</item>
+        <item>Бабушка/дедушка</item>
+        <item>Супруг</item>
     </string-array>
 
     <string-array name="contact_type">

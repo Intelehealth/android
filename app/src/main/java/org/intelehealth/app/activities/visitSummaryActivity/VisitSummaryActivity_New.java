@@ -173,6 +173,7 @@ import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.DownloadFilesUtils;
 import org.intelehealth.app.utilities.FileUtils;
 import org.intelehealth.app.utilities.FlavorKeys;
+import org.intelehealth.app.utilities.LanguageUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
@@ -2191,7 +2192,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     private void setupTypeOfConsultationSpinner() {
         String consultationType = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, CONSULTATION_TYPE);
         if (!TextUtils.isEmpty(consultationType)) {
-            mBinding.vdConsultationTypeValue.setText(" " + Node.bullet + "  " + consultationType);
+            mBinding.vdConsultationTypeValue.setText(" " + Node.bullet + "  " + StringUtils.getTypeOfConsultation(consultationType, LanguageUtils.getLocalLang()));
         } else {
             mBinding.vdConsultationTypeValue.setText(getString(R.string.no_data_found));
         }
