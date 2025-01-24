@@ -195,4 +195,36 @@
         <item>गर्भपात</item>
         <item>सध्या गरोदर आहे</item>
     </string-array>
+
+    <string-array name="child_alive">
+
+        <item>होय</item>
+        <item>नाही</item>
+    </string-array>
+
+    <string-array name="child_pre_term">
+
+        <item>@string/yes</item>
+        <item>@string/no</item>
+    </string-array>
+    <string-array name="block" >
+
+        <item>पेठ तालुका</item>
+        <item>सुरगाणा तालुका</item>
+        <item>इतर तालुका</item>
+    </string-array>
+    <string-array name="single_multiple_births">
+        <item>एकच मुल</item>
+        <item>एकाहून अधिक जन्म (जुळे, तिळे, इ.)</item>
+    </string-array>
+
+    <string-array name="sex_of_baby">
+        <item>मुलगा</item>
+        <item>मुलगी</item>
+    </string-array>
+
+    <string-array name="complications">
+        <item>होय</item>
+        <item>नाही</item>
+    </string-array>
 </resources>

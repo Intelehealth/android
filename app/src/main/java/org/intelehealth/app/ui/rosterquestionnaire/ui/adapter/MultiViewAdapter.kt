@@ -2,13 +2,17 @@ package org.intelehealth.app.ui.rosterquestionnaire.ui.adapter
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import org.intelehealth.app.R
+import org.intelehealth.app.databinding.ItemBlankViewBinding
 import org.intelehealth.app.databinding.ItemDatePickerViewBinding
 import org.intelehealth.app.databinding.ItemEditTextViewBinding
 import org.intelehealth.app.databinding.ItemSpinnerViewBinding
@@ -16,9 +20,12 @@ import org.intelehealth.app.ui.rosterquestionnaire.model.RoasterViewQuestion
 import org.intelehealth.app.ui.rosterquestionnaire.ui.listeners.MultiViewListener
 import org.intelehealth.app.ui.rosterquestionnaire.utilities.RoasterQuestionView
 import org.intelehealth.app.utilities.ArrayAdapterUtils
+import org.intelehealth.app.utilities.LanguageUtils
 import org.intelehealth.app.utilities.extensions.hideError
 import org.intelehealth.app.utilities.extensions.showDropDownError
 import org.intelehealth.app.utilities.extensions.validate
+
+private const val SPECIFY: String = "specify"
 
 class MultiViewAdapter(
     private var items: ArrayList<RoasterViewQuestion> = ArrayList(),
@@ -26,10 +33,17 @@ class MultiViewAdapter(
     private var isResulCheck: Boolean = false,
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
+
     private var errorPosition = -1
 
     override fun getItemViewType(position: Int): Int {
-        return items[position].layoutId.lavout
+        return if (!items[position].isVisible) {
+            R.layout.item_blank_view
+        } else {
+            items[position].layoutId.lavout
+        }
+
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -52,7 +66,13 @@ class MultiViewAdapter(
                 ), parent, false
             )
             // Add other layouts here
-            else -> throw IllegalArgumentException("Unknown view type: $viewType")
+            else -> {
+                ItemBlankViewBinding.inflate(
+                    LayoutInflater.from(
+                        parent.context
+                    ), parent, false
+                )
+            }
         }
 
         return GenericViewHolder(binding)
@@ -68,27 +88,48 @@ class MultiViewAdapter(
     inner class GenericViewHolder(private val binding: ViewBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(data: RoasterViewQuestion) {
+            val mContext = binding.root.context
             when (binding) {
                 is ItemSpinnerViewBinding -> {
 
                     binding.tvSpinnerHeader.text = data.question
                     binding.spinner.apply {
-                        val adapter = ArrayAdapterUtils.getObjectArrayAdapter(
-                            binding.root.context,
-                            data.spinnerItem!!
-                        )
+                        val englishList =
+                            LanguageUtils.getStringArrayInLocale(context, data.spinnerItem!!, "en")
+
+                        val listItem = context.resources.getStringArray(data.spinnerItem)
+                            .toList()
+                        val adapter =
+                            ArrayAdapterUtils.getObjectArrayAdapter(context, listItem)
 
                         if (adapter != this.adapter) {
                             setAdapter(adapter)
                         }
-
+                        // if the spinner already selected then set the selected data otherwise set 'select' text
                         if (text.toString() != data.answer) {
-                            setText(
-                                data.answer ?: binding.root.context.getString(R.string.select),
-                                false
-                            )
-                        }
+                            if (!data.answer.isNullOrEmpty() && data.answer!!.contains(
+                                    SPECIFY,
+                                    true
+                                )
+                            ) {
+                                binding.tilOtherText.visibility = View.VISIBLE
+                                val newArrayAnswer = data.answer!!.split(":")
+                                if (newArrayAnswer.size > 1) {
+                                    setText(context.getString(R.string.other_specify), false)
+                                    binding.etOther.setText(newArrayAnswer[1])
+                                }
 
+                            } else {
+                                val selectedPos =
+                                    getPositionOfSpinnerItem(data.answer, englishList)
+                                if (selectedPos != null) {
+                                    setText(listItem[selectedPos], false)
+                                }
+                                binding.tilOtherText.visibility = View.GONE
+                            }
+
+                        }
+                        // Handling error
                         if (bindingAdapterPosition == errorPosition && data.answer.isNullOrEmpty()) {
                             binding.textInputLayRelation.showDropDownError(
                                 data.answer,
@@ -97,12 +138,46 @@ class MultiViewAdapter(
                         } else {
                             binding.textInputLayRelation.hideError()
                         }
-
-                        setOnItemClickListener { _, _, _, id ->
-                            data.answer = adapter.getItem(id.toInt())
+                        // Set the data into model
+                        setOnItemClickListener { _, _, position, _ ->
+                            data.answer = englishList[position]
                             binding.textInputLayRelation.hideError()
+                            setSpinnerOtherVisibility(data, binding)
+                            listener.onItemClick(data, bindingAdapterPosition, this)
                         }
                     }
+                    binding.etOther.addTextChangedListener(object : TextWatcher {
+                        override fun onTextChanged(
+                            s: CharSequence?,
+                            start: Int,
+                            before: Int,
+                            count: Int,
+                        ) {
+                            if (!s.isNullOrEmpty()) {
+                                data.answer = LanguageUtils.getStringInLocale(
+                                    mContext,
+                                    R.string.other_specify,
+                                    "en"
+                                ) + ":" + s.toString()
+                            } else {
+                                data.answer = if (!data.answer.isNullOrEmpty()) {
+                                    data.answer!!.split(":")[0]
+                                } else {
+                                    null
+                                }
+                            }
+                        }
+
+                        override fun beforeTextChanged(
+                            s: CharSequence?,
+                            start: Int,
+                            count: Int,
+                            after: Int,
+                        ) {
+                        }
+
+                        override fun afterTextChanged(s: Editable?) {}
+                    })
                 }
 
                 is ItemDatePickerViewBinding -> {
@@ -144,6 +219,30 @@ class MultiViewAdapter(
                 }
 
             }
+        }
+
+        private fun setSpinnerOtherVisibility(
+            data: RoasterViewQuestion,
+            binding: ItemSpinnerViewBinding,
+        ) {
+            if (data.answer!!.contains(SPECIFY, true)) {
+                binding.tilOtherText.visibility = View.VISIBLE
+            } else {
+                binding.tilOtherText.visibility = View.GONE
+                binding.etOther.setText("")
+            }
+        }
+
+        private fun getPositionOfSpinnerItem(key: String?, list: Array<String>): Int? {
+            if (key.isNullOrEmpty()) {
+                return null
+            }
+            list.forEachIndexed { index, item ->
+                if (item == key) {
+                    return index
+                }
+            }
+            return null
         }
     }
 

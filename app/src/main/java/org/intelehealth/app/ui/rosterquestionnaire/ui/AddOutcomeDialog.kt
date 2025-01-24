@@ -13,6 +13,7 @@ import org.intelehealth.app.ui.dialog.CalendarDialog
 import org.intelehealth.app.ui.rosterquestionnaire.model.RoasterViewQuestion
 import org.intelehealth.app.ui.rosterquestionnaire.ui.adapter.MultiViewAdapter
 import org.intelehealth.app.ui.rosterquestionnaire.ui.listeners.MultiViewListener
+import org.intelehealth.app.ui.rosterquestionnaire.utilities.RoasterQuestionView
 import org.intelehealth.app.ui.rosterquestionnaire.viewmodel.RosterViewModel
 import org.intelehealth.app.utilities.SpacingItemDecoration
 
@@ -69,7 +70,7 @@ class AddOutcomeDialog : DialogFragment(), MultiViewListener {
                 _binding.rvOutcomeQuestions.smoothScrollToPosition(it)
                 pregnancyAdapter.updateErrorMessage(it)
             } ?: run {
-                rosterViewModel.addPregnancyOutcome(pregnancyOutcomeList,editPosition)
+                rosterViewModel.addPregnancyOutcome(pregnancyOutcomeList, editPosition)
                 dismiss()
             }
 
@@ -82,20 +83,67 @@ class AddOutcomeDialog : DialogFragment(), MultiViewListener {
         _binding.rvOutcomeQuestions.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = pregnancyAdapter
-            addItemDecoration(SpacingItemDecoration(16))
+        }
+        pregnancyOutcomeList.forEachIndexed{index,item->
+            changePregnancyVisibility(index,item)
         }
         pregnancyAdapter.notifyList(pregnancyOutcomeList)
     }
 
 
     override fun onItemClick(item: RoasterViewQuestion, position: Int, view: View) {
-        CalendarDialog.showDatePickerDialog(object : CalendarDialog.OnDatePickListener {
-            override fun onDatePick(day: Int, month: Int, year: Int, value: String?) {
-                item.answer = value
-                pregnancyAdapter.notifyItemChanged(position)
+        if (item.layoutId.lavout == RoasterQuestionView.DATE_PICKER.lavout) {
+            CalendarDialog.showDatePickerDialog(object : CalendarDialog.OnDatePickListener {
+                override fun onDatePick(day: Int, month: Int, year: Int, value: String?) {
+                    item.answer = value
+                    pregnancyAdapter.notifyItemChanged(position)
 
+                }
+            }, childFragmentManager)
+        } else {
+            changePregnancyVisibility(position, item)
+        }
+
+    }
+
+    private fun changePregnancyVisibility(
+        position: Int,
+        item: RoasterViewQuestion,
+    ) {
+        if (position == 0) {
+
+            if (item.answer.equals("Born alive", true)) {
+                // 5 11
+                pregnancyOutcomeList.forEachIndexed { index, item ->
+                    item.isVisible = !(index == 5 || index == 11)
+                }
+
+            } else if (item.answer.equals("Still birth", true)) {
+                // 1,2,5,11
+                pregnancyOutcomeList.forEachIndexed { index, item ->
+                    item.isVisible = !(index == 1 || index == 2 || index == 5 || index == 11)
+                }
+            } else if (item.answer.equals("Induced abortion (mtp)", true)) {
+                // 1 ,2,5,8,9,10,11,12,15
+                pregnancyOutcomeList.forEachIndexed { index, item ->
+                    item.isVisible =
+                        !(index == 1 || index == 2 || index == 5 || index == 8 || index == 9 || index == 10 || index == 11 || index == 12 || index == 15)
+                }
+            } else if (item.answer.equals("Miscarriage", true)) {
+                //1,2,5 ,6,8,9,10,11,12,15
+                pregnancyOutcomeList.forEachIndexed { index, item ->
+                    item.isVisible =
+                        !(index == 1 || index == 2 || index == 5 || index == 6 || index == 8 || index == 9 || index == 10 || index == 11 || index == 12 || index == 15)
+                }
+            } else if (item.answer.equals("Currently pregnant", true)) {
+                //1,2,3,4,6,7,8,9,10,11,12,15
+                pregnancyOutcomeList.forEachIndexed { index, item ->
+                    item.isVisible =
+                        !(index == 1 || index == 2 || index == 3 || index == 4 || index == 6 || index == 7 || index == 8 || index == 9 || index == 10 || index == 11)
+                }
             }
-        }, childFragmentManager)
+            pregnancyAdapter.notifyDataSetChanged()
+        }
     }
 
     fun setPregnancyOutcomeList(list: List<RoasterViewQuestion>, editPosition: Int = -1) {

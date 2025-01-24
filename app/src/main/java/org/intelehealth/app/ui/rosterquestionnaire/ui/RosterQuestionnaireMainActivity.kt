@@ -220,7 +220,7 @@ class RosterQuestionnaireMainActivity : BaseActivity() {
                 putExtra(PATIENT_UUID, patientId)
                 putExtra(ROSTER_CURRENT_STAGE, stage)
                 putExtra(IS_EDIT_MODE, isEditMode)
-                putExtra(IS_PREGNANCY_MODE, isPregnancyVisible)
+                putExtra(IS_PREGNANCY_MODE, true)
 
             }.also { context.startActivity(it) }
         }

@@ -108,13 +108,7 @@ class PregnancyRosterFragment : BaseRosterFragment(R.layout.fragment_pregnancy_r
 
         }
 
-//        binding.frag2BtnNext.setOnClickListener {
-//            handleNextButtonClick()
-//        }
-//
-//        binding.frag2BtnBack.setOnClickListener {
-//            findNavController().popBackStack()
-//        }
+
         binding.rgPregnancyOutcome.setOnCheckedChangeListener { group, checkedId ->
             val selectedRadioButton = group.findViewById<RadioButton>(checkedId)
             if (selectedRadioButton.text.toString()
@@ -135,23 +129,6 @@ class PregnancyRosterFragment : BaseRosterFragment(R.layout.fragment_pregnancy_r
         }
     }
 
-//    private fun handleNextButtonClick() {
-//
-//        if (isValidPregnancy()) {
-//            rosterViewModel.pregnancyOutcomeCount =
-//                binding.tilEtPregnancyOutcomeCount.text.toString()
-//            navigateToHealthService()
-//        }
-//    }
-
-    /**
-     * Navigates to the Health Service section of the application.
-     */
-//    private fun navigateToHealthService() {
-//        PregnancyRosterFragmentDirections.navigationPregnancyToHealthService().apply {
-//            findNavController().navigate(this)
-//        }
-//    }
 
     /**
      * Deletes the selected pregnancy outcome from the list and updates the RecyclerView.
@@ -172,6 +149,7 @@ class PregnancyRosterFragment : BaseRosterFragment(R.layout.fragment_pregnancy_r
      * @param item The pregnancy outcome model to edit
      */
     override fun onClickEdit(view: View, position: Int, item: PregnancyOutComeModel) {
+        rosterViewModel.setQuestionVisibility(item.roasterViewQuestion)
         AddOutcomeDialog().apply {
             setPregnancyOutcomeList(item.roasterViewQuestion, position)
         }.show(childFragmentManager, AddOutcomeDialog::class.simpleName)

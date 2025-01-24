@@ -7,12 +7,12 @@ data class RoasterViewQuestion(
     val layoutId: RoasterQuestionView,
     val data: Any? = null,
     val question: String,
-    val spinnerItem: List<String>?= null,
+    val spinnerItem: Int ?=null,
     var spinnerPosition: Int?= null,
     var answer: String?= null,
     val errorMessage: String= "",
-    val inputType : Int = InputType.TYPE_CLASS_TEXT,
-    var attribute : String = "",
-    var uuid : String? = null,
-    var isVisible : Boolean = true
+    val inputType: Int = InputType.TYPE_CLASS_TEXT,
+    var attribute: String = "",
+    var uuid: String? = null,
+    var isVisible: Boolean = true
 )

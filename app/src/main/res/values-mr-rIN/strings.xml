@@ -881,6 +881,7 @@
     <string name="identification_screen_prompt_household_no">घर क्रमांक</string>
     <string name="identification_screen_prompt_other_block">Other Block</string>
     <string name="what_was_the_outcome_of_your_pregnancy">गरोदरपणाचा परिणाम काय झाला/ गरोदरपणात बाळाचे काय झाले?</string>
+    <string name="txt_is_the_child_alive">मुल जिवंत आहे का?</string>
     <string name="what_was_the_year_of_pregnancy_outcome_a_for_pregnant_ladies_mention_the_date_when_conceived_b_in_case_of_other_options_mention_the_date_of_delivery_miscarriage">What was the year of pregnancy outcome? ((a) for pregnant ladies, mention the date when conceived (b) in case of other options mention the date of delivery/miscarriage)</string>
     <string name="how_many_months_did_this_pregnancy_last">ही गर्भधारणा किती महिने टिकली?</string>
     <string name="what_is_the_place_of_delivery">डिलिव्हरी / प्रसुतीचे ठिकाण कुठे आहे?</string>
@@ -955,4 +956,12 @@
     <string name="enter_diagnosis">Enter Diagnosis</string>
     <string name="diagnosis_required">Diagnosis Required</string>
     <string name="please_delete_pregnancy_outcome">कृपया %1$s गर्भधारणेचा परिणाम हटवा</string>
+    <string name="was_this_birth_pre_term_earlier_than_due_date_for_delivery">िलेल्या तारखेपूर्वी डिलिव्हरी/ प्रसूती झाली का ?/ (निर्धारित काळापूर्वी बाळाचा जन्म झाला का)</string>
+    <string name="txt_how_many_months_have_you_been_pregnant">तुम्ही किती महिने गरोदर आहात</string>
+    <string name="focal_facility_for_this_pregnancy">ह्या गरोदरपणासाठी अथवा प्रसूती / डिलिव्हरीसाठी तुम्ही उपचार घेतलेले ठिकाण</string>
+    <string name="what_was_the_name_of_the_facility">ुविधाकेंद्र कुठले होते?</string>
+    <string name="txt_was_this_a_single_multiple_births">हे एकच/एकाहून अधिक जन्म होते का?</string>
+    <string name="txt_how_old_was_the_baby_when_he_she_died">बाळ/ती मरण पावले तेव्हा त्याचे वय किती होते?</string>
+    <string name="txt_what_is_was_the_sex_of_the_baby">बाळाचे लिंग काय/होते?</string>
+    <string name="txt_were_any_complications_identified_at_the_time_of_delivery">प्रसूतीच्या वेळी काही गुंतागुंती/ कॉम्प्लिकेशन्स झाल्या होत्या का ?</string>
 </resources>

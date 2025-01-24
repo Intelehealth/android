@@ -95,7 +95,9 @@ class PersonalConsentActivity : AppCompatActivity(), WebViewStatus {
 //        startRosterQuestionnaire(
 //            this,
 //           " patient.uuid",
-//            RosterQuestionnaireStage.GENERAL_ROSTER
+//            RosterQuestionnaireStage.GENERAL_ROSTER,
+//            isPregnancyVisible = true,
+//            isEditMode = false
 //        )
 
         /*  startRosterQuestionnaire(

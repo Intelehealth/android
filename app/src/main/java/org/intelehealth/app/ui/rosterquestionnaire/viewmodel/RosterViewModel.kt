@@ -183,4 +183,8 @@ class RosterViewModel @Inject constructor(
         return questions.indexOfFirst { it.answer.isNullOrEmpty() }.takeIf { it != -1 }
     }
 
+    fun setQuestionVisibility(roasterViewQuestion: List<RoasterViewQuestion>) {
+
+    }
+
 }

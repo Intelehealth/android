@@ -2776,4 +2776,35 @@
         <item>Good</item>
         <item>Very Good</item>
     </string-array>
+
+    <string-array name="child_alive">
+
+        <item>Yes</item>
+        <item>No</item>
+    </string-array>
+    <string-array name="child_pre_term">
+
+        <item>@string/yes</item>
+        <item>@string/no</item>
+    </string-array>
+    <string-array name="block" >
+
+        <item>Peth Block</item>
+        <item>Suragana Block</item>
+        <item>Other Block (specify)</item>
+    </string-array>
+    <string-array name="single_multiple_births">
+        <item>Single</item>
+        <item>Multiple</item>
+    </string-array>
+    <string-array name="sex_of_baby">
+
+        <item>Male</item>
+        <item>Female</item>
+    </string-array>
+
+    <string-array name="complications">
+        <item>Yes</item>
+        <item>No</item>
+    </string-array>
 </resources>
