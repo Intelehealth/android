@@ -182,31 +182,11 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
     private fun setupStates() {
         LanguageUtils.getStateList()?.let {
             binding.textInputLayState.tag = it
-            val adapter: ArrayAdapter<StateData> = ArrayAdapterUtils.getObjectArrayAdapter(
-                requireContext(), it
-            )
-            binding.autoCompleteState.setAdapter(adapter)
-            if (patient.stateprovince != null && patient.stateprovince.isNotEmpty()) {
-                val state = LanguageUtils.getState(patient.stateprovince)
-                if (state != null) {
-                    binding.autoCompleteState.setText(state.toString(), false)
-                    setupDistricts(state)
-                }
-            }
-
             val defaultValue = SessionManager.getInstance(requireContext()).stateName
-            binding.autoCompleteState.setText(defaultValue, false)
-
+            binding.autoCompleteState.setAdapter(null)
+            binding.autoCompleteState.setText(defaultValue)
             binding.autoCompleteState.isEnabled = false
-            binding.autoCompleteState.setOnItemClickListener { _, _, i, _ ->
-                binding.textInputLayState.hideError()
-                val list: List<StateData> = binding.textInputLayState.tag as List<StateData>
-                val selectedState = list[i]
-                patient.stateprovince = selectedState.state
-                setupDistricts(selectedState)
-            }
         }
-
     }
 
     private fun setupDistricts(stateData: StateData) {

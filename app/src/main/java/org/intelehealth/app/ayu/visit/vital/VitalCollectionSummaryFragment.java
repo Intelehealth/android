@@ -362,9 +362,7 @@ public class VitalCollectionSummaryFragment extends Fragment {
                                 return;
                             }
                             mLastClickTime = SystemClock.elapsedRealtime();
-
-                            speciality_attributes.insertVisitAttributes(visitUuid, "", AppConstants.DOCTOR_NOT_NEEDED);
-                            // speciality_attributes.insertVisitAttributes(visitUuid, " Specialist doctor not needed");
+                            speciality_attributes.insertVisitAttributes(visitUuid, AppConstants.DOCTOR_NOT_NEEDED, UuidDictionary.SPECIALITY);
                         } catch (DAOException e) {
                             e.printStackTrace();
                         }

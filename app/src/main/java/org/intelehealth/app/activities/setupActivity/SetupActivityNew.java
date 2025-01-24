@@ -19,6 +19,7 @@ import android.os.LocaleList;
 import android.os.StrictMode;
 import android.text.Editable;
 import android.text.InputFilter;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
@@ -197,6 +198,8 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
             }
         });
 
+        etServer.setText("ekal.intelehealth.org");
+        etServer.setInputType(InputType.TYPE_NULL);
 
         r1 = findViewById(R.id.demoMindmap);
         r2 = findViewById(R.id.downloadMindmap);
