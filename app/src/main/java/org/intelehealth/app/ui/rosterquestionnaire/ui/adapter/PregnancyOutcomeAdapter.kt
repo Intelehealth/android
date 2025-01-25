@@ -45,7 +45,7 @@ PregnancyOutcomeAdapter(
         fun bind(item: PregnancyOutComeModel) {
             binding.tvTitle.text = item.title
             binding.rvOutComeItem.adapter =
-                PregnancyOutComeChildAdapter(item.roasterViewQuestion)
+                PregnancyOutComeChildAdapter(item.roasterViewQuestion.filter { it.isVisible })
             if (item.isOpen) {
                 binding.rvOutComeItem.visibility = View.VISIBLE
                 binding.bottomDivider.visibility = View.VISIBLE

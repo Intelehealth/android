@@ -132,12 +132,21 @@ class InsertRoasterUseCase @Inject constructor(private val repository: RosterRep
             val pregnancyOutComeQuestion = it.roasterViewQuestion
             val pregnancyRosterData = PregnancyRosterData(
                 pregnancyOutcome = pregnancyOutComeQuestion[0].answer ?: "",
-                yearOfPregnancyOutcome = pregnancyOutComeQuestion[1].answer ?: "",
-                monthsOfPregnancy = pregnancyOutComeQuestion[2].answer ?: "",
-                placeOfDelivery = pregnancyOutComeQuestion[3].answer ?: "",
-                typeOfDelivery = pregnancyOutComeQuestion[4].answer ?: "",
-                pregnancyPlanned = pregnancyOutComeQuestion[5].answer ?: "",
-                highRiskPregnancy = pregnancyOutComeQuestion[6].answer ?: "",
+                isChildAlive = pregnancyOutComeQuestion[1].answer ?: "",
+                isPreTerm = pregnancyOutComeQuestion[2].answer ?: "",
+                yearOfPregnancyOutcome = pregnancyOutComeQuestion[3].answer ?: "",
+                monthsOfPregnancy = pregnancyOutComeQuestion[4].answer ?: "",
+                monthsBeenPregnant = pregnancyOutComeQuestion[5].answer ?: "",
+                placeOfDelivery = pregnancyOutComeQuestion[6].answer ?: "",
+                typeOfDelivery = pregnancyOutComeQuestion[7].answer ?: "",
+                focalFacilityForPregnancy = pregnancyOutComeQuestion[8].answer ?: "",
+                facilityName = pregnancyOutComeQuestion[9].answer ?: "",
+                singleMultipleBirths = pregnancyOutComeQuestion[10].answer ?: "",
+                babyAgeDied = pregnancyOutComeQuestion[11].answer ?: "",
+                sexOfBaby = pregnancyOutComeQuestion[12].answer ?: "",
+                pregnancyPlanned = pregnancyOutComeQuestion[13].answer ?: "",
+                highRiskPregnancy = pregnancyOutComeQuestion[14].answer ?: "",
+                pregnancyComplications = pregnancyOutComeQuestion[15].answer ?: "",
             )
             pregnancyRosterList.add(pregnancyRosterData)
         }

@@ -12,7 +12,6 @@ import org.intelehealth.app.ui.rosterquestionnaire.ui.adapter.MultiViewAdapter
 import org.intelehealth.app.ui.rosterquestionnaire.ui.listeners.MultiViewListener
 import org.intelehealth.app.ui.rosterquestionnaire.utilities.RosterQuestionnaireStage
 import org.intelehealth.app.ui.rosterquestionnaire.viewmodel.RosterViewModel
-import org.intelehealth.app.utilities.SpacingItemDecoration
 
 @AndroidEntryPoint
 class GeneralRosterFragment : BaseRosterFragment(R.layout.fragment_general_roster),
@@ -52,40 +51,8 @@ class GeneralRosterFragment : BaseRosterFragment(R.layout.fragment_general_roste
         _binding.rvGeneralQuestion.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = generalQuestionAdapter
-            addItemDecoration(SpacingItemDecoration(16))
         }
     }
-
-
-//    private fun clickListeners() {
-//
-//        _binding.frag2BtnBack.setOnClickListener {
-//            // Handle back button click
-//            handleBackEventFromRosterToPatientReg(
-//                requireActivity(),
-//                rosterViewModel.patientUuid,
-//                PatientRegStage.OTHER
-//            )
-//        }
-//
-//        _binding.frag2BtnNext.setOnClickListener {
-//            rosterViewModel.validateGeneralList()?.let {
-//                _binding.rvGeneralQuestion.smoothScrollToPosition(it)
-//                generalQuestionAdapter.updateErrorMessage(it)
-//            } ?: run { navigateToPregnancy() }
-//
-//        }
-//
-//    }
-
-    /**
-     * Navigate to Pregnancy Roster Fragment
-     */
-//    private fun navigateToPregnancy() {
-//        GeneralRosterFragmentDirections.navigationGeneralToPregnancyRoster().apply {
-//            findNavController().navigate(this)
-//        }
-//    }
 
     /**
      * Method for handling item clicks on the RecyclerView (currently not implemented)

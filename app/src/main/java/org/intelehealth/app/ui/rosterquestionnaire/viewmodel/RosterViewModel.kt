@@ -61,7 +61,7 @@ class RosterViewModel @Inject constructor(
 
     fun addPregnancyOutcome(questionList: List<RoasterViewQuestion>, editPosition: Int = -1) {
         val pregnancyOutComeModel = PregnancyOutComeModel(
-            title = questionList[0].answer ?: "",
+            title = questionList[0].localAnswer ?: questionList[0].answer,
             roasterViewQuestion = questionList
         )
         val list = _outComeLiveList.value ?: mutableListOf()
@@ -75,7 +75,7 @@ class RosterViewModel @Inject constructor(
 
     fun addHealthService(questionList: List<RoasterViewQuestion>, editPosition: Int = -1) {
         val healthServiceModel = HealthServiceModel(
-            title = questionList[0].answer ?: "",
+            title = questionList[0].localAnswer ?: questionList[0].answer,
             roasterViewQuestion = questionList
         )
         val list = _healthServiceLiveList.value ?: mutableListOf()
@@ -180,11 +180,8 @@ class RosterViewModel @Inject constructor(
     }
 
     fun validatePregnancyOutcomeList(questions: List<RoasterViewQuestion>): Int? {
-        return questions.indexOfFirst { it.answer.isNullOrEmpty() }.takeIf { it != -1 }
+        return questions.indexOfFirst { it.isVisible && it.answer.isNullOrEmpty() }.takeIf { it != -1 }
     }
 
-    fun setQuestionVisibility(roasterViewQuestion: List<RoasterViewQuestion>) {
-
-    }
 
 }

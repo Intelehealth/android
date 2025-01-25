@@ -120,11 +120,7 @@ class MultiViewAdapter(
                                 }
 
                             } else {
-                                val selectedPos =
-                                    getPositionOfSpinnerItem(data.answer, englishList)
-                                if (selectedPos != null) {
-                                    setText(listItem[selectedPos], false)
-                                }
+                                setText(data.localAnswer, false)
                                 binding.tilOtherText.visibility = View.GONE
                             }
 
@@ -141,6 +137,7 @@ class MultiViewAdapter(
                         // Set the data into model
                         setOnItemClickListener { _, _, position, _ ->
                             data.answer = englishList[position]
+                            data.localAnswer = listItem[position]
                             binding.textInputLayRelation.hideError()
                             setSpinnerOtherVisibility(data, binding)
                             listener.onItemClick(data, bindingAdapterPosition, this)

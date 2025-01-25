@@ -44,6 +44,7 @@
             style="@style/AppTheme.OutlineInputBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             app:hintEnabled="false">
 
             <com.google.android.material.textfield.TextInputEditText

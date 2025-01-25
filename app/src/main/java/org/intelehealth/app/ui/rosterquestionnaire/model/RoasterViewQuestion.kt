@@ -14,5 +14,6 @@ data class RoasterViewQuestion(
     val inputType: Int = InputType.TYPE_CLASS_TEXT,
     var attribute: String = "",
     var uuid: String? = null,
-    var isVisible: Boolean = true
+    var isVisible: Boolean = true,
+    var localAnswer: String?= null,
 )

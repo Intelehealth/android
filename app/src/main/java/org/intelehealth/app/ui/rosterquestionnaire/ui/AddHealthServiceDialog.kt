@@ -13,6 +13,7 @@ import org.intelehealth.app.ui.dialog.CalendarDialog
 import org.intelehealth.app.ui.rosterquestionnaire.model.RoasterViewQuestion
 import org.intelehealth.app.ui.rosterquestionnaire.ui.adapter.MultiViewAdapter
 import org.intelehealth.app.ui.rosterquestionnaire.ui.listeners.MultiViewListener
+import org.intelehealth.app.ui.rosterquestionnaire.utilities.RoasterQuestionView
 import org.intelehealth.app.ui.rosterquestionnaire.viewmodel.RosterViewModel
 import org.intelehealth.app.utilities.SpacingItemDecoration
 
@@ -89,19 +90,21 @@ class AddHealthServiceDialog : DialogFragment(), MultiViewListener {
         _binding.rvHealthServiceQuestions.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = pregnancyAdapter
-            addItemDecoration(SpacingItemDecoration(16))
         }
         pregnancyAdapter.notifyList(healthServiceQuestionList)
     }
 
     override fun onItemClick(item: RoasterViewQuestion, position: Int, view: View) {
-        CalendarDialog.showDatePickerDialog(object : CalendarDialog.OnDatePickListener {
-            override fun onDatePick(day: Int, month: Int, year: Int, value: String?) {
-                item.answer = value
-                pregnancyAdapter.notifyItemChanged(position)
+        if (item.layoutId == RoasterQuestionView.DATE_PICKER)
+        {
+            CalendarDialog.showDatePickerDialog(object : CalendarDialog.OnDatePickListener {
+                override fun onDatePick(day: Int, month: Int, year: Int, value: String?) {
+                    item.answer = value
+                    pregnancyAdapter.notifyItemChanged(position)
 
-            }
-        }, childFragmentManager)
+                }
+            }, childFragmentManager)
+        }
     }
 
 

@@ -13,9 +13,13 @@ import org.intelehealth.app.ui.dialog.CalendarDialog
 import org.intelehealth.app.ui.rosterquestionnaire.model.RoasterViewQuestion
 import org.intelehealth.app.ui.rosterquestionnaire.ui.adapter.MultiViewAdapter
 import org.intelehealth.app.ui.rosterquestionnaire.ui.listeners.MultiViewListener
+import org.intelehealth.app.ui.rosterquestionnaire.utilities.BORN_ALIVE
+import org.intelehealth.app.ui.rosterquestionnaire.utilities.CURRENTLY_PREGNANT
+import org.intelehealth.app.ui.rosterquestionnaire.utilities.INDUCED_ABORTION
+import org.intelehealth.app.ui.rosterquestionnaire.utilities.MISCARRIAGE
 import org.intelehealth.app.ui.rosterquestionnaire.utilities.RoasterQuestionView
+import org.intelehealth.app.ui.rosterquestionnaire.utilities.STILL_BIRTH
 import org.intelehealth.app.ui.rosterquestionnaire.viewmodel.RosterViewModel
-import org.intelehealth.app.utilities.SpacingItemDecoration
 
 
 class AddOutcomeDialog : DialogFragment(), MultiViewListener {
@@ -84,9 +88,7 @@ class AddOutcomeDialog : DialogFragment(), MultiViewListener {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = pregnancyAdapter
         }
-        pregnancyOutcomeList.forEachIndexed{index,item->
-            changePregnancyVisibility(index,item)
-        }
+
         pregnancyAdapter.notifyList(pregnancyOutcomeList)
     }
 
@@ -108,34 +110,34 @@ class AddOutcomeDialog : DialogFragment(), MultiViewListener {
 
     private fun changePregnancyVisibility(
         position: Int,
-        item: RoasterViewQuestion,
+        roasterQuestion: RoasterViewQuestion,
     ) {
         if (position == 0) {
 
-            if (item.answer.equals("Born alive", true)) {
+            if (roasterQuestion.answer.equals(BORN_ALIVE, true)) {
                 // 5 11
                 pregnancyOutcomeList.forEachIndexed { index, item ->
                     item.isVisible = !(index == 5 || index == 11)
                 }
 
-            } else if (item.answer.equals("Still birth", true)) {
+            } else if (roasterQuestion.answer.equals(STILL_BIRTH, true)) {
                 // 1,2,5,11
                 pregnancyOutcomeList.forEachIndexed { index, item ->
                     item.isVisible = !(index == 1 || index == 2 || index == 5 || index == 11)
                 }
-            } else if (item.answer.equals("Induced abortion (mtp)", true)) {
+            } else if (roasterQuestion.answer.equals(INDUCED_ABORTION, true)) {
                 // 1 ,2,5,8,9,10,11,12,15
                 pregnancyOutcomeList.forEachIndexed { index, item ->
                     item.isVisible =
                         !(index == 1 || index == 2 || index == 5 || index == 8 || index == 9 || index == 10 || index == 11 || index == 12 || index == 15)
                 }
-            } else if (item.answer.equals("Miscarriage", true)) {
+            } else if (roasterQuestion.answer.equals(MISCARRIAGE, true)) {
                 //1,2,5 ,6,8,9,10,11,12,15
                 pregnancyOutcomeList.forEachIndexed { index, item ->
                     item.isVisible =
                         !(index == 1 || index == 2 || index == 5 || index == 6 || index == 8 || index == 9 || index == 10 || index == 11 || index == 12 || index == 15)
                 }
-            } else if (item.answer.equals("Currently pregnant", true)) {
+            } else if (roasterQuestion.answer.equals(CURRENTLY_PREGNANT, true)) {
                 //1,2,3,4,6,7,8,9,10,11,12,15
                 pregnancyOutcomeList.forEachIndexed { index, item ->
                     item.isVisible =
