@@ -1111,9 +1111,6 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
             }
         }
-        /*for NAS corresponding address is not required and address 1
-             means household no value thats why disabled the corresponding address 1 field for nas*/
-        addressOneTr.setVisibility(BuildConfig.FLAVOR_client.equals("nas") ? View.GONE : View.VISIBLE);
     }
 
 

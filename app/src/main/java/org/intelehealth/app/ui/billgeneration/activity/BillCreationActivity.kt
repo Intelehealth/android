@@ -53,7 +53,8 @@ class BillCreationActivity : AppCompatActivity() {
             if (it.isNotEmpty()) {
                 viewModel.isBillGenerated = true
                 binding.contentGenerateBill.isBillGenerated = viewModel.isBillGenerated
-                viewModel.updatePaymentStatusValue(billDetails.billType)
+                if (billDetails.billType.isNotEmpty())
+                    viewModel.updatePaymentStatusValue(billDetails.billType)
             }
         }
         binding.contentGenerateBill.patientDetailsTV.text = viewModel.setPatientDetails(billDetails)

@@ -2,10 +2,13 @@ package org.intelehealth.app.ui.billgeneration.utils;
 
 import static com.rt.printerlibrary.enumerate.CommonEnum.ALIGN_MIDDLE;
 
+import static org.intelehealth.app.activities.prescription.thermalprinter.TextPrintESCActivity.curPrinterInterface;
+
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Looper;
@@ -42,6 +45,7 @@ import com.rt.printerlibrary.setting.TextSetting;
 import com.rt.printerlibrary.utils.FuncUtils;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.activities.prescription.thermalprinter.BaseEnum;
 import org.intelehealth.app.activities.prescription.thermalprinter.BluetoothDeviceChooseDialog;
 import org.intelehealth.app.app.IntelehealthApplication;
@@ -62,7 +66,7 @@ public class PrintBillUsingThermalPrinter implements PrinterObserver {
     private TextSetting textSetting;
     private String mChartsetName = "UTF-8";
     private Object configObj;
-    public static PrinterInterface curPrinterInterface = null;
+    //public static PrinterInterface curPrinterInterface = null;
     private FragmentManager fragmentManager;
 
     public PrintBillUsingThermalPrinter(Context context, ActivityBillCreationBinding binding, Activity activity,
@@ -254,7 +258,7 @@ public class PrintBillUsingThermalPrinter implements PrinterObserver {
         activity.runOnUiThread(() -> {
             android.app.AlertDialog.Builder dialog =
                     new android.app.AlertDialog.Builder(context);
-            dialog.setTitle("Please connect device");
+            dialog.setTitle(context.getString(R.string.please_connect_device));
             dialog.setMessage(msg);
             dialog.setNegativeButton(R.string.cancel, null);
             dialog.show();
@@ -320,6 +324,8 @@ public class PrintBillUsingThermalPrinter implements PrinterObserver {
                                 binding.contentGenerateBill.buttonPrint.setEnabled(true);
                                 binding.contentGenerateBill.buttonPrint.setClickable(true);
                                 activity.finish();
+                                Intent intent = new Intent(context, HomeScreenActivity_New.class);
+                                context.startActivity(intent);
                             }
                         });
 
