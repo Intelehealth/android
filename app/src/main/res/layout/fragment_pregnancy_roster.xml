@@ -150,9 +150,8 @@
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/cvAddPregnancyOutCome"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/margin_8"
                     android:layout_marginTop="@dimen/margin_16"
                     android:background="@drawable/ui2_card_bg_gray_border"
                     app:cardCornerRadius="@dimen/common_card_corner_radius"

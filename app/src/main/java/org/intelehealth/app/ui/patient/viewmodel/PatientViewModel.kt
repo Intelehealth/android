@@ -8,6 +8,7 @@ import com.google.gson.Gson
 import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.app.ui.patient.data.PatientRepository
 import org.intelehealth.app.ui.rosterquestionnaire.utilities.FEMALE
+import org.intelehealth.app.utilities.DateAndTimeUtils
 import org.intelehealth.app.utilities.PatientRegStage
 import org.intelehealth.config.presenter.fields.viewmodel.RegFieldViewModel
 import org.intelehealth.klivekit.utils.Constants
@@ -59,6 +60,7 @@ class PatientViewModel(
     }
 
     fun getPregnancyVisibility(): Boolean {
-        return patientData.equals(FEMALE)
+        val patient = patientData.value
+        return patient?.gender.equals(FEMALE,true) && DateAndTimeUtils.isDateGreaterThan15Years(patient?.dateofbirth)
     }
 }

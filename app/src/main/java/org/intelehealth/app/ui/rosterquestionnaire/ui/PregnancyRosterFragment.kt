@@ -99,7 +99,7 @@ class PregnancyRosterFragment : BaseRosterFragment(R.layout.fragment_pregnancy_r
     }
 
     /**
-     * Configures click listeners for UI actions like adding outcomes, navigating forward, and going back.
+     * Configures click listeners .
      */
     private fun setListeners() {
         binding.tvAddPregnancyOutcome.setOnClickListener {

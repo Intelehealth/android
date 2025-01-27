@@ -104,11 +104,15 @@ class RosterQuestionnaireMainActivity : BaseActivity() {
             val currentFragment = navHostFragment?.childFragmentManager?.primaryNavigationFragment
             when (currentFragment) {
                 is PregnancyRosterFragment -> {
-                    navigateToStage(RosterQuestionnaireStage.PREGNANCY_ROSTER)
+                    navigateToStage(RosterQuestionnaireStage.GENERAL_ROSTER)
                 }
 
                 is HealthServiceRosterFragment -> {
-                    navigateToStage(RosterQuestionnaireStage.HEALTH_SERVICE)
+                    if (rosterViewModel.isPregnancyVisible) {
+                        navigateToStage(RosterQuestionnaireStage.PREGNANCY_ROSTER)
+                    } else {
+                        navigateToStage(RosterQuestionnaireStage.GENERAL_ROSTER)
+                    }
                 }
             }
         }
@@ -220,7 +224,7 @@ class RosterQuestionnaireMainActivity : BaseActivity() {
                 putExtra(PATIENT_UUID, patientId)
                 putExtra(ROSTER_CURRENT_STAGE, stage)
                 putExtra(IS_EDIT_MODE, isEditMode)
-                putExtra(IS_PREGNANCY_MODE, true)
+                putExtra(IS_PREGNANCY_MODE, isPregnancyVisible)
 
             }.also { context.startActivity(it) }
         }
@@ -290,7 +294,7 @@ class RosterQuestionnaireMainActivity : BaseActivity() {
 
     private fun hidePregnancyIndicator() {
         binding.rosterTab.ivIndicatorPregnancyRoster.visibility = GONE
-        binding.rosterTab.line1.visibility = GONE
+        binding.rosterTab.line2.visibility = GONE
         binding.rosterTab.tvIndicatorPregnancyRoster.visibility = GONE
     }
 }
