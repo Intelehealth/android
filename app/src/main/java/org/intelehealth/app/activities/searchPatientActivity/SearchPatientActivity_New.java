@@ -19,8 +19,9 @@ import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
+
 import org.intelehealth.app.utilities.CustomLog;
-import android.view.ContextThemeWrapper;
+
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -34,7 +35,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -47,11 +47,9 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.onboarding.PrivacyPolicyActivity_New;
 import org.intelehealth.app.activities.searchPatientActivity.adapter.SearchChipsPreviewGridAdapter;
-import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
-import org.intelehealth.app.models.PrescriptionModel;
 import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.models.dto.VisitDTO;
 import org.intelehealth.app.shared.BaseActivity;
@@ -89,7 +87,7 @@ public class SearchPatientActivity_New extends BaseActivity {
 
     private RecyclerView mSearchHistoryRecyclerView;
 
-    private final int limit = 50;
+    private final int limit = 25;
     private int start = 0, end = start + limit;
     private boolean isFullyLoaded = false;
     List<PatientDTO> patientDTOList;
@@ -184,7 +182,7 @@ public class SearchPatientActivity_New extends BaseActivity {
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                             query = "";
+                            query = "";
                             doQuery(query);
                         }
                     }, 100);
@@ -220,7 +218,7 @@ public class SearchPatientActivity_New extends BaseActivity {
             else
                 allPatientsTV.setText(getResources().getString(R.string.results_for) + " \"" + text + "\"");
 
-            mSearchEditText.setTextColor(ContextCompat.getColor(this,R.color.white));
+            mSearchEditText.setTextColor(ContextCompat.getColor(this, R.color.white));
             managePreviousSearchStorage(text);
             query = text;
             doQuery(text);
@@ -262,8 +260,8 @@ public class SearchPatientActivity_New extends BaseActivity {
         patientDTOList = PatientsDAO.getAllPatientsFromDB(limit, start);   // fetch first 15 records and dont skip any records ie. start = 0 for 2nd itertion skip first 15records.
         CustomLog.d(TAG, "queryAllPatients: " + patientDTOList.size());
 
-        if (patientDTOList.size() > 0) { // ie. the entered text is present in db
-            patientDTOList = fetchDataforTags(patientDTOList);
+        if (!patientDTOList.isEmpty()) { // ie. the entered text is present in db
+            fetchDataforTags(patientDTOList);
             CustomLog.v(TAG, "size: " + patientDTOList.size());
             searchData_Available();
             try {
@@ -357,46 +355,40 @@ public class SearchPatientActivity_New extends BaseActivity {
                 adapter = new SearchPatientAdapter_New(this, patientDTOList);
                 fullyLoaded = true;
                 search_recycelview.setAdapter(adapter);
-
             } catch (Exception e) {
                 FirebaseCrashlytics.getInstance().recordException(e);
-                Logger.logE("doquery", "doquery", e);
             }
             return;
         }
 
         recent = getQueryPatients(query);  // fetches all the list of patients.
 
-        if (recent.size() > 0) { // ie. the entered text is present in db
-            recent = fetchDataforTags(recent);
-            CustomLog.v(TAG, "size: " + recent.size());
-
+        if (!recent.isEmpty()) { // ie. the entered text is present in db
+            fetchDataforTags(recent);
             searchData_Available();
             try {
                 adapter = new SearchPatientAdapter_New(this, recent);
                 fullyLoaded = true;
                 search_recycelview.setAdapter(adapter);
-
             } catch (Exception e) {
                 FirebaseCrashlytics.getInstance().recordException(e);
-                CustomLog.e("doquery", "doquery", e);
             }
         } else {
             searchData_Unavailable();
         }
     }
 
-    private List<PatientDTO> fetchDataforTags(List<PatientDTO> patientDTOList) {
+    private void fetchDataforTags(List<PatientDTO> patientDTOList) {
         db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
 
-        /**
-         * 1. Check first if visit is present for this patient or not if yes than do other code logic.
+        /*
+          1. Check first if visit is present for this patient or not if yes than do other code logic.
          */
         for (int i = 0; i < patientDTOList.size(); i++) {
             VisitDTO visitDTO = isVisitPresentForPatient_fetchVisitValues(patientDTOList.get(i).getUuid());
 
-            /**
-             * 2. now check if only visit is present than only proceed to get value for priority tag, presc tag, startdate tag.
+            /*
+              2. now check if only visit is present than only proceed to get value for priority tag, presc tag, startdate tag.
              */
             if (visitDTO.getUuid() != null && visitDTO.getStartdate() != null) {
                 //  1. Priority Tag.
@@ -415,11 +407,7 @@ public class SearchPatientActivity_New extends BaseActivity {
                 }
 
                 //  2. startdate added.
-                String visit_start_date = DateAndTimeUtils.date_formatter(visitDTO.getStartdate(),
-                        "yyyy-MM-dd'T'HH:mm:ss.SSSZ",
-                        "dd MMM 'at' HH:mm a");    // Eg. 26 Sep 2022 at 03:15 PM
-                CustomLog.v("SearchPatient", "date: " + visit_start_date);
-
+                String visit_start_date = DateAndTimeUtils.date_formatter(visitDTO.getStartdate(), "yyyy-MM-dd'T'HH:mm:ss.SSSZ", "dd MMM 'at' HH:mm a");    // Eg. 26 Sep 2022 at 03:15 PM
                 patientDTOList.get(i).setVisit_startdate(visit_start_date);
 
                 //  3. prescription received/pending tag logic.
@@ -435,14 +423,13 @@ public class SearchPatientActivity_New extends BaseActivity {
                 // checking if visit is uploaded or not - end
 
             } else {
-                /**
-                 * no visit for this patient.
-                 * dont add startvisitdate value into this model keep it null and later check for null check and add logic
+                /*
+                  no visit for this patient.
+                  dont add startvisitdate value into this model keep it null and later check for null check and add logic
                  */
             }
         }
 
-        return patientDTOList;
     }
 
     private void searchData_Available() {
@@ -508,7 +495,7 @@ public class SearchPatientActivity_New extends BaseActivity {
                 return;
             }
 
-         //   patientDTOList = PatientsDAO.getAllPatientsFromDB(limit, start);    // for n iteration limit be fixed == 15 and start - offset will keep skipping each records.
+            //   patientDTOList = PatientsDAO.getAllPatientsFromDB(limit, start);    // for n iteration limit be fixed == 15 and start - offset will keep skipping each records.
             List<PatientDTO> tempList = PatientsDAO.getAllPatientsFromDB(limit, start); // for n iteration limit be fixed == 15 and start - offset will keep skipping each records.
             if (tempList.size() > 0) {
                 patientDTOList.addAll(tempList);

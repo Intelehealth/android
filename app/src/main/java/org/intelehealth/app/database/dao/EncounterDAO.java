@@ -436,7 +436,7 @@ public class EncounterDAO {
         String encounterUuid = "";
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
 
-        Cursor idCursor = db.rawQuery("SELECT uuid FROM tbl_encounter where visituuid = ? AND " + "encounter_type_uuid = ? AND (sync = '1' OR sync = 'true' OR sync = 'TRUE') COLLATE NOCASE", new String[]{visitUUID, ENCOUNTER_VISIT_NOTE});
+        Cursor idCursor = db.rawQuery("SELECT uuid FROM tbl_encounter where visituuid = ? AND encounter_type_uuid = ? AND (sync = '1' OR sync = 'true' OR sync = 'TRUE') COLLATE NOCASE", new String[]{visitUUID, ENCOUNTER_VISIT_NOTE});
         if (idCursor.getCount() != 0) {
             while (idCursor.moveToNext()) {
                 encounterUuid = idCursor.getString(idCursor.getColumnIndexOrThrow("uuid"));
