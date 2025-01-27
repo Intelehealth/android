@@ -415,7 +415,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                 node.setSelected(false);
                 parentNode.setSelected(false);
                 parentNode.setDataCaptured(false);
-                mOnItemSelection.onSelect(node, mRootIndex, true, parentNode);
+                mOnItemSelection.onSelect(node, mRootIndex, true, parentNode, false);
                 notifyItemChanged(index);
             }
         });
@@ -452,7 +452,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                     mParentNode.setSelected(true);
                     mParentNode.setDataCaptured(true);
                     notifyItemChanged(index);
-                    mOnItemSelection.onSelect(node, mRootIndex, false, parentNode);
+                    mOnItemSelection.onSelect(node, mRootIndex, false, parentNode, false);
                 }
             }
         });
@@ -508,7 +508,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
             node.setDataCaptured(false);
             parentNode.setSelected(false);
             parentNode.setDataCaptured(false);
-            mOnItemSelection.onSelect(node, mRootIndex, true, parentNode);
+            mOnItemSelection.onSelect(node, mRootIndex, true, parentNode, false);
             notifyItemChanged(index);
         });
 
@@ -541,7 +541,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                 parentNode.setSelected(true);
                 parentNode.setDataCaptured(true);
                 notifyItemChanged(index);
-                mOnItemSelection.onSelect(node, mRootIndex, false, parentNode);
+                mOnItemSelection.onSelect(node, mRootIndex, false, parentNode, false);
             }
         });
         rangeSlider.setLabelFormatter(value -> String.valueOf((int) value));
@@ -882,7 +882,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                                     holder.submitButton.setVisibility(View.VISIBLE);
                             } else {
                                 holder.submitButton.setVisibility(View.GONE);
-                                mOnItemSelection.onSelect(node, mRootIndex, false, mItemList.get(index));
+                                mOnItemSelection.onSelect(node, mRootIndex, false, mItemList.get(index), false);
                                 AdapterUtils.setToDisable(holder.skipButton);
                             }
 
@@ -984,7 +984,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                             } else {
                                 //holder.tvQuestionDesc.setText(mContext.getString(R.string.select_any_one));
                                 holder.submitButton.setVisibility(View.GONE);
-                                mOnItemSelection.onSelect(node, mRootIndex, false, mItemList.get(index));
+                                mOnItemSelection.onSelect(node, mRootIndex, false, mItemList.get(index), false);
                                 AdapterUtils.setToDisable(holder.skipButton);
                             }
 
@@ -1058,7 +1058,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         int nestedLevel = mNestedLevel + 1;
         holder.nestedQuestionsListingAdapter = new NestedQuestionsListingAdapter(mContext, mRootRecyclerView, holder.superNestedRecyclerView, selectedNode, nestedLevel, mRootIndex, mIsEditMode, mIsParentNodeIsMandatory, new OnItemSelection() {
             @Override
-            public void onSelect(Node node, int indexSelected, boolean isSkipped, Node parentNode) {
+            public void onSelect(Node node, int indexSelected, boolean isSkipped, Node parentNode, boolean isLastNodeSubmit) {
                 CustomLog.v(TAG, "NestedQuestionsListingAdapter showOptionsDataV2 onSelect index- " + indexSelected);
                 CustomLog.v(TAG, "NestedQuestionsListingAdapter showOptionsDataV2 onSelect selectedNode- " + selectedNode.findDisplay());
                 CustomLog.v(TAG, "NestedQuestionsListingAdapter showOptionsDataV2 onSelect nestedLevel- " + nestedLevel);
@@ -1081,13 +1081,13 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                 VisitUtils.scrollNow(mRootRecyclerView, 1000, 0, 400, mIsEditMode, mLoadedIds.contains(mItemList.get(index).getId()));
                 CustomLog.v(TAG, "NestedQuestionsListingAdapter onSelect selectedNestedOptionIndex- " + holder.selectedNestedOptionIndex);
 
-                boolean isLastNodeSubmit = holder.selectedNestedOptionIndex >= options.size() - 1;
+                isLastNodeSubmit = holder.selectedNestedOptionIndex >= options.size() - 1;
 
                 if (!selectedNode.isHavingNestedQuestion() && !selectedNode.isContainsTheQuestionBeforeOptions()) {
-                    mOnItemSelection.onSelect(node, index, isSkipped, selectedNode);
+                    mOnItemSelection.onSelect(node, index, isSkipped, selectedNode, isLastNodeSubmit);
                 } else {
                     if (isLastNodeSubmit)
-                        mOnItemSelection.onSelect(node, indexSelected, isSkipped, selectedNode);
+                        mOnItemSelection.onSelect(node, indexSelected, isSkipped, selectedNode, isLastNodeSubmit);
 
                     else {
                         holder.selectedNestedOptionIndex += 1;
@@ -1181,7 +1181,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
             int nestedLevel = mNestedLevel + 1;
             holder.nestedQuestionsListingAdapter = new NestedQuestionsListingAdapter(mContext, mRootRecyclerView, holder.superNestedRecyclerView, selectedNode, nestedLevel, mRootIndex, mIsEditMode, mIsParentNodeIsMandatory, new OnItemSelection() {
                 @Override
-                public void onSelect(Node node, int indexSelected, boolean isSkipped, Node parentNode) {
+                public void onSelect(Node node, int indexSelected, boolean isSkipped, Node parentNode, boolean isLastNodeSubmit) {
                     CustomLog.v(TAG, "NestedQuestionsListingAdapter onSelect index- " + indexSelected);
                     CustomLog.v(TAG, "NestedQuestionsListingAdapter onSelect selectedNode- " + selectedNode.findDisplay());
                     CustomLog.v(TAG, "NestedQuestionsListingAdapter onSelect nestedLevel- " + nestedLevel);
@@ -1204,10 +1204,10 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                     VisitUtils.scrollNow(mRootRecyclerView, 1000, 0, 400, mIsEditMode, mLoadedIds.contains(mItemList.get(index).getId()));
                     CustomLog.v(TAG, "NestedQuestionsListingAdapter onSelect selectedNestedOptionIndex- " + holder.selectedNestedOptionIndex);
 
-                    boolean isLastNodeSubmit = holder.selectedNestedOptionIndex >= options.size() - 1;
+                    isLastNodeSubmit = holder.selectedNestedOptionIndex >= options.size() - 1;
 
                     if (isLastNodeSubmit)
-                        mOnItemSelection.onSelect(node, indexSelected, isSkipped, selectedNode);
+                        mOnItemSelection.onSelect(node, indexSelected, isSkipped, selectedNode, isLastNodeSubmit);
 
                     else {
                         holder.selectedNestedOptionIndex += 1;
@@ -1333,7 +1333,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                         } else {
                             //holder.tvQuestionDesc.setText(mContext.getString(R.string.select_any_one));
                             holder.submitButton.setVisibility(View.GONE);
-                            mOnItemSelection.onSelect(node, mRootIndex, false, mItemList.get(index));
+                            mOnItemSelection.onSelect(node, mRootIndex, false, mItemList.get(index), false);
                             AdapterUtils.setToDisable(holder.skipButton);
                         }
 
@@ -1403,7 +1403,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                     @Override
                     public void onFinish() {
                         node.setImageUploaded(true);
-                        mOnItemSelection.onSelect(node, mRootIndex, false, parentNode);
+                        mOnItemSelection.onSelect(node, mRootIndex, false, parentNode, false);
 
                     }
                 });
@@ -1498,7 +1498,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                 AdapterUtils.buttonProgressAnimation(mContext, skipButton, false, new AdapterUtils.OnFinishActionListener() {
                     @Override
                     public void onFinish() {
-                        mOnItemSelection.onSelect(node, mRootIndex, true, parentNode);
+                        mOnItemSelection.onSelect(node, mRootIndex, true, parentNode, false);
                         notifyItemChanged(index);
                     }
                 });
@@ -1613,7 +1613,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                 AdapterUtils.buttonProgressAnimation(mContext, submitButton, true, new AdapterUtils.OnFinishActionListener() {
                     @Override
                     public void onFinish() {
-                        mOnItemSelection.onSelect(node, mRootIndex, false, parentNode);
+                        mOnItemSelection.onSelect(node, mRootIndex, false, parentNode, false);
                         mOnItemSelection.onTerminalNodeAnsweredForParentUpdate(parentNode.getId());
                     }
                 });
@@ -1741,7 +1741,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                 AdapterUtils.buttonProgressAnimation(mContext, skipButton, false, new AdapterUtils.OnFinishActionListener() {
                     @Override
                     public void onFinish() {
-                        mOnItemSelection.onSelect(node, mRootIndex, true, parentNode);
+                        mOnItemSelection.onSelect(node, mRootIndex, true, parentNode, false);
                         notifyItemChanged(index);
                     }
                 });
@@ -1806,7 +1806,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                     AdapterUtils.buttonProgressAnimation(mContext, submitButton, true, new AdapterUtils.OnFinishActionListener() {
                         @Override
                         public void onFinish() {
-                            mOnItemSelection.onSelect(node, mRootIndex, false, parentNode);
+                            mOnItemSelection.onSelect(node, mRootIndex, false, parentNode, false);
                             mOnItemSelection.onTerminalNodeAnsweredForParentUpdate(parentNode.getId());
 
                         }
@@ -1901,7 +1901,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                 AdapterUtils.buttonProgressAnimation(mContext, skipButton, false, new AdapterUtils.OnFinishActionListener() {
                     @Override
                     public void onFinish() {
-                        mOnItemSelection.onSelect(node, mRootIndex, true, parentNode);
+                        mOnItemSelection.onSelect(node, mRootIndex, true, parentNode, false);
                         notifyItemChanged(index);
                     }
                 });
@@ -1965,7 +1965,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                     AdapterUtils.buttonProgressAnimation(mContext, submitButton, true, new AdapterUtils.OnFinishActionListener() {
                         @Override
                         public void onFinish() {
-                            mOnItemSelection.onSelect(node, mRootIndex, false, parentNode);
+                            mOnItemSelection.onSelect(node, mRootIndex, false, parentNode, false);
                             mOnItemSelection.onTerminalNodeAnsweredForParentUpdate(parentNode.getId());
 
                         }
@@ -2111,7 +2111,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                 AdapterUtils.buttonProgressAnimation(mContext, skipButton, false, new AdapterUtils.OnFinishActionListener() {
                     @Override
                     public void onFinish() {
-                        mOnItemSelection.onSelect(node, mRootIndex, true, parentNode);
+                        mOnItemSelection.onSelect(node, mRootIndex, true, parentNode, false);
                         notifyItemChanged(index);
                     }
                 });
@@ -2219,7 +2219,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                     AdapterUtils.buttonProgressAnimation(mContext, submitButton, true, new AdapterUtils.OnFinishActionListener() {
                         @Override
                         public void onFinish() {
-                            mOnItemSelection.onSelect(node, mRootIndex, false, parentNode);
+                            mOnItemSelection.onSelect(node, mRootIndex, false, parentNode, false);
                             mOnItemSelection.onTerminalNodeAnsweredForParentUpdate(parentNode.getId());
                         }
                     });
@@ -2281,7 +2281,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                     AdapterUtils.buttonProgressAnimation(mContext, submitButton, true, new AdapterUtils.OnFinishActionListener() {
                         @Override
                         public void onFinish() {
-                            mOnItemSelection.onSelect(node, mRootIndex, false, null);
+                            mOnItemSelection.onSelect(node, mRootIndex, false, null, false);
                         }
                     });
 
@@ -2301,7 +2301,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                     AdapterUtils.buttonProgressAnimation(mContext, skipButton, false, new AdapterUtils.OnFinishActionListener() {
                         @Override
                         public void onFinish() {
-                            mOnItemSelection.onSelect(node, mRootIndex, true, null);
+                            mOnItemSelection.onSelect(node, mRootIndex, true, null, false);
                             notifyItemChanged(index);
                         }
                     });

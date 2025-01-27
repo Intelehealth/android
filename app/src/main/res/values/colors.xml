@@ -136,6 +136,7 @@
 
 
     <color name="ui2_green">#0FD197</color>
+    <color name="ui2_green_trans">#8AFFDA</color>
 
     <color name="ui2_link">#3F51B5</color>
 

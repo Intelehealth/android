@@ -128,7 +128,7 @@ public class PhysicalExaminationFragment extends Fragment {
 
             mQuestionsListingAdapter = new QuestionsListingAdapter(recyclerView, requireActivity(), false, true, physicalExam, 0, mRootComplainBasicInfoHashMap, mIsEditMode, new OnItemSelection() {
                 @Override
-                public void onSelect(Node node, int index, boolean isSkipped, Node parentNode) {
+                public void onSelect(Node node, int index, boolean isSkipped, Node parentNode, boolean isLastNodeSubmit) {
                     // avoid the scroll for old data change
                     CustomLog.v("onSelect", "mCurrentComplainNodeOptionsIndex - " + mCurrentComplainNodeOptionsIndex);
                     if (mCurrentComplainNodeOptionsIndex - index >= 1) {

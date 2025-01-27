@@ -165,7 +165,7 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
 
                         genericViewHolder.questionsListingAdapter = new QuestionsListingAdapter(genericViewHolder.recyclerView, mContext, true, false, null, 0, rootComplainBasicInfoHashMap, mIsEditMode, new OnItemSelection() {
                             @Override
-                            public void onSelect(Node node, int index, boolean isSkipped, Node parentNode) {
+                            public void onSelect(Node node, int index, boolean isSkipped, Node parentNode, boolean isLastNodeSubmit) {
 
                                 CustomLog.v(TAG, "currentComplainNodeOptionsIndex - " + genericViewHolder.currentComplainNodeOptionsIndex);
                                 CustomLog.v(TAG, "mItemList.get(position).getOptionsList().size() - " + mItemList.get(position).getOptionsList().size());

@@ -263,7 +263,7 @@ public class VisitReasonQuestionsFragment extends Fragment {
         }
 
         @Override
-        public void onSelect(Node node, int index, boolean isSkipped, Node parentNode) {
+        public void onSelect(Node node, int index, boolean isSkipped, Node parentNode, boolean isLastNodeSubmit) {
             CustomLog.v("onSelect QuestionsListingAdapter", "index - " + index + " \t mCurrentComplainNodeOptionsIndex - " + mCurrentComplainNodeOptionsIndex);
             CustomLog.v("onSelect QuestionsListingAdapter", "node - " + node.getText());
             // avoid the scroll for old data change
@@ -289,8 +289,22 @@ public class VisitReasonQuestionsFragment extends Fragment {
 
                 if (mQuestionsListingAdapter.geItems().get(index).getOptionsList() != null && mQuestionsListingAdapter.geItems().get(index).getOptionsList().size() > 0)
                     for (int i = 0; i < mQuestionsListingAdapter.geItems().get(index).getOptionsList().size(); i++) {
-                        mQuestionsListingAdapter.geItems().get(index).getOptionsList().get(i).setSelected(false);
-                        mQuestionsListingAdapter.geItems().get(index).getOptionsList().get(i).setDataCaptured(false);
+                      // check if all nested are not answered then unselect the parent
+                        if (mQuestionsListingAdapter.geItems().get(index).getOptionsList().get(i).getOptionsList() != null && mQuestionsListingAdapter.geItems().get(index).getOptionsList().get(i).getOptionsList().size() > 0) {
+                            boolean isAllNestedNotAnswered = true;
+                            for (int j = 0; j < mQuestionsListingAdapter.geItems().get(index).getOptionsList().get(i).getOptionsList().size(); j++) {
+                                if (mQuestionsListingAdapter.geItems().get(index).getOptionsList().get(i).getOptionsList().get(j).isSelected()) {
+                                    isAllNestedNotAnswered = false;
+                                    break;
+                                }
+                            }
+                            if (isAllNestedNotAnswered) {
+                                mQuestionsListingAdapter.geItems().get(index).getOptionsList().get(i).setSelected(false);
+                                mQuestionsListingAdapter.geItems().get(index).getOptionsList().get(i).setDataCaptured(false);
+                            }
+                        }
+//                        mQuestionsListingAdapter.geItems().get(index).getOptionsList().get(i).setSelected(false);
+//                        mQuestionsListingAdapter.geItems().get(index).getOptionsList().get(i).setDataCaptured(false);
                     }
                 if (mQuestionsListingAdapter.geItems().get(index).isRequired()) {
                     mQuestionsListingAdapter.notifyItemChanged(index);

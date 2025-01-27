@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dip"
+        android:background="@drawable/ui2_chat_bubble_square_round"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/header_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ui2_top_rounded_gree_color"
+            android:maxLines="1"
+            android:padding="8dip"
+            android:singleLine="true"
+            android:text="Radiation"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:visibility="visible" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcv_nested_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/header_tv"
+
+            android:paddingHorizontal="8dip"
+            android:paddingVertical="8dip" />
+    </LinearLayout>
+
+</RelativeLayout>
