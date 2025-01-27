@@ -5,6 +5,7 @@ import static org.intelehealth.app.database.dao.PatientsDAO.getQueryPatients;
 import static org.intelehealth.app.database.dao.PatientsDAO.isVisitPresentForPatient_fetchVisitValues;
 import static org.intelehealth.app.utilities.StringUtils.inputFilter_SearchBar;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -62,6 +63,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Created by: Prajwal Waingankar On: 29/Aug/2022
@@ -257,25 +260,26 @@ public class SearchPatientActivity_New extends BaseActivity {
     }
 
     private void queryAllPatients() {
-        patientDTOList = PatientsDAO.getAllPatientsFromDB(limit, start);   // fetch first 15 records and dont skip any records ie. start = 0 for 2nd itertion skip first 15records.
-        CustomLog.d(TAG, "queryAllPatients: " + patientDTOList.size());
+        Executors.newSingleThreadExecutor().execute(() -> {
+            patientDTOList = PatientsDAO.getAllPatientsFromDB(limit, start);   // fetch first 15 records and dont skip any records ie. start = 0 for 2nd itertion skip first 15records.
 
-        if (!patientDTOList.isEmpty()) { // ie. the entered text is present in db
-            fetchDataforTags(patientDTOList);
-            CustomLog.v(TAG, "size: " + patientDTOList.size());
-            searchData_Available();
-            try {
-                adapter = new SearchPatientAdapter_New(this, patientDTOList);
-                search_recycelview.setAdapter(adapter);
-                start = end;
-                end += limit;
-            } catch (Exception e) {
-                FirebaseCrashlytics.getInstance().recordException(e);
-                Logger.logE("doquery", "doquery", e);
+            if (!patientDTOList.isEmpty()) { // ie. the entered text is present in db
+                fetchDataforTags(patientDTOList);
+                runOnUiThread(this::searchData_Available);
+                try {
+                    runOnUiThread(() -> {
+                        adapter = new SearchPatientAdapter_New(this, patientDTOList);
+                        search_recycelview.setAdapter(adapter);
+                        start = end;
+                        end += limit;
+                    });
+                } catch (Exception e) {
+                    FirebaseCrashlytics.getInstance().recordException(e);
+                }
+            } else {
+                runOnUiThread(this::searchData_Unavailable);
             }
-        } else {
-            searchData_Unavailable();
-        }
+        });
     }
 
     @Override
@@ -466,12 +470,11 @@ public class SearchPatientActivity_New extends BaseActivity {
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
 
-                if (patientDTOList != null && patientDTOList.size() == 0) {
+                if (patientDTOList != null && patientDTOList.isEmpty()) {
                     isFullyLoaded = true;
                     return;
                 }
-                if (!isFullyLoaded && newState == RecyclerView.SCROLL_STATE_IDLE &&
-                        linearLayoutManager.findLastVisibleItemPosition() == adapter.getItemCount() - 1) {
+                if (!isFullyLoaded && newState == RecyclerView.SCROLL_STATE_IDLE && linearLayoutManager.findLastVisibleItemPosition() == adapter.getItemCount() - 1) {
                     if (recent != null) {
                         if (recent.size() > 0) {
 
@@ -486,26 +489,28 @@ public class SearchPatientActivity_New extends BaseActivity {
     }
 
     // This method will be accessed every time the person scrolls the recyclerView further.
+    @SuppressLint("NotifyDataSetChanged")
     private void setMoreDataIntoRecyclerView() {
-        if (recent.size() > 0) {    // on scroll, new data loads issue fix.
+        Executors.newSingleThreadExecutor().execute(() -> {
+            if (!recent.isEmpty()) {    // on scroll, new data loads issue fix.
 
-        } else {
-            if (patientDTOList != null && patientDTOList.size() == 0) {
-                isFullyLoaded = true;
-                return;
-            }
+            } else {
+                if (patientDTOList != null && patientDTOList.isEmpty()) {
+                    isFullyLoaded = true;
+                    return;
+                }
 
-            //   patientDTOList = PatientsDAO.getAllPatientsFromDB(limit, start);    // for n iteration limit be fixed == 15 and start - offset will keep skipping each records.
-            List<PatientDTO> tempList = PatientsDAO.getAllPatientsFromDB(limit, start); // for n iteration limit be fixed == 15 and start - offset will keep skipping each records.
-            if (tempList.size() > 0) {
-                patientDTOList.addAll(tempList);
-                CustomLog.d(TAG, "queryAllPatients: " + patientDTOList.size());
-                adapter.patientDTOS.addAll(tempList);
-                adapter.notifyDataSetChanged();
-                start = end;
-                end += limit;
+                List<PatientDTO> tempList = PatientsDAO.getAllPatientsFromDB(limit, start); // for n iteration limit be fixed == 15 and start - offset will keep skipping each records.
+                runOnUiThread(() -> {
+                    if (!tempList.isEmpty()) {
+                        patientDTOList.addAll(tempList);
+                        adapter.patientDTOS.addAll(tempList);
+                        adapter.notifyDataSetChanged();
+                        start = end;
+                        end += limit;
+                    }
+                });
             }
-        }
+        });
     }
-
 }
