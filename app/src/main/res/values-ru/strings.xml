@@ -470,7 +470,7 @@
 
 
     <string name="setup_new">Настройка</string>
-    <string name="one_time_setup">Please complete your one\ntime setup activity</string>
+    <string name="one_time_setup">Пожалуйста, сделайте настройку приложения</string>
     <string name="enter_following_details">Пожалуйста, введите следущие детали</string>
     <string name="location_new">Местоположение</string>
     <string name="please_wait_logging">Пожалуйста, подождите немного, идет загрузка Вашего профиля</string>
@@ -761,10 +761,10 @@
     <string name="failed_to_send_otp">Неудачная попытка отправить одноразовый пароль</string>
     <string name="otp_is_incorrect">Неверный одноразовый пароль!</string>
     <string name="otp_verification_failed">Неудачная верификация одноразового пароля!</string>
-    <string name="treat_mild_fever">Treat mild fever at home</string>
-    <string name="what_is_anemia">What is Anemia?</string>
-    <string name="treat_cough_at_home">Treat cough at home</string>
-    <string name="benefits_of_walking">Benefits of walking</string>
+    <string name="treat_mild_fever">Лечите легкую лихорадку дома</string>
+    <string name="what_is_anemia">Что так анемия?</string>
+    <string name="treat_cough_at_home">Лечите кашель дома</string>
+    <string name="benefits_of_walking">Польза ходьбы</string>
     <string name="out_of"> из </string>
     <string name="pending">Ожидаемые</string>
     <string name="exit_app">Выйти из приложения</string>
@@ -802,7 +802,7 @@
     <string name="downloaded_to">Загружено в: </string>
     <string name="doctor_suggested_follow_up_on">Врач предложил последующий визит в %1$s</string>
     <string name="downloaded_successfully">Успешно загружено</string>
-    <string name="prescription_up_to_date">Prescription is up to date.</string>
+    <string name="prescription_up_to_date">Рекомендация является актуальной.</string>
     <string name="select_all_answers">Выберите все ответы</string>
     <string name="some_issue_with_mindmap">Возникла проблема с mindmap.</string>
     <string name="of">из</string>
@@ -858,7 +858,7 @@
     <string name="how_we_can_improve_experience">Оцените нас, чтобы мы могли улучшить приложение.</string>
     <string name="give_feedback">Пожалуйста дайте обратную связь</string>
     <string name="chw_worker">Медицинский работник</string>
-    <string name="consulted_doctor_details">Consulted Doctor Details</string>
+    <string name="consulted_doctor_details">Консультирующий специалист</string>
     <string name="details">Детали</string>
     <string name="name">Имя</string>
     <string name="no_information">Нет информации</string>
@@ -896,7 +896,7 @@
     <string name="all_reasons">Все причины для консультации</string>
     <string name="_visit_reason_summary">%1$d/%2$d Причины для консультации</string>
     <string name="change">Изменить</string>
-    <string name="_vitals_summary">1/4. Vitals summary</string>
+    <string name="_vitals_summary">1/4. Жизненные показатели</string>
     <string name="mo">Понедельник</string>
     <string name="tu">Вторник</string>
     <string name="we">Среда</string>
@@ -965,17 +965,17 @@
     <string name="open_prescription">Открытые рекомендации</string>
     <string name="reset">Сбросить</string>
     <string name="update_button">Обновить</string>
-    <string name="underweight">Underweight</string>
+    <string name="underweight">Недостаточный вес</string>
     <string name="normal">Нормальный вес</string>
     <string name="overweight">Избыточный вес</string>
-    <string name="very_severely_obese">Very Severe(Morbid) Obesity(Class 3)</string>
-    <string name="severely_obese">Severe Obesity(Class 2)</string>
-    <string name="morbidly_obese">Moderate Obesity(Class 1)</string>
+    <string name="very_severely_obese">Очень избыточное ожирение (класс 3)</string>
+    <string name="severely_obese">Изюыточное ожирение (класс 2)</string>
+    <string name="morbidly_obese">Среднее ожирение (класс 1)</string>
 
     <string name="bp_validation_sys"><![CDATA[Систолическое артериальное давление должно быть выше диастолического]]></string>
     <string name="bp_validation_dia"><![CDATA[Диастолическое артериальное давление должно быть ниже систолического]]></string>
     <string name="duration_type">Duration Type</string>
-    <string name="number_label">Number</string>
+    <string name="number_label">Номер</string>
     <string name="associated_symptoms_header_visit_creation">Сопутствующие симптомы</string>
     <string name="edit">Редактировать</string>
     <string name="references">References:</string>
@@ -1009,10 +1009,10 @@
     <string name="unable_to_load_data_please_try_again">Невозможно загрузить данные. Пожалуйста, попытайтесь позже!</string>
     <string name="username_sent_desc">SMS c Вашим именем пользователся было отправлено на Ваш зарегистрированный номер телефона.</string>
     <string name="teleconsultation_consent_title">Согласие на телеконсультацию</string>
-    <string name="u2022_strength">• Strength</string>
-    <string name="u2022_no_of_days">• No. of days</string>
-    <string name="u2022_timings">• Timings</string>
-    <string name="u2022_remarks">• Remarks</string>
+    <string name="u2022_strength">• Доза</string>
+    <string name="u2022_no_of_days">• Количество дней</string>
+    <string name="u2022_timings">• Время приема</string>
+    <string name="u2022_remarks">• Примечания</string>
     <string name="the_from_date_cannot_be_greater_than_the_to_date">The \'from\' date cannot be greater than the \'to\' date</string>
     <string name="the_to_date_cannot_be_less_than_the_from_date">The \'to\' date cannot be less than the \'from\' date</string>
 
@@ -1025,13 +1025,13 @@
 
     <string name="guardian_name_non_required">Имя опекуна</string>
     <string name="enter_guardian_name">Введите имя опекуна</string>
-    <string name="guardian_type_non_required">Guardian Type</string>
-    <string name="select_guardian_type">Select Guardian Type</string>
+    <string name="guardian_type_non_required">Опекун/официальный представитель</string>
+    <string name="select_guardian_type">Выберите кто является опекуном/официальный представителем</string>
     <string name="contact_type_non_required">Принадлежность номера</string>
     <string name="emergency_contact_number_non_required">Номер контактного лица для экстренного случая</string>
     <string name="emergency_contact_name_non_required">Имя контактного лица для экстренного случая</string>
     <string name="enter_emergency_contact_name">Введите имя контактного лица для экстренного случая</string>
-    <string name="phone_number_and_emergency_number_can_not_be_the_same">Phone Number and Emergency Number cannot be the same</string>
+    <string name="phone_number_and_emergency_number_can_not_be_the_same">Номер телефона и номер телефона для экстренных случаев не может быть одинаковым</string>
 
     <string name="enter_other_information_txt">Введите другую информацию</string>
     <string name="blood_group_txt">Группа крови</string>
@@ -1040,7 +1040,7 @@
     <string name="universal_donor">( Универсальный донор)</string>
     <string name="universal_recipient">( Универсальный получатель )</string>
     <string name="profile_picture_is_mandatory">Фото профиля обязательно</string>
-    <string name="past">Past</string>
+    <string name="past">Прошедшие приемы</string>
     <string name="missed">Пропущенные</string>
     <string name="sorted_by_descending_order">Отсортировано в убывающем порядке</string>
     <string name="sorted_by_ascending_order">Отсортировано в восходящем порядке</string>
@@ -1051,7 +1051,7 @@
     <string name="please_select_valid_followup_date">Пожалуйста введите корректную дату для последующего визита на консультацию</string>
     <string name="reminder">Reminder</string>
     <string name="patient_follow_up_appointment_on">Пациент %1$s (%2$s): Последующий визит запланирован на %3$s</string>
-    <string name="open_followup">Open Followup</string>
+    <string name="open_followup">Предстоящие консультации</string>
     <string name="find_patients_hint">Найти пациента</string>
     <string name="tomorrow">завтра</string>
     <string name="range">Диапазон</string>
@@ -1117,11 +1117,12 @@
     <string name="select_consultation_type">Выбрать вид консультации</string>
     <string name="enter_diagnosis">Введите диагноз</string>
     <string name="diagnosis_required">Требуется постановка диагноза</string>
-    <string name="blackout">Blackout</string>
-    <string name="to_disable_notification_between_below_time_period_switch_on_the_blackout_period">To disable notification between below time period. switch on the blackout period</string>
+    <string name="blackout">Время не беспокоить</string>
+    <string name="to_disable_notification_between_below_time_period_switch_on_the_blackout_period">Чтобы отключить уведомление в течение указанного ниже периода времени.</string>
     <string name="signature">Подпись</string>
     <string name="generate">Сгенерировать</string>
     <string name="type_name_to_generate_signature">Напините свое имя для генерирования подписи.</string>
     <string name="enter_signature">Поставить подпись</string>
+    <string name="from_9_00_pm_to_6_00_am">от 9:00 PM до 6:00 AM</string>
     <!-- UNFPA Strings end  -->
 </resources>

@@ -1829,6 +1829,26 @@ public final class StringUtils {
         return mdob_text;
     }
 
+    public static String en_ru_dob_three(String dob) { //English dob is replaced to Russian text.
+        //added this logic to handle crash when dob is null
+        if(dob == null || dob.isEmpty()) return "";
+        String mdob_text = dob
+                .replace("Jan", "Январь")
+                .replace("Feb", "Февраль")
+                .replace("Mar", "Март")
+                .replace("Apr", "Апрель")
+                .replace("May", "Май")
+                .replace("Jun", "Июнь")
+                .replace("Jul", "Июль")
+                .replace("Aug", "Август")
+                .replace("Sep", "Сентябрь")
+                .replace("Oct", "Октябрь")
+                .replace("Nov", "Ноябрь")
+                .replace("Dec", "Декабрь");
+
+        return mdob_text;
+    }
+
 
     public static String en__gu_dob(String dob) { //English dob is replaced to Hindi text.
         //added this logic to handle crash when dob is null
@@ -4350,7 +4370,17 @@ public final class StringUtils {
             } else {
                 genderView.setText(gender + " " + age);
             }
-        } else {
+        } else if(sessionManager.getAppLanguage().equalsIgnoreCase("ru")){
+            if (gender.equalsIgnoreCase("M")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
+            } else if (gender.equalsIgnoreCase("F")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
+            } else if (gender.equalsIgnoreCase("O")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
+            } else {
+                genderView.setText(gender + " " + age);
+            }
+        }else {
             genderView.setText(gender + " " + age);
         }
     }
@@ -4491,6 +4521,16 @@ public final class StringUtils {
             } else {
                 genderView.setText(gender + ", " + age);
             }
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+            if (gender.equalsIgnoreCase("M")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_male) + ", " + age);
+            } else if (gender.equalsIgnoreCase("F")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_female) + ", " + age);
+            } else if (gender.equalsIgnoreCase("O")) {
+                genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_other) + ", " + age);
+            } else {
+                genderView.setText(gender + ", " + age);
+            }
         } else {
             genderView.setText(gender + ", " + age);
         }
@@ -4521,6 +4561,27 @@ public final class StringUtils {
                 case "In emergency form – from 30 minutes to 2 hours" -> consultationType = "Экстренная консультация от 30 минут до 3 часов";
                 case "In urgent form - from 3 to 24 hours" -> consultationType = "Срочная консультация от 3 до 24 часов";
                 case "In planned form – for a day or more" -> consultationType = "Запланированная консультация";
+                default -> {
+                    return consultationType;
+                }
+            }
+        }
+
+        return consultationType;
+    }
+
+    public static String getHealthyFacilityName(String consultationType,String lan) {
+        if(consultationType == null || consultationType.isEmpty()) return "";
+        if(lan.equalsIgnoreCase("ru")){
+            switch (consultationType) {
+                case "Maternity department of Chui Regional United Hospital" ->
+                        consultationType = "Родильное отделение Чуйской областной объединенной больницы";
+                case "Maternity department of Issyk-Kul Regional United Hospital" ->
+                        consultationType = "Родильное отделение Иссыкульской областной объединенной больницы";
+                case "Maternity hospital of Jalal-Abad Regional United Hospital" ->
+                        consultationType = "Родильный стационар Жалал-Абадской областной объединенной больницы";
+                case "Maternity hospital of Osh Interregional Clinical Hospital" ->
+                        consultationType = "Родильный стационар Ошской межобластной клинической больницы";
                 default -> {
                     return consultationType;
                 }
