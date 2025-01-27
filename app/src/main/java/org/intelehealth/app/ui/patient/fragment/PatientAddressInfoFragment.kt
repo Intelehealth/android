@@ -226,6 +226,7 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
                 val provincesAndCities: ProvincesAndCities =
                     binding.textInputLayProvince.tag as ProvincesAndCities
                 patient.province = provincesAndCities.provinces[i]
+                patient.codeOfHealthFacility = LanguageUtils.getCodeOfHf(provincesAndCities.provinces[i])
             }
 
             //cities

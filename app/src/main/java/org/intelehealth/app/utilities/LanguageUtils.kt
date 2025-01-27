@@ -24,6 +24,8 @@ object LanguageUtils {
     private const val STATE_DISTRICT_JSON = "state_district_tehsil.json"
     private const val PROVINCE_AND_CITIES_JSON = "province_and_cities.json"
 
+    private var provincesAndCities: ProvincesAndCities? = null
+
     @JvmStatic
     fun getLocalLang(): String {
         val context = IntelehealthApplication.getAppContext()
@@ -87,10 +89,14 @@ object LanguageUtils {
         val context = IntelehealthApplication.getAppContext()
         val jsonObject = FileUtils.encodeJSON(context, PROVINCE_AND_CITIES_JSON)
 
-        return Gson().fromJson(
-            jsonObject.toString(),
-            ProvincesAndCities::class.java
-        )
+        if(provincesAndCities == null){
+            provincesAndCities =  Gson().fromJson(
+                jsonObject.toString(),
+                ProvincesAndCities::class.java
+            )
+        }
+
+        return provincesAndCities!!
     }
 
     @JvmStatic
