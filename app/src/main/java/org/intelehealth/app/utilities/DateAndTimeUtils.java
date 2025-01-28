@@ -1170,4 +1170,30 @@ public class DateAndTimeUtils {
         Date todayDate = new Date();
         return date.format(todayDate);
     }
+
+    public static boolean isDateGreaterThan15Years(String selectedDate) {
+        // Define the date format
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+
+        try {
+            // Parse the selected date
+            Date parsedDate = dateFormat.parse(selectedDate);
+
+            // Get the current date
+            Calendar currentDate = Calendar.getInstance();
+
+            // Set the selected date in a Calendar instance
+            Calendar selectedCalendar = Calendar.getInstance();
+            selectedCalendar.setTime(parsedDate);
+
+            // Add 15 years to the selected date
+            selectedCalendar.add(Calendar.YEAR, 15);
+
+            // Check if the modified selected date is before or after the current date
+            return selectedCalendar.before(currentDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return false; // Return false if there's an error parsing the date
+        }
+    }
 }

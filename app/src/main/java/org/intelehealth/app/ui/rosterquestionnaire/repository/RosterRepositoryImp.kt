@@ -7,6 +7,7 @@ import org.intelehealth.app.app.IntelehealthApplication
 import org.intelehealth.app.database.dao.PatientsDAO
 import org.intelehealth.app.models.dto.PatientAttributesDTO
 import org.intelehealth.app.ui.rosterquestionnaire.model.RoasterViewQuestion
+import org.intelehealth.app.ui.rosterquestionnaire.utilities.RoasterAttribute
 import org.intelehealth.app.ui.rosterquestionnaire.utilities.RoasterQuestionView
 import javax.inject.Inject
 
@@ -23,90 +24,81 @@ class RosterRepositoryImp @Inject constructor() : RosterRepository {
                 RoasterViewQuestion(
                     layoutId = RoasterQuestionView.SPINNER,
                     question = context.getString(R.string.txt_what_is_your_relationship_with_head_of_household),
-                    spinnerItem = context.resources.getStringArray(R.array.relationshipHoH)
-                        .toList(),
+                    spinnerItem = R.array.relationshipHoH,
                     errorMessage = context.getString(R.string.this_field_is_mandatory),
-                    attribute = "RelationshipStatusHOH"
+                    attribute = RoasterAttribute.RELATIONSHIP_STATUS_HOH.attributeName
                 )
             )
             add(
                 RoasterViewQuestion(
                     layoutId = RoasterQuestionView.SPINNER,
                     question = context.getString(R.string.what_is_your_marital_status),
-                    spinnerItem = context.resources.getStringArray(R.array.maritual)
-                        .toList(),
+                    spinnerItem = R.array.maritual,
                     errorMessage = context.getString(R.string.this_field_is_mandatory),
-                    attribute = "MaritualStatus"
+                    attribute = RoasterAttribute.MARITAL_STATUS.attributeName
                 )
             )
             add(
                 RoasterViewQuestion(
                     layoutId = RoasterQuestionView.SPINNER,
                     question = context.getString(R.string.what_is_your_education_status),
-                    spinnerItem = context.resources.getStringArray(R.array.education_nas)
-                        .toList(),
+                    spinnerItem = R.array.education_nas,
                     errorMessage = context.getString(R.string.this_field_is_mandatory),
-                    attribute = "Education Level"
+                    attribute = RoasterAttribute.EDUCATION_LEVEL.attributeName
                 )
             )
             add(
                 RoasterViewQuestion(
                     layoutId = RoasterQuestionView.SPINNER,
                     question = context.getString(R.string.nas_occupation),
-                    spinnerItem = context.resources.getStringArray(R.array.occupation_identification)
-                        .toList(),
+                    spinnerItem = R.array.occupation_identification,
                     errorMessage = context.getString(R.string.this_field_is_mandatory),
-                    attribute = "occupation"
+                    attribute = RoasterAttribute.OCCUPATION.attributeName
                 )
             )
             add(
                 RoasterViewQuestion(
                     layoutId = RoasterQuestionView.SPINNER,
                     question = context.getString(R.string.txt_phone_ownership),
-                    spinnerItem = context.resources.getStringArray(R.array.phoneownership)
-                        .toList(),
+                    spinnerItem = R.array.phoneownership,
                     errorMessage = context.getString(R.string.this_field_is_mandatory),
-                    attribute = "PhoneOwnership"
+                    attribute = RoasterAttribute.PHONE_OWNERSHIP.attributeName
                 )
             )
             add(
                 RoasterViewQuestion(
                     layoutId = RoasterQuestionView.SPINNER,
                     question = context.getString(R.string.txt_when_was_the_last_time_you_got_your_bp_checked),
-                    spinnerItem = context.resources.getStringArray(R.array.bp)
-                        .toList(),
+                    spinnerItem = R.array.bp,
                     errorMessage = context.getString(R.string.this_field_is_mandatory),
-                    attribute = "BPchecked"
+                    attribute = RoasterAttribute.BP_CHECKED.attributeName
                 )
             )
             add(
                 RoasterViewQuestion(
                     layoutId = RoasterQuestionView.SPINNER,
                     question = context.getString(R.string.txt_when_was_the_last_time_you_got_your_sugar_level_checked),
-                    spinnerItem = context.resources.getStringArray(R.array.sugar)
-                        .toList(),
+                    spinnerItem = R.array.sugar,
                     errorMessage = context.getString(R.string.this_field_is_mandatory),
-                    attribute = "Sugarchecked"
+                    attribute = RoasterAttribute.SUGAR_CHECKED.attributeName
                 )
             )
             add(
                 RoasterViewQuestion(
                     layoutId = RoasterQuestionView.SPINNER,
                     question = context.getString(R.string.txt_when_was_the_last_time_you_got_your_hb_level_tested),
-                    spinnerItem = context.resources.getStringArray(R.array.hb)
-                        .toList(),
+                    spinnerItem = R.array.hb,
                     errorMessage = context.getString(R.string.this_field_is_mandatory),
-                    attribute = "HBtest"
+                    attribute = RoasterAttribute.HB_TEST.attributeName
                 )
             )
             add(
                 RoasterViewQuestion(
                     layoutId = RoasterQuestionView.SPINNER,
                     question = context.getString(R.string.txt_bmi_height_and_weight_checked),
-                    spinnerItem = context.resources.getStringArray(R.array.bmi)
-                        .toList(),
+                    spinnerItem = R.array.bmi,
                     errorMessage = context.getString(R.string.this_field_is_mandatory),
-                    attribute = "BMI"
+                    attribute = RoasterAttribute.BMI.attributeName
                 )
             )
         }
@@ -116,16 +108,34 @@ class RosterRepositoryImp @Inject constructor() : RosterRepository {
     override fun getOutcomeQuestionList(): ArrayList<RoasterViewQuestion> {
         val list = ArrayList<RoasterViewQuestion>()
         list.apply {
+            // 1 Question
             add(
                 RoasterViewQuestion(
                     layoutId = RoasterQuestionView.SPINNER,
                     question = context.getString(R.string.what_was_the_outcome_of_your_pregnancy),
-                    spinnerItem = context.resources.getStringArray(R.array.outcome_pregnancy_en)
-                        .toList(),
+                    spinnerItem = R.array.outcome_pregnancy_en,
                     errorMessage = context.getString(R.string.this_field_is_mandatory)
                 )
             )
-
+            // 2 Question
+            add(
+                RoasterViewQuestion(
+                    layoutId = RoasterQuestionView.SPINNER,
+                    question = context.getString(R.string.txt_is_the_child_alive),
+                    spinnerItem = R.array.child_alive,
+                    errorMessage = context.getString(R.string.this_field_is_mandatory)
+                )
+            )
+            // 3 Question
+            add(
+                RoasterViewQuestion(
+                    layoutId = RoasterQuestionView.SPINNER,
+                    question = context.getString(R.string.was_this_birth_pre_term_earlier_than_due_date_for_delivery),
+                    spinnerItem = R.array.child_pre_term,
+                    errorMessage = context.getString(R.string.this_field_is_mandatory)
+                )
+            )
+            // 4 Question
             add(
                 RoasterViewQuestion(
                     layoutId = RoasterQuestionView.DATE_PICKER,
@@ -133,48 +143,111 @@ class RosterRepositoryImp @Inject constructor() : RosterRepository {
                     errorMessage = context.getString(R.string.this_field_is_mandatory)
                 )
             )
+            // 5 Question
             add(
                 RoasterViewQuestion(
-                    layoutId = RoasterQuestionView.SPINNER,
+                    layoutId = RoasterQuestionView.EDIT_TEXT,
                     question = context.getString(R.string.how_many_months_did_this_pregnancy_last),
-                    spinnerItem = context.resources.getStringArray(R.array.outcome_how_many_pregnancy_en)
-                        .toList(),
+                    inputType = InputType.TYPE_CLASS_NUMBER,
                     errorMessage = context.getString(R.string.this_field_is_mandatory)
                 )
             )
+            // 6 Question
+            add(
+                RoasterViewQuestion(
+                    layoutId = RoasterQuestionView.EDIT_TEXT,
+                    question = context.getString(R.string.txt_how_many_months_have_you_been_pregnant),
+                    inputType = InputType.TYPE_CLASS_NUMBER,
+                    errorMessage = context.getString(R.string.this_field_is_mandatory)
+                )
+            )
+            // 7 Question
             add(
                 RoasterViewQuestion(
                     layoutId = RoasterQuestionView.SPINNER,
                     question = context.getString(R.string.what_is_the_place_of_delivery),
-                    spinnerItem = context.resources.getStringArray(R.array.place_delivery_en)
-                        .toList(),
+                    spinnerItem = R.array.place_delivery_en,
                     errorMessage = context.getString(R.string.this_field_is_mandatory)
                 )
             )
+            // 8 Question
             add(
                 RoasterViewQuestion(
                     layoutId = RoasterQuestionView.SPINNER,
                     question = context.getString(R.string.what_is_the_type_of_delivery),
-                    spinnerItem = context.resources.getStringArray(R.array.delivery_type_en)
-                        .toList(),
+                    spinnerItem = R.array.delivery_type_en,
                     errorMessage = context.getString(R.string.this_field_is_mandatory)
                 )
             )
+            // 9 Question
+            add(
+                RoasterViewQuestion(
+                    layoutId = RoasterQuestionView.SPINNER,
+                    question = context.getString(R.string.focal_facility_for_this_pregnancy),
+                    spinnerItem = R.array.block,
+                    errorMessage = context.getString(R.string.this_field_is_mandatory)
+                )
+            )
+            // 10 Question
+            add(
+                RoasterViewQuestion(
+                    layoutId = RoasterQuestionView.EDIT_TEXT,
+                    question = context.getString(R.string.what_was_the_name_of_the_facility),
+                    inputType = InputType.TYPE_CLASS_TEXT,
+                    errorMessage = context.getString(R.string.this_field_is_mandatory)
+                )
+            )
+            // 11 Question
+            add(
+                RoasterViewQuestion(
+                    layoutId = RoasterQuestionView.SPINNER,
+                    question = context.getString(R.string.txt_was_this_a_single_multiple_births),
+                    spinnerItem = R.array.single_multiple_births,
+                    errorMessage = context.getString(R.string.this_field_is_mandatory)
+                )
+            )
+            // 12 Question
+            add(
+                RoasterViewQuestion(
+                    layoutId = RoasterQuestionView.EDIT_TEXT,
+                    question = context.getString(R.string.txt_how_old_was_the_baby_when_he_she_died),
+                    inputType = InputType.TYPE_CLASS_NUMBER,
+                    errorMessage = context.getString(R.string.this_field_is_mandatory)
+                )
+            )
+            // 13 Question
+            add(
+                RoasterViewQuestion(
+                    layoutId = RoasterQuestionView.SPINNER,
+                    question = context.getString(R.string.txt_what_is_was_the_sex_of_the_baby),
+                    spinnerItem = R.array.sex_of_baby,
+                    errorMessage = context.getString(R.string.this_field_is_mandatory)
+                )
+            )
+            // 14 Question
             add(
                 RoasterViewQuestion(
                     layoutId = RoasterQuestionView.SPINNER,
                     question = context.getString(R.string.was_the_pregnancy_planned),
-                    spinnerItem = context.resources.getStringArray(R.array.pregnancy_planned_en)
-                        .toList(),
+                    spinnerItem = R.array.pregnancy_planned_en,
                     errorMessage = context.getString(R.string.this_field_is_mandatory)
                 )
             )
+            // 15 Question
             add(
                 RoasterViewQuestion(
                     layoutId = RoasterQuestionView.SPINNER,
                     question = context.getString(R.string.where_you_identified_as_a_high_risk_pregnancy_case),
-                    spinnerItem = context.resources.getStringArray(R.array.high_risk_pregnancy_en)
-                        .toList(),
+                    spinnerItem = R.array.high_risk_pregnancy_en,
+                    errorMessage = context.getString(R.string.this_field_is_mandatory)
+                )
+            )
+            // 16 Question
+            add(
+                RoasterViewQuestion(
+                    layoutId = RoasterQuestionView.SPINNER,
+                    question = context.getString(R.string.txt_were_any_complications_identified_at_the_time_of_delivery),
+                    spinnerItem = R.array.complications,
                     errorMessage = context.getString(R.string.this_field_is_mandatory)
                 )
             )
@@ -189,8 +262,7 @@ class RosterRepositoryImp @Inject constructor() : RosterRepository {
                 RoasterViewQuestion(
                     layoutId = RoasterQuestionView.SPINNER,
                     question = context.getString(R.string.health_issue_reported),
-                    spinnerItem = context.resources.getStringArray(R.array.health_issue_reported_en)
-                        .toList(),
+                    spinnerItem = R.array.health_issue_reported_en,
                     errorMessage = context.getString(R.string.this_field_is_mandatory)
                 )
             )
@@ -207,8 +279,7 @@ class RosterRepositoryImp @Inject constructor() : RosterRepository {
                 RoasterViewQuestion(
                     layoutId = RoasterQuestionView.SPINNER,
                     question = context.getString(R.string.generally_which_is_the_primary_health_provider_you_interacted_with_for_health_issues),
-                    spinnerItem = context.resources.getStringArray(R.array.primary_health_provider_en)
-                        .toList(),
+                    spinnerItem = R.array.primary_health_provider_en,
                     errorMessage = context.getString(R.string.this_field_is_mandatory)
                 )
             )
@@ -216,8 +287,7 @@ class RosterRepositoryImp @Inject constructor() : RosterRepository {
                 RoasterViewQuestion(
                     layoutId = RoasterQuestionView.SPINNER,
                     question = context.getString(R.string.first_location_of_visit_interaction),
-                    spinnerItem = context.resources.getStringArray(R.array.place_delivery_en)
-                        .toList(),
+                    spinnerItem = R.array.place_delivery_en,
                     errorMessage = context.getString(R.string.this_field_is_mandatory)
                 )
             )
@@ -225,7 +295,7 @@ class RosterRepositoryImp @Inject constructor() : RosterRepository {
                 RoasterViewQuestion(
                     layoutId = RoasterQuestionView.SPINNER,
                     question = context.getString(R.string.referred_to),
-                    spinnerItem = context.resources.getStringArray(R.array.referred_to_en).toList(),
+                    spinnerItem = R.array.referred_to_en,
                     errorMessage = context.getString(R.string.this_field_is_mandatory)
                 )
             )
@@ -233,8 +303,7 @@ class RosterRepositoryImp @Inject constructor() : RosterRepository {
                 RoasterViewQuestion(
                     layoutId = RoasterQuestionView.SPINNER,
                     question = context.getString(R.string.mode_of_transportation_used_to_reach_facility),
-                    spinnerItem = context.resources.getStringArray(R.array.mode_transport_en)
-                        .toList(),
+                    spinnerItem = R.array.mode_transport_en,
                     errorMessage = context.getString(R.string.this_field_is_mandatory)
                 )
             )
@@ -266,8 +335,7 @@ class RosterRepositoryImp @Inject constructor() : RosterRepository {
                 RoasterViewQuestion(
                     layoutId = RoasterQuestionView.SPINNER,
                     question = context.getString(R.string.score_for_experience_of_treatment),
-                    spinnerItem = context.resources.getStringArray(R.array.score_experience_en)
-                        .toList(),
+                    spinnerItem = R.array.score_experience_en,
                     errorMessage = context.getString(R.string.this_field_is_mandatory)
                 )
             )

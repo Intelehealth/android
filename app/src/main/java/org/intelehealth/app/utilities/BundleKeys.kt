@@ -29,6 +29,7 @@ class BundleKeys {
         const val HOUSEHOLD_CURRENT_STAGE = "household_current_stage"
         const val ROSTER_CURRENT_STAGE = "roster_current_stage"
         const val IS_EDIT_MODE = "isEditMode"
+        const val IS_PREGNANCY_MODE = "isPregnant"
 
     }
 }

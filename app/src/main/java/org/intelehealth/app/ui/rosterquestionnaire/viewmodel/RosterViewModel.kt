@@ -17,9 +17,7 @@ import org.intelehealth.app.ui.rosterquestionnaire.usecase.GetHealthServiceQuest
 import org.intelehealth.app.ui.rosterquestionnaire.usecase.GetOutComeQuestionUseCase
 import org.intelehealth.app.ui.rosterquestionnaire.usecase.InsertRoasterUseCase
 import org.intelehealth.app.ui.rosterquestionnaire.utilities.NO
-import org.intelehealth.app.ui.rosterquestionnaire.utilities.NO_OF_PREGNANCY_OUTCOME_TWO_YEARS
-import org.intelehealth.app.ui.rosterquestionnaire.utilities.NO_OF_TIME_PREGNANT
-import org.intelehealth.app.ui.rosterquestionnaire.utilities.PREGNANCY_PAST_TWO_YEARS
+import org.intelehealth.app.ui.rosterquestionnaire.utilities.RoasterAttribute
 import org.intelehealth.app.ui.rosterquestionnaire.utilities.RosterQuestionnaireStage
 import javax.inject.Inject
 
@@ -34,6 +32,7 @@ class RosterViewModel @Inject constructor(
     private val ioDispatcher: CoroutineDispatcher,
 ) : ViewModel() {
 
+    var isPregnancyVisible: Boolean = true
     var pregnancyOutcomeCount: String = ""
     var pregnancyOutcome: String = NO
     var pregnancyCount: String = ""
@@ -62,7 +61,7 @@ class RosterViewModel @Inject constructor(
 
     fun addPregnancyOutcome(questionList: List<RoasterViewQuestion>, editPosition: Int = -1) {
         val pregnancyOutComeModel = PregnancyOutComeModel(
-            title = questionList[0].answer ?: "",
+            title = questionList[0].localAnswer ?: questionList[0].answer,
             roasterViewQuestion = questionList
         )
         val list = _outComeLiveList.value ?: mutableListOf()
@@ -76,7 +75,7 @@ class RosterViewModel @Inject constructor(
 
     fun addHealthService(questionList: List<RoasterViewQuestion>, editPosition: Int = -1) {
         val healthServiceModel = HealthServiceModel(
-            title = questionList[0].answer ?: "",
+            title = questionList[0].localAnswer ?: questionList[0].answer,
             roasterViewQuestion = questionList
         )
         val list = _healthServiceLiveList.value ?: mutableListOf()
@@ -140,9 +139,13 @@ class RosterViewModel @Inject constructor(
 
             // Extract pregnancy-related data
             val pregnancyDataMap = mapOf(
-                NO_OF_TIME_PREGNANT to { value: String -> pregnancyCount = value },
-                PREGNANCY_PAST_TWO_YEARS to { value: String -> pregnancyOutcome = value },
-                NO_OF_PREGNANCY_OUTCOME_TWO_YEARS to { value: String ->
+                RoasterAttribute.NO_OF_TIME_PREGNANT.attributeName to { value: String ->
+                    pregnancyCount = value
+                },
+                RoasterAttribute.PREGNANCY_PAST_TWO_YEARS.attributeName to { value: String ->
+                    pregnancyOutcome = value
+                },
+                RoasterAttribute.NO_OF_PREGNANCY_OUTCOME_TWO_YEARS.attributeName to { value: String ->
                     pregnancyOutcomeCount = value
                 }
             )
@@ -177,7 +180,8 @@ class RosterViewModel @Inject constructor(
     }
 
     fun validatePregnancyOutcomeList(questions: List<RoasterViewQuestion>): Int? {
-        return questions.indexOfFirst { it.answer.isNullOrEmpty() }.takeIf { it != -1 }
+        return questions.indexOfFirst { it.isVisible && it.answer.isNullOrEmpty() }.takeIf { it != -1 }
     }
+
 
 }

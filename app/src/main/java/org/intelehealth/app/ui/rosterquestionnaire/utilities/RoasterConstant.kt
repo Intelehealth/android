@@ -1,9 +1,13 @@
 package org.intelehealth.app.ui.rosterquestionnaire.utilities
 
-const val NO_OF_TIME_PREGNANT = "NoOfTimesPregnant"
-const val PREGNANCY_PAST_TWO_YEARS = "PregnanyPastTwoYears"
-const val NO_OF_PREGNANCY_OUTCOME_TWO_YEARS = "No_Pregnancy_Outcome_2years"
-const val PREGNANCY_OUTCOME_REPORTED = "PregnancyOutcomesReported"
-const val HEALTH_ISSUE_REPORTED  = "HealthIssueReported"
-const val YES = "Yes"
+
+
 const val NO = "No"
+const val YES = "Yes"
+const val FEMALE = "F"
+const val BORN_ALIVE = "Born alive"
+const val STILL_BIRTH = "Still birth"
+const val INDUCED_ABORTION = "Induced abortion (mtp)"
+const val MISCARRIAGE = "Miscarriage"
+const val CURRENTLY_PREGNANT = "Currently pregnant"
+

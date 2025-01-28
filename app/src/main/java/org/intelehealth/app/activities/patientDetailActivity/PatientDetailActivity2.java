@@ -1,5 +1,6 @@
 package org.intelehealth.app.activities.patientDetailActivity;
 
+import static org.intelehealth.app.ui.rosterquestionnaire.utilities.RoasterConstantKt.FEMALE;
 import static org.intelehealth.app.utilities.DialogUtils.patientRegistrationDialog;
 import static org.intelehealth.app.utilities.StringUtils.en__as_dob;
 import static org.intelehealth.app.utilities.StringUtils.en__bn_dob;
@@ -47,6 +48,7 @@ import static org.intelehealth.app.utilities.StringUtils.switch_ta_education_edi
 import static org.intelehealth.app.utilities.StringUtils.switch_te_caste_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_te_economic_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_te_education_edit;
+import static org.intelehealth.app.utilities.StringUtils.translateLocation;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
@@ -434,18 +436,22 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         });
 
         binding.rosterDetails.generalEdit.setOnClickListener(v -> {
-            RosterQuestionnaireMainActivity.startRosterQuestionnaire(this, patientDTO.getUuid(), RosterQuestionnaireStage.GENERAL_ROSTER,true);
+            RosterQuestionnaireMainActivity.startRosterQuestionnaire(this, patientDTO.getUuid(), RosterQuestionnaireStage.GENERAL_ROSTER, isPregnancyVisible(), true);
             finish();
         });
         binding.rosterDetails.pregnancyEdit.setOnClickListener(v -> {
-            RosterQuestionnaireMainActivity.startRosterQuestionnaire(this, patientDTO.getUuid(), RosterQuestionnaireStage.PREGNANCY_ROSTER,true);
+            RosterQuestionnaireMainActivity.startRosterQuestionnaire(this, patientDTO.getUuid(), RosterQuestionnaireStage.PREGNANCY_ROSTER, isPregnancyVisible(), true);
             finish();
         });
         binding.rosterDetails.healthServiceEdit.setOnClickListener(v -> {
-            RosterQuestionnaireMainActivity.startRosterQuestionnaire(this, patientDTO.getUuid(), RosterQuestionnaireStage.HEALTH_SERVICE,true);
+            RosterQuestionnaireMainActivity.startRosterQuestionnaire(this, patientDTO.getUuid(), RosterQuestionnaireStage.HEALTH_SERVICE, isPregnancyVisible(), true);
             finish();
         });
 
+    }
+
+    private boolean isPregnancyVisible() {
+        return mGender.equalsIgnoreCase(FEMALE) && DateAndTimeUtils.isDateGreaterThan15Years(patientDTO.getDateofbirth());
     }
 
     // Family Member
@@ -547,6 +553,11 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     protected void onResume() {
         super.onResume();
         setDisplay(patientDTO.getUuid());
+        if (isPregnancyVisible()) {
+            binding.rosterDetails.relativePregnancyHeader.setVisibility(View.VISIBLE);
+        } else {
+            binding.rosterDetails.relativePregnancyHeader.setVisibility(View.GONE);
+        }
     }
 
     private RelativeLayout mPersonalHeaderRelativeLayout, mAddressHeaderRelativeLayout, mOthersHeaderRelativeLayout;

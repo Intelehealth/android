@@ -5,7 +5,6 @@ import android.view.View
 import android.widget.RadioButton
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import org.intelehealth.app.R
@@ -46,6 +45,17 @@ class PregnancyRosterFragment : BaseRosterFragment(R.layout.fragment_pregnancy_r
         setListeners()
         observeLiveData()
         setExistingData()
+    }
+
+    override fun isInputValid(): Boolean {
+        if (isValidPregnancy()) {
+            rosterViewModel.pregnancyOutcomeCount =
+                binding.tilEtPregnancyOutcomeCount.text.toString()
+            rosterViewModel.pregnancyCount = binding.tilEtPregnancyCount.text.toString()
+            return true
+        } else {
+            return false
+        }
     }
 
     private fun setExistingData() {
@@ -89,7 +99,7 @@ class PregnancyRosterFragment : BaseRosterFragment(R.layout.fragment_pregnancy_r
     }
 
     /**
-     * Configures click listeners for UI actions like adding outcomes, navigating forward, and going back.
+     * Configures click listeners .
      */
     private fun setListeners() {
         binding.tvAddPregnancyOutcome.setOnClickListener {
@@ -99,16 +109,12 @@ class PregnancyRosterFragment : BaseRosterFragment(R.layout.fragment_pregnancy_r
 
         }
 
-        binding.frag2BtnNext.setOnClickListener {
-            handleNextButtonClick()
-        }
 
-        binding.frag2BtnBack.setOnClickListener {
-            findNavController().popBackStack()
-        }
         binding.rgPregnancyOutcome.setOnCheckedChangeListener { group, checkedId ->
             val selectedRadioButton = group.findViewById<RadioButton>(checkedId)
-            if (selectedRadioButton.text.equals(YES)) {
+            if (selectedRadioButton.text.toString()
+                    .equals(getString(R.string.yes), ignoreCase = true)
+            ) {
                 binding.groupPregnancyOutcome.visibility = View.VISIBLE
                 rosterViewModel.pregnancyOutcome = YES
             } else {
@@ -124,23 +130,6 @@ class PregnancyRosterFragment : BaseRosterFragment(R.layout.fragment_pregnancy_r
         }
     }
 
-    private fun handleNextButtonClick() {
-
-        if (isValidPregnancy()) {
-            rosterViewModel.pregnancyOutcomeCount =
-                binding.tilEtPregnancyOutcomeCount.text.toString()
-            navigateToHealthService()
-        }
-    }
-
-    /**
-     * Navigates to the Health Service section of the application.
-     */
-    private fun navigateToHealthService() {
-        PregnancyRosterFragmentDirections.navigationPregnancyToHealthService().apply {
-            findNavController().navigate(this)
-        }
-    }
 
     /**
      * Deletes the selected pregnancy outcome from the list and updates the RecyclerView.
