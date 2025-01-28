@@ -88,21 +88,23 @@ class PersonalConsentActivity : AppCompatActivity(), WebViewStatus {
 //                IdentificationActivity_New::class.java
 //            )
 //        )
-       PatientRegistrationActivity.startPatientRegistration(this)
-      setResult(AppConstants.PERSONAL_CONSENT_ACCEPT)
-       finish()
+        PatientRegistrationActivity.startPatientRegistration(this)
+        setResult(AppConstants.PERSONAL_CONSENT_ACCEPT)
+        finish()
 
-       /* startRosterQuestionnaire(
-            this,
-           " patient.uuid",
-            RosterQuestionnaireStage.GENERAL_ROSTER
-        )*/
+//        startRosterQuestionnaire(
+//            this,
+//           " patient.uuid",
+//            RosterQuestionnaireStage.GENERAL_ROSTER,
+//            isPregnancyVisible = true,
+//            isEditMode = false
+//        )
 
-      /*  startRosterQuestionnaire(
-            this,
-            "hgfdhbgdshj",
-            RosterQuestionnaireStage.GENERAL_ROSTER
-        )*/
+        /*  startRosterQuestionnaire(
+              this,
+              "hgfdhbgdshj",
+              RosterQuestionnaireStage.GENERAL_ROSTER
+          )*/
 
     }
 

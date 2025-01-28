@@ -141,7 +141,7 @@ object LanguageUtils {
     fun getLocalValueFromArray(
         context: Context,
         dbString: String,
-        @ArrayRes arrayResId: Int
+        @ArrayRes arrayResId: Int,
     ): String {
         return if (SessionManager(context).appLanguage.equals("en").not()) {
             val array = context.resources.getStringArray(arrayResId)
@@ -150,5 +150,41 @@ object LanguageUtils {
             return if (index > 0) array[index]
             else ""
         } else dbString
+    }
+
+
+    // Function to get a string array for a specific locale
+    fun getStringArrayInLocale(
+        context: Context,
+        arrayResId: Int,
+        languageCode: String?,
+    ): Array<String> {
+        // Create a new Locale for the desired language
+        val locale = Locale(languageCode)
+
+        // Create a new Configuration with the desired Locale
+        val config = Configuration(context.resources.configuration)
+        config.setLocale(locale)
+
+        // Get a Resources object with the updated Locale
+        val localizedResources = context.createConfigurationContext(config).resources
+
+        // Retrieve the string array for the desired language
+        return localizedResources.getStringArray(arrayResId)
+    }
+
+    fun getStringInLocale(context: Context, stringResId: Int, languageCode: String?): String {
+        // Create a new Locale for the desired language
+        val locale = Locale(languageCode)
+
+        // Create a new Configuration with the desired Locale
+        val config = Configuration(context.resources.configuration)
+        config.setLocale(locale)
+
+        // Get a Resources object with the updated Locale
+        val localizedResources = context.createConfigurationContext(config).resources
+
+        // Retrieve the string resource for the desired language
+        return localizedResources.getString(stringResId)
     }
 }

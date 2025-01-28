@@ -13,7 +13,6 @@ import org.intelehealth.app.ui.filter.FirstLetterUpperCaseInputFilter
 import org.intelehealth.app.ui.rosterquestionnaire.ui.RosterQuestionnaireMainActivity.Companion.startRosterQuestionnaire
 import org.intelehealth.app.ui.rosterquestionnaire.utilities.RosterQuestionnaireStage
 import org.intelehealth.app.utilities.ArrayAdapterUtils
-import org.intelehealth.app.utilities.CustomLog
 import org.intelehealth.app.utilities.DialogUtils
 import org.intelehealth.app.utilities.DialogUtils.CustomDialogListener
 import org.intelehealth.app.utilities.LanguageUtils
@@ -135,16 +134,17 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
         } else {
             val rosterConfig = patientViewModel.activeStatusRosterSection
             Log.d("TAG", "navigateToDetails: rosterConfig : " + rosterConfig)
-            if (rosterConfig) {
-                showMoveToRosterDialog()
-            } else {
-                PatientOtherInfoFragmentDirections.navigationOtherToDetails(
-                    patient.uuid, "searchPatient", "false"
-                ).also {
-                    findNavController().navigate(it)
-                    requireActivity().finish()
-                }
-            }
+            showMoveToRosterDialog()
+//            if (rosterConfig) {
+//                showMoveToRosterDialog()
+//            } else {
+//                PatientOtherInfoFragmentDirections.navigationOtherToDetails(
+//                    patient.uuid, "searchPatient", "false"
+//                ).also {
+//                    findNavController().navigate(it)
+//                    requireActivity().finish()
+//                }
+//            }
         }
 
     }
@@ -306,7 +306,9 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
                 startRosterQuestionnaire(
                     requireActivity(),
                     patient.uuid,
-                    RosterQuestionnaireStage.GENERAL_ROSTER
+                    RosterQuestionnaireStage.GENERAL_ROSTER,
+                    patientViewModel.getPregnancyVisibility(),
+                    false
                 )
                 requireActivity().finish()
             } else if (action == CustomDialogListener.NEGATIVE_CLICK) {

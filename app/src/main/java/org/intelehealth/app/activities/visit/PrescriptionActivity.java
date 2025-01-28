@@ -1318,6 +1318,53 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             qualification.setText(details.getQualification());
         dr_speciality.setText(details.getSpecialization());
     }
+
+    private   String addBulletPoints(String inputString) {
+        // Remove all occurrences of "&null" (case-insensitive) and "null" (case-insensitive)
+        String cleanedString = inputString
+                .replaceAll("(?i)& ?\\bnull\\b", "") // Remove "&null" or "null" with optional "&"
+                .trim();
+
+        // Split the cleaned string into lines
+        String[] lines = cleanedString.split("\\r?\\n");
+        StringBuilder result = new StringBuilder();
+
+        // Add bullet point to each non-empty line
+        for (String line : lines) {
+            if (!line.trim().isEmpty()) {
+                result.append("• ").append(line.trim()).append("\n");
+            }
+        }
+
+        // Remove the last extra newline character
+        if (result.length() > 0) {
+            result.setLength(result.length() - 1);
+        }
+
+        return result.toString();
+    }
+  private   String addBulletPoints1(String inputString) {
+
+
+        // Split the cleaned string into lines
+        String[] lines = inputString.split("\\r?\\n");
+        StringBuilder result = new StringBuilder();
+
+        // Add bullet point to each non-empty line
+        for (String line : lines) {
+            if (!line.trim().isEmpty()) {
+                result.append("• ").append(line.trim()).append("\n");
+            }
+        }
+
+        // Remove the last extra newline character
+        if (result.length() > 0) {
+            result.setLength(result.length() - 1);
+        }
+
+        return result.toString();
+    }
+
     // parse dr details - end
     // parse presc value - start
 
@@ -1381,11 +1428,11 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
             case UuidDictionary.TELEMEDICINE_DIAGNOSIS: {
                 if (!diagnosisReturned.isEmpty() && !diagnosisReturned.contains(value)) {
-                    diagnosisReturned = diagnosisReturned + ",\n" + value;
+                    diagnosisReturned = diagnosisReturned + "\n" + value;
                 } else {
                     diagnosisReturned = value;
                 }
-                diagnosis_txt.setText(diagnosisReturned);
+                diagnosis_txt.setText(addBulletPoints(diagnosisReturned));
                 break;
             }
 
@@ -1427,9 +1474,17 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
                 CustomLog.d("Hyperlink", "Hyperlink: " + medicalAdvice_HyperLink);
 
-                medicalAdvice_string = adviceReturned.replaceAll(medicalAdvice_HyperLink, "");
+                if (!medicalAdvice_HyperLink.isEmpty())
+                {
+                    medicalAdvice_string = adviceReturned.replaceAll(medicalAdvice_HyperLink, "\n");
+                    advice_txt.setText(addBulletPoints1(medicalAdvice_string));
+                }else
+                {
+                    medicalAdvice_string = adviceReturned.replaceAll(medicalAdvice_HyperLink, "");
+                    advice_txt.setText(addBulletPoints1(medicalAdvice_string));
+                }
                 if (!medicalAdvice_string.equalsIgnoreCase(""))
-                    advice_txt.setText(medicalAdvice_string);
+                    advice_txt.setText(addBulletPoints1(medicalAdvice_string));
                 CustomLog.d("Hyperlink", "hyper_string: " + medicalAdvice_string);
 
                 /*

@@ -11,7 +11,8 @@ import org.intelehealth.app.ui.rosterquestionnaire.model.PregnancyOutComeModel
 import org.intelehealth.app.ui.rosterquestionnaire.ui.listeners.PregnancyOutcomeClickListener
 import org.intelehealth.app.utilities.SpacingItemDecoration
 
-class PregnancyOutcomeAdapter(
+class
+PregnancyOutcomeAdapter(
     private val items: ArrayList<PregnancyOutComeModel>,
     private val listener: PregnancyOutcomeClickListener,
 ) : RecyclerView.Adapter<PregnancyOutcomeAdapter.ParentViewHolder>() {
@@ -44,7 +45,7 @@ class PregnancyOutcomeAdapter(
         fun bind(item: PregnancyOutComeModel) {
             binding.tvTitle.text = item.title
             binding.rvOutComeItem.adapter =
-                PregnancyOutComeChildAdapter(item.roasterViewQuestion)
+                PregnancyOutComeChildAdapter(item.roasterViewQuestion.filter { it.isVisible })
             if (item.isOpen) {
                 binding.rvOutComeItem.visibility = View.VISIBLE
                 binding.bottomDivider.visibility = View.VISIBLE

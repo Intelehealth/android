@@ -2,7 +2,7 @@
 <layout>
 
     <data>
-
+        <import type="android.view.View"/>
         <variable
             name="isEditMode"
             type="Boolean" />
@@ -38,7 +38,7 @@
             app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
             <include
-                android:id="@+id/patientTab"
+                android:id="@+id/rosterTab"
                 layout="@layout/view_roster_questionnaire_tabs" />
 
             <androidx.fragment.app.FragmentContainerView
@@ -48,39 +48,39 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 app:defaultNavHost="true"
+                android:padding="@dimen/margin_16"
                 app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
 
-<!--
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/std_16dp">
 
                 <Button
-                    android:id="@+id/frag2_btn_back"
+                    android:id="@+id/btnBack"
                     style="@style/AppTheme.OutlinedButton.White"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="@string/generic_back"
                     android:textColor="@color/primary_text"
+                    android:visibility="@{isEditMode ? View.GONE : View.VISIBLE}"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/frag2_btn_next"
+                    app:layout_constraintEnd_toStartOf="@id/btnNext"
                     app:layout_constraintStart_toStartOf="parent" />
 
                 <Button
-                    android:id="@+id/frag2_btn_next"
+                    android:id="@+id/btnNext"
                     style="@style/AppTheme.OutlinedButton.Primary"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="@string/next"
+                    android:text="@{isEditMode ? @string/update : @string/next}"
                     app:icon="@drawable/ui2_ic_baseline_arrow_forward_24"
                     app:iconGravity="end"
                     android:layout_marginStart="@dimen/std_16dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/frag2_btn_back" />
+                    app:layout_constraintStart_toEndOf="@id/btnBack" />
             </androidx.constraintlayout.widget.ConstraintLayout>
--->
         </LinearLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

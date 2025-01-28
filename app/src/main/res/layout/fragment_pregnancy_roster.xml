@@ -2,17 +2,19 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
     <data>
-        <import type="android.view.View"/>
+
+        <import type="android.view.View" />
+
         <variable
             name="viewModel"
             type="org.intelehealth.app.ui.rosterquestionnaire.viewmodel.RosterViewModel" />
     </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingBottom="@dimen/space_16dp"
-        >
+        android:layout_height="match_parent">
 
         <androidx.core.widget.NestedScrollView
             android:id="@+id/scrollView"
@@ -32,8 +34,6 @@
                     android:id="@+id/tvPregnancyCount"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/margin_16"
-                    android:layout_marginTop="@dimen/margin_24"
                     android:lineSpacingExtra="3sp"
                     android:text="@string/how_many_times_have_you_been_pregnant"
                     android:textAppearance="@style/blur_txtview"
@@ -47,8 +47,8 @@
                     style="@style/AppTheme.OutlineInputBox"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    app:hintEnabled="false"
                     android:layout_marginTop="@dimen/margin_8"
+                    app:hintEnabled="false"
                     app:layout_constraintEnd_toEndOf="@+id/tvPregnancyCount"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="@+id/tvPregnancyCount"
@@ -81,14 +81,14 @@
                     android:id="@+id/rgPregnancyOutcome"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
                     android:layout_marginTop="@dimen/margin_8"
+                    android:orientation="horizontal"
                     app:layout_constraintEnd_toEndOf="@id/tvPregnancyCount"
                     app:layout_constraintStart_toStartOf="@id/tvPregnancyCount"
                     app:layout_constraintTop_toBottomOf="@id/tvPregnancyOutcome">
 
                     <RadioButton
-                        android:id="@+id/rvYes"
+                        android:id="@+id/rbYes"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="@dimen/margin_16"
@@ -98,9 +98,10 @@
 
 
                     <RadioButton
-                        android:id="@+id/rvNo"
+                        android:id="@+id/rbNo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:checked="true"
                         android:text="@string/no"
                         tools:ignore="TouchTargetSizeCheck" />
                 </RadioGroup>
@@ -124,8 +125,8 @@
                     style="@style/AppTheme.OutlineInputBox"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    app:hintEnabled="false"
                     android:layout_marginTop="@dimen/margin_8"
+                    app:hintEnabled="false"
                     app:layout_constraintEnd_toEndOf="@+id/tvPregnancyCount"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="@+id/tvPregnancyCount"
@@ -140,12 +141,18 @@
                         android:inputType="number" />
                 </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
 
+                <androidx.constraintlayout.widget.Group
+                    android:id="@+id/groupPregnancyOutcome"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    app:constraint_referenced_ids="tilPregnancyOutcomeCount,tvPregnancyOutcomeCount,cvAddPregnancyOutCome" />
+
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/cvAddPregnancyOutCome"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_16"
-                    android:layout_marginHorizontal="@dimen/margin_8"
                     android:background="@drawable/ui2_card_bg_gray_border"
                     app:cardCornerRadius="@dimen/common_card_corner_radius"
                     app:cardElevation="@dimen/card_appointment_card_elevation"
@@ -196,10 +203,10 @@
                             android:id="@+id/horizontal_view"
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
-                            android:visibility="@{viewModel.outComeLiveList.size() > 0 ? View.VISIBLE : View.GONE}"
-                            app:layout_constraintTop_toBottomOf="@+id/tvAddPregnancyOutcomeHeader"
+                            android:layout_marginTop="@dimen/margin_16"
                             android:background="@color/notifi_divider_color"
-                            android:layout_marginTop="@dimen/margin_16" />
+                            android:visibility="@{viewModel.outComeLiveList.size() > 0 ? View.VISIBLE : View.GONE}"
+                            app:layout_constraintTop_toBottomOf="@+id/tvAddPregnancyOutcomeHeader" />
 
 
                         <androidx.recyclerview.widget.RecyclerView
@@ -220,32 +227,6 @@
 
         </androidx.core.widget.NestedScrollView>
 
-        <Button
-            android:id="@+id/frag2_btn_back"
-            style="@style/AppTheme.OutlinedButton.White"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/std_16dp"
 
-            android:text="@string/generic_back"
-            android:textColor="@color/primary_text"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/frag2_btn_next"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <Button
-            android:id="@+id/frag2_btn_next"
-            style="@style/AppTheme.OutlinedButton.Primary"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/std_16dp"
-            android:layout_marginEnd="@dimen/std_16dp"
-            android:text="@string/next"
-            app:icon="@drawable/ui2_ic_baseline_arrow_forward_24"
-            app:iconGravity="end"
-            app:layout_constraintBottom_toBottomOf="@+id/frag2_btn_back"
-            app:layout_constraintTop_toTopOf="@+id/frag2_btn_back"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/frag2_btn_back" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

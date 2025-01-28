@@ -14,7 +14,7 @@ class PregnancyOutComeChildAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: RoasterViewQuestion) {
             binding.tvQuestion.text = item.question
-            binding.tvAnswer.text = item.answer ?: ""
+            binding.tvAnswer.text = item.localAnswer ?: item.answer
         }
     }
 

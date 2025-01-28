@@ -1553,12 +1553,13 @@
     <string name="enter_date">Enter Date</string>
     <string name="health_service">Health Service</string>
     <string name="please_add_health_service">Please add health service</string>
-    <string name="please_add_pregnancy_outcome">Please add pregnancy outcome</string>
+    <string name="please_add_pregnancy_outcome">Please add %1$s pregnancy outcome</string>
     <string name="please_select_pregnancy_outcome">Please select pregnancy outcome\n</string>
     <string name="_diagnostics_summary">%1$d/%2$d Diagnostics summary</string>
     <string name="physical_exam_screen_title">@string/physical_examination</string>
     <string name="physical_exam_screen_header">@string/general_exams</string>
     <string name="what_was_the_outcome_of_your_pregnancy">What was the outcome of your pregnancy?*</string>
+    <string name="txt_is_the_child_alive">Is the child alive?</string>
     <string name="what_was_the_year_of_pregnancy_outcome_a_for_pregnant_ladies_mention_the_date_when_conceived_b_in_case_of_other_options_mention_the_date_of_delivery_miscarriage">What was the year of pregnancy outcome? ((a) for pregnant ladies, mention the date when conceived (b) in case of other options mention the date of delivery/miscarriage)</string>
     <string name="how_many_months_did_this_pregnancy_last">How many months did this pregnancy last?</string>
     <string name="what_is_the_place_of_delivery">What is the Place of Delivery?</string>
@@ -1575,4 +1576,16 @@
     <string name="average_cost_incurred_on_consultation_fee_per_episode">Average cost incurred on consultation fee per episode</string>
     <string name="average_cost_incurred_on_medicines_per_episode">Average cost incurred on medicines per episode</string>
     <string name="score_for_experience_of_treatment">Score for experience of treatment</string>
+    <string name="share_the_file">Share the file…</string>
+    <string name="please_delete_pregnancy_outcome">Please delete %1$s pregnancy outcome</string>
+    <string name="please_connect_device">Please connect device</string>
+
+    <string name="was_this_birth_pre_term_earlier_than_due_date_for_delivery">Was this birth pre-term? (earlier than the due date for delivery?)</string>
+    <string name="txt_how_many_months_have_you_been_pregnant">How many months have you been pregnant</string>
+    <string name="focal_facility_for_this_pregnancy">Focal Facility for this pregnancy</string>
+    <string name="what_was_the_name_of_the_facility">What was the name of the facility?</string>
+    <string name="txt_was_this_a_single_multiple_births">Was this a single/multiple births?</string>
+    <string name="txt_how_old_was_the_baby_when_he_she_died">How old was the baby when he/she died?</string>
+    <string name="txt_what_is_was_the_sex_of_the_baby">What is/was the sex of the baby?</string>
+    <string name="txt_were_any_complications_identified_at_the_time_of_delivery">Were any complications identified at the time of delivery?</string>
 </resources>

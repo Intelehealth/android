@@ -125,7 +125,14 @@ public class TextPrintESCActivity extends BaseActivity implements View.OnClickLi
         btnConnect.setOnClickListener(this);
         btnDisConnect.setOnClickListener(this);
     }
+    private String removeNull(String inputString) {
+        // Remove all occurrences of "&null" (case-insensitive) and "null" (case-insensitive)
 
+
+        return inputString
+                .replaceAll("(?i)& ?\\bnull\\b", "") // Remove "&null" or "null" with optional "&"
+                .trim();
+    }
     public void init() {
         IntelehealthApplication.getInstance().setCurrentCmdType(BaseEnum.CMD_ESC);
         // printerFactory = new UniversalPrinterFactory();
@@ -153,9 +160,9 @@ public class TextPrintESCActivity extends BaseActivity implements View.OnClickLi
             prescData = intent.getStringExtra("sms_prescripton");
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                presTextview.setText(Html.fromHtml(prescData, Html.FROM_HTML_MODE_COMPACT));
+                presTextview.setText(Html.fromHtml(removeNull(prescData), Html.FROM_HTML_MODE_COMPACT));
             } else {
-                presTextview.setText(Html.fromHtml(prescData));
+                presTextview.setText(Html.fromHtml(removeNull(prescData)));
             }
 
            /* prescData = "    - Not Provided\n" +

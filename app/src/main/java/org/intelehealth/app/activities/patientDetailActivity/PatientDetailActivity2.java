@@ -1,5 +1,6 @@
 package org.intelehealth.app.activities.patientDetailActivity;
 
+import static org.intelehealth.app.ui.rosterquestionnaire.utilities.RoasterConstantKt.FEMALE;
 import static org.intelehealth.app.utilities.DialogUtils.patientRegistrationDialog;
 import static org.intelehealth.app.utilities.StringUtils.en__as_dob;
 import static org.intelehealth.app.utilities.StringUtils.en__bn_dob;
@@ -47,6 +48,7 @@ import static org.intelehealth.app.utilities.StringUtils.switch_ta_education_edi
 import static org.intelehealth.app.utilities.StringUtils.switch_te_caste_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_te_economic_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_te_education_edit;
+import static org.intelehealth.app.utilities.StringUtils.translateLocation;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
@@ -434,18 +436,22 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         });
 
         binding.rosterDetails.generalEdit.setOnClickListener(v -> {
-            RosterQuestionnaireMainActivity.startRosterQuestionnaire(this, patientDTO.getUuid(), RosterQuestionnaireStage.GENERAL_ROSTER);
+            RosterQuestionnaireMainActivity.startRosterQuestionnaire(this, patientDTO.getUuid(), RosterQuestionnaireStage.GENERAL_ROSTER, isPregnancyVisible(), true);
             finish();
         });
         binding.rosterDetails.pregnancyEdit.setOnClickListener(v -> {
-            RosterQuestionnaireMainActivity.startRosterQuestionnaire(this, patientDTO.getUuid(), RosterQuestionnaireStage.PREGNANCY_ROSTER);
+            RosterQuestionnaireMainActivity.startRosterQuestionnaire(this, patientDTO.getUuid(), RosterQuestionnaireStage.PREGNANCY_ROSTER, isPregnancyVisible(), true);
             finish();
         });
         binding.rosterDetails.healthServiceEdit.setOnClickListener(v -> {
-            RosterQuestionnaireMainActivity.startRosterQuestionnaire(this, patientDTO.getUuid(), RosterQuestionnaireStage.HEALTH_SERVICE);
+            RosterQuestionnaireMainActivity.startRosterQuestionnaire(this, patientDTO.getUuid(), RosterQuestionnaireStage.HEALTH_SERVICE, isPregnancyVisible(), true);
             finish();
         });
 
+    }
+
+    private boolean isPregnancyVisible() {
+        return mGender.equalsIgnoreCase(FEMALE) && DateAndTimeUtils.isDateGreaterThan15Years(patientDTO.getDateofbirth());
     }
 
     // Family Member
@@ -547,6 +553,11 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     protected void onResume() {
         super.onResume();
         setDisplay(patientDTO.getUuid());
+        if (isPregnancyVisible()) {
+            binding.rosterDetails.relativePregnancyHeader.setVisibility(View.VISIBLE);
+        } else {
+            binding.rosterDetails.relativePregnancyHeader.setVisibility(View.GONE);
+        }
     }
 
     private RelativeLayout mPersonalHeaderRelativeLayout, mAddressHeaderRelativeLayout, mOthersHeaderRelativeLayout;
@@ -1111,9 +1122,6 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
             }
         }
-        /*for NAS corresponding address is not required and address 1
-             means household no value thats why disabled the corresponding address 1 field for nas*/
-        addressOneTr.setVisibility(BuildConfig.FLAVOR_client.equals("nas") ? View.GONE : View.VISIBLE);
     }
 
 
@@ -1360,7 +1368,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         String[] patientColumns = {"uuid", "openmrs_id", "first_name", "middle_name", "last_name", "gender",
                 "date_of_birth", "address1", "address2", "city_village", "state_province",
                 "postal_code", "country", "phone_number", "gender", "sdw",
-                "patient_photo", "guardian_type", "guardian_name", "contact_type", "em_contact_name", "em_contact_num", "address3"};
+                "patient_photo", "guardian_type", "guardian_name", "contact_type", "em_contact_name", "em_contact_num", "address3","address6","countyDistrict"};
         Cursor idCursor = db.query("tbl_patient", patientColumns, patientSelection, patientArgs, null, null, null);
         if (idCursor.moveToFirst()) {
             do {
@@ -1386,6 +1394,10 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 patientDTO.setContactType(idCursor.getString(idCursor.getColumnIndexOrThrow("contact_type")));
                 patientDTO.setEmContactName(idCursor.getString(idCursor.getColumnIndexOrThrow("em_contact_name")));
                 patientDTO.setEmContactNumber(idCursor.getString(idCursor.getColumnIndexOrThrow("em_contact_num")));
+
+                patientDTO.setAddress3(idCursor.getString(idCursor.getColumnIndexOrThrow("address3")));
+                patientDTO.setAddress6(idCursor.getString(idCursor.getColumnIndexOrThrow("address6")));
+                patientDTO.setDistrict(idCursor.getString(idCursor.getColumnIndexOrThrow("countyDistrict")));
             } while (idCursor.moveToNext());
         }
         idCursor.close();
@@ -1434,9 +1446,9 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 if (name.equalsIgnoreCase("providerUUID")) {
                     patientDTO.setProviderUUID(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
-                if (name.equalsIgnoreCase("blockSurvey")) {
+                /*if (name.equalsIgnoreCase("blockSurvey")) {
                     patientDTO.setBlock(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
-                }
+                }*/
 
                 if (name.equalsIgnoreCase(PatientAttributesDTO.Column.TMH_CASE_NUMBER.value)) {
                     patientDTO.setTmhCaseNumber(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
@@ -2276,7 +2288,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         }
 
         if (patientDTO.getAddress1() != null && !patientDTO.getAddress1().equals("")) {
-            householdNumber.setText(patientDTO.getAddress1());
+            householdNumber.setText(patientDTO.getAddress6());
         } else {
             householdNumber.setText(getString(R.string.not_provided));
         }

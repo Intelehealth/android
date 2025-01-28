@@ -41,7 +41,7 @@ class HealthServiceAdapter(
         }
 
         fun bind(item: HealthServiceModel) {
-            binding.tvTitle.text = item.title
+            binding.tvTitle.text = item.title ?: ""
             binding.rvOutComeItem.adapter =
                 HealthServiceChildAdapter(item.roasterViewQuestion)
             if (item.isOpen) {
