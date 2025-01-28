@@ -12,7 +12,7 @@ public class PatientDTO implements Serializable {
 
     @SerializedName("uuid")
     @Expose
-    private String uuid;
+    public String uuid;
     @SerializedName("openmrs_id")
     @Expose
     private String openmrsId;
