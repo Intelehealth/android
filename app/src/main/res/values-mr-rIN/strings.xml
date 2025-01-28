@@ -1035,6 +1035,7 @@
     <string name="physical_exam_screen_header">@string/general_exams</string>
     <string name="share_the_file">Share the file…</string>
     <string name="please_delete_pregnancy_outcome">कृपया %1$s गर्भधारणेचा परिणाम हटवा</string>
+    <string name="please_connect_device">कृपया डिव्हाइस कनेक्ट करा</string>
     <string name="was_this_birth_pre_term_earlier_than_due_date_for_delivery">िलेल्या तारखेपूर्वी डिलिव्हरी/ प्रसूती झाली का ?/ (निर्धारित काळापूर्वी बाळाचा जन्म झाला का)</string>
     <string name="txt_how_many_months_have_you_been_pregnant">तुम्ही किती महिने गरोदर आहात</string>
     <string name="focal_facility_for_this_pregnancy">ह्या गरोदरपणासाठी अथवा प्रसूती / डिलिव्हरीसाठी तुम्ही उपचार घेतलेले ठिकाण</string>

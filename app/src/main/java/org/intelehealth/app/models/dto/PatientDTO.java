@@ -49,6 +49,15 @@ public class PatientDTO implements Serializable {
     @SerializedName("country")
     @Expose
     private String country;
+
+    public String getAddress6() {
+        return address6;
+    }
+
+    public void setAddress6(String address6) {
+        this.address6 = address6;
+    }
+
     @SerializedName("education")
     @Expose
     private String education;
@@ -88,7 +97,7 @@ public class PatientDTO implements Serializable {
 
     private String profileTimestamp;
 
-    private String district;
+    //private String district;
 
     private String patientImageFromImageDao;
 
@@ -97,7 +106,12 @@ public class PatientDTO implements Serializable {
     private String relativePhoneNumber;
     private String discipline;
     private String department;
-
+    @SerializedName("countyDistrict")
+    @Expose
+    private String district;
+    @SerializedName("address6")
+    @Expose
+    private String address6;
     public String getRelativePhoneNumber() {
         return relativePhoneNumber;
     }
@@ -616,16 +630,8 @@ public class PatientDTO implements Serializable {
                 '}';
     }
 
-    private String block;
+
     private String householdLinkingUUIDlinking;
-
-    public String getBlock() {
-        return block;
-    }
-
-    public void setBlock(String block) {
-        this.block = block;
-    }
 
     public String getHouseholdLinkingUUIDlinking() {
         return householdLinkingUUIDlinking;
@@ -643,27 +649,14 @@ public class PatientDTO implements Serializable {
     public void setReportDateOfPatientCreated(String reportDateOfPatientCreated) {
         this.reportDateOfPatientCreated = reportDateOfPatientCreated;
     }
-/* public String getHouseholdNumber() {
-        return householdNumber;
-    }
-
-    public void setHouseholdNumber(String householdNumber) {
-        this.householdNumber = householdNumber;
-    }*/
-
-   /* public String getAddress3() {
+    public String getAddress3() {
         return address3;
     }
 
     public void setAddress3(String address3) {
         this.address3 = address3;
-    }*/
-
-  /*  @SerializedName("address3")
+    }
+    @SerializedName("address3")
     @Expose
-    private String address3;*/
-   /* @SerializedName("HouseHold")
-    @Expose
-    private String householdNumber;*/
-
+    private String address3;
 }

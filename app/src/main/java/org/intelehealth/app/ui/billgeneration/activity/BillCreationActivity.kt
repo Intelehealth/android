@@ -19,6 +19,7 @@ import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New
 import org.intelehealth.app.databinding.ActivityBillCreationBinding
 import org.intelehealth.app.ui.billgeneration.models.BillDetails
 import org.intelehealth.app.ui.billgeneration.utils.PaymentStatus
+import org.intelehealth.app.ui.billgeneration.utils.PrintBillUsingThermalPrinter
 import org.intelehealth.app.ui.billgeneration.viewmodel.BillGenerationViewModel
 import org.intelehealth.app.utilities.DialogUtils
 import org.intelehealth.app.utilities.SessionManager
@@ -44,6 +45,8 @@ class BillCreationActivity : AppCompatActivity() {
         intent?.let { billDetails = getBillDetailsFromIntent(it)!! }
         setupActionBar()
         showBillDetails()
+        printBill()
+
     }
 
     private fun showBillDetails() {
@@ -51,7 +54,8 @@ class BillCreationActivity : AppCompatActivity() {
             if (it.isNotEmpty()) {
                 viewModel.isBillGenerated = true
                 binding.contentGenerateBill.isBillGenerated = viewModel.isBillGenerated
-                viewModel.updatePaymentStatusValue(billDetails.billType)
+                if (billDetails.billType.isNotEmpty())
+                    viewModel.updatePaymentStatusValue(billDetails.billType)
             }
         }
         binding.contentGenerateBill.patientDetailsTV.text = viewModel.setPatientDetails(billDetails)
@@ -252,6 +256,28 @@ class BillCreationActivity : AppCompatActivity() {
             HomeScreenActivity_New::class.java
         )
         startActivity(intent)
+    }
+    private fun printBill() {
+        val fragmentManager = supportFragmentManager
+        val printBillObj= PrintBillUsingThermalPrinter(this@BillCreationActivity,binding,this@BillCreationActivity, fragmentManager)
+        val layoutBinding = binding.contentGenerateBill
+        printBillObj.initBluetoothDevice()
+        layoutBinding.buttonPrint.setOnClickListener {
+            printBillObj.textPrint()
+        }
+        layoutBinding.tvDeviceSelected.setOnClickListener {
+            printBillObj.showBluetoothDeviceChooseDialog()
+        }
+        layoutBinding.btnConnect.setOnClickListener {
+            printBillObj.doConnect()
+        }
+        layoutBinding.btnDisConnect.setOnClickListener {
+            printBillObj.doDisConnect()
+        }
+        layoutBinding.btnDisConnect.setOnClickListener {
+            printBillObj.doDisConnect()
+        }
+
     }
 }
 
