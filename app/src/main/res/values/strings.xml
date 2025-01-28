@@ -1575,5 +1575,8 @@
     <string name="average_cost_incurred_on_consultation_fee_per_episode">Average cost incurred on consultation fee per episode</string>
     <string name="average_cost_incurred_on_medicines_per_episode">Average cost incurred on medicines per episode</string>
     <string name="score_for_experience_of_treatment">Score for experience of treatment</string>
+    <string name="share_the_file">Share the file…</string>
     <string name="please_delete_pregnancy_outcome">Please delete %1$s pregnancy outcome</string>
+    <string name="please_connect_device">Please connect device</string>
+
 </resources>

@@ -371,6 +371,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginEnd="@dimen/radio_buttons_between_margin"
                                 android:paddingStart="@dimen/radio_buttons_padding_start_end"
+                                android:checked="false"
                                 android:paddingEnd="@dimen/radio_buttons_padding_start_end"
                                 android:text="@string/meter"
                                 app:useMaterialThemeColors="false" />
@@ -383,10 +384,19 @@
                                 android:paddingStart="@dimen/radio_buttons_padding_start_end"
                                 android:paddingEnd="@dimen/radio_buttons_padding_start_end"
                                 android:text="@string/km"
+                                android:checked="false"
                                 app:useMaterialThemeColors="false" />
 
                         </RadioGroup>
-
+                        <LinearLayout
+                            android:id="@+id/llWaterSourceDistance"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/primary_source_of_water_checkbox_linear_layout"
+                            android:visibility="gone">
                         <TextView
                             android:id="@+id/lblDistanceNumber"
                             android:layout_width="match_parent"
@@ -396,9 +406,7 @@
                             android:text="@string/no_of_m_km"
                             android:textAppearance="@style/blur_txtview"
                             android:textSize="@null"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/primary_source_of_water_checkbox_linear_layout" />
+                           />
 
                         <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
                             android:id="@+id/textInputLayWaterSourceDistance"
@@ -423,6 +431,7 @@
                                 app:layout_constraintTop_toTopOf="parent" />
 
                         </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
+                        </LinearLayout>
                     </LinearLayout>
 
                 </LinearLayout>
