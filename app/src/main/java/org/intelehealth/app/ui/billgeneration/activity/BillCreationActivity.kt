@@ -46,6 +46,7 @@ class BillCreationActivity : AppCompatActivity() {
         setupActionBar()
         showBillDetails()
         printBill()
+
     }
 
     private fun showBillDetails() {
