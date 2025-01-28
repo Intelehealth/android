@@ -92,35 +92,35 @@ public class SyncDAO {
             saveConfig(responseDTO.getData().getConfigResponse());
 
             patientsDAO.patinetAttributeMaster(responseDTO.getData().getPatientAttributeTypeMasterDTO());
-            Logger.logD(TAG, "patinetAttributeMaster = "+responseDTO.getData().getPatientAttributeTypeMasterDTO().size());
+            Logger.logD(TAG, "patinetAttributeMaster = " + responseDTO.getData().getPatientAttributeTypeMasterDTO().size());
 
             patientsDAO.insertPatients(responseDTO.getData().getPatientDTO());
-            Logger.logD(TAG, "insertPatients = "+responseDTO.getData().getPatientDTO().size());
+            Logger.logD(TAG, "insertPatients = " + responseDTO.getData().getPatientDTO().size());
 
             patientsDAO.patientAttributes(responseDTO.getData().getPatientAttributesDTO());
-            Logger.logD(TAG, "insertPatientAttributes = "+responseDTO.getData().getPatientAttributesDTO().size());
+            Logger.logD(TAG, "insertPatientAttributes = " + responseDTO.getData().getPatientAttributesDTO().size());
 
             visitsDAO.insertVisit(responseDTO.getData().getVisitDTO());
-            Logger.logD(TAG, "insertVisit = "+responseDTO.getData().getVisitDTO().size());
+            Logger.logD(TAG, "insertVisit = " + responseDTO.getData().getVisitDTO().size());
 
             encounterDAO.insertEncounter(responseDTO.getData().getEncounterDTO());
-            Logger.logD(TAG, "insertEncounter = "+responseDTO.getData().getEncounterDTO().size());
+            Logger.logD(TAG, "insertEncounter = " + responseDTO.getData().getEncounterDTO().size());
 
             obsDAO.insertObsTemp(responseDTO.getData().getObsDTO());
-            Logger.logD(TAG, "insertObsTemp = "+responseDTO.getData().getObsDTO().size());
+            Logger.logD(TAG, "insertObsTemp = " + responseDTO.getData().getObsDTO().size());
 
             locationDAO.insertLocations(responseDTO.getData().getLocationDTO());
-            Logger.logD(TAG, "insertLocations = "+responseDTO.getData().getLocationDTO().size());
+            Logger.logD(TAG, "insertLocations = " + responseDTO.getData().getLocationDTO().size());
 
             providerDAO.insertProviders(responseDTO.getData().getProviderlist());
-            Logger.logD(TAG, "insertProviders = "+responseDTO.getData().getProviderlist().size());
+            Logger.logD(TAG, "insertProviders = " + responseDTO.getData().getProviderlist().size());
 
             providerAttributeLIstDAO.insertProvidersAttributeList
                     (responseDTO.getData().getProviderAttributeList());
-            Logger.logD(TAG, "insertProvidersAttributeList = "+responseDTO.getData().getProviderAttributeList().size());
+            Logger.logD(TAG, "insertProvidersAttributeList = " + responseDTO.getData().getProviderAttributeList().size());
 
             visitAttributeListDAO.insertProvidersAttributeList(responseDTO.getData().getVisitAttributeList());
-            Logger.logD(TAG, "insertVisitAttributeList = "+responseDTO.getData().getVisitAttributeList().size());
+            Logger.logD(TAG, "insertVisitAttributeList = " + responseDTO.getData().getVisitAttributeList().size());
 
             //downloading images if not found
             downloadPatientImages(responseDTO.getData().getPatientDTO());
@@ -133,8 +133,9 @@ public class SyncDAO {
                     .setPackage(IntelehealthApplication.getAppContext().getPackageName())
                     .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_PUSH_DATA_TO_LOCAL_DB_DONE));
         } catch (Exception e) {
+            e.printStackTrace();
             FirebaseCrashlytics.getInstance().recordException(e);
-            Logger.logE(TAG, "Exception", e);
+            Logger.logE(TAG, "Exception => " + e.getLocalizedMessage(), e);
             throw new DAOException(e.getMessage(), e);
         }
 
@@ -240,7 +241,7 @@ public class SyncDAO {
         sessionManager = new SessionManager(context);
         String encoded = sessionManager.getEncoded();
         String oldDate = sessionManager.getPullExcutedTime();
-        Log.d(TAG, "pullData_Background: encoded : "+encoded);
+        Log.d(TAG, "pullData_Background: encoded : " + encoded);
         String url = BuildConfig.SERVER_URL + "/EMR-Middleware/webapi/pull/pulldata/" +
                 sessionManager.getLocationUuid() + "/" + sessionManager.getPullExcutedTime() +
                 "/" + pageNo + "/" + AppConstants.PAGE_LIMIT;

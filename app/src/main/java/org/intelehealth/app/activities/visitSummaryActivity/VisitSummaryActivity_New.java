@@ -2590,10 +2590,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         if (visitUUID != null && !visitUUID.isEmpty()) {
             String hideVisitUUID = visitUUID;
             hideVisitUUID = hideVisitUUID.substring(hideVisitUUID.length() - 4, hideVisitUUID.length());
-            Log.d(TAG, "kkshowVisitID: hideVisitUUID : " + hideVisitUUID);
             visitView.setText("XXXX" + hideVisitUUID);
         }
-        Log.d(TAG, "kkshowVisitID:kk " + visitView.getText().toString());
         return visitView.getText().toString();
     }
 
@@ -3156,12 +3154,17 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             showSelectSpeciliatyErrorDialog();
         }
 
-        if (mBinding.flDiagnosisCard.getVisibility() == View.VISIBLE && mBinding.diagnosisTextInput.getText().toString().isEmpty() ||
-                selectedConsultationType.isEmpty() ||
-                (speciality_selected == null || speciality_selected.isEmpty())
-        ) {
+        if (mFeatureActiveStatus.getDiagnosisAtSecondaryLevel() && mBinding.diagnosisTextInput.getText().toString().isEmpty()) {
+            Timber.tag(TAG).d("DiagnosisAtSecondaryLevel");
             return;
-        }
+        } else if (mFeatureActiveStatus.getTypeOfConsultation() && selectedConsultationType.isEmpty()) {
+            Timber.tag(TAG).d("TypeOfConsultation");
+            return;
+        } else if (mFeatureActiveStatus.getVisitSummeryDoctorSpeciality() && (speciality_selected == null || speciality_selected.isEmpty())) {
+            Timber.tag(TAG).d("DoctorSpeciality");
+            return;
+        } else Timber.tag(TAG).d("visitSendDialog: success");
+
         MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(context);
         final LayoutInflater inflater = LayoutInflater.from(context);
         View convertView = inflater.inflate(R.layout.dialog_patient_registration, null);
