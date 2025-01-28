@@ -13,6 +13,7 @@ import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -108,8 +109,8 @@ public class SetupPrivacyNoteActivity_New extends AppCompatActivity {
         startingPositionPP = getResources().getString(R.string.agree_to_terms).indexOf(getResources().getString(R.string.privacy_policy));
         endingPositionPP = startingPositionPP + getResources().getString(R.string.privacy_policy).length();
 
-        //SpanString.setSpan(termsAndCondition, startingPositionTC, endingPositionTC, 0);
-        //SpanString.setSpan(privacy, startingPositionPP, endingPositionPP, 0);
+        SpanString.setSpan(termsAndCondition, startingPositionTC, endingPositionTC, 0);
+        SpanString.setSpan(privacy, startingPositionPP, endingPositionPP, 0);
 
         tvTermsAndPrivacy.setText(SpanString, TextView.BufferType.SPANNABLE);
     }

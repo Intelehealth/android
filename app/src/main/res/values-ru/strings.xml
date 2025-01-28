@@ -446,9 +446,9 @@
 
     <string name="hello_i_am_ayu">Здравствуйте, я цифровой помощник AYU,</string>
     <string name="ayu_intro">Я цифровой помощник. Давайте начнем работу!</string>
-    <string name="agree_to_terms">Принять <font color='#2F1E91'><u>правила и условия</u></font> и <font color='#2F1E91'><u>политику конфиденциальности</u></font></string>
+    <string name="agree_to_terms">Принять Правила &amp; Условия и Политика конфиденциальности</string>
     <string name="setup">Настройка</string>
-    <string name="terms_and_conditions">Правила и Условия</string>
+    <string name="terms_and_conditions">Правила &amp; Условия</string>
     <string name="privacy_policy">Политика конфиденциальности</string>
     <string name="decline">Отклонить</string>
     <string name="accept_new">Принять</string>
