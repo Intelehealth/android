@@ -1455,7 +1455,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
                 medicalAdvice_string = adviceReturned.replaceAll(medicalAdvice_HyperLink, "");
                 if (!medicalAdvice_string.equalsIgnoreCase(""))
-                    advice_txt.setText(medicalAdvice_string);
+                    advice_txt.setText(addBulletPoints(medicalAdvice_string));
                 CustomLog.d("Hyperlink", "hyper_string: " + medicalAdvice_string);
 
                 /*
