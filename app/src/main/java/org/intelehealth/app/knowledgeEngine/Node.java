@@ -147,6 +147,7 @@ public class Node implements Serializable {
 
     private boolean isAutoPopulateField = false;
     private String autoPopulateDataType;
+    private boolean isDisabled = false;
 
     //• = \u2022, ● = \u25CF, ○ = \u25CB, ▪ = \u25AA, ■ = \u25A0, □ = \u25A1, ► = \u25BA
     private int associated_symptoms = 0;
@@ -373,7 +374,7 @@ public class Node implements Serializable {
 
             this.isAutoPopulateField = jsonNode.optBoolean("is-auto-populate-field");
             this.autoPopulateDataType = jsonNode.optString("auto-populate-data-type");
-
+            this.isDisabled = jsonNode.optBoolean("is-disabled");
         } catch (JSONException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
@@ -436,6 +437,7 @@ public class Node implements Serializable {
         this.needToHide = source.needToHide;
         this.isAutoPopulateField = source.isAutoPopulateField;
         this.autoPopulateDataType = source.autoPopulateDataType;
+        this.isDisabled = source.isDisabled;
     }
 
     public static void subLevelQuestion(final Node node, final Activity context, final QuestionsAdapter callingAdapter,
@@ -2614,6 +2616,14 @@ public class Node implements Serializable {
 
     public void setAutoPopulateField(boolean autoPopulateField) {
         isAutoPopulateField = autoPopulateField;
+    }
+
+    public boolean isDisabled() {
+        return isDisabled;
+    }
+
+    public void setDisabled(boolean disabled) {
+        isDisabled = disabled;
     }
 
     public String getAutoPopulateDataType() {
