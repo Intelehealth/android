@@ -225,8 +225,8 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
                     setAutoFillValuesViaMobile(abhaProfileResponse);
                     patientdto.setOpenmrsId(abhaProfileResponse.getOpenMrsId());
                     patientdto.setUuid(abhaProfileResponse.getUuiD());
-                    patientdto.getAbhaAddress();
-                    patientdto.getAddress1().equals("");
+//                    patientdto.getAbhaAddress();
+//                    patientdto.getAddress1();
 
                 }
             }
