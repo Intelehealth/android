@@ -168,7 +168,7 @@ public class ResetPasswordActivity_New extends AppCompatActivity {
         cpd.show(getString(R.string.please_wait));
 
         SessionManager sessionManager = new SessionManager(context);
-        String serverUrl = BuildConfig.SERVER_URL + ":3004";
+        String serverUrl = SessionManager.getInstance(this).getServerUrl() + ":3004";
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 

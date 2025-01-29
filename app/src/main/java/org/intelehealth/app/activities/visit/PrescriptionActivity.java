@@ -45,6 +45,7 @@ import android.print.PrintAttributes;
 import android.print.PrintDocumentAdapter;
 import android.print.PrintJob;
 import android.print.PrintManager;
+import android.se.omapi.Session;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 
@@ -218,7 +219,6 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
     String visitStartDate = "";
 
     ClsDoctorDetails objClsDoctorDetails;
-
 
 
     @Override
@@ -578,7 +578,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         int appointmentID = appointmentInfo.getId();
         String reason = "Visit was ended";
         String providerID = sessionManager.getProviderID();
-        String baseurl = BuildConfig.SERVER_URL + ":3004";
+        String baseurl = SessionManager.getInstance(this).getServerUrl() + ":3004";
 
         new AppointmentUtils().cancelAppointmentRequestOnVisitEnd(visitUUID, appointmentID, reason, providerID, baseurl);
     }
@@ -1125,7 +1125,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             //  docDigitallySign = "Digitally Signed By";
             doctorSign = details.getTextOfSign();
 
-            sign_url = BuildConfig.SERVER_URL + "/ds/" + details.getUuid() + "_sign.png";
+            sign_url = SessionManager.getInstance(this).getServerUrl() + "/ds/" + details.getUuid() + "_sign.png";
             CustomLog.v("signurl", "signurl: " + sign_url);
 
             doctrRegistartionNum = !TextUtils.isEmpty(details.getRegistrationNumber()) ? getString(R.string.dr_registration_no) + details.getRegistrationNumber() : "";
@@ -2004,7 +2004,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
     // presc share - start
     private void sharePresc() {
-        if(hasPrescription){
+        if (hasPrescription) {
             getVisitStartDate();
 
             String[] eColumns = {"visituuid", "encounter_type_uuid"};
@@ -2084,6 +2084,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
         return obj;
     }
+
     public <T> T mapCursorToObject(Cursor cursor, Class<T> targetClass) {
         try {
             T obj = targetClass.newInstance();
@@ -2240,11 +2241,12 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         Gson gson = new Gson();
         SharedPreferences sharedPreference = IntelehealthApplication.getAppContext().getSharedPreferences(IntelehealthApplication.getAppContext().getString(R.string.prescription_share_key), Context.MODE_PRIVATE);
         String prescriptionListJson = sharedPreference.getString(AppConstants.PRESCRIPTION_DATA_LIST, "");
-        if(!prescriptionListJson.isEmpty()){
-            Type type = new TypeToken<List<LocalPrescriptionInfo>>() {}.getType();
+        if (!prescriptionListJson.isEmpty()) {
+            Type type = new TypeToken<List<LocalPrescriptionInfo>>() {
+            }.getType();
             prescriptionDataList = gson.fromJson(prescriptionListJson, type);
-            for(LocalPrescriptionInfo lpi: prescriptionDataList){
-                if(lpi.getVisitUUID().equals(visituuid)){
+            for (LocalPrescriptionInfo lpi : prescriptionDataList) {
+                if (lpi.getVisitUUID().equals(visituuid)) {
                     lpi.setShareStatus(true);
                 }
             }
@@ -2671,7 +2673,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             //  docDigitallySign = "Digitally Signed By";
             doctorSign = details.getTextOfSign();
 
-            sign_url = BuildConfig.SERVER_URL + "/ds/" + details.getUuid() + "_sign.png";
+            sign_url = SessionManager.getInstance(this).getServerUrl() + "/ds/" + details.getUuid() + "_sign.png";
             CustomLog.v("signurl", "signurl: " + sign_url);
 
             doctrRegistartionNum = !TextUtils.isEmpty(details.getRegistrationNumber()) ? getString(R.string.dr_registration_no) + details.getRegistrationNumber() : "";

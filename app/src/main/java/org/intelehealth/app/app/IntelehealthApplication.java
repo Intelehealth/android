@@ -172,7 +172,7 @@ public class IntelehealthApplication extends MultiDexApplication implements Defa
         CustomLog.d(TAG, "initSocketConnection: ");
         if (sessionManager.getProviderID() != null && !sessionManager.getProviderID().isEmpty()) {
             Manager.getInstance().setBaseUrl(sessionManager.getServerUrl());
-            String socketUrl = BuildConfig.SERVER_URL + ":3004" + "?userId="
+            String socketUrl = sessionManager.getServerUrl() + ":3004" + "?userId="
                     + sessionManager.getProviderID()
                     + "&name=" + sessionManager.getChwname();
             if (!socketManager.isConnected()) socketManager.connect(socketUrl);

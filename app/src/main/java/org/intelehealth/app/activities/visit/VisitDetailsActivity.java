@@ -1114,7 +1114,7 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
         int appointmentID = appointmentInfo.getId();
         String reason = "Visit was ended";
         String providerID = sessionManager.getProviderID();
-        String baseurl = BuildConfig.SERVER_URL + ":3004";
+        String baseurl = SessionManager.getInstance(this).getServerUrl() + ":3004";
 
         new AppointmentUtils().cancelAppointmentRequestOnVisitEnd(visitUUID, appointmentID, reason, providerID, baseurl);
     }

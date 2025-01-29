@@ -16,7 +16,9 @@ import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
+
 import org.intelehealth.app.utilities.CustomLog;
+
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -153,8 +155,8 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
             mLayoutUsername.setVisibility(View.VISIBLE);
             tvMobileError.setVisibility(View.GONE);
             tvUsernameError.setVisibility(View.GONE);
-            mButtonUsername.setBackground(ContextCompat.getDrawable(context,R.drawable.button_bg_forgot_pass_ui2));
-            mButtonMobileNumber.setBackground(ContextCompat.getDrawable(context,R.drawable.button_bg_forgot_pass_disabled_ui2));
+            mButtonUsername.setBackground(ContextCompat.getDrawable(context, R.drawable.button_bg_forgot_pass_ui2));
+            mButtonMobileNumber.setBackground(ContextCompat.getDrawable(context, R.drawable.button_bg_forgot_pass_disabled_ui2));
             mMobileNoEditText.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
             mUsernameEditText.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
 
@@ -179,8 +181,8 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
         tvUsernameError.setVisibility(View.GONE);
         mLayoutUsername.setVisibility(View.GONE);
         mLayoutMobileNo.setVisibility(View.VISIBLE);
-        mButtonMobileNumber.setBackground(ContextCompat.getDrawable(context,R.drawable.button_bg_forgot_pass_ui2));
-        mButtonUsername.setBackground(ContextCompat.getDrawable(context,R.drawable.button_bg_forgot_pass_disabled_ui2));
+        mButtonMobileNumber.setBackground(ContextCompat.getDrawable(context, R.drawable.button_bg_forgot_pass_ui2));
+        mButtonUsername.setBackground(ContextCompat.getDrawable(context, R.drawable.button_bg_forgot_pass_disabled_ui2));
         mMobileNoEditText.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
         mUsernameEditText.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
     }
@@ -243,9 +245,9 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
         @Override
         public void afterTextChanged(Editable editable) {
             String val = editable.toString().trim();
-            if(editText.getId() == R.id.edittext_mobile_number) {
+            if (editText.getId() == R.id.edittext_mobile_number) {
                 mButtonContinue.setEnabled(val.length() == 10);
-            }else{
+            } else {
                 mButtonContinue.setEnabled(val.length() >= 5);
             }
 
@@ -255,7 +257,7 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
     public void apiCallForRequestOTP(Context context, String username, String mobileNo) {
         cpd.show(getString(R.string.otp_sending));
         mButtonContinue.setEnabled(false);
-        String serverUrl = BuildConfig.SERVER_URL + ":3004";
+        String serverUrl = SessionManager.getInstance(this).getServerUrl() + ":3004";
         CustomLog.d(TAG, "apiCallForRequestOTP: serverUrl : " + serverUrl);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);

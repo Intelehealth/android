@@ -15,7 +15,9 @@ import android.os.StrictMode;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
+
 import org.intelehealth.app.utilities.CustomLog;
+
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -60,7 +62,7 @@ public class ForgotPasswordOtpVerificationActivity_New extends AppCompatActivity
     String userUuid = "", userPhoneNum, userName;
     TextView tvOtpError, tvResendOtp;
     EditText etPin1, etPin2, etPin3, etPin4, etPin5, etPin6;
-    LinearLayout  rvHelpInfo;
+    LinearLayout rvHelpInfo;
     ScrollView scrollView;
     LinearLayout layoutParent;
     SnackbarUtils snackbarUtils;
@@ -171,7 +173,7 @@ public class ForgotPasswordOtpVerificationActivity_New extends AppCompatActivity
             int keypadHeight = screenHeight - r.bottom;
 
             if (keypadHeight > screenHeight * 0.15) {
-                scrollView.scrollTo(0,buttonVerifyOtp.getBottom());
+                scrollView.scrollTo(0, buttonVerifyOtp.getBottom());
             }
         });
     }
@@ -192,7 +194,7 @@ public class ForgotPasswordOtpVerificationActivity_New extends AppCompatActivity
     }
 
     private void verifyOTP(Context context, String otp) {
-        String serverUrl = BuildConfig.SERVER_URL + ":3004";
+        String serverUrl = SessionManager.getInstance(this).getServerUrl() + ":3004";
         CustomLog.d(TAG, "apiCallForRequestOTP: serverUrl : " + serverUrl);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
@@ -204,66 +206,66 @@ public class ForgotPasswordOtpVerificationActivity_New extends AppCompatActivity
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<ForgotPasswordApiResponseModel_New>() {
-            @Override
-            public void onSubscribe(Disposable d) {
+                    @Override
+                    public void onSubscribe(Disposable d) {
 
-            }
-
-            @Override
-            public void onNext(ForgotPasswordApiResponseModel_New forgotPasswordApiResponseModel_new) {
-                if (forgotPasswordApiResponseModel_new.getSuccess()) {
-                    snackbarUtils.showSnackLinearLayoutParentSuccess(ForgotPasswordOtpVerificationActivity_New.this, layoutParent, StringUtils.getMessageTranslated(forgotPasswordApiResponseModel_new.getMessage(), sessionManager.getAppLanguage()), true);
-                    if (mActionType != AppConstants.FORGOT_USER_NAME_ACTION) {
-                        Intent intent = new Intent(ForgotPasswordOtpVerificationActivity_New.this, ResetPasswordActivity_New.class);
-                        intent.putExtra("otp", otp);
-                        intent.putExtra("userUuid", userUuid);
-                        startActivity(intent);
-                        finish();
-                    } else {
-                        DialogUtils dialogUtils = new DialogUtils();
-                        dialogUtils.showCommonDialog(ForgotPasswordOtpVerificationActivity_New.this, R.drawable.ui2_complete_icon,
-                                getResources().getString(R.string.username_sent_title),
-                                getResources().getString(R.string.username_sent_desc), true, getResources().getString(R.string.okay), null, new DialogUtils.CustomDialogListener() {
-                                    @Override
-                                    public void onDialogActionDone(int action) {
-                                        finish();
-                                    }
-                                });
                     }
 
-                } else {
-                    tvOtpError.setVisibility(View.VISIBLE);
-                    tvOtpError.setText(getResources().getString(R.string.otp_is_incorrect));
-                    etPin6.requestFocus();
-                    buttonVerifyOtp.setEnabled(true);
-                }
-            }
+                    @Override
+                    public void onNext(ForgotPasswordApiResponseModel_New forgotPasswordApiResponseModel_new) {
+                        if (forgotPasswordApiResponseModel_new.getSuccess()) {
+                            snackbarUtils.showSnackLinearLayoutParentSuccess(ForgotPasswordOtpVerificationActivity_New.this, layoutParent, StringUtils.getMessageTranslated(forgotPasswordApiResponseModel_new.getMessage(), sessionManager.getAppLanguage()), true);
+                            if (mActionType != AppConstants.FORGOT_USER_NAME_ACTION) {
+                                Intent intent = new Intent(ForgotPasswordOtpVerificationActivity_New.this, ResetPasswordActivity_New.class);
+                                intent.putExtra("otp", otp);
+                                intent.putExtra("userUuid", userUuid);
+                                startActivity(intent);
+                                finish();
+                            } else {
+                                DialogUtils dialogUtils = new DialogUtils();
+                                dialogUtils.showCommonDialog(ForgotPasswordOtpVerificationActivity_New.this, R.drawable.ui2_complete_icon,
+                                        getResources().getString(R.string.username_sent_title),
+                                        getResources().getString(R.string.username_sent_desc), true, getResources().getString(R.string.okay), null, new DialogUtils.CustomDialogListener() {
+                                            @Override
+                                            public void onDialogActionDone(int action) {
+                                                finish();
+                                            }
+                                        });
+                            }
 
-            @Override
-            public void onError(Throwable e) {
-                Logger.logD(TAG, "Login Failure" + e.getMessage());
-                e.printStackTrace();
-                snackbarUtils.showSnackLinearLayoutParentSuccess(context, layoutParent, getResources().getString(R.string.otp_verification_failed), false);
-                etPin6.requestFocus();
-                buttonVerifyOtp.setEnabled(true);
+                        } else {
+                            tvOtpError.setVisibility(View.VISIBLE);
+                            tvOtpError.setText(getResources().getString(R.string.otp_is_incorrect));
+                            etPin6.requestFocus();
+                            buttonVerifyOtp.setEnabled(true);
+                        }
+                    }
 
-            }
+                    @Override
+                    public void onError(Throwable e) {
+                        Logger.logD(TAG, "Login Failure" + e.getMessage());
+                        e.printStackTrace();
+                        snackbarUtils.showSnackLinearLayoutParentSuccess(context, layoutParent, getResources().getString(R.string.otp_verification_failed), false);
+                        etPin6.requestFocus();
+                        buttonVerifyOtp.setEnabled(true);
 
-            @Override
-            public void onComplete() {
-                Logger.logD(TAG, "completed");
-            }
-        });
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Logger.logD(TAG, "completed");
+                    }
+                });
 
     }
 
     public void apiCallForRequestOTP(Context context, String username, String mobileNo) {
         tvResendOtp.setEnabled(false);
         tvResendOtp.setText(R.string.sending_otp);
-        tvResendOtp.setTextColor(ContextCompat.getColor(ForgotPasswordOtpVerificationActivity_New.this,R.color.textColorLightGary));
+        tvResendOtp.setTextColor(ContextCompat.getColor(ForgotPasswordOtpVerificationActivity_New.this, R.color.textColorLightGary));
         tvResendOtp.setPaintFlags(View.INVISIBLE);
 
-        String serverUrl = BuildConfig.SERVER_URL + ":3004";
+        String serverUrl = SessionManager.getInstance(this).getServerUrl() + ":3004";
         CustomLog.d(TAG, "apiCallForRequestOTP: serverUrl : " + serverUrl);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
@@ -275,42 +277,42 @@ public class ForgotPasswordOtpVerificationActivity_New extends AppCompatActivity
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<ForgotPasswordApiResponseModel_New>() {
-            @Override
-            public void onSubscribe(Disposable d) {
+                    @Override
+                    public void onSubscribe(Disposable d) {
 
-            }
+                    }
 
-            @Override
-            public void onNext(ForgotPasswordApiResponseModel_New forgotPasswordApiResponseModel_new) {
-                if (forgotPasswordApiResponseModel_new.getSuccess()) {
-                    resendOtp();
-                    snackbarUtils.showSnackLinearLayoutParentSuccess(ForgotPasswordOtpVerificationActivity_New.this, layoutParent, StringUtils.getMessageTranslated(forgotPasswordApiResponseModel_new.getMessage(), sessionManager.getAppLanguage()), true);
-                    etPin1.requestFocus();
-                } else {
-                    snackbarUtils.showSnackLinearLayoutParentSuccess(context, layoutParent, getResources().getString(R.string.failed_to_send_otp), false);
-                    cancelCountDownTimer();
-                }
-            }
+                    @Override
+                    public void onNext(ForgotPasswordApiResponseModel_New forgotPasswordApiResponseModel_new) {
+                        if (forgotPasswordApiResponseModel_new.getSuccess()) {
+                            resendOtp();
+                            snackbarUtils.showSnackLinearLayoutParentSuccess(ForgotPasswordOtpVerificationActivity_New.this, layoutParent, StringUtils.getMessageTranslated(forgotPasswordApiResponseModel_new.getMessage(), sessionManager.getAppLanguage()), true);
+                            etPin1.requestFocus();
+                        } else {
+                            snackbarUtils.showSnackLinearLayoutParentSuccess(context, layoutParent, getResources().getString(R.string.failed_to_send_otp), false);
+                            cancelCountDownTimer();
+                        }
+                    }
 
-            @Override
-            public void onError(Throwable e) {
-                Logger.logD(TAG, "Login Failure" + e.getMessage());
-                e.printStackTrace();
-                snackbarUtils.showSnackLinearLayoutParentSuccess(context, layoutParent, getResources().getString(R.string.failed_to_send_otp), false);
-                tvResendOtp.setEnabled(true);
-               cancelCountDownTimer();
-            }
+                    @Override
+                    public void onError(Throwable e) {
+                        Logger.logD(TAG, "Login Failure" + e.getMessage());
+                        e.printStackTrace();
+                        snackbarUtils.showSnackLinearLayoutParentSuccess(context, layoutParent, getResources().getString(R.string.failed_to_send_otp), false);
+                        tvResendOtp.setEnabled(true);
+                        cancelCountDownTimer();
+                    }
 
-            @Override
-            public void onComplete() {
-                Logger.logD(TAG, "completed");
-            }
-        });
+                    @Override
+                    public void onComplete() {
+                        Logger.logD(TAG, "completed");
+                    }
+                });
 
     }
 
     private void cancelCountDownTimer() {
-        if(countdownTimer != null){
+        if (countdownTimer != null) {
             countdownTimer.cancel();
             countdownTimer.onFinish();
         }
@@ -426,7 +428,7 @@ public class ForgotPasswordOtpVerificationActivity_New extends AppCompatActivity
 
     private void resendOtp() {
         tvResendOtp.setEnabled(false);
-        tvResendOtp.setTextColor(ContextCompat.getColor(this,R.color.green));
+        tvResendOtp.setTextColor(ContextCompat.getColor(this, R.color.green));
         tvResendOtp.setPaintFlags(View.VISIBLE);
         String resendTime = getResources().getString(R.string.resend_otp_in);
         countdownTimer = new CountDownTimer(60000, 1000) {

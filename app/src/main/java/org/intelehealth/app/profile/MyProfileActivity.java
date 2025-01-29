@@ -33,7 +33,9 @@ import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
+
 import org.intelehealth.app.utilities.CustomLog;
+
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -605,7 +607,7 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
 
         ProfileCreateAttribute inputModel = new ProfileCreateAttribute(newValue, attributeTypeUuid);
 
-        ApiClient.changeApiBaseUrl(BuildConfig.SERVER_URL);
+        ApiClient.changeApiBaseUrl(sessionManager.getServerUrl());
         ApiInterface apiService = ApiClient.createService(ApiInterface.class);
         Observable<ResponseBody> profileAttributeCreateRequest = apiService.PROFILE_ATTRIBUTE_CREATE(sessionManager.getProviderID(), inputModel, "Basic " + sessionManager.getEncoded());
         profileAttributeCreateRequest.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new DisposableObserver<ResponseBody>() {
@@ -630,7 +632,7 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
     private void updateProfileAttribute(String attributeTypeUuid, String newValue) {
         Timber.tag(TAG).d("Mobile:%s", newValue);
         Timber.tag(TAG).d("Attributes:%s", attributeTypeUuid);
-        String serverUrl = BuildConfig.SERVER_URL + "/openmrs/ws/rest/v1/provider/" + sessionManager.getProviderID() + "/"; //${target_provider_uuid}/attribute/${target_provider_attribute_uuid}
+        String serverUrl = SessionManager.getInstance(this).getServerUrl() + "/openmrs/ws/rest/v1/provider/" + sessionManager.getProviderID() + "/"; //${target_provider_uuid}/attribute/${target_provider_attribute_uuid}
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
@@ -664,7 +666,7 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
 
         ProfileUpdateAge inputModel = new ProfileUpdateAge(updatedAge, updatedDOB, gender);
 
-        ApiClient.changeApiBaseUrl(BuildConfig.SERVER_URL);
+        ApiClient.changeApiBaseUrl(SessionManager.getInstance(this).getServerUrl());
         ApiInterface apiService = ApiClient.createService(ApiInterface.class);
         Observable<ResponseBody> profileAgeUpdateRequest = apiService.PROFILE_AGE_UPDATE(personUuid, inputModel, "Basic " + sessionManager.getEncoded());
         profileAgeUpdateRequest.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new DisposableObserver<ResponseBody>() {
@@ -1123,10 +1125,10 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
         Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
         Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
 
-        positiveButton.setTextColor(ContextCompat.getColor(this,R.color.colorPrimary));
+        positiveButton.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
         //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
 
-        negativeButton.setTextColor(ContextCompat.getColor(this,R.color.colorPrimary));
+        negativeButton.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
         //negativeButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
         IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
     }

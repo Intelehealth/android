@@ -89,7 +89,7 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
         void onShareIconClicked(PrescriptionModel model);
     }
 
-    public EndVisitAdapter(Context context, List<PrescriptionModel> arrayList,  EndVisitAdapter.OnVisitClickListener listener) {
+    public EndVisitAdapter(Context context, List<PrescriptionModel> arrayList, EndVisitAdapter.OnVisitClickListener listener) {
         this.context = context;
         this.arrayList.addAll(arrayList);
         this.listener = listener;
@@ -284,7 +284,7 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
         int appointmentID = appointmentInfo.getId();
         String reason = "Visit was ended";
         String providerID = sessionManager.getProviderID();
-        String baseurl = BuildConfig.SERVER_URL + ":3004";
+        String baseurl = SessionManager.getInstance(context).getServerUrl() + ":3004";
 
         new AppointmentUtils().cancelAppointmentRequestOnVisitEnd(visitID, appointmentID, reason, providerID, baseurl);
     }

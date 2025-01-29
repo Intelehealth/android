@@ -157,7 +157,7 @@ public class ChangePasswordActivity_New extends AppCompatActivity implements Net
 
     public void apiCallForChangePassword(String currentPassword, String newPassword) {
         cpd.show(getString(R.string.please_wait));
-        String serverUrl = BuildConfig.SERVER_URL;
+        String serverUrl = SessionManager.getInstance(this).getServerUrl();
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         String encoded = "Bearer " + sessionManager.getEncoded(); //Bearer bnVyc2UyMzpEYW5pZWxDcmFpZzE=
