@@ -967,12 +967,17 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
             if (mItemList.get(index).isMultiChoice()) {
                 holder.tvQuestionDesc.setText(mContext.getString(R.string.select_one_or_more));
-                holder.submitButton.setVisibility(View.VISIBLE);
-                holder.submitButton.setBackgroundResource(selectedNode.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
-                if (mItemList.get(index).isDataCaptured()) {
-                    AdapterUtils.setToDisable(holder.skipButton);
+                if (!isRootNodeQuestion) {
+                    holder.submitButton.setVisibility(View.GONE);
+                    holder.skipButton.setVisibility(View.GONE);
                 } else {
-                    AdapterUtils.setToDefault(holder.skipButton);
+                    holder.submitButton.setVisibility(View.VISIBLE);
+                    holder.submitButton.setBackgroundResource(selectedNode.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
+                    if (mItemList.get(index).isDataCaptured()) {
+                        AdapterUtils.setToDisable(holder.skipButton);
+                    } else {
+                        AdapterUtils.setToDefault(holder.skipButton);
+                    }
                 }
             } else {
                 holder.tvQuestionDesc.setText(mContext.getString(R.string.select_any_one));
@@ -984,11 +989,12 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 }
             }
 
-
-            if (mItemList.get(index).isRequired()) {
-                holder.skipButton.setVisibility(View.GONE);
-            } else {
-                holder.skipButton.setVisibility(View.VISIBLE);
+            if (isRootNodeQuestion) {
+                if (mItemList.get(index).isRequired()) {
+                    holder.skipButton.setVisibility(View.GONE);
+                } else {
+                    holder.skipButton.setVisibility(View.VISIBLE);
+                }
             }
             //if (isSuperNested) {
             boolean havingNestedQuestion = selectedNode.isHavingNestedQuestion();
@@ -1361,6 +1367,9 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                                 holder.singleComponentContainer.removeAllViews();
                                 // holder.nestedRecyclerView.setAdapter(null);
                             }
+                            if(node.isExcludedFromMultiChoice()){
+                                holder.nestedRecyclerViewContainerLinerLayout.removeAllViews();
+                            }
                             holder.singleComponentContainer.setVisibility(View.VISIBLE);
                             if (!foundUserInputs) {
 
@@ -1412,6 +1421,21 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                                     if (!mItemList.get(index).getOptionsList().get(i).getText().equals(node.getText())) {
                                         mItemList.get(index).getOptionsList().get(i).unselectAllNestedNode();
                                     }
+                                }
+                            } else {
+                                if (isRequiredToShowParentActionButtons) {
+                                    if (!mItemList.get(index).isEnableExclusiveOption()) {
+                                        holder.submitButton.setVisibility(View.VISIBLE);
+                                        if (mItemList.get(index).isRequired()) {
+                                            holder.skipButton.setVisibility(View.GONE);
+                                        } else {
+                                            holder.skipButton.setVisibility(View.VISIBLE);
+
+                                        }
+                                    }
+                                } else {
+                                    holder.submitButton.setVisibility(View.GONE);
+                                    holder.skipButton.setVisibility(View.GONE);
                                 }
                             }
 

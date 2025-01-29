@@ -879,7 +879,10 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
 //                            holder.singleComponentContainer.removeAllViews();
                             if (mItemList.get(index).isMultiChoice()) {
                                 if (!getInputVisibility(true, holder.singleComponentContainer))
-                                    holder.submitButton.setVisibility(View.VISIBLE);
+                                    if (isRequiredToShowParentActionButtons)
+                                        holder.submitButton.setVisibility(View.VISIBLE);
+                                    else
+                                        holder.submitButton.setVisibility(View.GONE);
                             } else {
                                 holder.submitButton.setVisibility(View.GONE);
                                 mOnItemSelection.onSelect(node, mRootIndex, false, mItemList.get(index), false);
@@ -892,11 +895,31 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                                 holder.skipButton.setVisibility(View.VISIBLE);
 
                             checkAndHideSkipButton(holder.skipButton);
+                            if (!isRequiredToShowParentActionButtons)
+                                holder.skipButton.setVisibility(View.GONE);
                             // remove child nodes views on deselect of same option - end
 
 
                             if (type.equalsIgnoreCase("camera"))
                                 mItemList.get(index).removeImagesAllNestedNode();
+
+                            // check selected node all unselected
+                            if (selectedNode.getOptionsList() != null) {
+                                boolean allUnselected = true;
+                                for (int i = 0; i < selectedNode.getOptionsList().size(); i++) {
+                                    if (selectedNode.getOptionsList().get(i).isSelected()) {
+                                        allUnselected = false;
+                                        break;
+                                    }
+                                }
+                                if (allUnselected) {
+                                    holder.submitButton.setVisibility(View.VISIBLE);
+                                    if (mItemList.get(index).isRequired())
+                                        holder.skipButton.setVisibility(View.GONE);
+                                    else
+                                        holder.skipButton.setVisibility(View.VISIBLE);
+                                }
+                            }
 
                             if (!mItemList.get(index).isMultiChoice()) {
 
@@ -995,9 +1018,37 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                             }
 
                             checkAndHideSkipButton(holder.skipButton);
+
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (!isLoadingForNestedEditData) {
+                                        // found the correct node
+                                        boolean found = false;
+                                        int foundIndex = -1;
+                                        for (int i = 0; i < mItemList.size(); i++) {
+                                            Node n = mItemList.get(i);
+                                            CustomLog.v(TAG, node.getText() + "## n ## " + n.getText());
+                                            if (node.getText().equalsIgnoreCase(n.getText())) {
+                                                found = true;
+                                                // remove all the next nodes of the selected node - nested options.
+                                                //while (mItemList.size() > i) {
+                                                mItemList.remove(i);
+                                                notifyItemRemoved(i);
+                                                //}
+                                                //break;
+                                            }
+                                        }
+                                        if (!found)
+                                            notifyItemChanged(index);
+                                    }
+                                }
+                            }, 100);
                             return;
                         }
                         checkAndHideSkipButton(holder.skipButton);
+                        if (!isRequiredToShowParentActionButtons && holder.skipButton.getVisibility() == View.VISIBLE)
+                            holder.skipButton.setVisibility(View.GONE);
                         if (type.equals("options")) {
                             CustomLog.v(TAG, "Option got!");
                             addItem(TAG, node);
@@ -1078,6 +1129,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                             return;
                         }*/
                 }
+                // TODO: index issue fix
                 VisitUtils.scrollNow(mRootRecyclerView, 1000, 0, 400, mIsEditMode, mLoadedIds.contains(mItemList.get(index).getId()));
                 CustomLog.v(TAG, "NestedQuestionsListingAdapter onSelect selectedNestedOptionIndex- " + holder.selectedNestedOptionIndex);
 
