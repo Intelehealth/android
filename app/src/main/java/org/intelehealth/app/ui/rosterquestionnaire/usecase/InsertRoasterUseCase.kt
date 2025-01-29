@@ -9,6 +9,7 @@ import org.intelehealth.app.ui.rosterquestionnaire.model.PregnancyOutComeModel
 import org.intelehealth.app.ui.rosterquestionnaire.model.PregnancyRosterData
 import org.intelehealth.app.ui.rosterquestionnaire.model.RoasterViewQuestion
 import org.intelehealth.app.ui.rosterquestionnaire.repository.RosterRepository
+import org.intelehealth.app.ui.rosterquestionnaire.utilities.NO
 
 import org.intelehealth.app.ui.rosterquestionnaire.utilities.RoasterAttribute
 import java.util.UUID
@@ -116,6 +117,9 @@ class InsertRoasterUseCase @Inject constructor(private val repository: RosterRep
         patientAttributesDTO.personAttributeTypeUuid =
             RoasterAttribute.PREGNANCY_PAST_TWO_YEARS.attributeName
         patientAttributesDTO.value = pregnancyOutcome
+        if (pregnancyOutcome == NO) {
+            pregnancyOutcomeList?.clear()
+        }
         patientAttributesDTOList.add(patientAttributesDTO)
 
 
