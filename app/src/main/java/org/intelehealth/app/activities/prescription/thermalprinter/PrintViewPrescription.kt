@@ -1,27 +1,18 @@
 package org.intelehealth.app.activities.prescription.thermalprinter
 
-import android.content.Context
-import androidx.appcompat.app.AppCompatActivity
-import org.intelehealth.app.app.AppConstants.CONFIG_FILE_NAME
-import org.intelehealth.app.models.ClsDoctorDetails
-import org.intelehealth.app.models.Patient
-import org.intelehealth.app.app.AppConstants.CONFIG_FILE_NAME
 
+import android.content.Context
 import android.content.Intent
-import android.database.Cursor
-import android.database.sqlite.SQLiteDatabase
 import android.text.Html
 import android.text.TextUtils
 import android.util.Log
 import android.widget.Toast
-
-
-import org.apache.commons.lang3.StringUtils
+import androidx.appcompat.app.AppCompatActivity
 import org.intelehealth.app.R
-import org.intelehealth.app.app.IntelehealthApplication
+import org.intelehealth.app.app.AppConstants.CONFIG_FILE_NAME
 import org.intelehealth.app.knowledgeEngine.Node
-
-
+import org.intelehealth.app.models.ClsDoctorDetails
+import org.intelehealth.app.models.Patient
 import java.text.NumberFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -34,7 +25,7 @@ class PrintViewPrescription(
     private val clsDoctorDetails: ClsDoctorDetails?,
     private val patient: Patient,
     private val dataModel: PrintViewPrescriptionDataModel,
-    private val activityContext: AppCompatActivity
+    private val activityContext: AppCompatActivity,
 ) {
 
     private var mHeight: String? = null
@@ -177,7 +168,7 @@ class PrintViewPrescription(
         heading2: String,
         mPatientName: String,
         age: Int,
-        mGender: String
+        mGender: String,
     ): String {
         return "<b id=\"heading_1\">$heading</b><br><b id=\"heading_2\" style=\"font-size:5pt; margin: 0px; padding: 0px; text-align: center;\">$heading2</b><br> ----------------------------------------------- <br><br><b id=\"patient_name\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">$mPatientName</b><br><id=\"patient_details\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Age: $age | Gender: $mGender<br><br>"
     }
@@ -213,12 +204,20 @@ class PrintViewPrescription(
 
     private fun formatPrescribedTests(): String {
         var htmlDocument = ""
-        Log.d(TAG, "formatPrescribedTests: tests  : ${dataModel.testsReturned}")
+        Log.d(TAG, "formatPrescribedTests: tests  : ${replaceDot(dataModel.testsReturned)}")
         if (dataModel.testsReturned.isNotEmpty()) {
             htmlDocument =
-                "<b id=\"tests_heading\" >* Recommended Investigation(s) </b><br>${dataModel.testsReturned} <br>"
+                "<b id=\"tests_heading\" >* Recommended Investigation(s) </b><br>${replaceDot(dataModel.testsReturned)} <br>"
         }
         return htmlDocument
+    }
+
+    fun replaceDot(inputString : String):String {
+
+
+        val formattedText = inputString.replace("•", "<br>-")
+
+        return formattedText
     }
 
     private fun generatePrescriptionHtml(): String {
