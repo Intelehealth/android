@@ -2,17 +2,22 @@ package org.intelehealth.app.activities.bill
 
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.WindowManager
 import android.widget.CompoundButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.gson.Gson
 import org.intelehealth.app.R
 import org.intelehealth.app.app.IntelehealthApplication
 import org.intelehealth.app.database.dao.EncounterDAO
 import org.intelehealth.app.databinding.ConfirmTestDialogBinding
 import org.intelehealth.app.models.Patient
+import org.intelehealth.app.ui.billgeneration.activity.BillCreationActivity
+import org.intelehealth.app.ui.billgeneration.models.BillDetails
 import org.intelehealth.app.utilities.UuidDictionary
+import java.io.Serializable
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -21,19 +26,19 @@ import java.util.Random
 class VisitSummaryBillUtils(
     private val mContext: Context,
     private val patient: Patient,
-    private val billModel: VisitSummaryBillModel
+    private val billModel: BillDetails
 ) {
     private val TAG = "VisitSummaryBillUtils"
-    private var receiptNum: String? = null
-    private var receiptDate: String? = null
-    private var receiptPaymentStatus = "NA"
-
+    private var receiptNumValue: String? = null
+    private var receiptDateValue: String? = null
+    private var receiptPaymentStatusValue = "NA"
+    private var billEncounterUuid = ""
     fun checkForOldBill(): String {
-        var billEncounterUuid = ""
+
         val db = IntelehealthApplication.inteleHealthDatabaseHelper.writableDatabase
         val encounterDAO = EncounterDAO()
         val encounterIDSelection = "visituuid = ? AND voided = ?"
-        val encounterIDArgs = arrayOf(billModel.visitUuid, "0")
+        val encounterIDArgs = arrayOf(billModel.patientVisitID, "0")
         val encounterCursor =
             db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null)
 
@@ -73,15 +78,15 @@ class VisitSummaryBillUtils(
     private fun parseBillData(selectedTests: ArrayList<String>, conceptId: String, value: String) {
         when (conceptId) {
             UuidDictionary.BILL_NUM -> {
-                receiptNum = value
+                receiptNumValue = value
             }
 
             UuidDictionary.BILL_DATE -> {
-                receiptDate = value
+                receiptDateValue = value
             }
 
             UuidDictionary.BILL_PAYMENT_STATUS -> {
-                receiptPaymentStatus = value
+                receiptPaymentStatusValue = value
             }
 
             UuidDictionary.BILL_PRICE_BP_ID -> {
@@ -156,14 +161,14 @@ class VisitSummaryBillUtils(
 
         alertDialog.window
             ?.setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg)
-       /* binding.glucoseNfCB.isChecked = checkedTests[1]
-        binding.glucoseFCB.isChecked = checkedTests[2]
-        binding.glucosePpnCB.isChecked = checkedTests[3]
-        binding.glucoseRanCB.isChecked = checkedTests[4]
-        binding.uricAcidCB.isChecked = checkedTests[5]
-        binding.cholesterolCB.isChecked = checkedTests[6]
-        binding.haemoglobinCB.isChecked = checkedTests[7]
-*/
+        /* binding.glucoseNfCB.isChecked = checkedTests[1]
+         binding.glucoseFCB.isChecked = checkedTests[2]
+         binding.glucosePpnCB.isChecked = checkedTests[3]
+         binding.glucoseRanCB.isChecked = checkedTests[4]
+         binding.uricAcidCB.isChecked = checkedTests[5]
+         binding.cholesterolCB.isChecked = checkedTests[6]
+         binding.haemoglobinCB.isChecked = checkedTests[7]
+ */
         if (checkedTests[1]) binding.glucoseNfCB.isChecked = true
         if (checkedTests[2]) binding.glucoseFCB.isChecked = true
         if (checkedTests[3]) binding.glucosePpnCB.isChecked = true
@@ -180,8 +185,8 @@ class VisitSummaryBillUtils(
             for (i in checkedTests.indices) {
                 if (checkedTests[i]) selectedTests.add(testNames[i])
             }
-            receiptNum = generateReceiptNum()
-            receiptDate = fetchSystemDateForBill()
+            receiptNumValue = generateReceiptNum()
+            receiptDateValue = fetchSystemDateForBill()
             passIntent(selectedTests)
             alertDialog.dismiss()
         }
@@ -193,18 +198,30 @@ class VisitSummaryBillUtils(
     }
 
     private fun passIntent(selectedTests: ArrayList<String>) {
-        val intent = Intent(mContext, BillGenerationActivity::class.java)
-        intent.putExtra("patientName", "${patient.first_name} ${patient.last_name}")
-        intent.putExtra("patientOpenMRSID", patient.openmrs_id)
-        intent.putExtra("patientPhoneNum", patient.phone_number)
-        intent.putExtra("patientVillage", patient.city_village)
-        intent.putExtra("patientHideVisitID", billModel.hideVisitUUID)
-        intent.putExtra("patientVisitID", billModel.visitUuid)
-        intent.putExtra("testsList", selectedTests)
-        intent.putExtra("receiptNum", receiptNum)
-        intent.putExtra("receiptDate", receiptDate)
-        intent.putExtra("visitType", billModel.visitType)
-        intent.putExtra("billType", receiptPaymentStatus)
+        Log.d(TAG, "passIntent: receiptNumValue : "+receiptNumValue)
+        Log.d(TAG, "passIntent: receiptDateValue : "+receiptDateValue)
+        Log.d(TAG, "passIntent: selectedTests : "+Gson().toJson(selectedTests))
+
+        billModel.apply {
+            patientName = "${patient.first_name} ${patient.last_name}"
+            patientOpenID = patient.openmrs_id ?: ""
+            patientPhoneNum = patient.phone_number ?: ""
+            patientVillage = patient.city_village ?: ""
+            selectedTestsList = selectedTests as ArrayList<String?>
+            receiptNum = receiptNumValue ?: ""
+            billDateString = receiptDateValue ?: ""
+            billType = receiptPaymentStatusValue
+            patientVisitID = billModel.patientVisitID
+            visitType = billModel.visitType
+            patientHideVisitID = billModel.patientHideVisitID
+            billEncounterUUID  = billEncounterUuid
+        }
+        Log.d(TAG, "passIntent: billDetails : "+Gson().toJson(billModel))
+        val intent = Intent(mContext, BillCreationActivity::class.java)
+        val args = Bundle().apply {
+            putSerializable("billDetails", billModel as Serializable)
+        }
+        intent.putExtra("BUNDLE", args)
         mContext.startActivity(intent)
     }
 

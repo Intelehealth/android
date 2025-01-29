@@ -87,10 +87,12 @@ class ThirdFragment : BaseHouseholdSurveyFragment(R.layout.fragment_third_househ
             when (checkedId) {
                 R.id.rbDistanceMeter -> {
                     mDistanceFromWaterSource = "Meter"
+                    binding.llWaterSourceDistance.visibility = View.VISIBLE
                 }
 
                 R.id.rbDistanceKMeter -> {
                     mDistanceFromWaterSource = "KM"
+                    binding.llWaterSourceDistance.visibility = View.VISIBLE
                 }
             }
         }
@@ -130,6 +132,7 @@ class ThirdFragment : BaseHouseholdSurveyFragment(R.layout.fragment_third_househ
         setDataToElectricityStatusOptions()
         setDataForRunningWaterOptions()
         setDataToBankStatusRadio()
+        setWaterSourceDistance()
     }
 
     private fun saveAndNavigateToDetails(
@@ -174,8 +177,8 @@ class ThirdFragment : BaseHouseholdSurveyFragment(R.layout.fragment_third_househ
 
     private fun savePatient() {
         householdSurveyModel.apply {
-           // waterSourceDistance = mDistanceFromWaterSource
-            waterSourceDistance = binding.textInputWaterSourceDistance.text?.toString()
+            waterSourceDistance = (binding.textInputWaterSourceDistance.text?.toString() + " "+mDistanceFromWaterSource).trim()
+            //waterSourceDistance = binding.textInputWaterSourceDistance.text?.toString()
 
             setupElectricityOptions()
             setupRunningWaterOptions()
@@ -487,5 +490,19 @@ class ThirdFragment : BaseHouseholdSurveyFragment(R.layout.fragment_third_househ
 
 
     }
+    private fun setWaterSourceDistance() {
+        householdSurveyModel.waterSourceDistance?.let {
+            val splitString = it.split(" ")
+            binding.textInputWaterSourceDistance.setText(splitString[0])
 
+            when (splitString.getOrNull(1)?.lowercase()) {
+                "meter" -> binding.rbDistanceMeter.isChecked = true
+                "km" -> binding.rbDistanceKMeter.isChecked = true
+                else -> {
+                binding.rbDistanceMeter.isChecked = false
+                binding.rbDistanceKMeter.isChecked = false
+            }
+            }
+        }
+    }
 }

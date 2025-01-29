@@ -96,6 +96,9 @@ public class PatientsFrameJson {
                 address.setCountry(patientDTOList.get(i).getCountry());
                 address.setPostalCode(patientDTOList.get(i).getPostalcode());
                 address.setStateProvince(patientDTOList.get(i).getStateprovince());
+                address.setAddress3(patientDTOList.get(i).getAddress3());
+                address.setDistrict(patientDTOList.get(i).getDistrict());
+                address.setAddress6(patientDTOList.get(i).getAddress6());
                 addressList.add(address);
 
 

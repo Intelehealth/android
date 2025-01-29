@@ -707,5 +707,25 @@ class HouseholdRepository(
         personAttributeTypeUuid = patientsDao.getUuidForAttribute(attrName)
         this.value = value
     }
+    fun getPatientUuidsForHouseholdValue(patientUuid: String): List<String> {
+        val patientsDao = PatientsDAO()
+        var houseHoldValue: String = ""
+        try {
+            houseHoldValue = patientsDao.getHouseHoldValue(patientUuid)
+        } catch (e: DAOException) {
+            FirebaseCrashlytics.getInstance().recordException(e)
+        }
 
+        return if (houseHoldValue.isNotEmpty()) {
+            // Fetch all patient UUIDs from houseHoldValue
+            try {
+                patientsDao.getPatientUUIDs(houseHoldValue)?.toList() ?: emptyList()
+            } catch (e: Exception) {
+                FirebaseCrashlytics.getInstance().recordException(e)
+                emptyList()
+            }
+        } else {
+            emptyList()
+        }
+    }
 }

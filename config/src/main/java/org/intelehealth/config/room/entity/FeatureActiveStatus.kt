@@ -68,4 +68,7 @@ data class FeatureActiveStatus(
 
     @SerializedName("patient_diagnostics_section")
     var activeStatusDiagnosticsSection: Boolean = true
+
+    @SerializedName("patient_draft_survey")
+    var activeStatusPatientDraftSurvey: Boolean = true
 }
