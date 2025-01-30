@@ -231,7 +231,9 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
             genericViewHolder.singleComponentContainer.removeAllViews();
             genericViewHolder.singleComponentContainer.setVisibility(View.GONE);
             genericViewHolder.optionRecyclerView.setVisibility(View.GONE);
+            genericViewHolder.optionRecyclerView.removeAllViewsInLayout();
             genericViewHolder.superNestedRecyclerView.setVisibility(View.GONE);
+            genericViewHolder.superNestedRecyclerView.removeAllViewsInLayout();
             genericViewHolder.submitButton.setVisibility(View.GONE);
             genericViewHolder.skipButton.setVisibility(View.GONE);
 
@@ -732,6 +734,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                                    boolean isGotFromChipSelected) {
         CustomLog.v(TAG, "showOptionsDataV2 - " + getEngineVersion());
         holder.singleComponentContainer.removeAllViews();
+        holder.optionRecyclerView.removeAllViewsInLayout();
         holder.optionRecyclerView.setVisibility(View.VISIBLE);
         CustomLog.v(TAG, "showOptionsDataV2 isMultiChoice - " + selectedNode.isMultiChoice());
         //mNestedLevel= mNestedLevel + 1;
@@ -741,6 +744,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
             //if (isSuperNested) {
             //if(mNestedLevel%2==0){
             showNestedItemsV2(selectedNode, holder, options, index, isSuperNested, isGotFromChipSelected);
+            holder.optionRecyclerView.setAdapter(null);
         } else {
             holder.superNestedRecyclerView.setVisibility(View.GONE);
             FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(mContext);
@@ -1130,7 +1134,8 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                         }*/
                 }
                 // TODO: index issue fix
-                VisitUtils.scrollNow(mRootRecyclerView, 1000, 0, 400, mIsEditMode, mLoadedIds.contains(mItemList.get(index).getId()));
+                if (mItemList.size() > index)
+                    VisitUtils.scrollNow(mRootRecyclerView, 1000, 0, 400, mIsEditMode, mLoadedIds.contains(mItemList.get(index).getId()));
                 CustomLog.v(TAG, "NestedQuestionsListingAdapter onSelect selectedNestedOptionIndex- " + holder.selectedNestedOptionIndex);
 
                 isLastNodeSubmit = holder.selectedNestedOptionIndex >= options.size() - 1;
