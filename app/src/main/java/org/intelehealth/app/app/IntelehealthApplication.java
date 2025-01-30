@@ -27,6 +27,7 @@ import org.intelehealth.app.R;
 import org.intelehealth.app.database.InteleHealthDatabaseHelper;
 import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.webrtc.activity.IDACallLogActivity;
 import org.intelehealth.app.webrtc.activity.IDAChatActivity;
 import org.intelehealth.app.webrtc.activity.IDAVideoActivity;
@@ -181,9 +182,14 @@ public class IntelehealthApplication extends MultiDexApplication implements Defa
     }
 
     private void initRtcConfig() {
+        String serverUrl = sessionManager.getServerUrl();
+        String cleanUrl = new UrlModifiers().getCleanUrl(serverUrl);
+        String liveKitUrl = "wss://" + cleanUrl + ":9090";
+        String socketUrl = serverUrl + ":3004";
+
         new RtcEngine.Builder()
-                .callUrl(BuildConfig.LIVE_KIT_URL)
-                .socketUrl(BuildConfig.SOCKET_URL + "?userId="
+                .callUrl(liveKitUrl)
+                .socketUrl(socketUrl + "?userId="
                         + sessionManager.getProviderID()
                         + "&name=" + sessionManager.getChwname())
                 .callIntentClass(IDAVideoActivity.class)

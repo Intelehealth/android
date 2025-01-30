@@ -27,7 +27,7 @@ public class UrlModifiers {
     public String patientProfileImageUrl(String patientUuid) {
         String provider = "personimage/" + patientUuid;
 
-        String BASE_URL = serverUrl + "openmrs/ws/rest/v1/";
+        String BASE_URL = serverUrl + "/" + "openmrs/ws/rest/v1/";
         return BASE_URL + provider;
     }
 
@@ -41,7 +41,7 @@ public class UrlModifiers {
     public String setPatientProfileImageUrl(String patientUuid) {
         String provider = "personimage/" + patientUuid;
 
-        String BASE_URL = serverUrl + "openmrs/ws/rest/v1/";
+        String BASE_URL = serverUrl + "/" + "openmrs/ws/rest/v1/";
         return BASE_URL + provider;
     }
 
@@ -49,21 +49,21 @@ public class UrlModifiers {
     public String obsImageUrl(String obsUuid) {
         String provider = "obs/" + obsUuid + "/value";
 
-        String BASE_URL = serverUrl + "openmrs/ws/rest/v1/";
+        String BASE_URL = serverUrl + "/" + "openmrs/ws/rest/v1/";
         return BASE_URL + provider;
     }
 
     public String obsImageDeleteUrl(String obsUuid) {
         String provider = "obs/" + obsUuid;
 
-        String BASE_URL = serverUrl + "openmrs/ws/rest/v1/";
+        String BASE_URL = serverUrl + "/" + "openmrs/ws/rest/v1/";
         return BASE_URL + provider;
     }
 
     public String setObsImageUrl() {
         String provider = "obs";
 
-        String BASE_URL = serverUrl + "openmrs/ws/rest/v1/";
+        String BASE_URL = serverUrl + "/" + "openmrs/ws/rest/v1/";
         return BASE_URL + provider;
     }
 
@@ -72,12 +72,12 @@ public class UrlModifiers {
      */
     public String setwhatsappPresciptionUrl() {
         //https://uiux.intelehealth.org/intelehealth/index.html#/i/7d
-        String BASE_URL = serverUrl + "intelehealth/index.html";
+        String BASE_URL = serverUrl + "/" + "intelehealth/index.html";
         return BASE_URL;
     }
 
     public String setDeletePrescItemUrl(String obsUuid) {
-        String BASE_URL = serverUrl + "openmrs/ws/rest/v1/";
+        String BASE_URL = serverUrl + "/" + "openmrs/ws/rest/v1/";
         String endpoint = "obs/" + obsUuid;
 
         return BASE_URL + endpoint;
@@ -86,7 +86,7 @@ public class UrlModifiers {
 
     //ui2.0 for provider profile upload
     public String setProviderProfileImageUrl() {
-        return serverUrl + "uploaddocimage";
+        return serverUrl + "/" + "uploaddocimage";
     }
 
     //ui2.0 for provider profile download
@@ -106,5 +106,9 @@ public class UrlModifiers {
         String provider = "provider?user=" + USER_UUID + "&v=custom:(uuid,person:(uuid,display,gender,age,birthdate,preferredName),attributes)";
         String BASE_URL = serverUrl + "/" + "openmrs/ws/rest/v1/";
         return BASE_URL + provider;
+    }
+
+    public String getCleanUrl(String serverUrl) {
+        return serverUrl.replaceFirst("https://", "");
     }
 }

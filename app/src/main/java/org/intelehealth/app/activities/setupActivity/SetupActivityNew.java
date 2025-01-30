@@ -198,9 +198,6 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
             }
         });
 
-        etServer.setText("ekal.intelehealth.org");
-        etServer.setInputType(InputType.TYPE_NULL);
-
         r1 = findViewById(R.id.demoMindmap);
         r2 = findViewById(R.id.downloadMindmap);
 

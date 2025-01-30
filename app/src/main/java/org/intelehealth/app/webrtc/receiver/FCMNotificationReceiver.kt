@@ -24,6 +24,7 @@ import org.intelehealth.app.utilities.NotificationSchedulerUtils
 import org.intelehealth.app.utilities.NotificationUtils
 import org.intelehealth.app.utilities.OfflineLogin
 import org.intelehealth.app.utilities.SessionManager
+import org.intelehealth.app.utilities.UrlModifiers
 import org.intelehealth.app.utilities.exception.DAOException
 import org.intelehealth.app.webrtc.activity.IDAChatActivity
 import org.intelehealth.app.webrtc.notification.AppNotification
@@ -55,15 +56,20 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
         Timber.tag(TAG).d("onMessageReceived: Data - $data")
         val sessionManager = SessionManager(context)
         if (sessionManager.isLogout) return
+
+        val serverUrl = sessionManager.serverUrl
+        var socketUrl = "$serverUrl:3004"
+        val cleanUrl = UrlModifiers().getCleanUrl(serverUrl)
+        val liveKitUrl = "wss://$cleanUrl:9090"
+
         context?.let {
             if (data.containsKey("type") && data["type"].equals("video_call")) {
 //                checkVideoActiveStatus(context) {
                 Gson().fromJson<RtcArgs>(Gson().toJson(data)).apply {
                     nurseName = sessionManager.chwname
                     callType = CallType.VIDEO
-                    url = BuildConfig.LIVE_KIT_URL
-                    socketUrl =
-                        BuildConfig.SOCKET_URL + "?userId=" + nurseId + "&name=" + nurseName
+                    url = liveKitUrl
+                    socketUrl = "$socketUrl?userId=$nurseId&name=$nurseName"
                     PatientsDAO().getPatientName(roomId).apply {
                         patientName = get(0).name
                     }

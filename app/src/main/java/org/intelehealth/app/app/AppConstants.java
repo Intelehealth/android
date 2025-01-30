@@ -17,6 +17,8 @@ import org.intelehealth.app.syncModule.SyncWorkManager;
 import org.intelehealth.app.syncModule.VisitSummaryWork;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.NotificationUtils;
+import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.UuidGenerator;
 
 import java.io.File;
@@ -195,12 +197,14 @@ public class AppConstants {
     }
 
     public static String getFirebaseRTDBRootRef() {
-        return BuildConfig.FB_RT_INSTANCE.replaceAll("\\.", "_") + "/" + FIREBASE_REAL_TIME_DB_BASE_REF;
+        String serverUrl = SessionManager.getInstance(IntelehealthApplication.getAppContext()).getServerUrl();
+        return new UrlModifiers().getCleanUrl(serverUrl).replaceAll("\\.", "_") + "/" + FIREBASE_REAL_TIME_DB_BASE_REF;
 
     }
 
     public static String getFirebaseRTDBRootRefForDeviceInfo() {
-        return BuildConfig.FB_RT_INSTANCE.replaceAll("\\.", "_") + "/" + FIREBASE_REAL_TIME_DB_BASE_REF_SAVE_DEVICE;
+        String serverUrl = SessionManager.getInstance(IntelehealthApplication.getAppContext()).getServerUrl();
+        return new UrlModifiers().getCleanUrl(serverUrl).replaceAll("\\.", "_") + "/" + FIREBASE_REAL_TIME_DB_BASE_REF_SAVE_DEVICE;
 
     }
 

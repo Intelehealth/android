@@ -171,7 +171,7 @@
     <string name="error_primary_health_centre_distance_not_selected">Please set the distance to the primary health centre (In Kms)</string>
     <string name="distance_to_nearest_community_health_centre_in_kms">Distance to nearest Community Health Centre*</string>
     <string name="within_three_km">Within 3 Km</string>
-    <string name="three_six_km">3 – 6 Km</string>
+    <string name="three_six_km">3 – 6Km</string>
     <string name="six_ten_km">6 – 10 Km</string>
     <string name="more_than_ten_km">More than 10 Km</string>
     <string name="error_community_health_centre_distance_not_selected">Please set the distance to the community health centre</string>

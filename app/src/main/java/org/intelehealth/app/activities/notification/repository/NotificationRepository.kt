@@ -40,8 +40,11 @@ class NotificationRepository {
     private val apiService = ApiClient.createService(ApiInterface::class.java)
     private var sessionManager = SessionManager(IntelehealthApplication.getAppContext())
 
+    private val serverUrl = sessionManager.serverUrl
+    private val socketUrl = "$serverUrl:3004"
+
     init {
-        ApiClient.changeApiBaseUrl(BuildConfig.SOCKET_URL)
+        ApiClient.changeApiBaseUrl(socketUrl)
     }
 
     fun updateNotificationStatus(id: String): Single<ResponseBody> =
@@ -54,7 +57,11 @@ class NotificationRepository {
             "Basic " + sessionManager.encoded, userUid
         )
 
-    fun fetchAllNotification(userId: String, page: String, size: String): Single<NotificationResponse> =
+    fun fetchAllNotification(
+        userId: String,
+        page: String,
+        size: String
+    ): Single<NotificationResponse> =
         apiService.fetchAllNotifications(
             "Basic " + sessionManager.encoded, userId, page, size
         )
