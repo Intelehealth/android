@@ -40,6 +40,7 @@ import org.intelehealth.app.utilities.LanguageUtils
 import org.intelehealth.app.utilities.PatientRegFieldsUtils
 import org.intelehealth.app.utilities.PatientRegStage
 import org.intelehealth.app.utilities.SessionManager
+import org.intelehealth.app.utilities.StringUtils
 import org.intelehealth.app.utilities.extensions.addFilter
 import org.intelehealth.app.utilities.extensions.hideDigitErrorOnTextChang
 import org.intelehealth.app.utilities.extensions.hideError
@@ -487,7 +488,12 @@ class PatientPersonalInfoFragment :
         val adapter = ArrayAdapterUtils.getArrayAdapter(requireContext(), R.array.contact_type)
         binding.autoCompleteEmContactType.setAdapter(adapter)
         if (patient.contactType != null && patient.contactType.isNotEmpty()) {
-            binding.autoCompleteEmContactType.setText(patient.contactType, false)
+            binding.autoCompleteEmContactType.setText(
+                StringUtils.getContactType(
+                    patient.contactType,
+                    LanguageUtils.getLocalLang()
+                ), false
+            )
         }
         binding.autoCompleteEmContactType.setOnItemClickListener { _, _, i, _ ->
             binding.textInputLayEmContactType.hideError()
@@ -538,7 +544,10 @@ class PatientPersonalInfoFragment :
                 binding.textInputLayPhoneNumber.validate(binding.textInputETPhoneNumber, error).and(
                     binding.textInputLayPhoneNumber.validateDigit(
                         binding.textInputETPhoneNumber,
-                        getString(R.string.enter_digits,binding.personalConfig?.phone?.maxLength ?: 10),
+                        getString(
+                            R.string.enter_digits,
+                            binding.personalConfig?.phone?.maxLength ?: 10
+                        ),
                         binding.personalConfig?.phone?.maxLength ?: 10
                     )
                 )
