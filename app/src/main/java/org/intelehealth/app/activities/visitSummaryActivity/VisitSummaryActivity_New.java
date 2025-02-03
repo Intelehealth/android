@@ -3302,7 +3302,14 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                     if (selectedSeverity != null) {
                         visitAttributeListDAO.insertVisitAttributes(visitUuid, selectedSeverity, SEVERITY);
                     }
-                    visitAttributeListDAO.insertVisitAttributes(visitUuid, AppConstants.dateAndTimeUtils.currentDateTime(), VISIT_UPLOAD_TIME);
+
+                    if (!isVisitSpecialityExists) {
+                        visitAttributeListDAO.insertVisitAttributes(visitUuid, AppConstants.dateAndTimeUtils.currentDateTime(), VISIT_UPLOAD_TIME);
+                    } else {
+                        visitAttributeListDAO.updateVisitAttribute(visitUuid, AppConstants.dateAndTimeUtils.currentDateTime(), VISIT_UPLOAD_TIME);
+                    }
+
+
                     if (!TextUtils.isEmpty(selectedFollowupDate) && !TextUtils.isEmpty(selectedFollowupTime)) {
                         EncounterDAO encounterDAO = new EncounterDAO();
                         EncounterDTO encounterDTO = new EncounterDTO();
@@ -3349,11 +3356,14 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 try {
                     String addnotes = etAdditionalNotesVS.getText().toString().trim();
                     CustomLog.v("addnotes", "addnotes: " + addnotes);
-                    if (!addnotes.equalsIgnoreCase("") && addnotes != null)
-                        visitAttributeListDAO.insertVisitAttributes(visitUuid, addnotes, ADDITIONAL_NOTES);
-                    else
-                        visitAttributeListDAO.insertVisitAttributes(visitUuid, "No notes added for Doctor.", ADDITIONAL_NOTES);
-                    // keeping raw string as we dont want regional lang data to be stored in DB.
+                    if (!isVisitSpecialityExists) {
+                        if (!addnotes.equalsIgnoreCase("")) {
+                            visitAttributeListDAO.insertVisitAttributes(visitUuid, addnotes, ADDITIONAL_NOTES);
+                        } else {
+                            visitAttributeListDAO.insertVisitAttributes(visitUuid, "No notes added for Doctor.", ADDITIONAL_NOTES);
+                            // keeping raw string as we dont want regional lang data to be stored in DB.
+                        }
+                    }
                 } catch (DAOException e) {
                     e.printStackTrace();
                     CustomLog.v("addnotes", "addnotes - error: " + e.getMessage());

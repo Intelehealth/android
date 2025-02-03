@@ -63,9 +63,10 @@ public class VisitAttributeListDAO {
         try {
             mSharedPreference = IntelehealthApplication.getAppContext().getSharedPreferences(IntelehealthApplication.getAppContext().getString(R.string.prescription_share_key), Context.MODE_PRIVATE);
             String prescriptionListJson = mSharedPreference.getString(AppConstants.PRESCRIPTION_DATA_LIST, "");
-            if(!prescriptionListJson.isEmpty()){
+            if (!prescriptionListJson.isEmpty()) {
                 Gson gson = new Gson();
-                Type type = new TypeToken<List<LocalPrescriptionInfo>>() {}.getType();
+                Type type = new TypeToken<List<LocalPrescriptionInfo>>() {
+                }.getType();
                 prescriptionDataList = gson.fromJson(prescriptionListJson, type);
                 getUnsharedPrescriptionCount();
             }
@@ -76,7 +77,7 @@ public class VisitAttributeListDAO {
             db.setTransactionSuccessful();
         } catch (SQLException e) {
             isInserted = false;
-            CustomLog.e(TAG,e.getMessage());
+            CustomLog.e(TAG, e.getMessage());
             throw new DAOException(e.getMessage(), e);
         } finally {
             db.endTransaction();
@@ -103,7 +104,7 @@ public class VisitAttributeListDAO {
             values.put("sync", "1");
 
             if (visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(SPECIALITY) ||
-                    visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(ADDITIONAL_NOTES) || visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(PRESCRIPTION_LINK) ) {
+                    visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(ADDITIONAL_NOTES) || visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(PRESCRIPTION_LINK)) {
                 createdRecordsCount = db.insertWithOnConflict("tbl_visit_attribute", null, values, SQLiteDatabase.CONFLICT_REPLACE);
 
                 if (createdRecordsCount != -1) {
@@ -112,14 +113,14 @@ public class VisitAttributeListDAO {
                     CustomLog.d("SPECI", "SIZEVISTATTR: " + createdRecordsCount);
                 }
 
-                if(visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(PRESCRIPTION_LINK)){
+                if (visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(PRESCRIPTION_LINK)) {
                     updatePrescriptionList(visitDTO);
                 }
             }
 
         } catch (SQLException e) {
             isCreated = false;
-            CustomLog.e(TAG,e.getMessage());
+            CustomLog.e(TAG, e.getMessage());
             throw new DAOException(e.getMessage(), e);
         } finally {
 
@@ -139,7 +140,7 @@ public class VisitAttributeListDAO {
     public void getUnsharedPrescriptionCount() {
         for (LocalPrescriptionInfo lpi : prescriptionDataList) {
             prevVisitIdList.add(lpi.getVisitUUID());
-            if(!lpi.getShareStatus()){
+            if (!lpi.getShareStatus()) {
                 unsharedPrescriptionCount++;
             }
         }
@@ -147,19 +148,19 @@ public class VisitAttributeListDAO {
 
     public void updatePrescriptionList(VisitAttributeDTO visitDTO) {
         boolean isNew = true;
-        if(!prevVisitIdList.isEmpty()){
-            if(prevVisitIdList.contains(visitDTO.getVisit_uuid())){
+        if (!prevVisitIdList.isEmpty()) {
+            if (prevVisitIdList.contains(visitDTO.getVisit_uuid())) {
                 isNew = false;
             }
         }
-        if(isNew){
+        if (isNew) {
             prescriptionDataList.add(new LocalPrescriptionInfo(visitDTO.getVisit_uuid(), false, System.currentTimeMillis()));
             unsharedPrescriptionCount++;
         }
     }
 
     public void updateSharedPrefForPrescriptionData() {
-        if(prescriptionDataList.size() > prevVisitIdList.size()){
+        if (prescriptionDataList.size() > prevVisitIdList.size()) {
             Gson gson = new Gson();
             String prescriptionDataListJson = gson.toJson(prescriptionDataList);
             mSharedPreference.edit().putString(AppConstants.PRESCRIPTION_DATA_LIST, prescriptionDataListJson).apply();
@@ -167,7 +168,7 @@ public class VisitAttributeListDAO {
         }
     }
 
-     public void scheduleNotification() {
+    public void scheduleNotification() {
         AlarmManager alarmManager = (AlarmManager) IntelehealthApplication.getAppContext().getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(IntelehealthApplication.getAppContext(), ReminderReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(
@@ -252,7 +253,7 @@ public class VisitAttributeListDAO {
             db.setTransactionSuccessful();
         } catch (SQLException e) {
             isInserted = false;
-            CustomLog.e(TAG,e.getMessage());
+            CustomLog.e(TAG, e.getMessage());
             throw new DAOException(e.getMessage(), e);
         } finally {
             db.endTransaction();
@@ -260,6 +261,30 @@ public class VisitAttributeListDAO {
 
         CustomLog.d("isInserted", "isInserted: " + isInserted);
         return isInserted;
+    }
+
+    public boolean updateVisitAttribute(String visitUuid, String value, String attributeTypeUUID) throws DAOException {
+        boolean isUpdated = false;
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+        ContentValues values = new ContentValues();
+        db.beginTransaction();
+
+        try {
+            values.put("value", value);
+            long count = db.update("tbl_visit_attribute", values, "visit_uuid=? and visit_attribute_type_uuid=?", new String[]{visitUuid, attributeTypeUUID});
+
+            if (count != -1) {
+                isUpdated = true;
+            }
+            db.setTransactionSuccessful();
+        } catch (SQLException e) {
+            CustomLog.e(TAG, e.getMessage());
+            throw new DAOException(e.getMessage(), e);
+        } finally {
+            db.endTransaction();
+        }
+
+        return isUpdated;
     }
 
     /**
