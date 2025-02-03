@@ -1112,22 +1112,24 @@ public class VisitsDAO {
                     String visitID = cursor.getString(cursor.getColumnIndexOrThrow("visituuid"));
                     boolean isCompletedExitedSurvey = false;
                     boolean isPrescriptionReceived = false;
+                    boolean isDoctorVisit = false;
                     try {
                         isCompletedExitedSurvey = new EncounterDAO().isCompletedExitedSurvey(visitID);
                         isPrescriptionReceived = new EncounterDAO().isPrescriptionReceived(visitID);
+                        isDoctorVisit = isDoctorVisit(visitID);
                     } catch (DAOException e) {
                         e.printStackTrace();
                         CustomLog.e(TAG, e.getMessage());
                     }
                     //TODO: need more improvement in main query, this condition can be done by join query
                     if (isForReceivedPrescription) {
-                        if (!isCompletedExitedSurvey && isPrescriptionReceived) {
+                        if (!isCompletedExitedSurvey && isPrescriptionReceived && isDoctorVisit) {
                             count += 1;
                             Timber.tag("getVisitCountsByStatus").v("Received - " + cursor.getString(cursor.getColumnIndexOrThrow("first_name"))
                                     + " " + cursor.getString(cursor.getColumnIndexOrThrow("last_name")) + " Gender - " + cursor.getString(cursor.getColumnIndexOrThrow("gender")));
                         }
                     } else {
-                        if (!isCompletedExitedSurvey && !isPrescriptionReceived) {
+                        if (!isCompletedExitedSurvey && !isPrescriptionReceived && isDoctorVisit) {
                             count += 1;
                             Timber.tag("getVisitCountsByStatus").v("Pending - " + cursor.getString(cursor.getColumnIndexOrThrow("first_name"))
                                     + " " + cursor.getString(cursor.getColumnIndexOrThrow("last_name")) + " Gender - " + cursor.getString(cursor.getColumnIndexOrThrow("gender")));
@@ -1155,5 +1157,25 @@ public class VisitsDAO {
         }
 
         return count;
+    }
+
+    public boolean isDoctorVisit(String visitId) {
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
+        boolean doctorVisit = false;
+        Cursor visitCursor = null;
+        try {
+            visitCursor = db.rawQuery("SELECT 1 FROM tbl_visit_attribute where visit_uuid = ? AND value != ? LIMIT 1", new String[]{visitId, AppConstants.DOCTOR_NOT_NEEDED});
+            if (visitCursor.moveToFirst()) {
+                doctorVisit = true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (visitCursor != null) {
+                visitCursor.close();
+            }
+        }
+
+        return doctorVisit;
     }
 }

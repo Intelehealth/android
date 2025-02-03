@@ -15,13 +15,16 @@ import org.intelehealth.app.activities.visit.staticEnabledFields.VitalsEnabledFi
 import org.intelehealth.app.ayu.visit.model.VitalsWrapper;
 import org.intelehealth.app.utilities.CustomLog;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -68,6 +71,8 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class VitalCollectionFragment extends Fragment implements View.OnClickListener {
@@ -82,9 +87,11 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
     private String encounterVitals;
     private float float_ageYear_Month;
     private int mAgeInMonth;
+    private boolean initialHeight = true, initialWeight = true;
     private String encounterAdultIntials = "", EncounterAdultInitial_LatestVisit = "";
     //private Spinner mHeightSpinner, mWeightSpinner;
-    private EditText mHeightEditText, mWeightEditText;
+    /*private EditText mHeightEditText, mWeightEditText;*/
+    private EditText mWeightEditText;
     private TextView mBMITextView, mBmiStatusTextView;
     //private LinearLayout mBMILinearLayout;
     TextView mHeightErrorTextView, mWeightErrorTextView, mPulseErrorTextView, mSpo2ErrorTextView, mRespErrorTextView, mBpSysErrorTextView, mBpDiaErrorTextView, mTemperatureErrorTextView, mBloodGroupErrorTextView, mHaemoglobinErrorTextView, mSugarRandomErrorTextView;
@@ -97,6 +104,9 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
     SessionManager sessionManager;
     ConfigUtils configUtils;
     VitalsObject results = new VitalsObject();
+
+    Spinner mheightSpinner;
+    ArrayAdapter<CharSequence> heightAdapter;
 
     private List<Integer> mHeightMasterList = new ArrayList<>();
     private List<Integer> mWeightMasterList = new ArrayList<>();
@@ -176,10 +186,11 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
 
         mBloodGroupTextView = mRootView.findViewById(R.id.tv_blood_group_spinner);
 
-        mHeightEditText = mRootView.findViewById(R.id.etv_height);
+//        mHeightEditText = mRootView.findViewById(R.id.etv_height);
+        mheightSpinner = mRootView.findViewById(R.id.heightSpinner);
         mWeightEditText = mRootView.findViewById(R.id.etv_weight);
 
-        mHeightEditText.setFilters(new InputFilter[]{new DecimalDigitsInputFilter(3, 0)});
+        /*mHeightEditText.setFilters(new InputFilter[]{new DecimalDigitsInputFilter(3, 0)});*/
         mWeightEditText.setFilters(new InputFilter[]{new DecimalDigitsInputFilter(3, 0)});
         /*mHeightTextView.setOnClickListener(this);
         mWeightTextView.setOnClickListener(this);*/
@@ -226,7 +237,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         mHaemoglobinErrorTextView.setVisibility(View.GONE);
         mSugarRandomErrorTextView.setVisibility(View.GONE);
 
-        mHeightEditText.addTextChangedListener(new MyTextWatcher(mHeightEditText));
+        /*mHeightEditText.addTextChangedListener(new MyTextWatcher(mHeightEditText));*/
         mWeightEditText.addTextChangedListener(new MyTextWatcher(mWeightEditText));
         mBpSysEditText.addTextChangedListener(new MyTextWatcher(mBpSysEditText));
         mBpDiaEditText.addTextChangedListener(new MyTextWatcher(mBpDiaEditText));
@@ -313,6 +324,38 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                 recyclerView.setAdapter(dialogListAdapter);
                 mBloodGroupAlertDialog = alertDialogBuilder.show();
                 mBloodGroupAlertDialog.getWindow().setBackgroundDrawableResource(R.drawable.popup_menu_background);
+            }
+        });
+
+        String heightStr = "height_" + sessionManager.getAppLanguage();
+        int heightArray = getResources().getIdentifier(heightStr, "array", requireActivity().getPackageName());
+        if (heightArray != 0) {
+            heightAdapter = ArrayAdapter.createFromResource(requireContext(), heightArray, android.R.layout.simple_spinner_dropdown_item);
+        }
+        mheightSpinner.setAdapter(heightAdapter);
+
+        mheightSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+                if (position != 0) {
+                    initialHeight = false;
+                    flag_height = 1;
+                    ConvertHeightIntoCm(heightAdapter.getItem(position).toString());
+                    mHeightErrorTextView.setVisibility(View.GONE);
+                    calculateBMI();
+                } else {
+                    flag_height = 0;
+                    heightvalue = "";
+                    mBMITextView.setText("");
+                    mBmiStatusTextView.setText("");
+                }
+                boolean isValid = isValidaForm();
+                setDisabledSubmit(!isValid);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
             }
         });
 
@@ -441,6 +484,23 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         return count;
     }
 
+    public void ConvertHeightIntoCm(String height) {
+        try {
+            if (height.contains("फीट") || height.contains("इंच"))  //this condition has been hardcoded because of the repetitive crash happening on the field.
+                height = height.replaceAll("फीट", "").replaceAll("इंच", "");
+//            height = height.replaceAll(getString(R.string.ft), "").replaceAll(getString(R.string.in), "");
+            height = height.replaceAll(getString(R.string.ft), "").replaceAll(getString(R.string.in_new), "");
+            String[] heightArr = height.split(" ");
+            int feets = Integer.parseInt(heightArr[0]) * 12;
+            int inches = Integer.parseInt(heightArr[1]);
+            int val = (int) ((feets + inches) * 2.54) + 1;
+            heightvalue = val + "";
+            System.out.println("value of height=" + val);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     class MyTextWatcher implements TextWatcher {
         EditText editText;
 
@@ -465,6 +525,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                 editText.setText("");
                 return;
             }
+            initialWeight = false;
             boolean isValid = isValidaForm();
             setDisabledSubmit(!isValid);
         }
@@ -474,28 +535,31 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         AtomicBoolean isValid = new AtomicBoolean(true);
 
         //if (editText.getId() == R.id.etv_height) {
-        String heightVal = mHeightEditText.getText().toString().trim();
+        /*String heightVal = mHeightEditText.getText().toString().trim();*/
+        String heightVal = heightvalue;
 
         String weight = mWeightEditText.getText().toString().trim();
         if (mHeightCardView.getTag() != null && ((PatientVital) mHeightCardView.getTag()).isMandatory() && heightVal.isEmpty()) {
-            mHeightErrorTextView.setText(getString(R.string.error_field_required));
-            mHeightErrorTextView.setVisibility(View.VISIBLE);
-            //mHeightEditText.requestFocus();
-            mHeightEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
-            return false;
+            if(!initialHeight){
+                mHeightErrorTextView.setText(getString(R.string.error_field_required));
+                mHeightErrorTextView.setVisibility(View.VISIBLE);
+                //mHeightEditText.requestFocus();
+                /*mHeightEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);*/
+                return false;
+            }
         } else {
             mHeightErrorTextView.setVisibility(View.GONE);
-            mHeightEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+            /*mHeightEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);*/
         }
         if (mHeightCardView.getTag() != null) {
             if (heightVal.isEmpty()) {
                 if (weight.isEmpty()) {
                     mHeightErrorTextView.setVisibility(View.GONE);
-                    mHeightEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+                    /*mHeightEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);*/
                 } else {
                     mHeightErrorTextView.setVisibility(View.VISIBLE);
                     mHeightErrorTextView.setText(getString(R.string.error_field_required));
-                    mHeightEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                    /*mHeightEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);*/
                     return false;
                 }
             } else {
@@ -505,13 +569,13 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
 
                     mHeightErrorTextView.setText(getString(R.string.height_error, AppConstants.MINIMUM_HEIGHT, AppConstants.MAXIMUM_HEIGHT));
                     mHeightErrorTextView.setVisibility(View.VISIBLE);
-                    mHeightEditText.requestFocus();
-                    mHeightEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                    /*mHeightEditText.requestFocus();
+                    mHeightEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);*/
                     return false;
 
                 } else {
                     mHeightErrorTextView.setVisibility(View.GONE);
-                    mHeightEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+                    /*mHeightEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);*/
                 }
             }
             heightvalue = heightVal;
@@ -521,13 +585,16 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
 
         //if (editText.getId() == R.id.etv_weight) {
         String wightVal = mWeightEditText.getText().toString().trim();
-        String height = mHeightEditText.getText().toString().trim();
+        /*String height = mHeightEditText.getText().toString().trim();*/
+        String height = heightVal;
         if (mWeightCardView.getTag() != null && ((PatientVital) mWeightCardView.getTag()).isMandatory() && wightVal.isEmpty()) {
-            mWeightErrorTextView.setText(getString(R.string.error_field_required));
-            mWeightErrorTextView.setVisibility(View.VISIBLE);
-            //mWeightEditText.requestFocus();
-            mWeightEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
-            return false;
+            if(!initialWeight){
+                mWeightErrorTextView.setText(getString(R.string.error_field_required));
+                mWeightErrorTextView.setVisibility(View.VISIBLE);
+                //mWeightEditText.requestFocus();
+                mWeightEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                return false;
+            }
         } else {
             mWeightErrorTextView.setVisibility(View.GONE);
             mWeightEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
@@ -955,7 +1022,6 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         mSubmitButton.setClickable(false);
         boolean isValid = isValidaForm();
         setDisabledSubmit(!isValid);
-
         if (isValid) {
             isDataReadyForSaving();
             mActionListener.onProgress(100);
@@ -1090,8 +1156,12 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         // set existing data
         if (results != null) {
             if (results.getHeight() != null && !results.getHeight().isEmpty() && !results.getHeight().equalsIgnoreCase("0")) {
-                //mHeightSpinner.setSelection(mHeightArrayAdapter.getPosition(results.getHeight() + " " + getResources().getString(R.string.cm)), true);
-                mHeightEditText.setText(results.getHeight());
+                heightvalue = results.getHeight();
+                String height = ConvertHeightIntoFeets(results.getHeight());
+                int pos = heightAdapter.getPosition(height);
+                mheightSpinner.setSelection(pos);
+//                mheightSpinner.setSelection(mHeightArrayAdapter.getPosition(results.getHeight() + " " + getResources().getString(R.string.cm)), true);
+                /*mHeightEditText.setText(results.getHeight());*/
             }
 
 
@@ -1181,7 +1251,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
     }
 
 
-    public void calculateBMI() {
+    /*public void calculateBMI() {
 
         mBMITextView.setText("");
         mBmiStatusTextView.setText("");
@@ -1199,7 +1269,44 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         BMIStatus bmiStatus = getBmiStatus(bmi_value);
         mBmiStatusTextView.setText(String.format("(%s)", bmiStatus.getStatus()));
         mBmiStatusTextView.setTextColor(ContextCompat.getColor(getActivity(), bmiStatus.getColor()));
+    }*/
+
+    public void calculateBMI() {
+        if (mWeightEditText != null && heightvalue != null && !heightvalue.equalsIgnoreCase("0")) {
+            if (flag_height == 1 && flag_weight == 1 ||
+                    /*(mHeight.getText().toString().trim().length() > 0 && !mHeight.getText().toString().startsWith(".")*/
+                    (heightvalue.trim().length() > 0 && (mWeightEditText.getText().toString().trim().length() > 0 &&
+                            !mWeightEditText.getText().toString().startsWith(".")))) {
+                mBMITextView.setText("");
+                mBmiStatusTextView.setText("");
+                /*mBMI.getText().clear();*/
+                double numerator = Double.parseDouble(mWeightEditText.getText().toString()) * 10000;
+                //  double denominator = (Double.parseDouble(mHeight.getText().toString())) * (Double.parseDouble(mHeight.getText().toString()));
+                double denominator = (Double.parseDouble(heightvalue)) * (Double.parseDouble(heightvalue));
+                double bmi_value = numerator / denominator;
+                //DecimalFormat df = new DecimalFormat("0.00");
+                //mBMI.setText(df.format(bmi_value));
+                mBMITextView.setText(String.format(Locale.ENGLISH, "%.2f", bmi_value));
+                if (mAgeInMonth >= 19) {
+                    BMIStatus bmiStatus = getBmiStatus(bmi_value);
+                    mBmiStatusTextView.setText(String.format("(%s)", bmiStatus.getStatus()));
+                    mBmiStatusTextView.setTextColor(ContextCompat.getColor(getActivity(), (bmiStatus.getColor())));
+                }
+                    /*bmiColorCode(String.format(Locale.ENGLISH, "%.2f", bmi_value));*/
+                Log.d("BMI", "BMI: " + mBMITextView.getText().toString());
+                //mBMI.setText(String.format(Locale.ENGLISH, "%.2f", bmi_value));
+            } else if (flag_height == 0 || flag_weight == 0) {
+                // do nothing
+                mBMITextView.setText("");
+                mBmiStatusTextView.setText("");
+                /*mBMI.getText().clear();*/
+            } else {
+                mBMITextView.setText("");
+                /*mBMI.getText().clear();*/
+            }
+        }
     }
+
 
     public void calculateBMI_onEdit(String height, String weight) {
         if (height != null && weight != null && height.toString().trim().length() > 0 && !height.toString().startsWith(".") &&
@@ -1244,16 +1351,21 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
     private void parseData(String concept_id, String value) {
         switch (concept_id) {
             case UuidDictionary.HEIGHT: //Height
-                heightvalue = value;
+                /*heightvalue = value;
                 //mHeightTextView.setText(value);
                 if (heightvalue != null && !heightvalue.isEmpty() && !heightvalue.equalsIgnoreCase("0")) {
                     //CustomLog.v(TAG, "getHeight - " + results.getHeight());
                     //CustomLog.v(TAG, "getPosition - " + mHeightArrayAdapter.getPosition(results.getHeight()));
                     //mHeightSpinner.setSelection(mHeightArrayAdapter.getPosition(heightvalue + " " + getResources().getString(R.string.cm)), true);
                     mHeightEditText.setText(heightvalue);
+                }*/
+
+                if (!value.equalsIgnoreCase("0")) {
+                    heightvalue = value;
+                    String height = ConvertHeightIntoFeets(value);
+                    int pos = heightAdapter.getPosition(height);
+                    mheightSpinner.setSelection(pos);
                 }
-
-
                 break;
             case UuidDictionary.WEIGHT: //Weight
                 weightvalue = value;
@@ -1320,6 +1432,17 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         if (mBMITextView.getText().toString().equalsIgnoreCase("")) {
             calculateBMI_onEdit(heightvalue, weightvalue);
         }
+    }
+
+    public String ConvertHeightIntoFeets(String height) {
+        int val = Integer.parseInt(height);
+        double centemeters = val / 2.54;
+        int inche = (int) centemeters % 12;
+        int feet = (int) centemeters / 12;
+//        String heightVal = feet + getString(R.string.ft) + " " + inche + getString(R.string.in);
+        String heightVal = feet + getString(R.string.ft) + " " + inche + getString(R.string.in_new);
+        System.out.println("value of height=" + val);
+        return heightVal;
     }
 
     public boolean isDataReadyForSaving() {
@@ -1619,7 +1742,8 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
             if (results == null) {
                 results = new VitalsObject();
             }
-            String height = mHeightEditText.getText().toString().trim();
+            /*String height = mHeightEditText.getText().toString().trim();*/
+            String height = heightvalue;
             String weight = mWeightEditText.getText().toString().trim();
             if (!height.equals("")) {
                 results.setHeight(height);

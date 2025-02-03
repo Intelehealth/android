@@ -19,7 +19,13 @@ import android.os.LocaleList;
 import android.text.Html;
 import android.util.DisplayMetrics;
 
+import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity2;
+import org.intelehealth.app.activities.visit.adapter.PastVisitListingAdapter;
+import org.intelehealth.app.activities.visit.model.PastVisitData;
 import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity_New;
+import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.ayu.visit.common.VisitUtils;
+import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.models.pushRequestApiCall.Visit;
 import org.intelehealth.app.utilities.CustomLog;
 
@@ -55,13 +61,20 @@ import org.intelehealth.app.database.dao.VisitsDAO;
 import org.intelehealth.app.models.PrescriptionModel;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.VisitCountInterface;
 import org.intelehealth.app.utilities.exception.DAOException;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 /**
  * Created by Prajwal Waingankar on 3/11/22.
@@ -218,8 +231,10 @@ public class VisitPendingFragment extends Fragment implements VisitAdapter.OnVis
         priority_visits_txt = view.findViewById(R.id.priority_visits_txt);
         filter_relative = view.findViewById(R.id.filter_relative);
         priority_cancel = view.findViewById(R.id.priority_cancel);
+
       //  olderList = new ArrayList<>();  // IDA-1347 ticket.
     }
+
 
     private void defaultData() {
         fetchRecentData();
@@ -468,14 +483,18 @@ public class VisitPendingFragment extends Fragment implements VisitAdapter.OnVis
                 String visitID = cursor.getString(cursor.getColumnIndexOrThrow("visituuid"));
                 boolean isCompletedExitedSurvey = false;
                 boolean isPrescriptionReceived = false;
+                boolean isDoctorVisit = false;
                 try {
                     isCompletedExitedSurvey = new EncounterDAO().isCompletedExitedSurvey(visitID);
                     isPrescriptionReceived = new EncounterDAO().isPrescriptionReceived(visitID);
+                    isDoctorVisit = new VisitsDAO().isDoctorVisit(visitID);
                 } catch (DAOException e) {
                     e.printStackTrace();
                 }
 
-                if (!isCompletedExitedSurvey && !isPrescriptionReceived) {  // ie. visit is active and presc is pending.
+
+
+                if (!isCompletedExitedSurvey && !isPrescriptionReceived && isDoctorVisit) {  // ie. visit is active and presc is pending and visit is not sevika visit
 
                     String emergencyUuid = "";
                     EncounterDAO encounterDAO = new EncounterDAO();
@@ -604,14 +623,16 @@ public class VisitPendingFragment extends Fragment implements VisitAdapter.OnVis
 
                 boolean isCompletedExitedSurvey = false;
                 boolean isPrescriptionReceived = false;
+                boolean isDoctorVisit = true;
                 try {
                     isCompletedExitedSurvey = new EncounterDAO().isCompletedExitedSurvey(visitID);
                     isPrescriptionReceived = new EncounterDAO().isPrescriptionReceived(visitID);
+//                    isDoctorVisit = new VisitsDAO().isDoctorVisit(visitID);
                 } catch (DAOException e) {
                     e.printStackTrace();
                 }
 
-                if (!isCompletedExitedSurvey && !isPrescriptionReceived) {  // ie. visit is active and presc is pending.
+                if (!isCompletedExitedSurvey && !isPrescriptionReceived && isDoctorVisit) {  // ie. visit is active and presc is pending && visit is not sevika visit
 
                     // emergency - start
                     EncounterDAO encounterDAO = new EncounterDAO();

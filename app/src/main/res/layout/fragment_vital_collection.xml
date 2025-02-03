@@ -109,7 +109,7 @@
                                 android:contentDescription="@null"
                                 android:src="@drawable/ui2_ic_dropdown"
                                 android:visibility="visible" />-->
-                            <EditText
+                            <!--<EditText
                                 android:id="@+id/etv_height"
                                 style="@style/edittext_textcolor"
                                 android:layout_width="match_parent"
@@ -121,7 +121,22 @@
                                 android:maxLength="3"
                                 android:padding="@dimen/padding_10"
                                 android:textColorHint="@color/edittext_hint_color"
-                                android:textSize="14sp" />
+                                android:textSize="14sp" />-->
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="3dp">
+
+                                <Spinner
+                                    android:id="@+id/heightSpinner"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="@dimen/edittext_height_44dp"
+                                    android:layout_marginTop="@dimen/hamburger_margin_start"
+                                    android:background="@drawable/input_edittext_border"
+                                    android:textSize="14sp"/>
+
+                            </com.google.android.material.textfield.TextInputLayout>
 
                         </FrameLayout>
 
@@ -129,7 +144,7 @@
                             android:id="@+id/tv_height_error"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="end"
+                            android:layout_gravity="start"
                             android:layout_marginTop="@dimen/hamburger_margin_start"
                             android:lineSpacingExtra="0sp"
                             android:text="@string/this_field_is_mandatory"

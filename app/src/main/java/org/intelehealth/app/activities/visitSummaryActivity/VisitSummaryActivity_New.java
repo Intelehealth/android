@@ -970,21 +970,25 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 openall_btn.setText(getResources().getString(R.string.close_all));
                 openall_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_up_24, 0);
                 vs_vitals_header_expandview.setVisibility(View.VISIBLE);
-                vs_visitreason_header_expandview.setVisibility(View.VISIBLE);
-                vs_phyexam_header_expandview.setVisibility(View.VISIBLE);
-                vs_medhist_header_expandview.setVisibility(View.VISIBLE);
-                vd_special_header_expandview.setVisibility(View.VISIBLE);
-                vd_addnotes_header_expandview.setVisibility(View.VISIBLE);
+                if(!isSevikaVisit){
+                    vs_visitreason_header_expandview.setVisibility(View.VISIBLE);
+                    vs_phyexam_header_expandview.setVisibility(View.VISIBLE);
+                    vs_medhist_header_expandview.setVisibility(View.VISIBLE);
+                    vd_special_header_expandview.setVisibility(View.VISIBLE);
+                    vd_addnotes_header_expandview.setVisibility(View.VISIBLE);
+                }
                 mOpenCount = 6;
             } else {
                 openall_btn.setText(getResources().getString(R.string.open_all));
                 openall_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_down_24, 0);
                 vs_vitals_header_expandview.setVisibility(View.GONE);
-                vs_visitreason_header_expandview.setVisibility(View.GONE);
-                vs_phyexam_header_expandview.setVisibility(View.GONE);
-                vs_medhist_header_expandview.setVisibility(View.GONE);
-                vd_special_header_expandview.setVisibility(View.GONE);
-                vd_addnotes_header_expandview.setVisibility(View.GONE);
+                if(!isSevikaVisit){
+                    vs_visitreason_header_expandview.setVisibility(View.GONE);
+                    vs_phyexam_header_expandview.setVisibility(View.GONE);
+                    vs_medhist_header_expandview.setVisibility(View.GONE);
+                    vd_special_header_expandview.setVisibility(View.GONE);
+                    vd_addnotes_header_expandview.setVisibility(View.GONE);
+                }
                 mOpenCount = 0;
             }
 
