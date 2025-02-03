@@ -65,7 +65,10 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
         super.onPatientDataLoaded(patient)
         Timber.d { "onPatientDataLoaded" }
         Timber.d { Gson().toJson(patient) }
-        patient.codeOfHealthFacility = LanguageUtils.getCodeOfHf(patient.province)
+
+        if(BuildConfig.FLAVOR_client == FlavorKeys.UNFPA){
+            patient.codeOfHealthFacility = LanguageUtils.getCodeOfHf(patient.province)
+        }
 
         binding.patient = patient
         binding.isEditMode = patientViewModel.isEditMode

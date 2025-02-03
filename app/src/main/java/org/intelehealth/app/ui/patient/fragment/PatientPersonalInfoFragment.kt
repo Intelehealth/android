@@ -461,7 +461,7 @@ class PatientPersonalInfoFragment :
         binding.textInputLayECName.hideErrorOnTextChang(binding.textInputETECName)
         binding.textInputLayPhoneNumber.hideDigitErrorOnTextChang(
             binding.textInputETPhoneNumber,
-            10
+            binding.personalConfig?.phone?.maxLength ?: 10
         )
         binding.textInputLayEMPhoneNumber.hideDigitErrorOnTextChang(
             binding.textInputETEMPhoneNumber,
@@ -500,9 +500,10 @@ class PatientPersonalInfoFragment :
     private fun validateForm(block: () -> Unit) {
         val error = R.string.this_field_is_mandatory
         binding.personalConfig?.let {
-            val bProfile = if (it.profilePic?.isEnabled == true && it.profilePic?.isMandatory == true) {
-                !patient.patientPhoto.isNullOrEmpty()
-            } else true
+            val bProfile =
+                if (it.profilePic?.isEnabled == true && it.profilePic?.isMandatory == true) {
+                    !patient.patientPhoto.isNullOrEmpty()
+                } else true
 
             binding.profileImageError.isVisible = bProfile.not()
 
@@ -510,9 +511,10 @@ class PatientPersonalInfoFragment :
                 binding.textInputLayFName.validate(binding.textInputETFName, error)
             } else true
 
-            val bMName = if (it.middleName?.isEnabled == true && it.middleName?.isMandatory == true) {
-                binding.textInputLayMName.validate(binding.textInputETMName, error)
-            } else true
+            val bMName =
+                if (it.middleName?.isEnabled == true && it.middleName?.isMandatory == true) {
+                    binding.textInputLayMName.validate(binding.textInputETMName, error)
+                } else true
 
             val bLName = if (it.lastName?.isEnabled == true && it.lastName?.isMandatory == true) {
                 binding.textInputLayLName.validate(binding.textInputETLName, error)
@@ -536,26 +538,28 @@ class PatientPersonalInfoFragment :
                 binding.textInputLayPhoneNumber.validate(binding.textInputETPhoneNumber, error).and(
                     binding.textInputLayPhoneNumber.validateDigit(
                         binding.textInputETPhoneNumber,
-                        R.string.enter_10_digits,
-                        10
+                        getString(R.string.enter_digits,binding.personalConfig?.phone?.maxLength ?: 10),
+                        binding.personalConfig?.phone?.maxLength ?: 10
                     )
                 )
 
             } else true
 
-            val bGuardianType = if (it.guardianType?.isEnabled == true && it.guardianType?.isMandatory == true) {
-                binding.textInputLayGuardianType.validateDropDowb(
-                    binding.autoCompleteGuardianType,
-                    error
-                )
-            } else true
+            val bGuardianType =
+                if (it.guardianType?.isEnabled == true && it.guardianType?.isMandatory == true) {
+                    binding.textInputLayGuardianType.validateDropDowb(
+                        binding.autoCompleteGuardianType,
+                        error
+                    )
+                } else true
 
-            val bGName = if (it.guardianName?.isEnabled == true && it.guardianName?.isMandatory == true) {
-                binding.textInputLayGuardianName.validate(
-                    binding.textInputETGuardianName,
-                    error
-                )
-            } else true
+            val bGName =
+                if (it.guardianName?.isEnabled == true && it.guardianName?.isMandatory == true) {
+                    binding.textInputLayGuardianName.validate(
+                        binding.textInputETGuardianName,
+                        error
+                    )
+                } else true
 
             val bEmName =
                 if (it.emergencyContactName?.isEnabled == true && it.emergencyContactName?.isMandatory == true) {

@@ -1,6 +1,7 @@
 package org.intelehealth.config.data
 
 import android.content.Context
+import android.util.Log
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -10,6 +11,7 @@ import kotlinx.coroutines.launch
 import org.intelehealth.config.Config
 import org.intelehealth.config.network.provider.WebClientProvider
 import org.intelehealth.config.network.response.ConfigResponse
+import org.intelehealth.config.network.response.PatientRegFieldsResponse
 import org.intelehealth.config.room.ConfigDatabase
 import org.intelehealth.config.room.dao.ConfigDao
 import org.intelehealth.config.room.entity.ConfigDictionary
@@ -55,7 +57,10 @@ class ConfigRepository(
             configDb.clearAllTables()
             configDb.specializationDao().save(config.specialization)
             configDb.languageDao().save(config.language)
-            groupingPatientRegFields(config.patientRegFields.personal, FieldGroup.PERSONAL)
+            groupingPatientRegFields(
+                toPersonalRegistrationFields(config.patientRegFields.personal),
+                FieldGroup.PERSONAL
+            )
             groupingPatientRegFields(config.patientRegFields.address, FieldGroup.ADDRESS)
             groupingPatientRegFields(config.patientRegFields.other, FieldGroup.OTHER)
             configDb.patientVitalDao().save(config.patientVitals)
@@ -80,4 +85,22 @@ class ConfigRepository(
             return@map it
         }.let { configDb.patientRegFieldDao().save(it) }
     }
+
+    /**
+     * converting response data class to room data class
+     */
+    private fun toPersonalRegistrationFields(personalRegFieldsResponse: List<PatientRegFieldsResponse>): List<PatientRegistrationFields> =
+        personalRegFieldsResponse.map { response ->
+            PatientRegistrationFields(
+                id = 0,
+                name = response.name,
+                idKey = response.idKey,
+                groupId = FieldGroup.PERSONAL.value,
+                isEnabled = response.isEnabled,
+                isEditable = response.isEditable,
+                isMandatory = response.isMandatory,
+                maxLength = response.validations?.maxLength,
+                minLength = response.validations?.minLength
+            )
+        }
 }

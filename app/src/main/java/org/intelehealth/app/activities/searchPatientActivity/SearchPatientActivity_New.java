@@ -24,6 +24,8 @@ import android.util.DisplayMetrics;
 import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.activities.onboarding.PersonalConsentActivity;
+import org.intelehealth.app.ayu.visit.vital.CoroutineProvider;
+import org.intelehealth.app.ui.patient.viewmodel.PatientViewModel;
 import org.intelehealth.app.utilities.AddPatientUtils;
 import org.intelehealth.app.utilities.CustomLog;
 import android.view.ContextThemeWrapper;
@@ -42,6 +44,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.LifecycleOwnerKt;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -69,6 +74,8 @@ import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.exception.DAOException;
+import org.intelehealth.config.presenter.fields.factory.PatientViewModelFactory;
+import org.intelehealth.config.room.entity.PatientRegistrationFields;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -153,7 +160,14 @@ public class SearchPatientActivity_New extends BaseActivity {
         addPatientTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AddPatientUtils.navigate(SearchPatientActivity_New.this);
+                //AddPatientUtils.navigate(SearchPatientActivity_New.this);
+                CoroutineProvider.usePatientConsentScope(
+                        LifecycleOwnerKt.getLifecycleScope(SearchPatientActivity_New.this),
+                        PatientViewModelFactory.create(SearchPatientActivity_New.this, SearchPatientActivity_New.this),
+                        data -> {
+                            AddPatientUtils.navigate(SearchPatientActivity_New.this, (List<PatientRegistrationFields>) data);
+                        }
+                );
                 finish();
             }
         });

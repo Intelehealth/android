@@ -16,7 +16,11 @@ import android.text.Html;
 import android.util.DisplayMetrics;
 
 import org.intelehealth.app.BuildConfig;
+import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.activities.onboarding.PersonalConsentActivity;
+import org.intelehealth.app.activities.searchPatientActivity.SearchPatientActivity_New;
+import org.intelehealth.app.ayu.visit.vital.CoroutineProvider;
+import org.intelehealth.app.ui.patient.viewmodel.PatientViewModel;
 import org.intelehealth.app.utilities.AddPatientUtils;
 import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
@@ -36,6 +40,8 @@ import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LifecycleOwnerKt;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -51,6 +57,8 @@ import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.VisitCountInterface;
 import org.intelehealth.app.utilities.exception.DAOException;
+import org.intelehealth.config.presenter.fields.factory.PatientViewModelFactory;
+import org.intelehealth.config.room.entity.PatientRegistrationFields;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -135,7 +143,14 @@ public class VisitPendingFragment extends Fragment {
         addPatientTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AddPatientUtils.navigate(getActivity());
+                //AddPatientUtils.navigate(getActivity());
+                CoroutineProvider.usePatientConsentScope(
+                        LifecycleOwnerKt.getLifecycleScope(requireActivity()),
+                        PatientViewModelFactory.create(requireActivity(), requireActivity()),
+                        data -> {
+                            AddPatientUtils.navigate(requireActivity(), (List<PatientRegistrationFields>) data);
+                        }
+                );
                 getActivity().finish();
             }
         });

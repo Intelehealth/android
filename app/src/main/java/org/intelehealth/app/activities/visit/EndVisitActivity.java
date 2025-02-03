@@ -10,6 +10,8 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
+import androidx.lifecycle.LifecycleOwnerKt;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -28,8 +30,11 @@ import android.util.DisplayMetrics;
 import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.activities.onboarding.PersonalConsentActivity;
 import org.intelehealth.app.activities.searchPatientActivity.SearchPatientActivity_New;
+import org.intelehealth.app.ayu.visit.vital.CoroutineProvider;
+import org.intelehealth.app.ui.patient.viewmodel.PatientViewModel;
 import org.intelehealth.app.utilities.AddPatientUtils;
 import org.intelehealth.app.utilities.CustomLog;
+
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -49,6 +54,8 @@ import org.intelehealth.app.models.PrescriptionModel;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.config.presenter.fields.factory.PatientViewModelFactory;
+import org.intelehealth.config.room.entity.PatientRegistrationFields;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,7 +80,7 @@ public class EndVisitActivity extends BaseActivity implements NetworkUtils.Inter
     private EndVisitAdapter recentVisitsAdapter, olderVisitsAdapter;
     private androidx.appcompat.widget.SearchView searchview_received;
     private ImageView closeButton;
-   // int totalCounts_recent = 0, totalCounts_older = 0;
+    // int totalCounts_recent = 0, totalCounts_older = 0;
 
     private Context context = EndVisitActivity.this;
     private RelativeLayout no_patient_found_block, main_block;
@@ -138,7 +145,14 @@ public class EndVisitActivity extends BaseActivity implements NetworkUtils.Inter
         addPatientTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AddPatientUtils.navigate(context);
+                //AddPatientUtils.navigate(context);
+                CoroutineProvider.usePatientConsentScope(
+                        LifecycleOwnerKt.getLifecycleScope(EndVisitActivity.this),
+                        PatientViewModelFactory.create(EndVisitActivity.this, EndVisitActivity.this),
+                        data -> {
+                            AddPatientUtils.navigate(EndVisitActivity.this, (List<PatientRegistrationFields>) data);
+                        }
+                );
                 finish();
             }
         });
@@ -165,8 +179,7 @@ public class EndVisitActivity extends BaseActivity implements NetworkUtils.Inter
                         if (!isolderFullyLoaded) {
                             if (recent != null && older != null) {
                                 if (recent.size() > 0 || older.size() > 0) {
-                                }
-                                else {
+                                } else {
                                     Toast.makeText(EndVisitActivity.this, getString(R.string.loading_more), Toast.LENGTH_SHORT).show();
                                     setOlderMoreDataIntoRecyclerView();
                                 }
@@ -192,12 +205,13 @@ public class EndVisitActivity extends BaseActivity implements NetworkUtils.Inter
                 searchOperation(query);
                 return false;   // setting to false will close the keyboard when clicked on search btn.
             }
+
             @Override
             public boolean onQueryTextChange(String newText) {
                 if (!newText.equalsIgnoreCase("")) {
-                    searchview_received.setBackground(ContextCompat.getDrawable(EndVisitActivity.this,R.drawable.blue_border_bg));
+                    searchview_received.setBackground(ContextCompat.getDrawable(EndVisitActivity.this, R.drawable.blue_border_bg));
                 } else {
-                    searchview_received.setBackground(ContextCompat.getDrawable(EndVisitActivity.this,R.drawable.ui2_common_input_bg));
+                    searchview_received.setBackground(ContextCompat.getDrawable(EndVisitActivity.this, R.drawable.ui2_common_input_bg));
                 }
                 return false;
             }
@@ -282,8 +296,7 @@ public class EndVisitActivity extends BaseActivity implements NetworkUtils.Inter
     private void setRecentMoreDataIntoRecyclerView() {
         if (recent.size() > 0 || older.size() > 0) {    // on scroll, new data loads issue fix.
 
-        }
-        else {
+        } else {
             CustomLog.d("TAG", "recentCloseVisitsList size: " + "D: " + recentCloseVisitsList.size());
             if (recentCloseVisitsList != null && recentCloseVisitsList.size() == 0) {
                 isRecentFullyLoaded = true;
@@ -305,8 +318,7 @@ public class EndVisitActivity extends BaseActivity implements NetworkUtils.Inter
 
     private void setOlderMoreDataIntoRecyclerView() {
         if (recent.size() > 0 || older.size() > 0) {
-        }
-        else {
+        } else {
             if (olderCloseVisitsList != null && olderCloseVisitsList.size() == 0) {
                 isolderFullyLoaded = true;
                 return;
@@ -339,9 +351,9 @@ public class EndVisitActivity extends BaseActivity implements NetworkUtils.Inter
     public void updateUIForInternetAvailability(boolean isInternetAvailable) {
         CustomLog.d("TAG", "updateUIForInternetAvailability: ");
         if (isInternetAvailable) {
-            refresh.setImageDrawable(ContextCompat.getDrawable(EndVisitActivity.this,R.drawable.ui2_ic_internet_available));
+            refresh.setImageDrawable(ContextCompat.getDrawable(EndVisitActivity.this, R.drawable.ui2_ic_internet_available));
         } else {
-            refresh.setImageDrawable(ContextCompat.getDrawable(EndVisitActivity.this,R.drawable.ui2_ic_no_internet));
+            refresh.setImageDrawable(ContextCompat.getDrawable(EndVisitActivity.this, R.drawable.ui2_ic_no_internet));
         }
     }
 
@@ -383,7 +395,7 @@ public class EndVisitActivity extends BaseActivity implements NetworkUtils.Inter
         new Thread(new Runnable() {
             @Override
             public void run() {
-              //  List<PrescriptionModel> allCloseList = allNotEndedVisits();
+                //  List<PrescriptionModel> allCloseList = allNotEndedVisits();
                 List<PrescriptionModel> allRecentList = recentNotEndedVisits();
                 List<PrescriptionModel> allOlderList = olderNotEndedVisits();
                 CustomLog.d("TAG", "searchListReturned: " + allRecentList.size() + ", " + allOlderList.size());
@@ -434,13 +446,12 @@ public class EndVisitActivity extends BaseActivity implements NetworkUtils.Inter
                                         String fullName = firstName + " " + middleName + " " + lastName;
 
                                         if (firstName.contains(finalQuery) || middleName.contains(finalQuery)
-                                                || lastName.contains(finalQuery)  || fullPartName.contains(finalQuery) || fullName.contains(finalQuery)) {
+                                                || lastName.contains(finalQuery) || fullPartName.contains(finalQuery) || fullName.contains(finalQuery)) {
                                             older.add(model);
                                         } else {
                                             // do nothing
                                         }
-                                    }
-                                    else {
+                                    } else {
                                         String firstName = model.getFirst_name().toLowerCase();
                                         String lastName = model.getLast_name().toLowerCase();
                                         String fullName = firstName + " " + lastName;
@@ -499,7 +510,7 @@ public class EndVisitActivity extends BaseActivity implements NetworkUtils.Inter
         }
     }
 
-    void handleBackPress(){
+    void handleBackPress() {
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {

@@ -310,6 +310,7 @@
     <string name="please_enter_mobile_number">Пожалуйста, введите номер мобильного телефона</string>
     <string name="download_prescription_first_before_sharing">Сначала скачайте рецепт, прежде чем поделиться им</string>
     <string name="enter_10_digits">Введите 10 цифр</string>
+    <string name="enter_digits">Введите %d цифр</string>
     <string name="enter_15_digits">Введите 15 символов</string>
     <string name="gender_male">Мужчина</string>
     <string name="gender_female">женский</string>
