@@ -1356,6 +1356,27 @@ public class PatientsDAO {
         return isCreated;
 
     }
+    // Update patient sync = false.
+    public boolean updatePatientSyncValue(String patientUUID) throws DAOException {
+        Log.d(TAG, "patientUUID: "+patientUUID);
+        boolean isCreated = true;
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        String whereClause = "uuid=?";
+        db.beginTransaction();
+        try {
+            values.put("sync", false);
+            db.update("tbl_patient", values, whereClause, new String[]{patientUUID});
+            db.setTransactionSuccessful();
+        } catch (SQLException e) {
+            isCreated = false;
+            throw new DAOException(e.getMessage(), e);
+        } finally {
+            db.endTransaction();
+        }
+        return isCreated;
+
+    }
     public HouseholdSurveyModel retrievePatientHouseholdSurveyAttributes(String patientUuid) {
         Timber.tag("devkz").d("retrievePatientHouseholdSurveyAttributes");
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
