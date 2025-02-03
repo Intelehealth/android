@@ -1,7 +1,7 @@
 package org.intelehealth.app.ui.rosterquestionnaire.utilities
 
 enum class RoasterAttribute(val attributeName: String) {
-    RELATIONSHIP_STATUS_HOH("149380dd-fa92-4211-88cb-ea053c352363"),
+    RELATIONSHIP_STATUS_HOH("149380dd-fa92-4211-88cb-ea053c352363"),    // TODO: since this is an adhoc task for me have added it here itself. Pls handle the clean code later.
     MARITAL_STATUS("50273e5b-1733-4fbe-a46c-20c1f7e183cb"),
     EDUCATION_LEVEL("1c718819-345c-4368-aad6-d69b4c267db7"),
     OCCUPATION("ecdaadb6-14a0-4ed9-b5b7-cfed87b44b87"),

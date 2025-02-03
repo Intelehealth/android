@@ -113,7 +113,7 @@ class RosterViewModel @Inject constructor(
 
     fun insertRoster() {
         viewModelScope.launch(ioDispatcher) {
-            // set sync = false for tbl_patient.
+            // set sync = false for tbl_patient.    // TODO: since this is an adhoc task for me have added it here itself. Pls handle the clean code later.
             val patientsDAO = PatientsDAO()
             patientsDAO.updatePatientSyncValue(patientUuid)
 
