@@ -2,7 +2,9 @@ package org.intelehealth.app.ayu.visit.reason;
 
 import android.content.Context;
 import android.os.Bundle;
+
 import org.intelehealth.app.utilities.CustomLog;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -149,13 +151,14 @@ public class VisitReasonCaptureFragment extends Fragment {
             JSONObject currentFile = null;
             if (!sessionManager.getLicenseKey().isEmpty()) {
                 currentFile = FileUtils.encodeJSONFromFile(requireActivity(), mindMapName + ".json");
-            }else{
+            } else {
                 String fileLocation = "engines/" + mindMapName + ".json";
                 currentFile = FileUtils.encodeJSON(getActivity(), fileLocation);
             }
 
             Node mainNode = new Node(currentFile);
-            if (VisitUtils.checkNodeValidByGenderAndAge(patientGender, float_ageYear_Month, mainNode.getGender(), mainNode.getMin_age(), mainNode.getMax_age())) {
+            boolean isPreviousVisitValid = VisitUtils.isPreviousVisitValid(mainNode, visitUuid);
+            if (VisitUtils.checkNodeValidByGenderAndAge(patientGender, float_ageYear_Month, mainNode.getGender(), mainNode.getMin_age(), mainNode.getMax_age()) && isPreviousVisitValid) {
                 mFinalEnabledMMList.add(mindMapName);
             }
         }
@@ -338,7 +341,7 @@ public class VisitReasonCaptureFragment extends Fragment {
         List<ReasonData> reasonDataList = new ArrayList<ReasonData>();
         try {
             String[] temp = null;
-            CustomLog.e("MindMapURL", "Successfully get MindMap URL"+sessionManager.getLicenseKey());
+            CustomLog.e("MindMapURL", "Successfully get MindMap URL" + sessionManager.getLicenseKey());
             if (!sessionManager.getLicenseKey().isEmpty()) {
                 File base_dir = new File(requireActivity().getFilesDir().getAbsolutePath() + File.separator + AppConstants.JSON_FOLDER);
                 File[] files = base_dir.listFiles();
@@ -377,7 +380,7 @@ public class VisitReasonCaptureFragment extends Fragment {
                 for (int i = 0; i < files.length; i++) {
                     fileNames[i] = files[i].getName();
                 }
-            }else{
+            } else {
                 fileNames = getActivity().getApplicationContext().getAssets().list("engines");
 
             }

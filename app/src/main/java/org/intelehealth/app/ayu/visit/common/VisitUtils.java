@@ -427,4 +427,12 @@ AB NEGATIVE = 1231*/
             node.getOption(0).setDataCaptured(true);
         }
     }
+
+    public static boolean isPreviousVisitValid(Node node, String visitUuid) {
+        if (node.isPreviousVisitRequired()) {
+            String previousVisitUuid = VisitsDAO.getPreviousVisitUuid(visitUuid);
+            return previousVisitUuid != null && !previousVisitUuid.isEmpty();
+        }
+        return true;
+    }
 }
