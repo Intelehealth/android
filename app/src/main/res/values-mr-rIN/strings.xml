@@ -96,7 +96,7 @@
 
     //Visit Summary Screen
     <string name="title_activity_family_history">कौटुंबिक इतिहास</string>
-    <string name="title_activity_physical_exam">शारीरिक परीक्षा</string>
+    <string name="title_activity_physical_exam">शारीरिक तपासणी</string>
     <string name="visit_summary_temperature">तापमान (सी)</string>
     <string name="visit_summary_bmi">बीएमआय</string>
     <string name="visit_summary_bp">बी.पी.</string>
@@ -369,17 +369,16 @@
 
     <string name="slot_info">स्लॉट माहिती</string>
     <string name="minutes_txt">मिनिटे</string>
-    <string name="please_upload_visit">कृपया भेटीची बुकिंग करण्यापूर्वी प्रथम भेट अपलोड करा.</string>
     <string name="failed_to_cancel_appointment">अपॉइंटमेंट रद्द करण्यात अयशस्वी!</string>
     <string name="appointment_cancelled_success_txt">अपॉइंटमेंट यशस्वीरित्या रद्द करण्यात आली!</string>
 
     <string name="book_appointment">पुस्तक भेट</string>
     <string name="appointment_booking_confirmation_txt">तुम्ही हा स्लॉट बुक करणार आहात का?</string>
     <string name="slot_empty_message">निवडलेल्या तारखेसाठी आणि विशेषतेसाठी अपॉइंटमेंट स्लॉट उपलब्ध नाही!</string>
-    <string name="please_select_your_reschedule_reason">Please select your reschedule reason</string>
-    <string name="please_select_your_cancel_reason">Please select your cancel reason</string>
-    <string name="doctor_is_not_available">Doctor is not available</string>
-    <string name="patient_is_not_available">Patient is not available</string>
+    <string name="please_select_your_reschedule_reason">कृपया तुमचे रीशेड्युलिंग कारण निवडा</string>
+    <string name="please_select_your_cancel_reason">कृपया तुमचे रद्द करण्याचे कारण निवडा</string>
+    <string name="doctor_is_not_available">डॉक्टर उपलब्ध नाहीत</string>
+    <string name="patient_is_not_available">रुग्ण उपलब्ध नाही</string>
     <string name="others">इतर</string>
     <string name="please_enter_the_reason_details">कृपया कारण तपशील प्रविष्ट करा</string>
 
@@ -402,22 +401,21 @@
 
     //----download protocol failed alert dialog-----------
     <!--    <string name="app_version_string">वापरकर्ता: %1$s, ऐप संस्करण: %2$s</string>-->
-    <string name="app_version_string">वापरकर्ता: %1$s</string>
     <string name="enter_patient_s_body_measurement_details">Enter patient’s body measurement details</string>
-    <string name="height_cm">Height (cm)</string>
-    <string name="weight_kg">Weight (kg)</string>
-    <string name="bmi_index_auto_calculated">BMI index(auto-calculated)</string>
-    <string name="enter_the_patient_s_vitals">Enter the patient’s vitals</string>
-    <string name="bp_sys">BP Systolic</string>
-    <string name="bp_dia">BP Diastolic</string>
-    <string name="pulse_bpm">Pulse (bpm)</string>
+    <string name="height_cm">उंची (सेमी)</string>
+    <string name="weight_kg">वजन (किलो)</string>
+    <string name="bmi_index_auto_calculated">BMI निर्देशांक (स्वयं-गणना)</string>
+    <string name="enter_the_patient_s_vitals">रुग्णाच्या जीवनावश्यक गोष्टी प्रविष्ट करा</string>
+    <string name="bp_sys">बीपी सिस्टोलिक</string>
+    <string name="bp_dia">बीपी डायस्टोलिक</string>
+    <string name="pulse_bpm">नाडी (bpm)</string>
     <string name="spo2">SpO2 (%)</string>
-    <string name="respiratory_rate_breaths_min">Respiratory Rate (breaths/min)</string>
-    <string name="temperature_f_new">Temperature (F)</string>
+    <string name="respiratory_rate_breaths_min">श्वसन दर (श्वास/मिनिट)</string>
+    <string name="temperature_f_new">तापमान (F)</string>
     <string name="confirm">पुष्टी करा</string>
-    <string name="ui2_physical_exam_summay_title">%1$d/%2$d Physical examination summary</string>
-    <string name="ui2_medical_hist_title_text">%1$d/%2$d Medical history summary</string>
-    <string name="select_any_one">Select any one</string>
+    <string name="ui2_physical_exam_summay_title">%1$d/%2$d शारीरिक तपासणी सारांश</string>
+    <string name="ui2_medical_hist_title_text">%1$d/%2$d वैद्यकीय इतिहास सारांश</string>
+    <string name="select_any_one">कोणतेही एक निवडा</string>
     <string name="unablet_get_the_doct_info_alert">Unable to get the doctor details!</string>
     <string name="video_call_req_sent">Request is sent to doctor for a video call</string>
     <string name="postal_code_6_dig_invalid_txt">Please enter 6 digit valid postal code</string>
@@ -425,7 +423,7 @@
     <string name="slider_desc">range slider</string>
     <string name="drag_tow_capture_range_from_0_to_100">Drag tow capture range from 0 to 100</string>
     <string name="ui2_no_information">No information</string>
-    <string name="are_you_sure_the_patient_has_the_following_reasons_for_a_visit">Are you sure the patient has the following reasons for a visit?</string>
+    <string name="are_you_sure_the_patient_has_the_following_reasons_for_a_visit">तुम्हाला खात्री आहे का की रुग्णाच्या विजीटचे खालील कारणे आहेत?</string>
     <string name="know_more_txt">Know more</string>
     <string name="drag_anywhere_from_0_to_10">Drag anywhere from 0 to 10</string>
     <string name="follow_up_visits_not_found">Follow up visits not found!</string>
@@ -438,28 +436,25 @@
     <string name="help_whatsapp_string">Hello I’m  %1$s I need some assistance</string>
     <string name="update_app_protocol">Update app protocol!</string>
     <string name="please_enter_the_server_url_with_license_key_to_download_the_protocols">Please enter the server url with license key to download the protocols?</string>
-    <string name="previously_scheduled_appointment_details">Previously scheduled appointment details</string>
     <string name="alert_txt">Alert!</string>
     <string name="valid_dob_msg">Please select valid DOB!</string>
     <string name="all_patients_txt">All Patients</string>
     <string name="alert_label_txt">Alert!</string>
-    <string name="describe_hint_txt">Describe...</string>
+    <string name="describe_hint_txt">वर्णन करा...</string>
     <string name="duration_validation_txt">Please select the duration number</string>
-    <string name="duration_type_validation_txt">Please select the duration type</string>
+    <string name="duration_type_validation_txt">कृपया कालावधी प्रकार निवडा</string>
     <string name="select_date_hint">Select date</string>
     <string name="error_field_valid_village_required">Please enter the valid village name (Min 3 char)</string>
-    <string name="patinet_history">%1$d/%2$d Medical history: Patient history</string>
-    <string name="_1_4_vitals">%1$d/%2$d Vitals</string>
+    <string name="patinet_history">%1$d/%2$d वैद्यकीय इतिहास: रुग्णाचा इतिहास</string>
+    <string name="_1_4_vitals">%1$d/%2$d महत्वपूर्ण</string>
     <string name="bp_validation_sys"><![CDATA[BP Sys always should be > BP Dia]]></string>
     <string name="bp_validation_dia"><![CDATA[BP Dia always should be < BP Sys]]></string>
     <string name="number_label">Number</string>
-    <string name="associated_symptoms_header_visit_creation">Associated symptoms</string>
+    <string name="associated_symptoms_header_visit_creation">संबद्ध लक्षणे</string>
     <string name="edit">Edit</string>
     <string name="already_selected_lbl">Already selected!</string>
-    <string name="please_submit_to_proceed_next_step">Please submit to proceed next step</string>
     <string name="to_date_validation">To date should be greater than from date</string>
     <string name="select_image_hdr">Select Image</string>
-    <string name="no_notes_added_for_doctor">No notes added for Doctor.</string>
     <string name="please_contact_your_system_administrator_to_change_these_profile_details">Please contact your system administrator to change these profile details</string>
     <string name="old_password_and_new_password_cannot_be_same">Old password and new password cannot be same.</string>
     <string name="this_feature_is_not_available_in_offline_mode">This feature is not available in offline mode.</string>
@@ -470,8 +465,8 @@
     <string name="otp_sending">OTP Sending...</string>
     <string name="token_expired">Token Expired</string>
     <string name="your_session_has_expired_please_log_in_again">तुमचे सत्र कालबाह्य झाले आहे. कृपया पुन्हा लॉग इन करा.</string>
-    <string name="forgot_username_link"><u>Forgot username?</u></string>
-    <string name="forgot_username_txt">Forgot username?</string>
+    <string name="forgot_username_link"><u>वापरकर्तानाव विसरलात?</u></string>
+    <string name="forgot_username_txt">वापरकर्तानाव विसरलात?</string>
     <string name="enter_mobile_no_given_text">Please make sure your mobile number is updated in the profile section before proceeding</string>
     <string name="username_sent_title">Username Sent</string>
     <string name="username_sent_desc">Your username has been sent via SMS to your registered mobile number.</string>
@@ -883,7 +878,7 @@
     <string name="referred_to">ेफर केले / पुढील उपचारासाठी पाठवले</string>
     <string name="mode_of_transportation_used_to_reach_facility">सुविधेपर्यंत पोहोचण्यासाठी वापरला जाणारा वाहतुकीचा प्रकार</string>
     <string name="average_cost_incurred_on_travel_and_stay_per_episode">्रवास आणि मुक्कामासाठी प्रति एपिसोडचा सरासरी खर्च</string>
-    <string name="average_cost_incurred_on_consultation_fee_per_episode">Average cost incurred on consultation fee per episode</string>
+    <string name="average_cost_incurred_on_consultation_fee_per_episode">सल्लामसलत शुल्क प्रति एपिसोड सरासरी खर्च</string>
     <string name="average_cost_incurred_on_medicines_per_episode">प्रत्येक वेळी अशा तक्रारींवर/ आजारपणावर होणारा  सरासरी खर्च</string>
     <string name="score_for_experience_of_treatment">उपचार अनुभवासाठी स्कोअर</string>
     <string name="hemoglobin_error">िमोग्लोबीन दरम्यान असावे %1$s आणि %2$s</string>
@@ -1032,7 +1027,7 @@
     <string name="txt_what_is_was_the_sex_of_the_baby">बाळाचे लिंग काय/होते?</string>
     <string name="txt_were_any_complications_identified_at_the_time_of_delivery">प्रसूतीच्या वेळी काही गुंतागुंती/ कॉम्प्लिकेशन्स झाल्या होत्या का ?</string>
 
-    <!--Hardcoded strings-->
+    <!--Strings from excel-->
     <string name="hba1c_range">HbA1c %1$s आणि %2$s मध्ये असले पाहिजे</string>
     <string name="hba1c">HbA1c</string>
     <string name="who_are_we">आम्ही कोण आहोत?</string>
@@ -1046,7 +1041,7 @@
     <string name="digital_health_assistant">एक डिजिटल हेल्थ असिस्टंट. चला तर मग सुरुवात करूया!</string>
     <string name="agree_terms">अटी आणि शर्ती आणि गोपनीयता धोरणास सहमती द्या</string>
     <string name="setup">सेटअप</string>
-    <string name="enter_details">कृपया खालील तपशील प्रविष्ट करा</string>
+    <string name="enter_following_details">कृपया खालील तपशील प्रविष्ट करा</string>
     <string name="location">लोकेशन</string>
     <string name="wait_logging_in">कृपया काही क्षण प्रतीक्षा करा, तुम्ही ॲपमध्ये पुन्हा लॉग इन करत आहात.</string>
     <string name="username">वापरकर्तानाव</string>
@@ -1056,7 +1051,7 @@
     <string name="enter_password">तुमचा पासवर्ड टाका</string>
     <string name="forgot_password">पासवर्ड विसरलात?</string>
     <string name="login_successful">लॉगिन यशस्वी</string>
-    <string name="add_patients">रुग्ण जोडा</string>
+    <string name="add_patient">रुग्ण जोडा</string>
     <string name="achievements">उपलब्धी</string>
     <string name="help">साह्यता</string>
     <string name="appointments">अपॉइंटमेंट्स</string>
@@ -1101,7 +1096,6 @@
     <string name="visits_completed_by_you">तुम्ही पूर्ण केलेल्या विजिट्स</string>
     <string name="patient_satisfaction_score">तुमचा पेशंट सॅटिस्फॅक्शन स्कोर</string>
     <string name="daily_avg_time_spent">तुम्ही घालवलेला दैनिक सरासरी वेळ</string>
-    <string name="search_patient_hint">रुग्णाचे नाव किंवा आयडी टाइप करा</string>
     <string name="all_patients">सर्व रुग्ण</string>
     <string name="health_service_roster_name">हेल्थ सर्विस रोस्टर</string>
     <string name="open_visits">ओपन विजिट्स</string>
@@ -1173,13 +1167,11 @@
     <string name="anm">एएनएम</string>
     <string name="aww">एडब्ल्यूडब्ल्यू</string>
     <string name="rmp">आरएमपी</string>
-    <string name="avg_consultation_cost">सल्लामसलत शुल्क प्रति एपिसोड सरासरी खर्च</string>
     <string name="start_visit">विजीट सुरू करा</string>
-    <string name="earning_members_household">कुटुंबातील कमावत्या सदस्यांची संख्या</string>
     <string name="no_of_m_km">एम/केएम ची संख्या</string>
     <string name="patient_registered">रुग्ण नोंदणीकृत!</string>
-    <string name="start_visit_now">रुग्णाला आता विजीट सुरू करायची आहे का?</string>
-    <string name="continue1">सुरू ठेवा</string>
+    <string name="does_patient_start_visit_now">रुग्णाला आता विजीट सुरू करायची आहे का?</string>
+    <string name="button_continue">सुरू ठेवा</string>
     <string name="teleconsultation_consent">टेलीकंसल्टेशन संमती</string>
     <string name="visit_reason">विजीटचे कारण</string>
     <string name="visit_reason_prompt">या विजीटचे कारण काय आहे?</string>
@@ -1188,19 +1180,18 @@
     <string name="selected_reasons">निवडलेली कारणे</string>
     <string name="all_reasons">सर्व कारणे</string>
     <string name="confirm_visit_reason">विजीटचे कारण पुष्टी करा?</string>
-    <string name="confirm_visit_reason_prompt">तुम्हाला खात्री आहे का की रुग्णाच्या विजीटचे खालील कारणे आहेत?</string>
     <string name="number">संख्या</string>
     <string name="duration_type">कालावधी प्रकार</string>
     <string name="select_duration_type">कृपया कालावधी प्रकार निवडा</string>
     <string name="questions">प्रश्न</string>
     <string name="of">चे</string>
     <string name="describe">वर्णन करा</string>
-    <string name="select_yes_no">हो किंवा नाही निवडा</string>
+    <string name="select_yes_or_no">हो किंवा नाही निवडा</string>
     <string name="visit_reason_summary">विजीट कारण सारांश</string>
     <string name="okay">ठीक आहे</string>
     <string name="physical_examination">शारीरिक तपासणी</string>
     <string name="references">संदर्भ:</string>
-    <string name="select_one_option">कृपया किमान एक पर्याय निवडा!</string>
+    <string name="select_at_least_one_option">कृपया किमान एक पर्याय निवडा!</string>
     <string name="select_one_or_more">कृपया एक किंवा अधिक निवडा</string>
     <string name="add_image_by">इमेज जोडा</string>
     <string name="upload_image">गॅलरीमधून इमेज अपलोड करा किंवा चित्र घ्या</string>
@@ -1208,37 +1199,36 @@
     <string name="physical_exam_summary">शारीरिक तपासणी सारांश</string>
     <string name="medical_history_patient">वैद्यकीय इतिहास: रुग्णाचा इतिहास</string>
     <string name="medical_history_family">वैद्यकीय इतिहास: कुटुंबाचा इतिहास</string>
-    <string name="submit_proceed">पुढील चरणांसाठी कृपया सबमिट करा</string>
+    <string name="please_submit_to_proceed_next_step">पुढील चरणांसाठी कृपया सबमिट करा</string>
     <string name="alert">सूचना!</string>
     <string name="missed_questions">तुम्ही अनिवार्य प्रश्न विसरलात, कृपया त्यांची उत्तरे द्या.</string>
-    <string name="family_history_prompt">तुमच्या कुटुंबात खालीलपैकी कोणाचा इतिहास आहे का?</string>
+    <string name="do_you_have_family_history">तुमच्या कुटुंबात खालीलपैकी कोणाचा इतिहास आहे का?</string>
     <string name="chw_worker">CHW कामगार</string>
     <string name="chief_complaints">मुख्य तक्रार(ा)</string>
     <string name="additional_notes">अतिरिक्त नोट्स</string>
-    <string name="leave_note_doctor">डॉक्टरांसाठी एक नोट सोडा</string>
-    <string name="add_additional_docs">अतिरिक्त दस्तऐवज जोडा</string>
-    <string name="add_docs_prompt">अतिरिक्त दस्तऐवज जसे की रिपोर्ट, प्रिस्क्रिप्शन इ. जोडा.</string>
+    <string name="leave_a_note_for_doctor">डॉक्टरांसाठी एक नोट सोडा</string>
+    <string name="add_additional_documents_like">अतिरिक्त दस्तऐवज जसे की रिपोर्ट, प्रिस्क्रिप्शन इ. जोडा.</string>
     <string name="doctor_speciality">डॉक्टरांची तज्ञता</string>
     <string name="select_specialization">तज्ञता निवडा</string>
     <string name="appointment">अपॉइंटमेंट</string>
     <string name="send_visit">विजीट पाठवा</string>
-    <string name="confirm_send_visit">तुम्हाला खात्री आहे का की तुम्ही विजीट डॉक्टरांना पाठवू इच्छिता?</string>
-    <string name="visit_sent_successfully">विजीट यशस्वीरित्या पाठवली!</string>
-    <string name="no_notes_for_doctor">डॉक्टरांसाठी कोणतीही नोंद जोडलेली नाही</string>
+    <string name="are_you_sure_you_want_to_send_visit">तुम्हाला खात्री आहे का की तुम्ही विजीट डॉक्टरांना पाठवू इच्छिता?</string>
+    <string name="visit_successfully_sent">विजीट यशस्वीरित्या पाठवली!</string>
+    <string name="no_notes_added_for_doctor">डॉक्टरांसाठी कोणतीही नोंद जोडलेली नाही</string>
     <string name="visit_sent_to_doctor">रुग्णाची विजीट यशस्वीरित्या डॉक्टरकडे पाठविली गेली आहे.</string>
     <string name="select_time_slot">कृपया टाइम स्लॉट निवडा</string>
     <string name="pdf_created_successfully">यशस्वीरित्या पीडीएफ तयार केला!</string>
     <string name="patients_awaiting_prescriptions">रुग्ण त्यांच्या प्रिस्क्रिप्शनच्या प्रतीक्षेत आहेत</string>
     <string name="received">प्राप्त झाले</string>
     <string name="pending">बाकी आहे</string>
-    <string name="recent_visits">अलीकडील विजीट्स</string>
+    <string name="recent_visit">अलीकडील विजीट्स</string>
     <string name="older_visits">जुन्या विजीट्स</string>
     <string name="search_patient">रुग्ण शोधा</string>
     <string name="doctor_pending_prescriptions">डॉक्टरांनी अद्याप 35 रुग्णांसाठी प्रिस्क्रिप्शन पाठवल्या नाहीत, तुम्ही डॉक्टरांना आठवण करून देऊ शकता.</string>
     <string name="visit_summary">विजीटचा सारांश</string>
     <string name="pending_since">पासून प्रलंबित</string>
     <string name="follow_up_on">वर फॉलो अप घ्या</string>
-    <string name="doctor_suggested_followup">डॉक्टरांनी फॉलो-अप विजीट देण्याची शिफारस केली आहे</string>
+    <string name="doctor_suggested_follow_up_on">डॉक्टरांनी फॉलो-अप विजीट देण्याची शिफारस केली आहे</string>
     <string name="consulted_doctor_details">सल्ला घेतलेल्या डॉक्टरांचा तपशील</string>
     <string name="qualification">पात्रता</string>
     <string name="no_information">माहिती नाही</string>
@@ -1247,12 +1237,12 @@
     <string name="referred_specialist">संदर्भित तज्ञ</string>
     <string name="end_visit_ques">ही विजीट संपवायची?</string>
     <string name="confirm_end_visit">तुम्हाला खात्री आहे की तुम्हाला ही विजीट संपवायची आहे?</string>
-    <string name="rate_experience">तुमच्या अनुभवाचे मूल्यांकन करा</string>
-    <string name="rate_us_feedback">आम्हाला रेट करा म्हणजे आम्ही तुमच्यासाठी अनुभव सुधारू शकू.</string>
+    <string name="rate_your_experience">तुमच्या अनुभवाचे मूल्यांकन करा</string>
+    <string name="how_we_can_improve_experience">आम्हाला रेट करा म्हणजे आम्ही तुमच्यासाठी अनुभव सुधारू शकू.</string>
     <string name="give_feedback">अभिप्राय द्या</string>
     <string name="type_here">येथे टाइप करा...</string>
     <string name="feedback">अभिप्राय</string>
-    <string name="thank_you_feedback">तुमच्या अभिप्रायाबद्दल धन्यवाद!</string>
+    <string name="thank_you_for_feedback">तुमच्या अभिप्रायाबद्दल धन्यवाद!</string>
     <string name="close_visit">विजीट बंद करा</string>
     <string name="no_data_found">कोणताही डेटा आढळला नाही</string>
     <string name="today">आज</string>
@@ -1265,19 +1255,15 @@
     <string name="sorted_descending">उतरत्या क्रमाने क्रमवारी लावली</string>
     <string name="help_center">सहाय्यता केंद्र</string>
     <string name="most_searched">सर्वाधिक शोधलेले</string>
-    <string name="frequently_asked_questions">वारंवार विचारले जाणारे प्रश्न</string>
+    <string name="frequently_asked_ques">वारंवार विचारले जाणारे प्रश्न</string>
     <string name="how_intelehealth_works">इंटेलहेल्थ (intelehealth) कसे काम करते?</string>
-    <string name="intelehealth_description">इं टे लहे ल् थने एक व् यापक तां त् रिक प् लॅ टफॉर् म तयार के ला आहे ज् याचा वापर रुग्णालये, स्वयंसेवी संस्था आणि सरकार त्यांच्या लाभार्थ्यांना टेलिमेडिसिन-आधारित काळजी प्रदान करण्यासाठी करू शकतात. कोणतीही संस्था त्यांच्या गरजांनुसार ते सहजपणे वापरू शकते आणि सुधारू शकते कारण त्याच्या मजबूत वैशिष्ट्यांमुळे, ज्यामध्ये 80 हून अधिक केअर प्रोटोकॉलसह डिजिटल असिस्टंट सारखे वैशिष्ट्ये यामध्ये समाविष्ट आहेत!</string>
-    <string name="intelehealth_vision">इंटेलेहेल्थ टीमचे "सर्वांसाठी आरोग्य" हे एक स्वप्न आहे. त्यामुळे इंटेलेहेल्थ ही सार्वत्रिक आरोग्य कवच राखण्यासाठी अस्तित्वात आहे. प्रत्येक व्यक्तीला त्यांना लागणारी आरोग्य सेवा जेव्हा आणि जिथे लागते, तेव्हा आणि कुठेही, कोणत्याही आर्थिक अडचणीशिवाय मिळावी यासाठी हे प्रयत्नशील आहे.</string>
-    <string name="how_intelehealth_helps_patients">इंटेलेहेल्थ रुग्णांना कशी मदत करते?</string>
-    <string name="intelehealth_patient_help">आमच्या टेलिमेडिसिन अॅपमुळे प्राथमिक आरोग्यसेवा मिळवू इच्छिणाऱ्या ग्रामीण लोकांना आता तज्ञ डॉक्टरांशी सल्लामसलत करता येईल. अॅप वापरून, आरोग्य कर्मचारी रुग्णाच्या औषधांचा इतिहास, निदान, प्रिस्क्रिप्शन आणि उपचारांची माहिती टिपू शकतात. ही सर्व माहिती दूरदराजच्या डॉक्टरांशी सल्लामसलत करण्यासाठी पाठवली जाते. यामुळे रुग्णांना आरोग्यसेवेकरिता लांब प्रवास करण्याची आवश्यकता नाही.</string>
-    <string name="why_intelehealth_exists">इंटेलेहेल्थ का अस्तित्वात आहे?</string>
-    <string name="register_new_patient">नवीन रुग्णाची नोंदणी कशी करावी?</string>
-    <string name="register_patient_steps">रुग्णाची नोंदणी करण्यासाठी होम स्क्रीनवर "रुग्ण जोडा" टॅबवर क्लिक करा. रुग्णाला गोपनीयता धोरण वाचा. जर रुग्ण सहमत असेल तर सर्व माहिती पूर्ण करा आणि रुग्णाची नोंदणी करा.</string>
-    <string name="add_new_visit">नवीन विजीट कशी जोडावी?</string>
+    <string name="why_intelehealth_exist_ans">इंटेलेहेल्थ टीमचे "सर्वांसाठी आरोग्य" हे एक स्वप्न आहे. त्यामुळे इंटेलेहेल्थ ही सार्वत्रिक आरोग्य कवच राखण्यासाठी अस्तित्वात आहे. प्रत्येक व्यक्तीला त्यांना लागणारी आरोग्य सेवा जेव्हा आणि जिथे लागते, तेव्हा आणि कुठेही, कोणत्याही आर्थिक अडचणीशिवाय मिळावी यासाठी हे प्रयत्नशील आहे.</string>
+    <string name="how_intelehealth_help">इंटेलेहेल्थ रुग्णांना कशी मदत करते?</string>
+    <string name="how_to_register_ans">रुग्णाची नोंदणी करण्यासाठी होम स्क्रीनवर "रुग्ण जोडा" टॅबवर क्लिक करा. रुग्णाला गोपनीयता धोरण वाचा. जर रुग्ण सहमत असेल तर सर्व माहिती पूर्ण करा आणि रुग्णाची नोंदणी करा.</string>
+    <string name="how_to_add_new_visit">नवीन विजीट कशी जोडावी?</string>
     <string name="add_new_visit_steps">एकदा रुग्णाची नोंदणी झाल्यानंतर, रुग्णाच्या तपशीलांच्या स्क्रीनवर "विजीट सुरू करा" बटणावर क्लिक करा आणि नवीन विजीट तयार करा.</string>
-    <string name="how_to_book_appointment">अपॉइंटमेंट कशी बुक करावी?</string>
-    <string name="book_appointment_steps">रुग्णाची नोंदणी झाल्यानंतर आणि विजीट तयार झाल्यावर, विजीट सारांश स्क्रीनवरील "अपॉइंटमेंट" बटणावर क्लिक करा. रुग्णासाठी उपयुक्त असलेली तारीख आणि वेळ (उपलब्ध स्लॉटमधून) निवडा. "अपॉइंटमेंट बुक करा" बटणावर क्लिक करा.</string>
+    <string name="how_to_book_an_appointment">अपॉइंटमेंट कशी बुक करावी?</string>
+    <string name="how_to_book_an_appointment_ans">रुग्णाची नोंदणी झाल्यानंतर आणि विजीट तयार झाल्यावर, विजीट सारांश स्क्रीनवरील "अपॉइंटमेंट" बटणावर क्लिक करा. रुग्णासाठी उपयुक्त असलेली तारीख आणि वेळ (उपलब्ध स्लॉटमधून) निवडा. "अपॉइंटमेंट बुक करा" बटणावर क्लिक करा.</string>
     <string name="treat_mild_fever">सौम्य तापावर घरी उपचार करा</string>
     <string name="what_is_anemia">ॲनिमिया म्हणजे काय?</string>
     <string name="treat_cough_at_home">घरच्या घरी खोकल्यावर उपचार करा</string>
@@ -1291,25 +1277,17 @@
     <string name="booking_appointment">अपॉइंटमेंट बुक करत आहे!</string>
     <string name="results_for">निकाल</string>
     <string name="today_at">आज</string>
-    <string name="has_appointment_with">आपल्याला अपॉइंटमेंट आहे</string>
+    <string name="has_an_appointment_with">आपल्याला अपॉइंटमेंट आहे</string>
     <string name="cancel_appointment">अपॉइंटमेंट रद्द करायची?</string>
     <string name="cancel_appointment_confirmation">या विजीटशी संबंधित अपॉइंटमेंट आहे आणि विजीट संपल्यावर अपॉइंटमेंट रद्द होईल. तुम्हाला नक्की पुढे जायचं आहे का?</string>
     <string name="no_prescription_exists">कोणतेही प्रिस्क्रिप्शन उपलब्ध नाही</string>
-    <string name="confirm_booking_slot">तुम्हाला खात्री आहे की तुम्ही हा स्लॉट बुक कराल?</string>
-    <string name="appointment_slot_not_available">निवडलेल्या तारखेसाठी आणि तज्ञांसाठी अपॉइंटमेंट स्लॉट उपलब्ध नाही!</string>
     <string name="minutes">मिनिटे</string>
-    <string name="upload_visit_before_booking">अपॉइंटमेंट बुक करण्यापूर्वी कृपया विजीट अपलोड करा.</string>
-    <string name="appointment_not_available_priority">प्राधान्य विजीट्ससाठी अपॉइंटमेंट बुकिंग उपलब्ध नाही.</string>
+    <string name="please_upload_visit">अपॉइंटमेंट बुक करण्यापूर्वी कृपया विजीट अपलोड करा.</string>
+    <string name="no_appointment_for_priority">प्राधान्य विजीट्ससाठी अपॉइंटमेंट बुकिंग उपलब्ध नाही.</string>
     <string name="appointment_booked_successfully">अपॉइंटमेंट यशस्वीरीत्या बुक झाली!</string>
-    <string name="appointment_canceled_successfully">विजीट यशस्वीरित्या रद्द केली!</string>
-    <string name="select_reschedule_reason">कृपया तुमचे रीशेड्युलिंग कारण निवडा</string>
-    <string name="select_cancel_reason">कृपया तुमचे रद्द करण्याचे कारण निवडा</string>
-    <string name="doctor_not_available">डॉक्टर उपलब्ध नाहीत</string>
-    <string name="patient_not_available">रुग्ण उपलब्ध नाही</string>
-    <string name="enter_reason_details">कृपया कारण तपशील प्रविष्ट करा</string>
     <string name="please_enter_reason_txt">कृपया कारण प्रविष्ट करा!</string>
     <string name="compulsory_questions">खालील अनिवार्य प्रश्न आहेत, कृपया त्यांची उत्तरे द्या.</string>
-    <string name="app_version">अ ॅ प आवृत्ती - %1$s</string>
+    <string name="app_version_string">अॅप आवृत्ती - %1$s</string>
     <string name="my_appointments">माझ्या अपॉइंटमेंट्स</string>
     <string name="todays">आजचे</string>
     <string name="all">सर्व</string>
@@ -1323,9 +1301,9 @@
     <string name="view_patient_history">रुग्णाचा इतिहास पहा</string>
     <string name="reschedule">रीशेड्युल करा</string>
     <string name="confirm_appointment">अपॉइंटमेंटची पुष्टी करायची?</string>
-    <string name="cancel_appointment_confirmation1">%1$s साठी अपॉइंटमेंट रद्द करायची आहे का?</string>
-    <string name="reschedule_appointment_confirmation">%1$s साठी अपॉइंटमेंट रीशेड्युल करायची आहे का?</string>
-    <string name="reschedule_appointment">अपॉइंटमेंट पुन्हा शेड्युल करायची आहे का?</string>
+    <string name="sure_to_cancel_appointment">%1$s साठी अपॉइंटमेंट रद्द करायची आहे का?</string>
+    <string name="sure_to_reschedule_appointment">%1$s साठी अपॉइंटमेंट रीशेड्युल करायची आहे का?</string>
+    <string name="reschedule_appointment_new">अपॉइंटमेंट पुन्हा शेड्युल करायची आहे का?</string>
     <string name="speciality">तज्ञता</string>
     <string name="schedule_appointment">अपॉइंटमेंट शेड्यूल करा</string>
     <string name="confirm_patient_appointment">%1$s वर अपॉइंटमेंट बुक करू इच्छिता का?</string>
@@ -1333,7 +1311,7 @@
     <string name="afternoon">दुपार</string>
     <string name="evening">संध्याकाळ</string>
     <string name="pick_time_slot">वेळेचा स्लॉट निवडा</string>
-    <string name="previous_appointment_details">पूर्वी शेड्युल केलेल्या अपॉइंटमेंटचे तपशील</string>
+    <string name="previously_scheduled_appointment_details">पूर्वी शेड्युल केलेल्या अपॉइंटमेंटचे तपशील</string>
     <string name="digital_stethoscope">डिजिटल स्टेथोस्कोप</string>
     <string name="heart">हृदय</string>
     <string name="lung">फुफ्फुसे</string>
@@ -1342,7 +1320,7 @@
     <string name="breathing">श्वासोश्वास</string>
     <string name="heart_recording_saved">हृदयाचे रेकॉर्डिंग यशस्वीरित्या सेव्ह केले!</string>
     <string name="lung_sound_saved">फुफ्फुसांचा आवाज यशस्वीरित्या सेव्ह केला!</string>
-    <string name="end_visit">End visit</string>
+    <string name="end_visit">विजीट संपवा</string>
     <string name="accept_new">स्वीकारा</string>
     <string name="personal_identification">व्यक्तिगत</string>
     <string name="address_identification">पत्ता</string>
@@ -1351,15 +1329,38 @@
     <string name="health_service_roster_details">आरोग्य सेवा</string>
 
     <!-- Not in 2nd excel -->
-    <string name="processing_personal_data">Processing Personal Data</string>
-    <string name="first_name_mandatory">First Name</string>
-    <string name="middle_name_registration">Middle Name</string>
-    <string name="last_name_mandatory">Last Name</string>
-    <string name="gender_mandatory">Gender</string>
-    <string name="date_of_birth_mandatory">Date of Birth</string>
-    <string name="age_mandatory">Age</string>
-    <string name="enter_age">Enter Age</string>
-    <string name="corresponding_address_1">Corresponding Address 1</string>
-    <string name="this_field_is_mandatory">This field is mandatory</string>
+    <string name="processing_personal_data">वैयक्तिक डेटावर प्रक्रिया करत आहे</string>
+    <string name="first_name_mandatory">पहिले नाव</string>
+    <string name="middle_name_registration">मधले नाव</string>
+    <string name="last_name_mandatory">आडनाव</string>
+    <string name="gender_mandatory">लिंग</string>
+    <string name="date_of_birth_mandatory">जन्मतारीख</string>
+    <string name="age_mandatory">वय</string>
+    <string name="enter_age">वय प्रविष्ट करा</string>
+    <string name="corresponding_address_1">संबंधित पत्ता 1</string>
+    <string name="this_field_is_mandatory">हे फील्ड अनिवार्य आहे</string>
+    <string name="_vitals_summary">%1$d/%2$d महत्वपूर्ण सारांश</string>
+    <string name="select_one_or_multiple_reasons">एक किंवा अधिक कारणे निवडा</string>
+    <string name="_visit_reason_summary">%1$d/%2$d विजीटच्या कारण सारांश</string>
+    <string name="add_patients">रुग्ण जोडा</string>
+    <string name="cancel_appointment_new">अपॉइंटमेंट रद्द करायची?</string>
+    <string name="no_of_earning_members_are_there_in_the_household">कुटुंबातील कमावत्या सदस्यांची संख्या</string>
+    <string name="start_typing_location">टाइप करणे सुरू करा किंवा लोकेशन निवडा</string>
+    <string name="close_patient_registration">रुग्ण नोंदणी बंद करायची?</string>
+    <string name="start_visit_now">रुग्णाला आता विजीट सुरू करायची आहे का?</string>
+    <string name="how_intelehealth_work_ans">इंटेलहेल्थने एक व्यापक तांत्रिक प्लॅटफॉर्म तयार केला आहे ज्याचा वापर
+रुग्णालये, स्वयंसेवी संस्था आणि सरकार त्यांच्या लाभार्थ्यांना टेलिमेडिसिन-
+आधारित काळजी प्रदान करण्यासाठी करू शकतात. कोणतीही संस्था त्यांच्या
+गरजांनुसार ते सहजपणे वापरू शकते आणि सुधारू शकते कारण त्याच्या मजबूत
+वैशिष्ट्यांमुळे, ज्यामध्ये 80 हून अधिक केअर प्रोटोकॉलसह डिजिटल असिस्टंट
+सारखे वैशिष्ट्ये यामध्ये समाविष्ट आहेत!</string>
+    <string name="answer_following_questions">खालील अनिवार्य प्रश्न आहेत, कृपया त्यांची उत्तरे द्या.</string>
+    <string name="please_enter_reason">कृपया कारण प्रविष्ट करा!</string>
+    <string name="patient_visit_sent">रुग्णाची विजीट यशस्वीरित्या डॉक्टरकडे पाठविली गेली आहे.</string>
+    <string name="type_here_patient_survey">येथे टाइप करा...</string>
+    <string name="change_lang">भभाषा आणि प्रोटोकॉल बदला</string>
+    <string name="please_enter_the_value">कृपया मूल्य प्रविष्ट करा</string>
+    <string name="hello_i_am_ayu">नमस्कार, मी AYU आहे,</string>
+
 
 </resources>
