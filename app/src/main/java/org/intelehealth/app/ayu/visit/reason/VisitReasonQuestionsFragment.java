@@ -3,7 +3,6 @@ package org.intelehealth.app.ayu.visit.reason;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -310,12 +309,12 @@ public class VisitReasonQuestionsFragment extends Fragment {
                     mQuestionsListingAdapter.notifyItemChanged(index);
                     return;
                 } else {
-                    new Handler().postDelayed(new Runnable() {
+                    /*new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             mQuestionsListingAdapter.notifyItemChanged(index);
                         }
-                    }, 1000);
+                    }, 1000);*/
                 }
             }
 

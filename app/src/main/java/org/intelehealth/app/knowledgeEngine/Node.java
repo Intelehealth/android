@@ -3574,6 +3574,7 @@ public class Node implements Serializable {
             for (int i = 0; i < optionsList.size(); i++) {
                 optionsList.get(i).setSelected(false);
                 optionsList.get(i).setDataCaptured(false);
+                optionsList.get(i).setSkipped(false);
                 if (optionsList.get(i).optionsList != null) {
                     optionsList.get(i).unselectAllNestedNode();
                 }
