@@ -29,6 +29,7 @@ import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivi
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
+import org.intelehealth.app.database.dao.VisitsDAO;
 import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DownloadFilesUtils;
@@ -98,28 +99,37 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
 
             //  4. Visit Start Date else No visit created text display.
             if (model.getVisit_startdate() != null) {
-                if (model.isPrescription_exists()) {
-                    holder.presc_receivingCV.setVisibility(View.VISIBLE);
-                    holder.presc_pendingCV.setVisibility(View.GONE);
-                } else if (!model.isPrescription_exists()) {
-                    holder.presc_pendingCV.setVisibility(View.VISIBLE);
-                    holder.presc_receivingCV.setVisibility(View.GONE);
-                }
-
-                //  5. Checking visit uploaded or not and Prescription received/pending tag display. - start
-                if (model.getVisitDTO() != null) {
-                    if (model.getVisitDTO().getSyncd() != null && model.getVisitDTO().getSyncd()) {
-                        //holder.visitNotUploadCV.setVisibility(View.GONE);
-                    } else {
-                        //holder.visitNotUploadCV.setVisibility(View.VISIBLE);
+                boolean isDoctorVisit = new VisitsDAO().isDoctorVisit(model.getVisitDTO().getUuid());
+                if(isDoctorVisit){
+                    if (model.isPrescription_exists()) {
+                        holder.presc_receivingCV.setVisibility(View.VISIBLE);
                         holder.presc_pendingCV.setVisibility(View.GONE);
+                    } else if (!model.isPrescription_exists()) {
+                        holder.presc_pendingCV.setVisibility(View.VISIBLE);
                         holder.presc_receivingCV.setVisibility(View.GONE);
                     }
 
-                    if (model.getVisitDTO().getEnddate() != null) {
-                        //holder.visitNotUploadCV.setVisibility(View.GONE);
+                    //  5. Checking visit uploaded or not and Prescription received/pending tag display. - start
+                    if (model.getVisitDTO() != null) {
+                        if (model.getVisitDTO().getSyncd() != null && model.getVisitDTO().getSyncd()) {
+                            //holder.visitNotUploadCV.setVisibility(View.GONE);
+                        } else {
+                            //holder.visitNotUploadCV.setVisibility(View.VISIBLE);
+                            holder.presc_pendingCV.setVisibility(View.GONE);
+                            holder.presc_receivingCV.setVisibility(View.GONE);
+                        }
+
+                        if (model.getVisitDTO().getEnddate() != null) {
+                            //holder.visitNotUploadCV.setVisibility(View.GONE);
+                        }
                     }
+                } else {
+                    // if sevika visit hide the prescription status
+
+                    holder.presc_receivingCV.setVisibility(View.GONE);
+                    holder.presc_pendingCV.setVisibility(View.GONE);
                 }
+
                 // checking visit uploaded or not - end
 
                 holder.fu_item_calendar.setVisibility(View.VISIBLE);

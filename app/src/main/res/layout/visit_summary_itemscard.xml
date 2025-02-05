@@ -149,7 +149,7 @@
                                 android:layout_weight="1"
                                 android:drawableStart="@drawable/bullet_gray"
                                 android:drawablePadding="5dp"
-                                android:text="@string/height_cm"
+                                android:text="@string/height_ft"
                                 android:textAppearance="@style/caption"
                                 android:textColor="@color/hint_text_color"
                                 android:textSize="@dimen/find_patient_hint_size" />

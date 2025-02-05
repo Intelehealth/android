@@ -19,16 +19,13 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
-import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity2;
 import org.intelehealth.app.activities.visit.staticEnabledFields.VitalsEnabledFieldsHelper;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
@@ -36,7 +33,6 @@ import org.intelehealth.app.ayu.visit.VisitCreationActionListener;
 import org.intelehealth.app.ayu.visit.VisitCreationActivity;
 import org.intelehealth.app.ayu.visit.common.VisitUtils;
 import org.intelehealth.app.ayu.visit.model.VitalsWrapper;
-import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.database.dao.VisitAttributeListDAO;
 import org.intelehealth.app.database.dao.VisitsDAO;
 import org.intelehealth.app.models.VitalsObject;
@@ -60,9 +56,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
-
-import timber.log.Timber;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -201,7 +194,8 @@ public class VitalCollectionSummaryFragment extends Fragment {
 
         if (mVitalsObject != null) {
             if (mVitalsObject.getHeight() != null && !mVitalsObject.getHeight().isEmpty() && !mVitalsObject.getHeight().equalsIgnoreCase("0"))
-                ((TextView) view.findViewById(R.id.tv_height)).setText(mVitalsObject.getHeight() + " " + getResources().getString(R.string.cm));
+                ((TextView) view.findViewById(R.id.tv_height)).setText(VisitUtils.convertHeightIntoFeets(mVitalsObject.getHeight(), requireContext()));
+//                ((TextView) view.findViewById(R.id.tv_height)).setText(mVitalsObject.getHeight() + " " + getResources().getString(R.string.cm));
             else
                 ((TextView) view.findViewById(R.id.tv_height)).setText(getString(R.string.ui2_no_information));
 

@@ -105,6 +105,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.github.ajalt.timberkt.Timber;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
@@ -208,6 +209,8 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     Myreceiver reMyreceive;
     IntentFilter filter;
     Button startVisitBtn, startSevikaVisitBtn;
+    boolean anyPrescriptionPending = false;
+
     EncounterDTO encounterDTO;
     ImageView cancelBtn;
     //private boolean returning;
@@ -462,7 +465,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
         isBaselineSurveyCompleted = new PatientsDAO().checkIfBaselineSurveyCompleted(patientDTO.getUuid());
 
-        if (!isBaselineSurveyCompleted) {
+        if (!isBaselineSurveyCompleted || anyPrescriptionPending) {
             startVisitBtn.setEnabled(false);
             startSevikaVisitBtn.setEnabled(false);
             ivAddBaselineSurvey.setVisibility(View.VISIBLE);
@@ -1138,6 +1141,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     private RecyclerView mCurrentVisitsRecyclerView;
     private List<PastVisitData> mCurrentVisitDataList = new ArrayList<PastVisitData>();
 
+
     private void initForOpenVisit() {
         if (patientDTO == null || patientDTO.getUuid() == null) {
             return;
@@ -1317,6 +1321,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         }
         CustomLog.v(TAG, "initForOpenVisit - " + new Gson().toJson(mCurrentVisitDataList));
         if (!mCurrentVisitDataList.isEmpty()) {
+            findViewById(R.id.cv_open_visits).setVisibility(View.VISIBLE);
             PastVisitListingAdapter pastVisitListingAdapter = new PastVisitListingAdapter(mCurrentVisitsRecyclerView, PatientDetailActivity2.this, mCurrentVisitDataList, new PastVisitListingAdapter.OnItemSelected() {
                 @Override
                 public void onItemSelected(PastVisitData pastVisitData) {
@@ -1324,14 +1329,26 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 }
             });
             mCurrentVisitsRecyclerView.setAdapter(pastVisitListingAdapter);
-        }
-
-        if (!mCurrentVisitDataList.isEmpty()) {
-            findViewById(R.id.cv_open_visits).setVisibility(View.VISIBLE);
+            checkForPendingPrescription(mCurrentVisitDataList);
         } else {
             findViewById(R.id.cv_open_visits).setVisibility(View.GONE);
         }
-        // }
+    }
+
+
+    private void checkForPendingPrescription(List<PastVisitData> mCurrentVisitDataList) {
+        for(PastVisitData pvd : mCurrentVisitDataList){
+            try {
+                boolean prescriptionReceived = new EncounterDAO().isPrescriptionReceived(pvd.getVisitUUID());
+                if(!prescriptionReceived){
+                    anyPrescriptionPending = true;
+                    break;
+                }
+            } catch (DAOException e) {
+                CustomLog.e(TAG, e.getMessage());
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     /**

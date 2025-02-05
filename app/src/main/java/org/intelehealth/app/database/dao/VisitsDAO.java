@@ -27,6 +27,7 @@ import org.intelehealth.app.utilities.exception.DAOException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import timber.log.Timber;
 
@@ -1088,7 +1089,7 @@ public class VisitsDAO {
             SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
             Cursor cursor = null;
             if (isForReceivedPrescription)
-                cursor = db.rawQuery("select p.patient_photo, p.first_name, p.last_name, p.openmrs_id, p.date_of_birth, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid,"
+                cursor = db.rawQuery("select p.uuid as puid, p.patient_photo, p.first_name, p.last_name, p.openmrs_id, p.date_of_birth, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid,"
                         + " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where"
                         + " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and"
                         + "  e.encounter_type_uuid = ? and"
@@ -1098,7 +1099,7 @@ public class VisitsDAO {
 //                    +" and v.startdate <= DATETIME('now', '-4 day') "
                         + " group by p.openmrs_id ORDER BY v.startdate DESC", new String[]{ENCOUNTER_VISIT_COMPLETE});  // 537bb20d-d09d-4f88-930b-cc45c7d662df -> Diagnosis conceptID.
             else
-                cursor = db.rawQuery("select p.patient_photo, p.first_name, p.last_name, p.openmrs_id, p.date_of_birth, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid,"
+                cursor = db.rawQuery("select p.uuid as puid, p.patient_photo, p.first_name, p.last_name, p.openmrs_id, p.date_of_birth, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid,"
                         + " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" + " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
                         //" e.encounter_type_uuid = ?  and " +
                         " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 "
@@ -1109,31 +1110,64 @@ public class VisitsDAO {
             if (cursor.getCount() > 0 && cursor.moveToFirst()) {
                 do {
 
-                    String visitID = cursor.getString(cursor.getColumnIndexOrThrow("visituuid"));
+                    String puid = cursor.getString(cursor.getColumnIndexOrThrow("puid"));
+
+                    List<String> visitUuidList = getFilteredVisits(db, puid);
+
+                    for(String vuid : visitUuidList){
+                        boolean isCompletedExitedSurvey = false;
+                        boolean isPrescriptionReceived = false;
+                        try {
+                            isCompletedExitedSurvey = new EncounterDAO().isCompletedExitedSurvey(vuid);
+                            isPrescriptionReceived = new EncounterDAO().isPrescriptionReceived(vuid);
+                        } catch (DAOException e) {
+                            e.printStackTrace();
+                            CustomLog.e(TAG, e.getMessage());
+                        }
+                        //TODO: need more improvement in main query, this condition can be done by join query
+                        if (isForReceivedPrescription) {
+                            if (!isCompletedExitedSurvey && isPrescriptionReceived) {
+                                count += 1;
+                                Timber.tag("getVisitCountsByStatus").v("Received - " + cursor.getString(cursor.getColumnIndexOrThrow("first_name"))
+                                        + " " + cursor.getString(cursor.getColumnIndexOrThrow("last_name")) + " Gender - " + cursor.getString(cursor.getColumnIndexOrThrow("gender")));
+                            }
+                        } else {
+                            if (!isCompletedExitedSurvey && !isPrescriptionReceived) {
+                                count += 1;
+                                Timber.tag("getVisitCountsByStatus").v("Pending - " + cursor.getString(cursor.getColumnIndexOrThrow("first_name"))
+                                        + " " + cursor.getString(cursor.getColumnIndexOrThrow("last_name")) + " Gender - " + cursor.getString(cursor.getColumnIndexOrThrow("gender")));
+
+                            }
+                        }
+                    }
+
+                    /*String visitID = cursor.getString(cursor.getColumnIndexOrThrow("visituuid"));
                     boolean isCompletedExitedSurvey = false;
                     boolean isPrescriptionReceived = false;
+                    boolean isDoctorVisit = false;
                     try {
                         isCompletedExitedSurvey = new EncounterDAO().isCompletedExitedSurvey(visitID);
                         isPrescriptionReceived = new EncounterDAO().isPrescriptionReceived(visitID);
+                        isDoctorVisit = isDoctorVisitNew(db, visitID);
                     } catch (DAOException e) {
                         e.printStackTrace();
                         CustomLog.e(TAG, e.getMessage());
                     }
                     //TODO: need more improvement in main query, this condition can be done by join query
                     if (isForReceivedPrescription) {
-                        if (!isCompletedExitedSurvey && isPrescriptionReceived) {
+                        if (!isCompletedExitedSurvey && isPrescriptionReceived && isDoctorVisit) {
                             count += 1;
                             Timber.tag("getVisitCountsByStatus").v("Received - " + cursor.getString(cursor.getColumnIndexOrThrow("first_name"))
                                     + " " + cursor.getString(cursor.getColumnIndexOrThrow("last_name")) + " Gender - " + cursor.getString(cursor.getColumnIndexOrThrow("gender")));
                         }
                     } else {
-                        if (!isCompletedExitedSurvey && !isPrescriptionReceived) {
+                        if (!isCompletedExitedSurvey && !isPrescriptionReceived && isDoctorVisit) {
                             count += 1;
                             Timber.tag("getVisitCountsByStatus").v("Pending - " + cursor.getString(cursor.getColumnIndexOrThrow("first_name"))
                                     + " " + cursor.getString(cursor.getColumnIndexOrThrow("last_name")) + " Gender - " + cursor.getString(cursor.getColumnIndexOrThrow("gender")));
 
                         }
-                    }
+                    }*/
                 } while (cursor.moveToNext());
             }
 
@@ -1155,5 +1189,64 @@ public class VisitsDAO {
         }
 
         return count;
+    }
+
+    public List<String> getFilteredVisits(SQLiteDatabase db, String patientUuid) {
+        List<String> visitUuidList = new ArrayList<>();
+
+        String query = "SELECT DISTINCT v.uuid FROM tbl_visit v " +
+                "LEFT JOIN tbl_visit_attribute va ON v.uuid = va.visit_uuid " +
+                "WHERE v.patientuuid = ? " +
+                "AND (v.sync = 1 OR v.sync = 'TRUE' OR v.sync = 'true') " +
+                "AND (va.value IS NULL OR va.value != ?)";
+
+        Cursor cursor = db.rawQuery(query, new String[]{patientUuid, AppConstants.DOCTOR_NOT_NEEDED});
+
+        if (cursor.moveToFirst()) {
+            do {
+                String vid = cursor.getString(cursor.getColumnIndexOrThrow("uuid"));
+                visitUuidList.add(vid);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        return visitUuidList;
+    }
+
+    public boolean isDoctorVisit(String visitId) {
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
+        boolean doctorVisit = false;
+        Cursor visitCursor = null;
+        try {
+            visitCursor = db.rawQuery("SELECT * FROM tbl_visit_attribute where visit_uuid = ? AND value != ?", new String[]{visitId, AppConstants.DOCTOR_NOT_NEEDED});
+            if (visitCursor.moveToFirst()) {
+                doctorVisit = true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (visitCursor != null) {
+                visitCursor.close();
+            }
+        }
+
+        return doctorVisit;
+    }
+
+    public boolean isDoctorVisitNew(SQLiteDatabase db, String visitId) {
+        boolean doctorVisit = false;
+        Cursor visitCursor = null;
+        try {
+            visitCursor = db.rawQuery("SELECT * FROM tbl_visit_attribute where visit_uuid = ? AND value != ?", new String[]{visitId, AppConstants.DOCTOR_NOT_NEEDED});
+            if (visitCursor.moveToFirst()) {
+                doctorVisit = true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (visitCursor != null) visitCursor.close();
+        }
+
+        return doctorVisit;
     }
 }

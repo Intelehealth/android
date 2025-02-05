@@ -309,6 +309,7 @@
     <string name="upload_started">Uploading...</string>
     <string name="visit_uploaded_failed">Will be uploaded when internet is available</string>
     <string name="visitID">Visit ID</string>
+    <string name="ft">ft</string>
 
     <string name="prescription_not_downloaded_check_internet">Prescription not downloaded, check internet connection</string>
     <string name="new_update_available">New Update Available</string>
@@ -642,6 +643,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="enter_patient_s_body_measurement_details">Enter patient’s body measurement details</string>
     <string name="height_cm">Height (cm)</string>
+    <string name="height_ft">Height (ft)</string>
     <string name="weight_kg">Weight (kg)</string>
     <string name="bmi_index_auto_calculated">BMI index(auto-calculated)</string>
     <string name="enter_the_patient_s_vitals">Enter the patient’s vitals</string>
@@ -772,6 +774,7 @@
     <string name="doctor_annotation">Dr.</string>
     <string name="at">at</string>
     <string name="in">In</string>
+    <string name="in_new">in</string>
     <string name="hours">hours</string>
     <string name="upcoming_0">Upcoming (0)</string>
     <string name="completed_0">Completed (0)</string>
