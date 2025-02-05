@@ -1043,11 +1043,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
     @Override
     protected void onResume() {
 
-        if (new PreferenceHelper(this).get(PreferenceHelper.IS_NOTIFICATION, false)) {
-            ivNotificationIcon.setVisibility(View.VISIBLE);
-        } else {
-            ivNotificationIcon.setVisibility(View.GONE);
-        }
+        setupNotificationDotVisibility();
 
         IntentFilter filter = new IntentFilter(AppConstants.SYNC_INTENT_ACTION);
         ContextCompat.registerReceiver(this, syncBroadcastReceiver, filter, ContextCompat.RECEIVER_NOT_EXPORTED);
@@ -1081,6 +1077,14 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         checkAppVer();  //auto-update feature.
         bottomNav.getMenu().findItem(R.id.bottom_nav_home_menu).setChecked(true);
         super.onResume();
+    }
+
+    private void setupNotificationDotVisibility() {
+        if (new PreferenceHelper(this).get(PreferenceHelper.IS_NOTIFICATION, false)) {
+            ivNotificationIcon.setVisibility(View.VISIBLE);
+        } else {
+            ivNotificationIcon.setVisibility(View.GONE);
+        }
     }
 
     private void checkAppVer() {
@@ -1297,6 +1301,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
                     fragment = new HomeFragment_New();
                     ivHamburger.setVisibility(View.VISIBLE);
                     loadFragment(fragment, TAG_HOME);
+                    setupNotificationDotVisibility();
                     return true;
                 case R.id.bottom_nav_achievements:
                     tvTitleHomeScreenCommon.setText(getResources().getString(R.string.my_achievements));
@@ -1305,6 +1310,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
                     ivHamburger.setVisibility(View.GONE);
                     imageViewIsInternet.setVisibility(View.VISIBLE);
                     imageViewIsNotification.setVisibility(View.GONE);
+                    ivNotificationIcon.setVisibility(View.GONE);
                     fragment = new MyAchievementsFragment();
                     //loadFragmentForBottomNav(fragment);
                     loadFragment(fragment, TAG_ACHIEVEMENT);
@@ -1315,6 +1321,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
                     tvAppLastSync.setVisibility(View.GONE);
                     imageViewIsInternet.setVisibility(View.VISIBLE);
                     imageViewIsNotification.setVisibility(View.GONE);
+                    ivNotificationIcon.setVisibility(View.GONE);
                     ivHamburger.setVisibility(View.GONE);
                     fragment = new HelpFragment_New();
                     //loadFragmentForBottomNav(fragment);
@@ -1501,12 +1508,14 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             tvTitleHomeScreenCommon.setText(getResources().getString(R.string.help_center));
             ivHamburger.setVisibility(View.GONE);
             imageview_notifications_home.setVisibility(View.GONE);
+            ivNotificationIcon.setVisibility(View.GONE);
             imageViewIsInternet.setVisibility(View.VISIBLE);
         } else if (tag.equalsIgnoreCase(TAG_ACHIEVEMENT)) {
             fragment = new MyAchievementsFragment();
             bottomNav.getMenu().findItem(R.id.bottom_nav_achievements).setChecked(true);
             ivHamburger.setVisibility(View.GONE);
             imageview_notifications_home.setVisibility(View.GONE);
+            ivNotificationIcon.setVisibility(View.GONE);
             imageViewIsInternet.setVisibility(View.VISIBLE);
             tvTitleHomeScreenCommon.setText(getString(R.string.my_achievements));
             tag = TAG_ACHIEVEMENT;
