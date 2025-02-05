@@ -170,11 +170,9 @@ import org.intelehealth.app.services.DownloadService;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.ui.patient.activity.PatientRegistrationActivity;
-import org.intelehealth.app.ui.specialization.SpecializationArrayAdapter;
 import org.intelehealth.app.ui2.utils.CheckInternetAvailability;
 import org.intelehealth.app.utilities.AppointmentUtils;
 import org.intelehealth.app.utilities.BitmapUtils;
-import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.DownloadFilesUtils;
@@ -194,23 +192,18 @@ import org.intelehealth.app.webrtc.activity.IDAChatActivity;
 import org.intelehealth.config.presenter.fields.data.PatientVitalRepository;
 import org.intelehealth.config.presenter.fields.factory.PatientVitalViewModelFactory;
 import org.intelehealth.config.presenter.fields.viewmodel.PatientVitalViewModel;
-import org.intelehealth.config.presenter.language.factory.SpecializationViewModelFactory;
-import org.intelehealth.config.presenter.specialization.data.SpecializationRepository;
 import org.intelehealth.config.presenter.specialization.viewmodel.SpecializationViewModel;
 import org.intelehealth.config.room.ConfigDatabase;
 import org.intelehealth.config.room.entity.FeatureActiveStatus;
 import org.intelehealth.config.room.entity.PatientVital;
 import org.intelehealth.config.room.entity.Specialization;
 import org.intelehealth.config.utility.PatientVitalConfigKeys;
-import org.intelehealth.config.utility.ResUtils;
 import org.intelehealth.ihutils.ui.CameraActivity;
 import org.intelehealth.klivekit.model.RtcArgs;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -227,7 +220,6 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.UUID;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import io.reactivex.Observable;
@@ -1199,7 +1191,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             if (height.getValue().trim().isEmpty() || height.getValue().trim().equals("0")) {
                 heightView.setText(getResources().getString(R.string.no_information));
             } else {
-                heightView.setText(height.getValue());
+                heightView.setText(VisitUtils.convertHeightIntoFeets(height.getValue(), this));
             }
         }
 

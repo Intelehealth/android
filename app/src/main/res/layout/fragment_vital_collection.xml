@@ -83,7 +83,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:lineSpacingExtra="1sp"
-                            android:text="@string/height_cm"
+                            android:text="@string/height_ft"
                             android:textColor="@color/gray_3"
                             android:textSize="@dimen/common_label_text_size"
                             android:textStyle="normal" />

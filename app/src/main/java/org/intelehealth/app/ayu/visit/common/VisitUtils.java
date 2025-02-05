@@ -1,5 +1,8 @@
 package org.intelehealth.app.ayu.visit.common;
 
+import android.content.Context;
+
+import org.intelehealth.app.R;
 import org.intelehealth.app.database.dao.ObsDAO;
 import org.intelehealth.app.database.dao.VisitsDAO;
 import org.intelehealth.app.knowledgeEngine.Node;
@@ -407,6 +410,17 @@ AB NEGATIVE = 1231*/
         //result = String.valueOf(b);
         return result;
 
+    }
+
+    public static String convertHeightIntoFeets(String height, Context context) {
+        int val = Integer.parseInt(height);
+        double centemeters = val / 2.54;
+        int inche = (int) centemeters % 12;
+        int feet = (int) centemeters / 12;
+//        String heightVal = feet + getString(R.string.ft) + " " + inche + getString(R.string.in);
+        String heightVal = feet + context.getString(R.string.ft) + " " + inche + context.getString(R.string.in_new);
+        System.out.println("value of height=" + val);
+        return heightVal;
     }
 
     public static void prefillNodeValues(Node node, String type, String visitUuid) {

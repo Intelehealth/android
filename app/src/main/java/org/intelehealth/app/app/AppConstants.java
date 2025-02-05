@@ -294,4 +294,13 @@ public class AppConstants {
     public static final String VISIT_TYPE_DOCTOR = "doctor";
     public static final String COMPLAINT_SEVIKA_VISIT = "Sevika Visit";
 
+    public static final String LANGUAGE_EN = "en";
+    public static final String LANGUAGE_HI = "hi";
+    public static final String LANGUAGE_BN = "bn";
+    public static final String LANGUAGE_GU = "gu";
+    public static final String LANGUAGE_MR = "mr";
+    public static final String LANGUAGE_KN = "kn";
+    public static final String LANGUAGE_OR = "or";
+    public static final String LANGUAGE_AS = "as";
+
 }

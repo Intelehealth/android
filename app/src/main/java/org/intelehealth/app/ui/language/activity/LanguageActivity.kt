@@ -9,6 +9,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
+import org.intelehealth.app.activities.patientDetailActivity.StaticPatientRegistrationEnabledFieldsHelper
 import org.intelehealth.app.utilities.SessionManager
 import org.intelehealth.config.presenter.language.data.LanguageRepository
 import org.intelehealth.config.presenter.language.factory.LanguageViewModelFactory
@@ -34,9 +35,11 @@ abstract class LanguageActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         sessionManager = SessionManager(this)
-        languageViewModel.fetchSupportedLanguage().observe(this) {
+        /*languageViewModel.fetchSupportedLanguage().observe(this) {
             onLanguageLoaded(it)
-        }
+        }*/
+        val it = StaticLanguageEnabledFieldsHelper.getEnabledLanguageFields();
+        onLanguageLoaded(it)
         setupLanguage()
     }
 

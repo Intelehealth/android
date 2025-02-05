@@ -643,6 +643,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="enter_patient_s_body_measurement_details">Enter patient’s body measurement details</string>
     <string name="height_cm">Height (cm)</string>
+    <string name="height_ft">Height (ft)</string>
     <string name="weight_kg">Weight (kg)</string>
     <string name="bmi_index_auto_calculated">BMI index(auto-calculated)</string>
     <string name="enter_the_patient_s_vitals">Enter the patient’s vitals</string>

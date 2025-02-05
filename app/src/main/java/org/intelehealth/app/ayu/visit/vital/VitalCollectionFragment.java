@@ -87,6 +87,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
     private String encounterVitals;
     private float float_ageYear_Month;
     private int mAgeInMonth;
+    private double  bmi_value;
     private boolean initialHeight = true, initialWeight = true;
     private String encounterAdultIntials = "", EncounterAdultInitial_LatestVisit = "";
     //private Spinner mHeightSpinner, mWeightSpinner;
@@ -1157,7 +1158,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         if (results != null) {
             if (results.getHeight() != null && !results.getHeight().isEmpty() && !results.getHeight().equalsIgnoreCase("0")) {
                 heightvalue = results.getHeight();
-                String height = ConvertHeightIntoFeets(results.getHeight());
+                String height = VisitUtils.convertHeightIntoFeets(results.getHeight(), requireContext());
                 int pos = heightAdapter.getPosition(height);
                 mheightSpinner.setSelection(pos);
 //                mheightSpinner.setSelection(mHeightArrayAdapter.getPosition(results.getHeight() + " " + getResources().getString(R.string.cm)), true);
@@ -1283,7 +1284,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                 double numerator = Double.parseDouble(mWeightEditText.getText().toString()) * 10000;
                 //  double denominator = (Double.parseDouble(mHeight.getText().toString())) * (Double.parseDouble(mHeight.getText().toString()));
                 double denominator = (Double.parseDouble(heightvalue)) * (Double.parseDouble(heightvalue));
-                double bmi_value = numerator / denominator;
+                bmi_value = numerator / denominator;
                 //DecimalFormat df = new DecimalFormat("0.00");
                 //mBMI.setText(df.format(bmi_value));
                 mBMITextView.setText(String.format(Locale.ENGLISH, "%.2f", bmi_value));
@@ -1362,7 +1363,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
 
                 if (!value.equalsIgnoreCase("0")) {
                     heightvalue = value;
-                    String height = ConvertHeightIntoFeets(value);
+                    String height = VisitUtils.convertHeightIntoFeets(value, requireContext());
                     int pos = heightAdapter.getPosition(height);
                     mheightSpinner.setSelection(pos);
                 }
@@ -1432,17 +1433,6 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         if (mBMITextView.getText().toString().equalsIgnoreCase("")) {
             calculateBMI_onEdit(heightvalue, weightvalue);
         }
-    }
-
-    public String ConvertHeightIntoFeets(String height) {
-        int val = Integer.parseInt(height);
-        double centemeters = val / 2.54;
-        int inche = (int) centemeters % 12;
-        int feet = (int) centemeters / 12;
-//        String heightVal = feet + getString(R.string.ft) + " " + inche + getString(R.string.in);
-        String heightVal = feet + getString(R.string.ft) + " " + inche + getString(R.string.in_new);
-        System.out.println("value of height=" + val);
-        return heightVal;
     }
 
     public boolean isDataReadyForSaving() {
@@ -1772,7 +1762,12 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
             if (mBMITextView.getText() != null && mBMITextView.getText().toString().trim().contains(" ")) {
                 results.setBmi(mBMITextView.getText().toString().trim().split(" ")[0]);
             } else {
-                results.setBmi("");
+                double safeBmi = Objects.requireNonNullElse(bmi_value, 0.0);
+                if(safeBmi > 0 ){
+                    results.setBmi(String.format(Locale.ENGLISH, "%.2f", bmi_value));
+                } else {
+                    results.setBmi("");
+                }
             }
             results.setHaemoglobin(mHaemoglobinText.getText().toString());
             results.setSugarRandom(mSugarRandomText.getText().toString());

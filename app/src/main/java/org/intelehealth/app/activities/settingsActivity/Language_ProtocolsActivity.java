@@ -107,9 +107,13 @@ public class Language_ProtocolsActivity extends BaseActivity implements BaseView
         if (languageAdapter != null) {
             for (int i = 0; i < languageAdapter.getList().size(); i++) {
                 ActiveLanguage language = languageAdapter.getList().get(i);
+                sessionManager = new SessionManager(Language_ProtocolsActivity.this);
                 if (language.getCode().equalsIgnoreCase(sessionManager.getAppLanguage())) {
                     languageAdapter.select(i, language);
-                    mLangTextView.setText(language.getName());
+                    selectedLanguage = language;
+                    if(mLangTextView != null){
+                        mLangTextView.setText(selectedLanguage.getName());
+                    }
                 }
             }
         }
@@ -137,6 +141,9 @@ public class Language_ProtocolsActivity extends BaseActivity implements BaseView
        switchNotification .setOnCheckedChangeListener((buttonView, isChecked) -> {
            sessionManager.setBlackout(isChecked);
        });
+       if(selectedLanguage != null){
+           mLangTextView.setText(selectedLanguage.getName());
+       }
     }
 
 //    public Context setLocale(Context context) {

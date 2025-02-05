@@ -114,7 +114,7 @@ class SplashActivity : LanguageActivity(), BaseViewHolder.ViewHolderClickListene
     }
 
     override fun onLanguageLoaded(languages: List<ActiveLanguage>) {
-        adapter.updateItems(languages.toMutableList())
+//        adapter.updateItems(languages.toMutableList())
     }
 
     private fun handleButtonClickListener() {
