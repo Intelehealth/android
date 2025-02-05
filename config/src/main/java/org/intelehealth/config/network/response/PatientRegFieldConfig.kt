@@ -8,8 +8,7 @@ import org.intelehealth.config.room.entity.PatientRegistrationFields
  * Mob   : +919727206702
  **/
 data class PatientRegFieldConfig(
-    // it has some nested data, that's why separated response and entity data classes
-    val personal: List<PatientRegFieldsResponse>,
+    val personal: List<PatientRegistrationFields>,
     val address: List<PatientRegistrationFields>,
     val other: List<PatientRegistrationFields>
 )

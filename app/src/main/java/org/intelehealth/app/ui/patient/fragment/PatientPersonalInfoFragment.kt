@@ -462,7 +462,7 @@ class PatientPersonalInfoFragment :
         binding.textInputLayECName.hideErrorOnTextChang(binding.textInputETECName)
         binding.textInputLayPhoneNumber.hideDigitErrorOnTextChang(
             binding.textInputETPhoneNumber,
-            binding.personalConfig?.phone?.maxLength ?: 10
+            binding.personalConfig?.phone?.validations?.minLength ?: 10
         )
         binding.textInputLayEMPhoneNumber.hideDigitErrorOnTextChang(
             binding.textInputETEMPhoneNumber,
@@ -546,9 +546,9 @@ class PatientPersonalInfoFragment :
                         binding.textInputETPhoneNumber,
                         getString(
                             R.string.enter_digits,
-                            binding.personalConfig?.phone?.maxLength ?: 10
+                            binding.personalConfig?.phone?.validations?.minLength ?: 10
                         ),
-                        binding.personalConfig?.phone?.maxLength ?: 10
+                        binding.personalConfig?.phone?.validations?.minLength ?: 10
                     )
                 )
 
