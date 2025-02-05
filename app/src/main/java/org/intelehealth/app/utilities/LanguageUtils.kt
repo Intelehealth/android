@@ -33,7 +33,7 @@ object LanguageUtils {
 
     @JvmStatic
     fun getState(state: String): StateData? {
-        return parseStatesJson().stateDataList.find { it.state == state }
+        return parseStatesJson().stateDataList.find {it.state == state || it.stateMarathi == state}
     }
 
     @JvmStatic
@@ -82,12 +82,12 @@ object LanguageUtils {
 
     @JvmStatic
     fun getDistrict(state: StateData?, district: String): DistData? {
-        return state?.distDataList?.find { it.name == district }
+        return state?.distDataList?.find { it.name == district  || it.nameMarathi == district }
     }
 
     @JvmStatic
     fun getBlock(district: DistData?, block: String?): Block? {
-        return block?.let { return@let district?.blocks?.find { it.name == block } }
+        return block?.let { return@let district?.blocks?.find { it.name == block || it.nameMarathi == block } }
     }
 
     @JvmStatic
@@ -97,7 +97,7 @@ object LanguageUtils {
 
     @JvmStatic
     fun getVillage(gramPanchayat: GramPanchayat?, village: String?): Village? {
-        return village?.let { return@let gramPanchayat?.villages?.find { it.name == village } }
+        return village?.let { return@let gramPanchayat?.villages?.find { it.name == village || it.nameMarathi == village} }
     }
 
     @JvmStatic
