@@ -1361,6 +1361,18 @@
     <string name="change_lang">भभाषा आणि प्रोटोकॉल बदला</string>
     <string name="please_enter_the_value">कृपया मूल्य प्रविष्ट करा</string>
     <string name="hello_i_am_ayu">नमस्कार, मी AYU आहे,</string>
-
+    <string name="agree_to_terms">अटी आणि शर्ती आणि गोपनीयता धोरणास सहमती द्या</string>
+    <string name="terms_and_conditions">अटी आणि शर्ती</string>
+    <string name="setup_new">सेटअप</string>
+    <string name="one_time_setup">कृपया तुमची एकदा\nसेटअप क्रियाकलाप पूर्ण करा</string>
+    <string name="location_new">लोकेशन</string>
+    <string name="enter_username1">तुमचे वापरकर्तानाव प्रविष्ट करा</string>
+    <string name="enter_password1">तुमचा पासवर्ड टाका</string>
+    <string name="forgot_password_link"><u>पासवर्ड विसरलात?</u></string>
+    <plurals name="open_no_of_visit">
+        <item quantity="one">%d ओपन विजिट</item>
+        <item quantity="other">%d ओपन विजिट्स</item>
+    </plurals>
+    <string name="help_footer">साह्यता</string>
 
 </resources>
