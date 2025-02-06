@@ -49,9 +49,13 @@ class PregnancyRosterFragment : BaseRosterFragment(R.layout.fragment_pregnancy_r
 
     override fun isInputValid(): Boolean {
         if (isValidPregnancy()) {
-            rosterViewModel.pregnancyOutcomeCount =
-                binding.tilEtPregnancyOutcomeCount.text.toString()
             rosterViewModel.pregnancyCount = binding.tilEtPregnancyCount.text.toString()
+            if (rosterViewModel.pregnancyOutcome == YES) {
+                rosterViewModel.pregnancyOutcomeCount =
+                    binding.tilEtPregnancyOutcomeCount.text.toString()
+            } else {
+                rosterViewModel.pregnancyOutcomeCount = ""
+            }
             return true
         } else {
             return false
@@ -120,8 +124,6 @@ class PregnancyRosterFragment : BaseRosterFragment(R.layout.fragment_pregnancy_r
             } else {
                 rosterViewModel.pregnancyOutcome = NO
                 binding.groupPregnancyOutcome.visibility = View.GONE
-                rosterViewModel.pregnancyOutcomeCount = ""
-                binding.tilEtPregnancyOutcomeCount.setText("")
             }
         }
 

@@ -74,22 +74,31 @@ class RosterQuestionnaireMainActivity : BaseActivity() {
 
         binding.btnNext.setOnClickListener {
             val currentFragment = navHostFragment?.childFragmentManager?.primaryNavigationFragment
-            if (rosterViewModel.isEditMode) {
-                rosterViewModel.insertRoster()
-                return@setOnClickListener
-            }
+
             if (currentFragment is GeneralRosterFragment) {
                 if (currentFragment.isInputValid()) {
-                    if (rosterViewModel.isPregnancyVisible) {
-                        navigateToStage(RosterQuestionnaireStage.PREGNANCY_ROSTER)
+                    if (rosterViewModel.isEditMode) {
+                        rosterViewModel.insertRoster()
+                        return@setOnClickListener
                     } else {
-                        navigateToStage(RosterQuestionnaireStage.HEALTH_SERVICE)
+                        if (rosterViewModel.isPregnancyVisible) {
+                            navigateToStage(RosterQuestionnaireStage.PREGNANCY_ROSTER)
+                        } else {
+                            navigateToStage(RosterQuestionnaireStage.HEALTH_SERVICE)
+                        }
                     }
+
 
                 }
             } else if (currentFragment is PregnancyRosterFragment) {
+
                 if (currentFragment.isInputValid()) {
-                    navigateToStage(RosterQuestionnaireStage.HEALTH_SERVICE)
+                    if (rosterViewModel.isEditMode) {
+                        rosterViewModel.insertRoster()
+                        return@setOnClickListener
+                    } else {
+                        navigateToStage(RosterQuestionnaireStage.HEALTH_SERVICE)
+                    }
                 }
 
             } else if (currentFragment is HealthServiceRosterFragment) {
