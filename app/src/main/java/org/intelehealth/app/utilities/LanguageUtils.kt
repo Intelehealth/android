@@ -3,6 +3,7 @@ package org.intelehealth.app.utilities
 import android.content.Context
 import android.content.res.Configuration
 import android.content.res.Resources
+import android.util.Log
 import androidx.annotation.ArrayRes
 import com.google.gson.Gson
 import org.intelehealth.app.activities.identificationActivity.model.Block
@@ -102,8 +103,11 @@ object LanguageUtils {
 
     @JvmStatic
     fun getStateLocal(state: StateData): String {
-        if (getLocalLang().equals("hi")) return state.stateHindi
-        return state.state
+        return when (getLocalLang()) {
+            "hi" -> state.stateHindi
+            "mr" -> state.stateMarathi
+            else -> state.state
+        }
     }
 
     @JvmStatic
@@ -187,4 +191,13 @@ object LanguageUtils {
         // Retrieve the string resource for the desired language
         return localizedResources.getString(stringResId)
     }
+    @JvmStatic
+    fun getStateInEnglish(state: StateData): String {
+             return state.state
+    }
+    @JvmStatic
+    fun getDistrictInEnglish(district: DistData): String {
+        return district.name
+    }
+
 }

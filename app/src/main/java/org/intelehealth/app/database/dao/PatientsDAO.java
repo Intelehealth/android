@@ -534,13 +534,16 @@ public class PatientsDAO {
         db.beginTransaction();
         try {
             for (int i = 0; i < patientAttributesDTOS.size(); i++) {
-                values.put("uuid", patientAttributesDTOS.get(i).getUuid());
-                values.put("person_attribute_type_uuid", patientAttributesDTOS.get(i).getPersonAttributeTypeUuid());
-                values.put("patientuuid", patientAttributesDTOS.get(i).getPatientuuid());
-                values.put("value", patientAttributesDTOS.get(i).getValue());
-                values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
-                values.put("sync", false);
-                db.insertWithOnConflict("tbl_patient_attribute", null, values, SQLiteDatabase.CONFLICT_REPLACE);
+                PatientAttributesDTO patientAttributesDTO = patientAttributesDTOS.get(i);
+                if (patientAttributesDTO.getPersonAttributeTypeUuid() != null && !patientAttributesDTO.getPersonAttributeTypeUuid().isEmpty()) {
+                    values.put("uuid", patientAttributesDTOS.get(i).getUuid());
+                    values.put("person_attribute_type_uuid", patientAttributesDTOS.get(i).getPersonAttributeTypeUuid());
+                    values.put("patientuuid", patientAttributesDTOS.get(i).getPatientuuid());
+                    values.put("value", patientAttributesDTOS.get(i).getValue());
+                    values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
+                    values.put("sync", false);
+                    db.insertWithOnConflict("tbl_patient_attribute", null, values, SQLiteDatabase.CONFLICT_REPLACE);
+                }
             }
             db.setTransactionSuccessful();
         } catch (SQLException e) {

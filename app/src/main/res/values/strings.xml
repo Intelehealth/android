@@ -1092,8 +1092,6 @@
     <string name="household_no">Household Number</string>
     <string name="hint_drop_down_village">Select Village</string>
     <string name="enter_block">Enter Block</string>
-    <string name="other_block">Other Block</string>
-
     <string name="title_video">Video Feature</string>
     <string name="province">Province</string>
     <string name="select_province">Select Province</string>
@@ -1731,6 +1729,7 @@
     <string name="breathing">breathing</string>
     <string name="heart_recording_saved">Heart recording saved successfully!</string>
     <string name="lung_sound_saved">Lung sound saved successfully!</string>
+    <string name="other_block_option">Other Block</string>
 
 
 </resources>
