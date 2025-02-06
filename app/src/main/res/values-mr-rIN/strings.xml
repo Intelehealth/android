@@ -14,6 +14,7 @@
     <string name="action_home">मुख्यपृष्ठ</string>
 
 
+
     //Database Schema Names
 
     //Login Screen
@@ -42,7 +43,7 @@
     <string name="identification_screen_checkbox_other">इतर</string>
     <string name="identification_screen_prompt_age">वय: *</string>
     <string name="identification_screen_prompt_city">गाव / नगर / शहर *</string>
-    <string name="identification_screen_prompt_state">राज्य *</string>
+    <string name="identification_screen_prompt_state">राज्य</string>
     <string name="identification_screen_prompt_country">देश *</string>
     <string name="identification_screen_prompt_postal_code">पिनकोड</string>
     <string name="identification_screen_text_years">वर्ष</string>
@@ -404,12 +405,12 @@
     <string name="enter_patient_s_body_measurement_details">रुग्णाच्या शरीराचे मापन तपशील प्रविष्ट करा</string>
     <string name="height_cm">उंची (सेमी)</string>
     <string name="weight_kg">वजन (किलो)</string>
-    <string name="bmi_index_auto_calculated">BMI निर्देशांक (स्वयं-गणना)</string>
+    <string name="bmi_index_auto_calculated">बी.एम.आय निर्देशांक (स्वयं-गणना)</string>
     <string name="enter_the_patient_s_vitals">रुग्णाच्या जीवनावश्यक गोष्टी प्रविष्ट करा</string>
     <string name="bp_sys">बीपी सिस्टोलिक</string>
     <string name="bp_dia">बीपी डायस्टोलिक</string>
-    <string name="pulse_bpm">नाडी (bpm)</string>
-    <string name="spo2">SpO2 (%)</string>
+    <string name="pulse_bpm">नाडी (बीपीएम)</string>
+    <string name="spo2">एसपीO2 (%)</string>
     <string name="respiratory_rate_breaths_min">श्वसन दर (श्वास/मिनिट)</string>
     <string name="temperature_f_new">तापमान (F)</string>
     <string name="confirm">पुष्टी करा</string>
@@ -462,50 +463,50 @@
     <string name="you_are_offline_please_connect_to_the_internet_for_videos">तुम्ही ऑफलाइन आहात! कृपया व्हिडिओसाठी इंटरनेटशी कनेक्ट करा.</string>
     <string name="you_missed_the_compulsory_questions_please_answer_them">तुमचे अनिवार्य प्रश्न चुकले आहेत, कृपया त्यांची उत्तरे द्या.</string>
     <string name="image_upload_pending_alert">कृपया सबमिट करण्यापूर्वी कॅप्चर केलेली प्रतिमा अपलोड करा!</string>
-    <string name="otp_sending">OTP पाठवत आहे...</string>
+    <string name="otp_sending">ओटीपी पाठवत आहे...</string>
     <string name="token_expired">टोकन कालबाह्य झाले</string>
     <string name="your_session_has_expired_please_log_in_again">तुमचे सत्र कालबाह्य झाले आहे. कृपया पुन्हा लॉग इन करा.</string>
     <string name="forgot_username_link"><u>वापरकर्तानाव विसरलात?</u></string>
     <string name="forgot_username_txt">वापरकर्तानाव विसरलात?</string>
-    <string name="enter_mobile_no_given_text">Please make sure your mobile number is updated in the profile section before proceeding</string>
-    <string name="username_sent_title">Username Sent</string>
-    <string name="username_sent_desc">Your username has been sent via SMS to your registered mobile number.</string>
+    <string name="enter_mobile_no_given_text">कृपया पुढे जाण्यापूर्वी प्रोफाईल विभागात तुमचा मोबाईल नंबर अपडेट केल्याची खात्री करा</string>
+    <string name="username_sent_title">वापरकर्तानाव पाठवले</string>
+    <string name="username_sent_desc">तुमचे वापरकर्तानाव तुमच्या नोंदणीकृत मोबाईल क्रमांकावर एसएमएसद्वारे पाठवले गेले आहे.</string>
     <string name="teleconsultation_consent_title">टेलीकंसल्टेशन संमती</string>
-    <string name="u2022_strength">• Strength</string>
-    <string name="u2022_no_of_days">• No. of days</string>
-    <string name="u2022_timings">• Timings</string>
-    <string name="u2022_remarks">• Remarks</string>
+    <string name="u2022_strength">• ताकद</string>
+    <string name="u2022_no_of_days">• दिवसांची संख्या</string>
+    <string name="u2022_timings">• वेळा</string>
+    <string name="u2022_remarks">• शेरा</string>
     <string name="the_from_date_cannot_be_greater_than_the_to_date">The \'from\' date cannot be greater than the \'to\' date</string>
-    <string name="enter_other_information_txt">Enter other information</string>
-    <string name="blood_group_txt">Blood Group</string>
-    <string name="eg_a_ve">Eg. A +ve</string>
-    <string name="dont_know">Don\'t know</string>
-    <string name="universal_donor">( Universal Donor)</string>
-    <string name="universal_recipient">( Universal Recipient )</string>
-    <string name="no_notifications_yet">No Notifications Yet</string>
-    <string name="this_visit_is_completed">This visit is completed.</string>
-    <string name="confirmation">Confirmation</string>
+    <string name="enter_other_information_txt">इतर माहिती प्रविष्ट करा</string>
+    <string name="blood_group_txt">रक्त गट</string>
+    <string name="eg_a_ve">उदा. A +ve</string>
+    <string name="dont_know">माहीत नाही</string>
+    <string name="universal_donor">(युनिव्हर्सल डोनर)</string>
+    <string name="universal_recipient">(सार्वत्रिक प्राप्तकर्ता)</string>
+    <string name="no_notifications_yet">अद्याप कोणत्याही सूचना नाहीत</string>
+    <string name="this_visit_is_completed">ही भेट पूर्ण झाली.</string>
+    <string name="confirmation">पुष्टीकरण</string>
     <string name="delete">हटवा</string>
-    <string name="are_you_sure_you_want_to_delete_all_notifications">Are you sure you want to delete all notifications?</string>
-    <string name="view_prescription_lbl">View Prescription</string>
+    <string name="are_you_sure_you_want_to_delete_all_notifications">तुम्हाला खात्री आहे की तुम्ही सर्व सूचना हटवू इच्छिता?</string>
+    <string name="view_prescription_lbl">प्रिस्क्रिप्शन पहा</string>
     <string name="past">भूतकाळ</string>
     <string name="missed">चुकले</string>
     <string name="sorted_by_descending_order">चढत्या क्रमाने क्रमवारी लावली</string>
     <string name="sorted_by_ascending_order">उतरत्या क्रमाने क्रमवारी लावली</string>
-    <string name="over">" Over"</string>
-    <string name="facility_to_visit">Facility to visit</string>
-    <string name="follow_up_date">Follow up date</string>
-    <string name="please_select_valid_followup_date">Please select valid followup date</string>
-    <string name="reminder">Reminder</string>
-    <string name="patient_follow_up_appointment_on">Patient %1$s (%2$s): Follow-up appointment on %3$s</string>
-    <string name="open_followup">Open Followup</string>
-    <string name="find_patients_hint">Find patients</string>
+    <string name="over">" ओव्हर"</string>
+    <string name="facility_to_visit">भेट देण्याची सोय</string>
+    <string name="follow_up_date">फॉलो अप तारीख</string>
+    <string name="please_select_valid_followup_date">कृपया वैध फॉलोअप तारीख निवडा</string>
+    <string name="reminder">स्मरणपत्र</string>
+    <string name="patient_follow_up_appointment_on">पेशंट %1$s (%2$s): %3$s वर फॉलो-अप अपॉइंटमेंट</string>
+    <string name="open_followup">फॉलोअप उघडा</string>
+    <string name="find_patients_hint">रुग्ण शोधा</string>
     <string name="select_date_to_apply_filter">फिल्टर लागू करण्यासाठी तारीख निवडा.</string>
     <string name="required_alarm_and_reminder_permission">आवश्यक अलार्म आणि स्मरणपत्र परवानगी.</string>
-    <string name="forgot_your_username">Forgot your username?</string>
+    <string name="forgot_your_username">तुमचे वापरकर्तानाव विसरलात?</string>
     <string name="contact_your_admin">तुमच्या प्रशासकाशी संपर्क साधा</string>
-    <string name="sync">Refresh</string>
-    <string name="sending_otp">OTP पाठवत आहे...</string>
+    <string name="sync">रिफ्रेश करा</string>
+    <string name="sending_otp">ओटीपी पाठवत आहे...</string>
     <string name="province">Province</string>
     <string name="select_province">Select Province</string>
     <string name="city">शहर</string>
@@ -1036,7 +1037,7 @@
     <string name="take_patient_visits">रुग्णांच्या विजिट्स घेणे</string>
     <string name="ayu_digital_assistant">आयु, एक प्रोग्रामेबल डिजिटल असिस्टंट असून ते प्रादेशिक भाषांमध्ये पुराव्यावर आधारित मूलभूत आरोग्यसेवा पद्धती प्रदान करून आघाडीच्या आरोग्यसेवा व्यावसायिकांना बळकटी देतो.</string>
     <string name="skip">वगळा</string>
-    <string name="hello_ayu">नमस्कार, मी AYU आहे,</string>
+    <string name="hello_ayu">नमस्कार, मी आयु आहे,</string>
     <string name="ayu_intro">एक डिजिटल हेल्थ असिस्टंट. चला तर मग सुरुवात करूया!</string>
     <string name="agree_terms">अटी आणि शर्ती आणि गोपनीयता धोरणास सहमती द्या</string>
     <string name="setup">सेटअप</string>
@@ -1060,7 +1061,7 @@
     <string name="follow_up_visits">फॉलो-अप विजिट्स</string>
     <string name="upcoming">आगामी</string>
     <string name="edit_profile">प्रोफाइल संपादित करा</string>
-    <string name="chw_id">CHW आयडी:</string>
+    <string name="chw_id">सी.एच.डब्ल्यू आयडी:</string>
     <string name="my_achievements">माझी उपलब्धी</string>
     <string name="about_us">आमच्याबद्दल</string>
     <string name="logout">लॉग-आउट</string>
@@ -1201,7 +1202,7 @@
     <string name="alert">सूचना!</string>
     <string name="missed_questions">तुम्ही अनिवार्य प्रश्न विसरलात, कृपया त्यांची उत्तरे द्या.</string>
     <string name="do_you_have_family_history">तुमच्या कुटुंबात खालीलपैकी कोणाचा इतिहास आहे का?</string>
-    <string name="chw_worker">CHW कामगार</string>
+    <string name="chw_worker">सी.एच.डब्ल्यू कामगार</string>
     <string name="chief_complaints">मुख्य तक्रार(ा)</string>
     <string name="additional_notes">अतिरिक्त नोट्स</string>
     <string name="leave_a_note_for_doctor">डॉक्टरांसाठी एक नोट सोडा</string>
@@ -1358,7 +1359,7 @@
     <string name="type_here_patient_survey">येथे टाइप करा...</string>
     <string name="change_lang">भाषा आणि प्रोटोकॉल बदला</string>
     <string name="please_enter_the_value">कृपया मूल्य प्रविष्ट करा</string>
-    <string name="hello_i_am_ayu">नमस्कार, मी AYU आहे,</string>
+    <string name="hello_i_am_ayu">नमस्कार, मी आयु आहे,</string>
     <string name="agree_to_terms">अटी आणि शर्ती आणि गोपनीयता धोरणास सहमती द्या</string>
     <string name="terms_and_conditions">अटी आणि शर्ती</string>
     <string name="setup_new">सेटअप</string>
@@ -1420,7 +1421,7 @@
     <string name="username_not_found">वापरकर्तानाव सापडले नाही</string>
     <string name="mobile_not_registered">मोबाइल क्रमांक नोंदणीकृत नाही</string>
     <string name="password_validation">पासवर्डची लांबी ८ किंवा त्यापेक्षा जास्त असावी आणि त्यात लहान, मोठ्या अक्षरांचे व अंकांचे संयोजन असावे</string>
-    <string name="enter_otp">कृपया OTP प्रविष्ट करा</string>
+    <string name="enter_otp">कृपया ओटीपी प्रविष्ट करा</string>
     <string name="reset_app_new_title">रीसेट ॲप?</string>
     <string name="snack_policy">कृपया अटींना सहमती द्या आणि अटी आणि गोपनीयता धोरण</string>
     <string name="refreshed_successfully">यशस्वीरित्या रीफ्रेश केले!</string>
@@ -1428,5 +1429,48 @@
     <string name="no_follow_up_data">फॉलोअप डेटा नाही</string>
     <string name="you_can_add">आज</string>
     <string name="please_wait_app_reset">ॲप रीसेट होत असताना कृपया काही क्षण प्रतीक्षा करा</string>
+
+    <string name="splash_desc">जिथे डॉक्टर नाही तिथे \nदर्जेदार आरोग्य सेवा</string>
+    <string name="mobile_number">मोबाईल नंबर</string>
+    <string name="enter_mobile_no">मोबाईल नंबर टाका</string>
+    <string name="search_txt_enter">रुग्णाचे नाव किंवा आयडी टाइप करा</string>
+    <string name="search_pat_not_found_txt">रुग्ण सापडला नाही!</string>
+    <string name="search_pat_hint_txt">शोधण्यासाठी योग्य वापरकर्तानाव किंवा आयडी वापरा किंवा तुम्ही नवीन रुग्णाची नोंदणी करू शकता.</string>
+    <string name="doctor_yet_to_send_prescription">डॉक्टरांनी अजून प्रिस्क्रिप्शन पाठवायचे आहेत</string>
+    <string name="patients">रुग्णांसाठी</string>
+    <string name="you_can_remind_doctor">तुम्ही डॉक्टरांना आठवण करून देऊ शकता.</string>
+    <string name="no_visit_found">भेट मिळाली नाही</string>
+    <string name="level">पातळी %1$d</string>
+    <string name="from_9_00_pm_to_6_00_am">रात्री 9.00 ते सकाळी 6.00 पर्यंत</string>
+    <string name="aboutus_text">इंटेलहेल्थ ही उच्च दर्जाची आरोग्यसेवा देणारी ना-नफा आहे जिथे टेलिमेडिसिनद्वारे डॉक्टर नसतात. अभिनव डिजिटल हेल्थ असिस्टंटद्वारे चालवलेले आमचे ओपन-सोर्स टेक्नॉलॉजी प्लॅटफॉर्म वापरून, आम्ही शेवटच्या टप्प्यावर डॉक्टर, डायग्नोस्टिक्स आणि amp; औषधे.\n\nसंसर्गजन्य आणि असंसर्गजन्य आजारांसाठी आरोग्य सेवा देण्यासाठी हजारो आरोग्य कर्मचारी आणि डॉक्टरांना जोडून, इंटेलहेल्थ लाखो रुग्णांपर्यंत पोहोचली आहे. आम्ही भारतातील आरोग्य मंत्रालयांसोबत भागीदारीत काम केले आहे &amp; किर्गिझस्तान तसेच युनिसेफ, झपीगो, एमएसएफ, एकल आरोग्य आणि इतर अनेक संस्था. इंटेलहेल्थला वर्ल्ड इकॉनॉमिक फोरम आणि नीती आयोग इंडियाने प्रभावी डिजिटल पब्लिक गुड म्हणून मान्यता दिली आहे.</string>
+    <string name="aboutus_termscondition">आमचे पहा <a href="https://intelehealth.org/terms-of-use">अटी आणि शर्ती</a></string>
+    <string name="Hours">तास</string>
+    <string name="Days">दिवस</string>
+    <string name="Weeks">आठवडे</string>
+    <string name="Months">महिने</string>
+    <string name="Years">वर्षे</string>
+    <string name="upload_image_from_gallery">गॅलरीमधून प्रतिमा अपलोड करा किंवा चित्र घ्या</string>
+    //Camera Permissions
+    <string name="util_permission_camera_rationale">कॅमेरा पूर्वावलोकन दर्शविण्यासाठी कॅमेरा परवानगी आवश्यक आहे.</string>
+    <string name="util_permission_camera_denied">कॅमेरा परवानगी नाकारली. कृपया कॅमेरा ऍक्सेस करण्यासाठी ते मंजूर करण्याचा विचार करा!</string>
+    <string name="util_permission_camera_never_askagain">पुन्हा कधीही न विचारता कॅमेरा परवानगी नाकारण्यात आली.</string>
+    <string name="util_button_allow">परवानगी द्या</string>
+    <string name="util_button_deny">नकार द्या</string>
+    <string name="util_button_ok">ठीक आहे</string>
+    <string name="util_button_cancel">रद्द करा</string>
+    <string name="util_picture_taken">चित्र काढले</string>
+    <string name="util_switch_flash">फ्लॅश स्विच करा</string>
+    <string name="util_switch_camera">कॅमेरा स्विच करा</string>
+    <string name="util_flash_auto">फ्लॅश ऑटो</string>
+    <string name="util_flash_off">फ्लॅश बंद</string>
+    <string name="util_flash_on">फ्लॅश चालू</string>
+    <string name="util_title_activity_camera">कॅमेरा</string>
+    <string name="util_cancel">रद्द करा</string>
+    <string name="util_take_image">प्रतिमा घ्या</string>
+    <string name="util_photo">फोटो</string>
+    <string name="chief_complaint">मुख्य तक्रार(री)</string>
+    <string name="add_additional_documents">अतिरिक्त दस्तऐवज जोडा</string>
+    <string name="reason">कारण</string>
+
 
 </resources>
