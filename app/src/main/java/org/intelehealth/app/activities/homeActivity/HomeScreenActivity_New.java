@@ -43,11 +43,8 @@ import android.provider.Settings;
 import android.text.Html;
 import android.util.DisplayMetrics;
 
-import org.intelehealth.app.activities.onboarding.PersonalConsentActivity;
 import org.intelehealth.app.ayu.visit.vital.CoroutineProvider;
-import org.intelehealth.app.ui.patient.data.PatientRepository;
-import org.intelehealth.app.ui.patient.viewmodel.PatientViewModel;
-import org.intelehealth.app.utilities.AddPatientUtils;
+import org.intelehealth.app.utilities.NavigationConfigUtils;
 import org.intelehealth.app.utilities.CustomLog;
 
 import android.view.LayoutInflater;
@@ -77,7 +74,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.LifecycleOwnerKt;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.WorkManager;
@@ -85,7 +81,6 @@ import androidx.work.WorkManager;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.github.ajalt.timberkt.Timber;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.navigation.NavigationBarView;
@@ -101,7 +96,6 @@ import org.intelehealth.app.activities.help.activities.HelpFragment_New;
 import org.intelehealth.app.activities.informativeVideos.fragments.InformativeVideosFragment_New;
 import org.intelehealth.app.activities.loginActivity.LoginActivityNew;
 import org.intelehealth.app.activities.notification.view.NotificationActivity;
-import org.intelehealth.app.activities.onboarding.PrivacyPolicyActivity_New;
 import org.intelehealth.app.activities.settingsActivity.Language_ProtocolsActivity;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
@@ -114,11 +108,9 @@ import org.intelehealth.app.models.CheckAppUpdateRes;
 import org.intelehealth.app.models.dto.ProviderAttributeDTO;
 import org.intelehealth.app.models.dto.ProviderDTO;
 import org.intelehealth.app.profile.MyProfileActivity;
-import org.intelehealth.app.services.MyIntentService;
 import org.intelehealth.app.services.firebase_services.DeviceInfoUtils;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
-import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.DownloadFilesUtils;
@@ -132,11 +124,7 @@ import org.intelehealth.app.utilities.TooltipWindow;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.app.webrtc.activity.IDACallLogActivity;
-import org.intelehealth.config.presenter.feature.data.FeatureActiveStatusRepository;
-import org.intelehealth.config.presenter.feature.factory.FeatureActiveStatusViewModelFactory;
-import org.intelehealth.config.presenter.feature.viewmodel.FeatureActiveStatusViewModel;
 import org.intelehealth.config.presenter.fields.factory.PatientViewModelFactory;
-import org.intelehealth.config.room.ConfigDatabase;
 import org.intelehealth.config.room.entity.FeatureActiveStatus;
 import org.intelehealth.config.room.entity.PatientRegistrationFields;
 import org.intelehealth.fcm.utils.FcmTokenGenerator;
@@ -1340,7 +1328,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
                             LifecycleOwnerKt.getLifecycleScope(HomeScreenActivity_New.this),
                             PatientViewModelFactory.create(HomeScreenActivity_New.this, HomeScreenActivity_New.this),
                             data -> {
-                                AddPatientUtils.navigate(HomeScreenActivity_New.this, (List<PatientRegistrationFields>) data);
+                                NavigationConfigUtils.navigateToPatientReg(HomeScreenActivity_New.this, (List<PatientRegistrationFields>) data);
                             }
                     );
 

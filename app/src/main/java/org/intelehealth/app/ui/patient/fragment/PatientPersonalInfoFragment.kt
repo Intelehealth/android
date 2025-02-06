@@ -466,7 +466,7 @@ class PatientPersonalInfoFragment :
         )
         binding.textInputLayEMPhoneNumber.hideDigitErrorOnTextChang(
             binding.textInputETEMPhoneNumber,
-            10
+            binding.personalConfig?.emergencyContactNumber?.validations?.minLength ?: 10
         )
     }
 
@@ -584,8 +584,11 @@ class PatientPersonalInfoFragment :
                     ).and(
                         binding.textInputLayEMPhoneNumber.validateDigit(
                             binding.textInputETEMPhoneNumber,
-                            R.string.enter_10_digits,
-                            10
+                            getString(
+                                R.string.enter_digits,
+                                binding.personalConfig?.emergencyContactNumber?.validations?.minLength ?: 10
+                            ),
+                            binding.personalConfig?.emergencyContactNumber?.validations?.minLength ?: 10
                         )
                     ).and(binding.textInputETPhoneNumber.text?.let { phone ->
                         val valid =
@@ -609,8 +612,11 @@ class PatientPersonalInfoFragment :
                         if (etEm.text?.isNotEmpty() == true) {
                             binding.textInputLayEMPhoneNumber.validateDigit(
                                 binding.textInputETEMPhoneNumber,
-                                R.string.enter_10_digits,
-                                10
+                                getString(
+                                    R.string.enter_digits,
+                                    binding.personalConfig?.emergencyContactNumber?.validations?.minLength ?: 10
+                                ),
+                                binding.personalConfig?.emergencyContactNumber?.validations?.minLength ?: 10
                             ).and(binding.textInputETPhoneNumber.text?.let { phone ->
                                 val valid =
                                     phone.toString() != binding.textInputETEMPhoneNumber.text.toString()

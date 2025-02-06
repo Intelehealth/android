@@ -9,5 +9,8 @@ class IntentKeys {
         const val IS_PERSONAL_CONSENT_REQUIRED = "isPersonalConsentRequired"
         const val INTENT_FROM = "IntentFrom"
         const val IS_PRIVACY_POLICY = "isPrivacyPolicy"
+
+        const val COMMON_VISIT_DATA = "CommonVisitData"
+        const val NEW = "new"
     }
 }

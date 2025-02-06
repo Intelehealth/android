@@ -130,6 +130,7 @@ import org.intelehealth.app.utilities.DownloadFilesUtils;
 import org.intelehealth.app.utilities.FileUtils;
 import org.intelehealth.app.utilities.LanguageUtils;
 import org.intelehealth.app.utilities.Logger;
+import org.intelehealth.app.utilities.NavigationConfigUtils;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.PatientRegConfigKeys;
@@ -219,6 +220,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
     List<PatientRegistrationFields> patientAllFields;
     private ActivityPatientDetail2Binding binding;
+    private boolean isTeleconsultationConsentActive = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -325,14 +327,12 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                         @Override
                         public void onDialogActionDone(int action) {
                             if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
-                                Intent in = new Intent(PatientDetailActivity2.this, TeleconsultationConsentActivity.class);
-                                CommonVisitData commonVisitData = new CommonVisitData();
-                                commonVisitData.setPatientUuid(patientDTO.getUuid());
-                                commonVisitData.setPrivacyNote(privacy_value_selected);
-                                in.putExtra("CommonVisitData", commonVisitData);
-                                startActivity(in);
-                                // startVisit();
-                                // mStartForConsentApproveResult.launch(new Intent(PatientDetailActivity2.this, TeleconsultationConsentActivity.class));
+                                NavigationConfigUtils.navigateToStartVisit(
+                                        PatientDetailActivity2.this,
+                                        isTeleconsultationConsentActive,
+                                        privacy_value_selected,
+                                        patientDTO.getUuid()
+                                );
                             }
                         }
                     });
@@ -2686,6 +2686,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         if (activeStatus != null) {
             binding.setAddressActiveStatus(activeStatus.getActiveStatusPatientAddress());
             binding.setOtherActiveStatus(activeStatus.getActiveStatusPatientOther());
+            isTeleconsultationConsentActive = activeStatus.getConsentPolicy();
         }
     }
 }

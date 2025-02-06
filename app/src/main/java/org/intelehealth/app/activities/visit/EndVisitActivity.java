@@ -1,17 +1,14 @@
 package org.intelehealth.app.activities.visit;
 
-import static org.intelehealth.app.database.dao.VisitsDAO.allNotEndedVisits;
 import static org.intelehealth.app.database.dao.VisitsDAO.thisMonths_NotEndedVisits;
 import static org.intelehealth.app.database.dao.VisitsDAO.olderNotEndedVisits;
 import static org.intelehealth.app.database.dao.VisitsDAO.recentNotEndedVisits;
 import static org.intelehealth.app.syncModule.SyncUtils.syncNow;
 
 import androidx.activity.OnBackPressedCallback;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.lifecycle.LifecycleOwnerKt;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -27,12 +24,8 @@ import android.os.Bundle;
 import android.os.LocaleList;
 import android.util.DisplayMetrics;
 
-import org.intelehealth.app.BuildConfig;
-import org.intelehealth.app.activities.onboarding.PersonalConsentActivity;
-import org.intelehealth.app.activities.searchPatientActivity.SearchPatientActivity_New;
 import org.intelehealth.app.ayu.visit.vital.CoroutineProvider;
-import org.intelehealth.app.ui.patient.viewmodel.PatientViewModel;
-import org.intelehealth.app.utilities.AddPatientUtils;
+import org.intelehealth.app.utilities.NavigationConfigUtils;
 import org.intelehealth.app.utilities.CustomLog;
 
 import android.view.View;
@@ -44,11 +37,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.activities.followuppatients.FollowUpPatientActivity_New;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
-import org.intelehealth.app.activities.onboarding.PrivacyPolicyActivity_New;
-import org.intelehealth.app.activities.settingsActivity.Language_ProtocolsActivity;
-import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.models.PrescriptionModel;
 import org.intelehealth.app.shared.BaseActivity;
@@ -150,7 +139,7 @@ public class EndVisitActivity extends BaseActivity implements NetworkUtils.Inter
                         LifecycleOwnerKt.getLifecycleScope(EndVisitActivity.this),
                         PatientViewModelFactory.create(EndVisitActivity.this, EndVisitActivity.this),
                         data -> {
-                            AddPatientUtils.navigate(EndVisitActivity.this, (List<PatientRegistrationFields>) data);
+                            NavigationConfigUtils.navigateToPatientReg(EndVisitActivity.this, (List<PatientRegistrationFields>) data);
                         }
                 );
                 finish();

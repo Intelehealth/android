@@ -18,9 +18,8 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 
-import org.intelehealth.app.activities.searchPatientActivity.SearchPatientActivity_New;
 import org.intelehealth.app.ayu.visit.vital.CoroutineProvider;
-import org.intelehealth.app.utilities.AddPatientUtils;
+import org.intelehealth.app.utilities.NavigationConfigUtils;
 import org.intelehealth.app.utilities.CustomLog;
 import android.util.TypedValue;
 import android.view.KeyEvent;
@@ -53,7 +52,6 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.activities.notification.usecase.DeleteLocalNotificationUseCase;
-import org.intelehealth.app.activities.onboarding.PrivacyPolicyActivity_New;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
@@ -63,7 +61,6 @@ import org.intelehealth.app.models.FollowUpModel;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DialogUtils;
-import org.intelehealth.app.utilities.IntentKeys;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.ToastUtil;
@@ -266,7 +263,7 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                         LifecycleOwnerKt.getLifecycleScope(FollowUpPatientActivity_New.this),
                         PatientViewModelFactory.create(FollowUpPatientActivity_New.this, FollowUpPatientActivity_New.this),
                         data -> {
-                            AddPatientUtils.navigate(FollowUpPatientActivity_New.this, (List<PatientRegistrationFields>) data);
+                            NavigationConfigUtils.navigateToPatientReg(FollowUpPatientActivity_New.this, (List<PatientRegistrationFields>) data);
                         }
                 );
                 finish();
