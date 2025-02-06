@@ -1592,7 +1592,6 @@
     <string name="wait_logging_in">Please wait a moment, you are logging into the app.</string>
     <string name="select_location">Start typing or select location</string>
     <string name="forgot_username">Forgot username?</string>
-    <string name="login_successful">Login Successful</string>
     <string name="add_patients">Add Patients</string>
     <string name="last_sync1">Last sync:</string>
     <string name="logout">Log-out</string>
