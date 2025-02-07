@@ -14,7 +14,6 @@
     <string name="action_home">मुख्यपृष्ठ</string>
 
 
-
     //Database Schema Names
 
     //Login Screen
@@ -269,7 +268,7 @@
     <string name="minute">मिनिट</string>
     <string name="s">s</string>
     <string name="ago">पूर्वी</string>
-    <string name="failed_synced"><![CDATA[Failed refresh, check your internet connection]]></string>
+    <string name="failed_synced"><![CDATA[रिफ्रेश करता आले नाही, तुमचे इंटरनेट कनेक्शन तपासा]]></string>
     <string name="visit_not_uploaded">भेट दिली नाही अपलोड केलेले नाही</string>
     <string name="upload_started">अपलोड करीत आहे ...</string>
     <string name="visit_uploaded_failed">इंटरनेट उपलब्ध असेल तेव्हा अपलोड केले जाईल</string>
@@ -292,8 +291,8 @@
     <string name="since_when_have_you_had_this_symptom">आपल्याला हे लक्षण कधीपासून आहे?</string>
     <string name="please_enter_url_and_key">कृपया URL आणि की प्रविष्ट करा</string>
     <string name="permission_denied">परवानगी नाकारली \ n</string>
-    <string name="reject_permission_results"><![CDATA[If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]]]></string>
-    <string name="current_time"><![CDATA[\"Current time => \"]]></string>
+    <string name="reject_permission_results"><![CDATA[तुम्ही परवानगी नाकारल्यास, तुम्ही ही सेवा वापरू शकत नाही\n\nकृपया [सेटिंग] > [परवानग्या येथे चालू करा]]]></string>
+    <string name="current_time"><![CDATA[\"वर्तमान वेळ => \"]]></string>
     <string name="no_history_family_found">कुटुंबातील आजाराचा कोणताही इतिहास प्रदान केलेला नाही.</string>
     <string name="no_history_patient_illness_found">रूग्णाच्या आजाराचा कोणताही इतिहास दिलेला नाही.</string>
     <string name="dr_registration_no">नॊदणी क्रमांक:</string>
