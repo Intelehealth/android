@@ -1726,6 +1726,8 @@
     <string name="heart_recording_saved">Heart recording saved successfully!</string>
     <string name="lung_sound_saved">Lung sound saved successfully!</string>
     <string name="other_block_option">Other Block</string>
+    <string name="from_9_00_pm_to_6_00_am">From 9:00 PM To 6:00 AM</string>
+
 
 
 

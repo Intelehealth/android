@@ -1428,5 +1428,6 @@
     <string name="no_follow_up_data">फॉलोअप डेटा नाही</string>
     <string name="you_can_add">आज</string>
     <string name="please_wait_app_reset">ॲप रीसेट होत असताना कृपया काही क्षण प्रतीक्षा करा</string>
+    <string name="from_9_00_pm_to_6_00_am">रात्री 9.00 ते सकाळी 6.00 पर्यंत</string>
 
 </resources>
