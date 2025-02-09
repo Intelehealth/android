@@ -962,7 +962,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 openall_btn.setText(getResources().getString(R.string.close_all));
                 openall_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_up_24, 0);
                 vs_vitals_header_expandview.setVisibility(View.VISIBLE);
-                if(!isSevikaVisit){
+                if (!isSevikaVisit) {
                     vs_visitreason_header_expandview.setVisibility(View.VISIBLE);
                     vs_phyexam_header_expandview.setVisibility(View.VISIBLE);
                     vs_medhist_header_expandview.setVisibility(View.VISIBLE);
@@ -974,7 +974,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 openall_btn.setText(getResources().getString(R.string.open_all));
                 openall_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_down_24, 0);
                 vs_vitals_header_expandview.setVisibility(View.GONE);
-                if(!isSevikaVisit){
+                if (!isSevikaVisit) {
                     vs_visitreason_header_expandview.setVisibility(View.GONE);
                     vs_phyexam_header_expandview.setVisibility(View.GONE);
                     vs_medhist_header_expandview.setVisibility(View.GONE);
@@ -1246,7 +1246,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             if (mBloodGroupObsDTO.getValue().trim().isEmpty() || mBloodGroupObsDTO.getValue().trim().equals("null"))
                 mBloodGroupTextView.setText(getResources().getString(R.string.no_information));
             else
-                mBloodGroupTextView.setText(VisitUtils.getBloodPressureEnStringFromCode(mBloodGroupObsDTO.getValue()));
+                mBloodGroupTextView.setText(mBloodGroupObsDTO.getValue());
         } else mBloodGroupTextView.setText(getResources().getString(R.string.no_information));
 
         if (haemoglobinDTO.getValue() != null) {

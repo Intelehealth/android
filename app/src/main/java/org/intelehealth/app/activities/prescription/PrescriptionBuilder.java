@@ -1100,7 +1100,7 @@ public class PrescriptionBuilder {
         String respiratoryRate = getOrganizedDataWithBullets(activityContext.getString(R.string.prescription_respiratory_rate, checkValueAndReturnNA(vitalsObject.getResp())));
         String spO2 = getOrganizedDataWithBullets(activityContext.getString(R.string.prescription_spo2, checkValueAndReturnNA(vitalsObject.getSpo2())));
         String haemoglobin = getOrganizedDataWithBullets(activityContext.getString(R.string.prescription_haemoglobin, checkValueAndReturnNA(vitalsObject.getHaemoglobin())));
-        String bloodGroup = getOrganizedDataWithBullets(activityContext.getString(R.string.prescription_blood_group, checkValueAndReturnNA(VisitUtils.getBloodPressureEnStringFromCode(vitalsObject.getBloodGroup()))));
+        String bloodGroup = getOrganizedDataWithBullets(activityContext.getString(R.string.prescription_blood_group, checkValueAndReturnNA(vitalsObject.getBloodGroup())));
 //        String sugarFasting = getOrganizedDataWithBullets(activityContext.getString(R.string.prescription_sugar_fasting, "NA"));
         String sugarRandom = getOrganizedDataWithBullets(activityContext.getString(R.string.prescription_sugar_random, checkValueAndReturnNA(vitalsObject.getSugarRandom())));
 

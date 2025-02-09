@@ -87,7 +87,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
     private String encounterVitals;
     private float float_ageYear_Month;
     private int mAgeInMonth;
-    private double  bmi_value;
+    private double bmi_value;
     private boolean initialHeight = true, initialWeight = true;
     private String encounterAdultIntials = "", EncounterAdultInitial_LatestVisit = "";
     //private Spinner mHeightSpinner, mWeightSpinner;
@@ -285,7 +285,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                 for (int i = 0; i < displaySelection.size(); i++) {
                     SimpleItemData simpleItemData = new SimpleItemData();
                     simpleItemData.setTitle(displaySelection.get(i));
-                    simpleItemData.setObject(VisitUtils.getBloodPressureCode(displaySelection.get(i)));
+                    simpleItemData.setObject(displaySelection.get(i));
                     if (displaySelection.get(i).equalsIgnoreCase("Don\\'t Know")) {
                         simpleItemData.setTitleLocal(getString(R.string.dont_know));
                     }
@@ -541,7 +541,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
 
         String weight = mWeightEditText.getText().toString().trim();
         if (mHeightCardView.getTag() != null && ((PatientVital) mHeightCardView.getTag()).isMandatory() && heightVal.isEmpty()) {
-            if(!initialHeight){
+            if (!initialHeight) {
                 mHeightErrorTextView.setText(getString(R.string.error_field_required));
                 mHeightErrorTextView.setVisibility(View.VISIBLE);
                 //mHeightEditText.requestFocus();
@@ -589,7 +589,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         /*String height = mHeightEditText.getText().toString().trim();*/
         String height = heightVal;
         if (mWeightCardView.getTag() != null && ((PatientVital) mWeightCardView.getTag()).isMandatory() && wightVal.isEmpty()) {
-            if(!initialWeight){
+            if (!initialWeight) {
                 mWeightErrorTextView.setText(getString(R.string.error_field_required));
                 mWeightErrorTextView.setVisibility(View.VISIBLE);
                 //mWeightEditText.requestFocus();
@@ -1200,7 +1200,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                 mSpo2EditText.setText(results.getSpo2());
 
             if (results.getBloodGroup() != null && !results.getBloodGroup().isEmpty()) {
-                mBloodGroupTextView.setText(VisitUtils.getBloodPressureEnStringFromCode(results.getBloodGroup()));
+                mBloodGroupTextView.setText(results.getBloodGroup());
                 mBloodGroupTextView.setTag(results.getBloodGroup());
             }
 
@@ -1293,7 +1293,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                     mBmiStatusTextView.setText(String.format("(%s)", bmiStatus.getStatus()));
                     mBmiStatusTextView.setTextColor(ContextCompat.getColor(getActivity(), (bmiStatus.getColor())));
                 }
-                    /*bmiColorCode(String.format(Locale.ENGLISH, "%.2f", bmi_value));*/
+                /*bmiColorCode(String.format(Locale.ENGLISH, "%.2f", bmi_value));*/
                 Log.d("BMI", "BMI: " + mBMITextView.getText().toString());
                 //mBMI.setText(String.format(Locale.ENGLISH, "%.2f", bmi_value));
             } else if (flag_height == 0 || flag_weight == 0) {
@@ -1412,7 +1412,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                 break;
             case UuidDictionary.BLOOD_GROUP: //SpO2
                 if (value != null && !value.isEmpty()) {
-                    mBloodGroupTextView.setText(VisitUtils.getBloodPressureEnStringFromCode(value));
+                    mBloodGroupTextView.setText(value);
                     mBloodGroupTextView.setTag(value);
                 }
                 break;
@@ -1763,7 +1763,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                 results.setBmi(mBMITextView.getText().toString().trim().split(" ")[0]);
             } else {
                 double safeBmi = Objects.requireNonNullElse(bmi_value, 0.0);
-                if(safeBmi > 0 ){
+                if (safeBmi > 0) {
                     results.setBmi(String.format(Locale.ENGLISH, "%.2f", bmi_value));
                 } else {
                     results.setBmi("");

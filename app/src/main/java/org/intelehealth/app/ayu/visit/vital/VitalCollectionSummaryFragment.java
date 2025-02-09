@@ -236,7 +236,7 @@ public class VitalCollectionSummaryFragment extends Fragment {
                 ((TextView) view.findViewById(R.id.tv_spo2)).setText(getString(R.string.ui2_no_information));
 
             if (mVitalsObject.getBloodGroup() != null && !mVitalsObject.getBloodGroup().isEmpty())
-                ((TextView) view.findViewById(R.id.tv_blood_group)).setText(VisitUtils.getBloodPressureEnStringFromCode(mVitalsObject.getBloodGroup()));
+                ((TextView) view.findViewById(R.id.tv_blood_group)).setText(mVitalsObject.getBloodGroup());
             else
                 ((TextView) view.findViewById(R.id.tv_blood_group)).setText(getString(R.string.ui2_no_information));
 
