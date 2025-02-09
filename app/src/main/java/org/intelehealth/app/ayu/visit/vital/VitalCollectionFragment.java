@@ -568,11 +568,13 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                         (Double.parseDouble(heightVal) < Double.parseDouble(AppConstants.MINIMUM_HEIGHT))) {
                     //et.setError(getString(R.string.bpsys_error, AppConstants.MINIMUM_BP_SYS, AppConstants.MAXIMUM_BP_SYS));
 
-                    mHeightErrorTextView.setText(getString(R.string.height_error, AppConstants.MINIMUM_HEIGHT, AppConstants.MAXIMUM_HEIGHT));
-                    mHeightErrorTextView.setVisibility(View.VISIBLE);
+                    /*mHeightErrorTextView.setText(getString(R.string.height_error, AppConstants.MINIMUM_HEIGHT, AppConstants.MAXIMUM_HEIGHT));
+                    mHeightErrorTextView.setVisibility(View.VISIBLE);*/   // AEAT - 1433
+
                     /*mHeightEditText.requestFocus();
                     mHeightEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);*/
-                    return false;
+
+                    /*return false;*/  // AEAT - 1433
 
                 } else {
                     mHeightErrorTextView.setVisibility(View.GONE);
@@ -1364,7 +1366,13 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                 if (!value.equalsIgnoreCase("0")) {
                     heightvalue = value;
                     String height = VisitUtils.convertHeightIntoFeets(value, requireContext());
+                    if(heightAdapter == null){
+                        String heightStr = "height_" + sessionManager.getAppLanguage();
+                        int heightArray = getResources().getIdentifier(heightStr, "array", requireActivity().getPackageName());
+                        heightAdapter = ArrayAdapter.createFromResource(requireContext(), heightArray, android.R.layout.simple_spinner_dropdown_item);
+                    }
                     int pos = heightAdapter.getPosition(height);
+                    mheightSpinner.setAdapter(heightAdapter);
                     mheightSpinner.setSelection(pos);
                 }
                 break;

@@ -938,7 +938,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             mFamHist = "";
         }
 
-        mHeight = height.getValue();
+        mHeight = org.intelehealth.app.ayu.visit.common.VisitUtils.convertHeightIntoFeets(height.getValue(), this);
         mWeight = weight.getValue();
         mBP = bpSys.getValue() + "/" + bpDias.getValue();
         mPulse = pulse.getValue();
@@ -2386,7 +2386,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             mFamHist = "";
         }
 
-        mHeight = height.getValue();
+        mHeight = org.intelehealth.app.ayu.visit.common.VisitUtils.convertHeightIntoFeets(height.getValue(), this);
         mWeight = weight.getValue();
         mBP = bpSys.getValue() + "/" + bpDias.getValue();
         mPulse = pulse.getValue();
@@ -2735,7 +2735,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
     private VitalsObject getAllVitalsData() {
         VitalsObject vitalsObject = new VitalsObject();
-        vitalsObject.setHeight(height.getValue());
+        vitalsObject.setHeight(org.intelehealth.app.ayu.visit.common.VisitUtils.convertHeightIntoFeets(height.getValue(), this));
         vitalsObject.setWeight(weight.getValue());
         vitalsObject.setPulse(pulse.getValue());
         vitalsObject.setResp(resp.getValue());

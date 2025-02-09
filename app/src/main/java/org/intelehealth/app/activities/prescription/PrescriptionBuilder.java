@@ -1089,7 +1089,7 @@ public class PrescriptionBuilder {
     }
 
     public void setVitals(VitalsObject vitalsObject) {
-        String height = getOrganizedDataWithBullets(activityContext.getString(R.string.prescription_height, checkValueAndReturnNA(vitalsObject.getHeight())));
+        String height = getOrganizedDataWithBullets(activityContext.getString(R.string.prescription_height, VisitUtils.convertHeightIntoFeets(checkValueAndReturnNA(vitalsObject.getHeight()), activityContext)));
         String weight = getOrganizedDataWithBullets(activityContext.getString(R.string.prescription_weight, checkValueAndReturnNA(vitalsObject.getWeight())));
         String bmi = getOrganizedDataWithBullets(activityContext.getString(R.string.prescription_bmi, checkValueAndReturnNA(vitalsObject.getBmi())));
         String bpSys = checkValueAndReturnNA(vitalsObject.getBpsys());
