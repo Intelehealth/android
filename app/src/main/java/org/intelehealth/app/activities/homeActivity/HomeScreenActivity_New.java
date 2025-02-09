@@ -1003,6 +1003,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             ivHamburger.setVisibility(View.GONE);
             imageViewIsInternet.setVisibility(View.VISIBLE);
             imageViewIsNotification.setVisibility(View.GONE);
+            ivNotificationIcon.setVisibility(View.GONE);
             fragment = new MyAchievementsFragment();
             tag = TAG_ACHIEVEMENT;
         } else if (itemId == R.id.menu_video_lib) {
