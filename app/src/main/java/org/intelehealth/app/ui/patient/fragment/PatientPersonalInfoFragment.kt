@@ -209,7 +209,7 @@ class PatientPersonalInfoFragment :
             firstname = binding.textInputETFName.text?.toString()
             middlename = binding.textInputETMName.text?.toString()
             lastname = binding.textInputETLName.text?.toString()
-            phonenumber = binding.countrycodeSpinner.fullNumberWithPlus
+            phonenumber = binding.textInputETPhoneNumber.text?.toString()
             guardianName = binding.textInputETGuardianName.text?.toString()
             emContactName = binding.textInputETECName.text?.toString()
             emContactNumber = binding.ccpEmContactPhone.fullNumberWithPlus
@@ -368,9 +368,6 @@ class PatientPersonalInfoFragment :
     }
 
     private fun setInputTextChangListener() {
-        binding.countrycodeSpinner.registerCarrierNumberEditText(binding.textInputETPhoneNumber)
-        binding.countrycodeSpinner.setNumberAutoFormattingEnabled(false)
-        binding.countrycodeSpinner.fullNumber = patient.phonenumber
         binding.ccpEmContactPhone.registerCarrierNumberEditText(binding.textInputETEMPhoneNumber)
         binding.ccpEmContactPhone.setNumberAutoFormattingEnabled(false)
         binding.ccpEmContactPhone.fullNumber = patient.emContactNumber

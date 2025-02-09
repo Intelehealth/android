@@ -533,6 +533,7 @@
                             android:layout_marginTop="@dimen/margin_4"
                             android:background="@drawable/input_edittext_border"
                             android:gravity="center_vertical"
+                            android:visibility="gone"
                             app:ccp_countryPreference="us,in"
                             app:ccp_textSize="@dimen/txtsize_patdetail_16sp"
                             app:layout_constraintStart_toStartOf="parent"
@@ -545,7 +546,6 @@
                             editMode="@{isEditMode}"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/std_12dp"
                             android:hint="@{ personalConfig.phone.mandatory ? @string/phone_number + ` *` : @string/phone_number}"
                             app:expandedHintEnabled="false"
                             app:hintEnabled="false"
@@ -560,6 +560,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:cursorVisible="true"
+                                android:text="@{patient.phonenumber}"
                                 android:hint="@string/phone_number" />
                         </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
                     </androidx.constraintlayout.widget.ConstraintLayout>
