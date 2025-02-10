@@ -24,6 +24,8 @@ import android.widget.TextView;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.IntelehealthApplication;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.math.RoundingMode;
@@ -4576,6 +4578,8 @@ public final class StringUtils {
         if (consultationType == null || consultationType.isEmpty()) return "";
         if (lan.equalsIgnoreCase("ru")) {
             switch (consultationType) {
+                case "Select" ->
+                        consultationType = "Выберите";
                 case "Maternity department of Chui Regional United Hospital" ->
                         consultationType = "Родильное отделение Чуйской областной объединенной больницы";
                 case "Maternity department of Issyk-Kul Regional United Hospital" ->
@@ -4591,5 +4595,36 @@ public final class StringUtils {
         }
 
         return consultationType;
+    }
+
+
+    public static String getDefaultCountry(String country, String lan) {
+        if (country == null || country.isEmpty()) return "";
+        if (lan.equalsIgnoreCase("ru")) {
+            if (country.equals("Kyrgyzstan")) {
+                country = "Кыргызстан";
+            } else {
+                return country;
+            }
+        }
+
+        return country;
+    }
+
+    public static String getContactType(String contactType, String lan) {
+        if (contactType == null || contactType.isEmpty()) return "";
+        if (lan.equalsIgnoreCase("ru")) {
+            switch (contactType) {
+                case "Self" ->
+                        contactType = "Личный";
+                case "Family" ->
+                        contactType = "Личный";
+                default -> {
+                    return contactType;
+                }
+            }
+        }
+
+        return contactType;
     }
 }
