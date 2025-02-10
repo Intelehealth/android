@@ -24,6 +24,7 @@ import android.widget.TextView;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.IntelehealthApplication;
+import org.intelehealth.app.knowledgeEngine.Node;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -4474,5 +4475,22 @@ public final class StringUtils {
         }
 
         return visitReason;
+    }
+
+    public static String getRegionalLanguageDataFromJson(String value, String appLanguage) {
+        String regionalChiefComplaintData = "";
+
+        try {
+            JSONObject regionalObject = new JSONObject(value);
+            String regionalValue = regionalObject.getString("text_" + appLanguage);
+            regionalValue.replace("?<b>", Node.bullet_arrow);
+            regionalChiefComplaintData = regionalValue;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return regionalChiefComplaintData;
     }
 }

@@ -396,27 +396,8 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
         chief_complaint_txt = findViewById(R.id.chief_complaint_txt);
         if (chief_complaint_value == null)
             chief_complaint_value = getChiefComplaint(visitID);
-        CustomLog.v(TAG, "chief_Complaint: " + chief_complaint_value);
-
-        /*if (chief_complaint_value != null) {
-            int first = chief_complaint_value.indexOf("<b>");
-            int last = chief_complaint_value.indexOf("</b>");
-            chief_complaint_value = chief_complaint_value.substring(first, last + 4);
-            Log.v(TAG, "chief_Complaint: " + chief_complaint_value);
-            Log.v(TAG, "a: " + first + " b: " + last + " C: " + chief_complaint_value);
-        } else {  // ie. here user is coming from Prescription screen and not Follow up screen.
-            chief_complaint_value = getChiefComplaint(visitID);
-            Log.v(TAG, "chief_Complaint: " + chief_complaint_value);
-            int first = chief_complaint_value.indexOf("<b>");
-            int last = chief_complaint_value.indexOf("</b>");
-            chief_complaint_value = chief_complaint_value.substring(first, last + 4);
-            Log.v(TAG, "chief_Complaint: " + chief_complaint_value);
-            Log.v(TAG, "a: " + first + " b: " + last + " C: " + chief_complaint_value);
-        }*/
 
         if (chief_complaint_value != null && !chief_complaint_value.isEmpty()) {
-
-
             boolean needToShowCoreValue = false;
             if (chief_complaint_value.startsWith("{") && chief_complaint_value.endsWith("}")) {
                 try {

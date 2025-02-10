@@ -26,6 +26,8 @@ public class UuidDictionary {
     public static final String HAEMOGLOBIN = "33b241d6-3e9d-443e-9572-f38ecb1e752a";
     public static final String SUGAR_LEVEL_RANDOM = "95cf1d31-21dc-4fae-96fd-d1dd9455914f";
 
+    public static final String CC_REG_LANG_VALUE = "9cca1f28-c52c-461e-9305-7bec2d048d25";
+
     //m added
     public static final String EMERGENCY = "ca5f5dc3-4f0b-4097-9cae-5cf2eb44a09c";
 

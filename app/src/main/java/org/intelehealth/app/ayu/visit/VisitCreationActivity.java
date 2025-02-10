@@ -543,10 +543,17 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
             case STEP_2_VISIT_REASON_QUESTION_SUMMARY:
                 if (isSavedVisitReason()) {
                     mStep2ProgressBar.setProgress(100);
-
                     mSummaryFrameLayout.setVisibility(View.VISIBLE);
+
+                    String data = "";
+                    if (!sessionManager.getAppLanguage().equalsIgnoreCase("en")) {
+                        data = insertionLocale;
+                    } else {
+                        data = insertion;
+                    }
+
                     getSupportFragmentManager().beginTransaction().
-                            replace(R.id.fl_steps_summary, VisitReasonSummaryFragment.newInstance(mCommonVisitData, insertionWithLocaleJsonString, isEditMode), VISIT_REASON_QUESTION_FRAGMENT).
+                            replace(R.id.fl_steps_summary, VisitReasonSummaryFragment.newInstance(mCommonVisitData, data, isEditMode), VISIT_REASON_QUESTION_FRAGMENT).
                             commit();
                 }
                 break;
@@ -658,44 +665,43 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < mChiefComplainRootNodeList.size(); i++) {
             Node node = mChiefComplainRootNodeList.get(i);
-            CustomLog.v(TAG, "mChiefComplainRootNodeList- " + node.findDisplay());
             boolean isAssociateSymptomsType = node.getText().equalsIgnoreCase(Node.ASSOCIATE_SYMPTOMS);
             String val = formatComplainRecord(node, isAssociateSymptomsType);
-            CustomLog.v(TAG, "val- " + val);
             String answerInLocale = bullet_arrow + node.findDisplay() + "::" + node.formQuestionAnswer(0, isAssociateSymptomsType);
-            CustomLog.v(TAG, "answerInLocale- " + answerInLocale);
 
             stringBuilder.append(answerInLocale);
             if (val == null) {
                 return false;
             }
         }
-        insertionLocale = stringBuilder.toString();
 
+        insertionLocale = stringBuilder.toString();
 
         if (insertion.contains("<br/> ►<b>" + Node.ASSOCIATE_SYMPTOMS + "</b>: <br/>►<b> " + Node.ASSOCIATE_SYMPTOMS + "</b>:  <br/>")) {
             insertion = insertion.replace("<br/> ►<b>" + Node.ASSOCIATE_SYMPTOMS + "</b>: <br/>►<b> " + Node.ASSOCIATE_SYMPTOMS + "</b>:  <br/>", "<br/>►<b> " + Node.ASSOCIATE_SYMPTOMS + "</b>:  <br/>");
         }
-        JSONObject jsonObject = new JSONObject();
-        try {
-            insertionLocale = VisitUtils.replaceEnglishCommonString(insertionLocale, sessionManager.getAppLanguage());
-            String[] matchDate = DateAndTimeUtils.findDateFromStringDDMMMYYY(insertionLocale);
-            if (matchDate != null) {
-                for (String date : matchDate) {
-                    insertionLocale = insertionLocale.replaceAll(date, DateAndTimeUtils.formatInLocalDateForDDMMMYYYY(date, sessionManager.getAppLanguage()));
-                }
+
+        insertionLocale = VisitUtils.replaceEnglishCommonString(insertionLocale, sessionManager.getAppLanguage());
+        String[] matchDate = DateAndTimeUtils.findDateFromStringDDMMMYYY(insertionLocale);
+        if (matchDate != null) {
+            for (String date : matchDate) {
+                insertionLocale = insertionLocale.replaceAll(date, DateAndTimeUtils.formatInLocalDateForDDMMMYYYY(date, sessionManager.getAppLanguage()));
             }
-            insertion = VisitUtils.replaceToEnglishCommonString(insertion, sessionManager.getAppLanguage());
-            jsonObject.put("en", insertion);
-            //if(!sessionManager.getAppLanguage().equalsIgnoreCase("en")) {
-            jsonObject.put("l-" + sessionManager.getAppLanguage(), insertionLocale);
-            //}
-            insertionWithLocaleJsonString = jsonObject.toString().replace("\\/", "/");
-            CustomLog.v(TAG, insertionWithLocaleJsonString);
+        }
+
+        insertion = VisitUtils.replaceToEnglishCommonString(insertion, sessionManager.getAppLanguage());
+        boolean isCurrentComplaintInserted = insertChiefComplainToDb(insertion, UuidDictionary.CURRENT_COMPLAINT);
+        boolean isCurrentComplaintLocaleInserted = false;
+
+        JSONObject regionalLanguageObject = new JSONObject();
+        try {
+            regionalLanguageObject.put("text_" + sessionManager.getAppLanguage(), insertionLocale);
+            isCurrentComplaintLocaleInserted = insertChiefComplainToDb(regionalLanguageObject.toString(), UuidDictionary.CC_REG_LANG_VALUE);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return insertChiefComplainToDb(insertionWithLocaleJsonString);
+
+        return isCurrentComplaintInserted && isCurrentComplaintLocaleInserted;
     }
 
     private Node mPhysicalExamNode;
@@ -1028,26 +1034,20 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
      * @param value String to put into DB
      * @return DB Row number, never used
      */
-    private boolean insertChiefComplainToDb(String value) {
+    private boolean insertChiefComplainToDb(String value, String conceptUuid) {
         boolean isInserted = false;
         try {
-            CustomLog.i(TAG, "insertChiefComplainToDb: " + patientUuid + " " + visitUuid + " " + UuidDictionary.CURRENT_COMPLAINT);
-            CustomLog.i(TAG, "insertChiefComplainToDb: " + value);
             ObsDAO obsDAO = new ObsDAO();
             ObsDTO obsDTO = new ObsDTO();
-            String uuidOBS = obsDAO.getObsuuid(encounterAdultIntials, UuidDictionary.CURRENT_COMPLAINT);
-            CustomLog.i(TAG, "insertChiefComplainToDb: uuidOBS - " + uuidOBS);
-            obsDTO.setConceptuuid(UuidDictionary.CURRENT_COMPLAINT);
+            String uuidOBS = obsDAO.getObsuuid(encounterAdultIntials, conceptUuid);
+            obsDTO.setConceptuuid(conceptUuid);
             obsDTO.setEncounteruuid(encounterAdultIntials);
             obsDTO.setCreator(sessionManager.getCreatorID());
             obsDTO.setValue(StringUtils.getValue1(value));
             if (uuidOBS != null) {
                 obsDTO.setUuid(uuidOBS);
-                CustomLog.v("obsDTO update", new Gson().toJson(obsDTO));
-
                 isInserted = obsDAO.updateObs(obsDTO);
             } else {
-                CustomLog.v("obsDTO insert", new Gson().toJson(obsDTO));
                 isInserted = obsDAO.insertObs(obsDTO);
             }
         } catch (DAOException e) {

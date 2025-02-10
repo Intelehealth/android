@@ -1190,13 +1190,39 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                     }
                     encounterCursor.close();
 
-                    String previsitSelection = "encounteruuid = ? AND conceptuuid = ? and voided !='1'";
-                    String[] previsitArgs = {encounterlocalAdultintial, UuidDictionary.CURRENT_COMPLAINT};
+                    String previsitSelection = "encounteruuid = ? AND conceptuuid = ? OR conceptuuid = ? and voided !='1'";
+                    String[] previsitArgs = {encounterlocalAdultintial, UuidDictionary.CURRENT_COMPLAINT, UuidDictionary.CC_REG_LANG_VALUE};
                     String[] previsitColumms = {"value", " conceptuuid", "encounteruuid"};
                     Cursor previsitCursor = db.query("tbl_obs", previsitColumms, previsitSelection, previsitArgs, null, null, null);
+
+                    String complaintInEnglish = "";
+                    String complaintInRegional = "";
+
+                    while (previsitCursor.moveToNext()) {
+                        String conceptId = previsitCursor.getString(previsitCursor.getColumnIndexOrThrow("conceptuuid"));
+                        if (Objects.equals(conceptId, UuidDictionary.CURRENT_COMPLAINT)) {
+                            complaintInEnglish = previsitCursor.getString(previsitCursor.getColumnIndexOrThrow("value"));
+                        } else {
+                            complaintInRegional = previsitCursor.getString(previsitCursor.getColumnIndexOrThrow("value"));
+                        }
+                    }
+
+                    String finalComplaint = "";
+                    if (sessionManager.getAppLanguage().equalsIgnoreCase("en")) {
+                        finalComplaint = complaintInEnglish;
+                    } else {
+                        complaintInRegional = StringUtils.getRegionalLanguageDataFromJson(complaintInRegional, sessionManager.getAppLanguage());
+                        if (complaintInRegional.equalsIgnoreCase("")) {
+                            complaintInRegional = complaintInEnglish;
+                            finalComplaint = complaintInEnglish;
+                        } else {
+                            finalComplaint = complaintInRegional;
+                        }
+                    }
+
                     if (previsitCursor != null && previsitCursor.moveToLast()) {
 
-                        String visitValue = previsitCursor.getString(previsitCursor.getColumnIndexOrThrow("value"));
+                        String visitValue = finalComplaint;
                         boolean needToShowCoreValue = false;
                         if (visitValue.startsWith("{") && visitValue.endsWith("}")) {
                             try {
@@ -1337,10 +1363,10 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
 
     private void checkForPendingPrescription(List<PastVisitData> mCurrentVisitDataList) {
-        for(PastVisitData pvd : mCurrentVisitDataList){
+        for (PastVisitData pvd : mCurrentVisitDataList) {
             try {
                 boolean prescriptionReceived = new EncounterDAO().isPrescriptionReceived(pvd.getVisitUUID());
-                if(!prescriptionReceived){
+                if (!prescriptionReceived) {
                     anyPrescriptionPending = true;
                     break;
                 }
@@ -2530,15 +2556,40 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                         }
                         encounterCursor.close();
 
-                        String previsitSelection = "encounteruuid = ? AND conceptuuid = ? and voided !='1'";
-                        String[] previsitArgs = {encounterlocalAdultintial, UuidDictionary.CURRENT_COMPLAINT};
+                        String previsitSelection = "encounteruuid = ? AND conceptuuid = ? OR conceptuuid = ? and voided !='1'";
+                        String[] previsitArgs = {encounterlocalAdultintial, UuidDictionary.CURRENT_COMPLAINT, UuidDictionary.CC_REG_LANG_VALUE};
                         String[] previsitColumms = {"value", " conceptuuid", "encounteruuid"};
                         Cursor previsitCursor = db.query("tbl_obs", previsitColumms, previsitSelection, previsitArgs, null, null, null);
                         SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
 
+                        String complaintInEnglish = "";
+                        String complaintInRegional = "";
+
+                        while (previsitCursor.moveToNext()) {
+                            String conceptId = previsitCursor.getString(previsitCursor.getColumnIndexOrThrow("conceptuuid"));
+                            if (Objects.equals(conceptId, UuidDictionary.CURRENT_COMPLAINT)) {
+                                complaintInEnglish = previsitCursor.getString(previsitCursor.getColumnIndexOrThrow("value"));
+                            } else {
+                                complaintInRegional = previsitCursor.getString(previsitCursor.getColumnIndexOrThrow("value"));
+                            }
+                        }
+
+                        String finalComplaint = "";
+                        if (sessionManager.getAppLanguage().equalsIgnoreCase("en")) {
+                            finalComplaint = complaintInEnglish;
+                        } else {
+                            complaintInRegional = StringUtils.getRegionalLanguageDataFromJson(complaintInRegional, sessionManager.getAppLanguage());
+                            if (complaintInRegional.equalsIgnoreCase("")) {
+                                complaintInRegional = complaintInEnglish;
+                                finalComplaint = complaintInEnglish;
+                            } else {
+                                finalComplaint = complaintInRegional;
+                            }
+                        }
+
                         if (previsitCursor != null && previsitCursor.moveToLast()) {
 
-                            String visitValue = previsitCursor.getString(previsitCursor.getColumnIndexOrThrow("value"));
+                            String visitValue = finalComplaint;
                             boolean needToShowCoreValue = false;
                             if (visitValue.startsWith("{") && visitValue.endsWith("}")) {
                                 try {
@@ -2685,7 +2736,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         }
     }
 
-    void processVisitStatus(String visitId, boolean isSevikaVisit){
+    void processVisitStatus(String visitId, boolean isSevikaVisit) {
         boolean keyExists = false;
         for (Map<String, Boolean> map : visitStatusList) {
             if (map.containsKey(visitId)) {

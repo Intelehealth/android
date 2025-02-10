@@ -273,6 +273,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
     Patient patient = new Patient();
     ObsDTO complaint = new ObsDTO();
+    ObsDTO complaintReg = new ObsDTO();
     ObsDTO famHistory = new ObsDTO();
     ObsDTO patHistory = new ObsDTO();
     ObsDTO phyExam = new ObsDTO();
@@ -3713,6 +3714,10 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 complaint.setValue(value.replace("?<b>", Node.bullet_arrow));
                 break;
             }
+            case UuidDictionary.CC_REG_LANG_VALUE: {
+                String regionalLanguageData = StringUtils.getRegionalLanguageDataFromJson(value, sessionManager.getAppLanguage());
+                complaintReg.setValue(regionalLanguageData);
+            }
             case UuidDictionary.PHYSICAL_EXAMINATION: { //Physical Examination
                 phyExam.setValue(value);
                 break;
@@ -5681,11 +5686,18 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
         // complaints data
         if (complaint.getValue() != null) {
-            String value = complaint.getValue();
-            //boolean isInOldFormat = true;
-            //Show Visit summary data in Clinical Format for English language only
-            //Else for other language keep the data in Question Answer format
-            Timber.tag(TAG).d("Complain => %s", value);
+            String value = "";
+
+            if (!sessionManager.getAppLanguage().equalsIgnoreCase("en")) {
+                if (complaintReg.getValue() == null || complaintReg.getValue().isEmpty()) {
+                    value = complaint.getValue();
+                } else {
+                    value = complaintReg.getValue();
+                }
+            } else {
+                value = complaint.getValue();
+            }
+
             if (value.startsWith("{") && value.endsWith("}")) {
                 try {
                     JSONObject jsonObject = new JSONObject(value);
@@ -5701,9 +5713,10 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+            } else {
+                mIsCCInOldFormat = true;
             }
-            CustomLog.v(TAG, "isInOldFormat: " + mIsCCInOldFormat);
-            CustomLog.v(TAG, "complaint: " + value);
+
             String valueArray[] = null;
             boolean isAssociateSymptomFound = false;
             if (mIsCCInOldFormat) {
