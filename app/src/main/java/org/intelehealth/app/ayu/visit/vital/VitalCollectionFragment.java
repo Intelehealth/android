@@ -15,8 +15,10 @@ import org.intelehealth.app.activities.visit.staticEnabledFields.VitalsEnabledFi
 import org.intelehealth.app.ayu.visit.model.VitalsWrapper;
 import org.intelehealth.app.utilities.CustomLog;
 
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -30,6 +32,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.ListPopupWindow;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -328,6 +331,12 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
             }
         });
 
+        processHeightDropdown();
+
+        return mRootView;
+    }
+
+    private void processHeightDropdown() {
         String heightStr = "height_" + sessionManager.getAppLanguage();
         int heightArray = getResources().getIdentifier(heightStr, "array", requireActivity().getPackageName());
         if (heightArray != 0) {
@@ -335,32 +344,44 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         }
         mheightSpinner.setAdapter(heightAdapter);
 
-        mheightSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-                if (position != 0) {
-                    initialHeight = false;
-                    flag_height = 1;
-                    ConvertHeightIntoCm(heightAdapter.getItem(position).toString());
-                    mHeightErrorTextView.setVisibility(View.GONE);
-                    calculateBMI();
-                } else {
-                    flag_height = 0;
-                    heightvalue = "";
-                    mBMITextView.setText("");
-                    mBmiStatusTextView.setText("");
-                }
-                boolean isValid = isValidaForm();
-                setDisabledSubmit(!isValid);
-            }
+        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+        int screenHeight = displayMetrics.heightPixels;
+        int dropdownHeight = screenHeight / 2;
 
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
+        ListPopupWindow listPopupWindow = new ListPopupWindow(requireActivity());
+        listPopupWindow.setAdapter(heightAdapter);
+        listPopupWindow.setAnchorView(mheightSpinner);
+        listPopupWindow.setHeight(dropdownHeight);
+        listPopupWindow.setModal(true);
 
+        mheightSpinner.setClickable(true);
+
+        mheightSpinner.setOnTouchListener((v, event) -> {
+            if (event.getAction() == MotionEvent.ACTION_UP) {
+                listPopupWindow.show();
             }
+            return true; // Important
         });
 
-        return mRootView;
+        listPopupWindow.setOnItemClickListener((parent, view, position, id) -> {
+            if (position != 0) {
+                initialHeight = false;
+                flag_height = 1;
+                ConvertHeightIntoCm(heightAdapter.getItem(position).toString());
+                mHeightErrorTextView.setVisibility(View.GONE);
+                calculateBMI();
+            } else {
+                flag_height = 0;
+                heightvalue = "";
+                mBMITextView.setText("");
+                mBmiStatusTextView.setText("");
+            }
+            mheightSpinner.setSelection(position);
+            listPopupWindow.dismiss();
+
+            boolean isValid = isValidaForm();
+            setDisabledSubmit(!isValid);
+        });
     }
 
 
@@ -1372,8 +1393,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                         heightAdapter = ArrayAdapter.createFromResource(requireContext(), heightArray, android.R.layout.simple_spinner_dropdown_item);
                     }
                     int pos = heightAdapter.getPosition(height);
-                    mheightSpinner.setAdapter(heightAdapter);
-                    mheightSpinner.setSelection(pos);
+                    mheightSpinner.post(() -> mheightSpinner.setSelection(pos));
                 }
                 break;
             case UuidDictionary.WEIGHT: //Weight

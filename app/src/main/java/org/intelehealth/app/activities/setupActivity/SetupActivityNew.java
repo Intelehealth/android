@@ -187,6 +187,11 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
         tipWindow = new TooltipWindow(SetupActivityNew.this);
         restrictInputTypeForTextFields();
 
+
+        // These are added to stop auto predicting in the samsung keyboards.
+        etUsername.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+        etServer.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+
         autotvLocations.setOnClickListener(v -> redirectToLocationSurveyScreen());
         autoTvTextInputLayout.setEndIconOnClickListener(v -> redirectToLocationSurveyScreen());
 
@@ -339,7 +344,6 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
 
     class MyTextWatcher implements TextWatcher {
         EditText editText;
-
         Runnable userStoppedTyping = () -> {
             if (this.editText.getId() == R.id.et_server) {
                 Pattern urlPattern = Pattern.compile("^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]\\.(?:[a-z]{2,})$");
@@ -375,43 +379,47 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
 
         @Override
         public void afterTextChanged(Editable editable) {
-            String val = editable.toString().trim();
-            if (this.editText.getId() == R.id.et_username) {
-                if (val.isEmpty()) {
-                    mUserNameErrorTextView.setVisibility(View.VISIBLE);
-                    mUserNameErrorTextView.setText(getString(R.string.error_field_required));
-                    etUsername.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
-                } else {
-                    updateListeners(etUsername, this, val);
-                    mUserNameErrorTextView.setVisibility(View.GONE);
-                    etUsername.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
-                }
-            } else if (this.editText.getId() == R.id.et_password) {
-                if (val.isEmpty()) {
-                    mPasswordErrorTextView.setVisibility(View.VISIBLE);
-                    mPasswordErrorTextView.setText(getString(R.string.error_field_required));
-                    etPassword.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
-                } else {
-                    mPasswordErrorTextView.setVisibility(View.GONE);
-                    etPassword.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
-                }
-            } else if (this.editText.getId() == R.id.et_server) {
-                if (val.isEmpty()) {
-                    serverErrorTextView.setVisibility(View.VISIBLE);
-                    serverErrorTextView.setText(getString(R.string.error_field_required));
-                    isUrlValid = false;
-                    baseUrl = null;
-                    displayCheckUrlToast();
-                } else {
-                    updateListeners(etServer, this, val);
-                    baseUrl = val;
-                    isUrlValid = true;
-                    serverErrorTextView.setVisibility(View.GONE);
-                }
+            String val = editText.getText().toString().trim();
+            processTextChanged(val, editText, MyTextWatcher.this);
+        }
+    }
+
+    public void processTextChanged(String val, EditText editText, TextWatcher tw) {
+        if (editText.getId() == R.id.et_username) {
+            if (val.isEmpty()) {
+                mUserNameErrorTextView.setVisibility(View.VISIBLE);
+                mUserNameErrorTextView.setText(getString(R.string.error_field_required));
+                etUsername.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
+            } else {
+                updateListeners(etUsername, tw, val);
+                mUserNameErrorTextView.setVisibility(View.GONE);
+                etUsername.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
+            }
+        } else if (editText.getId() == R.id.et_password) {
+            if (val.isEmpty()) {
+                mPasswordErrorTextView.setVisibility(View.VISIBLE);
+                mPasswordErrorTextView.setText(getString(R.string.error_field_required));
+                etPassword.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
+            } else {
+                mPasswordErrorTextView.setVisibility(View.GONE);
+                etPassword.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
+            }
+        } else if (editText.getId() == R.id.et_server) {
+            if (val.isEmpty()) {
+                serverErrorTextView.setVisibility(View.VISIBLE);
+                serverErrorTextView.setText(getString(R.string.error_field_required));
+                isUrlValid = false;
+                baseUrl = null;
+                displayCheckUrlToast();
+            } else {
+                updateListeners(etServer, tw, val);
+                baseUrl = val;
+                isUrlValid = true;
+                serverErrorTextView.setVisibility(View.GONE);
+            }
 
 //                mHandler.removeCallbacksAndMessages(null);
 //                mHandler.postDelayed(userStoppedTyping, 1500);
-            }
         }
     }
 
