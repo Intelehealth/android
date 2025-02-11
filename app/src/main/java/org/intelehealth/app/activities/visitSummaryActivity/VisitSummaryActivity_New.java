@@ -5721,6 +5721,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 }
             } else {
                 mIsCCInOldFormat = true;
+                complaintLocalString = value;
             }
 
             String valueArray[] = null;
@@ -5836,6 +5837,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+            } else {
+                physicalExamLocaleString = value;
             }
             CustomLog.v(TAG, "phyExam : " + value);
             if (isInOldFormat) {
