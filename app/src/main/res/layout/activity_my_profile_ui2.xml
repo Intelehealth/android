@@ -66,6 +66,8 @@
                     android:id="@+id/view_change_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    tools:visibility="gone"
                     android:layout_marginStart="@dimen/tv_pass_margin_start"
                     android:layout_marginTop="@dimen/tv_pass_margin_top"
                     android:layout_marginEnd="@dimen/tv_pass_margin_end">

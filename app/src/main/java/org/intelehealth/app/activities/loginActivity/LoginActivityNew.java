@@ -348,7 +348,7 @@ public class LoginActivityNew extends AppCompatActivity {
      * This class also uses SharedPreferences to store session ID
      */
     public void UserLoginTask(String mEmail, String mPassword) {
-        String urlString = urlModifiers.loginUrl(SessionManager.getInstance(this).getServerUrl() + "/");
+        String urlString = urlModifiers.loginUrl(SessionManager.getInstance(this).getServerUrl());
 
         CustomLog.d(TAG, "UserLoginTask: urlString : " + urlString);
         Logger.logD(TAG, "username and password" + mEmail + mPassword);
@@ -389,7 +389,7 @@ public class LoginActivityNew extends AppCompatActivity {
 
                             UrlModifiers urlModifiers = new UrlModifiers();
                             // String url = urlModifiers.loginUrlProvider(sessionManager.getServerUrl(), loginModel.getUser().getUuid());
-                            String serverUrl = SessionManager.getInstance(LoginActivityNew.this).getServerUrl() + "/";
+                            String serverUrl = SessionManager.getInstance(LoginActivityNew.this).getServerUrl();
                             String url = urlModifiers.loginUrlProvider(serverUrl, loginModel.getUser().getUuid());
                             CustomLog.d(TAG, "onNext: url : " + url);
                             Observable<LoginProviderModel> loginProviderModelObservable = AppConstants.apiInterface.LOGIN_PROVIDER_MODEL_OBSERVABLE(url, "Basic " + encoded);

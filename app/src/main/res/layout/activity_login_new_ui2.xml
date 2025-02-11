@@ -166,7 +166,8 @@
                         android:gravity="end"
                         android:text="@string/forgot_username_link"
                         android:textColor="@color/textColorGray"
-                        android:textSize="@dimen/common_label_text_size" />
+                        android:textSize="@dimen/common_label_text_size"
+                        android:visibility="gone"/>
 
                     <TextView
                         android:id="@+id/tv_username_error"
@@ -237,7 +238,8 @@
                         android:gravity="end"
                         android:text="@string/forgot_password_link"
                         android:textColor="@color/textColorGray"
-                        android:textSize="@dimen/common_label_text_size" />
+                        android:textSize="@dimen/common_label_text_size"
+                        android:visibility="gone"/>
 
 
                 </LinearLayout>
