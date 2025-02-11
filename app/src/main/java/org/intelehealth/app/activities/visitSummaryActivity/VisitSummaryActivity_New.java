@@ -277,6 +277,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     ObsDTO famHistory = new ObsDTO();
     ObsDTO patHistory = new ObsDTO();
     ObsDTO phyExam = new ObsDTO();
+    ObsDTO phyExamReg = new ObsDTO();
     ObsDTO height = new ObsDTO();
     ObsDTO weight = new ObsDTO();
     ObsDTO pulse = new ObsDTO();
@@ -3722,6 +3723,11 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 phyExam.setValue(value);
                 break;
             }
+            case UuidDictionary.PHYEXAM_REG_LANG_VALUE: {
+                String regionalLanguageData = StringUtils.getRegionalLanguageDataFromJson(value, sessionManager.getAppLanguage());
+                phyExamReg.setValue(regionalLanguageData);
+                break;
+            }
             case UuidDictionary.HEIGHT: //Height
             {
                 height.setValue(value);
@@ -5801,7 +5807,18 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
         // phys exam data
         if (phyExam.getValue() != null) {
-            String value = phyExam.getValue();
+            String value = "";
+
+            if (!sessionManager.getAppLanguage().equalsIgnoreCase("en")) {
+                if (phyExamReg.getValue() == null || phyExamReg.getValue().isEmpty()) {
+                    value = phyExam.getValue();
+                } else {
+                    value = phyExamReg.getValue();
+                }
+            } else {
+                value = phyExam.getValue();
+            }
+
             boolean isInOldFormat = true;
             //Show Visit summary data in Clinical Format for English language only
             //Else for other language keep the data in Question Answer format
@@ -6079,8 +6096,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                     mapData.get(complainName).add(s1);
                 }
             }
-
         }
+
         System.out.println(mapData);
         for (Map.Entry<String, List<String>> entry : mapData.entrySet()) {
             String _complain = entry.getKey();

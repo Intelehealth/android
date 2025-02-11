@@ -27,6 +27,7 @@ public class UuidDictionary {
     public static final String SUGAR_LEVEL_RANDOM = "95cf1d31-21dc-4fae-96fd-d1dd9455914f";
 
     public static final String CC_REG_LANG_VALUE = "9cca1f28-c52c-461e-9305-7bec2d048d25";
+    public static final String PHYEXAM_REG_LANG_VALUE = "1ae67139-abb3-464c-9091-feab2e6e0fdb";
 
     //m added
     public static final String EMERGENCY = "ca5f5dc3-4f0b-4097-9cae-5cf2eb44a09c";
