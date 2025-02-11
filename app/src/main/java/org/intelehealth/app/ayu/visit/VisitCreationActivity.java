@@ -1125,27 +1125,21 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
     }
 
     /*Physical exam*/
-    private boolean insertDbPhysicalExam(String value) {
-        CustomLog.i(TAG, "insertDb: ");
+    private boolean insertDbPhysicalExam(String value, String conceptUuid) {
         boolean isInserted = false;
         try {
             ObsDAO obsDAO = new ObsDAO();
             ObsDTO obsDTO = new ObsDTO();
-            String uuidOBS = obsDAO.getObsuuid(encounterAdultIntials, UuidDictionary.PHYSICAL_EXAMINATION);
-            CustomLog.i(TAG, "insertDbPhysicalExam: uuidOBS - " + uuidOBS);
-
-            obsDTO.setConceptuuid(UuidDictionary.PHYSICAL_EXAMINATION);
+            String uuidOBS = obsDAO.getObsuuid(encounterAdultIntials, conceptUuid);
+            obsDTO.setConceptuuid(conceptUuid);
             obsDTO.setEncounteruuid(encounterAdultIntials);
             obsDTO.setCreator(sessionManager.getCreatorID());
             obsDTO.setValue(StringUtils.getValue(value));
 
             if (uuidOBS != null) {
                 obsDTO.setUuid(uuidOBS);
-                CustomLog.v("obsDTO update", new Gson().toJson(obsDTO));
-
                 isInserted = obsDAO.updateObs(obsDTO);
             } else {
-                CustomLog.v("obsDTO insert", new Gson().toJson(obsDTO));
                 isInserted = obsDAO.insertObs(obsDTO);
             }
         } catch (DAOException e) {
@@ -1189,53 +1183,49 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                     CustomLog.v(TAG, "savePhysicalExamData, imagePathList " + imagePathList);
                     if (imagePathList != null && imagePathList.size() > 0) {
                         if (l2Node.isImageUploaded()) {
-
                             for (String imagePath : imagePathList) {
                                 String comments = l2Node.getImagePathListWithSectionTag().get(imagePath);
                                 String fileName = imagePath.substring(imagePath.lastIndexOf("/") + 1).split("\\.")[0];
                                 updateImageDatabase(fileName, comments);
                             }
-
                         } else {
                             Toast.makeText(this, getString(R.string.image_upload_pending_alert), Toast.LENGTH_SHORT).show();
                             return false;
                         }
                     }
                 }
-
             }
 
-
-            JSONObject jsonObject = new JSONObject();
-            try {
-                physicalStringLocale = VisitUtils.replaceEnglishCommonString(physicalStringLocale, sessionManager.getAppLanguage());
-                if (physicalStringLocale != null && !sessionManager.getAppLanguage().equals("en")) {
-                    Timber.tag(TAG).v("physicalStringLocale - %s", physicalStringLocale);
-                    physicalStringLocale = physicalStringLocale.replaceAll("picture taken", getString(R.string.picture_taken));
-                    Timber.tag(TAG).v("physicalStringLocale - %s", physicalStringLocale);
-                }
-                String[] matchDate = DateAndTimeUtils.findDateFromStringDDMMMYYY(physicalStringLocale);
-                if (matchDate != null) {
-                    for (String date : matchDate) {
-                        physicalStringLocale = physicalStringLocale.replaceAll(date, DateAndTimeUtils.formatInLocalDateForDDMMMYYYY(date, sessionManager.getAppLanguage()));
-                    }
-                }
-                physicalString = VisitUtils.replaceToEnglishCommonString(physicalString, sessionManager.getAppLanguage());
-                jsonObject.put("en", physicalString);
-                //if(!sessionManager.getAppLanguage().equalsIgnoreCase("en")) {
-                jsonObject.put("l-" + sessionManager.getAppLanguage(), physicalStringLocale);
-                //}
-                physicalStringWithLocaleJsonString = jsonObject.toString().replace("\\/", "/");
-                Timber.tag(TAG).v(physicalStringWithLocaleJsonString);
-            } catch (JSONException e) {
-                e.printStackTrace();
+            physicalStringLocale = VisitUtils.replaceEnglishCommonString(physicalStringLocale, sessionManager.getAppLanguage());
+            if (physicalStringLocale != null && !sessionManager.getAppLanguage().equals("en")) {
+                physicalStringLocale = physicalStringLocale.replaceAll("picture taken", getString(R.string.picture_taken));
             }
 
+            String[] matchDate = DateAndTimeUtils.findDateFromStringDDMMMYYY(physicalStringLocale);
+            if (matchDate != null) {
+                for (String date : matchDate) {
+                    physicalStringLocale = physicalStringLocale.replaceAll(date, DateAndTimeUtils.formatInLocalDateForDDMMMYYYY(date, sessionManager.getAppLanguage()));
+                }
+            }
+
+            physicalString = VisitUtils.replaceToEnglishCommonString(physicalString, sessionManager.getAppLanguage());
         } else {
             questionsMissing();
             return false;
         }
-        return insertDbPhysicalExam(physicalStringWithLocaleJsonString);
+
+        boolean isPhysicalExamInserted = insertDbPhysicalExam(physicalString, UuidDictionary.PHYSICAL_EXAMINATION);
+        boolean isPhysicalExamLocaleInserted = false;
+
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("text_" + sessionManager.getAppLanguage(), physicalStringLocale);
+            isPhysicalExamLocaleInserted = insertDbPhysicalExam(jsonObject.toString(), UuidDictionary.PHYEXAM_REG_LANG_VALUE);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return isPhysicalExamInserted && isPhysicalExamLocaleInserted;
     }
 
     private String patientHistory, familyHistory;
