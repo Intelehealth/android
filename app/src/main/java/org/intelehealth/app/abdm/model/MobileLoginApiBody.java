@@ -18,6 +18,8 @@ public class MobileLoginApiBody {
     private String scope;
     @SerializedName("authMethod")
     private String authMethod;
+    @SerializedName("txnId")
+    private String txnId;
 
     public String getValue() {
         return value;
@@ -41,5 +43,13 @@ public class MobileLoginApiBody {
 
     public void setAuthMethod(String authMethod) {
         this.authMethod = authMethod;
+    }
+
+    public String getTxnId() {
+        return txnId;
+    }
+
+    public void setTxnId(String txnId) {
+        this.txnId = txnId;
     }
 }

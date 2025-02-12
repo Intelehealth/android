@@ -1,6 +1,7 @@
 package org.intelehealth.app.abdm.adapter;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,7 +45,11 @@ public class MultipleAccountsAdapter extends RecyclerView.Adapter<MultipleAccoun
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Account account = accountList.get(position);
-        holder.tvAbhaAddress.setText(account.getPreferredAbhaAddress());
+        if (TextUtils.isEmpty(account.getPreferredAbhaAddress())) {
+            holder.tvAbhaAddress.setText(account.getABHANumber());
+        } else {
+            holder.tvAbhaAddress.setText(account.getPreferredAbhaAddress());
+        }
         holder.tvFullname.setText(account.getName());
 
         holder.itemView.setOnClickListener(v -> {
@@ -56,19 +61,17 @@ public class MultipleAccountsAdapter extends RecyclerView.Adapter<MultipleAccoun
                     checkedPosition = position;
                     onItemClick.OnItemSelected(account, true);
                 }
-            }
-            else if ((Integer) holder.itemView.getTag() == R.drawable.ui2_chat_bubble_square_round) {
+            } else if ((Integer) holder.itemView.getTag() == R.drawable.ui2_chat_bubble_square_round) {
                 holder.ivCheckedIcon.setVisibility(View.GONE);
                 holder.itemView.setBackground(context.getDrawable(R.drawable.textbox_outline));
                 holder.itemView.setTag(R.drawable.textbox_outline);
                 checkedPosition = -1;
                 onItemClick.OnItemSelected(account, false);
-            }
-            else {
+            } else {
                 holder.ivCheckedIcon.setVisibility(View.GONE);
                 holder.itemView.setBackground(context.getDrawable(R.drawable.textbox_outline));
                 holder.itemView.setTag(R.drawable.textbox_outline);
-              //  onItemClick.OnItemSelected(account, false);
+                //  onItemClick.OnItemSelected(account, false);
             }
 
         });
@@ -82,6 +85,7 @@ public class MultipleAccountsAdapter extends RecyclerView.Adapter<MultipleAccoun
     public class MyViewHolder extends RecyclerView.ViewHolder {
         private TextView tvAbhaAddress, tvFullname;
         private ImageView ivCheckedIcon;
+
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             tvAbhaAddress = itemView.findViewById(R.id.tvAbhaAddress);

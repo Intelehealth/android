@@ -2,11 +2,13 @@ package org.intelehealth.app.abdm.activity;
 
 import static org.intelehealth.app.abdm.utils.ABDMConstant.AADHAAR_CARD_SELECTION;
 import static org.intelehealth.app.abdm.utils.ABDMConstant.ABHA_OTP_AADHAAR;
+import static org.intelehealth.app.abdm.utils.ABDMConstant.ABHA_OTP_MOBILE;
 import static org.intelehealth.app.abdm.utils.ABDMConstant.ABHA_SELECTION;
 import static org.intelehealth.app.abdm.utils.ABDMConstant.MOBILE_NUMBER_SELECTION;
 import static org.intelehealth.app.abdm.utils.ABDMConstant.SCOPE_AADHAAR;
 import static org.intelehealth.app.abdm.utils.ABDMConstant.SCOPE_ABHA_ADDRESS;
 import static org.intelehealth.app.abdm.utils.ABDMConstant.SCOPE_ABHA_NUMBER;
+import static org.intelehealth.app.abdm.utils.ABDMConstant.SCOPE_INDEX;
 import static org.intelehealth.app.abdm.utils.ABDMConstant.SCOPE_MOBILE;
 import static org.intelehealth.app.utilities.DialogUtils.showOKDialog;
 
@@ -36,11 +38,14 @@ import org.intelehealth.app.abdm.dialog.AbhaOtpTypeDialogFragment;
 import org.intelehealth.app.abdm.dialog.AccountSelectDialogFragment;
 import org.intelehealth.app.abdm.model.AbhaProfileRequestBody;
 import org.intelehealth.app.abdm.model.AbhaProfileResponse;
+import org.intelehealth.app.abdm.model.Account;
 import org.intelehealth.app.abdm.model.ExistUserStatusResponse;
 import org.intelehealth.app.abdm.model.MobileLoginApiBody;
 import org.intelehealth.app.abdm.model.MobileLoginOnOTPVerifiedResponse;
 import org.intelehealth.app.abdm.model.OTPResponse;
 import org.intelehealth.app.abdm.model.OTPVerificationRequestBody;
+import org.intelehealth.app.abdm.model.SearchAbhaProfile;
+import org.intelehealth.app.abdm.model.SearchAbhaProfileResponse;
 import org.intelehealth.app.abdm.model.TokenResponse;
 import org.intelehealth.app.abdm.utils.ABDMUtils;
 import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
@@ -56,6 +61,8 @@ import org.intelehealth.app.utilities.VerhoeffAlgorithm;
 import org.intelehealth.app.utilities.WindowsUtils;
 import org.intelehealth.app.widget.materialprogressbar.CustomProgressDialog;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.regex.Pattern;
@@ -259,8 +266,11 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(TokenResponse tokenResponse1) {
                             accessToken = BEARER_AUTH + tokenResponse1.getAccessToken();
-                            if (optionSelected.equalsIgnoreCase(AADHAAR_CARD_SELECTION) || (optionSelected.equalsIgnoreCase(MOBILE_NUMBER_SELECTION))) {
+                            if (optionSelected.equalsIgnoreCase(AADHAAR_CARD_SELECTION)) {
                                 sentOtpApi(accessToken, getSendOtpApiRequest());   // via. aadhaarEnroll api
+                            } else if (optionSelected.equalsIgnoreCase(MOBILE_NUMBER_SELECTION)) {
+                                searchMobile(accessToken, new SearchAbhaProfile(Objects.requireNonNull(binding.layoutHaveABHANumber.edittextMobileNumber.getText()).toString()));
+
                             } else if (optionSelected.equalsIgnoreCase(ABHA_SELECTION)) {
                                 cpd.dismiss();
                                 AbhaOtpTypeDialogFragment dialog = new AbhaOtpTypeDialogFragment();
@@ -308,6 +318,73 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
         }
 
         return requestBody;
+    }
+
+    private void searchMobile(String accessToken, SearchAbhaProfile requestBody) {  // mobile: Step 2
+        cpd.show(getString(R.string.otp_sending));
+
+        String url = UrlModifiers.searchMobileVerification();
+        // payload - end
+
+        Single<Response<HashMap<String, SearchAbhaProfileResponse>>> mobileResponseSingle = AppConstants.apiInterface.searchAbhaProfile(url, accessToken, requestBody);
+        new Thread(() -> {
+            // api - start
+            mobileResponseSingle
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new DisposableSingleObserver<>() {
+                        @Override
+                        public void onSuccess(Response<HashMap<String, SearchAbhaProfileResponse>> searchProfileResponse) {
+                            cpd.dismiss();
+                            if (searchProfileResponse.code() == 200) {
+//                                setOtpVisibility();
+                                SearchAbhaProfileResponse response = searchProfileResponse.body().get("0");
+
+                                AccountSelectDialogFragment dialog = new AccountSelectDialogFragment();
+                                dialog.openAccountSelectionDialog(response.getABHA(), account -> {
+                                    MobileLoginApiBody mobileLoginApiBody = getSendOtpApiRequest();
+                                    mobileLoginApiBody.setTxnId(response.getTxnId());
+                                    mobileLoginApiBody.setValue(String.valueOf(account.getIndex()));
+                                    mobileLoginApiBody.setAuthMethod(ABHA_OTP_MOBILE);
+                                    mobileLoginApiBody.setScope(SCOPE_INDEX);
+                                    sentOtpApi(accessToken, mobileLoginApiBody);
+                                    dialog.dismiss();
+                                });
+                                dialog.show(getSupportFragmentManager(), "");
+
+                            } else if (searchProfileResponse.code() == 404) {
+                                switch (optionSelected) {
+                                    case MOBILE_NUMBER_SELECTION ->
+                                            Toast.makeText(context, R.string.the_mobile_number_you_have_entered_does_not_match_with_any_of_the_records_please_enter_a_different_number, Toast.LENGTH_SHORT).show();
+                                    case ABHA_SELECTION ->
+                                            Toast.makeText(context, R.string.please_enter_valid_abha, Toast.LENGTH_SHORT).show();
+                                    default ->
+                                            Toast.makeText(context, R.string.please_enter_valid_aadhaar, Toast.LENGTH_SHORT).show();
+                                }
+                                binding.sendOtpBtn.setEnabled(true);
+                            } else {
+                                if (searchProfileResponse.errorBody() != null) {
+                                    Toast.makeText(context, ABDMUtils.getErrorMessage1(searchProfileResponse.errorBody()), Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                                }
+                                binding.sendOtpBtn.setEnabled(true);
+                            }
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            binding.sendOtpBtn.setEnabled(true);
+                            binding.sendOtpBtn.setText(R.string.send_otp);  // Send otp.
+                            binding.otpBox.setText("");
+                            Timber.tag(TAG).e("onError: callMobileNumberVerificationApi: %s", e.getMessage());
+                            Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                            cancelResendAndHideView();
+                            cpd.dismiss();
+                        }
+                    });
+            // api - end
+        }).start();
     }
 
     private void sentOtpApi(String accessToken, MobileLoginApiBody requestBody) {  // mobile: Step 2
@@ -631,6 +708,8 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
             requestBody.setScope(SCOPE_AADHAAR);
         } else if (!optionSelected.isEmpty() && optionSelected.equalsIgnoreCase(ABHA_SELECTION)) {
             requestBody.setScope(TextUtils.isEmpty(binding.layoutHaveABHANumber.abhaDetails.etAbhaNumber.getText()) ? SCOPE_ABHA_ADDRESS : SCOPE_ABHA_NUMBER);
+        } else if (!optionSelected.isEmpty() && optionSelected.equalsIgnoreCase(SCOPE_MOBILE)) {
+            requestBody.setScope(SCOPE_ABHA_NUMBER);
         }
         // payload - end
 

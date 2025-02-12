@@ -3,6 +3,7 @@ package org.intelehealth.app.abdm.utils
 object ABDMConstant{
     const val SCOPE_AADHAAR = "aadhar"
     const val SCOPE_MOBILE = "mobile"
+    const val SCOPE_INDEX = "index"
     const val SCOPE_ABHA_ADDRESS = "abha-address"
     const val SCOPE_ABHA_NUMBER = "abha-number"
     const val INTENT_PATIENT_UUID = "patientUuid"

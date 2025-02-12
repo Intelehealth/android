@@ -1,6 +1,8 @@
 package org.intelehealth.app.networkApiCalls;
 
 
+import com.google.protobuf.Any;
+
 import org.intelehealth.app.abdm.model.AadharApiBody;
 import org.intelehealth.app.abdm.model.AbhaCardResponseBody;
 import org.intelehealth.app.abdm.model.AbhaProfileRequestBody;
@@ -14,6 +16,8 @@ import org.intelehealth.app.abdm.model.EnrollSuggestionRequestBody;
 import org.intelehealth.app.abdm.model.EnrollSuggestionResponse;
 import org.intelehealth.app.abdm.model.OTPVerificationRequestBody;
 import org.intelehealth.app.abdm.model.OTPVerificationResponse;
+import org.intelehealth.app.abdm.model.SearchAbhaProfile;
+import org.intelehealth.app.abdm.model.SearchAbhaProfileResponse;
 import org.intelehealth.app.abdm.model.SetAbhaAddressResponse;
 import org.intelehealth.app.abdm.model.TokenResponse;
 import org.intelehealth.app.models.ChangePasswordModel_New;
@@ -45,6 +49,8 @@ import org.intelehealth.app.models.pushRequestApiCall.PushRequestApiCall;
 import org.intelehealth.app.models.pushResponseApiCall.PushResponseApiCall;
 import org.intelehealth.app.models.statewise_location.District_Sanch_Village;
 import org.intelehealth.app.models.statewise_location.State;
+
+import java.util.HashMap;
 
 import io.reactivex.Observable;
 import io.reactivex.Single;
@@ -227,6 +233,10 @@ public interface ApiInterface {
     Single<Response<OTPResponse>> GET_OTP_FOR_MOBILE(@Url String url,
                                            @Header("Authorization") String accessToken,
                                            @Body MobileLoginApiBody mobileLoginApiBody);
+    @POST
+    Single<Response<HashMap<String, SearchAbhaProfileResponse>>> searchAbhaProfile(@Url String url,
+                                                                                   @Header("Authorization") String accessToken,
+                                                                                   @Body SearchAbhaProfile searchAbhaProfile);
 
     @POST
     Single<Response<OTPVerificationResponse>> PUSH_OTP_FOR_VERIFICATION(@Url String url,

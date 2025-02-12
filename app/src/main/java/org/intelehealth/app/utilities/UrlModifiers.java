@@ -127,6 +127,9 @@ public class UrlModifiers {
     public static String getMobileLoginVerificationUrl() {
         return BuildConfig.SERVER_URL + "/abha/loginOTPReq";
     }
+    public static String searchMobileVerification() {
+        return BuildConfig.SERVER_URL + "/abha/searchAbhaProfiles";
+    }
     public static String getOTPForMobileLoginVerificationUrl() {
         return BuildConfig.SERVER_URL + "/abha/loginOTPVerify";
     }
