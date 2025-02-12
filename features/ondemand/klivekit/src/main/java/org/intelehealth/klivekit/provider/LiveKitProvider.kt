@@ -13,6 +13,7 @@ import io.livekit.android.room.participant.VideoTrackPublishDefaults
 import io.livekit.android.room.track.CameraPosition
 import io.livekit.android.room.track.LocalAudioTrackOptions
 import io.livekit.android.room.track.LocalVideoTrackOptions
+import io.livekit.android.room.track.VideoPreset169
 import io.livekit.android.room.track.VideoPreset43
 import livekit.org.webrtc.EglBase
 import livekit.org.webrtc.HardwareVideoEncoderFactory
@@ -53,7 +54,7 @@ object LiveKitProvider {
     )
 
     private fun provideVideoPublishTrack() = VideoTrackPublishDefaults(
-        videoEncoding = VideoPreset43.H480.encoding
+        videoEncoding = VideoPreset169.H720.encoding,
 //        videoEncoding = VideoPreset169.VGA.encoding,
 //            videoCodec = VideoCodec.VP8.codecName
     )
@@ -66,6 +67,8 @@ object LiveKitProvider {
     ) = RoomOptions(
         audioTrackCaptureDefaults = localAudioTrackOptions,
         audioTrackPublishDefaults = audioTrackPublishDefaults,
+        videoTrackCaptureDefaults = localVideoTrackOptions,
+        videoTrackPublishDefaults = videoTrackPublishDefaults,
         adaptiveStream = true
     )
 
