@@ -2287,7 +2287,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             departmentTv.setText(getString(R.string.not_provided));
         }
 
-        if (patientDTO.getAddress1() != null && !patientDTO.getAddress1().equals("")) {
+        if (patientDTO.getAddress6() != null && !patientDTO.getAddress6().equals("")) {
             householdNumber.setText(patientDTO.getAddress6());
         } else {
             householdNumber.setText(getString(R.string.not_provided));

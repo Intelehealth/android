@@ -119,25 +119,19 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
             address2 = binding.textInputAddress2.text?.toString()
             registrationAddressOfHf = binding.textInputRegistrationAddressOfHf.text?.toString()
 
-            //householdNumber = binding.textInputHouseholdNumber.text?.toString()
              address1 = binding.textInputAddress1.text?.toString()
             address6 = binding.textInputHouseholdNumber.text?.toString()
 
-            var village: String
+
             if (binding.llBlock.isEnabled) {
-                if (binding.autoCompleteBlock.text.contains("Other", ignoreCase = true)) {
+                if (binding.autoCompleteBlock.text.toString().equals(getString(R.string.other_block_option), ignoreCase = true)) {
                     address3 = binding.textInputOtherBlock.text.toString()
-                    village = binding.textInputCityVillage.text?.toString().toString()
-                } else {
-                    village = binding.autoCompleteVillageDropdown.text.toString()
-                    address3 = binding.autoCompleteBlock.text.toString()
+                    cityvillage = binding.textInputCityVillage.text?.toString().toString()
                 }
             } else {
-                village = binding.textInputCityVillage.text.toString()
+                cityvillage = binding.textInputCityVillage.text.toString()
             }
-            /*cityvillage = if (district.isNullOrEmpty().not()) "${district}:$village"
-            else village*/
-            cityvillage = village
+
 
             patientViewModel.updatedPatient(this)
             if (patientViewModel.isEditMode) {
@@ -199,7 +193,7 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
                2 defaultState - project has default state :: if above both conditions true then it has default value and make it editable false*/
             setFieldEnabledStatus(binding.textInputLayState, false)
             binding.autoCompleteState.setText(defaultState.toString(), false)
-            patient.stateprovince = binding.autoCompleteState.text.toString()
+            patient.stateprovince = LanguageUtils.getStateInEnglish(defaultState)
             setupDistricts(defaultState)
         } else {
             binding.autoCompleteState.setText("", false)
@@ -218,7 +212,7 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
                 if (patient.stateprovince != null && patient.stateprovince.isNotEmpty()) {
                     val state = LanguageUtils.getState(patient.stateprovince)
                     if (state != null) {
-                        binding.autoCompleteState.setText(state.toString(), false)
+                        binding.autoCompleteState.setText(LanguageUtils.getStateLocal(state), false)
                         setupDistricts(state)
                     }
                 }
@@ -229,7 +223,8 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
                     val selectedState = list[i]
                     binding.autoCompleteDistrict.setText("", false)
                     patient.district = binding.autoCompleteDistrict.text.toString()
-                    patient.stateprovince = selectedState.state
+                    //patient.stateprovince = selectedState.state
+                    patient.stateprovince = LanguageUtils.getStateInEnglish(selectedState)
                     setupDistricts(selectedState)
                 }
             }
@@ -295,7 +290,8 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
                2 defaultDistrict - project has default state :: if above both conditions true then it has default value and make it editable false*/
             setFieldEnabledStatus(binding.textInputLayDistrict, false)
             binding.autoCompleteDistrict.setText(defaultDistrict.toString(), false)
-            patient.district = binding.autoCompleteDistrict.text.toString()
+            //patient.district = binding.autoCompleteDistrict.text.toString()
+            patient.district = LanguageUtils.getDistrictInEnglish(defaultDistrict)
             if (binding.llBlock.isEnabled) setupBlocks(defaultDistrict)
         } else {
             // IDA flow (No default value for state
@@ -317,7 +313,8 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
             binding.autoCompleteDistrict.setOnItemClickListener { adapterView, _, i, _ ->
                 binding.textInputLayDistrict.hideError()
                 val dList: List<DistData> = binding.textInputLayDistrict.tag as List<DistData>
-                patient.district = dList[i].name
+                //patient.district = dList[i].name
+                patient.district = LanguageUtils.getDistrictInEnglish(dList[i])
                 if (binding.llBlock.isEnabled) setupBlocks(dList[i])
             }
         }
@@ -405,8 +402,7 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
             } else true
 
             val bVillageField = if (it.block?.isEnabled == true && it.block?.isMandatory == true) {
-                if (binding.autoCompleteBlock.text.toString()
-                        .contains("Other", ignoreCase = true)
+                if (binding.autoCompleteBlock.text.toString().equals(getString(R.string.other_block_option), ignoreCase = true)
                 ) {
                     binding.textInputLayOtherBlock.validate(binding.textInputOtherBlock, error)
                     binding.textInputLayCityVillage.validate(binding.textInputCityVillage, error)
@@ -447,7 +443,7 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
             if (patient.address3 != null && patient.address3.isNotEmpty()) {
                 val selected = LanguageUtils.getBlock(districtData, patient.address3)
                 if (selected == null) {
-                    val selected = LanguageUtils.getBlock(districtData, "Other Block")
+                    val selected = LanguageUtils.getBlock(districtData, getString(R.string.other_block_option))
                     binding.autoCompleteBlock.setText(selected.toString(), false)
                     binding.textInputOtherBlock.setText(patient.address3)
                     enableOtherBlock()
@@ -471,7 +467,7 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
 
                 val blocksList: List<Block> = binding.textInputLayBlock.tag as List<Block>
                 val selectedBlock = blocksList[i]
-                if (selectedBlock.name?.contains("Other") == true) {
+                if (i ==2) {
                     binding.textInputLayOtherBlock.visibility = View.VISIBLE
                     enableOtherBlock()
                     binding.textInputCityVillage.setText("")
@@ -517,7 +513,7 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
                     binding.autoCompleteVillageDropdown.setOnItemClickListener { adapterView, _, i, _ ->
                         binding.textInputLayVillageDropdown.hideError()
                         val selectedVillage = villages[i]
-                        if (binding.autoCompleteBlock.text.contains("Other", ignoreCase = true)
+                        if (binding.autoCompleteBlock.text.toString().equals(getString(R.string.other_block_option), ignoreCase = true)
                         ) binding.textInputCityVillage.setText("")
                          else patient.cityvillage = selectedVillage.name
                     }
@@ -618,23 +614,14 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
     }
 
     private fun setOtherBlockData() {
-        //if (binding.autoCompleteBlock.text.contains("Other", ignoreCase = true)) {
         if (isOtherBlockSelected()) {
             patient.address3 = binding.textInputOtherBlock.text.toString()
             patient.cityvillage = binding.textInputCityVillage.text.toString()
         }
-        //}
     }
 
-    private fun isOtherBlockSelected1() =
-        binding.autoCompleteBlock.text.contains("Other", ignoreCase = true) ||
-                (patient.address3 != null && patient.address3.isNotEmpty() && patient.address3.contains(
-                    "Other",
-                    ignoreCase = true
-                ))
-
     private fun isOtherBlockSelected() =
-        binding.autoCompleteBlock.text.contains("Other", ignoreCase = true)
+        binding.autoCompleteBlock.text.toString().equals(getString(R.string.other_block_option), ignoreCase = true)
 
     private fun eraseAllBlockFields() {
         binding.autoCompleteBlock.setText("", false)

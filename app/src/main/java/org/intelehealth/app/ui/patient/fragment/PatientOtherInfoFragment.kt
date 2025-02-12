@@ -134,17 +134,17 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
         } else {
             val rosterConfig = patientViewModel.activeStatusRosterSection
             Log.d("TAG", "navigateToDetails: rosterConfig : " + rosterConfig)
-            showMoveToRosterDialog()
-//            if (rosterConfig) {
-//                showMoveToRosterDialog()
-//            } else {
-//                PatientOtherInfoFragmentDirections.navigationOtherToDetails(
-//                    patient.uuid, "searchPatient", "false"
-//                ).also {
-//                    findNavController().navigate(it)
-//                    requireActivity().finish()
-//                }
-//            }
+            //showMoveToRosterDialog()
+            if (rosterConfig) {
+                showMoveToRosterDialog()
+            } else {
+                PatientOtherInfoFragmentDirections.navigationOtherToDetails(
+                    patient.uuid, "searchPatient", "false"
+                ).also {
+                    findNavController().navigate(it)
+                    requireActivity().finish()
+                }
+           }
         }
 
     }

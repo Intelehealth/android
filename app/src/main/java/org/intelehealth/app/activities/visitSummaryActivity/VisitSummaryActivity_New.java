@@ -3286,8 +3286,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 CustomLog.v("addnotes", "addnotes: " + addnotes);
                 if (!addnotes.equalsIgnoreCase("") && addnotes != null)
                     visitAttributeListDAO.insertVisitAttributes(visitUuid, addnotes, ADDITIONAL_NOTES);
-                else
-                    visitAttributeListDAO.insertVisitAttributes(visitUuid, "No notes added for Doctor.", ADDITIONAL_NOTES);
+                /*else  // TODO: this is hardcoded and needs to be handled via config api.
+                    visitAttributeListDAO.insertVisitAttributes(visitUuid, "No notes added for Doctor.", ADDITIONAL_NOTES);*/
                 // keeping raw string as we dont want regional lang data to be stored in DB.
             } catch (DAOException e) {
                 e.printStackTrace();

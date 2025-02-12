@@ -534,13 +534,16 @@ public class PatientsDAO {
         db.beginTransaction();
         try {
             for (int i = 0; i < patientAttributesDTOS.size(); i++) {
-                values.put("uuid", patientAttributesDTOS.get(i).getUuid());
-                values.put("person_attribute_type_uuid", patientAttributesDTOS.get(i).getPersonAttributeTypeUuid());
-                values.put("patientuuid", patientAttributesDTOS.get(i).getPatientuuid());
-                values.put("value", patientAttributesDTOS.get(i).getValue());
-                values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
-                values.put("sync", false);
-                db.insertWithOnConflict("tbl_patient_attribute", null, values, SQLiteDatabase.CONFLICT_REPLACE);
+                PatientAttributesDTO patientAttributesDTO = patientAttributesDTOS.get(i);
+                if (patientAttributesDTO.getPersonAttributeTypeUuid() != null && !patientAttributesDTO.getPersonAttributeTypeUuid().isEmpty()) {
+                    values.put("uuid", patientAttributesDTOS.get(i).getUuid());
+                    values.put("person_attribute_type_uuid", patientAttributesDTOS.get(i).getPersonAttributeTypeUuid());
+                    values.put("patientuuid", patientAttributesDTOS.get(i).getPatientuuid());
+                    values.put("value", patientAttributesDTOS.get(i).getValue());
+                    values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
+                    values.put("sync", false);
+                    db.insertWithOnConflict("tbl_patient_attribute", null, values, SQLiteDatabase.CONFLICT_REPLACE);
+                }
             }
             db.setTransactionSuccessful();
         } catch (SQLException e) {
@@ -1347,6 +1350,27 @@ public class PatientsDAO {
             createdRecordsCount1 = db.update("tbl_patient", values, whereclause, new String[]{uuid});
             db.setTransactionSuccessful();
             Logger.logD("devKZchk", "created records count" + createdRecordsCount1);
+        } catch (SQLException e) {
+            isCreated = false;
+            throw new DAOException(e.getMessage(), e);
+        } finally {
+            db.endTransaction();
+        }
+        return isCreated;
+
+    }
+    // Update patient sync = false.
+    public boolean updatePatientSyncValue(String patientUUID) throws DAOException {
+        Log.d(TAG, "patientUUID: "+patientUUID);
+        boolean isCreated = true;
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        String whereClause = "uuid=?";
+        db.beginTransaction();
+        try {
+            values.put("sync", false);
+            db.update("tbl_patient", values, whereClause, new String[]{patientUUID});
+            db.setTransactionSuccessful();
         } catch (SQLException e) {
             isCreated = false;
             throw new DAOException(e.getMessage(), e);
