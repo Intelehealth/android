@@ -123,11 +123,11 @@ class NotificationActivity : BaseActivity(), ClearNotificationListener {
     fun showAlertDialog(message :String) {
         val builder = AlertDialog.Builder(this)
 
-        builder.setTitle("Notification")
+        builder.setTitle(getString(R.string.notifi_title))
         builder.setMessage(message)
 
         // Add the OK button
-        builder.setPositiveButton("OK") { dialog, _ ->
+        builder.setPositiveButton(getString(R.string.ok)) { dialog, _ ->
             // User clicked OK button
             dialog.dismiss()
         }
@@ -236,7 +236,7 @@ class NotificationActivity : BaseActivity(), ClearNotificationListener {
         }
 
         override fun deleteNotification(notificationModel: NotificationList, position: Int) {
-            ToastUtil.showLongToast(this@NotificationActivity,"Work in progress..")
+            ToastUtil.showLongToast(this@NotificationActivity,getString(R.string.work_in_progress))
         }
 
         override fun updateReadStatus(notificationModel: NotificationList, position: Int) {

@@ -3226,7 +3226,9 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 if (selectedSeverity != null) {
                     visitAttributeListDAO.insertVisitAttributes(visitUuid, selectedSeverity, SEVERITY);
                 }
-
+                if(BuildConfig.FLAVOR_client == FlavorKeys.NAS)
+                    visitAttributeListDAO.insertVisitAttributes(visitUuid, AppConstants.dateAndTimeUtils.getVisitUploadDateTime(), VISIT_UPLOAD_TIME);
+                else
                 visitAttributeListDAO.insertVisitAttributes(visitUuid, AppConstants.dateAndTimeUtils.currentDateTime(), VISIT_UPLOAD_TIME);
 
                 if (!mBinding.diagnosisTextInput.getText().toString().isEmpty()) {
