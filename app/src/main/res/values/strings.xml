@@ -1727,6 +1727,12 @@
     <string name="lung_sound_saved">Lung sound saved successfully!</string>
     <string name="other_block_option">Other Block</string>
     <string name="from_9_00_pm_to_6_00_am">From 9:00 PM To 6:00 AM</string>
+    <string name="work_in_progress">Work in progress..</string>
+    <string name="prescription_available_for_notification">Prescription available for %1$s</string>
+    <string name="click_notification_to_see">Click notification to see!</string>
+    <string name="appointment_reschedule_for_notification">Appointment rescheduled for %1$s</string>
+    <string name="appointment_cancelled_for_notification">Appointment cancelled for %1$s</string>
+
 
 
 </resources>
