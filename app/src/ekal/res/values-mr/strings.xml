@@ -12,7 +12,7 @@
     <string name="send_visit">भेट जतन करायची?</string>
     <string name="visit_successfully_sent">भेट यशस्वीरित्या जतन केली!</string>
     <string name="patient_visit_sent">रुग्णाची भेट यशस्वीरित्या जतन केली गेली आहे.</string>
-    <string name="visit_data_failed">भेट डेटा अपलोड करण्यात अयशस्वी</string>
+    <string name="visit_data_failed">भेटीचा डेटा अयशस्वी झाला</string>
     <string name="visit_uploaded_failed">इंटरनेट उपलब्ध झाल्यावर अपलोड केले जाईल.</string>
     <!--    <string name="visit_left_action_btn_label">@string/preview</string>-->
     <!--    <string name="visit_right_action_btn_label">@string/save_visit_button</string>-->

@@ -12,8 +12,8 @@
     <string name="send_visit">विज़िट सेव करें ?</string>
     <string name="visit_successfully_sent">विज़िट सफलतापूर्वक सेव की गई!</string>
     <string name="patient_visit_sent">पेशेंट की विजिट सफलतापूर्वक सेव की गई है.</string>
-    <string name="visit_data_failed">विज़िट सफलतापूर्वक सेव की गई!</string>
-    <string name="visit_uploaded_failed">पेशेंट की विजिट सफलतापूर्वक सेव की गई है.</string>
+    <string name="visit_data_failed">विज़िट डेटा विफल.</string>
+    <string name="visit_uploaded_failed">इंटरनेट उपलब्ध होने पर अपलोड किया जाएगा</string>
     <!--    <string name="visit_left_action_btn_label">@string/preview</string>-->
     <!--    <string name="visit_right_action_btn_label">@string/save_visit_button</string>-->
     <!--    <string name="visit_save_and_upload_status">@string/visit_saving</string>-->
