@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name" translatable="false">একল আৰোগ্য</string>
+    <string name="intro_title_1">আমি কোন?</string>
+    <string name="intro_tagline_1">একল আৰোগ্য হৈছে উচ্চমানৰ স্বাস্থ্য সেৱা প্ৰদানৰ বাবে ফ্ৰণ্টলাইন স্বাস্থ্য কৰ্মী আৰু ৰোগীক ভাৰ্চুৱেল চিকিৎসকৰ সৈতে সংযোগ কৰি দূৰৱৰ্তী অঞ্চলত স্বাস্থ্যসেৱাৰ প্ৰৱেশৰ ব্যৱধান দূৰ কৰিবলৈ ডিজাইন কৰা এক অভিনৱ টেলিমেডিচিন প্লেটফৰ্ম</string>
+    <string name="intro_title_2">ৰোগীৰ ওচৰলৈ যাওক</string>
+    <string name="intro_tagline_2">এই প্লেটফৰ্মটো আয়ুৰ দ্বাৰা চালিত, যিটো এটা প্ৰগ্ৰেমেবল ডিজিটেল সহায়ক যিয়ে আঞ্চলিক ভাষাত প্ৰাথমিক স্বাস্থ্যসেৱাৰ বাবে প্ৰমাণভিত্তিক প্ৰট’কলৰ সৈতে ফ্ৰণ্টলাইন স্বাস্থ্য কৰ্মীসকলক সমৰ্থন কৰে</string>
+    <string name="intro_title_3">প্ৰেছক্ৰিপচন দিব লাগে</string>
+    <string name="intro_tagline_3">কম সম্পদৰ পৰিৱেশৰ বাবে ডিজাইন কৰা ক্লাউড-ভিত্তিক মুক্ত উৎস প্লেটফৰ্মে এটা কাষ্টমাইজড ৰূপায়ণ কৌশলৰ সৈতে সংযুক্ত কৰি প্ৰভাৱশালী স্বাস্থ্য ফলাফলৰ বাবে এটা ডিজিটেল স্বাস্থ্য সমাধান সৃষ্টি কৰে</string>
+
+    <string name="are_you_sure_you_want_to_send_visit">আপুনি নিশ্চিতভাৱে ভ্ৰমণটো সংৰক্ষণ কৰিব বিচাৰেনে?</string>
+    <string name="send_visit">ভ্ৰমণ সংৰক্ষণ কৰক?</string>
+    <string name="visit_successfully_sent">ভ্ৰমণ সফলতাৰে সংৰক্ষণ কৰা হৈছে!</string>
+    <string name="patient_visit_sent">ৰোগীৰ ভ্ৰমণ সফলতাৰে ৰক্ষা কৰা হৈছে।</string>
+    <string name="visit_data_failed">ভিজিট ডাটা বিফল</string>
+    <string name="visit_uploaded_failed">ইণ্টাৰনেট উপলব্ধ হ’লে আপলোড কৰা হ’ব</string>
+    <!--    <string name="visit_left_action_btn_label">@string/preview</string>-->
+    <!--    <string name="visit_right_action_btn_label">@string/save_visit_button</string>-->
+    <!--    <string name="visit_save_and_upload_status">@string/visit_saving</string>-->
+
+    <string name="prescription_not_received">প্ৰেছক্ৰিপচন লাভ কৰা হোৱা নাই</string>
+    <string name="please_wait_for_the_doctor_to_share_the_prescription_before_closing_the_visit">অনুগ্ৰহ কৰি ভ্ৰমণ বন্ধ কৰাৰ আগতে চিকিৎসকে প্ৰেছক্ৰিপচন শ্বেয়াৰ কৰালৈ অপেক্ষা কৰক</string>
+    <string name="confirm_end_visit_reason">এই ভ্ৰমণৰ অন্ত পেলাব?</string>
+    <string name="confirm_end_visit_reason_message">এই ভ্ৰমণৰ অন্ত পেলাব বিচৰাটো নিশ্চিত নেকি?</string>
+    <string name="select_caste">জাতি নিৰ্বাচন কৰক</string>
+    <string name="select_education">শিক্ষা নিৰ্বাচন কৰক</string>
+    <string name="select_economic_category">অৰ্থনৈতিক অৱস্থা নিৰ্বাচন কৰক</string>
+    <string name="select_phone_ownership">ফোন মালিকীস্বত্ব নিৰ্বাচন কৰক</string>
+    <string name="select_your_choice">আপোনাৰ পছন্দ নিৰ্বাচন কৰক</string>
+
+    <string name="schedule_caste">অনুসূচী জাতি</string>
+    <string name="schedule_tribe">অনুসূচী জনজাতি</string>
+    <string name="survey_other_backward_caste">অন্যান্য পিছপৰা জাতি (OBC)</string>
+    <string name="survey_general">সাধাৰণ</string>
+    <string name="survey_other">অন্যান্য </string>
+
+    <string name="smoker">ধূমপায়ী</string>
+    <string name="non_smoker">ধূমপান নকৰা</string>
+    <string name="denied_to_answer">উত্তৰ দিবলৈ অস্বীকাৰ কৰা হৈছে</string>
+    <string name="medical_history">অতীতৰ চিকিৎসা ইতিহাস</string>
+
+    <string name="less_than_5_bidis_or_cigarette">৫ বিদি / চিগাৰেটতকৈ কম</string>
+    <string name="five_to_ten_bidis_or_cigarette">৫ – ১০ বিদি / চিগাৰেট</string>
+    <string name="more_than_10_bidis_or_cigarette">১০ টাতকৈ অধিক বিদি / চিগাৰেট</string>
+
+    <string name="less_than_a_year">এবছৰ নৌহওঁতেই</string>
+    <string name="from_1_year_to_5_years">১ বছৰৰ পৰা ৫ বছৰলৈ</string>
+    <string name="from_5_year_to_10_years">৫ৰ পৰা ১০ বছৰলৈ</string>
+    <string name="more_than_10_years">১০ বছৰতকৈ অধিক</string>
+
+    <string name="frequency_daily">দৈনিক</string>
+    <string name="frequency_once_a_week">সপ্তাহত এবাৰ</string>
+    <string name="frequency_twice_a_week">এসপ্তাহত দুবাৰ</string>
+    <string name="frequency_occasionally">মাজে মাজে (মাহত এবাৰ বা তাতকৈ কম সময়ত)</string>
+
+    <string name="zero_fifty_ml">০ – ৫০ মি.লি</string>
+    <string name="fifty_hundred_ml">৫০ – ১০০ মি.লি</string>
+    <string name="hundred_two_hundred_fifty_ml">১০০ – ২৫০ মি.লি</string>
+    <string name="two_fifty_five_hundred_ml">২৫০ – ৫০০ মি.লি</string>
+    <string name="more_than_five_hundred_ml">৫০০ মিলিলিটাৰতকৈ অধিক</string>
+
+    <string name="specify_the_reason">কাৰণ উল্লেখ কৰক</string>
+
+    <string name="zero_thirty_thousand">০ – ৩০,০০০</string>
+    <string name="thirty_fifty_thousand">৩০,০০০ – ৫০,০০০</string>
+    <string name="fifty_thousand_one_lakh">50,৫০,০০০ – ১,০০,০০০</string>
+    <string name="one_lakh_two_lakh_fifty_thousand">১,০০,০০০ – ২,৫০,০০০</string>
+    <string name="more_than_two_lakh_fifty_thousand">২,৫০,০০০ তকৈ অধিক</string>
+
+    <string name="religion_hindu">হিন্দু</string>
+    <string name="religion_muslim">মুছলমান</string>
+    <string name="religion_christian">খ্ৰীষ্টান</string>
+    <string name="religion_sikh">শিখ</string>
+    <string name="religion_buddhist_neo_buddhist">বৌদ্ধ বা নব্য বৌদ্ধ</string>
+    <string name="religion_jain">জৈন</string>
+    <string name="religion_jewish">ইহুদী</string>
+    <string name="parsi_zoroastrian">পাৰ্চী বা জৰদস্তিয়ান</string>
+    <string name="no_religion">কোনো ধৰ্ম নাই</string>
+
+    <string name="economic_status_apl">এ পি এল</string>
+    <string name="economic_status_bpl">বি পি এল</string>
+
+    <string name="toilet_facility_open_defecation">মুকলিকৈ শৌচ কৰা</string>
+    <string name="toilet_facility_own_a_toilet_but_it_unusable">শৌচাগাৰৰ মালিক হওক কিন্তু ই ব্যৱহাৰ কৰিব নোৱাৰা</string>
+    <string name="toilet_facility_use_toilet_at_home">ঘৰতে শৌচাগাৰ ব্যৱহাৰ কৰক</string>
+    <string name="toilet_facility_use_community_toilet">সামূহিক শৌচাগাৰ ব্যৱহাৰ কৰক</string>
+    <string name="toilet_facility_shared_toilet_with_other_households">অন্য পৰিয়ালৰ সৈতে ভাগ কৰা শৌচাগাৰ</string>
+    <string name="toilet_facility_declined_to_answer">উত্তৰ দিবলৈ অস্বীকাৰ কৰিলে</string>
+
+    <string name="house_structure_kutcha_house">কেচাঁ ঘৰ</string>
+    <string name="house_structure_pakka_house">পকী ঘৰ</string>
+    <string name="house_structure_homeless">গৃহহীন</string>
+
+    <string name="cultivable_land_bigha">বিঘা</string>
+    <string name="cultivable_land_gunta">পোৰা</string>
+    <string name="cultivable_land_acre">একৰ</string>
+    <string name="cultivable_land_hectare">হেক্টৰ</string>
+    <string name="cultivable_land_landless">ভূমিহীন</string>
+
+    <string name="error_number_of_people_living_cannot_be_greater_than_the_total_number_of_members_in_the_household">বাস কৰা সদস্যৰ সংখ্যা ঘৰৰ মুঠ সদস্যৰ সংখ্যাতকৈ বেছি হ’ব নোৱাৰে</string>
+    <string name="load_shedding_hours_error">ঘণ্টাৰ সংখ্যা ০ৰ পৰা ২৪ৰ ভিতৰত হ’ব লাগিব।</string>
+    <string name="load_shedding_days_error">দিনৰ সংখ্যা ০ৰ পৰা ৭ৰ ভিতৰত হ’ব লাগিব।</string>
+
+    <string name="availability_of_water_supply">পানী যোগানৰ উপলব্ধতা</string>
+
+    <string name="hb_check_question">শেষবাৰৰ বাবে কেতিয়া HB লেভেল পৰীক্ষা কৰা হৈছিল?</string>
+    <string name="bp_check_question">শেষবাৰৰ বাবে কেতিয়া বি পি পৰীক্ষা কৰিছিল?</string>
+    <string name="sugar_check_question">শেষবাৰৰ বাবে কেতিয়া চেনিৰ মাত্ৰা পৰীক্ষা কৰা হৈছিল?</string>
+    <string name="bp_label">বি পি</string>
+    <string name="diabetes_label">ডায়েবিটিছ</string>
+    <string name="arthritis_label">গাঠিৰ বিষ</string>
+    <string name="anemia_label">ৰক্তহীনতা</string>
+    <string name="surgery_label">কোন চার্জাৰি?</string>
+    <string name="surgery_reason_label">অস্ত্ৰোপচাৰৰ কাৰণ</string>
+    <string name="smoking_history_question">ব্যক্তিজনে ধঁপাত চোবাই খায় নেকি?</string>
+    <string name="smoking_rate_label">ধূমপানৰ হাৰ</string>
+    <string name="smoking_duration_question">কিমান দিনৰ পৰা ধূমপান কৰি আছে?</string>
+    <string name="smoking_frequency_label">খোৱাৰ কম্পাঙ্ক</string>
+    <string name="chew_tobacco_question">ব্যক্তিজনে ধঁপাত চোবাই খায় নেকি?</string>
+    <string name="alcohol_history_question">মদ্যপানৰ ইতিহাস আছে নেকি?</string>
+    <string name="alcohol_rate_label">মদ্যপানৰ হাৰ</string>
+    <string name="alcohol_consumption_question">কিমান দিনৰ পৰা মদ্যপান কৰি আছে?</string>
+    <string name="alcohol_frequency_label">খোৱাৰ কম্পাঙ্ক</string>
+
+    <string name="head_of_household_question">আপুনি পৰিয়ালৰ মুৰব্বী নেকি?</string>
+    <string name="ration_card_question">আপোনাৰ Ration কাৰ্ড আছে নেকি?</string>
+    <string name="other_religion_label">ধৰ্ম</string>
+    <string name="total_members_question">ঘৰখনৰ মুঠ সদস্যৰ সংখ্যা</string>
+    <string name="usual_members_question">সাধাৰণতে আপোনাৰ ঘৰত কিমান সদস্য থাকে বা এতিয়া আপোনাৰ লগত থাকে?</string>
+    <string name="smart_phone_label">ঘৰত স্মাৰ্টফোনৰ সংখ্যা</string>
+    <string name="feature_phone_label">ঘৰত ফিচাৰ ফোন থকা সংখ্যা</string>
+    <string name="earning_members_label">ঘৰত উপাৰ্জন কৰা সদস্যৰ সংখ্যা</string>
+    <string name="electricity_check_question">ঘৰত বিদ্যুৎ আছে নেকি?</string>
+    <string name="load_shedding">লোড শ্বেডিং</string>
+    <string name="load_shedding_hours_question">প্ৰতিদিনে ঘণ্টাৰ সংখ্যা</string>
+    <string name="load_shedding_days_question">প্ৰতি সপ্তাহত দিনৰ সংখ্যা</string>
+    <string name="water_check_question">ঘৰত বৈ যোৱা পানী পোৱা যায় নেকি?</string>
+    <string name="water_availability_hours_per_day">প্ৰতিদিনে ঘণ্টাৰ সংখ্যা</string>
+    <string name="water_availability_days_per_week">প্ৰতি সপ্তাহত দিনৰ সংখ্যা</string>
+
+    <string name="source_of_water_question">আপোনাৰ ঘৰৰ সদস্যসকলৰ বাবে খোৱাপানীৰ মূল উৎস কি?</string>
+    <string name="safequard_question">সাধাৰণতে পানীখিনি কি কৰে যাতে পানী খাবলৈ সুৰক্ষিত হয়?</string>
+    <string name="distance_from_water_question">ঘৰৰ পৰা অহা-যোৱা কৰাৰ ৩০ মিনিটৰ ভিতৰত খোৱাপানীৰ উৎস নেকি?</string>
+    <string name="toilet_facility_question">আপোনাৰ ঘৰৰ সদস্যসকলে সাধাৰণতে কেনেধৰণৰ শৌচাগাৰ ব্যৱহাৰ কৰে?</string>
+    <string name="house_structure_label">ঘৰৰ গঠন নিৰ্বাচন কৰক</string>
+    <string name="cultivable_land_question">আপোনাৰ পৰিয়ালৰ কিমান হেক্টৰ খেতিযোগ্য মাটি আছে?</string>
+    <string name="average_income_label">গড় বাৰ্ষিক পৰিয়ালৰ আয় (INR)</string>
+    <string name="fuel_type_question">আপোনাৰ ঘৰখনে মূলতঃ ৰন্ধা-বঢ়াৰ বাবে কি ধৰণৰ ইন্ধন ব্যৱহাৰ কৰে?</string>
+    <string name="source_of_lighting_question">এই ঘৰখনত পোহৰৰ মূল উৎস কি?</string>
+    <string name="hand_wash_Label">আপোনাৰ হাত ধোৱাৰ প্ৰথাৰ বৰ্ণনা কৰক</string>
+    <string name="ekal_service_check_question">একল আপোনাৰ গাঁৱত এটা টেলিমেডিচিন কাৰ্যসূচী আৰম্ভ কৰিছে যাতে প্ৰাথমিক স্বাস্থ্যসেৱা প্ৰদান কৰিব পাৰে - এইচ বি পৰীক্ষা, বি পি পৰীক্ষা, চুগাৰৰ পৰীক্ষা, আৰু প্ৰয়োজন অনুসৰি চিকিৎসকৰ পৰামৰ্শ। আপুনি আমাৰ সেৱা ল\'ব বিচাৰেনে?</string>
+    <string name="relation_with_household">ঘৰৰ মুৰব্বীজনৰ লগত আপোনাৰ সম্পৰ্ক কি?</string>
+
+    <string name="which_server_would_you_like_to_connect_to">আপুনি কোনটো চাৰ্ভাৰৰ সৈতে সংযোগ কৰিব বিচাৰে?</string>
+    <string name="enter_url">ইউআৰএল প্ৰবিষ্ট কৰক</string>
+    <string name="please_enter_a_valid_url">অনুগ্ৰহ কৰি এটা বৈধ URL দিয়ক।</string>
+    <string name="select_location">অৱস্থান নিৰ্ব্বাচন কৰক</string>
+    <string name="select_state">অৱস্থা নিৰ্ব্বাচন কৰক</string>
+    <string name="select_district">জিলা নিৰ্বাচন কৰক</string>
+    <string name="sanch">সঞ্চ</string>
+    <string name="select_sanch">সঞ্চ নিৰ্ব্বাচন কৰক</string>
+    <string name="primary_village">প্ৰাথমিক গাঁও</string>
+    <string name="select_primary_village">প্ৰাথমিক গাঁও নিৰ্বাচন কৰক</string>
+    <string name="secondary_village">মাধ্যমিক গাঁও</string>
+    <string name="select_secondary_village">মাধ্যমিক গাঁও নিৰ্বাচন কৰক</string>
+    <string name="location_survey_enter_following_details">অনুগ্ৰহ কৰি তলত দিয়া বিৱৰণসমূহ দিয়ক</string>
+    <string name="choose_a_location_to_login">প্ৰৱেশ কৰিবলৈ এটা অৱস্থান বাছক</string>
+    <string name="distance_to_sub_centre_in_walking_time">উপ-কেন্দ্ৰৰ পৰা দূৰত্ব (খোজ কঢ়াৰ সময়ত)*</string>
+    <string name="within_5_minutes">৫ মিনিটৰ ভিতৰত</string>
+    <string name="five_fifteen_minutes">৫ – ১৫ মিনিট</string>
+    <string name="fifteen_thirty_minutes">১৫ – ৩০ মিনিট</string>
+    <string name="more_than_thirty_minutes">৩০ মিনিটতকৈ অধিক সময়</string>
+    <string name="error_sub_centre_distance_not_selected">অনুগ্ৰহ কৰি দূৰত্ব উপ-কেন্দ্ৰলৈ নিৰ্ধাৰণ কৰক</string>
+    <string name="distance_to_nearest_primary_health_centre_in_kms">নিকটতম প্ৰাথমিক স্বাস্থ্য কেন্দ্ৰৰ পৰা দূৰত্ব (কেএমএছত)*</string>
+    <string name="within_1_km">১ কিলোমিটাৰৰ ভিতৰত</string>
+    <string name="one_three_km">১ – ৩ কিলোমিটাৰ</string>
+    <string name="three_five_km">৩ – ৫কিলোমিটাৰ</string>
+    <string name="more_than_five_km">৫ কিলোমিটাৰতকৈ অধিক</string>
+    <string name="error_primary_health_centre_distance_not_selected">অনুগ্ৰহ কৰি প্ৰাথমিক স্বাস্থ্য কেন্দ্ৰৰ পৰা দূৰত্ব নিৰ্ধাৰণ কৰক (In Kms)</string>
+    <string name="distance_to_nearest_community_health_centre_in_kms">ওচৰৰ সামূহিক স্বাস্থ্য কেন্দ্ৰৰ পৰা দূৰত্ব*</string>
+    <string name="within_three_km">৩ কিলোমিটাৰৰ ভিতৰত</string>
+    <string name="three_six_km">৩ – ৬কিলোমিটাৰ</string>
+    <string name="six_ten_km">৬ – ১০ কিলোমিটাৰ</string>
+    <string name="more_than_ten_km">১০ কিলোমিটাৰতকৈ অধিক</string>
+    <string name="error_community_health_centre_distance_not_selected">Please set the distance to the community health centre</string>
+    <string name="distance_to_nearest_district_hospital">Distance to nearest District Hospital*</string>
+    <string name="within_five_km">Within 5 Km</string>
+    <string name="five_ten_km">5 – 10 Km</string>
+    <string name="ten_twenty_km">10 – 20 Km</string>
+    <string name="twenty_thirty_km">20 – 30 Km</string>
+    <string name="more_than_thirty_km">More than 30 Km</string>
+    <string name="error_district_hospital_distance_not_selected">অনুগ্ৰহ কৰি জিলা চিকিৎসালয়ৰ দূৰত্ব নিৰ্ধাৰণ কৰক</string>
+    <string name="distance_to_nearest_medical_store">ওচৰৰ মেডিকেল ষ্ট’ৰলৈ দূৰত্ব*</string>
+    <string name="distance_to_nearest_pathological_lab">ওচৰৰ পেথ’লজিকেল লেবৰ পৰা দূৰত্ব*</string>
+    <string name="error_medical_store_distance_not_selected">অনুগ্ৰহ কৰি মেডিকেল ষ্ট’ৰৰ পৰা দূৰত্ব নিৰ্ধাৰণ কৰক</string>
+    <string name="error_pathological_lab_distance_not_selected">অনুগ্ৰহ কৰি পেথ’লজিকেল লেবৰ দূৰত্ব নিৰ্ধাৰণ কৰক</string>
+    <string name="distance_to_nearest_private_clinic">ওচৰৰ ব্যক্তিগত ক্লিনিকৰ পৰা দূৰত্ব (এমবিবিএছৰ চিকিৎসকৰ সৈতে)*</string>
+    <string name="distance_to_nearest_private_clinic_with_alternate_medicine">ওচৰৰ ব্যক্তিগত ক্লিনিকৰ পৰা দূৰত্ব (বিকল্প চিকিৎসকৰ সৈতে – বি.এ.এম.এছ., বি.এইচ.এম.এছ., আয়ুৰ্বেদ আদি)*</string>
+    <string name="error_private_clinic_not_selected">অনুগ্ৰহ কৰি MBBS চিকিৎসকৰ সৈতে ওচৰৰ ব্যক্তিগত ক্লিনিকৰ দূৰত্ব বাছি লওক</string>
+    <string name="error_private_clinic_alternate_medicine_distance_not_selected">অনুগ্ৰহ কৰি বিকল্প চিকিৎসকৰ সৈতে ওচৰৰ ব্যক্তিগত ক্লিনিকৰ দূৰত্ব বাছি লওক</string>
+    <string name="does_this_village_get_water_under_jal_jeevan_yojana_scheme">জল জীৱন যোজনা আঁচনিৰ অধীনত গাঁওখনে পানী পায় নেকি?*</string>
+    <string name="error_jal_jeevan_yojana_not_selected">জল জীৱন যোজনা আঁচনিৰ অধীনত গাঁওখনে পানী পায় নে নাই সেইটো নিৰ্বাচন কৰক</string>
+    <string name="please_select_all_the_required_fields">অনুগ্ৰহ কৰি সকলো প্ৰয়োজনীয় ক্ষেত্ৰ নিৰ্বাচন কৰক</string>
+
+    <string name="setup_select_state_str">অৱস্থা নিৰ্ব্বাচন কৰক</string>
+    <string name="setup_select_dropdown_state_msg">ড্ৰপডাউনৰ পৰা অৱস্থা নিৰ্ব্বাচন কৰক</string>
+    <string name="setup_select_district_str">জিলা নিৰ্বাচন কৰক</string>
+    <string name="setup_select_dropdown_district_msg">ড্ৰপডাউনৰ পৰা জিলা নিৰ্বাচন কৰক</string>
+    <string name="setup_select_sanch_str">সঞ্চ নিৰ্ব্বাচন কৰক</string>
+    <string name="setup_select_dropdown_sanch_msg">ড্ৰপডাউনৰ পৰা সঞ্চ নিৰ্ব্বাচন কৰক</string>
+    <string name="setup_select_village_str">গাঁও নিৰ্বাচন কৰক</string>
+    <string name="setup_select_primary_village_str">প্ৰাথমিক গাঁও নিৰ্বাচন কৰক</string>
+    <string name="setup_select_secondary_village_str">মাধ্যমিক গাঁও নিৰ্বাচন কৰক</string>
+    <string name="setup_select_dropdown_village_msg">ড্ৰপডাউনৰ পৰা গাঁও নিৰ্ব্বাচন কৰক</string>
+    <string name="switch_location">অৱস্থান সলনি কৰক</string>
+    <string name="no_network_sync">আপুনি ইণ্টাৰনেটৰ সৈতে সংযুক্ত নহয়। অনুগ্ৰহ কৰি পিছত পুনৰ চেষ্টা কৰক।</string>
+    <string name="confirm_switch_location">আপুনি বৰ্তমানে \'%1$s\' গাঁৱত লগ ইন কৰিছে। আপুনি নিশ্চিত নেকি যে আপুনি \'%2$s\' গাঁওলৈ সলনি কৰিব বিচাৰে?</string>
+    <string name="start_sevika_visit">ছেভিকা নতুন পৰামৰ্শ আৰম্ভ কৰক</string>
+    <string name="start_doctor_visit">ডাক্তৰৰ নতুন পৰামৰ্শ আৰম্ভ কৰক</string>
+    <string name="haemoglobin">হিম’গ্লবিন</string>
+    <string name="sugar_random">চেনিৰ মাত্ৰা - যাদৃচ্ছিক</string>
+
+    <string name="hint_drop_down_hb_check">সময়কাল নিৰ্ব্বাচন কৰক</string>
+    <string name="enter_number">নম্বৰ দিয়ক</string>
+    <string name="baseline_survey_completed">ভিত্তি ৰেখাৰ জৰীপ সম্পূৰ্ণ হৈছে</string>
+
+    <string name="bullet">\u2022</string>
+    <string name="fields_not_filled">ক্ষেত্ৰসমূহ পূৰণ কৰা হোৱা নাই</string>
+    <string name="following_fields_are_not_filled">তলত দিয়া ক্ষেত্ৰসমূহ পূৰণ কৰা হোৱা নাই:</string>
+    <string name="do_you_still_want_to_continue">এতিয়াও আগবাঢ়ি যাব বিচাৰেনে?</string>
+    <string name="at_least_one_of_the_fields_is_mandatory">তলত দিয়া ক্ষেত্ৰসমূহৰ ভিতৰত অন্ততঃ এটা বাধ্যতামূলক: </string>
+
+    <string name="vital_alert_bp_dia_button">আপোনাৰ ডায়াষ্টলিক বিপি স্বাভাবিক নহয়।</string>
+    <string name="vital_alert_bp_sys_button">আপোনাৰ চিষ্টলিক বিপি স্বাভাবিক নয়।</string>
+    <string name="vital_alert_spo2_button">আপোনাৰ SpO2 স্বাভাবিক নহয়।</string>
+    <string name="vital_alert_pulse_button">আপোনাৰ নাড়ী স্বাভাবিক নহয়।</string>
+    <string name="vital_alert_resp_button">আপোনাৰ শ্বাস-প্ৰশ্বাসৰ হাৰ স্বাভাবিক নহয়।</string>
+    <string name="vital_alert_temperature_button">আপোনাৰ তাপমান স্বাভাবিক নহয়।</string>
+    <string name="vital_alert_hgb_button">আপোনাৰ HGB স্বাভাবিক নহয়।</string>
+    <string name="vital_alert_sugar_random_button">আপোনাৰ চুগাৰ ৰেন্ডম পৰ্য্যায় স্বাভাবিক নহয়।</string>
+    <string name="vital_alert_sugar_fasting_button">আপোনাৰ চুগাৰ খালি পেটৰ  পৰ্য্যায় স্বাভাবিক নহয়।</string>
+    <string name="vital_alert_sugar_aftermeal_button">খোৱা পাছত আপোনাৰ চিনেৰ মাত্রা স্বাভাবিক নহয়</string>
+
+</resources>
