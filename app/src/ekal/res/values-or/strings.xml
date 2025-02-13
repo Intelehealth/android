@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name" translatable="false">ଏକଲ ଆରୋଗ୍ୟ</string>
+    <string name="intro_title_1">ଆମେ କିଏ?</string>
+    <string name="intro_tagline_1">ଏକଲ ଆରୋଗ୍ୟ ହେଉଛି ଏକ ନୂତନ ଟେଲିମେଡିସିନ ପ୍ଲାଟଫର୍ମ ଯାହା ଦୂରସ୍ଥ ଅଞ୍ଚଳରେ ସ୍ୱାସ୍ଥ୍ୟ ସେବା ଲଭ୍ୟତାର ଅନ୍ତରକୁ ପୁରଣ କରିବା ପାଇଁ ଡିଜାଇନ କରାଯାଇଛି, ଏକ ଭର୍ଚ୍ଚୁଆଲ୍ ଡକ୍ତର ସହିତ ଫ୍ରଣ୍ଟଲାଇନ୍ ସ୍ୱାସ୍ଥ୍ୟ କର୍ମଚାରୀ ଏବଂ ରୋଗୀଙ୍କୁ ସଂଯୋଗ କରି ଉଚ୍ଚ ଗୁଣବତ୍ତା ସ୍ୱାସ୍ଥ୍ୟ ସେବା ଦେଇପାରିବ।</string>
+    <string name="intro_title_2">ରୋଗୀଙ୍କ ଦର୍ଶନ ନିଅନ୍ତୁ</string>
+    <string name="intro_tagline_2">ଏହି ପ୍ଲାଟଫର୍ମ ଆୟୁ ଦ୍ୱାରା ଚାଳିତ, ଏକ ପ୍ରୋଗ୍ରାମେବଲ୍ ଡିଜିଟାଲ୍ ଆସିଷ୍ଟାଣ୍ଟ ଯାହା ଆଞ୍ଚଳିକ ଭାଷାରେ ପ୍ରାଥମିକ ସ୍ୱାସ୍ଥ୍ୟସେବା ପାଇଁ ପ୍ରମାଣ-ଆଧାରିତ ପ୍ରୋଟୋକଲ୍ ସହିତ ଫ୍ରଣ୍ଟଲାଇନ ସ୍ୱାସ୍ଥ୍ୟ କର୍ମୀଙ୍କୁ ସମର୍ଥନ କରେ |</string>
+    <string name="intro_title_3">ପ୍ରେସକ୍ରିପସନ୍ ପ୍ରଦାନ କରନ୍ତୁ |</string>
+    <string name="intro_tagline_3">କ୍ଲାଉଡ୍-ଆଧାରିତ ମୁକ୍ତ ଉତ୍ସ ପ୍ଲାଟଫର୍ମ ଏକ ସ୍ୱଳ୍ପ ଉତ୍ସ ପରିବେଶ ପାଇଁ ଡିଜାଇନ୍ ହୋଇଛି ଯାହା କଷ୍ଟୋମାଇଜଡ୍ କାର୍ଯ୍ୟକାରିତା ରଣନୀତି ସହିତ ମିଳିତ ହୋଇ ପ୍ରଭାବଶାଳୀ ସ୍ୱାସ୍ଥ୍ୟ ଫଳାଫଳ ପାଇଁ ଏକ ଡିଜିଟାଲ୍ ସ୍ୱାସ୍ଥ୍ୟ ସମାଧାନ ସୃଷ୍ଟି କରେ |</string>
+
+    <string name="are_you_sure_you_want_to_send_visit">ଆପଣ ନିଶ୍ଚିତ କି ଆପଣ ଭ୍ରମଣ ସଞ୍ଚୟ କରିବାକୁ ଚାହୁଁଛନ୍ତି କି?</string>
+    <string name="send_visit">ପରିଦର୍ଶନ ସଞ୍ଚୟ କରିବେ କି?</string>
+    <string name="visit_successfully_sent">ସଫଳତାର ସହିତ ସଞ୍ଚୟ ପରିଦର୍ଶନ କରନ୍ତୁ!</string>
+    <string name="patient_visit_sent">ରୋଗୀର ପରିଦର୍ଶନ ସଫଳତାର ସହିତ ସଞ୍ଚୟ ହୋଇଛି.</string>
+    <string name="visit_data_failed">ପରିଦର୍ଶନ ଡାଟା ବିଫଳ ହୋଇଛି</string>
+    <string name="visit_uploaded_failed">ଇଣ୍ଟରନେଟ୍ ଉପଲବ୍ଧ ହେଲେ ଅପଲୋଡ୍ କରାଯିବ</string>
+    <!--    <string name="visit_left_action_btn_label">@string/preview</string>-->
+    <!--    <string name="visit_right_action_btn_label">@string/save_visit_button</string>-->
+    <!--    <string name="visit_save_and_upload_status">@string/visit_saving</string>-->
+
+    <string name="prescription_not_received">ପ୍ରେସକ୍ରିପସନ୍ ଗ୍ରହଣ କରାଯାଇ ନାହିଁ</string>
+    <string name="please_wait_for_the_doctor_to_share_the_prescription_before_closing_the_visit">ପରିଦର୍ଶନ ବନ୍ଦ କରିବା ପୂର୍ବରୁ ଦୟାକରି ଡାକ୍ତରଙ୍କ ପ୍ରେସକ୍ରିପସନ୍ ବାଣ୍ଟିବାକୁ ଅପେକ୍ଷା କରନ୍ତୁ |</string>
+    <string name="confirm_end_visit_reason">ଏହି ପରିଦର୍ଶନ ଶେଷ କରିବେ କି?</string>
+    <string name="confirm_end_visit_reason_message">ଆପଣ ନିଶ୍ଚିତ କି ଆପଣ ଏହି ପରିଦର୍ଶନ ଶେଷ କରିବାକୁ ଚାହୁଁଛନ୍ତି କି?</string>
+    <string name="select_caste">ଜାତି ଚୟନ କରନ୍ତୁ |</string>
+    <string name="select_education">ଶିକ୍ଷା ଚୟନ କରନ୍ତୁ |</string>
+    <string name="select_economic_category">ଅର୍ଥନ Stat ତିକ ସ୍ଥିତି ଚୟନ କରନ୍ତୁ |</string>
+    <string name="select_phone_ownership">ଫୋନ୍ ମାଲିକାନା ଚୟନ କରନ୍ତୁ |</string>
+    <string name="select_your_choice">ଆପଣଙ୍କର ପସନ୍ଦ ଚୟନ କରନ୍ତୁ |</string>
+
+    <string name="schedule_caste">ଅନୁସୂଚିତ ଜାତି</string>
+    <string name="schedule_tribe">ଅନୁସୂଚିତ ଜନଜାତି</string>
+    <string name="survey_other_backward_caste">ଅନ୍ୟାନ୍ୟ ପଛୁଆ ବର୍ଗ</string>
+    <string name="survey_general">ସାଧାରଣ</string>
+    <string name="survey_other">ଅନ୍ୟାନ୍ୟ</string>
+
+    <string name="smoker">ଧୂମପାନକାରୀ</string>
+    <string name="non_smoker">ଅଣ ଧୂମପାନକାରୀ</string>
+    <string name="denied_to_answer">ଉତ୍ତର ଦେବାକୁ ମନା କଲେ</string>
+    <string name="medical_history">ଚିକିତ୍ସା ଇତିହାସ</string>
+
+    <string name="less_than_5_bidis_or_cigarette">୫ ରୁ କମ୍ ବିଡିସ୍ / ସିଗାରେଟ୍</string>
+    <string name="five_to_ten_bidis_or_cigarette">୫ – ୧୦ ବିଡି / ସିଗାରେଟ୍</string>
+    <string name="more_than_10_bidis_or_cigarette">୧୦ ରୁ ଅଧିକ ବିଡି / ସିଗାରେଟ୍</string>
+
+    <string name="less_than_a_year">ଏକ ବର୍ଷରୁ କମ୍</string>
+    <string name="from_1_year_to_5_years">୧ ବର୍ଷରୁ ୫ ବର୍ଷ ପର୍ଯ୍ୟନ୍ତ</string>
+    <string name="from_5_year_to_10_years">୫ ବର୍ଷରୁ ୧୦ ବର୍ଷ ପର୍ଯ୍ୟନ୍ତ</string>
+    <string name="more_than_10_years">୧୦ ବର୍ଷରୁ ଅଧିକ</string>
+
+    <string name="frequency_daily">ପ୍ରତିଦିନ</string>
+    <string name="frequency_once_a_week">ସପ୍ତାହକୁ ଥରେ</string>
+    <string name="frequency_twice_a_week">ସପ୍ତାହରେ ଦୁଇ ଥର</string>
+    <string name="frequency_occasionally">ବେଳେବେଳେ (ମାସରେ ଥରେ କିମ୍ବା ତା’ଠାରୁ କମ୍)</string>
+
+    <string name="zero_fifty_ml">0 – 50 ମିଲିରୁ</string>
+    <string name="fifty_hundred_ml">50 – 100 ମିଲିରୁ</string>
+    <string name="hundred_two_hundred_fifty_ml">100 – 250 ମିଲିରୁ</string>
+    <string name="two_fifty_five_hundred_ml">250 – 500 ମିଲିରୁ</string>
+    <string name="more_than_five_hundred_ml">500 ମିଲିରୁ ଅଧିକ</string>
+
+    <string name="specify_the_reason">କାରଣ ନିର୍ଦ୍ଦିଷ୍ଟ କରନ୍ତୁ</string>
+
+    <string name="zero_thirty_thousand">0 – 30,000</string>
+    <string name="thirty_fifty_thousand">30,000 – 50,000</string>
+    <string name="fifty_thousand_one_lakh">50,000 – 1,00,000</string>
+    <string name="one_lakh_two_lakh_fifty_thousand">1,00,000 – 2,50,000</string>
+    <string name="more_than_two_lakh_fifty_thousand">2,50,000 ରୁ ଅଧିକ |</string>
+
+    <string name="religion_hindu">ହିନ୍ଦୁ</string>
+    <string name="religion_muslim">ମୁସଲମାନ</string>
+    <string name="religion_christian">ଖ୍ରୀଷ୍ଟିଆନ</string>
+    <string name="religion_sikh">ଶିଖ</string>
+    <string name="religion_buddhist_neo_buddhist">ବୌଦ୍ଧ</string>
+    <string name="religion_jain">ଜୈନ</string>
+    <string name="religion_jewish">ଯିହୁଦୀ</string>
+    <string name="parsi_zoroastrian">ପାର୍ସୀ / ଜୋରାଷ୍ଟ୍ରିଆନ୍</string>
+    <string name="no_religion">ଧର୍ମ ନାହିଁ</string>
+
+    <string name="economic_status_apl">ଏପିଏଲ୍</string>
+    <string name="economic_status_bpl">ବିପିଏଲ୍</string>
+
+    <string name="toilet_facility_open_defecation">ମୁକ୍ତ ଜାଗା</string>
+    <string name="toilet_facility_own_a_toilet_but_it_unusable">ନିଜର ପାଇଖାନା କିନ୍ତୁ ବ୍ୟବହାର କରା ଯାଏନି</string>
+    <string name="toilet_facility_use_toilet_at_home">ଘରେ ପାଇଖାନା ରବ୍ୟବହାର</string>
+    <string name="toilet_facility_use_community_toilet">ସର୍ବ ସାଧାରଣ ପାଇଖାନା ର ବ୍ୟବହାର</string>
+    <string name="toilet_facility_shared_toilet_with_other_households">ଅନ୍ୟ ଘର ର ପାଇଖାନା ର ବ୍ୟବହାର</string>
+    <string name="toilet_facility_declined_to_answer">ଉତ୍ତର ଦେବାକୁ ମନା କଲେ</string>
+
+    <string name="house_structure_kutcha_house">କୁଚା ହାଉସ୍</string>
+    <string name="house_structure_pakka_house">ପାକ୍କା ହାଉସ୍</string>
+    <string name="house_structure_homeless">ଗୃହହୀନ</string>
+
+    <string name="cultivable_land_bigha">ବଡ</string>
+    <string name="cultivable_land_gunta">ଗୁଣ୍ଠ</string>
+    <string name="cultivable_land_acre">ଏକର</string>
+    <string name="cultivable_land_hectare">ହେକ୍ଟର</string>
+    <string name="cultivable_land_landless">ଭୂମିହୀନ</string>
+
+    <string name="error_number_of_people_living_cannot_be_greater_than_the_total_number_of_members_in_the_household">ବାସ କରୁଥିବା ସଦସ୍ୟଙ୍କ ସଂଖ୍ୟା ଘରର ମୋଟ ସଦସ୍ୟଙ୍କ ସଂଖ୍ୟାଠାରୁ ଅଧିକ ହୋଇପାରିବ ନାହିଁ</string>
+    <string name="load_shedding_hours_error">ଘଣ୍ଟା ସଂଖ୍ୟା ନିଶ୍ଚିତ ଭାବରେ 0 ଏବଂ 24 ମଧ୍ୟରେ ହେବା ଆବଶ୍ୟକ।.</string>
+    <string name="load_shedding_days_error">ଦିନ ସଂଖ୍ୟା 0 ରୁ 7 ମଧ୍ୟରେ ହେବା ଆବଶ୍ୟକ।</string>
+
+    <string name="availability_of_water_supply">ଜଳ ଯୋଗାଣର ବ୍ୟବସ୍ଥା</string>
+
+    <string name="hb_check_question">ଶେଷ ଥର କେତେବେଳେ ତୁମର ଏଚ୍.ପି. ସ୍ତର ପରୀକ୍ଷା କରାଗଲା??</string>
+    <string name="bp_check_question">ଶେଷ ଥର ପାଇଁ ଯେତେବେଳେ ତୁମର ବିପି ଯାଞ୍ଚ ହେଲା?</string>
+    <string name="sugar_check_question">ଶେଷ ଥର ଯେତେବେଳେ ତୁମର ଚିନି ସ୍ତର ଯାଞ୍ଚ ହେଲା?</string>
+    <string name="bp_label">ବ୍ଲଡ଼ ପ୍ରେସର (ରକ୍ତ ଚାପ)</string>
+    <string name="diabetes_label">ମଧୁମେହ</string>
+    <string name="arthritis_label">ଆର୍ଥ୍ରାଇଟିସ୍</string>
+    <string name="anemia_label">ରକ୍ତହୀନତା</string>
+    <string name="surgery_label">କୌଣସି ଅସ୍ତ୍ରୋପଚାର?</string>
+    <string name="surgery_reason_label">ଅସ୍ତ୍ରୋପଚାରର କାରଣ</string>
+    <string name="smoking_history_question">ବ୍ୟକ୍ତି ତମାଖୁ ସେବନ କରନ୍ତି କି ?</string>
+    <string name="smoking_rate_label">ଧୂମପାନର ହାର</string>
+    <string name="smoking_duration_question">କେତେ ଦିନ ହେଲାଣି ଆପଣ ଧୁମ୍ରପାନ କରୁଛନ୍ତି?</string>
+    <string name="smoking_frequency_label">ବ୍ୟବହାର କରିବାର ପରିମାଣ</string>
+    <string name="chew_tobacco_question">ବ୍ୟକ୍ତି ତମାଖୁ ସେବନ କରନ୍ତି କି?</string>
+    <string name="alcohol_history_question">ରେ କେହି ମଦ୍ୟ ପାନ କରୁଥିବାର ନଜିର ଅଛି କି?</string>
+    <string name="alcohol_rate_label">କେତେ ପରିମାଣର ମଦ୍ୟ ପାନ କରନ୍ତି</string>
+    <string name="alcohol_consumption_question">କେତେ ଦିନ ହେବ ଆପଣ ମଦ୍ୟ ପାନ କରୁଛନ୍ତି?</string>
+    <string name="alcohol_frequency_label">ବ୍ୟବହାର କରିବାର ପରିମାଣ</string>
+
+    <string name="head_of_household_question">ଆପଣ ପରିବାରର ମୁଖ୍ୟ କି?</string>
+    <string name="ration_card_question">ତୁମର ପଡ଼ି କାର୍ଡ ଅଛି କି?</string>
+    <string name="other_religion_label">ଧର୍ମ</string>
+    <string name="total_members_question">ଘରର ମୋଟ ସଦସ୍ୟଙ୍କ ସଂଖ୍ୟା</string>
+    <string name="usual_members_question">ସାଧାରଣତଃ ଆପଣଙ୍କର କେତେ ଜଣ ସଦସ୍ୟ ଘରେ ରୁହନ୍ତି କିମ୍ବା ବର୍ତ୍ତମାନ ଆପଣଙ୍କ ସହିତ ରହୁଛନ୍ତି?</string>
+    <string name="smart_phone_label">ଘରେ ଥିବା ସ୍ମାର୍ଟଫୋନର ସଂଖ୍ୟା</string>
+    <string name="feature_phone_label">ଘରେ ଥିବା ସ୍ମାର୍ଟଫୋନର ବୈଶିଷ୍ଟ୍ୟ</string>
+    <string name="earning_members_label">ଘରେ ରୋଜଗାରକ୍ଷମ ସଦସ୍ୟଙ୍କ ସଂଖ୍ୟା</string>
+    <string name="electricity_check_question">ଘରେ ବିଦ୍ୟୁତ ଅଛି କି?</string>
+    <string name="load_shedding">ଲୋଡ୍ ଶେଡିଙ୍ଗ୍</string>
+    <string name="load_shedding_hours_question">ଦିନକୁ କେତେ ଘଣ୍ଟା</string>
+    <string name="load_shedding_days_question">ସପ୍ତାହକୁ କେତେ ଦିନ</string>
+    <string name="water_check_question">ଘରେ ପାଇପଦ୍ୱାରା ପାଣିଯୋଗାଣ ବ୍ୟବସ୍ଥା ଅଛି କି?</string>
+    <string name="water_availability_hours_per_day">ଦିନକୁ କେତେ ଘଣ୍ଟା</string>
+    <string name="water_availability_days_per_week">ସପ୍ତାହକୁ କେତେ ଦିନ</string>
+
+    <string name="source_of_water_question">ଆପଣଙ୍କ ଘରର ସଦସ୍ୟମାନଙ୍କ ପାଇଁ ପାନୀୟ ଜଳର ମୁଖ୍ୟ ଉତ୍ସ କ’ଣ?</string>
+    <string name="safequard_question">ଏହାକୁ ପିଇବାକୁ ନିରାପଦ କରିବା ପାଇଁ ଆପଣ ସାଧାରଣତ ପାଣିରେ କ’ଣ କରନ୍ତି?</string>
+    <string name="distance_from_water_question">ଘର ପାଖରୁ ପିଇବା ପାଣି ଆଣିବାରେ ୩୦ ମିନିଟ୍ ସମୟ ମଧ୍ୟରେ</string>
+    <string name="toilet_facility_question">ଆପଣଙ୍କ ଘରର ସଦସ୍ୟ ମାନେ ସାଧାରତଃ କେଉଁ ପ୍ରକାରର ଶୌଚାଳୟ ସୁବିଧା ବ୍ୟବହାର କରନ୍ତି?</string>
+    <string name="house_structure_label">ଘରର ଗଠନ ଚୟନ କରନ୍ତୁ</string>
+    <string name="cultivable_land_question">ଆପଣଙ୍କ ପରିବାର ର କେତେ ଏକର ଚାଷ ଜମି ଅଛି?</string>
+    <string name="average_income_label">ହାରାହାରି ବାର୍ଷିକ ଘରୋଇ ଆୟ</string>
+    <string name="fuel_type_question">ଆପଣଙ୍କ ଘର ମୁଖ୍ୟତ ରୋଷେଇ ପାଇଁ କେଉଁ ପ୍ରକାରର ଇନ୍ଧନ ବ୍ୟବହାର କରନ୍ତି?</string>
+    <string name="source_of_lighting_question">ଏହି ଘରେ ଆଲୋକର ମୁଖ୍ୟ ଉତ୍ସ କ’ଣ?</string>
+    <string name="hand_wash_Label">ହାତ ସଫା କରିବାର ଅଭ୍ୟାସ</string>
+    <string name="ekal_service_check_question">ଏକଲ୍ ଆପଣଙ୍କ ଗ୍ରାମରେ ଏକ ଟେଲି ମେଡ଼ିସିନ୍ କାର୍ଯ୍ୟକ୍ରମ ଆରମ୍ଭ କରୁଛି ଯାହାକି ପ୍ରାଥମିକ ସ୍ବାସ୍ଥ୍ୟ ସୁବିଧା ଯୋଗାଇ ଦେବା ସହ - HB ପରୀକ୍ଷା , BP ପରୀକ୍ଷା , ସୁଗ।ର ପରୀକ୍ଷା ସହିତ ଡାକ୍ତରୀ ପରାମର୍ଶ ଯାହା ଦରକାର ହୋଇଥାଏ । ଆପଣ ଆମର ସେବା ଗ୍ରହଣ କରିବାକୁ ଆଗ୍ରହୀ ଅଟନ୍ତି?</string>
+    <string name="relation_with_household">ଘରର ମୁଖ୍ୟଙ୍କ ସହିତ ତୁମର ସମ୍ପର୍କ କଣ?</string>
+
+    <string name="which_server_would_you_like_to_connect_to">ଆପଣ ସକଉଁସଭଡରକୁସାଂସଯାଗ କରିବାକୁଚାହୁଁଛନ୍ତି?</string>
+    <string name="enter_url">ୟୁ ଆର୍ ଏଲ ( ଏଣ୍ଟର ) ପ୍ରବେଶ କରନ୍ତୁ</string>
+    <string name="please_enter_a_valid_url">ଦୟାକରି ଏକ ବ valid ଧ URL ପ୍ରବେଶ କରନ୍ତୁ|</string>
+    <string name="select_location">ଗୋଟିଏ ସ୍ଥାନ ଚୟନ କରନ୍ତୁ।</string>
+    <string name="select_state">ରାଜ୍ୟ ଚୟନ କରନ୍ତୁ</string>
+    <string name="select_district">ଜିଲ୍ଲା ଚୟନ କରନ୍ତୁ</string>
+    <string name="sanch">ସଞ୍ଚ</string>
+    <string name="select_sanch">ସଞ୍ଚ ଚୟନ କରନ୍ତୁ</string>
+    <string name="primary_village">ପ୍ରାଥମିକ ଗ୍ରାମ </string>
+    <string name="select_primary_village">ପ୍ରାଥମିକ ଗ୍ରାମ ଚୟନ</string>
+    <string name="secondary_village">ଦ୍ୱିତୀୟ ଗ୍ରାମ</string>
+    <string name="select_secondary_village">ଡ୍ରପଡାଉନ୍ ରୁ ଗାଁ ଚୟନ କରନ୍ତୁ</string>
+    <string name="location_survey_enter_following_details">ନିମ୍ନଲିଖିତ ବିବରଣୀ ପ୍ରବେଶ କରନ୍ତୁ|</string>
+    <string name="choose_a_location_to_login">ଲଗ୍ ଇନ୍ ପାଇଁ ଗୋଟିଏ ସ୍ଥାନ ବାଛନ୍ତୁ / ଚୟନ କରନ୍ତୁ</string>
+    <string name="distance_to_sub_centre_in_walking_time">ଉପ-କେନ୍ଦ୍ରକୁ ଦୂରତା (ଚାଲିବା ସମୟରେ)*</string>
+    <string name="within_5_minutes">5 ମିନିଟ୍ ମଧ୍ୟରେ</string>
+    <string name="five_fifteen_minutes">5 – 15 ମିନିଟ୍</string>
+    <string name="fifteen_thirty_minutes">15 – 30 ମିନିଟ୍</string>
+    <string name="more_than_thirty_minutes">30 ମିନିଟରୁ ଅଧିକ </string>
+    <string name="error_sub_centre_distance_not_selected">ଦୟାକରି ଉପ-କେନ୍ଦ୍ରର ଦୂରତା ସେଟ୍ କରନ୍ତୁ।</string>
+    <string name="distance_to_nearest_primary_health_centre_in_kms">ନିକଟସ୍ଥ ପ୍ରାଥମିକ ସ୍ୱାସ୍ଥ୍ୟ କେନ୍ଦ୍ରଗୁଡିକ ପାଇଁ ଦୂରତା (କିମିରେ)*</string>
+    <string name="within_1_km">1 କିଲୋମିଟର ମଧ୍ୟରେ</string>
+    <string name="one_three_km">1 – 3 କିମି</string>
+    <string name="three_five_km">3 – 5 କିମି</string>
+    <string name="more_than_five_km">5 କିଲୋମିଟରରୁ ଅଧିକ |</string>
+    <string name="error_primary_health_centre_distance_not_selected">ଦୟାକରି ପ୍ରାଥମିକ ସ୍ୱାସ୍ଥ୍ୟ କେନ୍ଦ୍ରର ଦୂରତା (କିଲୋମିଟରରେ) ସ୍ଥିର କରନ୍ତୁ।</string>
+    <string name="distance_to_nearest_community_health_centre_in_kms">ନିକଟତମ ଗୋଷ୍ଠୀ ସ୍ବାସ୍ଥ୍ୟ କେନ୍ଦ୍ର କୁ ଦୂରତା*</string>
+    <string name="within_three_km">3 କିଲୋମିଟର ମଧ୍ୟରେ</string>
+    <string name="three_six_km">3 – 6 କିମି</string>
+    <string name="six_ten_km">6 – 10 କିଲୋମିଟର</string>
+    <string name="more_than_ten_km">10 କିଲୋମିଟରରୁ ଅଧିକ</string>
+    <string name="error_community_health_centre_distance_not_selected">ଦୟାକରି ଗୋଷ୍ଠୀ ସ୍ୱାସ୍ଥ୍ୟ କେନ୍ଦ୍ରର ଦୂରତା ସ୍ଥିର କରନ୍ତୁ।</string>
+    <string name="distance_to_nearest_district_hospital">ନିକଟସ୍ଥ ଜିଲ୍ଲା ଚିକିତ୍ସାଳୟର ଦୂରତା*</string>
+    <string name="within_five_km">5 କିମି ମଧ୍ୟରେ</string>
+    <string name="five_ten_km">5 – 10 କିମି</string>
+    <string name="ten_twenty_km">10 – 20 କିମି</string>
+    <string name="twenty_thirty_km">20 – 30 କିମି</string>
+    <string name="more_than_thirty_km">30 କିଲୋମିଟରରୁ ଅଧିକ</string>
+    <string name="error_district_hospital_distance_not_selected">ଦୟାକରି ଜିଲ୍ଲା ଡାକ୍ତରଖାନାର ଦୂରତା ସ୍ଥିର କରନ୍ତୁ।</string>
+    <string name="distance_to_nearest_medical_store">ନିକଟସ୍ଥ ମେଡିକାଲ୍ ଷ୍ଟୋର୍‌କୁ ଦୂରତା*</string>
+    <string name="distance_to_nearest_pathological_lab">ନିକଟସ୍ଥ ପାଥୋଲୋଜିକାଲ ଲ୍ୟାବ ପାଇଁ ଦୂରତା*</string>
+    <string name="error_medical_store_distance_not_selected">ଦୟାକରି ମେଡିକାଲ୍ ଷ୍ଟୋରର ଦୂରତା ସ୍ଥିର କରନ୍ତୁ।</string>
+    <string name="error_pathological_lab_distance_not_selected">ଦୟାକରି ପାଥୋଲୋଜିକାଲ ଲ୍ୟାବ ପର୍ଯ୍ୟନ୍ତ ଦୂରତା ସେଟ୍ କରନ୍ତୁ।</string>
+    <string name="distance_to_nearest_private_clinic">ନିକଟତମ ଘରୋଇ କ୍ଲିନିକକୁ ଦୂରତା (ଏକ MBBS ଡାକ୍ତରଙ୍କ ସହିତ)*</string>
+    <string name="distance_to_nearest_private_clinic_with_alternate_medicine">ନିକଟତମ ଘରୋଇ କ୍ଲିନିକ୍ ପାଇଁ ଦୂରତା (ବିକଳ୍ପ ଡାକ୍ତରୀ ଚିକିତ୍ସକଙ୍କ ସହିତ - BAMS, BHMS, ଆୟୁର୍ବେଦ ଇତ୍ୟାଦି)*</string>
+    <string name="error_private_clinic_not_selected">ଦୟାକରି ଜଣେ MBBS ଡାକ୍ତର ଥିବା ନିକଟସ୍ଥ ଘରୋଇ କ୍ଲିନିକ୍ ପର୍ଯ୍ୟନ୍ତ ଦୂରତା ଚୟନ କରନ୍ତୁ।</string>
+    <string name="error_private_clinic_alternate_medicine_distance_not_selected">ଦୟାକରି ବିକଳ୍ପ ଡାକ୍ତରୀ ଚିକିତ୍ସକଙ୍କ ସହିତ ନିକଟତମ ଘରୋଇ କ୍ଲିନିକ୍ ପର୍ଯ୍ୟନ୍ତ ଦୂରତା ଚୟନ କରନ୍ତୁ।</string>
+    <string name="does_this_village_get_water_under_jal_jeevan_yojana_scheme">ଜଳ ଜୀବନ ଯୋଜନା ର ଅନ୍ତର୍ଭୁକ୍ତ ହୋଇଥିବା ଯୋଜନାର ପାଣି ଲୋକମାନେ ପିଉଛନ୍ତି କି?*</string>
+    <string name="error_jal_jeevan_yojana_not_selected">ଜଳ ଜୀବନ ଯୋଜନା ଯୋଜନାରେ ଗାଁକୁ ପାଣି ମିଳୁଛି କି ନାହିଁ ଦୟାକରି ଚୟନ କରନ୍ତୁ।</string>
+    <string name="please_select_all_the_required_fields">ଦୟାକରି ସମସ୍ତ ଆବଶ୍ୟକୀୟ କ୍ଷେତ୍ର ଚୟନ କରନ୍ତୁ |</string>
+
+    <string name="setup_select_state_str">ରାଜ୍ୟ ଚୟନ କରନ୍ତୁ</string>
+    <string name="setup_select_dropdown_state_msg">ଡ୍ରପଡାଉନ୍ ରୁ ରାଜ୍ୟ ଚୟନ କରନ୍ତୁ</string>
+    <string name="setup_select_district_str">ଜିଲ୍ଲା ଚୟନ କରନ୍ତୁ</string>
+    <string name="setup_select_dropdown_district_msg">ଡ୍ରପଡାଉନ୍ ରୁ ଜିଲ୍ଲା ଚୟନ କରନ୍ତୁ</string>
+    <string name="setup_select_sanch_str">ସଞ୍ଚ ଚୟନ କରନ୍ତୁ</string>
+    <string name="setup_select_dropdown_sanch_msg">ଡ୍ରପଡାଉନ୍ ରୁ ସାନଚ୍ ଚୟନ କରନ୍ତୁ</string>
+    <string name="setup_select_village_str">ଗାଁ ଚୟନ କରନ୍ତୁ</string>
+    <string name="setup_select_primary_village_str">"ପ୍ରାଥମିକ ଗ୍ରାମ ଚୟନ "</string>
+    <string name="setup_select_secondary_village_str">"ଦ୍ୱିତୀୟ ଗ୍ରାମ ଚୟନ "</string>
+    <string name="setup_select_dropdown_village_msg">ଡ୍ରପଡାଉନ୍ ରୁ ଗାଁ ଚୟନ କରନ୍ତୁ</string>
+    <string name="switch_location">"ଅବସ୍ଥିତି ବଦଳାଇ ଦିଅ "</string>
+    <string name="no_network_sync">"ତୁମେ ଇଣ୍ଟରନେଟ ସହ ଯୋଗ ହୋଇ ନାହଁ, ଦୟାକରି ପରେ ଚେଷ୍ଟା କରନ୍ତୁ "</string>
+    <string name="confirm_switch_location">"ତୁମେ ଏବେ ଲଗ୍ କରିଛ ପ୍ରଥମ ଗ୍ରାମ , ତୁମେ ନିଶ୍ଚିନ୍ତ କି ତୁମେ ଚାଲୁ ରଖିବ ନାହିଁ ଦ୍ଵିତୀୟ ଗ୍ରାମ "</string>
+    <string name="start_sevika_visit">ସେବାିକା ନୂତନ ପରାମର୍ଶ ଆରମ୍ଭ କରନ୍ତୁ</string>
+    <string name="start_doctor_visit">ଡାକ୍ତରଙ୍କ ନୂତନ ପରାମର୍ଶ ଆରମ୍ଭ କରନ୍ତୁ</string>
+    <string name="haemoglobin">ହିମୋଗ୍ଲୋବିନ୍</string>
+    <string name="sugar_random">ଚିନି ସ୍ତର - ଅନିୟମିତ</string>
+
+    <string name="hint_drop_down_hb_check">ଅବଧି ଚୟନ କରନ୍ତୁ</string>
+    <string name="enter_number">ସଂଖ୍ୟା ପ୍ରବେଶ କରନ୍ତୁ</string>
+    <string name="baseline_survey_completed">ବେସଲାଇନ୍ ସର୍ଭେ ସମାପ୍ତ ହୋଇଛି|</string>
+
+    <string name="bullet">\u2022</string>
+    <string name="fields_not_filled">କ୍ଷେତ୍ରଗୁଡିକ ପୂରଣ ହୋଇନାହିଁ |</string>
+    <string name="following_fields_are_not_filled">ନିମ୍ନଲିଖିତ କ୍ଷେତ୍ରଗୁଡ଼ିକ ପୂର୍ଣ୍ଣ ହୋଇନାହିଁ:</string>
+    <string name="do_you_still_want_to_continue">ଆପଣ ତଥାପି ଜାରି ରଖିବାକୁ ଚାହୁଁଛନ୍ତି କି?</string>
+    <string name="at_least_one_of_the_fields_is_mandatory">ନିମ୍ନଲିଖିତ କ୍ଷେତ୍ରଗୁଡ଼ିକ ମଧ୍ୟରୁ ଅତି କମରେ ଗୋଟିଏ ବାଧ୍ୟତାମୂଳକ: </string>
+
+    <string name="weight_loss_alert_msg">ତୁମର ଉଚ୍ଚତା ଅନୁଯାୟୀ ତୁମର ଓଜନ କମ୍ |</string>
+    <string name="weight_gain_alert_msg">ତୁମର ଉଚ୍ଚତା ଅନୁଯାୟୀ ତୁମର ଓଜନ ଅଧିକ |</string>
+    <string name="vital_alert_bp_dia_button">ତୁମର ଡାଇଷ୍ଟୋଲିକ୍ ବିପି ସାଧାରଣ ନୁହେଁ |</string>
+    <string name="vital_alert_bp_sys_button">ତୁମର ସିଷ୍ଟୋଲିକ୍ ବିପି ସାଧାରଣ ନୁହେଁ |</string>
+    <string name="vital_alert_spo2_button">ତୁମର SpO2 ସାଧାରଣ ନୁହେଁ |</string>
+    <string name="vital_alert_pulse_button">ତୁମର ପଲ୍ସ ସାଧାରଣ ନୁହେଁ |</string>
+    <string name="vital_alert_resp_button">ତୁମର ଶ୍ୱାସକ୍ରିୟା ହାର ସାଧାରଣ ନୁହେଁ |</string>
+    <string name="vital_alert_temperature_button">ତୁମର ତାପମାତ୍ରା ସାଧାରଣ ନୁହେଁ |</string>
+    <string name="vital_alert_hgb_button">ତୁମର ଏଚଜିବ ସାଧାରଣ ନୁହେଁ |</string>
+    <string name="vital_alert_sugar_random_button">ତୁମର ଚିନି ରାଣ୍ଡମ ସ୍ତର ସାଧାରଣ ନୁହେଁ |</string>
+    <string name="vital_alert_sugar_fasting_button">ତୁମର ଚିନି ଉପବାସ ସ୍ତର ସାଧାରଣ ନୁହେଁ |</string>
+    <string name="vital_alert_sugar_aftermeal_button">ଭୋଜନ ପରେ ତୁମର ଚିନି ସାଧାରଣ ନୁହେଁ |</string>
+
+</resources>
