@@ -12,8 +12,8 @@
     <string name="send_visit">Save visit?</string>
     <string name="visit_successfully_sent">Visit successfully saved!</string>
     <string name="patient_visit_sent">Patient\'s visit has been successfully saved.</string>
-    <string name="visit_data_failed">Visit successfully saved!</string>
-    <string name="visit_uploaded_failed">Patient\'s visit has been successfully saved.</string>
+    <string name="visit_data_failed">Visit Data Failed</string>
+    <string name="visit_uploaded_failed">Will be uploaded when internet is available</string>
     <!--    <string name="visit_left_action_btn_label">@string/preview</string>-->
     <!--    <string name="visit_right_action_btn_label">@string/save_visit_button</string>-->
     <!--    <string name="visit_save_and_upload_status">@string/visit_saving</string>-->
@@ -27,6 +27,12 @@
     <string name="select_economic_category">Select Economic Status</string>
     <string name="select_phone_ownership">Select Phone Ownership</string>
     <string name="select_your_choice">Select your choice</string>
+
+    <string name="schedule_caste">Schedule Caste</string>
+    <string name="schedule_tribe">Schedule Tribe</string>
+    <string name="survey_other_backward_caste">Other Backward Caste (OBC)</string>
+    <string name="survey_general">General</string>
+    <string name="survey_other">Other</string>
 
     <string name="smoker">Smoker</string>
     <string name="non_smoker">Non-Smoker</string>
@@ -67,7 +73,9 @@
     <string name="religion_sikh">Sikh</string>
     <string name="religion_buddhist_neo_buddhist">Buddhist or Neo-Buddhist</string>
     <string name="religion_jain">Jain</string>
-    <string name="religion_others">Others</string>
+    <string name="religion_jewish">Jewish</string>
+    <string name="parsi_zoroastrian">Parsi or Zoroastrian</string>
+    <string name="no_religion">No Religion</string>
 
     <string name="economic_status_apl">APL</string>
     <string name="economic_status_bpl">BPL</string>
@@ -191,7 +199,7 @@
     <string name="error_private_clinic_not_selected">Please select the distance to the nearest private clinic with an MBBS doctor</string>
     <string name="error_private_clinic_alternate_medicine_distance_not_selected">Please select the distance to the nearest private clinic with alternate medical practitioners</string>
     <string name="does_this_village_get_water_under_jal_jeevan_yojana_scheme">Does this village get water under the Jal Jeevan Yojana scheme?*</string>
-    <string name="error_jal_jeevan_yojana_not_selected">Please select whether the gets water under the Jal Jeevan Yojana scheme</string>
+    <string name="error_jal_jeevan_yojana_not_selected">Please select whether the village gets water under the Jal Jeevan Yojana scheme</string>
     <string name="please_select_all_the_required_fields">Please select all required fields</string>
 
     <string name="setup_select_state_str">Select State</string>
