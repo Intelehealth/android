@@ -844,6 +844,7 @@
 
                                 </RelativeLayout>
 
+
                             </RelativeLayout>
                         </androidx.cardview.widget.CardView>
 
@@ -887,6 +888,17 @@
                                     android:paddingStart="@dimen/fu_margin_start"
                                     android:paddingTop="@dimen/margin_10"
                                     android:paddingBottom="@dimen/margin_10" />
+
+                                <TextView
+                                    android:id="@+id/tvFacilityToVisitReferralRiskResult"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content" android:visibility="gone"
+                                    android:layout_below="@+id/spinnerFacilityToVisit"
+                                    android:layout_marginStart="@dimen/fu_margin_start"
+                                    android:layout_marginEnd="@dimen/fu_margin_start"
+                                    android:layout_marginBottom="@dimen/margin_16dp"
+                                    android:textColor="@color/orange"
+                                    android:textStyle="bold|italic" />
                             </RelativeLayout>
                         </androidx.cardview.widget.CardView>
                     </FrameLayout>
@@ -896,8 +908,8 @@
                         android:id="@+id/flReferralFacility"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:visibility="gone"
-                        android:layout_below="@+id/flFacilityToVisit">
+                        android:layout_below="@+id/flFacilityToVisit"
+                        android:visibility="gone">
 
                         <androidx.cardview.widget.CardView
                             android:id="@+id/cvReferralFacilityDoc"

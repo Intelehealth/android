@@ -14,6 +14,7 @@ import android.view.Gravity
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import androidx.activity.viewModels
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
 import androidx.biometric.BiometricPrompt.PromptInfo
@@ -28,6 +29,7 @@ import androidx.transition.TransitionManager
 import androidx.work.WorkInfo
 import com.github.ajalt.timberkt.Timber
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import dagger.hilt.android.AndroidEntryPoint
 import org.intelehealth.app.BuildConfig
 import org.intelehealth.app.R
 import org.intelehealth.app.activities.IntroActivity.IntroScreensActivity_New
@@ -43,6 +45,7 @@ import org.intelehealth.app.ui.splash.adapter.LanguageAdapter
 import org.intelehealth.app.utilities.DialogUtils
 import org.intelehealth.app.utilities.DialogUtils.CustomDialogListener
 import org.intelehealth.app.utilities.Logger
+import org.intelehealth.common.triagingrule.viewmodel.TriagingRuleViewModel
 import org.intelehealth.config.room.entity.ActiveLanguage
 import org.intelehealth.config.worker.ConfigSyncWorker
 import org.intelehealth.core.shared.ui.viewholder.BaseViewHolder
@@ -56,9 +59,12 @@ import org.intelehealth.klivekit.utils.extensions.showToast
  * Mob   : +919727206702
  **/
 @SuppressLint("CustomSplashScreen")
+@AndroidEntryPoint
 class SplashActivity : LanguageActivity(), BaseViewHolder.ViewHolderClickListener {
     private lateinit var binding: ActivitySplashBinding
     private lateinit var adapter: LanguageAdapter
+
+    private val triagingRuleViewModel: TriagingRuleViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,6 +77,9 @@ class SplashActivity : LanguageActivity(), BaseViewHolder.ViewHolderClickListene
         initLanguageList()
 
         binding.tvTitle.isVisible = BuildConfig.FLAVOR_client != "bmgf"
+
+        // load triaging rule data from server
+        triagingRuleViewModel.loadTriagingRuleData()
     }
 
     private fun loadConfig() {

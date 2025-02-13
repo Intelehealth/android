@@ -1,8 +1,6 @@
 package org.intelehealth.app.networkApiCalls;
 
 
-import com.google.gson.JsonObject;
-
 import org.intelehealth.app.models.ChangePasswordModel_New;
 import org.intelehealth.app.models.ChangePasswordParamsModel_New;
 import org.intelehealth.app.models.CheckAppUpdateRes;
@@ -34,7 +32,6 @@ import org.intelehealth.app.models.statewise_location.District_Sanch_Village;
 import org.intelehealth.app.models.statewise_location.State;
 import org.intelehealth.app.utilities.authJWT_API.AuthJWTBody;
 import org.intelehealth.app.utilities.authJWT_API.AuthJWTResponse;
-import org.json.JSONObject;
 
 import io.reactivex.Observable;
 import io.reactivex.Single;
@@ -172,17 +169,15 @@ public interface ApiInterface {
                                                                     @Body ChangePasswordParamsModel_New changePasswordParamsModel_new);
 
 
-
-
     @POST
     Single<ResponseBody> PROVIDER_PROFILE_PIC_UPLOAD(@Url String url,
-                                                   @Body ProviderProfile patientProfile,
-                                                   @Header("Authorization") String authHeader);
+                                                     @Body ProviderProfile patientProfile,
+                                                     @Header("Authorization") String authHeader);
 
 
     @GET
     Observable<ResponseBody> PROVIDER_PROFILE_PIC_DOWNLOAD(@Url String url,
-                                                         @Header("Authorization") String authHeader);
+                                                           @Header("Authorization") String authHeader);
 
     @GET
     Observable<Profile> PROVIDER_PROFILE_DETAILS_DOWNLOAD(@Url String url,
@@ -190,7 +185,7 @@ public interface ApiInterface {
 
     @POST("/openmrs/ws/rest/v1/person/{userUuid}")
     Observable<ResponseBody> PROFILE_AGE_UPDATE(@Path("userUuid") String userUuid,
-                                                             @Body ProfileUpdateAge profileUpdateAge, @Header("Authorization") String authHeader);
+                                                @Body ProfileUpdateAge profileUpdateAge, @Header("Authorization") String authHeader);
 
     @POST("/openmrs/ws/rest/v1/provider/{userUuid}/attribute")
     Observable<ResponseBody> PROFILE_ATTRIBUTE_CREATE(@Path("userUuid") String userUuid,
@@ -209,6 +204,7 @@ public interface ApiInterface {
 
     /**
      * getting html here like privacy policy, terms of service
+     *
      * @param url
      * @return
      */
@@ -217,4 +213,6 @@ public interface ApiInterface {
     Observable<ResponseBody> GET_HTML(
             @Url String url
     );
+
+
 }

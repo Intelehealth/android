@@ -24,8 +24,9 @@ import java.util.Locale
  **/
 object LanguageUtils {
     private const val STATE_DISTRICT_JSON = "state_district_tehsil.json"
-    private const val FACILITY_ALL_DATA_JSON = "facility-all-data.json"
-    //private const val FACILITY_ALL_DATA_JSON = "facility-all-data-for-qa.json"
+
+    //    private const val FACILITY_ALL_DATA_JSON = "facility-all-data.json"
+    private const val FACILITY_ALL_DATA_JSON = "facility-all-data-for-qa.json"
 
 
     @JvmStatic
@@ -129,6 +130,27 @@ object LanguageUtils {
 
         return referralFacilityData.data.filter { it.category.contains(category) }
     }
+
+    @JvmStatic
+    fun getReferralFacilityByCategoryAndLocation(
+        category: String,
+        blockName: String,
+        districtName: String
+    ): List<ReferralFacilityData?> {
+        val context = IntelehealthApplication.getAppContext()
+        val jsonObject = FileUtils.encodeJSON(context, FACILITY_ALL_DATA_JSON)
+        val referralFacilityData: ReferralFacility = Gson().fromJson(
+            jsonObject.toString(),
+            ReferralFacility::class.java
+        )
+
+        return referralFacilityData.data.filter {
+            it.category.contains(category) && it.block.contains(
+                blockName
+            ) && it.district.contains(districtName)
+        }
+    }
+
 
     @JvmStatic
     fun getReferralFacilityByName(facilityName: String): ReferralFacilityData? {

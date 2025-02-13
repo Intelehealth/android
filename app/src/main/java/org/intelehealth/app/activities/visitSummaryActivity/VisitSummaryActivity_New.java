@@ -120,6 +120,9 @@ import org.intelehealth.app.R;
 import org.intelehealth.app.activities.additionalDocumentsActivity.AdditionalDocumentAdapter;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
+import org.intelehealth.app.activities.identificationActivity.model.Block;
+import org.intelehealth.app.activities.identificationActivity.model.DistData;
+import org.intelehealth.app.activities.identificationActivity.model.StateData;
 import org.intelehealth.app.activities.notification.AdapterInterface;
 import org.intelehealth.app.activities.prescription.PrescriptionBuilder;
 import org.intelehealth.app.activities.visit.PrescriptionActivity;
@@ -159,6 +162,7 @@ import org.intelehealth.app.models.dto.RTCConnectionDTO;
 import org.intelehealth.app.services.DownloadService;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
+import org.intelehealth.app.triagingengine.model.TriageCalculatedResultModel;
 import org.intelehealth.app.ui.specialization.SpecializationArrayAdapter;
 import org.intelehealth.app.ui2.utils.CheckInternetAvailability;
 import org.intelehealth.app.utilities.AppointmentUtils;
@@ -179,6 +183,7 @@ import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.app.webrtc.activity.IDAChatActivity;
+import org.intelehealth.common.triagingrule.viewmodel.TriagingRuleViewModel;
 import org.intelehealth.config.presenter.language.factory.SpecializationViewModelFactory;
 import org.intelehealth.config.presenter.specialization.data.SpecializationRepository;
 import org.intelehealth.config.presenter.specialization.viewmodel.SpecializationViewModel;
@@ -209,6 +214,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.UUID;
 
+import dagger.hilt.android.AndroidEntryPoint;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableObserver;
@@ -220,7 +226,9 @@ import okhttp3.ResponseBody;
  * Github: prajwalmw
  */
 @SuppressLint("Range")
+@AndroidEntryPoint
 public class VisitSummaryActivity_New extends BaseActivity implements AdapterInterface, NetworkUtils.InternetCheckUpdateInterface {
+    private TriagingRuleViewModel mTriagingRuleViewModel;
     private static final String TAG = VisitSummaryActivity_New.class.getSimpleName();
     private static final int PICK_IMAGE_FROM_GALLERY = 2001;
     //SQLiteDatabase db;
@@ -236,7 +244,9 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     //    preview_with_save_visit_lay;
     private TextInputEditText etAdditionalNotesVS;
     SessionManager sessionManager, sessionManager1;
-    String appLanguage, patientUuid, visitUuid, state, patientName, patientGender, intentTag, visitUUID, medicalAdvice_string = "", medicalAdvice_HyperLink = "", isSynedFlag = "";
+    String appLanguage, patientUuid, visitUuid, state, patientName, patientGender, intentTag, visitUUID,
+            medicalAdvice_string = "", medicalAdvice_HyperLink = "", isSynedFlag = "",
+            patientBlockName = "", patientDistName = "";
     private float float_ageYear_Month;
     String encounterVitals, encounterUuidAdultIntial, EncounterAdultInitial_LatestVisit;
     SharedPreferences mSharedPreference;
@@ -468,6 +478,11 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         unregisterReceiver(syncBroadcastReceiver);
     }
 
+    private TriageCalculatedResultModel mTriageCalculatedResultModel;
+    private int mDurationInDay = 0;
+    private int mAgeInteger = 0;
+    private String mSymptomName = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -506,6 +521,72 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
         IntentFilter filter = new IntentFilter(AppConstants.SYNC_INTENT_ACTION);
         ContextCompat.registerReceiver(this, syncBroadcastReceiver, filter, ContextCompat.RECEIVER_NOT_EXPORTED);
+
+        mTriagingRuleViewModel = new ViewModelProvider(this).get(TriagingRuleViewModel.class);
+
+        mAgeInteger = (int) float_ageYear_Month;
+        mSymptomName = mSymptomName.replaceAll("<b>", "").replaceAll("</b>", "");
+        Timber.tag(TAG).d("Triage Rule master data - age =>%s, SymptomName => %s", mAgeInteger, mSymptomName);
+
+        mTriagingRuleViewModel.getTriageCalculatedResultModel().observe(this, triageCalculatedResultModel -> {
+            mTriageCalculatedResultModel = triageCalculatedResultModel;
+            autoFillFacilityData();
+        });
+
+        mTriagingRuleViewModel.getTriagingReferralRuleData().observe(this, triagingReferralRuleData -> {
+            mTriagingRuleViewModel.calculateDurationInDays(mSymptomName, complaintClinicalString);
+        });
+        mTriagingRuleViewModel.loadTriagingRuleData();
+
+        mTriagingRuleViewModel.getDurationInDays().observe(this, val -> {
+            mDurationInDay = val;
+
+            Timber.tag(TAG).d("Triage Rule master durationInDays => %s", mDurationInDay);
+            mTriagingRuleViewModel.generateTriageResult(mAgeInteger, mSymptomName, mDurationInDay);
+
+        });
+
+
+    }
+
+    // function to set the views data
+    private void autoFillFacilityData() {
+        boolean isAllowForEdit = !isVisitSpecialityExists;
+        // restrict for past visit or uploaded visit
+        if (!isPastVisit && isAllowForEdit) {
+            // post delay
+            new Handler().postDelayed(() -> {
+                List<String> facilityList = Arrays.asList(getResources().getStringArray(R.array.visit_facilities));
+                if (mTriageCalculatedResultModel != null) {
+                    String facility = mTriageCalculatedResultModel.getResultFacilityCategory();
+                    if (facilityList.contains(facility)) {
+                        mBinding.spinnerFacilityToVisit.setSelection(facilityList.indexOf(facility));
+                    }
+                    //TODO : uncomment below section if we want to show the color based on the risk and set visitbility to the textview
+                   /* mBinding.tvFacilityToVisitReferralRiskResult.setText(mTriageCalculatedResultModel.getRiskName() + " :\n" + mTriageCalculatedResultModel.getPopupResult());
+                    if (mTriageCalculatedResultModel.getRiskName().equalsIgnoreCase("Very High Risk")) {
+                        mBinding.tvFacilityToVisitReferralRiskResult.setTextColor(getResources().getColor(R.color.red));
+                    } else if (mTriageCalculatedResultModel.getRiskName().equalsIgnoreCase("High Risk")) {
+                        mBinding.tvFacilityToVisitReferralRiskResult.setTextColor(getResources().getColor(R.color.orange));
+                    } else if (mTriageCalculatedResultModel.getRiskName().equalsIgnoreCase("Medium Risk")) {
+                        mBinding.tvFacilityToVisitReferralRiskResult.setTextColor(getResources().getColor(R.color.dark_yellow));
+                    } else {
+                        mBinding.tvFacilityToVisitReferralRiskResult.setTextColor(getResources().getColor(R.color.green));
+                    }*/
+
+                    // show advice alert to the HW
+                    DialogUtils dialogUtils = new DialogUtils();
+                    dialogUtils.showCommonDialog(this, 0, mTriageCalculatedResultModel.getRiskName(), mTriageCalculatedResultModel.getPopupResult(), true, getString(R.string.generic_ok), "", new DialogUtils.CustomDialogListener() {
+                        @Override
+                        public void onDialogActionDone(int action) {
+                            // nothing to do here
+                        }
+                    });
+                }
+            }, 1000);
+        }
+        // R.array.visit_facilities
+
 
     }
 
@@ -851,6 +932,34 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             btnAppointment.setText(getString(R.string.reschedule));
             doesAppointmentExist = true;
         }
+
+        // get the patint details
+        PatientsDAO patientsDAO = new PatientsDAO();
+        PatientDTO patientDTO = patientsDAO.getPatientDetailsByUuid(patientUuid);
+
+        StateData stateData = LanguageUtils.getState(patientDTO.getStateprovince().trim());
+
+        //String district = null;
+        String city_village = patientDTO.getCityvillage();
+        Timber.tag(TAG).d("Village =>%s", city_village);
+        if (patientDTO.getCityvillage() != null && patientDTO.getCityvillage().length() > 0) {
+            String[] district_city = patientDTO.getCityvillage().trim().split(":");
+            if (district_city.length == 2) {
+                patientDistName = district_city[0];
+                city_village = district_city[1];
+            }
+        }
+
+        DistData distData = LanguageUtils.getDistrict(stateData, patientDistName);
+        if (distData != null) {
+            patientDistName = LanguageUtils.getDistrictLocal(distData);
+
+        }
+        Block block = LanguageUtils.getBlock(distData, patientDTO.getAddress3());
+        if (patientDTO.getAddress3() != null) {
+            if (block != null) patientBlockName = LanguageUtils.getBlockLocal(block);
+        }
+
     }
 
     private void updateUIState() {
@@ -2075,7 +2184,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
 //    private String[] getFacilityList() {
 //        facilityList = new ArrayList<FacilityToVisitModel>();
-    //        for (int i = 0; i < facilities.length; i++) {
+//        for (int i = 0; i < facilities.length; i++) {
 //            facilityList.add(new FacilityToVisitModel("" + i, facilities[i]));
 //        }
 //        facilityList.add(new FacilityToVisitModel("0", "Select Facility"));
@@ -2170,7 +2279,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
         List<ReferralFacilityData> referralFacilityDataList = new ArrayList<>();
         referralFacilityDataList.add(getInitialData());
-        referralFacilityDataList.addAll(LanguageUtils.getReferralFacilityByCategory(selectedFacilityToVisit));
+        //referralFacilityDataList.addAll(LanguageUtils.getReferralFacilityByCategory(selectedFacilityToVisit));
+        referralFacilityDataList.addAll(LanguageUtils.getReferralFacilityByCategoryAndLocation(selectedFacilityToVisit, patientBlockName, patientDistName));
 
         if (referralFacilityDataList.size() == 1) {
             mBinding.flReferralFacility.setVisibility(View.GONE);
@@ -2535,7 +2645,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         return true;
     }
 
-    // permission code - end
+// permission code - end
 
     private void jsonBasedPrescTitle() {
         //Check for license key and load the correct config file
@@ -4066,7 +4176,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         }
     }
 
-    // query data
+// query data
 
     /**
      * This methods retrieves patient data from database.
@@ -4496,7 +4606,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         }*/
     }
 
-    // speciality alrady exists checking
+// speciality alrady exists checking
 
     /**
      * @param uuid the visit uuid of the patient visit records is passed to the function.
@@ -4584,12 +4694,12 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         return mBackgroundHandler;
     }
 
-    // compress image
+// compress image
 
     /**
      * @param filePath Final Image path to compress.
      */
-    // TODO: crash as there is no permission given in setup app section for firsttime user.
+// TODO: crash as there is no permission given in setup app section for firsttime user.
     void compressImageAndSave(final String filePath) {
         getBackgroundHandler().post(new Runnable() {
             @Override
@@ -4621,7 +4731,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     }
 
 
-    // udpate database block
+// udpate database block
 
     /**
      * This method updates patient details to database.
@@ -5047,7 +5157,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     }
 
     // print job
-    //print button start
+//print button start
     private void createWebPrintJob_Button(WebView webView, int contentHeight) {
         // Get a PrintManager instance
         PrintManager printManager = (PrintManager) this.getSystemService(Context.PRINT_SERVICE);
@@ -5122,7 +5232,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
         return formatted;
     }
-    // Print - end
+// Print - end
 
     @Override
     public void updateUIForInternetAvailability(boolean isInternetAvailable) {
@@ -5756,6 +5866,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     private LinearLayout mAssociateSymptomsLinearLayout, mComplainSummaryLinearLayout, mPhysicalExamSummamryLinearLayout, mPastMedicalHistorySummaryLinearLayout, mFamilyHistorySummaryLinearLayout;
     private TextView mAssociateSymptomsLabelTextView;
     private boolean mIsCCInOldFormat = true;
+    private String complaintClinicalString = "";
     ;
 
     private void setQAData() {
@@ -5789,6 +5900,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                         mIsCCInOldFormat = true;
                     }
                     complaintLocalString = value;
+                    complaintClinicalString = jsonObject.getString("en"); // always take it from eng for the unique traige rules & calculation
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -5803,27 +5915,19 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 findViewById(R.id.denies_relative).setVisibility(View.VISIBLE);
 
                 valueArray = value.split("►<b> " + Node.ASSOCIATE_SYMPTOMS + "</b>:  <br/>");
-                isAssociateSymptomFound = valueArray.length >= 2;
-                Log.v(TAG, "complaint: " + valueArray[0]);
-                Log.v(TAG, "complaint associated: " + (isAssociateSymptomFound ? valueArray[1] : "no Associated Symptom found in value"));
-                String[] headerchips = valueArray[0].split("►");
-                List<String> cc_tempvalues = new ArrayList<>(Arrays.asList(headerchips));
+                // complaintClinicalString = valueArray[0];
+                setChiefComplainListData(valueArray, true);
 
-                // Emptying this list so that when the user comes back from the chief complaint screen - they see only 1 instance of values.
-                if (!mChiefComplainList.isEmpty()) {
-                    mChiefComplainList.clear();
-                }
-
-                for (int i = 0; i < cc_tempvalues.size(); i++) {
-                    if (!cc_tempvalues.get(i).equalsIgnoreCase("") && cc_tempvalues.get(i).contains(":"))
-                        mChiefComplainList.add(cc_tempvalues.get(i).substring(0, headerchips[i].indexOf(":")));
-                }
                 for (int i = 0; i < mChiefComplainList.size(); i++) {
                     if (mChiefComplainList.get(i).contains("Follow up visit") || mChiefComplainList.get(i).contains("दोबारा विजिट करना (फॉलो अप विजिट)")) {
                         mIsFollowUpTypeVisit = true;
                         break;
                     }
                 }
+                isAssociateSymptomFound = valueArray.length >= 2;
+                Log.v(TAG, "complaint: " + valueArray[0]);
+                Log.v(TAG, "complaint associated: " + (isAssociateSymptomFound ? valueArray[1] : "no Associated Symptom found in value"));
+
                 cc_recyclerview_gridlayout = new GridLayoutManager(this, 2);
                 cc_recyclerview.setLayoutManager(cc_recyclerview_gridlayout);
                 cc_adapter = new ComplaintHeaderAdapter(this, mChiefComplainList);
@@ -5875,6 +5979,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 isAssociateSymptomFound = valueArray.length >= 2;
                 if (isAssociateSymptomFound)
                     valueArray[1] = valueArray[1].split("::")[1];*/
+                // complaintClinicalString = complaintLocalString;
+                setChiefComplainListData(complaintClinicalString.split("►<b> " + Node.ASSOCIATE_SYMPTOMS + "</b>:  <br/>"), false);
                 setDataForChiefComplainSummary(complaintLocalString);
             }
 
@@ -5983,6 +6089,28 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         // medical history data - end
 
         uiUpdateForFollowUpVisit();
+    }
+
+    private void setChiefComplainListData(String[] valueArray, boolean isRequiredToAdd) {
+        String[] headerchips = valueArray[0].split("►");
+        List<String> cc_tempvalues = new ArrayList<>(Arrays.asList(headerchips));
+        List<String> tempList = new ArrayList<>();
+
+        // Emptying this list so that when the user comes back from the chief complaint screen - they see only 1 instance of values.
+        if (isRequiredToAdd)
+            if (!mChiefComplainList.isEmpty()) {
+                mChiefComplainList.clear();
+            }
+
+        for (int i = 0; i < cc_tempvalues.size(); i++) {
+            if (!cc_tempvalues.get(i).equalsIgnoreCase("") && cc_tempvalues.get(i).contains(":")) {
+                if (isRequiredToAdd)
+                    mChiefComplainList.add(cc_tempvalues.get(i).substring(0, headerchips[i].indexOf(":")));
+                else
+                    tempList.add(cc_tempvalues.get(i).substring(0, headerchips[i].indexOf(":")));
+            }
+        }
+        mSymptomName = isRequiredToAdd ? mChiefComplainList.get(0) : tempList.get(0);
     }
 
     private void uiUpdateForFollowUpVisit() {
