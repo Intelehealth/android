@@ -80,7 +80,7 @@
     <string name="economic_status_apl">APL</string>
     <string name="economic_status_bpl">BPL</string>
 
-    <string name="toilet_facility_open_defecation">Open Defecation</string>
+    <string name="toilet_facility_open_defecation">Open Defacation</string>
     <string name="toilet_facility_own_a_toilet_but_it_unusable">Own a toilet but it is unusable</string>
     <string name="toilet_facility_use_toilet_at_home">Use toilet at home</string>
     <string name="toilet_facility_use_community_toilet">Use Community Toilet</string>
