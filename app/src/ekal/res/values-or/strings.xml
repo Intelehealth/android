@@ -361,4 +361,12 @@
     <string name="common_hand_pump">ସାଧାରଣ ହାତ ପମ୍ପ</string>
     <string name="hand_pump_at_home">ଘରେ ଥିବା ହାତ ପମ୍ପ</string>
 
+    <string name="boil">ଫୁଟାପାଣି</string>
+    <string name="use_alum">ଫିଟିକିରି ବ୍ୟବହାର</string>
+    <string name="add_bleach_chlorine_tablets_drops">ବିରଞ୍ଜନ ଯୁକ୍ତ କରିବା</string>
+    <string name="strain_through_a_cloth">କପଡ଼ାରେ ଛ।ନିବା</string>
+    <string name="use_water_filter_ceramic_sand_composite_etc">ଫିଲ୍ଟର ପାଣି</string>
+    <string name="handmade_purifier">ହାତ ତିଆରି ବିଶୋଧକ</string>
+    <string name="do_nothing">କିଛି କରୁ ନାହିଁ</string>
+
 </resources>

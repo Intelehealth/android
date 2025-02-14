@@ -875,14 +875,14 @@
     </string-array>
 
     <string-array name="safeguard_water">
-        <item>Boiling</item>
-        <item>Use Alum</item>
-        <item>Add Bleach</item>
-        <item>Strain Through a Cloth</item>
-        <item>Water Filter</item>
-        <item>Hand Made Purifier</item>
-        <item>Do Nothing</item>
-        <item>Others</item>
+        <item>@string/boil</item>
+        <item>@string/use_alum</item>
+        <item>@string/add_bleach_chlorine_tablets_drops</item>
+        <item>@string/strain_through_a_cloth</item>
+        <item>@string/use_water_filter_ceramic_sand_composite_etc</item>
+        <item>@string/handmade_purifier</item>
+        <item>@string/do_nothing</item>
+        <item>@string/others</item>
     </string-array>
 
 
@@ -921,7 +921,6 @@
         <item>Medical Survey</item>
         <item>Other Survey</item>
     </string-array>
-
 
 
     <string-array name="hb_check">

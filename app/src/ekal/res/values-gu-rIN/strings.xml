@@ -361,4 +361,12 @@
     <string name="common_hand_pump">કોમન હેન્ડ પંપ</string>
     <string name="hand_pump_at_home">ઘરે હેન્ડ પંપ</string>
 
+    <string name="boil">ઉકાળો</string>
+    <string name="use_alum">ફટકડીનો ઉપયોગ કરો</string>
+    <string name="add_bleach_chlorine_tablets_drops">બ્લિચ ઉમેરવું</string>
+    <string name="strain_through_a_cloth">કાપડ દ્વારા તાણ</string>
+    <string name="use_water_filter_ceramic_sand_composite_etc">વોટર ફિલ્ટરનો ઉપયોગ</string>
+    <string name="handmade_purifier">ઘરે બનાવેલું ફિલ્ટર</string>
+    <string name="do_nothing">મૂકી રાખો અને સ્થિર કરો</string>
+
 </resources>

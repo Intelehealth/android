@@ -362,4 +362,12 @@
     <string name="common_hand_pump">सामान्य हैंड पंप</string>
     <string name="hand_pump_at_home">घर पर हैंड पंप</string>
 
+    <string name="boil">उकळणे</string>
+    <string name="use_alum">तुरटी वापरणे</string>
+    <string name="add_bleach_chlorine_tablets_drops">ब्लीच / क्लोरीन गोळ्या/ ड्रॉप्स</string>
+    <string name="strain_through_a_cloth">कापडाने गाळणे</string>
+    <string name="use_water_filter_ceramic_sand_composite_etc">पाणी फिल्टर वापरा (सिरेमिक / वाळू / संयुक्त / इ.)</string>
+    <string name="handmade_purifier">हँड मेड प्युरिफायर</string>
+    <string name="do_nothing">काही करत नाही</string>
+
 </resources>

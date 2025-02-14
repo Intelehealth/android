@@ -349,7 +349,7 @@
     <string name="piped_into_dwelling">Piped Into Dwelling</string>
     <string name="piped_into_yard_plot">Piped Into Yard or Plot</string>
     <string name="public_tap_standpipe">Public Tap or Standpipe</string>
-        <string name="tube_well_borehole">Tube Well or Borehole</string>
+    <string name="tube_well_borehole">Tube Well or Borehole</string>
     <string name="protected_well_checkbox">Protected Well</string>
     <string name="unprotected_well">Unprotected Well</string>
     <string name="protected_spring">Protected Spring</string>
@@ -360,5 +360,13 @@
     <string name="surface_water">Surface Water</string>
     <string name="common_hand_pump">Common Hand Pump</string>
     <string name="hand_pump_at_home">Hand Pump At Home</string>
+
+    <string name="boil">Boiling</string>
+    <string name="use_alum">Use Alum</string>
+    <string name="add_bleach_chlorine_tablets_drops">Add bleach</string>
+    <string name="strain_through_a_cloth">Strain Through A Cloth</string>
+    <string name="use_water_filter_ceramic_sand_composite_etc">Water Filter</string>
+    <string name="handmade_purifier">Hand Made Purifier</string>
+    <string name="do_nothing">Do Nothing</string>
 
 </resources>

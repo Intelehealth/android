@@ -359,4 +359,12 @@
     <string name="common_hand_pump">কমন হ্যান্ড পাম্প</string>
     <string name="hand_pump_at_home">বাড়িতে হ্যান্ড পাম্প</string>
 
+    <string name="boil">ফুটান</string>
+    <string name="use_alum">অ্যালুম ব্যবহার করুন</string>
+    <string name="add_bleach_chlorine_tablets_drops">ব্লিচ যোগ করুন</string>
+    <string name="strain_through_a_cloth">একটি কাপড় মাধ্যমে স্ট্রেন</string>
+    <string name="use_water_filter_ceramic_sand_composite_etc">জল ফিল্টার</string>
+    <string name="handmade_purifier">হ্যান্ড মেড পিউরিফায়ার</string>
+    <string name="do_nothing">কিছুই করবেন না</string>
+
 </resources>
