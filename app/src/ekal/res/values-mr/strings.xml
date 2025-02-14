@@ -370,4 +370,15 @@
     <string name="handmade_purifier">हँड मेड प्युरिफायर</string>
     <string name="do_nothing">काही करत नाही</string>
 
+    <string name="electricity">वीज</string>
+    <string name="lpg_natural_gas">एलपीजी / नैसर्गिक वायू</string>
+    <string name="biogas_checkbox">बायोगॅस</string>
+    <string name="kerosene">केरोसिन</string>
+    <string name="coal_lignite">कोळसा / लिग्नाइट</string>
+    <string name="wood">लाकूड</string>
+    <string name="charcoal">चारकोल</string>
+    <string name="straw_shrubs_grass">पेंढा / पाला - पाचोळा, झुडुपे  / गवत</string>
+    <string name="agricultural_crop_waste">कृषी पीक कचरा</string>
+    <string name="dung_cakes">गवऱ्या</string>
+
 </resources>

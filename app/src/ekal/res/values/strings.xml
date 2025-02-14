@@ -369,4 +369,15 @@
     <string name="handmade_purifier">Hand Made Purifier</string>
     <string name="do_nothing">Do Nothing</string>
 
+    <string name="electricity">Electricity</string>
+    <string name="lpg_natural_gas">LPG or Natural Gas</string>
+    <string name="biogas_checkbox">Biogas</string>
+    <string name="kerosene">Kerosene</string>
+    <string name="coal_lignite">Coal or Lignite</string>
+    <string name="wood">Wood</string>
+    <string name="charcoal">Charcoal</string>
+    <string name="straw_shrubs_grass">Straw or Shrubs or Grass</string>
+    <string name="agricultural_crop_waste">Agricultural Crop Waste</string>
+    <string name="dung_cakes">Dung Cakes</string>
+
 </resources>

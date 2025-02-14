@@ -887,17 +887,17 @@
 
 
     <string-array name="fuel_type">
-        <item>Electricity</item>
-        <item>LPG or Natural Gas</item>
-        <item>Biogas</item>
-        <item>Kerosene</item>
-        <item>Coal or Lignite</item>
-        <item>Charcoal</item>
-        <item>Wood</item>
-        <item>Straw or Shrubs or Grass</item>
-        <item>Agricultural Crop Waste</item>
-        <item>Dung Cakes</item>
-        <item>Others</item>
+        <item>@string/electricity</item>
+        <item>@string/lpg_natural_gas</item>
+        <item>@string/biogas_checkbox</item>
+        <item>@string/kerosene</item>
+        <item>@string/coal_lignite</item>
+        <item>@string/wood</item>
+        <item>@string/charcoal</item>
+        <item>@string/straw_shrubs_grass</item>
+        <item>@string/agricultural_crop_waste</item>
+        <item>@string/dung_cakes</item>
+        <item>@string/others</item>
     </string-array>
 
     <string-array name="source_of_light">

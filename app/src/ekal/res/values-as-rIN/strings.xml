@@ -367,4 +367,15 @@
     <string name="handmade_purifier">হাতেৰে নিৰ্মিত বিশুদ্ধকৰণ</string>
     <string name="do_nothing">একো নকৰিব</string>
 
+    <string name="electricity">বিদ্যুৎ</string>
+    <string name="lpg_natural_gas">এল পি জি বা প্ৰাকৃতিক গেছ</string>
+    <string name="biogas_checkbox">বায়’গেছ</string>
+    <string name="kerosene">কেৰাচিন</string>
+    <string name="coal_lignite">কয়লা বা লিগনাইট</string>
+    <string name="wood">কাঠ</string>
+    <string name="charcoal">কাঠকয়লা</string>
+    <string name="straw_shrubs_grass">খেৰ বা জোপোহা বা ঘাঁহ</string>
+    <string name="agricultural_crop_waste">কৃষি শস্যৰ আৱৰ্জনা</string>
+    <string name="dung_cakes">গোবৰ কেক</string>
+
 </resources>

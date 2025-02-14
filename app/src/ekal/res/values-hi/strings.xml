@@ -369,4 +369,15 @@
     <string name="handmade_purifier">घर पर बनाये फ़िल्टर का उपयोग करते है</string>
     <string name="do_nothing">कुछ नहीं करते है</string>
 
+    <string name="electricity">बिजली</string>
+    <string name="lpg_natural_gas">एलपीजी/प्राकृतिक गैस</string>
+    <string name="biogas_checkbox">बायोगैस</string>
+    <string name="kerosene">मिट्टी का तेल</string>
+    <string name="coal_lignite">कोयला/लिग्नाइट</string>
+    <string name="wood">लकड़ी</string>
+    <string name="charcoal">लकड़ी का कोयला</string>
+    <string name="straw_shrubs_grass">पुआल/झाड़ियाँ/घास</string>
+    <string name="agricultural_crop_waste">कृषि फसल अपशिष्ट</string>
+    <string name="dung_cakes">गोबर के कंडे</string>
+
 </resources>

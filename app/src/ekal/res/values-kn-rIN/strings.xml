@@ -367,4 +367,15 @@
     <string name="handmade_purifier">ಕೈಯಿಂದ ಮಾಡಿದ ಪ್ಯೂರಿಫೈಯರ್</string>
     <string name="do_nothing">ಏನನ್ನೂ ಮಾಡಬೇಡ</string>
 
+    <string name="electricity">ವಿದ್ಯುತ್</string>
+    <string name="lpg_natural_gas">ಎಲ್ ಪಿ ಜಿ ಅಥವಾ ನೈಸರ್ಗಿಕ ಅನಿಲ</string>
+    <string name="biogas_checkbox">ಜೈವಿಕ ಅನಿಲ</string>
+    <string name="kerosene">ಸೀಮೆಎಣ್ಣೆ</string>
+    <string name="coal_lignite">ಕಲ್ಲಿದ್ದಲು ಅಥವಾ ಲಿಗ್ನೈಟ್</string>
+    <string name="wood">ಮರ</string>
+    <string name="charcoal">ಇದ್ದಿಲು</string>
+    <string name="straw_shrubs_grass">ಹುಲ್ಲು ಅಥವಾ ಪೊದೆಗಳು ಅಥವಾ ಹುಲ್ಲು</string>
+    <string name="agricultural_crop_waste">ಕೃಷಿ ಬೆಳೆ ತ್ಯಾಜ್ಯ</string>
+    <string name="dung_cakes">ಸಗಣಿ ಕೇಕ್</string>
+
 </resources>

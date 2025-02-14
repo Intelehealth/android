@@ -369,4 +369,15 @@
     <string name="handmade_purifier">ହାତ ତିଆରି ବିଶୋଧକ</string>
     <string name="do_nothing">କିଛି କରୁ ନାହିଁ</string>
 
+    <string name="electricity">ବିଦ୍ୟୁତ୍‌</string>
+    <string name="lpg_natural_gas">ଏଲ.ପି.ଜି / ପ୍ରାକୃତିକ ଗ୍ୟାସ</string>
+    <string name="biogas_checkbox">ବାୟୋଗ୍ୟାସ</string>
+    <string name="kerosene">କିରୋସିନ</string>
+    <string name="coal_lignite">କୋଇଲା ବା ଅଙ୍ଗାର</string>
+    <string name="wood">କାଠ </string>
+    <string name="charcoal">ଅଙ୍ଗାର</string>
+    <string name="straw_shrubs_grass">ନଡା/ଘାସ</string>
+    <string name="agricultural_crop_waste">କୃଷି ବର୍ଜବସ୍ତୁ</string>
+    <string name="dung_cakes">ଖତର ଘସି</string>
+
 </resources>

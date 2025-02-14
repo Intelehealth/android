@@ -369,4 +369,15 @@
     <string name="handmade_purifier">ઘરે બનાવેલું ફિલ્ટર</string>
     <string name="do_nothing">મૂકી રાખો અને સ્થિર કરો</string>
 
+    <string name="electricity">વીજળી</string>
+    <string name="lpg_natural_gas">એલપીજી/નેચરલ ગેસ</string>
+    <string name="biogas_checkbox">બાયોગાસ</string>
+    <string name="kerosene">કેરોસીન</string>
+    <string name="coal_lignite">કોલ</string>
+    <string name="wood">લાકડા</string>
+    <string name="charcoal">ચારકોલ</string>
+    <string name="straw_shrubs_grass">સ્ટ્રો/ઝાડવા/ઘાસ</string>
+    <string name="agricultural_crop_waste">કૃષિ પાકનો કચરો</string>
+    <string name="dung_cakes">ગોબરની કેક</string>
+
 </resources>
