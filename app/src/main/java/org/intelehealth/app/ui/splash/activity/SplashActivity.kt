@@ -39,6 +39,7 @@ import org.intelehealth.app.app.IntelehealthApplication
 import org.intelehealth.app.dataMigration.SmoothUpgrade
 import org.intelehealth.app.databinding.ActivitySplashBinding
 import org.intelehealth.app.ui.language.activity.LanguageActivity
+import org.intelehealth.app.ui.language.activity.StaticLanguageEnabledFieldsHelper
 import org.intelehealth.app.ui.splash.adapter.LanguageAdapter
 import org.intelehealth.app.utilities.DialogUtils
 import org.intelehealth.app.utilities.DialogUtils.CustomDialogListener
@@ -65,10 +66,11 @@ class SplashActivity : LanguageActivity(), BaseViewHolder.ViewHolderClickListene
         super.onCreate(savedInstanceState)
         binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        animateViews()
+        initLanguageList()
 
         handleFcmCall()
         handleButtonClickListener()
-        initLanguageList()
         binding.tvTitle.isVisible = BuildConfig.FLAVOR_client != "bmgf"
     }
 
@@ -86,7 +88,7 @@ class SplashActivity : LanguageActivity(), BaseViewHolder.ViewHolderClickListene
 //            }
 //        } else {
         //as we are implementing force update now thus commenting this.
-        Handler(Looper.getMainLooper()).postDelayed({ nextActivity() }, 3000)
+//        Handler(Looper.getMainLooper()).postDelayed({ nextActivity() }, 3000)
 //        }
     }
 
@@ -107,7 +109,10 @@ class SplashActivity : LanguageActivity(), BaseViewHolder.ViewHolderClickListene
     private fun initLanguageList() {
         binding.rvSelectLanguage.layoutManager = LinearLayoutManager(this)
         binding.rvSelectLanguage.itemAnimator = DefaultItemAnimator()
-        adapter = LanguageAdapter(this, arrayListOf()).apply {
+        adapter = LanguageAdapter(
+            this,
+            StaticLanguageEnabledFieldsHelper.getEnabledLanguageFields()
+        ).apply {
             this.viewHolderClickListener = this@SplashActivity
             binding.rvSelectLanguage.adapter = this
         }
@@ -179,7 +184,7 @@ class SplashActivity : LanguageActivity(), BaseViewHolder.ViewHolderClickListene
                 }
             }
             if (allGranted) {
-                nextActivity()
+//                nextActivity()
             } else {
                 Timber.e("%s%s", "onRequestPermissionsResult: ", Gson().toJson(permissions))
             }
@@ -191,15 +196,15 @@ class SplashActivity : LanguageActivity(), BaseViewHolder.ViewHolderClickListene
             val handler = Handler(Looper.getMainLooper())
             if (sessionManager.isMigration) {
                 handler.postDelayed({
-                    nextActivity()
+//                    nextActivity()
                 }, 1000)
             } else {
                 handler.postDelayed({
                     val smoothUpgrade = SmoothUpgrade(this)
                     if (smoothUpgrade.checkingDatabase()) {
-                        nextActivity()
+//                        nextActivity()
                     } else {
-                        nextActivity()
+//                        nextActivity()
                     }
                 }, 1000)
             }

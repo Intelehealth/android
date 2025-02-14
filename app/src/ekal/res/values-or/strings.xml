@@ -346,4 +346,19 @@
     <string name="alert_save_and_exit_button">ସେଭ୍ କରନ୍ତୁ ଏବଂ ପ୍ରସ୍ଥାନ କରନ୍ତୁ</string>
     <string name="alert_start_button">ଆରମ୍ଭ</string>
 
+    <string name="piped_into_dwelling">ବାସଗୃହକୁ ପାଇପଯୋଗେ ପାଣି</string>
+    <string name="piped_into_yard_plot">ଅଗଣାକୁ ପାଇପ ପାଣି ଯୋଗାଣ</string>
+    <string name="public_tap_standpipe">ସର୍ବସାଧାରଣ ଟ୍ୟାବ</string>
+    <string name="tube_well_borehole">ନଳକୁପ/ ବୋର ୱେଲ </string>
+    <string name="protected_well_checkbox">ସୁରକ୍ଷିତ କୂଅ</string>
+    <string name="unprotected_well">ଅସୁରକ୍ଷିତ ପୂଅ</string>
+    <string name="protected_spring">ଅସୁରକ୍ଷିତ କୁଅ</string>
+    <string name="unprotected_spring">ଅସୁରକ୍ଷିତ ଝରଣା</string>
+    <string name="rainwater">ବର୍ଷାପାଣି</string>
+    <string name="tanker_truck">ଟ୍ୟାଙ୍କର ପାଣି</string>
+    <string name="cart_with_small_tank">ଛୋଟ ଟ୍ୟାଙ୍କର ଗାଡି</string>
+    <string name="surface_water">ଭୂପୃଷ୍ଠ ଜଳ</string>
+    <string name="common_hand_pump">ସାଧାରଣ ହାତ ପମ୍ପ</string>
+    <string name="hand_pump_at_home">ଘରେ ଥିବା ହାତ ପମ୍ପ</string>
+
 </resources>

@@ -344,4 +344,19 @@
     <string name="alert_save_and_exit_button">সংৰক্ষণ কৰক আৰু প্ৰস্থান কৰক</string>
     <string name="alert_start_button">আৰম্ভ কৰক</string>
 
+    <string name="piped_into_dwelling">বাসস্থান মধ্য পাইপ</string>
+    <string name="piped_into_yard_plot">পাইপ ইনটু য়াৰ্ড বা প্লট</string>
+    <string name="public_tap_standpipe">ৰাজহুৱা টেপ বা ষ্টেণ্ডপাইপ</string>
+    <string name="tube_well_borehole">টিউব ৱেল বা ব’ৰহ’ল</string>
+    <string name="protected_well_checkbox">সুৰক্ষিত ভাল</string>
+    <string name="unprotected_well">অসুৰক্ষিত কুঁৱা</string>
+    <string name="protected_spring">সুৰক্ষিত বসন্ত</string>
+    <string name="unprotected_spring">অসুৰক্ষিত বসন্ত</string>
+    <string name="rainwater">বৰষুণৰ পানী</string>
+    <string name="tanker_truck">টেংকাৰ ট্ৰাক</string>
+    <string name="cart_with_small_tank">সৰু ট্ৰাকৰ সৈতে কাৰ্ট</string>
+    <string name="surface_water">পৃষ্ঠীয় পানী</string>
+    <string name="common_hand_pump">সাধাৰণ হেণ্ড পাম্প</string>
+    <string name="hand_pump_at_home">হেণ্ড পাম্প এট হোম</string>
+
 </resources>

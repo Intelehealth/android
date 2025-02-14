@@ -346,4 +346,19 @@
     <string name="alert_save_and_exit_button">સાચવો અને આગળ વધો</string>
     <string name="alert_start_button">શરૂઆત</string>
 
+    <string name="piped_into_dwelling">રહેઠાણમાં પાઈપ</string>
+    <string name="piped_into_yard_plot">પાઈપ ટુ યાર્ડ/પ્લોટ</string>
+    <string name="public_tap_standpipe">પબ્લિક ટેપ/સ્ટેન્ડપાઈપ</string>
+    <string name="tube_well_borehole">ટ્યુબ વેલ/બોરહોલ</string>
+    <string name="protected_well_checkbox">સંરક્ષિત કૂવો</string>
+    <string name="unprotected_well">અસુરક્ષિત કૂવો</string>
+    <string name="protected_spring">સુરક્ષિત ઝરણું</string>
+    <string name="unprotected_spring">અસુરક્ષિત ઝરણું</string>
+    <string name="rainwater">વરસાદી પાણી</string>
+    <string name="tanker_truck">ટેન્કર ટ્રક</string>
+    <string name="cart_with_small_tank">નાની ટાંકી સાથેનું કાર્ટ</string>
+    <string name="surface_water">સપાટીનું પાણી</string>
+    <string name="common_hand_pump">કોમન હેન્ડ પંપ</string>
+    <string name="hand_pump_at_home">ઘરે હેન્ડ પંપ</string>
+
 </resources>

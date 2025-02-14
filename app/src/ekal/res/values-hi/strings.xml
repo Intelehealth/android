@@ -346,4 +346,19 @@
     <string name="alert_save_and_exit_button">सहेजें और बाहर निकलें</string>
     <string name="alert_start_button">प्रारंभ</string>
 
+    <string name="piped_into_dwelling">आवास में बोर किया गया</string>
+    <string name="piped_into_yard_plot">यार्ड/प्लॉट में बोर किया गया</string>
+    <string name="public_tap_standpipe">सार्वजनिक नल/स्टैंडपाइप</string>
+    <string name="tube_well_borehole">ट्यूब वेल/बोरहोल</string>
+    <string name="protected_well_checkbox">संरक्षित कुआं</string>
+    <string name="unprotected_well">असुरक्षित कुआं</string>
+    <string name="protected_spring">संरक्षित झरना</string>
+    <string name="unprotected_spring">असुरक्षित झरना</string>
+    <string name="rainwater">वर्षा जल</string>
+    <string name="tanker_truck">टैंकर ट्रक</string>
+    <string name="cart_with_small_tank">टैंकर छोटे टैंक के साथ</string>
+    <string name="surface_water">सतही जल</string>
+    <string name="common_hand_pump">सामान्य हैंड पंप</string>
+    <string name="hand_pump_at_home">घर पर हैंड पंप</string>
+
 </resources>

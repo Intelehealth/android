@@ -857,21 +857,21 @@
 
 
     <string-array name="source_of_water">
-        <item>Piped into Dwelling</item>
-        <item>Piped into Yard or Plot</item>
-        <item>Public Tap or Standpipe</item>
-        <item>Tube Well or Borehole</item>
-        <item>Protected Well</item>
-        <item>Unprotected Well</item>
-        <item>Protected Spring</item>
-        <item>Unprotected Spring</item>
-        <item>Rainwater</item>
-        <item>Tanker Truck</item>
-        <item>Cart With Small Tank</item>
-        <item>Surface Water</item>
-        <item>Common Hand Pump</item>
-        <item>Hand Pump At Home</item>
-        <item>Other</item>
+        <item>@string/piped_into_dwelling</item>
+        <item>@string/piped_into_yard_plot</item>
+        <item>@string/public_tap_standpipe</item>
+        <item>@string/tube_well_borehole</item>
+        <item>@string/protected_well_checkbox</item>
+        <item>@string/unprotected_well</item>
+        <item>@string/protected_spring</item>
+        <item>@string/unprotected_spring</item>
+        <item>@string/rainwater</item>
+        <item>@string/tanker_truck</item>
+        <item>@string/cart_with_small_tank</item>
+        <item>@string/surface_water</item>
+        <item>@string/common_hand_pump</item>
+        <item>@string/hand_pump_at_home</item>
+        <item>@string/other</item>
     </string-array>
 
     <string-array name="safeguard_water">

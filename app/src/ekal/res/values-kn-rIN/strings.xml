@@ -344,4 +344,19 @@
     <string name="alert_save_and_exit_button">ಉಳಿಸಿ ಮತ್ತು ನಿರ್ಗಮಿಸಿ</string>
     <string name="alert_start_button">ಪ್ರಾರಂಭಿಸಿ</string>
 
+    <string name="piped_into_dwelling">ವಾಸಕ್ಕೆ ಪೈಪ್ ಹಾಕಲಾಗಿದೆ</string>
+    <string name="piped_into_yard_plot">ಯಾರ್ಡ್ ಅಥವಾ ಪ್ಲಾಟ್‌ಗೆ ಪೈಪ್ ಹಾಕಲಾಗಿದೆ</string>
+    <string name="public_tap_standpipe">ಸಾರ್ವಜನಿಕ ಟ್ಯಾಪ್ ಅಥವಾ ಸ್ಟ್ಯಾಂಡ್ ಪೈಪ್</string>
+    <string name="tube_well_borehole">ಕೊಳವೆ ಬಾವಿ ಅಥವಾ ಕೊಳವೆಬಾವಿ</string>
+    <string name="protected_well_checkbox">ಚೆನ್ನಾಗಿ ರಕ್ಷಿಸಲಾಗಿದೆ</string>
+    <string name="unprotected_well">ರಕ್ಷಣೆಯಿಲ್ಲದ ಬಾವಿ</string>
+    <string name="protected_spring">ರಕ್ಷಿತ ವಸಂತ</string>
+    <string name="unprotected_spring">ಅಸುರಕ್ಷಿತ ವಸಂತ</string>
+    <string name="rainwater">ಮಳೆನೀರು</string>
+    <string name="tanker_truck">ಟ್ಯಾಂಕರ್ ಟ್ರಕ್</string>
+    <string name="cart_with_small_tank">ಸಣ್ಣ ಟ್ರಕ್ ಜೊತೆ ಕಾರ್ಟ್</string>
+    <string name="surface_water">ಮೇಲ್ಮೈ ನೀರು</string>
+    <string name="common_hand_pump">ಸಾಮಾನ್ಯ ಕೈ ಪಂಪ್</string>
+    <string name="hand_pump_at_home">ಮನೆಯಲ್ಲಿ ಕೈ ಪಂಪ್</string>
+
 </resources>
