@@ -409,4 +409,18 @@
     <string name="passed_senior_secondary_school">उच्च माध्यमिक शाळा (इयत्ता 12वी बोर्ड) उत्तीर्ण</string>
     <string name="graduation_and_above">पदवी आणि त्यावरील</string>
 
+    <string name="salaried_government_job">पगारदार सरकारी नोकरी</string>
+    <string name="salaried_private_job">पगारदार खाजगी नोकरी</string>
+    <string name="petty_business_shop_owner">लहान व्यवसाय / दुकान मालक</string>
+    <string name="technician_craftsman_other_skilled_work">तंत्रज्ञ किंवा कारागीर किंवा इतर कुशल काम (ड्रायव्हर, मेसन इ.)</string>
+    <string name="agricultural_farmer">कृषी शेतकरी</string>
+    <string name="tenant_farmer_agricultural_daily_wage_worker">भाडेकरी शेतकरी / कृषी दैनिक वेतन कार्यकर्ता</string>
+    <string name="daily_wage_worker_unskilled_workers">रोजंदारी कामगार (अकुशल कामगार)</string>
+    <string name="household_work">घरगुती काम</string>
+    <string name="student">विद्यार्थी</string>
+    <string name="unemployed">बेरोजगार</string>
+    <string name="retired_with_pension">सेवानिवृत्त (पेंशनसह)</string>
+    <string name="retired_without_pension">सेवानिवृत्त (पेंशनशिवाय)</string>
+    <string name="not_applicable">लागू नाही</string>
+
 </resources>

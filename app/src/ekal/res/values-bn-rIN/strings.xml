@@ -406,4 +406,18 @@
     <string name="passed_senior_secondary_school">সিনিয়র সেকেন্ডারি স্কুল পাশ (দ্বাদশ বোর্ড)</string>
     <string name="graduation_and_above">স্নাতক এবং তার উপরে</string>
 
+    <string name="salaried_government_job">বেতনভুক্ত সরকারি চাকরি</string>
+    <string name="salaried_private_job">বেতনভোগী বেসরকারি চাকরি</string>
+    <string name="petty_business_shop_owner">ক্ষুদ্র ব্যবসা বা দোকানের মালিক</string>
+    <string name="technician_craftsman_other_skilled_work">টেকনিশিয়ান বা কারিগর বা অন্যান্য দক্ষ কাজ (ড্রাইভার, রাজমিস্ত্রি, ইত্যাদি)</string>
+    <string name="agricultural_farmer">কৃষি কৃষক</string>
+    <string name="tenant_farmer_agricultural_daily_wage_worker">ভাড়াটিয়া কৃষক বা কৃষি দৈনিক মজুরি কর্মী</string>
+    <string name="daily_wage_worker_unskilled_workers">দৈনিক মজুরি কর্মী (অদক্ষ শ্রমিক)</string>
+    <string name="household_work">গৃহ কর্ম</string>
+    <string name="student">ছাত্র</string>
+    <string name="unemployed">বেকার</string>
+    <string name="retired_with_pension">অবসরপ্রাপ্ত (পেনশন সহ)</string>
+    <string name="retired_without_pension">অবসরপ্রাপ্ত (পেনশন ছাড়া)</string>
+    <string name="not_applicable">প্রযোজ্য নয়</string>
+
 </resources>

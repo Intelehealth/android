@@ -408,4 +408,18 @@
     <string name="passed_senior_secondary_school">ઉચ્ચતર માધ્યમિક શાળા(12 બોર્ડ) પાસ</string>
     <string name="graduation_and_above">સ્નાતક અને વધુ</string>
 
+    <string name="salaried_government_job">પગારવાળી સરકારી નોકરી</string>
+    <string name="salaried_private_job">પગારવાળી ખાનગી નોકરી</string>
+    <string name="petty_business_shop_owner">નાનો ધંધો/દુકાનના માલિક</string>
+    <string name="technician_craftsman_other_skilled_work">ટેક્નીસિયન/સિલ્પકાર/અન્ય કુશળ કારીગર (ડ્રાઇવર, સુથાર વગેરે)</string>
+    <string name="agricultural_farmer">ખેતી</string>
+    <string name="tenant_farmer_agricultural_daily_wage_worker">ભાડોકી ખેતી/ ખેત મજૂર</string>
+    <string name="daily_wage_worker_unskilled_workers">દહાડી મજૂર( અકુશળ કારીગર )</string>
+    <string name="household_work">ઘરનું કામ</string>
+    <string name="student">વિદ્યાર્થી</string>
+    <string name="unemployed">બેરોજગાર</string>
+    <string name="retired_with_pension">સેવા નિવૃત (પેન્સન સાથે)</string>
+    <string name="retired_without_pension">સેવા નિવૃત( પેન્સન વગર)</string>
+    <string name="not_applicable">લાગુ પડતું નથી</string>
+
 </resources>

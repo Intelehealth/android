@@ -408,4 +408,18 @@
     <string name="passed_senior_secondary_school">Passed senior secondary school (Class 12th boards)</string>
     <string name="graduation_and_above">Graduation and above</string>
 
+    <string name="salaried_government_job">Salaried Government Job</string>
+    <string name="salaried_private_job">Salaried Private Job</string>
+    <string name="petty_business_shop_owner">Petty Business or Shop Owner</string>
+    <string name="technician_craftsman_other_skilled_work">Technician or Craftsman or Other Skilled Work (Driver, Mason, etc.)</string>
+    <string name="agricultural_farmer">Agricultural Farmer</string>
+    <string name="tenant_farmer_agricultural_daily_wage_worker">Tenant Farmer or Agricultural Daily Wage Worker</string>
+    <string name="daily_wage_worker_unskilled_workers">Daily Wage Worker (Unskilled Worker)</string>
+    <string name="household_work">Household Work</string>
+    <string name="student">Student</string>
+    <string name="unemployed">Unemployed</string>
+    <string name="retired_with_pension">Retired (With Pension)</string>
+    <string name="retired_without_pension">Retired (Without Pension)</string>
+    <string name="not_applicable">Not Applicable</string>
+
 </resources>

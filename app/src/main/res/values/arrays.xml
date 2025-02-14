@@ -2547,19 +2547,19 @@
     </string-array>
 
     <string-array name="occupation">
-        <item>Salaried Government Job</item>
-        <item>Salaried Private Job</item>
-        <item>Petty Business or Shop Owner</item>
-        <item>Technician or Craftsman or Other Skilled Work (Driver, Mason, etc.)</item>
-        <item>Agricultural Farmer</item>
-        <item>Tenant Farmer or Agricultural Daily Wage Worker</item>
-        <item>Daily Wage Worker (Unskilled Worker)</item>
-        <item>Household Worker</item>
-        <item>Student</item>
-        <item>Unemployed</item>
-        <item>Retired (With Pension)</item>
-        <item>Retired (Without Pension)</item>
-        <item>Not Applicable</item>
+        <item>@string/salaried_government_job</item>
+        <item>@string/salaried_private_job</item>
+        <item>@string/petty_business_shop_owner</item>
+        <item>@string/technician_craftsman_other_skilled_work</item>
+        <item>@string/agricultural_farmer</item>
+        <item>@string/tenant_farmer_agricultural_daily_wage_worker</item>
+        <item>@string/daily_wage_worker_unskilled_workers</item>
+        <item>@string/household_work</item>
+        <item>@string/student</item>
+        <item>@string/unemployed</item>
+        <item>@string/retired_with_pension</item>
+        <item>@string/retired_without_pension</item>
+        <item>@string/not_applicable</item>
     </string-array>
 
     <string-array name="height_en">

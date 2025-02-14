@@ -406,4 +406,18 @@
     <string name="passed_senior_secondary_school">ಹಿರಿಯ ಮಾಧ್ಯಮಿಕ ಶಾಲೆಯಲ್ಲಿ ಉತ್ತೀರ್ಣರಾಗಿದ್ದಾರೆ (12 ನೇ ತರಗತಿ ಮಂಡಳಿಗಳು)</string>
     <string name="graduation_and_above">ಪದವಿ ಮತ್ತು ಮೇಲ್ಪಟ್ಟವರು</string>
 
+    <string name="salaried_government_job">ಸಂಬಳದ ಸರ್ಕಾರಿ ಕೆಲಸ</string>
+    <string name="salaried_private_job">ಸಂಬಳದ ಖಾಸಗಿ ಕೆಲಸ</string>
+    <string name="petty_business_shop_owner">ಸಣ್ಣ ವ್ಯಾಪಾರ ಅಥವಾ ಅಂಗಡಿ ಮಾಲೀಕರು</string>
+    <string name="technician_craftsman_other_skilled_work">ತಂತ್ರಜ್ಞ ಅಥವಾ ಕುಶಲಕರ್ಮಿ ಅಥವಾ ಇತರ ನುರಿತ ಕೆಲಸ (ಚಾಲಕ, ಮೇಸನ್, ಇತ್ಯಾದಿ)</string>
+    <string name="agricultural_farmer">ಕೃಷಿ ರೈತ</string>
+    <string name="tenant_farmer_agricultural_daily_wage_worker">ಗೇಣಿದಾರ ರೈತ ಅಥವಾ ಕೃಷಿ ದೈನಂದಿನ ಕೂಲಿ ಕೆಲಸಗಾರ</string>
+    <string name="daily_wage_worker_unskilled_workers">ದಿನಗೂಲಿ ಕೆಲಸಗಾರ (ಕೌಶಲ್ಯವಿಲ್ಲದ ಕೆಲಸಗಾರ)</string>
+    <string name="household_work">ಮನೆಯ ಕೆಲಸ</string>
+    <string name="student">ವಿದ್ಯಾರ್ಥಿ</string>
+    <string name="unemployed">ನಿರುದ್ಯೋಗಿ</string>
+    <string name="retired_with_pension">ನಿವೃತ್ತಿ (ಪಿಂಚಣಿಯೊಂದಿಗೆ)</string>
+    <string name="retired_without_pension">ನಿವೃತ್ತಿ (ಪಿಂಚಣಿ ಇಲ್ಲದೆ)</string>
+    <string name="not_applicable">ಅನ್ವಯಿಸುವುದಿಲ್ಲ</string>
+
 </resources>

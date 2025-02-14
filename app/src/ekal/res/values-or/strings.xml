@@ -408,4 +408,17 @@
     <string name="passed_senior_secondary_school">ଯୁକ୍ତ ଦୁଇ (ଦ୍ୱାଦଶ)</string>
     <string name="graduation_and_above">ସ୍ନାତକ ଓ ଅଧିକ</string>
 
+    <string name="salaried_government_job">ଦରମାପ୍ରାପ୍ତ ସରକାରୀ କର୍ମଚାରୀ</string>
+    <string name="salaried_private_job">ଦରମାପ୍ରାପ୍ତ ବେସରକାରୀ କର୍ମଚାରୀ</string>
+    <string name="petty_business_shop_owner">କ୍ଷୁଦ୍ର ବ୍ୟବସାୟୀ(ଦୋକାନୀ)</string>
+    <string name="technician_craftsman_other_skilled_work">କୁଶଳୀ (ବଢେଇ, ଗାଡି ଚାଳକ ଇଚ୍ଛ୍ୟାଦି)</string>
+    <string name="agricultural_farmer">କୃଷକ</string>
+    <string name="tenant_farmer_agricultural_daily_wage_worker">ପ୍ରଜା / ଭାଗ ଚାଷୀ / ଦୈନିକ ଚାଷୀ ମଜୁରିଆ</string>
+    <string name="daily_wage_worker_unskilled_workers">ଦୈନିକ ମଜୁରିଆ ( ଅଣ କୁଶଳୀ ଶ୍ରମିକ )</string>
+    <string name="household_work">ଗୃହକାର୍ଯ୍ୟ</string>
+    <string name="student">ଛାତ୍ର / ଛାତ୍ରୀ(ଅଣସଂରକ୍ଷିତ)</string>
+    <string name="unemployed">ବେକାରୀ</string>
+    <string name="retired_with_pension">ଚାକିରୀରୁ ଅବସର(ପେନସନ ଗ୍ରହୀତା)</string>
+    <string name="retired_without_pension">ଅବସର ପ୍ରାପ୍ତ ( ଅବସର କାଳୀନ ଭତ୍ତା ବିହୀନ )</string>
+
 </resources>
