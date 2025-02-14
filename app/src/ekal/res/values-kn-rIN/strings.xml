@@ -393,4 +393,9 @@
     <string name="in_past_one_week">ಕಳೆದ ಒಂದು ವಾರದಲ್ಲಿ</string>
     <string name="within_last_month">ಕಳೆದ 6 ತಿಂಗಳೊಳಗೆ</string>
 
+    <string name="own_smartphone">ಸ್ಮಾರ್ಟ್‌ಫೋನ್ ಹೊಂದಿದ್ದಾರೆ</string>
+    <string name="own_feature_phone">ಫೀಚರ್ ಫೋನ್ ಅನ್ನು ಹೊಂದಿದೆ</string>
+    <string name="shared_smartphone">ಹಂಚಿದ ಸ್ಮಾರ್ಟ್‌ಫೋನ್</string>
+    <string name="shared_feature_phone">ಹಂಚಿದ ವೈಶಿಷ್ಟ್ಯ ಫೋನ್</string>
+
 </resources>

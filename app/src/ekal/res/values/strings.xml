@@ -395,4 +395,9 @@
     <string name="in_past_one_week">In past one week</string>
     <string name="within_last_month">Within the last 6 months</string>
 
+    <string name="own_smartphone">Own Smartphone</string>
+    <string name="own_feature_phone">Own Feature Phone</string>
+    <string name="shared_smartphone">Shared Smartphone</string>
+    <string name="shared_feature_phone">Shared Feature Phone</string>
+
 </resources>

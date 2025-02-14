@@ -395,4 +395,9 @@
     <string name="in_past_one_week">ଗତ ଏକ ସପ୍ତାହରେ</string>
     <string name="within_last_month">ଗତ ୬ ମାସ ଭିତରେ</string>
 
+    <string name="own_smartphone">ନିଜର ସ୍ମାର୍ଟ ଫୋନ୍</string>
+    <string name="own_feature_phone">ନିଜର ସ୍ଵତନ୍ତ୍ର ଫୋନ୍</string>
+    <string name="shared_smartphone">ଅନ୍ୟ ସହ ଅଂଶୀଦାର ସ୍ମାର୍ଟ ଫୋନ୍</string>
+    <string name="shared_feature_phone">ଅନ୍ୟ ସହ ଅଂଶୀଦାର ସ୍ଵତନ୍ତ୍ର ଫୋନ୍</string>
+
 </resources>

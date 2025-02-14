@@ -393,4 +393,9 @@
     <string name="in_past_one_week">যোৱা এসপ্তাহত</string>
     <string name="within_last_month">যোৱা 6 মাহৰ ভিতৰত</string>
 
+    <string name="own_smartphone">স্মাৰ্টফোনৰ মালিক</string>
+    <string name="own_feature_phone">বৈশিষ্ট্য ফোন মালিক</string>
+    <string name="shared_smartphone">শ্বেয়াৰ কৰা স্মাৰ্টফোন</string>
+    <string name="shared_feature_phone">শ্বেয়াৰ কৰা বৈশিষ্ট্য ফোন</string>
+
 </resources>

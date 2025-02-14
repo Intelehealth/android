@@ -395,4 +395,9 @@
     <string name="in_past_one_week">पिछले एक सप्ताह में</string>
     <string name="within_last_month">पिछले 6 महीनों के भीतर</string>
 
+    <string name="own_smartphone">स्वयं का स्मार्टफोन है</string>
+    <string name="own_feature_phone">स्वयं का फीचर फोन है</string>
+    <string name="shared_smartphone">साझा स्मार्टफोन है</string>
+    <string name="shared_feature_phone">साझा फीचर फोन है</string>
+
 </resources>

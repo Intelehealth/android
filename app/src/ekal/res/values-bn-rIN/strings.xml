@@ -393,4 +393,9 @@
     <string name="in_past_one_week">গত এক সপ্তাহে</string>
     <string name="within_last_month">গত 6 মাসের মধ্যে</string>
 
+    <string name="own_smartphone">স্মার্টফোনের মালিক</string>
+    <string name="own_feature_phone">ফিচার ফোনের মালিক</string>
+    <string name="shared_smartphone">শেয়ার করা স্মার্টফোন</string>
+    <string name="shared_feature_phone">শেয়ার করা ফিচার ফোন</string>
+
 </resources>

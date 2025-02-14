@@ -396,4 +396,9 @@
     <string name="in_past_one_week">गेल्या एका आठवड्यात</string>
     <string name="within_last_month">गेल्या महिन्यात</string>
 
+    <string name="own_smartphone">स्वतःचा स्मार्टफोन</string>
+    <string name="own_feature_phone">स्वतःचा साधारण फोन</string>
+    <string name="shared_smartphone">सामायिक स्मार्टफोन</string>
+    <string name="shared_feature_phone">सामायिक साधारण फोन</string>
+
 </resources>

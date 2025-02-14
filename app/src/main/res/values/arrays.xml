@@ -946,11 +946,11 @@
     </string-array>
 
     <string-array name="phone_ownership">
-        <item>None</item>
-        <item>Own Smartphone</item>
-        <item>Own Feature Phone</item>
-        <item>Shared Smartphone</item>
-        <item>Shared Feature Phone</item>
+        <item>@string/none</item>
+        <item>@string/own_smartphone</item>
+        <item>@string/own_feature_phone</item>
+        <item>@string/shared_smartphone</item>
+        <item>@string/shared_feature_phone</item>
     </string-array>
 
     <string-array name="education">
