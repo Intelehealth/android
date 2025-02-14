@@ -392,4 +392,8 @@
     <string name="wash_before_cooking">स्वयंपाक करण्यापूर्वी हात स्वच्छ धुतो </string>
     <string name="wash_before_after_eating">खाण्यापूर्वी आणि नंतर हात स्वच्छ धुतो </string>
 
+    <string name="never_checked">कधीही तपासले नाही</string>
+    <string name="in_past_one_week">गेल्या एका आठवड्यात</string>
+    <string name="within_last_month">गेल्या महिन्यात</string>
+
 </resources>

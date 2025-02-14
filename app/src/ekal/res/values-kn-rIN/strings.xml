@@ -389,4 +389,8 @@
     <string name="wash_before_cooking">ಅಡುಗೆ ಮಾಡುವ ಮೊದಲು ತೊಳೆಯಿರಿ</string>
     <string name="wash_before_after_eating">ತಿನ್ನುವ ಮೊದಲು ಮತ್ತು ನಂತರ ತೊಳೆಯಿರಿ.</string>
 
+    <string name="never_checked">ಎಂದಿಗೂ ಪರಿಶೀಲಿಸಲಾಗಿಲ್ಲ</string>
+    <string name="in_past_one_week">ಕಳೆದ ಒಂದು ವಾರದಲ್ಲಿ</string>
+    <string name="within_last_month">ಕಳೆದ 6 ತಿಂಗಳೊಳಗೆ</string>
+
 </resources>

@@ -391,4 +391,8 @@
     <string name="wash_before_cooking">खाना पकाने से पहले धो लेते है</string>
     <string name="wash_before_after_eating">खाने से पहले और बाद में धो लेते है</string>
 
+    <string name="never_checked">कभी चेक नहीं किया गया</string>
+    <string name="in_past_one_week">पिछले एक सप्ताह में</string>
+    <string name="within_last_month">पिछले 6 महीनों के भीतर</string>
+
 </resources>

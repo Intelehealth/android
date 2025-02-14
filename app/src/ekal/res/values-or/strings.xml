@@ -391,4 +391,8 @@
     <string name="wash_before_cooking">ରାନ୍ଧିବା ଆଗରୁ ହାତ ଧୋଇବା</string>
     <string name="wash_before_after_eating">ଖାଇବା ଆଗରୁ ଓ ପରେ ହାତ ଧୋଇବା</string>
 
+    <string name="never_checked">କଦାପି ଯାଞ୍ଚ କରାଯାଇ ନାହିଁ</string>
+    <string name="in_past_one_week">ଗତ ଏକ ସପ୍ତାହରେ</string>
+    <string name="within_last_month">ଗତ ୬ ମାସ ଭିତରେ</string>
+
 </resources>

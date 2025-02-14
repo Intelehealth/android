@@ -389,4 +389,8 @@
     <string name="wash_before_cooking">ৰন্ধা আগতে ধুব</string>
     <string name="wash_before_after_eating">খোৱাৰ আগতে আৰু পিছত ধুব লাগে।</string>
 
+    <string name="never_checked">কেতিয়াও পৰীক্ষা কৰা হোৱা নাই</string>
+    <string name="in_past_one_week">যোৱা এসপ্তাহত</string>
+    <string name="within_last_month">যোৱা 6 মাহৰ ভিতৰত</string>
+
 </resources>

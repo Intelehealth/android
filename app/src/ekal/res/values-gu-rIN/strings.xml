@@ -391,4 +391,8 @@
     <string name="wash_before_cooking">જમવાનું બનાવવા પહેલા</string>
     <string name="wash_before_after_eating">જમ્યા પહેલાં અને જમ્યા પછી</string>
 
+    <string name="never_checked">ક્યારે તપાસવામાં આવ્યું નથી </string>
+    <string name="in_past_one_week">પાછલા એક અઠવાડિયામાં</string>
+    <string name="within_last_month">છેલ્લા 6 મહિનાની અંદર</string>
+
 </resources>

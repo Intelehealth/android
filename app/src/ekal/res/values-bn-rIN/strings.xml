@@ -389,4 +389,8 @@
     <string name="wash_before_cooking">রান্না করার আগে ধুয়ে ফেলুন</string>
     <string name="wash_before_after_eating">খাওয়ার আগে এবং পরে ধুয়ে ফেলুন।</string>
 
+    <string name="never_checked">কখনই চেক করা হয়নি</string>
+    <string name="in_past_one_week">গত এক সপ্তাহে</string>
+    <string name="within_last_month">গত 6 মাসের মধ্যে</string>
+
 </resources>

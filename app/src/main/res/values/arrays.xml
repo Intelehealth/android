@@ -924,21 +924,21 @@
 
 
     <string-array name="hb_check">
-        <item>Never Checked</item>
-        <item>Within the last 6 months</item>
-        <item>More than 6 months ago</item>
+        <item>@string/never_checked</item>
+        <item>@string/in_past_one_week</item>
+        <item>@string/within_last_month</item>
     </string-array>
 
     <string-array name="bp_check">
-        <item>Never Checked</item>
-        <item>Within the last 6 months</item>
-        <item>More than 6 months ago</item>
+        <item>@string/never_checked</item>
+        <item>@string/in_past_one_week</item>
+        <item>@string/within_last_month</item>
     </string-array>
 
     <string-array name="sugar_check">
-        <item>Never Checked</item>
-        <item>Within the last 6 months</item>
-        <item>More than 6 months ago</item>
+        <item>@string/never_checked</item>
+        <item>@string/in_past_one_week</item>
+        <item>@string/within_last_month</item>
     </string-array>
 
     <string-array name="surgery_reason_check">

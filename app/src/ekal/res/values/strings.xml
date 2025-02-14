@@ -391,4 +391,8 @@
     <string name="wash_before_cooking">Wash before cooking</string>
     <string name="wash_before_after_eating">Wash before and after eating</string>
 
+    <string name="never_checked">Never Checked</string>
+    <string name="in_past_one_week">In past one week</string>
+    <string name="within_last_month">Within the last 6 months</string>
+
 </resources>
