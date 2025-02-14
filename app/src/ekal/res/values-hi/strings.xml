@@ -243,29 +243,29 @@
     <string name="vital_alert_sugar_fasting_button">आपका शुगर फास्टिंग का स्तर सामान्य नहीं है|</string>
     <string name="vital_alert_sugar_aftermeal_button">आपका शुगर स्तर खाने के बाद सामान्य नहीं है|</string>
 
-    <string name="generic_not_sure">Not Sure</string>
-    <string name="generic_yes_personal">Yes (Personal)</string>
-    <string name="generic_yes_family">Yes (Family Member)</string>
-    <string name="decline_to_answer">Decline to answer</string>
-    <string name="married">Married</string>
-    <string name="unmarried">Unmarried</string>
-    <string name="widowed">Widowed</string>
+    <string name="generic_not_sure">पता नहीं</string>
+    <string name="generic_yes_personal">हां (व्यक्तिगत)</string>
+    <string name="generic_yes_family">हां (परिवार के सदस्य)</string>
+    <string name="decline_to_answer">जवाब देने के लिए मना कर दिया</string>
+    <string name="married">विवाहित</string>
+    <string name="unmarried">अविवाहित</string>
+    <string name="widowed">विधवा</string>
 
     // Relation with household
-    <string name="spouse">Spouse</string>
-    <string name="grandchild">Grandchild</string>
-    <string name="father_mother">Father or Mother</string>
-    <string name="father_mother_in_law">Father or Mother-In-Law</string>
-    <string name="brother_sister">Brother or Sister</string>
-    <string name="brother_sister_in_law">Brother or Sister-In-Law</string>
-    <string name="niece_nephew">Niece or Nephew</string>
-    <string name="grandparent">Grandparent or Grandparent-In-Law</string>
-    <string name="other_relative">Other Relative</string>
-    <string name="adopted">Adopted or Foster or Stepchild</string>
-    <string name="servant">Domestic Servant</string>
-    <string name="other_not_related">Other Not Related</string>
-    <string name="other_specify">Other (Specify)</string>
-    <string name="not_stated">Not Stated</string>
+    <string name="spouse">पति / पत्नी</string>
+    <string name="grandchild">पोता</string>
+    <string name="father_mother">पिता / माता</string>
+    <string name="father_mother_in_law">ससुर / सास</string>
+    <string name="brother_sister">भाई / बहन</string>
+    <string name="brother_sister_in_law">साला /साली</string>
+    <string name="niece_nephew">भतीजी/भतीजा</string>
+    <string name="grandparent">दादा ससुर / दादी सास</string>
+    <string name="other_relative">अन्य रिश्तेदार</string>
+    <string name="adopted">दत्तक/पालक / सौतेली संतान</string>
+    <string name="servant">घरेलू नौकर</string>
+    <string name="other_not_related">अन्य संबंधित नहीं</string>
+    <string name="other_specify">अन्य (विनिर्दिष्ट करें)</string>
+    <string name="not_stated">नहीं बताया गया</string>
 
     <string name="error_incorrect_server_url">कृपया अपना सर्वर यूआरएल जांचें</string>
     <string name="error_state_not_selected">कृपया राज्य ड्रॉपडाउन से एक मान चुनें</string>
