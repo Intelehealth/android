@@ -385,4 +385,10 @@
     <string name="solar_energy">ସୋଲାର</string>
     <string name="none">କିଛି ନୁହେଁ</string>
 
+    <string name="use_soap">ସାବୁନ ର ବ୍ୟବହାର</string>
+    <string name="use_other_means_wash_hands">ଅନ୍ୟ ଉପାୟ ଅବଲମ୍ବନ କରିବା</string>
+    <string name="wash_after_using_toilet">ପାଇଖାନା ବ୍ୟବହାର ପରେ ହାତ ଧୋଇବା</string>
+    <string name="wash_before_cooking">ରାନ୍ଧିବା ଆଗରୁ ହାତ ଧୋଇବା</string>
+    <string name="wash_before_after_eating">ଖାଇବା ଆଗରୁ ଓ ପରେ ହାତ ଧୋଇବା</string>
+
 </resources>

@@ -383,4 +383,10 @@
     <string name="solar_energy">সৌরশক্তি</string>
     <string name="none">কোনোটিই নয়</string>
 
+    <string name="use_soap">সাবান ব্যবহার করুন</string>
+    <string name="use_other_means_wash_hands">হাত ধোয়ার জন্য অন্য উপায় ব্যবহার করুন</string>
+    <string name="wash_after_using_toilet">টয়লেট ব্যবহারের পর ধুয়ে ফেলুন</string>
+    <string name="wash_before_cooking">রান্না করার আগে ধুয়ে ফেলুন</string>
+    <string name="wash_before_after_eating">খাওয়ার আগে এবং পরে ধুয়ে ফেলুন।</string>
+
 </resources>

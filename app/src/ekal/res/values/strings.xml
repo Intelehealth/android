@@ -385,4 +385,10 @@
     <string name="solar_energy">Solar Energy</string>
     <string name="none">None</string>
 
+    <string name="use_soap">Use Soap</string>
+    <string name="use_other_means_wash_hands">Use other means to wash hands</string>
+    <string name="wash_after_using_toilet">Wash after using toilet</string>
+    <string name="wash_before_cooking">Wash before cooking</string>
+    <string name="wash_before_after_eating">Wash before and after eating</string>
+
 </resources>

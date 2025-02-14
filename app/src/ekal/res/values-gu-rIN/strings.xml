@@ -385,4 +385,10 @@
     <string name="solar_energy">સૌર ઉર્જા</string>
     <string name="none">કોઈ નથી</string>
 
+    <string name="use_soap">સાબુનો ઉપયોગ</string>
+    <string name="use_other_means_wash_hands">ઘરમાં સાબુ ઉપલબ્ધ છે પણ ધોવામાં ઉપયોગ કરેલ નથી</string>
+    <string name="wash_after_using_toilet">શૌચાલયનો ઉપયોગ કર્યા પછી</string>
+    <string name="wash_before_cooking">જમવાનું બનાવવા પહેલા</string>
+    <string name="wash_before_after_eating">જમ્યા પહેલાં અને જમ્યા પછી</string>
+
 </resources>

@@ -909,11 +909,11 @@
     </string-array>
 
     <string-array name="hand_wash_practice">
-        <item>Use Soap</item>
-        <item>Use other means to wash hands</item>
-        <item>Wash after using toilet</item>
-        <item>Wash before cooking</item>
-        <item>Wash before and after eating</item>
+        <item>@string/use_soap</item>
+        <item>@string/use_other_means_wash_hands</item>
+        <item>@string/wash_after_using_toilet</item>
+        <item>@string/wash_before_cooking</item>
+        <item>@string/wash_before_after_eating</item>
     </string-array>
 
     <string-array name="baseline_survey_items">

@@ -385,4 +385,10 @@
     <string name="solar_energy">सौर ऊर्जा</string>
     <string name="none">कोई नहीं</string>
 
+    <string name="use_soap">साबुन का प्रयोग करते है</string>
+    <string name="use_other_means_wash_hands">हाथ धोने के लिए अन्य साधनों का प्रयोग करते है</string>
+    <string name="wash_after_using_toilet">शौचालय का उपयोग करने के बाद धो लेते है</string>
+    <string name="wash_before_cooking">खाना पकाने से पहले धो लेते है</string>
+    <string name="wash_before_after_eating">खाने से पहले और बाद में धो लेते है</string>
+
 </resources>
