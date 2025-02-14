@@ -378,4 +378,9 @@
     <string name="agricultural_crop_waste">কৃষি শস্যৰ আৱৰ্জনা</string>
     <string name="dung_cakes">গোবৰ কেক</string>
 
+    <string name="lantern_kerosenelamp_candle">বন্তি/কেৰাচিন লেম্প/মমবাতি</string>
+    <string name="electric">বৈদ্যুতিক</string>
+    <string name="solar_energy">সৌৰশক্তি</string>
+    <string name="none">একো নাই</string>
+
 </resources>

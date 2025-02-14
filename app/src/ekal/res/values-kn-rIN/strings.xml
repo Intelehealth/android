@@ -378,4 +378,9 @@
     <string name="agricultural_crop_waste">ಕೃಷಿ ಬೆಳೆ ತ್ಯಾಜ್ಯ</string>
     <string name="dung_cakes">ಸಗಣಿ ಕೇಕ್</string>
 
+    <string name="lantern_kerosenelamp_candle">ಲ್ಯಾಂಟರ್ನ್ / ಸೀಮೆಎಣ್ಣೆ ದೀಪ / ಕ್ಯಾಂಡಲ್</string>
+    <string name="electric">ಎಲೆಕ್ಟ್ರಿಕ್</string>
+    <string name="solar_energy">ಸೌರಶಕ್ತಿ</string>
+    <string name="none">ಯಾವುದೂ ಇಲ್ಲ</string>
+
 </resources>

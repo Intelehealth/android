@@ -380,4 +380,9 @@
     <string name="agricultural_crop_waste">କୃଷି ବର୍ଜବସ୍ତୁ</string>
     <string name="dung_cakes">ଖତର ଘସି</string>
 
+    <string name="lantern_kerosenelamp_candle">ଲଣ୍ଠନ/କିରୋସିନ ବତି/ମହମ୍ ବତି</string>
+    <string name="electric">ବିଦ୍ୟୁତ୍</string>
+    <string name="solar_energy">ସୋଲାର</string>
+    <string name="none">କିଛି ନୁହେଁ</string>
+
 </resources>

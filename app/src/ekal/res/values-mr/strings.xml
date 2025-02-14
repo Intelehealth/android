@@ -381,4 +381,9 @@
     <string name="agricultural_crop_waste">कृषी पीक कचरा</string>
     <string name="dung_cakes">गवऱ्या</string>
 
+    <string name="lantern_kerosenelamp_candle">कंदील/केरोसिन दिवा/मेणबत्ती</string>
+    <string name="electric">इलेक्ट्रिक</string>
+    <string name="solar_energy">सौर ऊर्जा</string>
+    <string name="none">काहीही नाही</string>
+
 </resources>

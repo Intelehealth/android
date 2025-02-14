@@ -380,4 +380,9 @@
     <string name="agricultural_crop_waste">કૃષિ પાકનો કચરો</string>
     <string name="dung_cakes">ગોબરની કેક</string>
 
+    <string name="lantern_kerosenelamp_candle">લાલટેન/કેરોસીન દીવો/મીણબત્તી</string>
+    <string name="electric">વીજળી </string>
+    <string name="solar_energy">સૌર ઉર્જા</string>
+    <string name="none">કોઈ નથી</string>
+
 </resources>

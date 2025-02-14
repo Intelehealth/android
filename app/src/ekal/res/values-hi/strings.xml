@@ -380,4 +380,9 @@
     <string name="agricultural_crop_waste">कृषि फसल अपशिष्ट</string>
     <string name="dung_cakes">गोबर के कंडे</string>
 
+    <string name="lantern_kerosenelamp_candle">लालटेन/मिट्टी के तेल का लैम्प/मोमबत्ती</string>
+    <string name="electric">बिजली</string>
+    <string name="solar_energy">सौर ऊर्जा</string>
+    <string name="none">कोई नहीं</string>
+
 </resources>

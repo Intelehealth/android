@@ -901,11 +901,11 @@
     </string-array>
 
     <string-array name="source_of_light">
-        <item>Lantern/Kerosene Lamp/Candle</item>
-        <item>Electricity</item>
-        <item>Solar Energy</item>
-        <item>None</item>
-        <item>Others</item>
+        <item>@string/lantern_kerosenelamp_candle</item>
+        <item>@string/electric</item>
+        <item>@string/solar_energy</item>
+        <item>@string/none</item>
+        <item>@string/others</item>
     </string-array>
 
     <string-array name="hand_wash_practice">

@@ -380,4 +380,9 @@
     <string name="agricultural_crop_waste">Agricultural Crop Waste</string>
     <string name="dung_cakes">Dung Cakes</string>
 
+    <string name="lantern_kerosenelamp_candle">Lantern/Kerosene Lamp/Candle</string>
+    <string name="electric">Electric</string>
+    <string name="solar_energy">Solar Energy</string>
+    <string name="none">None</string>
+
 </resources>
