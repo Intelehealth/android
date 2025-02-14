@@ -400,4 +400,12 @@
     <string name="shared_smartphone">ଅନ୍ୟ ସହ ଅଂଶୀଦାର ସ୍ମାର୍ଟ ଫୋନ୍</string>
     <string name="shared_feature_phone">ଅନ୍ୟ ସହ ଅଂଶୀଦାର ସ୍ଵତନ୍ତ୍ର ଫୋନ୍</string>
 
+    <string name="cannot_read_and_write">ପଢିବା ଏବଂ ଲେଖିବା ଜାଣେନାହିଁ</string>
+    <string name="can_read_and_write">ପଢିପାରେ ଏବଂ ଲେଖିପାରେ</string>
+    <string name="primary_education_till_class_five">ପ୍ରାଥମିକ ଶିକ୍ଷା( ୫ମ ଶ୍ରେଣୀ ପର୍ଯ୍ୟନ୍ତ)</string>
+    <string name="middle_school_sixth_eighth">ଉଚ୍ଚ ପ୍ରାଥମିକ ଶିକ୍ଷା( ଷଷ୍ଠ ରୁ ଅଷ୍ଟମ ପର୍ଯ୍ୟନ୍ତ)</string>
+    <string name="passed_secondary_school">ମାଧ୍ୟମିକ ଶତକ୍ଷା (ଦଶମ)</string>
+    <string name="passed_senior_secondary_school">ଯୁକ୍ତ ଦୁଇ (ଦ୍ୱାଦଶ)</string>
+    <string name="graduation_and_above">ସ୍ନାତକ ଓ ଅଧିକ</string>
+
 </resources>

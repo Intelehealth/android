@@ -401,4 +401,12 @@
     <string name="shared_smartphone">सामायिक स्मार्टफोन</string>
     <string name="shared_feature_phone">सामायिक साधारण फोन</string>
 
+    <string name="cannot_read_and_write">लिहिता-वाचता येत नाही</string>
+    <string name="can_read_and_write">वाचू आणि लिहू शकतो</string>
+    <string name="primary_education_till_class_five">प्राथमिक शिक्षण (वर्ग 5 पर्यंत)</string>
+    <string name="middle_school_sixth_eighth">माध्यमिक शाळा (६ वी ते ८ वी)</string>
+    <string name="passed_secondary_school">माध्यमिक शाळा उत्तीर्ण (इयत्ता 10वी बोर्ड)</string>
+    <string name="passed_senior_secondary_school">उच्च माध्यमिक शाळा (इयत्ता 12वी बोर्ड) उत्तीर्ण</string>
+    <string name="graduation_and_above">पदवी आणि त्यावरील</string>
+
 </resources>

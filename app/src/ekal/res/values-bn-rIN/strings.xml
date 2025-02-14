@@ -398,4 +398,12 @@
     <string name="shared_smartphone">শেয়ার করা স্মার্টফোন</string>
     <string name="shared_feature_phone">শেয়ার করা ফিচার ফোন</string>
 
+    <string name="cannot_read_and_write">পড়তে বা লিখতে পারে না</string>
+    <string name="can_read_and_write">পড়তে ও লিখতে পারে</string>
+    <string name="primary_education_till_class_five">প্রাথমিক শিক্ষা (5 শ্রেণী পর্যন্ত)</string>
+    <string name="middle_school_sixth_eighth">মাধ্যমিক বিদ্যালয় (৬ষ্ঠ - ৮ম)</string>
+    <string name="passed_secondary_school">মাধ্যমিক বিদ্যালয়ে উত্তীর্ণ (দশম শ্রেণী বোর্ড)</string>
+    <string name="passed_senior_secondary_school">সিনিয়র সেকেন্ডারি স্কুল পাশ (দ্বাদশ বোর্ড)</string>
+    <string name="graduation_and_above">স্নাতক এবং তার উপরে</string>
+
 </resources>

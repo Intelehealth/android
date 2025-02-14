@@ -400,4 +400,12 @@
     <string name="shared_smartphone">Shared Smartphone</string>
     <string name="shared_feature_phone">Shared Feature Phone</string>
 
+    <string name="cannot_read_and_write">Cannot read or write</string>
+    <string name="can_read_and_write">Can read and write</string>
+    <string name="primary_education_till_class_five">Primary education (Till Class 5)</string>
+    <string name="middle_school_sixth_eighth">Middle school (6th - 8th)</string>
+    <string name="passed_secondary_school">Passed secondary school (Class 10th boards)</string>
+    <string name="passed_senior_secondary_school">Passed senior secondary school (Class 12th boards)</string>
+    <string name="graduation_and_above">Graduation and above</string>
+
 </resources>

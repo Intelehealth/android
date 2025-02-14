@@ -398,4 +398,12 @@
     <string name="shared_smartphone">ಹಂಚಿದ ಸ್ಮಾರ್ಟ್‌ಫೋನ್</string>
     <string name="shared_feature_phone">ಹಂಚಿದ ವೈಶಿಷ್ಟ್ಯ ಫೋನ್</string>
 
+    <string name="cannot_read_and_write">ಓದಲು ಅಥವಾ ಬರೆಯಲು ಬರುವುದಿಲ್ಲ</string>
+    <string name="can_read_and_write">ಓದಲು ಮತ್ತು ಬರೆಯಲು ಸಾಧ್ಯವಾಗುತ್ತದೆ</string>
+    <string name="primary_education_till_class_five">ಪ್ರಾಥಮಿಕ ಶಿಕ್ಷಣ (5  ನೇ ತರಗತಿಯವರೆಗೆ)</string>
+    <string name="middle_school_sixth_eighth">ಮಧ್ಯಮ ಶಾಲೆ ( 6ನೇ - 8ನೇ)</string>
+    <string name="passed_secondary_school">ಮಾಧ್ಯಮಿಕ ಶಾಲೆಯಲ್ಲಿ ಉತ್ತೀರ್ಣರಾಗಿದ್ದಾರೆ (10 ನೇ ತರಗತಿ ಬೋರ್ಡ್‌ಗಳು)</string>
+    <string name="passed_senior_secondary_school">ಹಿರಿಯ ಮಾಧ್ಯಮಿಕ ಶಾಲೆಯಲ್ಲಿ ಉತ್ತೀರ್ಣರಾಗಿದ್ದಾರೆ (12 ನೇ ತರಗತಿ ಮಂಡಳಿಗಳು)</string>
+    <string name="graduation_and_above">ಪದವಿ ಮತ್ತು ಮೇಲ್ಪಟ್ಟವರು</string>
+
 </resources>

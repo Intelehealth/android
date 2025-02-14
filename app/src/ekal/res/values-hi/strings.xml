@@ -400,4 +400,12 @@
     <string name="shared_smartphone">साझा स्मार्टफोन है</string>
     <string name="shared_feature_phone">साझा फीचर फोन है</string>
 
+    <string name="cannot_read_and_write">पढ़ या लिख नहीं सकता</string>
+    <string name="can_read_and_write">पढ़ और लिख सकते हैं</string>
+    <string name="primary_education_till_class_five">प्राथमिक शिक्षा (कक्षा 5 तक)</string>
+    <string name="middle_school_sixth_eighth">मिडिल स्कूल (6वीं-8वीं)</string>
+    <string name="passed_secondary_school">माध्यमिक विद्यालय उत्तीर्ण (कक्षा 10वीं बोर्ड)</string>
+    <string name="passed_senior_secondary_school">वरिष्ठ माध्यमिक विद्यालय (12वीं बोर्ड) उत्तीर्ण</string>
+    <string name="graduation_and_above">स्नातक या स्नातक से ऊपर</string>
+
 </resources>

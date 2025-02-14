@@ -400,4 +400,12 @@
     <string name="shared_smartphone">શેર કરેલ સ્માર્ટફોન</string>
     <string name="shared_feature_phone">શેર કરેલ ફીચર ફોન</string>
 
+    <string name="cannot_read_and_write">વાંચી કે લખી શકતા નથી</string>
+    <string name="can_read_and_write">વાંચી અને લખી શકે છે</string>
+    <string name="primary_education_till_class_five">પ્રાથમિક શિક્ષા(ધોરણ 5 સુધી)</string>
+    <string name="middle_school_sixth_eighth">મિડલ સ્કૂલ (6ઠ્ઠી-8મી)</string>
+    <string name="passed_secondary_school">માધ્યમિક શાળા(10 બોર્ડ ) પાસ</string>
+    <string name="passed_senior_secondary_school">ઉચ્ચતર માધ્યમિક શાળા(12 બોર્ડ) પાસ</string>
+    <string name="graduation_and_above">સ્નાતક અને વધુ</string>
+
 </resources>

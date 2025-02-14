@@ -954,24 +954,13 @@
     </string-array>
 
     <string-array name="education">
-        <item>Cannot read or write</item>
-        <item>Can read and write</item>
-        <item>Primary education (Till Class 5)</item>
-        <item>Middle school (6th - 8th)</item>
-        <item>Passed secondary school (Class 10th boards)</item>
-        <item>Passed senior secondary school (Class 12th boards)</item>
-        <item>Graduation and above</item>
-    </string-array>
-
-    <string-array name="education_en">
-        <item>Select</item>
-        <item>Cannot read or write</item>
-        <item>Can read and write</item>
-        <item>Primary education (Till Class 5)</item>
-        <item>Middle school (6th - 8th)</item>
-        <item>Passed secondary school (Class 10th boards)</item>
-        <item>Passed senior secondary school (Class 12th boards)</item>
-        <item>Graduation and above</item>
+        <item>@string/cannot_read_and_write</item>
+        <item>@string/can_read_and_write</item>
+        <item>@string/primary_education_till_class_five</item>
+        <item>@string/middle_school_sixth_eighth</item>
+        <item>@string/passed_secondary_school</item>
+        <item>@string/passed_senior_secondary_school</item>
+        <item>@string/graduation_and_above</item>
     </string-array>
 
     <string-array name="education_te">

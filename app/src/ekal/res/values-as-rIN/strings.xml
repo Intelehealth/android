@@ -398,4 +398,12 @@
     <string name="shared_smartphone">শ্বেয়াৰ কৰা স্মাৰ্টফোন</string>
     <string name="shared_feature_phone">শ্বেয়াৰ কৰা বৈশিষ্ট্য ফোন</string>
 
+    <string name="cannot_read_and_write">পঢ়িব বা লিখিব নোৱাৰি</string>
+    <string name="can_read_and_write">পঢ়িব আৰু লিখিব পাৰে</string>
+    <string name="primary_education_till_class_five">প্ৰাথমিক শিক্ষা (৫ম শ্ৰেণীলৈকে)</string>
+    <string name="middle_school_sixth_eighth">মধ্যবিদ্যালয় (৬ম - ৮ম)</string>
+    <string name="passed_secondary_school">মাধ্যমিক বিদ্যালয় উত্তীৰ্ণ (দশম শ্ৰেণীৰ বৰ্ড)</string>
+    <string name="passed_senior_secondary_school">জ্যেষ্ঠ মাধ্যমিক বিদ্যালয়ত উত্তীৰ্ণ (ক্লাছ দ্বাদশ বৰ্ড)</string>
+    <string name="graduation_and_above">স্নাতক আৰু তাৰ ওপৰৰ</string>
+
 </resources>
