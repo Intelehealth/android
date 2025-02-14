@@ -241,4 +241,107 @@
     <string name="vital_alert_sugar_fasting_button">আপনার সুগার ফাস্টিং লেভেল স্বাভাবিক নয়।</string>
     <string name="vital_alert_sugar_aftermeal_button">খাবার পর আপনার চিনির মাত্রা স্বাভাবিক নয়।</string>
 
+    <string name="generic_not_sure">নিশ্চিত না</string>
+    <string name="generic_yes_personal">হ্যাঁ (ব্যক্তিগত)</string>
+    <string name="generic_yes_family">হ্যাঁ (পরিবারের সদস্য)</string>
+    <string name="decline_to_answer">উত্তর দিতে অস্বীকৃতি জানায়</string>
+    <string name="married">বিবাহিত</string>
+    <string name="unmarried">অবিবাহিত</string>
+    <string name="widowed">বিধবা</string>
+
+    // Relation with household
+    <string name="spouse">পত্নী</string>
+    <string name="grandchild">নাতি</string>
+    <string name="father_mother">বাবা বা মা</string>
+    <string name="father_mother_in_law">বাবা বা শাশুড়ি</string>
+    <string name="brother_sister">ভাই বা বোন</string>
+    <string name="brother_sister_in_law">ভাই বা ভগ্নিপতি</string>
+    <string name="niece_nephew">ভাতিজি বা ভাগ্নে</string>
+    <string name="grandparent">দাদা-দাদি বা দাদা-দাদি-শ্বশুর</string>
+    <string name="other_relative">অন্যান্য আত্মীয়</string>
+    <string name="adopted">দত্তক বা পালক বা সৎ সন্তান</string>
+    <string name="servant">গার্হস্থ্য দাস</string>
+    <string name="other_not_related">অন্যান্য সম্পর্কিত নয়</string>
+    <string name="other_specify">নির্দিষ্ট অন্যান্য)</string>
+    <string name="not_stated">বলা হয়নি</string>
+
+    <string name="error_incorrect_server_url">আপনার সার্ভার url চেক করুন</string>
+    <string name="error_state_not_selected">রাজ্য ড্রপডাউন থেকে একটি মান নির্বাচন করুন</string>
+    <string name="error_district_not_selected">জেলা ড্রপডাউন থেকে একটি মান নির্বাচন করুন</string>
+    <string name="error_sanch_not_selected">স্যাঞ্চ ড্রপডাউন থেকে একটি মান নির্বাচন করুন</string>
+    <string name="error_primary_village_not_selected">প্রাথমিক গ্রাম ড্রপডাউন থেকে একটি মান নির্বাচন করুন</string>
+    <string name="error_secondary_village_not_selected">অনুগ্রহ করে মাধ্যমিক গ্রামের ড্রপডাউন থেকে একটি মান নির্বাচন করুন</string>
+
+    <string name="title_activity_past_medical_history" translatable="false">PastMedicalHistoryActivity</string>
+    <string name="haemoglobin_error">হিমোগ্লোবিন %1$s এবং %2$s এর মধ্যে থাকা উচিত</string>
+    <string name="sugar_random_error">সুগার র‍্যান্ডম %1$s এবং %2$s এর মধ্যে হওয়া উচিত</string>
+
+    <string name="ft">ফু.</string>
+    <string name="height_ft">উচ্চতা (ফু.)</string>
+    <string name="ayushman_card_mandatory">আয়ুষ্মান কার্ড?</string>
+    <string name="general_occupation">পেশা</string>
+    <string name="general_caste">জাতি/শ্রেণী</string>
+    <string name="general_education">শিক্ষা স্তর</string>
+    <string name="general_economic_status">অর্থনৈতিক অবস্থা</string>
+    <string name="ayushman_card_question">আপনার কি আয়ুষ্মান কার্ড আছে?</string>
+    <string name="mgnrega_card_question">আপনার কি MGNREGA কার্ড আছে?</string>
+    <string name="bank_account_question">আপনার কি একটি ব্যাংক অ্যাকাউন্ট আছে?</string>
+    <string name="phone_ownership">ফোনের মালিক কে</string>
+    <string name="family_whatsapp_question">আপনি বা আপনার পরিবারের কেউ কি WhatsApp ব্যবহার করেন?</string>
+    <string name="marital_status_question">আপনার বৈবাহিক অবস্থা কি?</string>
+
+    <string name="please_install_whatsapp">এই প্রেসক্রিপশন শেয়ার করার জন্য অনুগ্রহ করে WhatsApp ইনস্টল করুন।</string>
+    <string name="select_occupation_txt">পেশা নির্বাচন করুন</string>
+    <string name="in_new">ফুট</string>
+    <string name="close_baseline_survey">বেসলাইন সমীক্ষা বন্ধ করবেন?</string>
+    <string name="sure_you_want_close_baseline_survey">আপনি কি বেসলাইন সমীক্ষা বন্ধ করার বিষয়ে নিশ্চিত?</string>
+    <string name="baseline_general">সাধারণ</string>
+    <string name="baseline_medical">মেডিকেল</string>
+
+    <string name="family_members">পরিবারের সদস্য</string>
+    <string name="baseline_survey">বেসলাইন সমীক্ষা</string>
+
+    <string name="prescription_ekal_telemedicine_project">Ekal Telemedicine Project</string>
+    <string name="prescription_subtitle">ePrescription</string>
+    <string name="prescription_age">Age: %1$s</string>
+    <string name="prescription_gender">Gender: %1$s</string>
+    <string name="prescription_address">Address: %1$s</string>
+    <string name="prescription_patient_id">Patient Id: %1$s</string>
+    <string name="prescription_date_of_visit">Date of Visit: %1$s</string>
+    <string name="prescription_presenting_complaints">Presenting Complaints</string>
+    <string name="prescription_vitals">Vitals</string>
+    <string name="prescription_height">Height: %1$s</string>
+    <string name="prescription_weight">Weight: %1$s</string>
+    <string name="prescription_bmi">BMI: %1$s</string>
+    <string name="prescription_bp">Blood Pressure: %1$s</string>
+    <string name="prescription_pulse_value">Pulse (bpm): %1$s</string>
+    <string name="prescription_temperature">Temperature (F): %1$s</string>
+    <string name="prescription_respiratory_rate">Respiratory Rate: %1$s</string>
+    <string name="prescription_spo2">SpO2 (%%): %1$s</string>
+    <string name="prescription_haemoglobin">Haemoglobin: %1$s</string>
+    <string name="prescription_blood_group">Blood Group: %1$s</string>
+    <string name="prescription_sugar_fasting">Sugar Level (Fasting): %1$s</string>
+    <string name="prescription_sugar_random">Sugar Level (Random): %1$s</string>
+    <string name="prescription_diagnosis">Diagnosis</string>
+    <string name="prescription_medication">Medication</string>
+    <string name="prescription_recommended_investigation">Recommended Investigation</string>
+    <string name="prescription_general_advice">General Advice</string>
+    <string name="prescription_follow_up">Follow Up</string>
+
+    <string name="sample_text">sample text</string>
+
+    <string name="prescription_dr_email">Email: %1$s</string>
+    <string name="prescription_dr_registration">Registration No: %1$s</string>
+
+    <string name="medical_to_other_info">Medical to Other info</string>
+    <string name="general_to_medical_info">General to medical info</string>
+    <string name="start_newadvice_confirmation_msg">আপনি কি সেবিকা পরামর্শ শুরু করার বিষয়ে নিশ্চিত?</string>
+    <string name="start_newadvice_confirmation_title">সেবিকা পরামর্শ শুরু করুন</string>
+    <string name="doctor_advice_alert_title">টেলি-পরামর্শ শুরু করুন</string>
+    <string name="doctor_advice_alert_msg">আপনি কি ডাক্তারের কাছ থেকে টেলি-পরামর্শ চান?</string>
+    <string name="vital_alert_continue_button">হ্যাঁ, চালিয়ে যান</string>
+    <string name="vital_alert_save_button">সংরক্ষণ</string>
+    <string name="alert_save_and_exit_button">সংরক্ষণ করুন এবং প্রস্থান করুন</string>
+    <string name="alert_start_button">শুরু করুন</string>
+
 </resources>
