@@ -219,16 +219,7 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
                             .diskCacheStrategy(DiskCacheStrategy.NONE)
                             .skipMemoryCache(true)
                             .into(profile_imgview);
-                }
-                else if(model.getPatientImageFromDownload() != null){
-                    Glide.with(context)
-                            .load(model.getPatientImageFromDownload())
-                            .thumbnail(requestBuilder)
-                            .centerCrop()
-                            .diskCacheStrategy(DiskCacheStrategy.NONE)
-                            .skipMemoryCache(true)
-                            .into(profile_imgview);
-                }else {
+                } else {
                     profile_imgview.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.avatar1));
                 }
 
