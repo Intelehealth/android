@@ -16,7 +16,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -35,7 +34,6 @@ import org.intelehealth.app.models.FollowUpModel;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DownloadFilesUtils;
 import org.intelehealth.app.utilities.Logger;
-import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UrlModifiers;
@@ -72,6 +70,11 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
         sessionManager = new SessionManager(context);
     }
 
+    public void setData(List<FollowUpModel> patients){
+        this.patients = patients;
+        notifyDataSetChanged();
+    }
+
     public FollowUpPatientAdapter_New(Context context) {
         this.context = context;
     }
@@ -85,7 +88,7 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
 
         //click listener moved from onbind view holder
         //to prevent multiple initialization
-        holder.cardView.setOnClickListener(v -> {
+        holder.itemLayout.setOnClickListener(v -> {
             final FollowUpModel model = patients.get(holder.getAbsoluteAdapterPosition());
             Intent intent = new Intent(context, PatientDetailActivity2.class);
             intent.putExtra("patientUuid", model.getPatientuuid());
@@ -102,7 +105,7 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
         if (patients != null) {
             if (position >= patients.size()) return;
             final FollowUpModel model = patients.get(position);
-            holder.bind(model);
+            holder.bind(model,position);
         }
     }
 
@@ -153,7 +156,7 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
     }
 
     class Myholder extends RecyclerView.ViewHolder {
-        CardView cardView;
+        LinearLayout itemLayout;
         private View rootView;
         TextView fu_patname_txtview, fu_date_txtview, search_gender, tv_time_diff, openmrs_id_tv;
         ImageView profile_image;
@@ -162,7 +165,7 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
         public Myholder(View itemView) {
             super(itemView);
 
-            cardView = itemView.findViewById(R.id.fu_cardview_item);
+            itemLayout = itemView.findViewById(R.id.fu_liner_layout_item);
             fu_patname_txtview = itemView.findViewById(R.id.fu_patname_txtview);
             fu_date_txtview = itemView.findViewById(R.id.fu_date_txtview);
             openmrs_id_tv = itemView.findViewById(R.id.openmrs_id_tv);
@@ -179,7 +182,7 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
             return rootView;
         }
 
-        void bind(FollowUpModel model){
+        void bind(FollowUpModel model, int position){
             setIsRecyclable(false);
 
             setGenderAgeLocalByCommaContact(context, search_gender, model.getDate_of_birth(), model.getGender(), sessionManager);
@@ -247,10 +250,10 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
                                 tv_time_diff.setVisibility(View.GONE);
                             }
 
-                            cardView.setCardBackgroundColor(ContextCompat.getColor(context, R.color.colorAccentLightCard));
+                            itemLayout.setBackground(ContextCompat.getDrawable(context,R.drawable.item_bg_accent));
                         } else {
                             tv_time_diff.setVisibility(View.GONE);
-                            cardView.setCardBackgroundColor(ContextCompat.getColor(context, R.color.white));
+                            itemLayout.setBackground(ContextCompat.getDrawable(context,R.drawable.item_bg_white));
                         }
 
                         Date fDate = new SimpleDateFormat("yyyy-MM-dd hh:mm a", Locale.ENGLISH).parse(followupDateTime);
@@ -277,14 +280,6 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
             // Patient Age
             //String age = DateAndTimeUtils.getAge_FollowUp(model.getDate_of_birth(), context);
 
-            /*cardView.setOnClickListener(v -> {
-                Intent intent = new Intent(context, PatientDetailActivity2.class);
-                intent.putExtra("patientUuid", model.getPatientuuid());
-                intent.putExtra("patientName", model.getFirst_name() + " " + model.getLast_name());
-                intent.putExtra("tag", "newPatient");
-                intent.putExtra("hasPrescription", "false");
-                context.startActivity(intent);
-            });*/
         }
     }
 
