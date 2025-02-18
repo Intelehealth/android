@@ -569,9 +569,9 @@
     <string name="profile_details_updated_new">प्रोफाइल तपशील यशस्वीरित्या अपडेट केले!</string>
     <string name="profile_photo_updated_new">प्रोफाइल फोटो यशस्वीरित्या अपडेट केला</string>
     <string name="ayu_intro">डिजिटल आरोग्य सहाय्यक.\nचला सुरुवात करूया!!</string>
-    <string name="agree_to_terms">सहमत आहे</string>
+    <string name="agree_to_terms"><font color='#2F1E91'><u>अटी आणि नियम</u></font> आणि <font color='#2F1E91'><u>गोपनीयता धोरण</u></font> यांच्याशी सहमत आहे.</string>
     <string name="setup">Setup</string>
-    <string name="terms_and_conditions">अटी आणि शर्ती</string>
+    <string name="terms_and_conditions">अटी आणि नियम</string>
     <string name="privacy_policy">गोपनीयता धोरण</string>
     <string name="decline">घट</string>
     <string name="accept_new">स्वीकारा</string>

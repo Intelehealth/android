@@ -555,7 +555,7 @@
     <string name="profile_photo_updated_new">ಪ್ರೊಫೈಲ್ ಫೋಟೋವನ್ನು ಯಶಸ್ವಿಯಾಗಿ ನವೀಕರಿಸಲಾಗಿದೆ.</string>
     <string name="hello_i_am_ayu">ಹಲೋ, ನಾನು ಆಯು,</string>
     <string name="ayu_intro">ಡಿಜಿಟಲ್ ಆರೋಗ್ಯ ಸಹಾಯಕ.\nಪ್ರಾರಂಭಿಸೋಣ!</string>
-    <string name="agree_to_terms">ಒಪ್ಪುತ್ತೇನೆ</string>
+    <string name="agree_to_terms"><font color='#2F1E91'><u>ನಿಯಮಗಳು ಮತ್ತು ಷರತ್ತುಗಳು</u></font> ಮತ್ತು <font color='#2F1E91'><u>ಗೌಪ್ಯತೆ ನೀತಿ</u></font> ಗೆ ಸಮ್ಮತಿಸುತ್ತೇನೆ</string>
     <string name="setup">ಸೆಟಪ್</string>
     <string name="terms_and_conditions">ನಿಯಮಗಳು ಮತ್ತು ಷರತ್ತುಗಳು</string>
     <string name="privacy_policy">ಗೌಪ್ಯತೆ ನೀತಿ</string>

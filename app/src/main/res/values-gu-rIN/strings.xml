@@ -896,9 +896,9 @@
     <string name="profile_photo_updated_new">પ્રોફાઇલ ફોટો સફળતાપૂર્વક અપડેટ થયો</string>
     <string name="hello_i_am_ayu">હેલો, હું આયુ છું</string>
     <string name="ayu_intro">ડિજિટલ આરોગ્ય સહાયક.\nચાલો પ્રારંભ કરીએ!</string>
-    <string name="agree_to_terms">સંમત થાઓ</string>
+    <string name="agree_to_terms"><font color='#2F1E91'><u>શરતો અને નિયમો</u></font> અને <font color='#2F1E91'><u>ગોપનીયતા નીતિ</u></font> સાથે સંમત થાઓ</string>
     <string name="setup">સ્થાપના</string>
-    <string name="terms_and_conditions">નિયમો અને શરતો</string>
+    <string name="terms_and_conditions">શરતો અને નિયમો</string>
     <string name="privacy_policy">ગોપનીયતા નીતિ</string>
     <string name="decline">ઘટાડો</string>
     <string name="accept_new">સ્વીકારો</string>

@@ -439,9 +439,9 @@
     <string name="profile_photo_updated_new">ପ୍ରୋଫାଇଲ୍ ଫଟୋ ସଫଳତାର ସହ ଅପଡେଟ୍ ହୋଇଛି</string>
     <string name="hello_i_am_ayu">ନମସ୍କାର, ମୁଁ AYU,</string>
     <string name="ayu_intro">ଏକ ଡିଜିଟାଲ୍ ସ୍ୱାସ୍ଥ୍ୟ ସହାୟକ.\nଚାଲ ଆରମ୍ଭ କରିବା!</string>
-    <string name="agree_to_terms">ସହମତ</string>
+    <string name="agree_to_terms"><font color='#2F1E91'><u>ନିୟମ ଏବଂ ସର୍ତ୍ତାବଳୀ</u></font> ଏବଂ <font color='#2F1E91'><u>ଗୋପନୀୟତା ନୀତି</u></font> ସହିତ ରାଜି ହୁଅନ୍ତୁ</string>
     <string name="setup">ସେଟଅପ୍ କରନ୍ତୁ</string>
-    <string name="terms_and_conditions">ସର୍ତ୍ତାବଳୀ</string>
+    <string name="terms_and_conditions">ନିୟମ ଏବଂ ସର୍ତ୍ତାବଳୀ</string>
     <string name="privacy_policy">ଗୋପନୀୟତା ନୀତି</string>
     <string name="decline">ହ୍ରାସ</string>
     <string name="accept_new">ଗ୍ରହଣ କରନ୍ତୁ</string>

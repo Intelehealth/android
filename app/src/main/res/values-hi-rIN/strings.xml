@@ -578,8 +578,8 @@
     <string name="hello_i_am_ayu">नमस्ते, मैं AYU हूं,</string>
     <string name="ayu_intro">डिज़िटल स्वास्थ्य सहायता।\nआइए शुरू करें!</string>
     <string name="setup">सेटअप</string>
-    <string name="agree_to_terms">नियम व शर्तों और गोपनीयता नीति से सहमति</string>
-    <string name="terms_and_conditions">नियम व शर्तों</string>
+    <string name="agree_to_terms"><font color='#2F1E91'><u>नियम एवं शर्तें</u></font> और <font color='#2F1E91'><u>गोपनीयता नीति</u></font> से सहमत हों</string>
+    <string name="terms_and_conditions">नियम एवं शर्तें</string>
     <string name="privacy_policy">गोपनीयता नीति</string>
     <string name="decline">इनकार करें</string>
     <string name="accept_new">स्वीकार करें</string>
