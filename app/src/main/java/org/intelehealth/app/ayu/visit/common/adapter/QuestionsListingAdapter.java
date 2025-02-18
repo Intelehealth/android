@@ -53,7 +53,7 @@ import org.intelehealth.app.ayu.visit.reason.adapter.OptionsChipsGridAdapter;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.knowledgeEngine.PhysicalExam;
 import org.intelehealth.app.models.AnswerResult;
-import org.intelehealth.app.shared.FirstLetterUpperCaseInputFilter;
+import org.intelehealth.app.ui.filter.FirstLetterUpperCaseInputFilter;
 import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.SessionManager;
@@ -1367,7 +1367,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                                 holder.singleComponentContainer.removeAllViews();
                                 // holder.nestedRecyclerView.setAdapter(null);
                             }
-                            if(node.isExcludedFromMultiChoice()){
+                            if (node.isExcludedFromMultiChoice()) {
                                 holder.nestedRecyclerViewContainerLinerLayout.removeAllViews();
                             }
                             holder.singleComponentContainer.setVisibility(View.VISIBLE);
@@ -2560,7 +2560,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
     private void addNumberView(Node node, GenericViewHolder holder, int index, boolean isDecimalAllowed) {
         holder.singleComponentContainer.removeAllViews();
         holder.singleComponentContainer.setVisibility(View.VISIBLE);
-        View view = View.inflate(mContext, R.layout.visit_reason_input_text, null);
+        View view = View.inflate(mContext, R.layout.visit_reason_input_num, null);
         Button submitButton = view.findViewById(R.id.btn_submit);
         submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, node.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
         submitButton.setBackgroundResource(node.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
@@ -2835,14 +2835,21 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             }
         });
 
-        editText.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+        // editText.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+        editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+
         editText.setFilters(new InputFilter[]{new FirstLetterUpperCaseInputFilter()});
         editText.setHorizontallyScrolling(false);
         editText.setHint(node.getHint());
         editText.setMinLines(node.minLines());
         editText.setLines(node.maxLines());
-        if (!node.isDateType())
+        if (!node.isDateType()) {
             editText.setMinHeight(320);
+            editText.setSingleLine(false);
+        } else {
+            editText.setMinHeight(200);
+            editText.setSingleLine(true);
+        }
 
         /*if (node.isDataCaptured() && node.isDataCaptured()) {
             submitButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_check_24_white, 0, 0, 0);
