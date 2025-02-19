@@ -576,6 +576,7 @@ public class FollowUpPatientActivity_New extends BaseActivity {
     private void fetchAndSegregateData(DataLoadingType dataLoadingType) {
         if (dataLoadingType == DataLoadingType.INITIAL) {
             commonLoadingDialog = new DialogUtils().showCommonLoadingDialog(this, getString(R.string.loading), "");
+            commonLoadingDialog.setCancelable(false);
             commonLoadingDialog.show();
         } else {
             commonLoadingDialog = null;
