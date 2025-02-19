@@ -6,37 +6,14 @@
     <string name="generic_cancel">Cancel</string>
     <string name="generic_yes">Yes</string>
     <string name="generic_no">No</string>
-    <string name="generic_not_sure">Not Sure</string>
-    <string name="generic_yes_personal">Yes (Personal)</string>
-    <string name="generic_yes_family">Yes (Family Member)</string>
-    <string name="decline_to_answer">Decline to answer</string>
-    <string name="married">Married</string>
-    <string name="unmarried">Unmarried</string>
-    <string name="widowed">Widowed</string>
+
     <string name="generic_back">Back</string>
     <string name="generic_coming_soon">Coming Soon.....</string>
     <string name="action_print">Print</string>
     <string name="action_home">Home</string>
 
 
-    // Relation with household
-    <string name="spouse">Spouse</string>
-    <string name="grandchild">Grandchild</string>
-    <string name="father_mother">Father or Mother</string>
-    <string name="father_mother_in_law">Father or Mother-In-Law</string>
-    <string name="brother_sister">Brother or Sister</string>
-    <string name="brother_sister_in_law">Brother or Sister-In-Law</string>
-    <string name="niece_nephew">Niece or Nephew</string>
-    <string name="grandparent">Grandparent or Grandparent-In-Law</string>
-    <string name="other_relative">Other Relative</string>
-    <string name="adopted">Adopted or Foster or Stepchild</string>
-    <string name="servant">Domestic Servant</string>
-    <string name="other_not_related">Other Not Related</string>
-    <string name="other_specify">Other (Specify)</string>
-    <string name="not_stated">Not Stated</string>
-
-
-    //Database Schema Names
+      //Database Schema Names
 
     //Login Screen
     <string name="title_activity_login">Intelehealth</string>
@@ -47,16 +24,10 @@
     <string name="error_password_not_exist">This password does not exist.</string>
     <string name="error_invalid_password">This password is too short</string>
     <string name="error_incorrect_password">Please check username and password entered</string>
-    <string name="error_incorrect_server_url">Please check your server url</string>
     <string name="error_field_required">This field is required</string>
     <string name="error_network" translatable="false">Network Error</string>
     <string name="could_not_connect_with_server">Couldn\'t connect with server . \nPlease check your internet \nconnection.</string>
     <string name="error_location_not_selected">Please select a value from the location dropdown</string>
-    <string name="error_state_not_selected">Please select a value from the state dropdown</string>
-    <string name="error_district_not_selected">Please select a value from the district dropdown</string>
-    <string name="error_sanch_not_selected">Please select a value from the sanch dropdown</string>
-    <string name="error_primary_village_not_selected">Please select a value from the primary village dropdown</string>
-    <string name="error_secondary_village_not_selected">Please select a value from the secondary village dropdown</string>
     <string name="error_location_not_fetched">Unable to fetch locations</string>
 
     //Home Screen (after login)
@@ -126,7 +97,6 @@
 
     //Visit Summary Screen
     <string name="title_activity_family_history">Family History</string>
-    <string name="title_activity_past_medical_history" translatable="false">PastMedicalHistoryActivity</string>
     <string name="title_activity_physical_exam">Physical Exam</string>
     <string name="visit_summary_temperature">Temperature(C)</string>
     <string name="visit_summary_bmi">BMI</string>
@@ -238,8 +208,6 @@
     <string name="bpsys_error">Systolic pressure should be in between %1$s and %2$s</string>
     <string name="bpdia_error">Diastolic pressure should be in between %1$s and %2$s</string>
     <string name="resp_error">Respiratory rate should be in between %1$s and %2$s</string>
-    <string name="haemoglobin_error">Haemoglobin should be in between %1$s and %2$s</string>
-    <string name="sugar_random_error">Sugar Random should be in between %1$s and %2$s</string>
     <string name="temp_error">Temperature should be in between %1$s and %2$s</string>
 
     <string name="not_provided">Not provided</string>
@@ -309,7 +277,6 @@
     <string name="upload_started">Uploading...</string>
     <string name="visit_uploaded_failed">Will be uploaded when internet is available</string>
     <string name="visitID">Visit ID</string>
-    <string name="ft">ft</string>
 
     <string name="prescription_not_downloaded_check_internet">Prescription not downloaded, check internet connection</string>
     <string name="new_update_available">New Update Available</string>
@@ -644,7 +611,6 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="enter_patient_s_body_measurement_details">Enter patient’s body measurement details</string>
     <string name="height_cm">Height (cm)</string>
-    <string name="height_ft">Height (ft)</string>
     <string name="weight_kg">Weight (kg)</string>
     <string name="bmi_index_auto_calculated">BMI index(auto-calculated)</string>
     <string name="enter_the_patient_s_vitals">Enter the patient’s vitals</string>
@@ -678,17 +644,6 @@
     <string name="middle_name_registration">Middle Name</string>
     <string name="last_name_mandatory">Last Name</string>
     <string name="gender_mandatory">Gender</string>
-    <string name="ayushman_card_mandatory">Ayushman Card</string>
-    <string name="general_occupation">Occupation</string>
-    <string name="general_caste">Caste</string>
-    <string name="general_education">Education</string>
-    <string name="general_economic_status">Economic status</string>
-    <string name="ayushman_card_question">Do you have an Ayushman Card?</string>
-    <string name="mgnrega_card_question">Do you have an MGNREGA Card?</string>
-    <string name="bank_account_question">Do you have a bank account?</string>
-    <string name="phone_ownership">Phone ownership</string>
-    <string name="family_whatsapp_question">Do you or any of your family member use Whatsapp?</string>
-    <string name="marital_status_question">What is your marital status?</string>
     <string name="date_of_birth_mandatory">Date of Birth</string>
     <string name="age_mandatory">Age</string>
     <string name="this_field_is_mandatory">This field is mandatory</string>
@@ -709,7 +664,6 @@
     <string name="reset_app_requires_internet_message">Resting app requires data syncing with strong connection so check your internet connection.</string>
     <string name="try_again">Try again</string>
 
-    <string name="please_install_whatsapp">Please install WhatsApp for sharing this prescription.</string>
 
 
     //fingerprint IDA_613
@@ -730,7 +684,6 @@
     <string name="drag_anywhere_from_0_to_10">Drag anywhere from 0 to 10</string>
     <string name="follow_up_visits_not_found">Follow up visits not found!</string>
     <string name="enter_occupation_txt">Enter Occupation</string>
-    <string name="select_occupation_txt">Select Occupation</string>
     <string name="education">Education</string>
     <string name="enter_your_relation_with_patient">Enter your relation with patient</string>
     <string name="empty_message_for_patinet_search_visit_screen">Use correct name or ID to search or add a new patient.</string>
@@ -775,7 +728,6 @@
     <string name="doctor_annotation">Dr.</string>
     <string name="at">at</string>
     <string name="in">In</string>
-    <string name="in_new">in</string>
     <string name="hours">hours</string>
     <string name="upcoming_0">Upcoming (0)</string>
     <string name="completed_0">Completed (0)</string>
@@ -825,9 +777,7 @@
     <string name="selected_date"> Selected date</string>
     <string name="today">Today</string>
     <string name="close_patient_registration">Close patient registration?</string>
-    <string name="close_baseline_survey">Close baseline survey?</string>
     <string name="sure_you_want_close_registration">Are you sure you want to close the patient registration?</string>
-    <string name="sure_you_want_close_baseline_survey">Are you sure you want to close the baseline survey?</string>
     <string name="health">Health</string>
     <string name="training">Training</string>
     <string name="about_app">About App</string>
@@ -904,8 +854,7 @@
     <string name="personal_identification">Personal</string>
     <string name="address_identification">Address</string>
     <string name="other_identification">Other</string>
-    <string name="baseline_general">General</string>
-    <string name="baseline_medical">Medical</string>
+
     <string name="past_visits">Past Visits</string>
     <string name="start_visit">Start Visit</string>
     <string name="feedback">Feedback</string>
@@ -967,8 +916,7 @@
     <string name="_corresponding_address_1">Corresponding \nAddress 1</string>
     <string name="_corresponding_address_2">Corresponding \nAddress 2</string>
     <string name="other_details">Other details</string>
-    <string name="family_members">Family Members</string>
-    <string name="baseline_survey">Baseline Survey</string>
+
     <string name="camera">Camera</string>
     <string name="gallery">Gallery</string>
     <string name="document">Document</string>
@@ -1028,40 +976,6 @@
     <string name="very_severely_obese">Very Severe(Morbid) Obesity(Class 3)</string>
     <string name="severely_obese">Severe Obesity(Class 2)</string>
     <string name="morbidly_obese">Moderate Obesity(Class 1)</string>
-
-    <string name="prescription_ekal_telemedicine_project">Ekal Telemedicine Project</string>
-    <string name="prescription_subtitle">ePrescription</string>
-    <string name="prescription_age">Age: %1$s</string>
-    <string name="prescription_gender">Gender: %1$s</string>
-    <string name="prescription_address">Address: %1$s</string>
-    <string name="prescription_patient_id">Patient Id: %1$s</string>
-    <string name="prescription_date_of_visit">Date of Visit: %1$s</string>
-    <string name="prescription_presenting_complaints">Presenting Complaints</string>
-    <string name="prescription_vitals">Vitals</string>
-    <string name="prescription_height">Height: %1$s</string>
-    <string name="prescription_weight">Weight: %1$s</string>
-    <string name="prescription_bmi">BMI: %1$s</string>
-    <string name="prescription_bp">Blood Pressure: %1$s</string>
-    <string name="prescription_pulse_value">Pulse (bpm): %1$s</string>
-    <string name="prescription_temperature">Temperature (F): %1$s</string>
-    <string name="prescription_respiratory_rate">Respiratory Rate: %1$s</string>
-    <string name="prescription_spo2">SpO2 (%%): %1$s</string>
-    <string name="prescription_haemoglobin">Haemoglobin: %1$s</string>
-    <string name="prescription_blood_group">Blood Group: %1$s</string>
-    <string name="prescription_sugar_fasting">Sugar Level (Fasting): %1$s</string>
-    <string name="prescription_sugar_random">Sugar Level (Random): %1$s</string>
-    <string name="prescription_diagnosis">Diagnosis</string>
-    <string name="prescription_medication">Medication</string>
-    <string name="prescription_recommended_investigation">Recommended Investigation</string>
-    <string name="prescription_general_advice">General Advice</string>
-    <string name="prescription_follow_up">Follow Up</string>
-
-    <string name="sample_text">sample text</string>
-
-    <string name="prescription_dr_email">Email: %1$s</string>
-    <string name="prescription_dr_registration">Registration No: %1$s</string>
-
-
     <string name="bp_validation_sys"><![CDATA[BP Sys always should be > BP Dia]]></string>
     <string name="bp_validation_dia"><![CDATA[BP Dia always should be < BP Sys]]></string>
     <string name="duration_type">Duration Type</string>
@@ -1086,7 +1000,7 @@
     <string name="loading">Loading...</string>
     <string name="you_missed_the_compulsory_questions_please_answer_them">You missed the compulsory questions, Please answer them.</string>
 
-    <string name="general_exam_title">" सामान्य जाँच:"</string>
+    <string name="general_exam_title">General Exams:</string>
     <string name="image_upload_pending_alert">Please upload the captured image before submit!</string>
     <string name="otp_sending">OTP Sending...</string>
     <string name="token_expired">Token Expired</string>
@@ -1151,9 +1065,7 @@
     <string name="forgot_your_username">Forgot your username?</string>
     <string name="contact_your_admin">Contact your admin</string>
     <string name="address_to_other_info">Address to Other info</string>
-    <string name="medical_to_other_info">Medical to Other info</string>
     <string name="personal_to_address_info">Personal to address info</string>
-    <string name="general_to_medical_info">General to medical info</string>
     <string name="emergency_contact_number">Emergency Number</string>
     <string name="hint_drop_down_guardian_type">Select Guardian Type</string>
     <string name="hint_drop_down_contact_type">Select Contact Type</string>
@@ -1167,42 +1079,5 @@
     <string name="sync">Refresh</string>
     <string name="sending_otp">Sending OTP...</string>
 
-    <string name="setup_select_state_str">Select State</string>
-    <string name="setup_select_dropdown_state_msg">Select State from dropdown</string>
-    <string name="setup_select_district_str">Select District</string>
-    <string name="setup_select_dropdown_district_msg">Select District from dropdown</string>
-    <string name="setup_select_sanch_str">Select Sanch</string>
-    <string name="setup_select_dropdown_sanch_msg">Select Sanch from dropdown</string>
-    <string name="setup_select_village_str">Select Village</string>
-    <string name="setup_select_primary_village_str">Select Primary Village</string>
-    <string name="setup_select_secondary_village_str">Select Secondary Village</string>
-    <string name="setup_select_dropdown_village_msg">Select Village from dropdown</string>
-    <string name="switch_location">Switch Location</string>
-    <string name="no_network_sync">You are not connected to the internet. Please try again later.</string>
-    <string name="confirm_switch_location">You are currently logged into the \'%1$s\' village. Are you sure that you wish to switch to the \'%2$s\' village?</string>
-    <string name="start_sevika_visit">Start Sevika Visit</string>
-    <string name="start_doctor_visit">Start Doctor Visit</string>
-    <string name="haemoglobin">Haemoglobin</string>
-    <string name="sugar_random">Sugar Level - Random</string>
-
-    <string name="start_newadvice_confirmation_msg">Are you sure you want to start a Sevika advice?</string>
-    <string name="start_newadvice_confirmation_title">Begin Sevika advice</string>
-    <string name="doctor_advice_alert_title">Begin Tele-consultation</string>
-    <string name="doctor_advice_alert_msg">Do you want tele-consultation from Doctor?</string>
-    <string name="vital_alert_continue_button">Yes, Continue</string>
-    <string name="vital_alert_save_button">Save</string>
-    <string name="alert_save_and_exit_button">Save &amp; Exit</string>
-    <string name="alert_start_button">Start</string>
-
-
-    <string name="hint_drop_down_hb_check">Select Duration</string>
-    <string name="enter_number">Enter number</string>
-    <string name="baseline_survey_completed">Baseline Survey Completed</string>
-
-    <string name="bullet">\u2022</string>
-    <string name="fields_not_filled">Fields Not Filled</string>
-    <string name="following_fields_are_not_filled">Following fields are not filled:</string>
-    <string name="do_you_still_want_to_continue">Do you still want to continue?</string>
-    <string name="at_least_one_of_the_fields_is_mandatory">At least one of the following fields is mandatory: </string>
 
 </resources>

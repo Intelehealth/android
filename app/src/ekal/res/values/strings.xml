@@ -12,8 +12,8 @@
     <string name="send_visit">Save visit?</string>
     <string name="visit_successfully_sent">Visit successfully saved!</string>
     <string name="patient_visit_sent">Patient\'s visit has been successfully saved.</string>
-    <string name="visit_data_failed">Visit successfully saved!</string>
-    <string name="visit_uploaded_failed">Patient\'s visit has been successfully saved.</string>
+    <string name="visit_data_failed">Visit Data Failed</string>
+    <string name="visit_uploaded_failed">Will be uploaded when internet is available</string>
     <!--    <string name="visit_left_action_btn_label">@string/preview</string>-->
     <!--    <string name="visit_right_action_btn_label">@string/save_visit_button</string>-->
     <!--    <string name="visit_save_and_upload_status">@string/visit_saving</string>-->
@@ -27,6 +27,12 @@
     <string name="select_economic_category">Select Economic Status</string>
     <string name="select_phone_ownership">Select Phone Ownership</string>
     <string name="select_your_choice">Select your choice</string>
+
+    <string name="schedule_caste">Schedule Caste</string>
+    <string name="schedule_tribe">Schedule Tribe</string>
+    <string name="survey_other_backward_caste">Other Backward Caste (OBC)</string>
+    <string name="survey_general">General</string>
+    <string name="survey_other">Other</string>
 
     <string name="smoker">Smoker</string>
     <string name="non_smoker">Non-Smoker</string>
@@ -67,12 +73,14 @@
     <string name="religion_sikh">Sikh</string>
     <string name="religion_buddhist_neo_buddhist">Buddhist or Neo-Buddhist</string>
     <string name="religion_jain">Jain</string>
-    <string name="religion_others">Others</string>
+    <string name="religion_jewish">Jewish</string>
+    <string name="parsi_zoroastrian">Parsi or Zoroastrian</string>
+    <string name="no_religion">No Religion</string>
 
     <string name="economic_status_apl">APL</string>
     <string name="economic_status_bpl">BPL</string>
 
-    <string name="toilet_facility_open_defecation">Open Defecation</string>
+    <string name="toilet_facility_open_defecation">Open Defacation</string>
     <string name="toilet_facility_own_a_toilet_but_it_unusable">Own a toilet but it is unusable</string>
     <string name="toilet_facility_use_toilet_at_home">Use toilet at home</string>
     <string name="toilet_facility_use_community_toilet">Use Community Toilet</string>
@@ -191,7 +199,7 @@
     <string name="error_private_clinic_not_selected">Please select the distance to the nearest private clinic with an MBBS doctor</string>
     <string name="error_private_clinic_alternate_medicine_distance_not_selected">Please select the distance to the nearest private clinic with alternate medical practitioners</string>
     <string name="does_this_village_get_water_under_jal_jeevan_yojana_scheme">Does this village get water under the Jal Jeevan Yojana scheme?*</string>
-    <string name="error_jal_jeevan_yojana_not_selected">Please select whether the gets water under the Jal Jeevan Yojana scheme</string>
+    <string name="error_jal_jeevan_yojana_not_selected">Please select whether the village gets water under the Jal Jeevan Yojana scheme</string>
     <string name="please_select_all_the_required_fields">Please select all required fields</string>
 
     <string name="setup_select_state_str">Select State</string>
@@ -234,5 +242,184 @@
     <string name="vital_alert_sugar_random_button">Your Sugar Random level is not Normal.</string>
     <string name="vital_alert_sugar_fasting_button">Your Sugar Fasting level is not Normal.</string>
     <string name="vital_alert_sugar_aftermeal_button">Your Sugar After Meal level is not Normal.</string>
+
+    <string name="generic_not_sure">Not Sure</string>
+    <string name="generic_yes_personal">Yes (Personal)</string>
+    <string name="generic_yes_family">Yes (Family Member)</string>
+    <string name="decline_to_answer">Decline to answer</string>
+    <string name="married">Married</string>
+    <string name="unmarried">Unmarried</string>
+    <string name="widowed">Widowed</string>
+
+    // Relation with household
+    <string name="spouse">Spouse</string>
+    <string name="grandchild">Grandchild</string>
+    <string name="father_mother">Father or Mother</string>
+    <string name="father_mother_in_law">Father or Mother-In-Law</string>
+    <string name="brother_sister">Brother or Sister</string>
+    <string name="brother_sister_in_law">Brother or Sister-In-Law</string>
+    <string name="niece_nephew">Niece or Nephew</string>
+    <string name="grandparent">Grandparent or Grandparent-In-Law</string>
+    <string name="other_relative">Other Relative</string>
+    <string name="adopted">Adopted or Foster or Stepchild</string>
+    <string name="servant">Domestic Servant</string>
+    <string name="other_not_related">Other Not Related</string>
+    <string name="other_specify">Other (Specify)</string>
+    <string name="not_stated">Not Stated</string>
+
+    <string name="error_incorrect_server_url">Please check your server url</string>
+    <string name="error_state_not_selected">Please select a value from the state dropdown</string>
+    <string name="error_district_not_selected">Please select a value from the district dropdown</string>
+    <string name="error_sanch_not_selected">Please select a value from the sanch dropdown</string>
+    <string name="error_primary_village_not_selected">Please select a value from the primary village dropdown</string>
+    <string name="error_secondary_village_not_selected">Please select a value from the secondary village dropdown</string>
+
+    <string name="title_activity_past_medical_history" translatable="false">PastMedicalHistoryActivity</string>
+    <string name="haemoglobin_error">Haemoglobin should be in between %1$s and %2$s</string>
+    <string name="sugar_random_error">Sugar Random should be in between %1$s and %2$s</string>
+
+    <string name="ft">ft</string>
+    <string name="height_ft">Height (ft)</string>
+    <string name="ayushman_card_mandatory">Ayushman Card</string>
+    <string name="general_occupation">Occupation</string>
+    <string name="general_caste">Caste</string>
+    <string name="general_education">Education</string>
+    <string name="general_economic_status">Economic status</string>
+    <string name="ayushman_card_question">Do you have an Ayushman Card?</string>
+    <string name="mgnrega_card_question">Do you have an MGNREGA Card?</string>
+    <string name="bank_account_question">Do you have a bank account?</string>
+    <string name="phone_ownership">Phone ownership</string>
+    <string name="family_whatsapp_question">Do you or any of your family member use Whatsapp?</string>
+    <string name="marital_status_question">What is your marital status?</string>
+
+    <string name="please_install_whatsapp">Please install WhatsApp for sharing this prescription.</string>
+    <string name="select_occupation_txt">Select Occupation</string>
+    <string name="in_new">in</string>
+    <string name="close_baseline_survey">Close baseline survey?</string>
+    <string name="sure_you_want_close_baseline_survey">Are you sure you want to close the baseline survey?</string>
+    <string name="baseline_general">General</string>
+    <string name="baseline_medical">Medical</string>
+
+    <string name="family_members">Family Members</string>
+    <string name="baseline_survey">Baseline Survey</string>
+
+    <string name="prescription_ekal_telemedicine_project">Ekal Telemedicine Project</string>
+    <string name="prescription_subtitle">ePrescription</string>
+    <string name="prescription_age">Age: %1$s</string>
+    <string name="prescription_gender">Gender: %1$s</string>
+    <string name="prescription_address">Address: %1$s</string>
+    <string name="prescription_patient_id">Patient Id: %1$s</string>
+    <string name="prescription_date_of_visit">Date of Visit: %1$s</string>
+    <string name="prescription_presenting_complaints">Presenting Complaints</string>
+    <string name="prescription_vitals">Vitals</string>
+    <string name="prescription_height">Height: %1$s</string>
+    <string name="prescription_weight">Weight: %1$s</string>
+    <string name="prescription_bmi">BMI: %1$s</string>
+    <string name="prescription_bp">Blood Pressure: %1$s</string>
+    <string name="prescription_pulse_value">Pulse (bpm): %1$s</string>
+    <string name="prescription_temperature">Temperature (F): %1$s</string>
+    <string name="prescription_respiratory_rate">Respiratory Rate: %1$s</string>
+    <string name="prescription_spo2">SpO2 (%%): %1$s</string>
+    <string name="prescription_haemoglobin">Haemoglobin: %1$s</string>
+    <string name="prescription_blood_group">Blood Group: %1$s</string>
+    <string name="prescription_sugar_fasting">Sugar Level (Fasting): %1$s</string>
+    <string name="prescription_sugar_random">Sugar Level (Random): %1$s</string>
+    <string name="prescription_diagnosis">Diagnosis</string>
+    <string name="prescription_medication">Medication</string>
+    <string name="prescription_recommended_investigation">Recommended Investigation</string>
+    <string name="prescription_general_advice">General Advice</string>
+    <string name="prescription_follow_up">Follow Up</string>
+
+    <string name="sample_text">sample text</string>
+
+    <string name="prescription_dr_email">Email: %1$s</string>
+    <string name="prescription_dr_registration">Registration No: %1$s</string>
+
+    <string name="medical_to_other_info">Medical to Other info</string>
+    <string name="general_to_medical_info">General to medical info</string>
+    <string name="start_newadvice_confirmation_msg">Are you sure you want to start a Sevika advice?</string>
+    <string name="start_newadvice_confirmation_title">Begin Sevika advice</string>
+    <string name="doctor_advice_alert_title">Begin Tele-consultation</string>
+    <string name="doctor_advice_alert_msg">Do you want tele-consultation from Doctor?</string>
+    <string name="vital_alert_continue_button">Yes, Continue</string>
+    <string name="vital_alert_save_button">Save</string>
+    <string name="alert_save_and_exit_button">Save &amp; Exit</string>
+    <string name="alert_start_button">Start</string>
+
+    <string name="piped_into_dwelling">Piped Into Dwelling</string>
+    <string name="piped_into_yard_plot">Piped Into Yard or Plot</string>
+    <string name="public_tap_standpipe">Public Tap or Standpipe</string>
+    <string name="tube_well_borehole">Tube Well or Borehole</string>
+    <string name="protected_well_checkbox">Protected Well</string>
+    <string name="unprotected_well">Unprotected Well</string>
+    <string name="protected_spring">Protected Spring</string>
+    <string name="unprotected_spring">Unprotected Spring</string>
+    <string name="rainwater">Rainwater</string>
+    <string name="tanker_truck">Tanker Truck</string>
+    <string name="cart_with_small_tank">Cart With Small Truck</string>
+    <string name="surface_water">Surface Water</string>
+    <string name="common_hand_pump">Common Hand Pump</string>
+    <string name="hand_pump_at_home">Hand Pump At Home</string>
+
+    <string name="boil">Boiling</string>
+    <string name="use_alum">Use Alum</string>
+    <string name="add_bleach_chlorine_tablets_drops">Add bleach</string>
+    <string name="strain_through_a_cloth">Strain Through A Cloth</string>
+    <string name="use_water_filter_ceramic_sand_composite_etc">Water Filter</string>
+    <string name="handmade_purifier">Hand Made Purifier</string>
+    <string name="do_nothing">Do Nothing</string>
+
+    <string name="electricity">Electricity</string>
+    <string name="lpg_natural_gas">LPG or Natural Gas</string>
+    <string name="biogas_checkbox">Biogas</string>
+    <string name="kerosene">Kerosene</string>
+    <string name="coal_lignite">Coal or Lignite</string>
+    <string name="wood">Wood</string>
+    <string name="charcoal">Charcoal</string>
+    <string name="straw_shrubs_grass">Straw or Shrubs or Grass</string>
+    <string name="agricultural_crop_waste">Agricultural Crop Waste</string>
+    <string name="dung_cakes">Dung Cakes</string>
+
+    <string name="lantern_kerosenelamp_candle">Lantern/Kerosene Lamp/Candle</string>
+    <string name="electric">Electric</string>
+    <string name="solar_energy">Solar Energy</string>
+    <string name="none">None</string>
+
+    <string name="use_soap">Use Soap</string>
+    <string name="use_other_means_wash_hands">Use other means to wash hands</string>
+    <string name="wash_after_using_toilet">Wash after using toilet</string>
+    <string name="wash_before_cooking">Wash before cooking</string>
+    <string name="wash_before_after_eating">Wash before and after eating</string>
+
+    <string name="never_checked">Never Checked</string>
+    <string name="in_past_one_week">In past one week</string>
+    <string name="within_last_month">Within the last 6 months</string>
+
+    <string name="own_smartphone">Own Smartphone</string>
+    <string name="own_feature_phone">Own Feature Phone</string>
+    <string name="shared_smartphone">Shared Smartphone</string>
+    <string name="shared_feature_phone">Shared Feature Phone</string>
+
+    <string name="cannot_read_and_write">Cannot read or write</string>
+    <string name="can_read_and_write">Can read and write</string>
+    <string name="primary_education_till_class_five">Primary education (Till Class 5)</string>
+    <string name="middle_school_sixth_eighth">Middle school (6th - 8th)</string>
+    <string name="passed_secondary_school">Passed secondary school (Class 10th boards)</string>
+    <string name="passed_senior_secondary_school">Passed senior secondary school (Class 12th boards)</string>
+    <string name="graduation_and_above">Graduation and above</string>
+
+    <string name="salaried_government_job">Salaried Government Job</string>
+    <string name="salaried_private_job">Salaried Private Job</string>
+    <string name="petty_business_shop_owner">Petty Business or Shop Owner</string>
+    <string name="technician_craftsman_other_skilled_work">Technician or Craftsman or Other Skilled Work (Driver, Mason, etc.)</string>
+    <string name="agricultural_farmer">Agricultural Farmer</string>
+    <string name="tenant_farmer_agricultural_daily_wage_worker">Tenant Farmer or Agricultural Daily Wage Worker</string>
+    <string name="daily_wage_worker_unskilled_workers">Daily Wage Worker (Unskilled Worker)</string>
+    <string name="household_work">Household Work</string>
+    <string name="student">Student</string>
+    <string name="unemployed">Unemployed</string>
+    <string name="retired_with_pension">Retired (With Pension)</string>
+    <string name="retired_without_pension">Retired (Without Pension)</string>
+    <string name="not_applicable">Not Applicable</string>
 
 </resources>

@@ -8,7 +8,17 @@
         <item>@string/religion_sikh</item>
         <item>@string/religion_buddhist_neo_buddhist</item>
         <item>@string/religion_jain</item>
-        <item>@string/religion_others</item>
+        <item>@string/religion_jewish</item>
+        <item>@string/parsi_zoroastrian</item>
+        <item>@string/no_religion</item>
+    </string-array>
+
+    <string-array name="caste">
+        <item>@string/schedule_caste</item>
+        <item>@string/schedule_tribe</item>
+        <item>@string/survey_other_backward_caste</item>
+        <item>@string/survey_general</item>
+        <item>@string/survey_other</item>
     </string-array>
 
     <string-array name="baseline_toilet_facilities">

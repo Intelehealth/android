@@ -857,63 +857,63 @@
 
 
     <string-array name="source_of_water">
-        <item>Piped into Dwelling</item>
-        <item>Piped into Yard or Plot</item>
-        <item>Public Tap or Standpipe</item>
-        <item>Tube Well or Borehole</item>
-        <item>Protected Well</item>
-        <item>Unprotected Well</item>
-        <item>Protected Spring</item>
-        <item>Unprotected Spring</item>
-        <item>Rainwater</item>
-        <item>Tanker Truck</item>
-        <item>Cart With Small Tank</item>
-        <item>Surface Water</item>
-        <item>Common Hand Pump</item>
-        <item>Hand Pump At Home</item>
-        <item>Other</item>
+        <item>@string/piped_into_dwelling</item>
+        <item>@string/piped_into_yard_plot</item>
+        <item>@string/public_tap_standpipe</item>
+        <item>@string/tube_well_borehole</item>
+        <item>@string/protected_well_checkbox</item>
+        <item>@string/unprotected_well</item>
+        <item>@string/protected_spring</item>
+        <item>@string/unprotected_spring</item>
+        <item>@string/rainwater</item>
+        <item>@string/tanker_truck</item>
+        <item>@string/cart_with_small_tank</item>
+        <item>@string/surface_water</item>
+        <item>@string/common_hand_pump</item>
+        <item>@string/hand_pump_at_home</item>
+        <item>@string/other</item>
     </string-array>
 
     <string-array name="safeguard_water">
-        <item>Boiling</item>
-        <item>Use Alum</item>
-        <item>Add Bleach</item>
-        <item>Strain Through a Cloth</item>
-        <item>Water Filter</item>
-        <item>Hand Made Purifier</item>
-        <item>Do Nothing</item>
-        <item>Others</item>
+        <item>@string/boil</item>
+        <item>@string/use_alum</item>
+        <item>@string/add_bleach_chlorine_tablets_drops</item>
+        <item>@string/strain_through_a_cloth</item>
+        <item>@string/use_water_filter_ceramic_sand_composite_etc</item>
+        <item>@string/handmade_purifier</item>
+        <item>@string/do_nothing</item>
+        <item>@string/others</item>
     </string-array>
 
 
     <string-array name="fuel_type">
-        <item>Electricity</item>
-        <item>LPG or Natural Gas</item>
-        <item>Biogas</item>
-        <item>Kerosene</item>
-        <item>Coal or Lignite</item>
-        <item>Charcoal</item>
-        <item>Wood</item>
-        <item>Straw or Shrubs or Grass</item>
-        <item>Agricultural Crop Waste</item>
-        <item>Dung Cakes</item>
-        <item>Others</item>
+        <item>@string/electricity</item>
+        <item>@string/lpg_natural_gas</item>
+        <item>@string/biogas_checkbox</item>
+        <item>@string/kerosene</item>
+        <item>@string/coal_lignite</item>
+        <item>@string/wood</item>
+        <item>@string/charcoal</item>
+        <item>@string/straw_shrubs_grass</item>
+        <item>@string/agricultural_crop_waste</item>
+        <item>@string/dung_cakes</item>
+        <item>@string/others</item>
     </string-array>
 
     <string-array name="source_of_light">
-        <item>Lantern/Kerosene Lamp/Candle</item>
-        <item>Electricity</item>
-        <item>Solar Energy</item>
-        <item>None</item>
-        <item>Others</item>
+        <item>@string/lantern_kerosenelamp_candle</item>
+        <item>@string/electric</item>
+        <item>@string/solar_energy</item>
+        <item>@string/none</item>
+        <item>@string/others</item>
     </string-array>
 
     <string-array name="hand_wash_practice">
-        <item>Use Soap</item>
-        <item>Use other means to wash hands</item>
-        <item>Wash after using toilet</item>
-        <item>Wash before cooking</item>
-        <item>Wash before and after eating</item>
+        <item>@string/use_soap</item>
+        <item>@string/use_other_means_wash_hands</item>
+        <item>@string/wash_after_using_toilet</item>
+        <item>@string/wash_before_cooking</item>
+        <item>@string/wash_before_after_eating</item>
     </string-array>
 
     <string-array name="baseline_survey_items">
@@ -923,23 +923,22 @@
     </string-array>
 
 
-
     <string-array name="hb_check">
-        <item>Never Checked</item>
-        <item>Within the last 6 months</item>
-        <item>More than 6 months ago</item>
+        <item>@string/never_checked</item>
+        <item>@string/in_past_one_week</item>
+        <item>@string/within_last_month</item>
     </string-array>
 
     <string-array name="bp_check">
-        <item>Never Checked</item>
-        <item>Within the last 6 months</item>
-        <item>More than 6 months ago</item>
+        <item>@string/never_checked</item>
+        <item>@string/in_past_one_week</item>
+        <item>@string/within_last_month</item>
     </string-array>
 
     <string-array name="sugar_check">
-        <item>Never Checked</item>
-        <item>Within the last 6 months</item>
-        <item>More than 6 months ago</item>
+        <item>@string/never_checked</item>
+        <item>@string/in_past_one_week</item>
+        <item>@string/within_last_month</item>
     </string-array>
 
     <string-array name="surgery_reason_check">
@@ -947,32 +946,21 @@
     </string-array>
 
     <string-array name="phone_ownership">
-        <item>None</item>
-        <item>Own Smartphone</item>
-        <item>Own Feature Phone</item>
-        <item>Shared Smartphone</item>
-        <item>Shared Feature Phone</item>
+        <item>@string/none</item>
+        <item>@string/own_smartphone</item>
+        <item>@string/own_feature_phone</item>
+        <item>@string/shared_smartphone</item>
+        <item>@string/shared_feature_phone</item>
     </string-array>
 
     <string-array name="education">
-        <item>Cannot read or write</item>
-        <item>Can read and write</item>
-        <item>Primary education (Till Class 5)</item>
-        <item>Middle school (6th - 8th)</item>
-        <item>Passed secondary school (Class 10th boards)</item>
-        <item>Passed senior secondary school (Class 12th boards)</item>
-        <item>Graduation and above</item>
-    </string-array>
-
-    <string-array name="education_en">
-        <item>Select</item>
-        <item>Cannot read or write</item>
-        <item>Can read and write</item>
-        <item>Primary education (Till Class 5)</item>
-        <item>Middle school (6th - 8th)</item>
-        <item>Passed secondary school (Class 10th boards)</item>
-        <item>Passed senior secondary school (Class 12th boards)</item>
-        <item>Graduation and above</item>
+        <item>@string/cannot_read_and_write</item>
+        <item>@string/can_read_and_write</item>
+        <item>@string/primary_education_till_class_five</item>
+        <item>@string/middle_school_sixth_eighth</item>
+        <item>@string/passed_secondary_school</item>
+        <item>@string/passed_senior_secondary_school</item>
+        <item>@string/graduation_and_above</item>
     </string-array>
 
     <string-array name="education_te">
@@ -2559,19 +2547,19 @@
     </string-array>
 
     <string-array name="occupation">
-        <item>Salaried Government Job</item>
-        <item>Salaried Private Job</item>
-        <item>Petty Business or Shop Owner</item>
-        <item>Technician or Craftsman or Other Skilled Work (Driver, Mason, etc.)</item>
-        <item>Agricultural Farmer</item>
-        <item>Tenant Farmer or Agricultural Daily Wage Worker</item>
-        <item>Daily Wage Worker (Unskilled Worker)</item>
-        <item>Household Worker</item>
-        <item>Student</item>
-        <item>Unemployed</item>
-        <item>Retired (With Pension)</item>
-        <item>Retired (Without Pension)</item>
-        <item>Not Applicable</item>
+        <item>@string/salaried_government_job</item>
+        <item>@string/salaried_private_job</item>
+        <item>@string/petty_business_shop_owner</item>
+        <item>@string/technician_craftsman_other_skilled_work</item>
+        <item>@string/agricultural_farmer</item>
+        <item>@string/tenant_farmer_agricultural_daily_wage_worker</item>
+        <item>@string/daily_wage_worker_unskilled_workers</item>
+        <item>@string/household_work</item>
+        <item>@string/student</item>
+        <item>@string/unemployed</item>
+        <item>@string/retired_with_pension</item>
+        <item>@string/retired_without_pension</item>
+        <item>@string/not_applicable</item>
     </string-array>
 
     <string-array name="height_en">
