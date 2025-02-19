@@ -411,7 +411,7 @@
                         android:paddingEnd="@dimen/space_5dp"
                         android:text="@string/male"
                         android:textColor="@color/edittext_hint_color"
-                        android:textSize="@dimen/select_language"
+                        android:textSize="@dimen/select_gender"
                         android:theme="@style/RadioButtonStyleSelection" />
 
                     <RadioButton
@@ -427,7 +427,7 @@
                         android:paddingEnd="@dimen/space_5dp"
                         android:text="@string/female"
                         android:textColor="@color/edittext_hint_color"
-                        android:textSize="@dimen/select_language"
+                        android:textSize="@dimen/select_gender"
                         android:theme="@style/RadioButtonStyleSelection" />
 
                     <RadioButton
@@ -441,7 +441,7 @@
                         android:paddingEnd="@dimen/space_5dp"
                         android:text="@string/other"
                         android:textColor="@color/edittext_hint_color"
-                        android:textSize="@dimen/select_language"
+                        android:textSize="@dimen/select_gender"
                         android:theme="@style/RadioButtonStyleSelection" />
                 </RadioGroup>
 

@@ -290,6 +290,7 @@
 
     <string name="prescription_wt">బరువు(kg)</string>
     <string name="prescription_ht">ఎత్తు(సెం.మీ.)</string>
+    <string name="prescription_ft">ఎత్తు(ft)</string>
     <string name="prescription_temp_c">ఉష్ణోగ్రత (C) : </string>
     <string name="prescription_temp_f">ఉష్ణోగ్రత (F) : </string>
 

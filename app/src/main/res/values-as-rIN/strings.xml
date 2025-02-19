@@ -370,6 +370,7 @@
 
     <string name="prescription_wt">ওজন \(কিলোগ্ৰাম\)</string>
     <string name="prescription_ht">উচ্চতা \(চে.মি.\)</string>
+    <string name="prescription_ft">উচ্চতা \(ft)</string>
     <string name="prescription_temp_c">তাপমাত্ৰা \(C\): </string>
     <string name="prescription_temp_f">তাপমাত্ৰা (F): </string>
 

@@ -186,7 +186,7 @@
                         android:layout_centerVertical="true"
                         android:layout_weight="1"
                         android:lineSpacingExtra="1sp"
-                        android:text="@string/height_cm" />
+                        android:text="@string/height_ft" />
 
                     <TextView
                         android:id="@+id/tv_height"

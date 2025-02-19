@@ -257,6 +257,7 @@
     <string name="prescription_pulse">Pulse(bpm)</string>
     <string name="prescription_wt">ഭാരം(കിലോ)</string>
     <string name="prescription_ht">ഉയരം(സെ.മീ.)</string>
+    <string name="prescription_ft">ഉയരം(ft)</string>
     <string name="prescription_temp_c">താപനില (C) : </string>
     <string name="prescription_temp_f">താപനില (F) : </string>
 

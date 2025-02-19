@@ -283,6 +283,7 @@
 
     <string name="prescription_wt">எடை(கிலோ)</string>
     <string name="prescription_ht">உயரம்(செமீ)</string>
+    <string name="prescription_ft">உயரம்(ft)</string>
     <string name="prescription_temp_c">வெப்பநிலை (C) : </string>
     <string name="prescription_temp_f">வெப்பநிலை (F) : </string>
 

@@ -576,43 +576,47 @@ public class VisitReceivedFragment extends Fragment implements VisitAdapter.OnVi
 
     private String formatComplaintData(String mComplaint) {
         String[] mComplaints = org.apache.commons.lang3.StringUtils.split(mComplaint, Node.bullet_arrow);
-        if(mComplaints != null && mComplaints.length > 0){
-            String[] complaints = {mComplaints[1]};
-            StringBuilder formattedData = new StringBuilder();
-            String colon = ":";
+        StringBuilder formattedData = new StringBuilder();
+        String colon = ":";
+        String result = "";
 
-            for (String value : complaints) {
-                if (value == null || value.trim().isEmpty()) {
-                    continue;
-                }
+        if (mComplaints != null) {
+            for (String mc: mComplaints) {
+                String[] complaints = {mc};
+                if (complaints != null) {
+                    for (String value : complaints) {
+                        if (value == null || value.trim().isEmpty()) {
+                            continue;
+                        }
 
-                if (value.contains("Associated symptoms")) {
-                    continue;
-                }
+                        if (value.contains("Associated symptoms")) {
+                            continue;
+                        }
 
-                try {
-                    int colonIndex = value.indexOf(colon);
-                    if (colonIndex > 0) {
-                        String formattedValue = value.substring(0, colonIndex).trim();
-                        formattedData.append(Node.big_bullet).append(" ").append(formattedValue).append("\n");
+                        try {
+                            int colonIndex = value.indexOf(colon);
+                            if (colonIndex > 0) {
+                                String formattedValue = value.substring(0, colonIndex).trim();
+                                formattedData.append(Node.big_bullet).append(" ").append(formattedValue).append("\n");
+                            }
+                        } catch (Exception e) {
+                            Log.e("FormatComplaint", "Error formatting complaint data", e);
+                        }
                     }
-                } catch (Exception e) {
-                    Log.e("FormatComplaint", "Error formatting complaint data", e);
                 }
             }
-
             if (formattedData.length() > 0) {
-                String result = formattedData.toString()
+                result = formattedData.toString()
                         .replaceAll("<b>", "")
                         .replaceAll("</b>", "");
 
                 if (result.endsWith("\n")) {
                     result = result.substring(0, result.lastIndexOf("\n"));
                 }
-                return result;
             }
         }
-        return "";
+
+        return result;
     }
 
     public String checkAndReturnVitalsValue(ObsDTO dto) {

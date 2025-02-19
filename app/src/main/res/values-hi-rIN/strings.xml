@@ -404,6 +404,7 @@
     <string name="prescription_pulse">पल्स (बीपीएम)</string>
     <string name="prescription_wt">वजन (किलो)</string>
     <string name="prescription_ht">ऊंचाई(सेमी)</string>
+    <string name="prescription_ft">ऊंचाई(ft)</string>
     <string name="prescription_temp_c">तापमान (C): </string>
     <string name="prescription_temp_f">तापमान (F): </string>
 

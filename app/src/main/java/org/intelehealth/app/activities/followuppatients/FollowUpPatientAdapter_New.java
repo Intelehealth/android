@@ -1,5 +1,6 @@
 package org.intelehealth.app.activities.followuppatients;
 
+import static org.intelehealth.app.activities.followuppatients.FollowUpPatientActivity_New.TAG;
 import static org.intelehealth.app.utilities.StringUtils.setGenderAgeLocal;
 import static org.intelehealth.app.utilities.StringUtils.setGenderAgeLocalByCommaContact;
 
@@ -8,6 +9,8 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import org.intelehealth.app.utilities.CustomLog;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -144,10 +147,15 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
                         CustomLog.v("getFollowup_date", model.getFollowup_date());
 
                         String followupDateTimeRaw = "";
+                        String aa = model.getFollowup_date();
                         try {
                             followupDateTimeRaw = model.getFollowup_date().substring(0, 26);
                         } catch (Exception e) {
-                            followupDateTimeRaw = model.getFollowup_date().substring(0, 25);
+                            try {
+                                followupDateTimeRaw = model.getFollowup_date().substring(0, 25);
+                            } catch (Exception ex){
+                                Log.d(TAG, ">>>>>>>> error when parsing followupDateTimeRaw" + ex.toString());
+                            }
                         }
 
                         CustomLog.v("getFollowup_date", followupDateTimeRaw + "OK");

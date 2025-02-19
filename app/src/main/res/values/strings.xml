@@ -404,6 +404,7 @@
 
     <string name="prescription_wt">Weight(kg)</string>
     <string name="prescription_ht">Height(cm)</string>
+    <string name="prescription_ft">Height(ft)</string>
     <string name="prescription_temp_c">Temperature (C): </string>
     <string name="prescription_temp_f">Temperature (F): </string>
 
