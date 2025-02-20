@@ -4115,7 +4115,7 @@ public final class StringUtils {
         return val;
     }
 
-    public static InputFilter inputFilter_Name = new InputFilter() { //filter input for name fields
+    public static InputFilter inputFilter_Alphabets_And_Numbers = new InputFilter() { //filter input for name fields
         @Override
         public CharSequence filter(CharSequence charSequence, int start, int end, Spanned spanned, int i2, int i3) {
             boolean keepOriginal = true;
@@ -4140,8 +4140,8 @@ public final class StringUtils {
             }
         }
 
-        private boolean isCharAllowed(char c) {
-            return Character.isLetterOrDigit(c) || Character.isSpaceChar(c);    // This allows only number and alphabets.
+        private boolean isCharAllowed(char c) { // This allows only number and alphabets.
+            return Character.isLetterOrDigit(c) || Character.isSpaceChar(c) || (c >= 0x0900 && c <= 0x097F); // Unicode range for Devanagari (Marathi, Hindi, etc.);
         }
     };
 
@@ -4158,7 +4158,7 @@ public final class StringUtils {
                     keepOriginal = false;
             }
             if (keepOriginal)
-                return null;
+                return charSequence;
             else {
                 if (charSequence instanceof Spanned) {
                     SpannableString sp = new SpannableString(sb);
@@ -4170,9 +4170,9 @@ public final class StringUtils {
             }
         }
 
-        private boolean isCharAllowed(char c) {
+        private boolean isCharAllowed(char c) { // This allows only alphabets.
             //   return Character.isLetterOrDigit(c) || Character.isSpaceChar(c);
-            return Character.isLetter(c) || Character.isSpaceChar(c);   // This allows only alphabets.
+            return Character.isLetter(c) || Character.isSpaceChar(c) || (c >= 0x0900 && c <= 0x097F); // Unicode range for Devanagari (Marathi, Hindi, etc.);
         }
     };
 
@@ -4202,7 +4202,8 @@ public final class StringUtils {
         }
 
         private boolean isCharAllowed(char c) {
-            return Character.isLetterOrDigit(c) || Character.valueOf(c).equals('-') || Character.valueOf(c).equals(' ');
+            return Character.isLetterOrDigit(c) || Character.valueOf(c).equals('-') || Character.valueOf(c).equals(' ')
+                    || (c >= 0x0900 && c <= 0x097F); // Unicode range for Devanagari (Marathi, Hindi, etc.); ;
         }
     };
 
