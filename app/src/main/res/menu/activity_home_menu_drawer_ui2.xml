@@ -14,7 +14,7 @@
         <item
             android:id="@+id/menu_video_library"
             android:icon="@drawable/ic_video_library"
-            android:title="@string/video_library"
+            android:title="@string/title_activity_video_library"
             app:iconTint="?colorPrimary" />
 
         <item
