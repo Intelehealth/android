@@ -66,7 +66,13 @@ class SplashActivity : LanguageActivity(), BaseViewHolder.ViewHolderClickListene
         super.onCreate(savedInstanceState)
         binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        animateViews()
+        if (sessionManager.isFirstTimeLaunch) {
+            checkPerm()
+            animateViews()
+        }else{
+            // delay for 3 seconds
+            Handler(Looper.getMainLooper()).postDelayed({ nextActivity() }, 3000)
+        }
         initLanguageList()
 
         handleFcmCall()
@@ -130,6 +136,7 @@ class SplashActivity : LanguageActivity(), BaseViewHolder.ViewHolderClickListene
                 Intent(this@SplashActivity, IntroScreensActivity_New::class.java).apply {
                     startActivity(this)
                 }
+                showChooseLanguageUI(false)
                 finish()
             }
         }
@@ -184,7 +191,7 @@ class SplashActivity : LanguageActivity(), BaseViewHolder.ViewHolderClickListene
                 }
             }
             if (allGranted) {
-//                nextActivity()
+                nextActivity()
             } else {
                 Timber.e("%s%s", "onRequestPermissionsResult: ", Gson().toJson(permissions))
             }
@@ -196,15 +203,15 @@ class SplashActivity : LanguageActivity(), BaseViewHolder.ViewHolderClickListene
             val handler = Handler(Looper.getMainLooper())
             if (sessionManager.isMigration) {
                 handler.postDelayed({
-//                    nextActivity()
+                   // nextActivity()
                 }, 1000)
             } else {
                 handler.postDelayed({
                     val smoothUpgrade = SmoothUpgrade(this)
                     if (smoothUpgrade.checkingDatabase()) {
-//                        nextActivity()
+                      //  nextActivity()
                     } else {
-//                        nextActivity()
+                      //  nextActivity()
                     }
                 }, 1000)
             }
