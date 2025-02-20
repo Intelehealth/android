@@ -279,6 +279,7 @@
     <string name="sugar_random_error">शुगर रैंडम %1$s और %2$s के बीच में होना चाहिए</string>
 
     <string name="ft">फी.</string>
+    <string name="ft_new">फीट.</string>
     <string name="height_ft">ऊंचाई(फी.)</string>
     <string name="ayushman_card_mandatory">आयुष्मान कार्ड</string>
     <string name="general_occupation">व्यवसाय</string>
@@ -295,6 +296,7 @@
     <string name="please_install_whatsapp">कृपया दवाई की पर्ची को साझा करने के लिए व्हाट्सएप इंस्टॉल करें।</string>
     <string name="select_occupation_txt">व्यवसाय चुनें</string>
     <string name="in_new">इं.</string>
+    <string name="inch_new">इंच</string>
     <string name="close_baseline_survey">बेसलाइन सर्वे बंद करें?</string>
     <string name="sure_you_want_close_baseline_survey">क्या आप वाकई बेसलाइन सर्वे बंद करना चाहते हैं?</string>
     <string name="baseline_general">सामान्य</string>
@@ -421,5 +423,13 @@
     <string name="retired_with_pension">सेवानिवृत्त (पेंशन के साथ)</string>
     <string name="retired_without_pension">सेवानिवृत्त (पेंशन के बिना)</string>
     <string name="not_applicable">लागू नहीं</string>
+    <string name="no_family_member_registered">परिवार का कोई भी सदस्य पंजीकृत नहीं है</string>
+
+    <string-array name="baseline_survey_items">
+        <item>सामान्य सर्वेक्षण</item>
+        <item>चिकित्सा सर्वेक्षण</item>
+        <item>अन्य सर्वेक्षण</item>
+    </string-array>
+
 
 </resources>

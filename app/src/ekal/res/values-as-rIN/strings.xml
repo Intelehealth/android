@@ -277,6 +277,7 @@
     <string name="sugar_random_error">চেনি ৰেণ্ডম %1$s আৰু %2$s ৰ মাজত থাকিব লাগে</string>
 
     <string name="ft">ফু.</string>
+    <string name="ft_new">ফুট.</string>
     <string name="height_ft">উচ্চতা(ফু.)</string>
     <string name="ayushman_card_mandatory">আয়ুষ্মান কাৰ্ড</string>
     <string name="general_occupation">বৃত্তি</string>
@@ -293,6 +294,7 @@
     <string name="please_install_whatsapp">এই প্ৰেছক্ৰিপচন শ্বেয়াৰ কৰাৰ বাবে WhatsApp ইনষ্টল কৰক।</string>
     <string name="select_occupation_txt">বৃত্তি নিৰ্বাচন কৰক</string>
     <string name="in_new">ইঞ্চি.</string>
+    <string name="inch_new">ভিতৰত</string>
     <string name="close_baseline_survey">ভিত্তি ৰেখাৰ জৰীপ বন্ধ কৰক?</string>
     <string name="sure_you_want_close_baseline_survey">আপুনি নিশ্চিত নেকি যে আপুনি ভিত্তি ৰেখাৰ জৰীপটো বন্ধ কৰিব বিচাৰে?</string>
     <string name="baseline_general">সাধাৰণ</string>
@@ -419,5 +421,13 @@
     <string name="retired_with_pension">অৱসৰপ্ৰাপ্ত (পেঞ্চনৰ সৈতে)</string>
     <string name="retired_without_pension">অৱসৰপ্ৰাপ্ত (পেঞ্চনবিহীন)</string>
     <string name="not_applicable">প্ৰযোজ্য নহয়</string>
+    <string name="no_family_member_registered">কোনো পৰিয়ালৰ সদস্য পঞ্জীয়ন হোৱা নাই</string>
+
+    <string-array name="baseline_survey_items">
+        <item>সাধাৰণ সমীক্ষা</item>
+        <item>চিকিৎসা সমীক্ষা</item>
+        <item>অন্যান্য সমীক্ষা</item>
+    </string-array>
+
 
 </resources>

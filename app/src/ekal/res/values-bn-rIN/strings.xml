@@ -277,6 +277,7 @@
     <string name="sugar_random_error">সুগার র‍্যান্ডম %1$s এবং %2$s এর মধ্যে হওয়া উচিত</string>
 
     <string name="ft">ফু.</string>
+    <string name="ft_new">ফুট.</string>
     <string name="height_ft">উচ্চতা (ফু.)</string>
     <string name="ayushman_card_mandatory">আয়ুষ্মান কার্ড?</string>
     <string name="general_occupation">পেশা</string>
@@ -292,7 +293,8 @@
 
     <string name="please_install_whatsapp">এই প্রেসক্রিপশন শেয়ার করার জন্য অনুগ্রহ করে WhatsApp ইনস্টল করুন।</string>
     <string name="select_occupation_txt">পেশা নির্বাচন করুন</string>
-    <string name="in_new">ফুট</string>
+    <string name="in_new">ইঞ্চি</string>
+    <string name="inch_new">ভিতরে</string>
     <string name="close_baseline_survey">বেসলাইন সমীক্ষা বন্ধ করবেন?</string>
     <string name="sure_you_want_close_baseline_survey">আপনি কি বেসলাইন সমীক্ষা বন্ধ করার বিষয়ে নিশ্চিত?</string>
     <string name="baseline_general">সাধারণ</string>
@@ -419,5 +421,13 @@
     <string name="retired_with_pension">অবসরপ্রাপ্ত (পেনশন সহ)</string>
     <string name="retired_without_pension">অবসরপ্রাপ্ত (পেনশন ছাড়া)</string>
     <string name="not_applicable">প্রযোজ্য নয়</string>
+    <string name="no_family_member_registered">পরিবারের কোনো সদস্য নিবন্ধিত নয়</string>
+
+    <string-array name="baseline_survey_items">
+        <item>সাধারণ জরিপ</item>
+        <item>মেডিকেল সার্ভে</item>
+        <item>অন্যান্য সমীক্ষা</item>
+    </string-array>
+
 
 </resources>
