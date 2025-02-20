@@ -44,4 +44,14 @@ fun String.getHyphenOrRelation(baseline: Baseline) {
 fun String.storeCultivableLandValue(landValue: String): String = "$landValue $this"
 
 fun String.getCultivableLandValue(): String = this.split(" ")[0]
-fun String.getCultivableLandUnit(): String = this.split(" ")[1]
+
+// introduced try-catch since it created parsing error
+fun String.getCultivableLandUnit(): String {
+    var result = this
+    try {
+        result = this.split(" ")[1]
+    } catch (e: Exception){
+        println(">>>>>>>>>> error while parsing - getCultivableLandUnit()")
+    }
+    return result
+}

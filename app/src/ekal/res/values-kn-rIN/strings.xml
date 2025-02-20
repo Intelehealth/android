@@ -277,6 +277,7 @@
     <string name="sugar_random_error">ಶುಗರ್ ಯಾದೃಚ್ಛಿಕ ಮೌಲ್ಯವು %1$s ಮತ್ತು %2$s ನಡುವೆ ಇರಬೇಕು.</string>
 
     <string name="ft">ಅ.</string>
+    <string name="ft_new">ಅಡಿ.</string>
     <string name="height_ft">ಎತ್ತರ (ಅ.)</string>
     <string name="ayushman_card_mandatory">ಆಯುಷ್ಮಾನ್ ಕಾರ್ಡ್</string>
     <string name="general_occupation">ಉದ್ಯೋಗ</string>
@@ -293,6 +294,7 @@
     <string name="please_install_whatsapp">ಈ ಪ್ರಿಸ್ಕ್ರಿಪ್ಷನ್ ಹಂಚಿಕೊಳ್ಳಲು ದಯವಿಟ್ಟು WhatsApp ಅನ್ನು ಸ್ಥಾಪಿಸಿ.</string>
     <string name="select_occupation_txt">ಉದ್ಯೋಗವನ್ನು ಆಯ್ಕೆಮಾಡಿ</string>
     <string name="in_new">ಇಂಚು</string>
+    <string name="inch_new">ಒಳಗೆ</string>
     <string name="close_baseline_survey">ಮೊದಲ ಹಂತದ ಸಮೀಕ್ಷೆಯನ್ನು ಮುಚ್ಚುವುದೇ?</string>
     <string name="sure_you_want_close_baseline_survey">ಮೊದಲ ಹಂತದ ಸಮೀಕ್ಷೆಯನ್ನು ಮುಚ್ಚಲು ನೀವು ಖಚಿತವಾಗಿ ಬಯಸುವಿರಾ?</string>
     <string name="baseline_general">ಸಾಮಾನ್ಯ</string>
@@ -419,5 +421,13 @@
     <string name="retired_with_pension">ನಿವೃತ್ತಿ (ಪಿಂಚಣಿಯೊಂದಿಗೆ)</string>
     <string name="retired_without_pension">ನಿವೃತ್ತಿ (ಪಿಂಚಣಿ ಇಲ್ಲದೆ)</string>
     <string name="not_applicable">ಅನ್ವಯಿಸುವುದಿಲ್ಲ</string>
+    <string name="no_family_member_registered">ಯಾವುದೇ ಕುಟುಂಬದ ಸದಸ್ಯರನ್ನು ನೋಂದಾಯಿಸಲಾಗಿಲ್ಲ</string>
+
+    <string-array name="baseline_survey_items">
+        <item>ಸಾಮಾನ್ಯ ಸಮೀಕ್ಷೆ</item>
+        <item>ವೈದ್ಯಕೀಯ ಸಮೀಕ್ಷೆ</item>
+        <item>ಇತರೆ ಸಮೀಕ್ಷೆ</item>
+    </string-array>
+
 
 </resources>

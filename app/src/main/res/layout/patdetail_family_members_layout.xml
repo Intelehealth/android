@@ -96,7 +96,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:textSize="14sp"
-                android:text="No family member registered"
+                android:text="@string/no_family_member_registered"
                 android:textColor="#757575"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
         </LinearLayout>

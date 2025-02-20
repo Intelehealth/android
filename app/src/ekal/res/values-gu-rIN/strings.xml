@@ -279,6 +279,7 @@
     <string name="sugar_random_error">চেনি ৰেণ্ডম %1$s আৰু %2$s ৰ মাজত থাকিব লাগে</string>
 
     <string name="ft">ફુ.</string>
+    <string name="ft_new">ફૂટ.</string>
     <string name="height_ft">ઊંચાઈ(ફુ.)</string>
     <string name="ayushman_card_mandatory">આયુષ્યમાન કાર્ડ</string>
     <string name="general_occupation">વ્યવસાય</string>
@@ -295,6 +296,7 @@
     <string name="please_install_whatsapp">કૃપા કરીને આ પ્રિસ્ક્રિપ્શન શેર કરવા માટે WhatsApp ઇન્સ્ટોલ કરો.</string>
     <string name="select_occupation_txt">વ્યવસાય પસંદ કરો</string>
     <string name="in_new">ઇંચ</string>
+    <string name="inch_new">ઇંચ</string>
     <string name="close_baseline_survey">આધારરેખા સર્વેક્ષણ બંધ કરીએ?</string>
     <string name="sure_you_want_close_baseline_survey">શું તમે ખરેખર બેઝલાઇન સર્વેક્ષણ બંધ કરવા માંગો છો?</string>
     <string name="baseline_general">સામાન્ય</string>
@@ -421,5 +423,13 @@
     <string name="retired_with_pension">સેવા નિવૃત (પેન્સન સાથે)</string>
     <string name="retired_without_pension">સેવા નિવૃત( પેન્સન વગર)</string>
     <string name="not_applicable">લાગુ પડતું નથી</string>
+    <string name="no_family_member_registered">પરિવારના કોઈ સભ્ય નોંધાયેલા નથી</string>
+
+    <string-array name="baseline_survey_items">
+        <item>સામાન્ય સર્વે</item>
+        <item>મેડિકલ સર્વે</item>
+        <item>અન્ય સર્વે</item>
+    </string-array>
+
 
 </resources>

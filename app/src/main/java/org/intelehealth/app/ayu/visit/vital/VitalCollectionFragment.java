@@ -508,10 +508,8 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
 
     public void ConvertHeightIntoCm(String height) {
         try {
-            if (height.contains("फीट") || height.contains("इंच"))  //this condition has been hardcoded because of the repetitive crash happening on the field.
-                height = height.replaceAll("फीट", "").replaceAll("इंच", "");
 //            height = height.replaceAll(getString(R.string.ft), "").replaceAll(getString(R.string.in), "");
-            height = height.replaceAll(getString(R.string.ft), "").replaceAll(getString(R.string.in_new), "");
+            height = height.replaceAll(getString(R.string.ft_new), " ").replaceAll(getString(R.string.inch_new), " ").replaceAll("\\s+", " ").trim();
             String[] heightArr = height.split(" ");
             int feets = Integer.parseInt(heightArr[0]) * 12;
             int inches = Integer.parseInt(heightArr[1]);

@@ -369,6 +369,7 @@
 
     <string name="prescription_wt">ওজন (কেজি)</string>
     <string name="prescription_ht">উচ্চতা (সেমি)</string>
+    <string name="prescription_ft">উচ্চতা (ft)</string>
     <string name="prescription_temp_c">তাপমাত্রা/(C/): </string>
     <string name="prescription_temp_f">তাপমাত্রা(F): </string>
 

@@ -319,7 +319,7 @@ public class PrescriptionBuilder {
         String unorderedListClosingTag = "</ul>";
 
         String vitalsDataString = "";
-        vitalsDataString = vitalsDataString + createVitalsListItem(activityContext.getString(R.string.prescription_ht), vitalsData.getHeight());
+        vitalsDataString = vitalsDataString + createVitalsListItem(activityContext.getString(R.string.prescription_ft), vitalsData.getHeight());
         vitalsDataString = vitalsDataString + createVitalsListItem(activityContext.getString(R.string.prescription_wt), vitalsData.getWeight());
         vitalsDataString = vitalsDataString + createVitalsListItem(activityContext.getString(R.string.prescription_systolic_blood_pressure), vitalsData.getBpsys());
         vitalsDataString = vitalsDataString + createVitalsListItem(activityContext.getString(R.string.prescription_diastolic_blood_pressure), vitalsData.getBpdia());

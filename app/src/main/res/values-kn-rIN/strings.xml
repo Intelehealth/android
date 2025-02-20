@@ -388,6 +388,7 @@
     <string name="prescription_pulse">Pulse(bpm)</string>
     <string name="prescription_wt">ತೂಕ(ಕೆಜಿ)</string>
     <string name="prescription_ht">ಎತ್ತರ(ಸೆಂ)</string>
+    <string name="prescription_ft">ಎತ್ತರ(ft)</string>
     <string name="prescription_temp_c">ತಾಪಮಾನ (C) : </string>
     <string name="prescription_temp_f">ತಾಪಮಾನ (F) : </string>
 

@@ -205,7 +205,7 @@ class BaselineMedicalFragment :
             anemiaValue = binding.rgAnemiaOptions.getSelectedData()
             surgeryValue = binding.rgSurgeryOptions.getSelectedData()
             surgeryReason = binding.etSurgeryReasonCheck.text.toString()
-                .storeReasonIfAnswerIsPositive(surgeryReason)
+                .storeReasonIfAnswerIsPositive(surgeryValue)
             smokingHistory = binding.rgSmokingHistoryOptions.getSelectedData()
             smokingRate = binding.rgSmokingRateOptions.getSelectedData()
             smokingDuration = binding.rgSmokingDurationOptions.getSelectedData()

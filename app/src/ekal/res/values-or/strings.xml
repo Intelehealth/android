@@ -279,6 +279,7 @@
     <string name="sugar_random_error">ସୁଗାର ରାଣ୍ଡମ୍ %1$s ଏବଂ %2$s ମଧ୍ୟରେ ହେବା ଉଚିତ</string>
 
     <string name="ft">ଫୁ.</string>
+    <string name="ft_new">ଫୁଟ.</string>
     <string name="height_ft">ಎತ್ತರ (ଫୁ.)</string>
     <string name="ayushman_card_mandatory">ଆୟୁଷ୍ମାନ କାର୍ଡ </string>
     <string name="general_occupation">ବୃତ୍ତି</string>
@@ -295,6 +296,7 @@
     <string name="please_install_whatsapp">ಈ ಪ್ರಿಸ್ಕ್ರಿಪ್ಷನ್ ಹಂಚಿಕೊಳ್ಳಲು ದಯವಿಟ್ಟು WhatsApp ಅನ್ನು ಸ್ಥಾಪಿಸಿ.</string>
     <string name="select_occupation_txt">ಉದ್ಯೋಗವನ್ನು ಆಯ್ಕೆಮಾಡಿ</string>
     <string name="in_new">ଇଞ୍ଚ</string>
+    <string name="inch_new">ଇଞ୍ଚ</string>
     <string name="close_baseline_survey">ಮೊದಲ ಹಂತದ ಸಮೀಕ್ಷೆಯನ್ನು ಮುಚ್ಚುವುದೇ?</string>
     <string name="sure_you_want_close_baseline_survey">ಮೊದಲ ಹಂತದ ಸಮೀಕ್ಷೆಯನ್ನು ಮುಚ್ಚಲು ನೀವು ಖಚಿತವಾಗಿ ಬಯಸುವಿರಾ?</string>
     <string name="baseline_general">ಸಾಮಾನ್ಯ</string>
@@ -420,5 +422,13 @@
     <string name="unemployed">ବେକାରୀ</string>
     <string name="retired_with_pension">ଚାକିରୀରୁ ଅବସର(ପେନସନ ଗ୍ରହୀତା)</string>
     <string name="retired_without_pension">ଅବସର ପ୍ରାପ୍ତ ( ଅବସର କାଳୀନ ଭତ୍ତା ବିହୀନ )</string>
+    <string name="no_family_member_registered">କ family ଣସି ପରିବାର ସଦସ୍ୟ ପଞ୍ଜିକୃତ ହୋଇନାହାଁନ୍ତି</string>
+
+    <string-array name="baseline_survey_items">
+        <item>ସାଧାରଣ ସର୍ବେକ୍ଷଣ</item>
+        <item>ଡାକ୍ତରୀ ସର୍ବେକ୍ଷଣ</item>
+        <item>ଅନ୍ୟାନ୍ୟ ସର୍ବେକ୍ଷଣ</item>
+    </string-array>
+
 
 </resources>

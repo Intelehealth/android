@@ -18,6 +18,8 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import org.intelehealth.app.utilities.CustomLog;
+
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -593,48 +595,52 @@ public class FollowUpPatientActivity_New extends BaseActivity {
         }
 
         Executors.newSingleThreadExecutor().execute(() -> {
-            List<FollowUpModel> initialFollowUpPatients = getAllPatientsFromDB();
-            if (initialFollowUpPatients.isEmpty()) {
-                if(dataLoadingType == DataLoadingType.INITIAL){
-                    commonLoadingDialog.dismiss();
-                }
-                runOnUiThread(() -> shouldShowNoDataTextViewForAllRecyclerViews(true));
-            } else {
-                if (filterType != FollowupFilterTypeEnum.NONE) {
-                    finalMonthsFollowUpDates.addAll(initialFollowUpPatients);
-                    runOnUiThread(() -> shouldShowNoDataTextViewForAllRecyclerViews(false));
-                    runOnUiThread(() -> {
-                        mTodayRelativeLayout.setVisibility(View.GONE);
-                        mWeekRelativeLayout.setVisibility(View.GONE);
-                        othersTitle.setVisibility(View.GONE);
-                        setMonthsDatesInRecyclerView(finalMonthsFollowUpDates);
-                        if(dataLoadingType == DataLoadingType.INITIAL){
-                            commonLoadingDialog.dismiss();
-                        }
-                    });
+            try {
+                List<FollowUpModel> initialFollowUpPatients = getAllPatientsFromDB();
+                if (initialFollowUpPatients.isEmpty()) {
+                    if(dataLoadingType == DataLoadingType.INITIAL){
+                        commonLoadingDialog.dismiss();
+                    }
+                    runOnUiThread(() -> shouldShowNoDataTextViewForAllRecyclerViews(true));
                 } else {
-                    finalMonthsFollowUpDates.addAll(initialFollowUpPatients);
-                    runOnUiThread(() -> {
-                        mTodayRelativeLayout.setVisibility(View.VISIBLE);
-                        mWeekRelativeLayout.setVisibility(View.VISIBLE);
-                        othersTitle.setVisibility(View.VISIBLE);
-                        shouldShowNoDataTextViewForAllRecyclerViews(false);
-                    });
-                    getChiefComplaint(initialFollowUpPatients);
-                    todaysFollowUpDates.addAll(getTodaysVisitsFromList(initialFollowUpPatients));
-                    initialFollowUpPatients.removeAll(todaysFollowUpDates);
-                    tomorrowssFollowUpDates.addAll(getTomorrowsVisitsFromList(initialFollowUpPatients));
-                    finalMonthsFollowUpDates.removeAll(todaysFollowUpDates);
-                    finalMonthsFollowUpDates.removeAll(tomorrowssFollowUpDates);
-                    runOnUiThread(() -> {
-                        setTodaysDatesInRecyclerView(todaysFollowUpDates);
-                        setTomorrowsDatesInRecyclerView(tomorrowssFollowUpDates);
-                        setMonthsDatesInRecyclerView(finalMonthsFollowUpDates);
-                        if(dataLoadingType == DataLoadingType.INITIAL){
-                            commonLoadingDialog.dismiss();
-                        }
-                    });
+                    if (filterType != FollowupFilterTypeEnum.NONE) {
+                        finalMonthsFollowUpDates.addAll(initialFollowUpPatients);
+                        runOnUiThread(() -> shouldShowNoDataTextViewForAllRecyclerViews(false));
+                        runOnUiThread(() -> {
+                            mTodayRelativeLayout.setVisibility(View.GONE);
+                            mWeekRelativeLayout.setVisibility(View.GONE);
+                            othersTitle.setVisibility(View.GONE);
+                            setMonthsDatesInRecyclerView(finalMonthsFollowUpDates);
+                            if(dataLoadingType == DataLoadingType.INITIAL){
+                                commonLoadingDialog.dismiss();
+                            }
+                        });
+                    } else {
+                        finalMonthsFollowUpDates.addAll(initialFollowUpPatients);
+                        runOnUiThread(() -> {
+                            mTodayRelativeLayout.setVisibility(View.VISIBLE);
+                            mWeekRelativeLayout.setVisibility(View.VISIBLE);
+                            othersTitle.setVisibility(View.VISIBLE);
+                            shouldShowNoDataTextViewForAllRecyclerViews(false);
+                        });
+                        getChiefComplaint(initialFollowUpPatients);
+                        todaysFollowUpDates.addAll(getTodaysVisitsFromList(initialFollowUpPatients));
+                        initialFollowUpPatients.removeAll(todaysFollowUpDates);
+                        tomorrowssFollowUpDates.addAll(getTomorrowsVisitsFromList(initialFollowUpPatients));
+                        finalMonthsFollowUpDates.removeAll(todaysFollowUpDates);
+                        finalMonthsFollowUpDates.removeAll(tomorrowssFollowUpDates);
+                        runOnUiThread(() -> {
+                            setTodaysDatesInRecyclerView(todaysFollowUpDates);
+                            setTomorrowsDatesInRecyclerView(tomorrowssFollowUpDates);
+                            setMonthsDatesInRecyclerView(finalMonthsFollowUpDates);
+                            if(dataLoadingType == DataLoadingType.INITIAL){
+                                commonLoadingDialog.dismiss();
+                            }
+                        });
+                    }
                 }
+            } catch (Exception ex) {
+                Log.d(TAG, "fetchAndSegregateData: >>>>>>>>>>>>>>> " + ex);
             }
         });
     }

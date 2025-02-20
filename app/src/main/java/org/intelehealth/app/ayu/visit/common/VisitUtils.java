@@ -1,6 +1,7 @@
 package org.intelehealth.app.ayu.visit.common;
 
 import android.content.Context;
+import android.util.Log;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.database.dao.ObsDAO;
@@ -12,6 +13,8 @@ import org.intelehealth.app.utilities.DateAndTimeUtils;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
 
 public class VisitUtils {
 
@@ -381,20 +384,23 @@ AB NEGATIVE = 1231*/
 
     public static String convertCtoF(String TAG, String temperature) {
         CustomLog.i(TAG, "convertCtoF IN: " + temperature);
+        String result = "Corrupted data";
+        try{
+            if (temperature == null || temperature.isEmpty()) return "";
+            double a = Double.parseDouble(String.valueOf(temperature));
+            Double b = (a * 9 / 5) + 32;
 
-        if (temperature == null || temperature.isEmpty()) return "";
-        String result = "";
-        double a = Double.parseDouble(String.valueOf(temperature));
-        Double b = (a * 9 / 5) + 32;
-
-        //DecimalFormat dtime = new DecimalFormat("#.##");
-        DecimalFormat dtime = new DecimalFormat("#.#");
-        b = Double.parseDouble(dtime.format(b));
-        result = String.format("%.1f", b);
-        //result = String.valueOf(b);
+            //DecimalFormat dtime = new DecimalFormat("#.##");
+//            DecimalFormat dtime = new DecimalFormat("#.#");
+            DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
+            DecimalFormat dtime = new DecimalFormat("#.#", symbols);
+            b = Double.parseDouble(dtime.format(b));
+            result = String.format(Locale.US, "%.1f", b);
+        } catch (Exception ex) {
+            Log.d(TAG, "convertCtoF: >>>>>>>>>> parsing error line 396 " + ex.toString());
+        }
         CustomLog.i(TAG, "convertCtoF OUT: " + result);
         return result;
-
     }
 
     public static String convertCtoFNew(String temperature) {

@@ -345,6 +345,7 @@
     <string name="prescription_pulse">Пульс (уд / мин)</string>
     <string name="prescription_wt">Вес (кг)</string>
     <string name="prescription_ht">Высота (см)</string>
+    <string name="prescription_ft">Высота (ft)</string>
     <string name="prescription_temp_c">Температура (C) : </string>
     <string name="prescription_temp_f">Температура (F) : </string>
     <string name="warning_app_update">Пожалуйста, обновите приложение до последней версии.</string>

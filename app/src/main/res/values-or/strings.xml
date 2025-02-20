@@ -253,6 +253,7 @@
 
     <string name="prescription_wt">ଓଜନ (କିଗ୍ରା)</string>
     <string name="prescription_ht">ଉଚ୍ଚତା (ସେମି)</string>
+    <string name="prescription_ft">ଉଚ୍ଚତା (ft)</string>
     <string name="prescription_temp_c">ତାପମାତ୍ରା (C):</string>
     <string name="prescription_temp_f">ତାପମାତ୍ରା (F):</string>
 
