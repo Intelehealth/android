@@ -33,6 +33,7 @@ import org.intelehealth.app.ui.dialog.CalendarDialog
 import org.intelehealth.app.ui.filter.FirstLetterUpperCaseInputFilter
 import org.intelehealth.app.utilities.AgeUtils
 import org.intelehealth.app.utilities.ArrayAdapterUtils
+import org.intelehealth.app.utilities.CountryCodeUtils
 import org.intelehealth.app.utilities.CustomLog
 import org.intelehealth.app.utilities.DateAndTimeUtils
 import org.intelehealth.app.utilities.FlavorKeys
@@ -452,9 +453,25 @@ class PatientPersonalInfoFragment :
         binding.countrycodeSpinner.registerCarrierNumberEditText(binding.textInputETPhoneNumber)
         binding.countrycodeSpinner.setNumberAutoFormattingEnabled(false)
         binding.countrycodeSpinner.fullNumber = patient.phonenumber
+        binding.countrycodeSpinner.setCountryForPhoneCode(
+            CountryCodeUtils.getPhoneCodeByCountry(
+                if (BuildConfig.FLAVOR_client == FlavorKeys.UNFPA) {
+                    "kz"
+                } else "in"
+            )
+        )
+
         binding.ccpEmContactPhone.registerCarrierNumberEditText(binding.textInputETEMPhoneNumber)
         binding.ccpEmContactPhone.setNumberAutoFormattingEnabled(false)
         binding.ccpEmContactPhone.fullNumber = patient.emContactNumber
+        binding.ccpEmContactPhone.setCountryForPhoneCode(
+            CountryCodeUtils.getPhoneCodeByCountry(
+                if (BuildConfig.FLAVOR_client == FlavorKeys.UNFPA) {
+                    "kz"
+                } else "in"
+            )
+        )
+
         binding.textInputLayFName.hideErrorOnTextChang(binding.textInputETFName)
         binding.textInputLayMName.hideErrorOnTextChang(binding.textInputETMName)
         binding.textInputLayLName.hideErrorOnTextChang(binding.textInputETLName)
@@ -586,9 +603,11 @@ class PatientPersonalInfoFragment :
                             binding.textInputETEMPhoneNumber,
                             getString(
                                 R.string.enter_digits,
-                                binding.personalConfig?.emergencyContactNumber?.validations?.minLength ?: 10
+                                binding.personalConfig?.emergencyContactNumber?.validations?.minLength
+                                    ?: 10
                             ),
-                            binding.personalConfig?.emergencyContactNumber?.validations?.minLength ?: 10
+                            binding.personalConfig?.emergencyContactNumber?.validations?.minLength
+                                ?: 10
                         )
                     ).and(binding.textInputETPhoneNumber.text?.let { phone ->
                         val valid =
@@ -614,9 +633,11 @@ class PatientPersonalInfoFragment :
                                 binding.textInputETEMPhoneNumber,
                                 getString(
                                     R.string.enter_digits,
-                                    binding.personalConfig?.emergencyContactNumber?.validations?.minLength ?: 10
+                                    binding.personalConfig?.emergencyContactNumber?.validations?.minLength
+                                        ?: 10
                                 ),
-                                binding.personalConfig?.emergencyContactNumber?.validations?.minLength ?: 10
+                                binding.personalConfig?.emergencyContactNumber?.validations?.minLength
+                                    ?: 10
                             ).and(binding.textInputETPhoneNumber.text?.let { phone ->
                                 val valid =
                                     phone.toString() != binding.textInputETEMPhoneNumber.text.toString()
