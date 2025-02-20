@@ -489,7 +489,7 @@ class PatientPersonalInfoFragment :
         binding.autoCompleteEmContactType.setAdapter(adapter)
         if (patient.contactType != null && patient.contactType.isNotEmpty()) {
             binding.autoCompleteEmContactType.setText(
-                StringUtils.getContactType(
+                StringUtils.switch_contact_type_by_local(
                     patient.contactType,
                     LanguageUtils.getLocalLang()
                 ), false

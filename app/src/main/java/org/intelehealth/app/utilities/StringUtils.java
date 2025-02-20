@@ -4155,13 +4155,23 @@ public final class StringUtils {
         return val;
     }
 
-    public static String switch_hi_contact_type_edit(String val) {
+    public static String switch_contact_type_by_local(String val,String locale) {
         if (val == null || val.isEmpty()) return "";
-        switch (val) {
-            case "Self" -> val = "स्वयं";
-            case "Family" -> val = "परिवार";
-            default -> {
-                return val;
+        if (locale.equals("hi")){
+            switch (val) {
+                case "Self" -> val = "स्वयं";
+                case "Family" -> val = "परिवार";
+                default -> {
+                    return val;
+                }
+            }
+        }else if(locale.equals("ru")){
+            switch (val) {
+                case "Self" -> val = "Личный";
+                case "Family" -> val = "Члена семьи";
+                default -> {
+                    return val;
+                }
             }
         }
         return val;

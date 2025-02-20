@@ -18,11 +18,11 @@ import static org.intelehealth.app.utilities.StringUtils.switch_as_education_edi
 import static org.intelehealth.app.utilities.StringUtils.switch_bn_caste_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_bn_economic_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_bn_education_edit;
+import static org.intelehealth.app.utilities.StringUtils.switch_contact_type_by_local;
 import static org.intelehealth.app.utilities.StringUtils.switch_gu_caste_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_gu_economic_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_gu_education_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_hi_caste_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_hi_contact_type_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_hi_economic_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_hi_education_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_hi_guardian_type_edit;
@@ -1986,15 +1986,10 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         }
 
         //contact type
-        if (patientDTO.getContactType() != null && !patientDTO.getContactType().
+        if (patientDTO.getContactType() != null && !patientDTO.getContactType().equals("")) {
+            String type = switch_contact_type_by_local(patientDTO.getContactType(), LanguageUtils.getLocalLang());
+            contact_type_tv.setText(type);
 
-                equals("")) {
-            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                String type = switch_hi_contact_type_edit(patientDTO.getContactType());
-                contact_type_tv.setText(type);
-            } else {
-                contact_type_tv.setText(patientDTO.getContactType());
-            }
         } else {
             contact_type_tv.setText(getString(R.string.not_provided));
         }
