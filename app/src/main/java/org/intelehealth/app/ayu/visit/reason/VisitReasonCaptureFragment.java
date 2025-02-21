@@ -2,9 +2,6 @@ package org.intelehealth.app.ayu.visit.reason;
 
 import android.content.Context;
 import android.os.Bundle;
-
-import org.intelehealth.app.utilities.CustomLog;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +35,7 @@ import org.intelehealth.app.ayu.visit.model.ReasonGroupData;
 import org.intelehealth.app.ayu.visit.reason.adapter.ReasonListingAdapter;
 import org.intelehealth.app.ayu.visit.reason.adapter.SelectedChipsGridAdapter;
 import org.intelehealth.app.knowledgeEngine.Node;
+import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.FileUtils;
 import org.intelehealth.app.utilities.SessionManager;
@@ -237,7 +235,8 @@ public class VisitReasonCaptureFragment extends Fragment {
 
         RecyclerView recyclerView = view.findViewById(R.id.rcv_all_reason);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-        mVisitReasonItemList = getVisitReasonList();
+        //mVisitReasonItemList = getVisitReasonList();
+        mVisitReasonItemList = getVisitReasonListWithoutGroup();
         mReasonListingAdapter = new ReasonListingAdapter(recyclerView, getActivity(), mVisitReasonItemList, new ReasonListingAdapter.OnItemSelection() {
             @Override
             public void onSelect(ReasonData data) {
@@ -405,7 +404,7 @@ public class VisitReasonCaptureFragment extends Fragment {
             List<ReasonData> list = new ArrayList<ReasonData>();
             for (ReasonData reasonData : mRawReasonDataList) {
                 //String chiefComplainNameByLocale =  NodeAdapterUtils.getTheChiefComplainNameWRTLocale(getActivity(), fileName);
-                if (reasonData.getReasonNameLocalized().toUpperCase().startsWith(String.valueOf(c))) {
+                if (reasonData.getReasonNameLocalized().startsWith(String.valueOf(c))) {
                     //ReasonData reasonData = new ReasonData();
                     //reasonData.setReasonName(fileName);
 //                  // TODO: we are adding this below conditions for keeping these protocol enable for selection
@@ -420,6 +419,29 @@ public class VisitReasonCaptureFragment extends Fragment {
             }
         }
 
+
+        return itemList;
+    }
+
+    private List<ReasonGroupData> getVisitReasonListWithoutGroup() {
+        List<ReasonGroupData> itemList = new ArrayList<>();
+
+        char startC = NodeAdapterUtils.getStartCharAsPerLocale();
+        char endC = NodeAdapterUtils.getEndCharAsPerLocale();
+
+        ReasonGroupData reasonGroupData = new ReasonGroupData();
+        reasonGroupData.setAlphabet(getString(R.string.all_reasons));
+        List<ReasonData> list = new ArrayList<ReasonData>();
+        for (ReasonData reasonData : mRawReasonDataList) {
+            // TODO: we are adding this below conditions for keeping these protocol enable for selection
+            reasonData.setEnabled(mFinalEnabledMMList.contains(reasonData.getReasonName()));
+            //reasonData.setReasonNameLocalized(chiefComplainNameByLocale);
+            list.add(reasonData);
+
+        }
+
+        reasonGroupData.setReasons(list);
+        itemList.add(reasonGroupData);
 
         return itemList;
     }

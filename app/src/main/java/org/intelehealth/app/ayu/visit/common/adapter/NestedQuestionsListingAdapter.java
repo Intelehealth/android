@@ -14,11 +14,6 @@ import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-
-import org.intelehealth.app.database.dao.ObsDAO;
-import org.intelehealth.app.database.dao.VisitsDAO;
-import org.intelehealth.app.utilities.CustomLog;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,6 +45,7 @@ import com.google.android.material.slider.Slider;
 import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.ayu.visit.VisitCreationActivity;
 import org.intelehealth.app.ayu.visit.common.OnItemSelection;
 import org.intelehealth.app.ayu.visit.common.VisitUtils;
 import org.intelehealth.app.ayu.visit.model.ComplainBasicInfo;
@@ -57,6 +53,7 @@ import org.intelehealth.app.ayu.visit.reason.adapter.OptionsChipsGridAdapter;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.knowledgeEngine.PhysicalExam;
 import org.intelehealth.app.shared.FirstLetterUpperCaseInputFilter;
+import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.WindowsUtils;
 import org.json.JSONObject;
@@ -180,7 +177,8 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         mItemList.clear();
     }
 
-    public void addItem(Node node) {
+    public void addItem(String tag, Node node) {
+        CustomLog.v(TAG, "addItem() tag - " + tag);
         CustomLog.v(TAG, "addItem() " + new Gson().toJson(node));
         CustomLog.v(TAG, "mItemList count " + mItemList.size());
         for (int i = 0; i < mItemList.size(); i++) {
@@ -193,6 +191,8 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         CustomLog.v(TAG, "mItemList count " + mItemList.size());
         mIndexMappingHashMap.put(mItemList.size() - 1, mRootIndex);
         notifyItemInserted(mItemList.size() - 1);
+        CustomLog.v(TAG, "************************************ " + this);
+        CustomLog.v(TAG, "************************************ ADDED END NEW NESTED ******************************************");
     }
 
     public void addItemAll(List<Node> nodes) {
@@ -224,14 +224,16 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         if (holder instanceof GenericViewHolder) {
             GenericViewHolder genericViewHolder = (GenericViewHolder) holder;
             int position = genericViewHolder.getAbsoluteAdapterPosition();
-            if (genericViewHolder.node == null)
-                genericViewHolder.node = mItemList.get(position);
+            //if (genericViewHolder.node == null)
+            genericViewHolder.node = mItemList.get(position);
             genericViewHolder.index = position;
 
             genericViewHolder.singleComponentContainer.removeAllViews();
             genericViewHolder.singleComponentContainer.setVisibility(View.GONE);
             genericViewHolder.optionRecyclerView.setVisibility(View.GONE);
+            genericViewHolder.optionRecyclerView.removeAllViewsInLayout();
             genericViewHolder.superNestedRecyclerView.setVisibility(View.GONE);
+            genericViewHolder.superNestedRecyclerView.removeAllViewsInLayout();
             genericViewHolder.submitButton.setVisibility(View.GONE);
             genericViewHolder.skipButton.setVisibility(View.GONE);
 
@@ -248,7 +250,12 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
 
 
             genericViewHolder.tvQuestion.setText(genericViewHolder.node.findDisplay());
-
+            CustomLog.v(TAG, "onBindViewHolder - rawPosition - " + rawPosition);
+            CustomLog.v(TAG, "onBindViewHolder - instance - " + this);
+            for (int i = 0; i < mItemList.size(); i++) {
+                CustomLog.v(TAG, "onBindViewHolder - Text - " + mItemList.get(i).getText());
+            }
+            CustomLog.v(TAG, "onBindViewHolder - position - " + position + " \t   size -  " + mItemList.size() + " \t Node text -  " + genericViewHolder.node.getText());
             routeByType(genericViewHolder, mParentNode, genericViewHolder.node, position, true, false);
 //            setTextViewDrawableColor(genericViewHolder.tvQuestion, mColors[0]);
             CustomLog.v(TAG, "mLoadedIds Nested - " + mLoadedIds.contains(genericViewHolder.node.getId()) + " \t Node findDisplay -  " + genericViewHolder.node.findDisplay());
@@ -342,7 +349,10 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                 addTextEnterView(parentNode, currentNode, genericViewHolder.singleComponentContainer, position);
                 break;
             case "number":
-                addNumberView(parentNode, currentNode, genericViewHolder.singleComponentContainer, position);
+                addNumberView(parentNode, currentNode, genericViewHolder.singleComponentContainer, position, false);
+                break;
+            case "decimal":
+                addNumberView(parentNode, currentNode, genericViewHolder.singleComponentContainer, position, true);
                 break;
             case "area":
                 // askArea(questionNode, context, adapter);
@@ -407,7 +417,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                 node.setSelected(false);
                 parentNode.setSelected(false);
                 parentNode.setDataCaptured(false);
-                mOnItemSelection.onSelect(node, mRootIndex, true, parentNode);
+                mOnItemSelection.onSelect(node, mRootIndex, true, parentNode, false);
                 notifyItemChanged(index);
             }
         });
@@ -441,8 +451,10 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                     node.setSelected(true);
                     parentNode.setSelected(true);
                     parentNode.setDataCaptured(true);
+                    mParentNode.setSelected(true);
+                    mParentNode.setDataCaptured(true);
                     notifyItemChanged(index);
-                    mOnItemSelection.onSelect(node, mRootIndex, false, parentNode);
+                    mOnItemSelection.onSelect(node, mRootIndex, false, parentNode, false);
                 }
             }
         });
@@ -498,7 +510,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
             node.setDataCaptured(false);
             parentNode.setSelected(false);
             parentNode.setDataCaptured(false);
-            mOnItemSelection.onSelect(node, mRootIndex, true, parentNode);
+            mOnItemSelection.onSelect(node, mRootIndex, true, parentNode, false);
             notifyItemChanged(index);
         });
 
@@ -531,7 +543,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                 parentNode.setSelected(true);
                 parentNode.setDataCaptured(true);
                 notifyItemChanged(index);
-                mOnItemSelection.onSelect(node, mRootIndex, false, parentNode);
+                mOnItemSelection.onSelect(node, mRootIndex, false, parentNode, false);
             }
         });
         rangeSlider.setLabelFormatter(value -> String.valueOf((int) value));
@@ -722,6 +734,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                                    boolean isGotFromChipSelected) {
         CustomLog.v(TAG, "showOptionsDataV2 - " + getEngineVersion());
         holder.singleComponentContainer.removeAllViews();
+        holder.optionRecyclerView.removeAllViewsInLayout();
         holder.optionRecyclerView.setVisibility(View.VISIBLE);
         CustomLog.v(TAG, "showOptionsDataV2 isMultiChoice - " + selectedNode.isMultiChoice());
         //mNestedLevel= mNestedLevel + 1;
@@ -731,6 +744,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
             //if (isSuperNested) {
             //if(mNestedLevel%2==0){
             showNestedItemsV2(selectedNode, holder, options, index, isSuperNested, isGotFromChipSelected);
+            holder.optionRecyclerView.setAdapter(null);
         } else {
             holder.superNestedRecyclerView.setVisibility(View.GONE);
             FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(mContext);
@@ -764,8 +778,8 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
 
             OptionsChipsGridAdapter optionsChipsGridAdapter = new OptionsChipsGridAdapter(holder.optionRecyclerView, mContext, mItemList.get(index), options,
                     (node, isLoadingForNestedEditData) -> {
-                        CustomLog.d(TAG, "onSelect: " + isLoadingForNestedEditData + "\n" + mItemList.toString());
-                        CustomLog.d(TAG, "onSelect selectedNode: " + new Gson().toJson(selectedNode));
+                        CustomLog.d(TAG, "onSelect: isLoadingForNestedEditData - " + isLoadingForNestedEditData + "\n" + mItemList.toString());
+                        //CustomLog.d(TAG, "onSelect selectedNode: " + new Gson().toJson(selectedNode));
                         if (index == mItemList.size()) return;
                         if (!isLoadingForNestedEditData)
                             VisitUtils.scrollNow(mRootRecyclerView, 1000, 0, 300, mIsEditMode, mItemList.size() <= index || mLoadedIds.contains(mItemList.get(index).getId()));
@@ -801,8 +815,9 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                         if (type == null || type.isEmpty() && (node.getOptionsList() != null && !node.getOptionsList().isEmpty())) {
                             type = "options";
                         }
-                        CustomLog.v(TAG, "node - " + node.getText());
-                        CustomLog.v(TAG, "node - " + node.findDisplay());
+                        CustomLog.v(TAG, "node text- " + node.getText());
+                        CustomLog.v(TAG, "node id - " + node.getId());
+                        CustomLog.v(TAG, "node display- " + node.findDisplay());
                         CustomLog.v(TAG, "Type - " + type);
                         CustomLog.v(TAG, "isLoadingForNestedEditData - " + isLoadingForNestedEditData);
 
@@ -868,10 +883,13 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
 //                            holder.singleComponentContainer.removeAllViews();
                             if (mItemList.get(index).isMultiChoice()) {
                                 if (!getInputVisibility(true, holder.singleComponentContainer))
-                                    holder.submitButton.setVisibility(View.VISIBLE);
+                                    if (isRequiredToShowParentActionButtons)
+                                        holder.submitButton.setVisibility(View.VISIBLE);
+                                    else
+                                        holder.submitButton.setVisibility(View.GONE);
                             } else {
                                 holder.submitButton.setVisibility(View.GONE);
-                                mOnItemSelection.onSelect(node, mRootIndex, false, mItemList.get(index));
+                                mOnItemSelection.onSelect(node, mRootIndex, false, mItemList.get(index), false);
                                 AdapterUtils.setToDisable(holder.skipButton);
                             }
 
@@ -881,11 +899,31 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                                 holder.skipButton.setVisibility(View.VISIBLE);
 
                             checkAndHideSkipButton(holder.skipButton);
+                            if (!isRequiredToShowParentActionButtons)
+                                holder.skipButton.setVisibility(View.GONE);
                             // remove child nodes views on deselect of same option - end
 
 
                             if (type.equalsIgnoreCase("camera"))
                                 mItemList.get(index).removeImagesAllNestedNode();
+
+                            // check selected node all unselected
+                            if (selectedNode.getOptionsList() != null) {
+                                boolean allUnselected = true;
+                                for (int i = 0; i < selectedNode.getOptionsList().size(); i++) {
+                                    if (selectedNode.getOptionsList().get(i).isSelected()) {
+                                        allUnselected = false;
+                                        break;
+                                    }
+                                }
+                                if (allUnselected) {
+                                    holder.submitButton.setVisibility(View.VISIBLE);
+                                    if (mItemList.get(index).isRequired())
+                                        holder.skipButton.setVisibility(View.GONE);
+                                    else
+                                        holder.skipButton.setVisibility(View.VISIBLE);
+                                }
+                            }
 
                             if (!mItemList.get(index).isMultiChoice()) {
 
@@ -914,14 +952,18 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                                         if (!isLoadingForNestedEditData) {
                                             // found the correct node
                                             boolean found = false;
+                                            int foundIndex = -1;
                                             for (int i = 0; i < mItemList.size(); i++) {
                                                 Node n = mItemList.get(i);
                                                 CustomLog.v(TAG, node.getText() + "## n ## " + n.getText());
                                                 if (node.getText().equalsIgnoreCase(n.getText())) {
                                                     found = true;
+                                                    // remove all the next nodes of the selected node - nested options.
+                                                    //while (mItemList.size() > i) {
                                                     mItemList.remove(i);
                                                     notifyItemRemoved(i);
-                                                    break;
+                                                    //}
+                                                    //break;
                                                 }
                                             }
                                             if (!found)
@@ -969,7 +1011,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                             } else {
                                 //holder.tvQuestionDesc.setText(mContext.getString(R.string.select_any_one));
                                 holder.submitButton.setVisibility(View.GONE);
-                                mOnItemSelection.onSelect(node, mRootIndex, false, mItemList.get(index));
+                                mOnItemSelection.onSelect(node, mRootIndex, false, mItemList.get(index), false);
                                 AdapterUtils.setToDisable(holder.skipButton);
                             }
 
@@ -980,12 +1022,40 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                             }
 
                             checkAndHideSkipButton(holder.skipButton);
+
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (!isLoadingForNestedEditData) {
+                                        // found the correct node
+                                        boolean found = false;
+                                        int foundIndex = -1;
+                                        for (int i = 0; i < mItemList.size(); i++) {
+                                            Node n = mItemList.get(i);
+                                            CustomLog.v(TAG, node.getText() + "## n ## " + n.getText());
+                                            if (node.getText().equalsIgnoreCase(n.getText())) {
+                                                found = true;
+                                                // remove all the next nodes of the selected node - nested options.
+                                                //while (mItemList.size() > i) {
+                                                mItemList.remove(i);
+                                                notifyItemRemoved(i);
+                                                //}
+                                                //break;
+                                            }
+                                        }
+                                        if (!found)
+                                            notifyItemChanged(index);
+                                    }
+                                }
+                            }, 100);
                             return;
                         }
                         checkAndHideSkipButton(holder.skipButton);
+                        if (!isRequiredToShowParentActionButtons && holder.skipButton.getVisibility() == View.VISIBLE)
+                            holder.skipButton.setVisibility(View.GONE);
                         if (type.equals("options")) {
                             CustomLog.v(TAG, "Option got!");
-                            addItem(node);
+                            addItem(TAG, node);
                             //showNestedItemsV2(node, holder, node.getOptionsList(), index, false, false);
                         } else {
                             routeByType(holder, selectedNode, node, index, true, true);
@@ -1043,7 +1113,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         int nestedLevel = mNestedLevel + 1;
         holder.nestedQuestionsListingAdapter = new NestedQuestionsListingAdapter(mContext, mRootRecyclerView, holder.superNestedRecyclerView, selectedNode, nestedLevel, mRootIndex, mIsEditMode, mIsParentNodeIsMandatory, new OnItemSelection() {
             @Override
-            public void onSelect(Node node, int indexSelected, boolean isSkipped, Node parentNode) {
+            public void onSelect(Node node, int indexSelected, boolean isSkipped, Node parentNode, boolean isLastNodeSubmit) {
                 CustomLog.v(TAG, "NestedQuestionsListingAdapter showOptionsDataV2 onSelect index- " + indexSelected);
                 CustomLog.v(TAG, "NestedQuestionsListingAdapter showOptionsDataV2 onSelect selectedNode- " + selectedNode.findDisplay());
                 CustomLog.v(TAG, "NestedQuestionsListingAdapter showOptionsDataV2 onSelect nestedLevel- " + nestedLevel);
@@ -1063,21 +1133,23 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                             return;
                         }*/
                 }
-                VisitUtils.scrollNow(mRootRecyclerView, 1000, 0, 400, mIsEditMode, mLoadedIds.contains(mItemList.get(index).getId()));
+                // TODO: index issue fix
+                if (mItemList.size() > index)
+                    VisitUtils.scrollNow(mRootRecyclerView, 1000, 0, 400, mIsEditMode, mLoadedIds.contains(mItemList.get(index).getId()));
                 CustomLog.v(TAG, "NestedQuestionsListingAdapter onSelect selectedNestedOptionIndex- " + holder.selectedNestedOptionIndex);
 
-                boolean isLastNodeSubmit = holder.selectedNestedOptionIndex >= options.size() - 1;
+                isLastNodeSubmit = holder.selectedNestedOptionIndex >= options.size() - 1;
 
                 if (!selectedNode.isHavingNestedQuestion() && !selectedNode.isContainsTheQuestionBeforeOptions()) {
-                    mOnItemSelection.onSelect(node, index, isSkipped, selectedNode);
+                    mOnItemSelection.onSelect(node, index, isSkipped, selectedNode, isLastNodeSubmit);
                 } else {
                     if (isLastNodeSubmit)
-                        mOnItemSelection.onSelect(node, indexSelected, isSkipped, selectedNode);
+                        mOnItemSelection.onSelect(node, indexSelected, isSkipped, selectedNode, isLastNodeSubmit);
 
                     else {
                         holder.selectedNestedOptionIndex += 1;
                         CustomLog.v(TAG, "options.get(holder.selectedNestedOptionIndex) " + holder.selectedNestedOptionIndex);
-                        holder.nestedQuestionsListingAdapter.addItem(options.get(holder.selectedNestedOptionIndex));
+                        holder.nestedQuestionsListingAdapter.addItem(TAG, options.get(holder.selectedNestedOptionIndex));
                     }
                 }
 
@@ -1102,6 +1174,17 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
             public void onImageRemoved(int nodeIndex, int imageIndex, String image) {
 
             }
+
+            @Override
+            public void onTerminalNodeAnsweredForParentUpdate(String parentNodeId) {
+                mParentNode.setDataCaptured(true);
+                selectedNode.setDataCaptured(true);
+            }
+
+            @Override
+            public void hideBelowToIndex(int index) {
+
+            }
         });
         holder.nestedQuestionsListingAdapter.setEngineVersion(getEngineVersion());
         holder.superNestedRecyclerView.setAdapter(holder.nestedQuestionsListingAdapter);
@@ -1109,7 +1192,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
             holder.nestedQuestionsListingAdapter.addItemAll(options);
         } else {
             CustomLog.v(TAG, "showNestedItemsV2 options.get(holder.selectedNestedOptionIndex)111 - " + holder.selectedNestedOptionIndex);
-            holder.nestedQuestionsListingAdapter.addItem(options.get(holder.selectedNestedOptionIndex));
+            holder.nestedQuestionsListingAdapter.addItem(TAG, options.get(holder.selectedNestedOptionIndex));
         }
         holder.nestedQuestionsListingAdapter.setSuperNodeList(mSuperItemList);
         holder.superNestedRecyclerView.setVisibility(View.VISIBLE);
@@ -1155,7 +1238,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
             int nestedLevel = mNestedLevel + 1;
             holder.nestedQuestionsListingAdapter = new NestedQuestionsListingAdapter(mContext, mRootRecyclerView, holder.superNestedRecyclerView, selectedNode, nestedLevel, mRootIndex, mIsEditMode, mIsParentNodeIsMandatory, new OnItemSelection() {
                 @Override
-                public void onSelect(Node node, int indexSelected, boolean isSkipped, Node parentNode) {
+                public void onSelect(Node node, int indexSelected, boolean isSkipped, Node parentNode, boolean isLastNodeSubmit) {
                     CustomLog.v(TAG, "NestedQuestionsListingAdapter onSelect index- " + indexSelected);
                     CustomLog.v(TAG, "NestedQuestionsListingAdapter onSelect selectedNode- " + selectedNode.findDisplay());
                     CustomLog.v(TAG, "NestedQuestionsListingAdapter onSelect nestedLevel- " + nestedLevel);
@@ -1178,14 +1261,14 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                     VisitUtils.scrollNow(mRootRecyclerView, 1000, 0, 400, mIsEditMode, mLoadedIds.contains(mItemList.get(index).getId()));
                     CustomLog.v(TAG, "NestedQuestionsListingAdapter onSelect selectedNestedOptionIndex- " + holder.selectedNestedOptionIndex);
 
-                    boolean isLastNodeSubmit = holder.selectedNestedOptionIndex >= options.size() - 1;
+                    isLastNodeSubmit = holder.selectedNestedOptionIndex >= options.size() - 1;
 
                     if (isLastNodeSubmit)
-                        mOnItemSelection.onSelect(node, indexSelected, isSkipped, selectedNode);
+                        mOnItemSelection.onSelect(node, indexSelected, isSkipped, selectedNode, isLastNodeSubmit);
 
                     else {
                         holder.selectedNestedOptionIndex += 1;
-                        holder.nestedQuestionsListingAdapter.addItem(options.get(holder.selectedNestedOptionIndex));
+                        holder.nestedQuestionsListingAdapter.addItem(TAG, options.get(holder.selectedNestedOptionIndex));
                     }
                 }
 
@@ -1208,12 +1291,23 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                 public void onImageRemoved(int nodeIndex, int imageIndex, String image) {
 
                 }
+
+                @Override
+                public void onTerminalNodeAnsweredForParentUpdate(String parentNodeId) {
+                    mParentNode.setDataCaptured(true);
+                    selectedNode.setDataCaptured(true);
+                }
+
+                @Override
+                public void hideBelowToIndex(int index) {
+
+                }
             });
             holder.superNestedRecyclerView.setAdapter(holder.nestedQuestionsListingAdapter);
             if (mIsEditMode) {
                 holder.nestedQuestionsListingAdapter.addItemAll(options);
             } else {
-                holder.nestedQuestionsListingAdapter.addItem(options.get(holder.selectedNestedOptionIndex));
+                holder.nestedQuestionsListingAdapter.addItem(TAG, options.get(holder.selectedNestedOptionIndex));
             }
             holder.nestedQuestionsListingAdapter.setSuperNodeList(mSuperItemList);
             holder.superNestedRecyclerView.setVisibility(View.VISIBLE);
@@ -1296,7 +1390,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                         } else {
                             //holder.tvQuestionDesc.setText(mContext.getString(R.string.select_any_one));
                             holder.submitButton.setVisibility(View.GONE);
-                            mOnItemSelection.onSelect(node, mRootIndex, false, mItemList.get(index));
+                            mOnItemSelection.onSelect(node, mRootIndex, false, mItemList.get(index), false);
                             AdapterUtils.setToDisable(holder.skipButton);
                         }
 
@@ -1366,7 +1460,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                     @Override
                     public void onFinish() {
                         node.setImageUploaded(true);
-                        mOnItemSelection.onSelect(node, mRootIndex, false, parentNode);
+                        mOnItemSelection.onSelect(node, mRootIndex, false, parentNode, false);
 
                     }
                 });
@@ -1461,7 +1555,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                 AdapterUtils.buttonProgressAnimation(mContext, skipButton, false, new AdapterUtils.OnFinishActionListener() {
                     @Override
                     public void onFinish() {
-                        mOnItemSelection.onSelect(node, mRootIndex, true, parentNode);
+                        mOnItemSelection.onSelect(node, mRootIndex, true, parentNode, false);
                         notifyItemChanged(index);
                     }
                 });
@@ -1566,6 +1660,8 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
 
                 parentNode.setSelected(true);
                 parentNode.setDataCaptured(true);
+                mParentNode.setSelected(true);
+                mParentNode.setDataCaptured(true);
 
                 //notifyDataSetChanged();
                 AdapterUtils.setToDisable(skipButton);
@@ -1574,7 +1670,8 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                 AdapterUtils.buttonProgressAnimation(mContext, submitButton, true, new AdapterUtils.OnFinishActionListener() {
                     @Override
                     public void onFinish() {
-                        mOnItemSelection.onSelect(node, mRootIndex, false, parentNode);
+                        mOnItemSelection.onSelect(node, mRootIndex, false, parentNode, false);
+                        mOnItemSelection.onTerminalNodeAnsweredForParentUpdate(parentNode.getId());
                     }
                 });
 
@@ -1637,9 +1734,9 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
     }
 
 
-    private void addNumberView(Node parentNode, Node node, LinearLayout containerLayout, int index) {
+    private void addNumberView(Node parentNode, Node node, LinearLayout containerLayout, int index, boolean isDecimalAllowed) {
         containerLayout.removeAllViews();
-        View view = View.inflate(mContext, R.layout.visit_reason_input_text, null);
+        View view = View.inflate(mContext, R.layout.visit_reason_input_num, null);
         Button submitButton = view.findViewById(R.id.btn_submit);
         submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, node.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
         submitButton.setBackgroundResource(node.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
@@ -1688,7 +1785,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         skipButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                node.setNeedToShowAlert(false);
                 node.setSelected(false);
                 node.setDataCaptured(false);
                 //holder.node.setDataCaptured(true);
@@ -1701,7 +1798,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                 AdapterUtils.buttonProgressAnimation(mContext, skipButton, false, new AdapterUtils.OnFinishActionListener() {
                     @Override
                     public void onFinish() {
-                        mOnItemSelection.onSelect(node, mRootIndex, true, parentNode);
+                        mOnItemSelection.onSelect(node, mRootIndex, true, parentNode, false);
                         notifyItemChanged(index);
                     }
                 });
@@ -1713,12 +1810,13 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                if (editText.getText().toString().trim().isEmpty()) {
+                node.setNeedToShowAlert(false);
+                String val = editText.getText().toString().trim();
+                if (val.isEmpty()) {
                     Toast.makeText(mContext, mContext.getString(R.string.please_enter_the_value), Toast.LENGTH_SHORT).show();
                 } else {
 
-                    if (!editText.getText().toString().equalsIgnoreCase("")) {
+                    if (!val.equalsIgnoreCase("")) {
                         if (node.getLanguage().contains("_")) {
                             node.setLanguage(node.getLanguage().replace("_", editText.getText().toString()));
                         } else {
@@ -1730,8 +1828,14 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                         node.setDataCaptured(true);
                         parentNode.setSelected(true);
                         parentNode.setDataCaptured(true);
+                        mParentNode.setSelected(true);
+                        mParentNode.setDataCaptured(true);
                         //holder.node.setDataCaptured(true);
+                        int age = ((VisitCreationActivity) mContext).getAgeInYear();
+                        String gender = ((VisitCreationActivity) mContext).getPatientGender();
+                        node.setNeedToShowAlert(node.checkCustomValidation(val, node.getNodeValidationList(), true, age, gender));
                     } else {
+
                         node.setDataCaptured(false);
                         //holder.node.setDataCaptured(false);
 
@@ -1759,7 +1863,8 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                     AdapterUtils.buttonProgressAnimation(mContext, submitButton, true, new AdapterUtils.OnFinishActionListener() {
                         @Override
                         public void onFinish() {
-                            mOnItemSelection.onSelect(node, mRootIndex, false, parentNode);
+                            mOnItemSelection.onSelect(node, mRootIndex, false, parentNode, false);
+                            mOnItemSelection.onTerminalNodeAnsweredForParentUpdate(parentNode.getId());
 
                         }
                     });
@@ -1768,8 +1873,16 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
             }
         });
 
-        editText.setInputType(InputType.TYPE_CLASS_NUMBER);
         editText.setHint(mContext.getString(R.string.describe_hint_txt));
+        if (isDecimalAllowed) {
+            editText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+            if (node.getPlaceholder() != null && !node.getPlaceholder().isEmpty())
+                editText.setHint(node.getPlaceholder());
+        } else {
+            editText.setInputType(InputType.TYPE_CLASS_NUMBER);
+
+        }
+
         /*if (node.isDataCaptured() && node.isDataCaptured()) {
             submitButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_check_24_white, 0, 0, 0);
         } else {
@@ -1786,16 +1899,13 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         Button submitButton = view.findViewById(R.id.btn_submit);
         submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, node.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
         submitButton.setBackgroundResource(node.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
-
         final EditText editText = view.findViewById(R.id.actv_reasons);
         Button skipButton = view.findViewById(R.id.btn_skip);
-
         if (node.isSkipped()) {
             skipButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_check_18_white, 0);
             skipButton.setBackgroundResource(R.drawable.ui2_common_primary_bg);
             AdapterUtils.setToDisable(submitButton);
         }
-
         Timber.tag(TAG).d("Input =>%s", node.getLanguage());
         if (node.isSelected() && node.getLanguage() != null && node.isDataCaptured()) {
             if (node.getLanguage().contains(" : "))
@@ -1804,7 +1914,6 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                 editText.setText(node.getLanguage());
 
         }
-
         String oldValue = editText.getText().toString().trim();
         editText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -1836,7 +1945,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         skipButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                node.setNeedToShowAlert(false);
                 node.setSelected(false);
                 node.setDataCaptured(false);
 
@@ -1849,7 +1958,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                 AdapterUtils.buttonProgressAnimation(mContext, skipButton, false, new AdapterUtils.OnFinishActionListener() {
                     @Override
                     public void onFinish() {
-                        mOnItemSelection.onSelect(node, mRootIndex, true, parentNode);
+                        mOnItemSelection.onSelect(node, mRootIndex, true, parentNode, false);
                         notifyItemChanged(index);
                     }
                 });
@@ -1861,7 +1970,9 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (editText.getText().toString().trim().isEmpty()) {
+                node.setNeedToShowAlert(false);
+                String val = editText.getText().toString().trim();
+                if (val.isEmpty()) {
                     Toast.makeText(mContext, mContext.getString(R.string.please_enter_the_value), Toast.LENGTH_SHORT).show();
                 } else {
 
@@ -1879,6 +1990,11 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
 
                         parentNode.setSelected(true);
                         parentNode.setDataCaptured(true);
+                        mParentNode.setSelected(true);
+                        mParentNode.setDataCaptured(true);
+                        int age = ((VisitCreationActivity) mContext).getAgeInYear();
+                        String gender = ((VisitCreationActivity) mContext).getPatientGender();
+                        node.setNeedToShowAlert(node.checkCustomValidation(val, node.getNodeValidationList(), false, age, gender));
 
                     } else {
                         node.setDataCaptured(false);
@@ -1902,10 +2018,12 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                     AdapterUtils.setToDisable(skipButton);
                     node.setSkipped(false);
                     parentNode.setSkipped(false);
+
                     AdapterUtils.buttonProgressAnimation(mContext, submitButton, true, new AdapterUtils.OnFinishActionListener() {
                         @Override
                         public void onFinish() {
-                            mOnItemSelection.onSelect(node, mRootIndex, false, parentNode);
+                            mOnItemSelection.onSelect(node, mRootIndex, false, parentNode, false);
+                            mOnItemSelection.onTerminalNodeAnsweredForParentUpdate(parentNode.getId());
 
                         }
                     });
@@ -1916,13 +2034,21 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
 
         });
 
-        editText.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+       // editText.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+        editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+
         editText.setFilters(new InputFilter[]{new FirstLetterUpperCaseInputFilter()});
-        editText.setMinLines(5);
-        editText.setLines(5);
         editText.setHorizontallyScrolling(false);
-        editText.setHint(mContext.getString(R.string.describe_hint_txt));
-        editText.setMinHeight(320);
+        editText.setHint(node.getHint());
+        editText.setMinLines(node.minLines());
+        editText.setLines(node.maxLines());
+        if (!node.isDateType()){
+            editText.setMinHeight(320);
+            editText.setSingleLine(false);
+        }else{
+            editText.setMinHeight(200);
+            editText.setSingleLine(true);
+        }
 
         /*if (node.isDataCaptured() && node.isDataCaptured()) {
             submitButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_check_24_white, 0, 0, 0);
@@ -2049,7 +2175,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                 AdapterUtils.buttonProgressAnimation(mContext, skipButton, false, new AdapterUtils.OnFinishActionListener() {
                     @Override
                     public void onFinish() {
-                        mOnItemSelection.onSelect(node, mRootIndex, true, parentNode);
+                        mOnItemSelection.onSelect(node, mRootIndex, true, parentNode, false);
                         notifyItemChanged(index);
                     }
                 });
@@ -2116,7 +2242,8 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                     //holder.node.setDataCaptured(true);
                     parentNode.setSelected(true);
                     parentNode.setDataCaptured(true);
-
+                    mParentNode.setSelected(true);
+                    mParentNode.setDataCaptured(true);
                     //notifyDataSetChanged();
                     AdapterUtils.setToDisable(skipButton);
                     node.setSkipped(false);
@@ -2156,7 +2283,8 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                     AdapterUtils.buttonProgressAnimation(mContext, submitButton, true, new AdapterUtils.OnFinishActionListener() {
                         @Override
                         public void onFinish() {
-                            mOnItemSelection.onSelect(node, mRootIndex, false, parentNode);
+                            mOnItemSelection.onSelect(node, mRootIndex, false, parentNode, false);
+                            mOnItemSelection.onTerminalNodeAnsweredForParentUpdate(parentNode.getId());
                         }
                     });
 
@@ -2217,7 +2345,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                     AdapterUtils.buttonProgressAnimation(mContext, submitButton, true, new AdapterUtils.OnFinishActionListener() {
                         @Override
                         public void onFinish() {
-                            mOnItemSelection.onSelect(node, mRootIndex, false, null);
+                            mOnItemSelection.onSelect(node, mRootIndex, false, null, false);
                         }
                     });
 
@@ -2237,7 +2365,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                     AdapterUtils.buttonProgressAnimation(mContext, skipButton, false, new AdapterUtils.OnFinishActionListener() {
                         @Override
                         public void onFinish() {
-                            mOnItemSelection.onSelect(node, mRootIndex, true, null);
+                            mOnItemSelection.onSelect(node, mRootIndex, true, null, false);
                             notifyItemChanged(index);
                         }
                     });

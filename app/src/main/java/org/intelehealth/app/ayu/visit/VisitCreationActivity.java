@@ -11,10 +11,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-
-import org.intelehealth.app.ayu.visit.model.VitalsWrapper;
-import org.intelehealth.app.utilities.CustomLog;
-
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
@@ -34,7 +30,6 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity_New;
 import org.intelehealth.app.app.AppConstants;
@@ -43,6 +38,7 @@ import org.intelehealth.app.ayu.visit.common.VisitUtils;
 import org.intelehealth.app.ayu.visit.familyhist.FamilyHistoryFragment;
 import org.intelehealth.app.ayu.visit.model.CommonVisitData;
 import org.intelehealth.app.ayu.visit.model.ReasonData;
+import org.intelehealth.app.ayu.visit.model.VitalsWrapper;
 import org.intelehealth.app.ayu.visit.pastmedicalhist.MedicalHistorySummaryFragment;
 import org.intelehealth.app.ayu.visit.pastmedicalhist.PastMedicalHistoryFragment;
 import org.intelehealth.app.ayu.visit.physicalexam.PhysicalExamSummaryFragment;
@@ -171,7 +167,13 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
     private boolean mHasLicence = false;
     private FeatureActiveStatus featureActiveStatus;
 
+    public int getAgeInYear() {
+        return Integer.parseInt(mAgeAndMonth.split(" ")[0]);
+    }
 
+    public String getPatientGender() {
+        return patientGender;
+    }
     private void startVisit() {
         // before starting, we determine if it is new visit for a returning patient
         // extract both FH and PMH
@@ -553,7 +555,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                     }
 
                     getSupportFragmentManager().beginTransaction().
-                            replace(R.id.fl_steps_summary, VisitReasonSummaryFragment.newInstance(mCommonVisitData, data, isEditMode), VISIT_REASON_QUESTION_FRAGMENT).
+                            replace(R.id.fl_steps_summary, VisitReasonSummaryFragment.newInstance(mCommonVisitData, insertionWithLocaleJsonString, isEditMode), VISIT_REASON_QUESTION_FRAGMENT).
                             commit();
                 }
                 break;
@@ -696,6 +698,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         JSONObject regionalLanguageObject = new JSONObject();
         try {
             regionalLanguageObject.put("text_" + sessionManager.getAppLanguage(), insertionLocale);
+            insertionWithLocaleJsonString = regionalLanguageObject.toString().replace("\\/", "/");
             isCurrentComplaintLocaleInserted = insertChiefComplainToDb(regionalLanguageObject.toString(), UuidDictionary.CC_REG_LANG_VALUE);
         } catch (JSONException e) {
             e.printStackTrace();

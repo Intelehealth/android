@@ -6,9 +6,6 @@ import static org.intelehealth.app.ayu.visit.common.VisitUtils.getTranslatedPati
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-
-import org.intelehealth.app.utilities.CustomLog;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +26,7 @@ import org.intelehealth.app.ayu.visit.model.CommonVisitData;
 import org.intelehealth.app.ayu.visit.model.VisitSummaryData;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.syncModule.SyncUtils;
+import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.config.room.entity.FeatureActiveStatus;
@@ -48,7 +46,7 @@ public class VisitReasonSummaryFragment extends Fragment {
     private List<Node> mAnsweredRootNodeList = new ArrayList<>();
     private List<List<VisitSummaryData>> mAllItemList = new ArrayList<>();
     private List<VisitSummaryData> mItemList = new ArrayList<VisitSummaryData>();
-    private String mSummaryString;
+    private JSONObject mSummaryStringJsonObject;
     private LinearLayout mAssociateSymptomsLinearLayout, mComplainSummaryLinearLayout;
     private VisitCreationActionListener mActionListener;
     SessionManager sessionManager;
@@ -63,7 +61,12 @@ public class VisitReasonSummaryFragment extends Fragment {
     // TODO: Rename and change types and number of parameters
     public static VisitReasonSummaryFragment newInstance(CommonVisitData commonVisitData, String values, boolean isEditMode) {
         VisitReasonSummaryFragment fragment = new VisitReasonSummaryFragment();
-        fragment.mSummaryString = values;
+        try {
+            fragment.mSummaryStringJsonObject =  new JSONObject(values);
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+        ;
         fragment.mIsEditMode = isEditMode;
         return fragment;
     }
@@ -145,156 +148,162 @@ public class VisitReasonSummaryFragment extends Fragment {
     }
 
     private void prepareSummaryV2() {
-        String answerInLocale = mSummaryString;
-        answerInLocale = answerInLocale.replaceAll("<.*?>", "");
-        String[] spt = answerInLocale.split("►");
-        List<String> list = new ArrayList<>();
-        String associatedSymptomsString = "";
-        for (String s : spt) {
-            if (s.isEmpty()) continue;
-            if (s.trim().contains(getTranslatedPatientDenies(sessionManager.getAppLanguage())) || s.trim().contains(getTranslatedAssociatedSymptomQString(sessionManager.getAppLanguage()))) {
-                associatedSymptomsString = s;
-            } else {
-                list.add(s);
-            }
-        }
-
-        mComplainSummaryLinearLayout.removeAllViews();
-        for (int i = 0; i < list.size(); i++) {
-            String complainName = "";
-            List<VisitSummaryData> visitSummaryDataList = new ArrayList<>();
-            String[] spt1 = list.get(i).split("●");
-            for (String value : spt1) {
-                if (value.contains("::")) {
-                    complainName = value.replace("::", "");
-                    System.out.println(complainName);
+        try {
+            String lCode = sessionManager.getAppLanguage();
+            String answerInLocale = mSummaryStringJsonObject.getString("text_" + lCode);
+            //String answerInLocale = mSummaryString;
+            answerInLocale = answerInLocale.replaceAll("<.*?>", "");
+            String[] spt = answerInLocale.split("►");
+            List<String> list = new ArrayList<>();
+            String associatedSymptomsString = "";
+            for (String s : spt) {
+                if (s.isEmpty()) continue;
+                if (s.trim().contains(getTranslatedPatientDenies(sessionManager.getAppLanguage())) || s.trim().contains(getTranslatedAssociatedSymptomQString(sessionManager.getAppLanguage()))) {
+                    associatedSymptomsString = s;
                 } else {
-                    String[] qa = value.split("•");
-                    if (qa.length == 2) {
-                        String k = value.split("•")[0].trim();
-                        String v = value.split("•")[1].trim();
-                        if (v.endsWith(",")) {
-                            v = v.substring(0, v.length() - 1);
-                        }
-                        VisitSummaryData summaryData = new VisitSummaryData();
-                        summaryData.setQuestion(k);
-                        summaryData.setDisplayValue(v);
-                        visitSummaryDataList.add(summaryData);
+                    list.add(s);
+                }
+            }
+
+            mComplainSummaryLinearLayout.removeAllViews();
+            for (int i = 0; i < list.size(); i++) {
+                String complainName = "";
+                List<VisitSummaryData> visitSummaryDataList = new ArrayList<>();
+                String[] spt1 = list.get(i).split("●");
+                for (String value : spt1) {
+                    if (value.contains("::")) {
+                        complainName = value.replace("::", "");
+                        System.out.println(complainName);
                     } else {
+                        String[] qa = value.split("•");
+                        if (qa.length == 2) {
+                            String k = value.split("•")[0].trim();
+                            String v = value.split("•")[1].trim();
+                            if (v.endsWith(",")) {
+                                v = v.substring(0, v.length() - 1);
+                            }
+                            VisitSummaryData summaryData = new VisitSummaryData();
+                            summaryData.setQuestion(k);
+                            summaryData.setDisplayValue(v);
+                            visitSummaryDataList.add(summaryData);
+                        } else {
 
 
-                        //String k = value.split("•")[0].trim();
-                        StringBuilder stringBuilder = new StringBuilder();
-                        String key = "";
-                        String lastString = "";
-                        for (int j = 0; j < qa.length; j++) {
+                            //String k = value.split("•")[0].trim();
+                            StringBuilder stringBuilder = new StringBuilder();
+                            String key = "";
+                            String lastString = "";
+                            for (int j = 0; j < qa.length; j++) {
 
-                            String v1 = qa[j].trim();
-                            System.out.println(v1);
-                            if (lastString.equals(v1)) continue;
-                            //if (!stringBuilder.toString().isEmpty()) stringBuilder.append("\n");
-                            stringBuilder.append(v1);
-                            lastString = v1;
-                            if (j % 2 != 0) {
-                                String v = qa[j].trim();
-                                if (j == qa.length - 2) {
-                                    v = v + Node.bullet_arrow + qa[j + 1];
+                                String v1 = qa[j].trim();
+                                System.out.println(v1);
+                                if (lastString.equals(v1)) continue;
+                                //if (!stringBuilder.toString().isEmpty()) stringBuilder.append("\n");
+                                stringBuilder.append(v1);
+                                lastString = v1;
+                                if (j % 2 != 0) {
+                                    String v = qa[j].trim();
+                                    if (j == qa.length - 2) {
+                                        v = v + Node.bullet_arrow + qa[j + 1];
+                                    }
+
+                                    VisitSummaryData summaryData = new VisitSummaryData();
+                                    if (v.endsWith(",")) {
+                                        v = v.substring(0, v.length() - 1);
+                                    }
+                                    summaryData.setQuestion(key);
+                                    summaryData.setDisplayValue(v);
+                                    visitSummaryDataList.add(summaryData);
+
+                                } else {
+                                    key = qa[j].trim();
                                 }
-
-                                VisitSummaryData summaryData = new VisitSummaryData();
-                                if (v.endsWith(",")) {
-                                    v = v.substring(0, v.length() - 1);
-                                }
-                                summaryData.setQuestion(key);
-                                summaryData.setDisplayValue(v);
-                                visitSummaryDataList.add(summaryData);
-
-                            } else {
-                                key = qa[j].trim();
                             }
                         }
                     }
+
                 }
 
+                if (!complainName.isEmpty() && !visitSummaryDataList.isEmpty()) {
+                    View view = View.inflate(getActivity(), R.layout.ui2_summary_main_row_item_view, null);
+                    TextView complainLabelTextView = view.findViewById(R.id.tv_complain_label);
+                    complainLabelTextView.setText(complainName);
+                    view.findViewById(R.id.tv_change).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            mActionListener.onFormSubmitted(VisitCreationActivity.FROM_SUMMARY_RESUME_BACK_FOR_EDIT, mIsEditMode, VisitCreationActivity.STEP_2_VISIT_REASON_QUESTION);
+                        }
+                    });
+
+                    RecyclerView recyclerView = view.findViewById(R.id.rcv_qa);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
+                    SummaryViewAdapter summaryViewAdapter = new SummaryViewAdapter(recyclerView, getActivity(), visitSummaryDataList, new SummaryViewAdapter.OnItemSelection() {
+                        @Override
+                        public void onSelect(VisitSummaryData data) {
+
+                        }
+                    });
+                    recyclerView.setAdapter(summaryViewAdapter);
+                    mComplainSummaryLinearLayout.addView(view);
+                }
             }
 
-            if (!complainName.isEmpty() && !visitSummaryDataList.isEmpty()) {
-                View view = View.inflate(getActivity(), R.layout.ui2_summary_main_row_item_view, null);
-                TextView complainLabelTextView = view.findViewById(R.id.tv_complain_label);
-                complainLabelTextView.setText(complainName);
-                view.findViewById(R.id.tv_change).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        mActionListener.onFormSubmitted(VisitCreationActivity.FROM_SUMMARY_RESUME_BACK_FOR_EDIT, mIsEditMode, VisitCreationActivity.STEP_2_VISIT_REASON_QUESTION);
-                    }
-                });
+            // ASSOCIATED SYMPTOMS
+            String[] tempAS = associatedSymptomsString.split("::");
+            if (tempAS.length >= 2) {
+                String title = tempAS[0];
+                mAssociateSymptomsLabelTextView.setText(title);
 
-                RecyclerView recyclerView = view.findViewById(R.id.rcv_qa);
-                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
-                SummaryViewAdapter summaryViewAdapter = new SummaryViewAdapter(recyclerView, getActivity(), visitSummaryDataList, new SummaryViewAdapter.OnItemSelection() {
-                    @Override
-                    public void onSelect(VisitSummaryData data) {
-
-                    }
-                });
-                recyclerView.setAdapter(summaryViewAdapter);
-                mComplainSummaryLinearLayout.addView(view);
+                associatedSymptomsString = tempAS[1];
             }
-        }
 
-        // ASSOCIATED SYMPTOMS
-        String[] tempAS = associatedSymptomsString.split("::");
-        if (tempAS.length >= 2) {
-            String title = tempAS[0];
-            mAssociateSymptomsLabelTextView.setText(title);
+            mAssociateSymptomsLinearLayout.removeAllViews();
 
-            associatedSymptomsString = tempAS[1];
-        }
+            if (!associatedSymptomsString.trim().isEmpty()) {
+                String[] sections = associatedSymptomsString.split(getTranslatedPatientDenies(sessionManager.getAppLanguage()));
 
-        mAssociateSymptomsLinearLayout.removeAllViews();
-
-        if (!associatedSymptomsString.trim().isEmpty()) {
-            String[] sections = associatedSymptomsString.split(getTranslatedPatientDenies(sessionManager.getAppLanguage()));
-
-            CustomLog.v(TAG, associatedSymptomsString);
-            String[] spt1 = associatedSymptomsString.trim().split("•");
-            CustomLog.e("node", associatedSymptomsString);
-            CustomLog.e("node", String.valueOf(spt1.length));
-            CustomLog.e("node", "sections.length - " + String.valueOf(sections.length));
-            for (int i = 0; i < sections.length; i++) {
-                String patientReports = sections[i]; // Patient reports & // Patient denies
-                if (patientReports != null && patientReports.length() >= 2) {
-                    patientReports = patientReports.substring(1);
-                    patientReports = patientReports.replace("•", ", ");
-                    patientReports = patientReports.replace("●", ", ");
-                    View view = View.inflate(getActivity(), R.layout.ui2_summary_qa_ass_sympt_row_item_view, null);
-                    TextView keyTextView = view.findViewById(R.id.tv_question_label);
-                    keyTextView.setText(i == 0 ? getString(R.string.patient_reports) : getString(R.string.patient_denies));
-                    TextView valueTextView = view.findViewById(R.id.tv_answer_value);
-                    valueTextView.setText(patientReports.trim());
+                CustomLog.v(TAG, associatedSymptomsString);
+                String[] spt1 = associatedSymptomsString.trim().split("•");
+                CustomLog.e("node", associatedSymptomsString);
+                CustomLog.e("node", String.valueOf(spt1.length));
+                CustomLog.e("node", "sections.length - " + String.valueOf(sections.length));
+                for (int i = 0; i < sections.length; i++) {
+                    String patientReports = sections[i]; // Patient reports & // Patient denies
+                    if (patientReports != null && patientReports.length() >= 2) {
+                        patientReports = patientReports.substring(1);
+                        patientReports = patientReports.replace("•", ", ");
+                        patientReports = patientReports.replace("●", ", ");
+                        View view = View.inflate(getActivity(), R.layout.ui2_summary_qa_ass_sympt_row_item_view, null);
+                        TextView keyTextView = view.findViewById(R.id.tv_question_label);
+                        keyTextView.setText(i == 0 ? getString(R.string.patient_reports) : getString(R.string.patient_denies));
+                        TextView valueTextView = view.findViewById(R.id.tv_answer_value);
+                        valueTextView.setText(patientReports.trim());
                /* if (patientReportsDenies.isEmpty()) {
                     view.findViewById(R.id.iv_blt).setVisibility(View.GONE);
                 } else {
                     view.findViewById(R.id.iv_blt).setVisibility(View.VISIBLE);
                 }*/
-                    mAssociateSymptomsLinearLayout.addView(view);
+                        mAssociateSymptomsLinearLayout.addView(view);
+                    }
+                }
+                mAssociateSymptomsLabelTextView.setVisibility(View.VISIBLE);
+                mAssociateSymptChangeTextView.setVisibility(View.VISIBLE);
+            } else {
+                mAssociateSymptomsLabelTextView.setVisibility(View.INVISIBLE);
+                mAssociateSymptChangeTextView.setVisibility(View.INVISIBLE);
+            }
+
+
+            for (int i = 0; i < mAnsweredRootNodeList.size(); i++) {
+                List<VisitSummaryData> itemList = new ArrayList<VisitSummaryData>();
+                for (int j = 0; j < mAnsweredRootNodeList.get(i).getOptionsList().size(); j++) {
+                    VisitSummaryData summaryData = new VisitSummaryData();
+                    summaryData.setDisplayValue(mAnsweredRootNodeList.get(i).getOptionsList().get(j).getText());
+                    itemList.add(summaryData);
                 }
             }
-            mAssociateSymptomsLabelTextView.setVisibility(View.VISIBLE);
-            mAssociateSymptChangeTextView.setVisibility(View.VISIBLE);
-        } else {
-            mAssociateSymptomsLabelTextView.setVisibility(View.INVISIBLE);
-            mAssociateSymptChangeTextView.setVisibility(View.INVISIBLE);
-        }
-
-
-        for (int i = 0; i < mAnsweredRootNodeList.size(); i++) {
-            List<VisitSummaryData> itemList = new ArrayList<VisitSummaryData>();
-            for (int j = 0; j < mAnsweredRootNodeList.get(i).getOptionsList().size(); j++) {
-                VisitSummaryData summaryData = new VisitSummaryData();
-                summaryData.setDisplayValue(mAnsweredRootNodeList.get(i).getOptionsList().get(j).getText());
-                itemList.add(summaryData);
-            }
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 }

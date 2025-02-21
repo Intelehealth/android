@@ -3,6 +3,8 @@ package org.intelehealth.app.ayu.visit.common;
 import android.content.Context;
 import android.util.Log;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import org.intelehealth.app.R;
 import org.intelehealth.app.database.dao.ObsDAO;
 import org.intelehealth.app.database.dao.VisitsDAO;
@@ -10,10 +12,10 @@ import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 
-import androidx.recyclerview.widget.RecyclerView;
-
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 public class VisitUtils {
@@ -336,6 +338,16 @@ AB NEGATIVE = 1231*/
             return "पेशेंट ने मना कर दिया -";
         } else if (localeCode.equalsIgnoreCase("or")) {
             return "ରୋଗୀ ଅସ୍ୱୀକାର କରନ୍ତି -";
+        } else if (localeCode.equalsIgnoreCase("gu")) {
+            return "દરદી મના કરે છે -";
+        } else if (localeCode.equalsIgnoreCase("as")) {
+            return "ৰোগীয়ে অস্বীকাৰ কৰে -";
+        } else if (localeCode.equalsIgnoreCase("bn")) {
+            return "রোগী অস্বীকার করে-";
+        } else if (localeCode.equalsIgnoreCase("kn")) {
+            return "ರೋಗಿಯು ನಿರಾಕರಿಸುತ್ತಾನೆ-";
+        } else if (localeCode.equalsIgnoreCase("mr")) {
+            return "रुग्ण नकार देतो-";
         } else {
             return "Patient denies -";
         }
@@ -346,6 +358,16 @@ AB NEGATIVE = 1231*/
             return "क्या आपको निम्न लक्षण है";
         } else if (localeCode.equalsIgnoreCase("or")) {
             return "ତମର ଏହି ଲକ୍ଷଣ ସବୁ ଅଛି କି?";
+        } else if (localeCode.equalsIgnoreCase("gu")) {
+            return "તમે નીચેનાં લક્ષણ(લક્ષણો) છે?";
+        } else if (localeCode.equalsIgnoreCase("as")) {
+            return "নিম্নলিখিত লক্ষণবোৰ আপোনাৰ আছে ?";
+        } else if (localeCode.equalsIgnoreCase("bn")) {
+            return "আপনার কি নিম্নলিখিত উপসর্গ(গুলি) আছে?";
+        } else if (localeCode.equalsIgnoreCase("kn")) {
+            return "ನೀವು ಈ ಕೆಳಗಿನ ರೋಗಲಕ್ಷಣಗಳನ್ನು ಹೊಂದಿದ್ದೀರಾ?";
+        } else if (localeCode.equalsIgnoreCase("mr")) {
+            return "तुम्हाला खालील लक्षण (लक्षणे) आहेत का?";
         } else {
             return "Do you have the following symptom(s)?";
         }
@@ -357,7 +379,17 @@ AB NEGATIVE = 1231*/
             return "सामान्य परीक्षण:";
         } else if (localeCode.equalsIgnoreCase("or")) {
             return "ସାଧାରଣ ପରୀକ୍ଷା:";
-        } else {
+        } else if (localeCode.equalsIgnoreCase("gu")) {
+            return "સામાન્ય પરીક્ષણ:";
+        } else if (localeCode.equalsIgnoreCase("as")) {
+            return "সাধাৰণ পৰিক্ষা:";
+        } else if (localeCode.equalsIgnoreCase("bn")) {
+            return "সাধারণ পরীক্ষা:";
+        } else if (localeCode.equalsIgnoreCase("kn")) {
+            return "ಸಾಮಾನ್ಯ ಪರೀಕ್ಷೆಗಳು:";
+        } else if (localeCode.equalsIgnoreCase("mr")) {
+            return "सामान्य परीक्षण:";
+        }else {
             return "General exams:";
         }
     }
@@ -385,7 +417,7 @@ AB NEGATIVE = 1231*/
     public static String convertCtoF(String TAG, String temperature) {
         CustomLog.i(TAG, "convertCtoF IN: " + temperature);
         String result = "Corrupted data";
-        try{
+        try {
             if (temperature == null || temperature.isEmpty()) return "";
             double a = Double.parseDouble(String.valueOf(temperature));
             Double b = (a * 9 / 5) + 32;
@@ -454,5 +486,33 @@ AB NEGATIVE = 1231*/
             return previousVisitUuid != null && !previousVisitUuid.isEmpty();
         }
         return true;
+    }
+
+
+    private List<Node> tempList = new ArrayList<>();
+
+    public void updateParentNodesIfSelectedAndDataCaptured(Node parentNode) {
+
+        if (parentNode.getOptionsList() != null) {
+            for (Node nestedNode : parentNode.getOptionsList()) {
+                tempList.add(parentNode);
+                //nestedNode.setParentNode(parentNode);
+                if (nestedNode.isTerminal()) {
+                    if (nestedNode.isSelected() && nestedNode.isDataCaptured()) {
+                        for (int i = 0; i < tempList.size(); i++) {
+                            tempList.get(i).setSelected(true);
+                            tempList.get(i).setDataCaptured(true);
+                        }
+                    }
+                    tempList.clear();
+                    break;
+                } else {
+                    updateParentNodesIfSelectedAndDataCaptured(nestedNode);
+
+
+                }
+            }
+        }
+
     }
 }

@@ -4,14 +4,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import org.intelehealth.app.utilities.CustomLog;
-
 import org.intelehealth.app.BuildConfig;
 import org.intelehealth.klivekit.data.PreferenceHelper;
 
 import java.util.Set;
-
-import kotlin.jvm.JvmStatic;
 
 public class SessionManager {
     // Shared preferences file name
@@ -182,8 +178,9 @@ public class SessionManager {
         return pref.getString(APP_LANGUAGE, "en");
     }
 
-    public void setAppLanguage(String pullExcutedTime) {
-        editor.putString(APP_LANGUAGE, pullExcutedTime);
+    public void setAppLanguage(String lan) {
+        editor.putString(APP_LANGUAGE, lan);
+        editor.putString(CURRENT_LANG, lan);
         editor.commit();
     }
 
@@ -312,6 +309,7 @@ public class SessionManager {
 
     public void setCurrentLang(String lang) {
         editor.putString(CURRENT_LANG, lang);
+        editor.putString(APP_LANGUAGE, lang);
         editor.commit();
     }
 

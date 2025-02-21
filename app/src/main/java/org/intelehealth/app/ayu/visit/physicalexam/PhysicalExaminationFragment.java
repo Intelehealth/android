@@ -126,9 +126,9 @@ public class PhysicalExaminationFragment extends Fragment {
             mRootComplainBasicInfoHashMap.put(0, complainBasicInfo);
 
             mQuestionsListingAdapter = new QuestionsListingAdapter(recyclerView, requireActivity(), false, true, physicalExam, 0, mRootComplainBasicInfoHashMap, mIsEditMode, new OnItemSelection() {
-                @Override
-                public void onSelect(Node node, int index, boolean isSkipped, Node parentNode) {
+                public void onSelect(Node node, int index, boolean isSkipped, Node parentNode, boolean isLastNodeSubmit) {
                     // avoid the scroll for old data change
+                    CustomLog.v("onSelect", "mCurrentComplainNodeOptionsIndex - " + mCurrentComplainNodeOptionsIndex);
                     if (mCurrentComplainNodeOptionsIndex - index >= 1) {
                         return;
                     }
@@ -148,7 +148,7 @@ public class PhysicalExaminationFragment extends Fragment {
 
                         //}
 
-
+                        physicalExam.getExamNode(mCurrentComplainNodeOptionsIndex).setNeedToHide(false);
                         mQuestionsListingAdapter.addItem(physicalExam.getExamNode(mCurrentComplainNodeOptionsIndex).getOption(0), physicalExam.getEngineVersion());
                    /* recyclerView.postDelayed(new Runnable() {
                         @Override
@@ -194,6 +194,20 @@ public class PhysicalExaminationFragment extends Fragment {
                 public void onImageRemoved(int nodeIndex, int imageIndex, String image) {
                     mActionListener.onImageRemoved(nodeIndex, imageIndex, image);
                 }
+
+                @Override
+                public void onTerminalNodeAnsweredForParentUpdate(String parentNodeId) {
+
+                }
+
+                @Override
+                public void hideBelowToIndex(int index) {
+                    physicalExam.hideBelowToIndex(index);
+                    mQuestionsListingAdapter.removeItemsFromSpecificIndexToEnd(index + 1);
+                    mCurrentComplainNodeOptionsIndex = index;
+                    mActionListener.onProgress(100);
+
+                }
             });
 
             recyclerView.setAdapter(mQuestionsListingAdapter);
@@ -205,8 +219,10 @@ public class PhysicalExaminationFragment extends Fragment {
                 while (true) {
                     if (mCurrentComplainNodeOptionsIndex < physicalExam.getTotalNumberOfExams() - 1) {
                         mCurrentComplainNodeOptionsIndex++;
-                        mQuestionsListingAdapter.addItem(physicalExam.getExamNode(mCurrentComplainNodeOptionsIndex).getOption(0), physicalExam.getEngineVersion());
-
+                        Node _node = physicalExam.getExamNode(mCurrentComplainNodeOptionsIndex).getOption(0);
+                        if (!_node.isNeedToHide()) {
+                            mQuestionsListingAdapter.addItem(_node, physicalExam.getEngineVersion());
+                        }
 
                     } else {
                         break;

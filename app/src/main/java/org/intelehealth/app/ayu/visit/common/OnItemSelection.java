@@ -3,7 +3,7 @@ package org.intelehealth.app.ayu.visit.common;
 import org.intelehealth.app.knowledgeEngine.Node;
 
 public interface OnItemSelection {
-    void onSelect(Node node, int index, boolean isSkipped, Node selectedNode);
+    void onSelect(Node node, int index, boolean isSkipped, Node selectedNode, boolean isLastNodeSubmit);
 
     void needTitleChange(String title);
 
@@ -12,6 +12,8 @@ public interface OnItemSelection {
     void onCameraRequest();
 
     void onImageRemoved(int nodeIndex,int imageIndex, String image);
+    void onTerminalNodeAnsweredForParentUpdate(String parentNodeId);
 
 
+    void hideBelowToIndex(int index);
 }
