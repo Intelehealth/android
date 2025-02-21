@@ -34,6 +34,7 @@ import android.util.DisplayMetrics;
 
 import org.intelehealth.app.activities.prescription.PrescriptionBuilder;
 import org.intelehealth.app.ayu.visit.notification.LocalPrescriptionInfo;
+import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.models.ClsDoctorDetails;
 import org.intelehealth.app.models.Patient;
@@ -442,6 +443,7 @@ public class EndVisitActivity extends BaseActivity implements NetworkUtils.Inter
         String[] eValues = {model.getVisitUuid(), UuidDictionary.ENCOUNTER_VITALS};
         EncounterDTO mEncounter = queryAndGetRowAsObject("tbl_encounter", eColumns, eValues, EncounterDTO.class);
 
+        preparePrescriptionDiagnosisInfo(model.getVisitUuid());
         preparePrescriptionVitals(mEncounter.getUuid());
 
         String[] pColumns = {"uuid"};
@@ -534,6 +536,38 @@ public class EndVisitActivity extends BaseActivity implements NetworkUtils.Inter
             return null;
         }
     }
+
+    public void preparePrescriptionDiagnosisInfo(String visitUuid) {
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
+        String visitnote = "";
+        EncounterDAO encounterDAO = new EncounterDAO();
+        String encounterIDSelection = "visituuid = ? AND voided = ?";
+        String[] encounterIDArgs = {visitUuid, "0"};
+        Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
+        if (encounterCursor != null && encounterCursor.moveToFirst()) {
+            do {
+                if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_VISIT_NOTE").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+                    visitnote = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
+                }
+            } while (encounterCursor.moveToNext());
+
+        }
+        encounterCursor.close();
+
+        String[] columns = {"value", " conceptuuid"};
+        String visitSelection = "encounteruuid = ? and voided = ? and sync = ?";
+        String[] visitArgs = {visitnote, "0", "TRUE"};
+        Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
+        if (visitCursor.moveToFirst()) {
+            do {
+                String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
+                String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
+                parseData(dbConceptID, dbValue);
+            } while (visitCursor.moveToNext());
+        }
+        visitCursor.close();
+    }
+
 
     public void preparePrescriptionVitals(String mEncounterUUID) {
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
@@ -789,26 +823,28 @@ public class EndVisitActivity extends BaseActivity implements NetworkUtils.Inter
         String colon = ":";
         String result = "";
 
-        for (String mc: mComplaints) {
-            String[] complaints = {mc};
-            if (complaints != null) {
-                for (String value : complaints) {
-                    if (value == null || value.trim().isEmpty()) {
-                        continue;
-                    }
-
-                    if (value.contains("Associated symptoms")) {
-                        continue;
-                    }
-
-                    try {
-                        int colonIndex = value.indexOf(colon);
-                        if (colonIndex > 0) {
-                            String formattedValue = value.substring(0, colonIndex).trim();
-                            formattedData.append(Node.big_bullet).append(" ").append(formattedValue).append("\n");
+        if(mComplaints != null){
+            for (String mc: mComplaints) {
+                String[] complaints = {mc};
+                if (complaints != null) {
+                    for (String value : complaints) {
+                        if (value == null || value.trim().isEmpty()) {
+                            continue;
                         }
-                    } catch (Exception e) {
-                        Log.e("FormatComplaint", "Error formatting complaint data", e);
+
+                        if (value.contains("Associated symptoms")) {
+                            continue;
+                        }
+
+                        try {
+                            int colonIndex = value.indexOf(colon);
+                            if (colonIndex > 0) {
+                                String formattedValue = value.substring(0, colonIndex).trim();
+                                formattedData.append(Node.big_bullet).append(" ").append(formattedValue).append("\n");
+                            }
+                        } catch (Exception e) {
+                            Log.e("FormatComplaint", "Error formatting complaint data", e);
+                        }
                     }
                 }
             }
