@@ -191,7 +191,7 @@ class SplashActivity : LanguageActivity(), BaseViewHolder.ViewHolderClickListene
                 }
             }
             if (allGranted) {
-                nextActivity()
+               // nextActivity()
             } else {
                 Timber.e("%s%s", "onRequestPermissionsResult: ", Gson().toJson(permissions))
             }

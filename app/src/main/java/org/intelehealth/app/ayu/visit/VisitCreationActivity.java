@@ -174,6 +174,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
     public String getPatientGender() {
         return patientGender;
     }
+
     private void startVisit() {
         // before starting, we determine if it is new visit for a returning patient
         // extract both FH and PMH
@@ -1295,9 +1296,9 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
             }
 
             patientHistory = VisitUtils.replaceToEnglishCommonString(patientHistory, sessionManager.getAppLanguage());
-            jsonObject.put("en", patientHistory);
+            //jsonObject.put("en", patientHistory);
             //if(!sessionManager.getAppLanguage().equalsIgnoreCase("en")) {
-            jsonObject.put("l-" + sessionManager.getAppLanguage(), patientHistoryLocale);
+            jsonObject.put("text_" + sessionManager.getAppLanguage(), patientHistoryLocale);
             //}
             patientHistoryWithLocaleJsonString = jsonObject.toString().replace("\\/", "/");
             CustomLog.v(TAG, patientHistoryWithLocaleJsonString);
@@ -1312,9 +1313,9 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
             }
 
             familyHistory = VisitUtils.replaceToEnglishCommonString(familyHistory, sessionManager.getAppLanguage());
-            jsonObject1.put("en", familyHistory);
+            //jsonObject1.put("en", familyHistory);
             //if(!sessionManager.getAppLanguage().equalsIgnoreCase("en")) {
-            jsonObject1.put("l-" + sessionManager.getAppLanguage(), familyHistoryLocale);
+            jsonObject1.put("text_" + sessionManager.getAppLanguage(), familyHistoryLocale);
             //}
             familyHistoryWithLocaleJsonString = jsonObject1.toString().replace("\\/", "/");
             CustomLog.v(TAG, familyHistoryWithLocaleJsonString);
@@ -1323,7 +1324,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
             e.printStackTrace();
         }
 
-        return insertDbPastHistory(patientHistoryWithLocaleJsonString, familyHistoryWithLocaleJsonString);
+        return insertDbPastHistory(patientHistory, patientHistoryWithLocaleJsonString, familyHistory, familyHistoryWithLocaleJsonString);
     }
 
     private String generateFamilyHistoryAns(boolean isLocale) {
@@ -1365,7 +1366,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
     }
 
     /*Physical exam*/
-    private boolean insertDbPastHistory(String patientHistory, String familyHistory) {
+    private boolean insertDbPastHistory(String patientHistory, String patientHistoryLocal, String familyHistory, String familyHistoryLocal) {
         CustomLog.i(TAG, "insertDb: ");
         boolean isInserted = false;
         try {
@@ -1391,6 +1392,28 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                 isInserted = obsDAO.insertObs(obsDTO);
             }
 
+            // insert/update for locale language
+            String uuidOBSLocal = obsDAO.getObsuuid(encounterAdultIntials, UuidDictionary.PASTHIST_REG_LANG_VALUE);
+            CustomLog.i(TAG, "insertDbPastHistory patientHistory Local : uuidOBS - " + uuidOBSLocal);
+
+            obsDTO = new ObsDTO();
+            obsDTO.setConceptuuid(UuidDictionary.PASTHIST_REG_LANG_VALUE);
+            obsDTO.setEncounteruuid(encounterAdultIntials);
+            obsDTO.setCreator(sessionManager.getCreatorID());
+            obsDTO.setValue(StringUtils.getValue(patientHistoryLocal));
+
+
+            if (uuidOBSLocal != null) {
+                obsDTO.setUuid(uuidOBSLocal);
+                CustomLog.v("obsDTO update local", new Gson().toJson(obsDTO));
+
+                isInserted = obsDAO.updateObs(obsDTO);
+            } else {
+                CustomLog.v("obsDTO insert local", new Gson().toJson(obsDTO));
+                isInserted = obsDAO.insertObs(obsDTO);
+            }
+
+
             String uuidOBS1 = obsDAO.getObsuuid(encounterAdultIntials, UuidDictionary.RHK_FAMILY_HISTORY_BLURB);
             CustomLog.i(TAG, "insertDbPastHistory familyHistory : uuidOBS - " + uuidOBS1);
             obsDTO = new ObsDTO();
@@ -1408,6 +1431,26 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                 CustomLog.v("obsDTO insert", new Gson().toJson(obsDTO));
                 isInserted = obsDAO.insertObs(obsDTO);
             }
+
+            // insert/update for locale language
+            String uuidOBS1Local = obsDAO.getObsuuid(encounterAdultIntials, UuidDictionary.FAMHIST_REG_LANG_VALUE);
+            CustomLog.i(TAG, "insertDbPastHistory familyHistory Local : uuidOBS - " + uuidOBS1Local);
+            obsDTO = new ObsDTO();
+            obsDTO.setConceptuuid(UuidDictionary.FAMHIST_REG_LANG_VALUE);
+            obsDTO.setEncounteruuid(encounterAdultIntials);
+            obsDTO.setCreator(sessionManager.getCreatorID());
+            obsDTO.setValue(org.intelehealth.app.utilities.StringUtils.getValue(familyHistoryLocal));
+
+            if (uuidOBS1Local != null) {
+                obsDTO.setUuid(uuidOBS1Local);
+                CustomLog.v("obsDTO update local", new Gson().toJson(obsDTO));
+
+                isInserted = obsDAO.updateObs(obsDTO);
+            } else {
+                CustomLog.v("obsDTO insert local", new Gson().toJson(obsDTO));
+                isInserted = obsDAO.insertObs(obsDTO);
+            }
+
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }

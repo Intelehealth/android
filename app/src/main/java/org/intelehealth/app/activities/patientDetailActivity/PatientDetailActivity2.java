@@ -1,5 +1,6 @@
 package org.intelehealth.app.activities.patientDetailActivity;
 
+import static org.intelehealth.app.ayu.visit.common.VisitUtils.getTranslatedAssociatedSymptomQString;
 import static org.intelehealth.app.utilities.DialogUtils.patientRegistrationDialog;
 import static org.intelehealth.app.utilities.StringUtils.en__as_dob;
 import static org.intelehealth.app.utilities.StringUtils.en__bn_dob;
@@ -52,7 +53,6 @@ import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
@@ -65,28 +65,14 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.LocaleList;
 import android.util.DisplayMetrics;
-
-import org.apache.commons.lang3.time.DateUtils;
-import org.intelehealth.app.activities.vitalActivity.VitalsActivity;
-import org.intelehealth.app.enums.ListTypeEnum;
-import org.intelehealth.app.models.BaselineSurveyItem;
-import org.intelehealth.app.models.FamilyMemberRes;
-import org.intelehealth.app.models.Patient;
-import org.intelehealth.app.ui.baseline_survey.activity.BaselineSurveyActivity;
-import org.intelehealth.app.utilities.BaselineSurveySource;
-import org.intelehealth.app.utilities.BaselineSurveyStage;
-import org.intelehealth.app.utilities.CustomLog;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.LinearInterpolator;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -105,11 +91,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.github.ajalt.timberkt.Timber;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.activities.identificationActivity.model.DistData;
@@ -118,6 +104,7 @@ import org.intelehealth.app.activities.searchPatientActivity.SearchPatientActivi
 import org.intelehealth.app.activities.visit.adapter.PastVisitListingAdapter;
 import org.intelehealth.app.activities.visit.model.PastVisitData;
 import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity_New;
+import org.intelehealth.app.activities.vitalActivity.VitalsActivity;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.ayu.visit.VisitCreationActivity;
@@ -129,14 +116,20 @@ import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.database.dao.VisitsDAO;
 import org.intelehealth.app.databinding.ActivityPatientDetail2Binding;
+import org.intelehealth.app.enums.ListTypeEnum;
 import org.intelehealth.app.knowledgeEngine.Node;
+import org.intelehealth.app.models.FamilyMemberRes;
 import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.models.dto.VisitDTO;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
+import org.intelehealth.app.ui.baseline_survey.activity.BaselineSurveyActivity;
 import org.intelehealth.app.ui.patient.activity.PatientRegistrationActivity;
 import org.intelehealth.app.utilities.AgeUtils;
+import org.intelehealth.app.utilities.BaselineSurveySource;
+import org.intelehealth.app.utilities.BaselineSurveyStage;
+import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.DownloadFilesUtils;
@@ -1260,6 +1253,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                                         }
                                     }
                                     if (!visitValue.isEmpty()) {
+
                                         visitValue = visitValue.replaceAll(Node.bullet_arrow, "");
                                         visitValue = visitValue.replaceAll("<br/>", ", ");
                                         visitValue = visitValue.replaceAll(Node.ASSOCIATE_SYMPTOMS, "");
@@ -1320,7 +1314,17 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                             }
                             SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
                             try {
-
+                                String associatedSymptom = getTranslatedAssociatedSymptomQString(sessionManager.getAppLanguage());
+                                if (visitValue.contains(associatedSymptom)) {
+                                    visitValue = visitValue.replace(associatedSymptom, "");
+                                }
+                                if (visitValue.endsWith("*")) {
+                                    visitValue = visitValue.substring(0, visitValue.length() - 1);
+                                }
+                                visitValue = visitValue.trim();
+                                if (visitValue.endsWith(",")) {
+                                    visitValue = visitValue.substring(0, visitValue.length() - 1);
+                                }
                                 Date formatted = currentDate.parse(date);
                                 String visitDate = currentDate.format(formatted);
                                 //createOldVisit(visitDate, visit_id, end_date, visitValue, encountervitalsLocal, encounterlocalAdultintial);

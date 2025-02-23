@@ -1042,7 +1042,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 }
             }
             TextView headerTextView = v1.findViewById(R.id.header_tv);
-            headerTextView.setText(selectedNode.getDisplay());
+            headerTextView.setText(selectedNode.findDisplay());
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
             linearLayoutManager.setStackFromEnd(false);
             linearLayoutManager.setSmoothScrollbarEnabled(true);
