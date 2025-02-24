@@ -69,7 +69,8 @@ object LiveKitProvider {
         audioTrackPublishDefaults = audioTrackPublishDefaults,
         videoTrackCaptureDefaults = localVideoTrackOptions,
         videoTrackPublishDefaults = videoTrackPublishDefaults,
-        adaptiveStream = true
+        adaptiveStream = true,
+        dynacast = false
     )
 
     private fun provideAudioSwitchHandler(@ApplicationContext context: Context) = AudioSwitchHandler(context)
