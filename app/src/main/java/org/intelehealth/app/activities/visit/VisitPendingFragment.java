@@ -664,7 +664,7 @@ public class VisitPendingFragment extends Fragment implements VisitAdapter.OnVis
                         model.setOpenmrs_id(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
                         model.setDob(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
                         model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
-                        recentList.add(model);
+                        olderList.add(model);
                     }
                 }
             }
