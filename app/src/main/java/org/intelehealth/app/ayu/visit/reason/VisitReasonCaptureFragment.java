@@ -235,8 +235,8 @@ public class VisitReasonCaptureFragment extends Fragment {
 
         RecyclerView recyclerView = view.findViewById(R.id.rcv_all_reason);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-        //mVisitReasonItemList = getVisitReasonList();
-        mVisitReasonItemList = getVisitReasonListWithoutGroup();
+        mVisitReasonItemList = getVisitReasonList();
+        //mVisitReasonItemList = getVisitReasonListWithoutGroup();
         mReasonListingAdapter = new ReasonListingAdapter(recyclerView, getActivity(), mVisitReasonItemList, new ReasonListingAdapter.OnItemSelection() {
             @Override
             public void onSelect(ReasonData data) {
@@ -394,9 +394,10 @@ public class VisitReasonCaptureFragment extends Fragment {
      */
     private List<ReasonGroupData> getVisitReasonList() {
         List<ReasonGroupData> itemList = new ArrayList<>();
+        char[] startEndChars = NodeAdapterUtils.getStartEndCharAsPerLocale();
 
-        char startC = NodeAdapterUtils.getStartCharAsPerLocale();
-        char endC = NodeAdapterUtils.getEndCharAsPerLocale();
+        char startC = startEndChars[0];
+        char endC = startEndChars[1];
 
         for (char c = startC; c <= endC; ++c) {
             ReasonGroupData reasonGroupData = new ReasonGroupData();
@@ -425,9 +426,6 @@ public class VisitReasonCaptureFragment extends Fragment {
 
     private List<ReasonGroupData> getVisitReasonListWithoutGroup() {
         List<ReasonGroupData> itemList = new ArrayList<>();
-
-        char startC = NodeAdapterUtils.getStartCharAsPerLocale();
-        char endC = NodeAdapterUtils.getEndCharAsPerLocale();
 
         ReasonGroupData reasonGroupData = new ReasonGroupData();
         reasonGroupData.setAlphabet(getString(R.string.all_reasons));

@@ -14,6 +14,8 @@ import org.intelehealth.app.utilities.FileUtils;
 import org.intelehealth.app.utilities.SessionManager;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+
 public class NodeAdapterUtils {
     public static final String TAG = NodeAdapterUtils.class.getSimpleName();
 
@@ -69,6 +71,32 @@ public class NodeAdapterUtils {
         } else return "";
     }
 
+    // ger the start and char of the locale
+
+
+    public static char[] getStartEndCharAsPerLocale() {
+        HashMap<String, String[]> alphabetRanges = new HashMap<>();
+        alphabetRanges.put("gu", new String[]{"અ", "હ"}); // Gujarati
+        alphabetRanges.put("bn", new String[]{"অ", "হ"}); // Bengali
+        alphabetRanges.put("en", new String[]{"A", "Z"}); // English
+        alphabetRanges.put("or", new String[]{"ଅ", "ହ"}); // Odia
+        alphabetRanges.put("ta", new String[]{"அ", "ஹ"}); // Tamil
+        alphabetRanges.put("hi", new String[]{"अ", "ह"}); // Hindi
+        alphabetRanges.put("te", new String[]{"అ", "హ"}); // Telugu
+        alphabetRanges.put("mr", new String[]{"अ", "ह"}); // Marathi
+        alphabetRanges.put("as", new String[]{"অ", "হ"}); // Assamese
+        alphabetRanges.put("ml", new String[]{"അ", "ഹ"}); // Malayalam
+        alphabetRanges.put("kn", new String[]{"ಅ", "ಹ"}); // Kannada
+        SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+        String localeCode = sessionManager.getCurrentLang();
+        if (alphabetRanges.containsKey(localeCode)) {
+            String[] range = alphabetRanges.get(localeCode);
+            return new char[]{range[0].charAt(0), range[1].charAt(0)};
+        } else {
+            return new char[]{'A', 'Z'};
+        }
+
+    }
 
     public static char getStartCharAsPerLocale() {
         char result = 'A';
