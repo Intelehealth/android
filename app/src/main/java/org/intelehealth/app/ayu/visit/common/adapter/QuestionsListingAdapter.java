@@ -2790,9 +2790,9 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
                     if (!editText.getText().toString().equalsIgnoreCase("")) {
                         if (node.getLanguage().contains("_")) {
-                            node.setLanguage(node.getLanguage().replace("_", editText.getText().toString()));
+                            node.setLanguage(node.getLanguage().replace("_", editText.getText().toString().trim()));
                         } else {
-                            node.addLanguage(editText.getText().toString());
+                            node.addLanguage(editText.getText().toString().trim());
                         }
                         node.setSelected(true);
                         holder.node.setSelected(true);
@@ -3116,4 +3116,3 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
 
 }
-

@@ -396,9 +396,9 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
                     if (!editText.getText().toString().equalsIgnoreCase("")) {
 
                         if (node.getLanguage().contains("_")) {
-                            node.setLanguage(node.getLanguage().replace("_", editText.getText().toString()));
+                            node.setLanguage(node.getLanguage().replace("_", editText.getText().toString().trim()));
                         } else {
-                            node.addLanguage(editText.getText().toString());
+                            node.addLanguage(editText.getText().toString().trim());
                         }
 
                        /* if (node.getLanguage().contains("_")) {
@@ -581,4 +581,3 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
         holder.singleComponentContainer.addView(view);
     }
 }
-
