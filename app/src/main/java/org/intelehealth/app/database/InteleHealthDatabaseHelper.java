@@ -342,6 +342,8 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_PROVIDER_ATTRIBUTES);
         db.execSQL(FOLLOW_UP_NOTIFICATION_SCHEDULE);
         db.execSQL(CREATE_LOCATION_NEW);
+        // create index
+
         uuidInsert(db);
         database = db;
 

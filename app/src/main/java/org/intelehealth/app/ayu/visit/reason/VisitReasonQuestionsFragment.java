@@ -3,8 +3,6 @@ package org.intelehealth.app.ayu.visit.reason;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
-import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +25,7 @@ import org.intelehealth.app.ayu.visit.model.CommonVisitData;
 import org.intelehealth.app.ayu.visit.model.ComplainBasicInfo;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.models.AnswerResult;
+import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.SessionManager;
 
 import java.util.ArrayList;
@@ -263,7 +262,7 @@ public class VisitReasonQuestionsFragment extends Fragment {
         }
 
         @Override
-        public void onSelect(Node node, int index, boolean isSkipped, Node parentNode) {
+        public void onSelect(Node node, int index, boolean isSkipped, Node parentNode, boolean isLastNodeSubmit) {
             CustomLog.v("onSelect QuestionsListingAdapter", "index - " + index + " \t mCurrentComplainNodeOptionsIndex - " + mCurrentComplainNodeOptionsIndex);
             CustomLog.v("onSelect QuestionsListingAdapter", "node - " + node.getText());
             // avoid the scroll for old data change
@@ -289,19 +288,33 @@ public class VisitReasonQuestionsFragment extends Fragment {
 
                 if (mQuestionsListingAdapter.geItems().get(index).getOptionsList() != null && mQuestionsListingAdapter.geItems().get(index).getOptionsList().size() > 0)
                     for (int i = 0; i < mQuestionsListingAdapter.geItems().get(index).getOptionsList().size(); i++) {
-                        mQuestionsListingAdapter.geItems().get(index).getOptionsList().get(i).setSelected(false);
-                        mQuestionsListingAdapter.geItems().get(index).getOptionsList().get(i).setDataCaptured(false);
+                        // check if all nested are not answered then unselect the parent
+                        if (mQuestionsListingAdapter.geItems().get(index).getOptionsList().get(i).getOptionsList() != null && mQuestionsListingAdapter.geItems().get(index).getOptionsList().get(i).getOptionsList().size() > 0) {
+                            boolean isAllNestedNotAnswered = true;
+                            for (int j = 0; j < mQuestionsListingAdapter.geItems().get(index).getOptionsList().get(i).getOptionsList().size(); j++) {
+                                if (mQuestionsListingAdapter.geItems().get(index).getOptionsList().get(i).getOptionsList().get(j).isSelected()) {
+                                    isAllNestedNotAnswered = false;
+                                    break;
+                                }
+                            }
+                            if (isAllNestedNotAnswered) {
+                                mQuestionsListingAdapter.geItems().get(index).getOptionsList().get(i).setSelected(false);
+                                mQuestionsListingAdapter.geItems().get(index).getOptionsList().get(i).setDataCaptured(false);
+                            }
+                        }
+//                        mQuestionsListingAdapter.geItems().get(index).getOptionsList().get(i).setSelected(false);
+//                        mQuestionsListingAdapter.geItems().get(index).getOptionsList().get(i).setDataCaptured(false);
                     }
                 if (mQuestionsListingAdapter.geItems().get(index).isRequired()) {
                     mQuestionsListingAdapter.notifyItemChanged(index);
                     return;
                 } else {
-                    new Handler().postDelayed(new Runnable() {
+                    /*new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             mQuestionsListingAdapter.notifyItemChanged(index);
                         }
-                    }, 1000);
+                    }, 1000);*/
                 }
             }
 
@@ -363,6 +376,16 @@ public class VisitReasonQuestionsFragment extends Fragment {
 
         @Override
         public void onImageRemoved(int nodeIndex, int imageIndex, String image) {
+
+        }
+
+        @Override
+        public void onTerminalNodeAnsweredForParentUpdate(String parentNodeId) {
+
+        }
+
+        @Override
+        public void hideBelowToIndex(int index) {
 
         }
     }

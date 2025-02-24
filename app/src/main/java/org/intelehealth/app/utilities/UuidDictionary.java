@@ -9,8 +9,7 @@ public class UuidDictionary {
 
     //Concepts
     public static final String BLOOD_GROUP = "a170929e-9e23-4689-98ed-074c0c4792bb";
-    public static final String CURRENT_COMPLAINT = "3edb0e09-9135-481e-b8f0-07a26fa9a5ce";
-    public static final String PHYSICAL_EXAMINATION = "e1761e85-9b50-48ae-8c4d-e6b7eeeba084";
+
     public static final String HEIGHT = "5090AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
     public static final String WEIGHT = "5089AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
     public static final String PULSE = "5087AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
@@ -19,15 +18,28 @@ public class UuidDictionary {
     public static final String TEMPERATURE = "5088AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
     public static final String RESPIRATORY = "5242AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
     public static final String SPO2 = "5092AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
-    public static final String RHK_MEDICAL_HISTORY_BLURB = "62bff84b-795a-45ad-aae1-80e7f5163a82";
-    public static final String RHK_FAMILY_HISTORY_BLURB = "d63ae965-47fb-40e8-8f08-1f46a8a60b2b";
+
     public static final String FOLLOW_UP_VISIT = "e8caffd6-5d22-41c4-8d6a-bc31a44d0c86";
     public static final String REFERRED_SPECIALIST = "605b6f15-8f7a-4c45-b06d-14165f6974be";
     public static final String HAEMOGLOBIN = "33b241d6-3e9d-443e-9572-f38ecb1e752a";
     public static final String SUGAR_LEVEL_RANDOM = "95cf1d31-21dc-4fae-96fd-d1dd9455914f";
 
+    // visit concept uuids *****************************************************************************
+    public static final String CURRENT_COMPLAINT = "3edb0e09-9135-481e-b8f0-07a26fa9a5ce";
     public static final String CC_REG_LANG_VALUE = "9cca1f28-c52c-461e-9305-7bec2d048d25";
+
+    public static final String PHYSICAL_EXAMINATION = "e1761e85-9b50-48ae-8c4d-e6b7eeeba084";
     public static final String PHYEXAM_REG_LANG_VALUE = "1ae67139-abb3-464c-9091-feab2e6e0fdb";
+
+    public static final String RHK_MEDICAL_HISTORY_BLURB = "62bff84b-795a-45ad-aae1-80e7f5163a82";
+    public static final String PASTHIST_REG_LANG_VALUE = "cf536c43-5aec-444c-a8a1-13f8d9c3e34d";
+
+    public static final String RHK_FAMILY_HISTORY_BLURB = "d63ae965-47fb-40e8-8f08-1f46a8a60b2b";
+    public static final String FAMHIST_REG_LANG_VALUE = "2349d38e-2d66-4a2b-a435-06ed28da5a7f";
+
+
+    //**************************************************************************************************
+
 
     //m added
     public static final String EMERGENCY = "ca5f5dc3-4f0b-4097-9cae-5cf2eb44a09c";

@@ -91,7 +91,9 @@ class CustomLog {
          * if device version is above android 9
          */
         private fun saveLogData(key: String, msg: String, type: String) {
-            if(Build.VERSION.SDK_INT < Build.VERSION_CODES.Q){
+            return;
+            // slowing the app so commenting this code
+            /*if(Build.VERSION.SDK_INT < Build.VERSION_CODES.Q){
                 saveFileToExternalStorage(key,msg,type)
                 return
             }
@@ -155,7 +157,7 @@ class CustomLog {
                 }
             }catch (e:Exception){
                 e.printStackTrace()
-            }
+            }*/
         }
 
         /**

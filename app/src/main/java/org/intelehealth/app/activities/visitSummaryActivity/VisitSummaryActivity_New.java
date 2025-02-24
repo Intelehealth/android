@@ -68,13 +68,6 @@ import android.text.Html;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
-
-import org.intelehealth.app.activities.visit.staticEnabledFields.SpecializationsEnabledFieldsHelper;
-import org.intelehealth.app.activities.visit.staticEnabledFields.VitalsEnabledFieldsHelper;
-import org.intelehealth.app.ayu.visit.notification.LocalPrescriptionInfo;
-import org.intelehealth.app.database.dao.VisitsDAO;
-import org.intelehealth.app.utilities.CustomLog;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -128,13 +121,14 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.additionalDocumentsActivity.AdditionalDocumentAdapter;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.activities.notification.AdapterInterface;
 import org.intelehealth.app.activities.prescription.PrescriptionBuilder;
 import org.intelehealth.app.activities.visit.PrescriptionActivity;
+import org.intelehealth.app.activities.visit.staticEnabledFields.SpecializationsEnabledFieldsHelper;
+import org.intelehealth.app.activities.visit.staticEnabledFields.VitalsEnabledFieldsHelper;
 import org.intelehealth.app.activities.visitSummaryActivity.facilitytovisit.FacilityToVisitArrayAdapter;
 import org.intelehealth.app.activities.visitSummaryActivity.facilitytovisit.FacilityToVisitModel;
 import org.intelehealth.app.activities.visitSummaryActivity.saverity.SeverityArrayAdapter;
@@ -149,12 +143,14 @@ import org.intelehealth.app.ayu.visit.common.VisitUtils;
 import org.intelehealth.app.ayu.visit.common.adapter.SummaryViewAdapter;
 import org.intelehealth.app.ayu.visit.model.CommonVisitData;
 import org.intelehealth.app.ayu.visit.model.VisitSummaryData;
+import org.intelehealth.app.ayu.visit.notification.LocalPrescriptionInfo;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.database.dao.ObsDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.database.dao.RTCConnectionDAO;
 import org.intelehealth.app.database.dao.VisitAttributeListDAO;
+import org.intelehealth.app.database.dao.VisitsDAO;
 import org.intelehealth.app.databinding.ActivityVisitSummaryNewBinding;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.models.ClsDoctorDetails;
@@ -173,6 +169,7 @@ import org.intelehealth.app.ui.patient.activity.PatientRegistrationActivity;
 import org.intelehealth.app.ui2.utils.CheckInternetAvailability;
 import org.intelehealth.app.utilities.AppointmentUtils;
 import org.intelehealth.app.utilities.BitmapUtils;
+import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.DownloadFilesUtils;
@@ -275,7 +272,9 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     ObsDTO complaint = new ObsDTO();
     ObsDTO complaintReg = new ObsDTO();
     ObsDTO famHistory = new ObsDTO();
+    ObsDTO famHistoryLocal = new ObsDTO();
     ObsDTO patHistory = new ObsDTO();
+    ObsDTO patHistoryLocal = new ObsDTO();
     ObsDTO phyExam = new ObsDTO();
     ObsDTO phyExamReg = new ObsDTO();
     ObsDTO height = new ObsDTO();
@@ -3004,7 +3003,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         String[] mComplaints = org.apache.commons.lang3.StringUtils.split(mComplaint, Node.bullet_arrow);
         String formattedData = "";
         String colon = ":";
-        for (String mc: mComplaints) {
+        for (String mc : mComplaints) {
             String[] complaints = {mc};
             if (complaints != null) {
                 for (String value : complaints) {
@@ -4031,16 +4030,26 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         }
 
         try {
+            String famHistSelection = "encounteruuid = ? AND conceptuuid = ?";
+            String[] famHistArgs = {encounterUuidAdultIntial, UuidDictionary.FAMHIST_REG_LANG_VALUE};
+            Cursor famHistCursor = db.query("tbl_obs", columns, famHistSelection, famHistArgs, null, null, null);
+            famHistCursor.moveToLast();
+            String famHistText = famHistCursor.getString(famHistCursor.getColumnIndexOrThrow("value"));
+            famHistoryLocal.setValue(famHistText);
+            famHistCursor.close();
+        } catch (CursorIndexOutOfBoundsException e) {
+            famHistoryLocal.setValue(""); // if family history does not exist
+        }
+
+        try {
             String medHistSelection = "encounteruuid = ? AND conceptuuid = ?";
-
             String[] medHistArgs = {encounterUuidAdultIntial, UuidDictionary.RHK_MEDICAL_HISTORY_BLURB};
-
             Cursor medHistCursor = db.query("tbl_obs", columns, medHistSelection, medHistArgs, null, null, null);
             medHistCursor.moveToLast();
             String medHistText = medHistCursor.getString(medHistCursor.getColumnIndexOrThrow("value"));
             patHistory.setValue(medHistText);
 
-            if (medHistText != null && !medHistText.isEmpty()) {
+            /*if (medHistText != null && !medHistText.isEmpty()) {
 
                 medHistory = patHistory.getValue();
 
@@ -4050,12 +4059,36 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 do {
                     medHistory = medHistory.replace("  ", "");
                 } while (medHistory.contains("  "));
-            }
+            }*/
             medHistCursor.close();
         } catch (CursorIndexOutOfBoundsException e) {
             patHistory.setValue(""); // if medical history does not exist
         }
-//vitals display code
+        try {
+            String medHistSelection = "encounteruuid = ? AND conceptuuid = ?";
+            String[] medHistArgs = {encounterUuidAdultIntial, UuidDictionary.PASTHIST_REG_LANG_VALUE};
+            Cursor medHistCursor = db.query("tbl_obs", columns, medHistSelection, medHistArgs, null, null, null);
+            medHistCursor.moveToLast();
+            String medHistText = medHistCursor.getString(medHistCursor.getColumnIndexOrThrow("value"));
+            patHistoryLocal.setValue(medHistText);
+
+            /*if (medHistText != null && !medHistText.isEmpty()) {
+
+                medHistory = patHistory.getValue();
+
+
+                medHistory = medHistory.replace("\"", "");
+                medHistory = medHistory.replace("\n", "");
+                do {
+                    medHistory = medHistory.replace("  ", "");
+                } while (medHistory.contains("  "));
+            }*/
+            medHistCursor.close();
+        } catch (CursorIndexOutOfBoundsException e) {
+            patHistoryLocal.setValue(""); // if medical history does not exist
+        }
+
+        //vitals display code
         String visitSelection = "encounteruuid = ? AND voided!='1'";
         String[] visitArgs = {encounterVitals};
         if (encounterVitals != null) {
@@ -5676,11 +5709,14 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
     private LinearLayout mAssociateSymptomsLinearLayout, mComplainSummaryLinearLayout, mPhysicalExamSummamryLinearLayout, mPastMedicalHistorySummaryLinearLayout, mFamilyHistorySummaryLinearLayout;
     private TextView mAssociateSymptomsLabelTextView;
-    private boolean mIsCCInOldFormat = true;
     ;
 
     private void setQAData() {
-        mIsCCInOldFormat = false;
+        boolean isCCInOldFormat = false;
+        boolean isPhysicalExamInOldFormat = false;
+        boolean isPatientHistoryInOldFormat = false;
+        boolean isFamilyHistoryInOldFormat = false;
+
         mFamilyHistorySummaryLinearLayout = findViewById(R.id.ll_family_history_summary);
         mPastMedicalHistorySummaryLinearLayout = findViewById(R.id.ll_patient_history_summary);
 
@@ -5697,37 +5733,34 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
             if (!sessionManager.getAppLanguage().equalsIgnoreCase("en")) {
                 if (complaintReg.getValue() == null || complaintReg.getValue().isEmpty()) {
+                    isCCInOldFormat = true;
                     value = complaint.getValue();
                 } else {
                     value = complaintReg.getValue();
                 }
             } else {
+                isCCInOldFormat = true;
                 value = complaint.getValue();
             }
+            /*if (!isCCInOldFormat)
+                if (value.startsWith("{") && value.endsWith("}")) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(value);
+                        if (!sessionManager.getAppLanguage().equals("en") && jsonObject.has("text_" + sessionManager.getAppLanguage())) {
+                            value = jsonObject.getString("text_" + sessionManager.getAppLanguage());
 
-            if (value.startsWith("{") && value.endsWith("}")) {
-                try {
-                    JSONObject jsonObject = new JSONObject(value);
-                    if (!sessionManager.getAppLanguage().equals("en") && jsonObject.has("l-" + sessionManager.getAppLanguage())) {
-                        value = jsonObject.getString("l-" + sessionManager.getAppLanguage());
-
-                        mIsCCInOldFormat = false;
-                    } else {
-                        value = jsonObject.getString("en");
-                        mIsCCInOldFormat = true;
+                        }
+                        complaintLocalString = value;
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
+                } *//*else {
                     complaintLocalString = value;
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            } else {
-                mIsCCInOldFormat = true;
-                complaintLocalString = value;
-            }
-
+                }*//*
+             */
             String valueArray[] = null;
             boolean isAssociateSymptomFound = false;
-            if (mIsCCInOldFormat) {
+            if (isCCInOldFormat) {
                 complaintView.setVisibility(View.VISIBLE);
                 findViewById(R.id.reports_relative).setVisibility(View.VISIBLE);
                 findViewById(R.id.denies_relative).setVisibility(View.VISIBLE);
@@ -5800,7 +5833,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 isAssociateSymptomFound = valueArray.length >= 2;
                 if (isAssociateSymptomFound)
                     valueArray[1] = valueArray[1].split("::")[1];*/
-                setDataForChiefComplainSummary(complaintLocalString);
+                setDataForChiefComplainSummary(value);
             }
 
 
@@ -5809,47 +5842,47 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
         // phys exam data
         if (phyExam.getValue() != null) {
+
             String value = "";
 
             if (!sessionManager.getAppLanguage().equalsIgnoreCase("en")) {
                 if (phyExamReg.getValue() == null || phyExamReg.getValue().isEmpty()) {
+                    isPhysicalExamInOldFormat = true;
                     value = phyExam.getValue();
                 } else {
                     value = phyExamReg.getValue();
                 }
             } else {
+                isPhysicalExamInOldFormat = true;
                 value = phyExam.getValue();
             }
 
-            boolean isInOldFormat = true;
+
             //Show Visit summary data in Clinical Format for English language only
             //Else for other language keep the data in Question Answer format
-            if (value.startsWith("{") && value.endsWith("}")) {
-                try {
-                    JSONObject jsonObject = new JSONObject(value);
-                    if (!sessionManager.getAppLanguage().equals("en") && jsonObject.has("l-" + sessionManager.getAppLanguage())) {
-                        value = jsonObject.getString("l-" + sessionManager.getAppLanguage());
-                        isInOldFormat = false;
-                    } else {
-                        value = jsonObject.getString("en");
-                        isInOldFormat = true;
+           /* if (!isPhysicalExamInOldFormat)
+                if (value.startsWith("{") && value.endsWith("}")) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(value);
+                        if (!sessionManager.getAppLanguage().equals("en") && jsonObject.has("text_" + sessionManager.getAppLanguage())) {
+                            value = jsonObject.getString("text_" + sessionManager.getAppLanguage());
+                        }
+                        physicalExamLocaleString = value;
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
+                }*//* else {
                     physicalExamLocaleString = value;
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            } else {
-                physicalExamLocaleString = value;
-            }
+                }*/
             CustomLog.v(TAG, "phyExam : " + value);
-            if (isInOldFormat) {
+            if (isPhysicalExamInOldFormat) {
                 physFindingsView.setVisibility(View.VISIBLE);
                 String valueArray[] = value.replace("General exams: <br>", "<b>General exams: </b><br/>").split("<b>General exams: </b><br/>");
                 if (valueArray.length > 1)
                     physFindingsView.setText(Html.fromHtml(valueArray[1]));//.replaceFirst("<b>", "<br/><b>")));
             } else {
                 //physFindingsView.setText(Html.fromHtml(value.replaceFirst("<b>", "<br/><b>")));
-                setDataForPhysicalExamSummary(physicalExamLocaleString);
+                setDataForPhysicalExamSummary(value);
             }
         }
         //image download for physcialExamination documents
@@ -5863,27 +5896,41 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
         // past medical hist
         if (patHistory.getValue() != null) {
-            String value = patHistory.getValue();
-            boolean isInOldFormat = true;
+            String value = "";
+
+            if (!sessionManager.getAppLanguage().equalsIgnoreCase("en")) {
+                if (patHistoryLocal.getValue() == null || patHistoryLocal.getValue().isEmpty()) {
+                    isPatientHistoryInOldFormat = true;
+                    value = patHistory.getValue();
+                } else {
+                    value = patHistoryLocal.getValue();
+                }
+            } else {
+                isPatientHistoryInOldFormat = true;
+                value = patHistory.getValue();
+            }
+
+
+            //String value = patHistory.getValue();
+            //boolean isInOldFormat = true;
             //Show Visit summary data in Clinical Format for English language only
             //Else for other language keep the data in Question Answer format
-            if (value.startsWith("{") && value.endsWith("}")) {
-                try {
-                    JSONObject jsonObject = new JSONObject(value);
-                    if (!sessionManager.getAppLanguage().equals("en") && jsonObject.has("l-" + sessionManager.getAppLanguage())) {
-                        value = jsonObject.getString("l-" + sessionManager.getAppLanguage());
-                        isInOldFormat = false;
-                    } else {
-                        value = jsonObject.getString("en");
-                        isInOldFormat = true;
+            if (!isPatientHistoryInOldFormat)
+                patientHistoryLocaleString = StringUtils.getRegionalLanguageDataFromJson(value, sessionManager.getAppLanguage());
+
+            /*if (value.startsWith("{") && value.endsWith("}")) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(value);
+                        if (!sessionManager.getAppLanguage().equals("en") && jsonObject.has("text_" + sessionManager.getAppLanguage())) {
+                            value = jsonObject.getString("text_" + sessionManager.getAppLanguage());
+                        }
+                        patientHistoryLocaleString = value;
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                    patientHistoryLocaleString = value;
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
+                }*/
             CustomLog.v(TAG, "patHistory : " + value);
-            if (isInOldFormat) {
+            if (isPatientHistoryInOldFormat) {
                 patHistView.setVisibility(View.VISIBLE);
                 patHistView.setText(Html.fromHtml(value));
             } else setDataForPatientMedicalHistorySummary(patientHistoryLocaleString);
@@ -5892,27 +5939,41 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
         // family history
         if (famHistory.getValue() != null) {
-            String value = famHistory.getValue();
-            boolean isInOldFormat = true;
+            String value = "";
+
+            if (!sessionManager.getAppLanguage().equalsIgnoreCase("en")) {
+                if (famHistoryLocal.getValue() == null || famHistoryLocal.getValue().isEmpty()) {
+                    isFamilyHistoryInOldFormat = true;
+                    value = famHistory.getValue();
+                } else {
+                    value = famHistoryLocal.getValue();
+                }
+            } else {
+                isFamilyHistoryInOldFormat = true;
+                value = famHistory.getValue();
+            }
+
+
+            //String value = famHistory.getValue();
+            //boolean isInOldFormat = true;
             //Show Visit summary data in Clinical Format for English language only
             //Else for other language keep the data in Question Answer format
-            if (value.startsWith("{") && value.endsWith("}")) {
-                try {
-                    JSONObject jsonObject = new JSONObject(value);
-                    if (!sessionManager.getAppLanguage().equals("en") && jsonObject.has("l-" + sessionManager.getAppLanguage())) {
-                        value = jsonObject.getString("l-" + sessionManager.getAppLanguage());
-                        isInOldFormat = false;
-                    } else {
-                        value = jsonObject.getString("en");
-                        isInOldFormat = true;
+            if (!isFamilyHistoryInOldFormat)
+                familyHistoryLocaleString = StringUtils.getRegionalLanguageDataFromJson(value, sessionManager.getAppLanguage());
+
+            /*if (value.startsWith("{") && value.endsWith("}")) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(value);
+                        if (!sessionManager.getAppLanguage().equals("en") && jsonObject.has("text_" + sessionManager.getAppLanguage())) {
+                            value = jsonObject.getString("text_" + sessionManager.getAppLanguage());
+                        }
+                        familyHistoryLocaleString = value;
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                    familyHistoryLocaleString = value;
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
+                }*/
             CustomLog.v(TAG, "famHistory : " + value);
-            if (isInOldFormat) {
+            if (isFamilyHistoryInOldFormat) {
                 famHistView.setVisibility(View.VISIBLE);
                 famHistView.setText(Html.fromHtml(value));
             } else setDataForFamilyHistorySummary(familyHistoryLocaleString);

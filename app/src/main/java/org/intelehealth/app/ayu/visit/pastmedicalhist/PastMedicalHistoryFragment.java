@@ -126,7 +126,7 @@ public class PastMedicalHistoryFragment extends Fragment {
 
         mQuestionsListingAdapter = new QuestionsListingAdapter(recyclerView, getActivity(), false, false, null, 0, mRootComplainBasicInfoHashMap, mIsEditMode, new OnItemSelection() {
             @Override
-            public void onSelect(Node node, int index, boolean isSkipped, Node parentNode) {
+            public void onSelect(Node node, int index, boolean isSkipped, Node parentNode, boolean isLastNodeSubmit) {
                 // avoid the scroll for old data change
                 if (mCurrentComplainNodeOptionsIndex - index >= 1) {
                     return;
@@ -194,6 +194,16 @@ public class PastMedicalHistoryFragment extends Fragment {
 
             @Override
             public void onImageRemoved(int nodeIndex, int imageIndex, String image) {
+
+            }
+
+            @Override
+            public void onTerminalNodeAnsweredForParentUpdate(String parentNodeId) {
+
+            }
+
+            @Override
+            public void hideBelowToIndex(int index) {
 
             }
         });

@@ -115,12 +115,12 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/margin_24"
                         android:drawablePadding="@dimen/margin_8"
+                        android:drawableTint="@color/colorPrimary"
                         android:lineSpacingExtra="1sp"
                         android:text="@string/know_more_txt"
                         android:textColor="@color/colorPrimary"
                         android:textSize="14sp"
                         android:textStyle="bold"
-                        android:drawableTint="@color/colorPrimary"
                         app:drawableEndCompat="@drawable/info_blue_svg" />
                 </LinearLayout>
 
@@ -138,6 +138,13 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_16"
                     android:orientation="vertical" />-->
+                <LinearLayout
+                    android:id="@+id/ll_nested_view_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:orientation="vertical" />
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rcv_nested_container"
                     android:layout_width="match_parent"

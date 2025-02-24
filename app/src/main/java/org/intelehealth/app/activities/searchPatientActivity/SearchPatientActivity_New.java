@@ -10,7 +10,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -20,9 +19,6 @@ import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
-
-import org.intelehealth.app.utilities.CustomLog;
-
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -48,14 +44,12 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.onboarding.PrivacyPolicyActivity_New;
 import org.intelehealth.app.activities.searchPatientActivity.adapter.SearchChipsPreviewGridAdapter;
-import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.models.dto.VisitDTO;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
-import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.exception.DAOException;
 
@@ -63,7 +57,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
@@ -83,7 +76,7 @@ public class SearchPatientActivity_New extends BaseActivity {
     public static final String TAG = "SearchPatient_New";
     private SearchRecentSuggestions suggestions;
     private SessionManager sessionManager;
-    private SQLiteDatabase db;
+   // private SQLiteDatabase db;
     private ImageButton backbtn;
     View dividerView;
     ImageView iconSearch, iconClear;
@@ -383,7 +376,7 @@ public class SearchPatientActivity_New extends BaseActivity {
     }
 
     private void fetchDataforTags(List<PatientDTO> patientDTOList) {
-        db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+        //db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
 
         /*
           1. Check first if visit is present for this patient or not if yes than do other code logic.
@@ -404,11 +397,9 @@ public class SearchPatientActivity_New extends BaseActivity {
                     FirebaseCrashlytics.getInstance().recordException(e);
                     emergencyUuid = "";
                 }
-                if (!emergencyUuid.isEmpty() || !emergencyUuid.equalsIgnoreCase("")) { // ie. visit is emergency visit.
-                    patientDTOList.get(i).setEmergency(true);
-                } else { //ie. visit not emergency.
-                    patientDTOList.get(i).setEmergency(false);
-                }
+                // ie. visit is emergency visit.
+                //ie. visit not emergency.
+                patientDTOList.get(i).setEmergency(!emergencyUuid.equalsIgnoreCase(""));
 
                 //  2. startdate added.
                 String visit_start_date = DateAndTimeUtils.date_formatter(visitDTO.getStartdate(), "yyyy-MM-dd'T'HH:mm:ss.SSSZ", "dd MMM 'at' HH:mm a");    // Eg. 26 Sep 2022 at 03:15 PM
@@ -416,11 +407,7 @@ public class SearchPatientActivity_New extends BaseActivity {
 
                 //  3. prescription received/pending tag logic.
                 String encounteruuid = getStartVisitNoteEncounterByVisitUUID(visitDTO.getUuid());
-                if (!encounteruuid.isEmpty() && !encounteruuid.equalsIgnoreCase("")) {
-                    patientDTOList.get(i).setPrescription_exists(true);
-                } else {
-                    patientDTOList.get(i).setPrescription_exists(false);
-                }
+                patientDTOList.get(i).setPrescription_exists(!encounteruuid.isEmpty());
 
                 // checking if visit is uploaded or not - start
                 patientDTOList.get(i).setVisitDTO(visitDTO);
