@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.text.TextUtils;
 import android.util.Log;
 
 import org.intelehealth.app.ui.householdSurvey.models.HouseholdSurveyModel;
@@ -39,13 +38,6 @@ import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
 
 import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.Observer;
-import io.reactivex.Scheduler;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 public class PatientsDAO extends BaseDao {
 
@@ -61,7 +53,7 @@ public class PatientsDAO extends BaseDao {
         for (PatientDTO patient : patientDTO) {
             patientList.add(createPatientMap(patient));
         }
-        execute(bulkInsert(patientList));
+        executeInBackground(bulkInsert(patientList));
 
 //        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
 //        ContentValues values = new ContentValues();

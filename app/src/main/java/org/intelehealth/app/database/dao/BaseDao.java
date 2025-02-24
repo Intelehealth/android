@@ -2,7 +2,6 @@ package org.intelehealth.app.database.dao;
 
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
-import android.os.Build;
 
 import org.intelehealth.app.app.IntelehealthApplication;
 
@@ -20,7 +19,7 @@ import java.util.concurrent.Executors;
 abstract class BaseDao {
     abstract String tableName();
 
-    public void execute(Runnable task) {
+    public void executeInBackground(Runnable task) {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(task);
         System.out.println("BaseDao.execute");
