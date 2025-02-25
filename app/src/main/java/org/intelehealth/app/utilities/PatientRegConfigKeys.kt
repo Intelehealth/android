@@ -22,6 +22,7 @@ class PatientRegConfigKeys {
         const val EM_CONTACT_NAME = "p_emergency_contact_name"
         const val EM_CONTACT_NUMBER = "p_emergency_contact_number"
         const val EM_CONTACT_TYPE = "p_contact_type"
+        const val REQUEST_ID = "p_request_id"
 
         //ADDRESS
         const val POSTAL_CODE = "a_postal_address"
@@ -43,7 +44,6 @@ class PatientRegConfigKeys {
         const val ECONOMIC_CATEGORY = "o_economic_category"
 
         const val TMH_CASE_SUMMARY = "o_tmh_case_number"
-        const val REQUEST_ID = "o_request_id"
         const val RELATIVE_PHONE_NUM = "o_relative_phone_number"
         const val DISCIPLINE = "o_discipline"
         const val DEPARTMENT = "o_department"

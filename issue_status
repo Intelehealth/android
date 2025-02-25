@@ -1,3 +1,106 @@
+• Identification and Demographics: Name, age, height, weight, gender.
+
+• Chief Complaint (CC): Primary health concern or reason for the visit.
+
+• History of Present Illness (HPI): Details about the current health issue, including onset, duration, and characteristics.
+
+• Past Medical History (PMH): Previous illnesses, surgeries, injuries, treatments.
+
+• Family History: Health conditions and diseases that run in the patient's family.
+
+• Social History: Lifestyle factors such as smoking, alcohol consumption, occupation, and living conditions.
+
+• Medications: List of current and past medications, including dosages and duration.
+
+• Allergies: Known allergies to medications, foods, or other substances.
+
+• Review of Systems (ROS): Inquiry about symptoms affecting different parts of the body.
+
+Patient Identification and Demographics
+• Name: John Doe
+
+• Age: 45
+
+• Gender: Male
+
+• Height: 6'0" (183 cm)
+
+• Weight: 180 lbs (82 kg)
+
+Chief Complaint (CC)
+• Primary Health Concern: Persistent cough and shortness of breath for the past 2 weeks.
+
+History of Present Illness (HPI)
+• Onset: Symptoms began 2 weeks ago.
+
+• Duration: Symptoms are present throughout the day, with no relief.
+
+• Characteristics: Dry cough, difficulty breathing, occasional chest pain.
+
+• Aggravating Factors: Symptoms worsen with physical activity.
+
+• Alleviating Factors: Rest provides slight relief.
+
+• Associated Symptoms: Mild fever, fatigue, and night sweats.
+
+Past Medical History (PMH)
+• Chronic Conditions: Hypertension (diagnosed 5 years ago), Type 2 Diabetes (diagnosed 3 years ago).
+
+• Surgeries: Appendectomy (age 20), Knee arthroscopy (age 35).
+
+• Injuries: Fractured right wrist (age 15).
+
+Family History
+• Father: Deceased (heart attack at age 60), history of hypertension and diabetes.
+
+• Mother: Alive (age 70), history of breast cancer (in remission).
+
+• Siblings: One brother (age 50) with hypertension.
+
+Social History
+• Occupation: Office manager.
+
+• Smoking: Former smoker (quit 10 years ago), smoked for 15 years.
+
+• Alcohol Consumption: Occasional drinker (1-2 drinks per week).
+
+• Exercise: Irregular, mostly sedentary lifestyle.
+
+• Living Conditions: Lives with spouse and two children.
+
+Medications
+• Current Medications:
+
+• Lisinopril (for hypertension)
+
+• Metformin (for diabetes)
+
+• Albuterol inhaler (as needed for shortness of breath)
+
+Allergies
+• Medications: Penicillin (rash and itching).
+
+• Foods: None known.
+
+• Others: None known.
+
+Review of Systems (ROS)
+• General: Fatigue, mild fever, night sweats.
+
+• Cardiovascular: No chest pain, palpitations.
+
+• Respiratory: Persistent dry cough, shortness of breath.
+
+• Gastrointestinal: No nausea, vomiting, or diarrhea.
+
+• Musculoskeletal: Occasional joint pain in knees.
+
+• Neurological: No headaches, dizziness, or seizures.
+
+
+{"en":"►<b>Case Summary</b>: <br/>• Type of Case - New patient<br/>• Medical History - Patient Information:\n\nName: John Doe\n\nAge: 45\n\nGender: Male\n\nDate of Birth: January 10, 1980\n\nChief Complaint:\n\nPersistent cough and shortness of breath\n\nHistory of Present Illness:\n\nDuration: 3 months\n\nAssociated symptoms: Mild fever, fatigue, weight loss\n\nAggravating factors: Physical exertion, cold weather\n\nRelieving factors: Rest, warm environment\n\nPast Medical History:\n\n• Hypertension (diagnosed in 2015)\n\n• Type 2 Diabetes (diagnosed in 2010)\n\n• Asthma (diagnosed in childhood)\n\n• Previous surgeries:\n\n• Appendectomy (1998)\n\n• Knee arthroscopy (2018)\n\nMedication History:\n\nMetformin 500 mg twice daily\n\nLisinopril 10 mg daily\n\nAlbuterol inhaler as needed\n\nAtorvastatin 20 mg daily\n\nAllergies:\n\nPenicillin (rash)\n\nLatex (itching)\n\nFamily History:\n\nFather: Hypertension, myocardial infarction at age 60\n\nMother: Type 2 Diabetes, osteoarthritis\n\nSibling: Asthma\n\nSocial History:\n\nOccupation: Office manager\n\nSmoking: 1 pack per day for 20 years, quit 5 years ago\n\nAlcohol: Social drinker (2-3 drinks per week)\n\nExercise: Sedentary lifestyle\n\nReview of Systems:\n\nGeneral: Fatigue, weight loss\n\nRespiratory: Cough, shortness of breath\n\nCardiovascular: No chest pain, palpitations\n\nGastrointestinal: No nausea, vomiting, or abdominal pain\n\nMusculoskeletal: Joint pain (knees).<br/>• Presenting Symptoms - Patient Information:\n\nName: John Doe\n\nAge: 45\n\nGender: Male\n\nDate of Birth: January 10, 1980\n\nChief Complaint:\n\nPersistent cough and shortness of breath\n\nHistory of Present Illness:\n\nDuration: 3 months\n\nAssociated symptoms: Mild fever, fatigue, weight loss\n\nAggravating factors: Physical exertion, cold weather\n\nRelieving factors: Rest, warm environment\n\nPast Medical History:\n\nHypertension (diagnosed in 2015)\n\nType 2 Diabetes (diagnosed in 2010)\n\nAsthma (diagnosed in childhood)\n\nPrevious surgeries:\n\nAppendectomy (1998)\n\nKnee arthroscopy (2018)\n\nMedication History:\n\nMetformin 500 mg twice daily\n\nLisinopril 10 mg daily\n\nAlbuterol inhaler as needed\n\nAtorvastatin 20 mg daily\n\nAllergies:\n\nPenicillin (rash)\n\nLatex (itching)\n\nFamily History:\n\nFather: Hypertension, myocardial infarction at age 60\n\nMother: Type 2 Diabetes, osteoarthritis\n\nSibling: Asthma\n\nSocial History:\n\nOccupation: Office manager\n\nSmoking: 1 pack per day for 20 years, quit 5 years ago\n\nAlcohol: Social drinker (2-3 drinks per week)\n\nExercise: Sedentary lifestyle\n\nReview of Systems:\n\nGeneral: Fatigue, weight loss\n\nRespiratory: Cough, shortness of breath\n\nCardiovascular: No chest pain, palpitations\n\nGastrointestinal: No nausea, vomiting, or abdominal pain\n\nMusculoskeletal: Joint pain (knees).<br/>• Investigation - Patient Information:\n\nName: John Doe\n\nAge: 45\n\nGender: Male\n\nDate of Birth: January 10, 1980\n\nChief Complaint:\n\nPersistent cough and shortness of breath\n\nHistory of Present Illness:\n\nDuration: 3 months\n\nAssociated symptoms: Mild fever, fatigue, weight loss\n\nAggravating factors: Physical exertion, cold weather\n\nRelieving factors: Rest, warm environment\n\nPast Medical History:\n\nHypertension (diagnosed in 2015)\n\nType 2 Diabetes (diagnosed in 2010)\n\nAsthma (diagnosed in childhood)\n\nPrevious surgeries:\n\nAppendectomy (1998)\n\nKnee arthroscopy (2018)\n\nMedication History:\n\nMetformin 500 mg twice daily\n\nLisinopril 10 mg daily\n\nAlbuterol inhaler as needed\n\nAtorvastatin 20 mg daily\n\nAllergies:\n\nPenicillin (rash)\n\nLatex (itching)\n\nFamily History:\n\nFather: Hypertension, myocardial infarction at age 60\n\nMother: Type 2 Diabetes, osteoarthritis\n\nSibling: Asthma\n\nSocial History:\n\nOccupation: Office manager\n\nSmoking: 1 pack per day for 20 years, quit 5 years ago\n\nAlcohol: Social drinker (2-3 drinks per week)\n\nExercise: Sedentary lifestyle\n\nReview of Systems:\n\nGene
+  ral: Fatigue, weight loss\n\nRespiratory: Cough, shortness of breath\n\nCardiovascular: No chest pain, palpitations\n\nGastrointestinal: No nausea, vomiting, or abdominal pain\n\nMusculoskeletal: Joint pain (knees).<br/> ","l-en":"►Case Summary::● Type of Case<br/>•  New patient<br/>● Medical History<br/>•Patient Information:\n\nName: John Doe\n\nAge: 45\n\nGender: Male\n\nDate of Birth: January 10, 1980\n\nChief Complaint:\n\nPersistent cough and shortness of breath\n\nHistory of Present Illness:\n\nDuration: 3 months\n\nAssociated symptoms: Mild fever, fatigue, weight loss\n\nAggravating factors: Physical exertion, cold weather\n\nRelieving factors: Rest, warm environment\n\nPast Medical History:\n\n• Hypertension (diagnosed in 2015)\n\n• Type 2 Diabetes (diagnosed in 2010)\n\n• Asthma (diagnosed in childhood)\n\n• Previous surgeries:\n\n• Appendectomy (1998)\n\n• Knee arthroscopy (2018)\n\nMedication History:\n\nMetformin 500 mg twice daily\n\nLisinopril 10 mg daily\n\nAlbuterol inhaler as needed\n\nAtorvastatin 20 mg daily\n\nAllergies:\n\nPenicillin (rash)\n\nLatex (itching)\n\nFamily History:\n\nFather: Hypertension, myocardial infarction at age 60\n\nMother: Type 2 Diabetes, osteoarthritis\n\nSibling: Asthma\n\nSocial History:\n\nOccupation: Office manager\n\nSmoking: 1 pack per day for 20 years, quit 5 years ago\n\nAlcohol: Social drinker (2-3 drinks per week)\n\nExercise: Sedentary lifestyle\n\nReview of Systems:\n\nGeneral: Fatigue, weight loss\n\nRespiratory: Cough, shortness of breath\n\nCardiovascular: No chest pain, palpitations\n\nGastrointestinal: No nausea, vomiting, or abdominal pain\n\nMusculoskeletal: Joint pain (knees)<br/>● Presenting Symptoms<br/>•Patient Information:\n\nName: John Doe\n\nAge: 45\n\nGender: Male\n\nDate of Birth: January 10, 1980\n\nChief Complaint:\n\nPersistent cough and shortness of breath\n\nHistory of Present Illness:\n\nDuration: 3 months\n\nAssociated symptoms: Mild fever, fatigue, weight loss\n\nAggravating factors: Physical exertion, cold weather\n\nRelieving factors: Rest, warm environment\n\nPast Medical History:\n\nHypertension (diagnosed in 2015)\n\nType 2 Diabetes (diagnosed in 2010)\n\nAsthma (diagnosed in childhood)\n\nPrevious surgeries:\n\nAppendectomy (1998)\n\nKnee arthroscopy (2018)\n\nMedication History:\n\nMetformin 500 mg twice daily\n\nLisinopril 10 mg daily\n\nAlbuterol inhaler as needed\n\nAtorvastatin 20 mg daily\n\nAllergies:\n\nPenicillin (rash)\n\nLatex (itching)\n\nFamily History:\n\nFather: Hypertension, myocardial infarction at age 60\n\nMother: Type 2 Diabetes, osteoarthritis\n\nSibling: Asthma\n\nSocial History:\n\nOccupation: Office manager\n\nSmoking: 1 pack per day for 20 years, quit 5 years ago\n\nAlcohol: Social drinker (2-3 drinks per week)\n\nExercise: Sedentary lifestyle\n\nReview of Systems:\n\nGeneral: Fatigue, weight loss\n\nRespiratory: Cough, shortness of breath\n\nCardiovascular: No chest pain, palpitations\n\nGastrointestinal: No nausea, vomiting, or abdominal pain\n\nMusculoskeletal: Joint pain (knees)<br/>● Investigation<br/>•Patient Information:\n\nName: John Doe\n\nAge: 45\n\nGender: Male\n\nDate of Birth: January 10, 1980\n\nChief Complaint:\n\nPersistent cough and shortness of breath\n\nHistory of Present Illness:\n\nDuration: 3 months\n\nAssociated symptoms: Mild fever, fatigue, weight loss\n\nAggravating factors: Physical exertion, cold weather\n\nRelieving factors: Rest, warm environment\n\nPast Medical History:\n\nHypertension (diagnosed in 2015)\n\nType 2 Diabetes (diagnosed in 2010)\n\nAsthma (diagnosed in childhood)\n\nPrevious surgeries:\n\nAppendectomy (1998)\n\nKnee arthroscopy (2018)\n\nMedication History:\n\nMetformin 500 mg twice daily\n\nLisinopril 10 mg daily\n\nAlbuterol inhaler as needed\n\nAtorvastatin 20 mg daily\n\nAllergies:\n\nPenicillin (rash)\n\nLatex (itching)\n\nFamily History:\n\nFather: Hypertension, myocardial infarction at age 60\n\nMother: Type 2 Diabetes, osteoarthritis\n\nSibling: Asthma\n\nSocial H
+  istory:\n\nOccupation: Office manager\n\nSmoking: 1 pack per day for 20 years, quit 5 years ago\n\nAlcohol: Social drinker (2-3 drinks per week)\n\nExercise: Sedentary lifestyle\n\nReview of Systems:\n\nGeneral: Fatigue, weight loss\n\nRespiratory: Cough, shortness of breath\n\nCardiovascular: No chest pain, palpitations\n\nGastrointestinal: No nausea, vomiting, or abdominal pain\n\nMusculoskeletal: Joint pain (knees)<br/>"}
 Ekal: Released with android 14 and full intent permission declaration
 Biocon: ABDM integration (should be a separate module, like config, livekit)
 IDA Demo app: Dr.Shaker's device issue exploring

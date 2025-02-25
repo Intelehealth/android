@@ -15,6 +15,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.intelehealth.app.models.FamilyMemberRes;
@@ -42,7 +43,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class PatientsDAO {
+public class PatientsDAO extends BaseDao {
 
     private int updatecount = 0;
     private long createdRecordsCount = 0;
@@ -52,21 +53,27 @@ public class PatientsDAO {
     public boolean insertPatients(List<PatientDTO> patientDTO) throws DAOException {
 
         boolean isInserted = true;
-        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
-        ContentValues values = new ContentValues();
-        db.beginTransaction();
-        try {
-            for (PatientDTO patient : patientDTO) {
-                createPatients(patient, db);
-            }
-            db.setTransactionSuccessful();
-        } catch (SQLException e) {
-            isInserted = false;
-            CustomLog.e(TAG, e.getMessage());
-            throw new DAOException(e.getMessage(), e);
-        } finally {
-            db.endTransaction();
+        List<HashMap<String, Object>> patientList = new ArrayList<>();
+        for (PatientDTO patient : patientDTO) {
+            patientList.add(createPatientMap(patient));
         }
+        execute(bulkInsert(patientList));
+
+//        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+//        ContentValues values = new ContentValues();
+//        db.beginTransaction();
+//        try {
+//            for (PatientDTO patient : patientDTO) {
+//                createPatients(patient, db);
+//            }
+//            db.setTransactionSuccessful();
+//        } catch (SQLException e) {
+//            isInserted = false;
+//            CustomLog.e(TAG, e.getMessage());
+//            throw new DAOException(e.getMessage(), e);
+//        } finally {
+//            db.endTransaction();
+//        }
 
         return isInserted;
     }
@@ -110,6 +117,36 @@ public class PatientsDAO {
         }
         return isCreated;
 
+    }
+
+    public HashMap<String, Object> createPatientMap(PatientDTO patient) {
+        HashMap<String, Object> values = new HashMap<>();
+        values.put("uuid", patient.getUuid());
+        values.put("openmrs_id", patient.getOpenmrsId());
+        values.put("first_name", patient.getFirstname());
+        values.put("middle_name", patient.getMiddlename());
+        values.put("last_name", patient.getLastname());
+        values.put("address1", patient.getAddress1());
+        values.put("address2", patient.getAddress2());
+        values.put("country", patient.getCountry());
+        values.put("date_of_birth",
+                DateAndTimeUtils.formatDateFromOnetoAnother(patient.getDateofbirth(),
+                        "MMM dd, yyyy hh:mm:ss a", "yyyy-MM-dd"));
+        values.put("gender", patient.getGender());
+        values.put("postal_code", patient.getPostalcode());
+        values.put("state_province", patient.getStateprovince());
+        values.put("city_village", patient.getCityvillage());
+        values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
+
+        values.put("guardian_type", patient.getGuardianType());
+        values.put("guardian_name", patient.getGuardianName());
+        values.put("contact_type", patient.getContactType());
+        values.put("em_contact_name", patient.getEmContactName());
+        values.put("em_contact_num", patient.getEmContactNumber());
+
+        values.put("dead", patient.getDead());
+        values.put("sync", patient.getSyncd());
+        return values;
     }
 
     public boolean insertPatientToDB(PatientDTO patientDTO, String uuid) throws DAOException {
@@ -1509,5 +1546,10 @@ public class PatientsDAO {
         cursor.close();
 
         return count;
+    }
+
+    @Override
+    String tableName() {
+        return "tbl_patient";
     }
 }

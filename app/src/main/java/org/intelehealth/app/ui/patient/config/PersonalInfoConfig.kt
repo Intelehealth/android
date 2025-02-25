@@ -21,4 +21,5 @@ class PersonalInfoConfig {
     var emergencyContactName: PatientRegistrationFields? = null
     var emergencyContactNumber: PatientRegistrationFields? = null
     var emergencyContactType: PatientRegistrationFields? = null
+    var requestId: PatientRegistrationFields? = null
 }

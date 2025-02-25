@@ -5,7 +5,9 @@ import android.database.sqlite.SQLiteStatement;
 
 import org.intelehealth.app.app.IntelehealthApplication;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -14,43 +16,104 @@ import java.util.concurrent.Executors;
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-abstract class BaseDao<T> {
+abstract class BaseDao {
     abstract String tableName();
-    public void executeWithBackgroundThread() {
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        executorService.execute(this::task);
-        System.out.println("BaseDao.execute");
 
+    public void execute(Runnable task) {
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(task);
+        System.out.println("BaseDao.execute");
 //        new Thread(this::task).start();
     }
 
-    @SafeVarargs
-    final void bulkInsert(T... t) {
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        executorService.execute(() -> {
-            for (T t1 : t) {
-//                insert(t1);
+    public Runnable insert(HashMap<String, Object> row) {
+        throwException();
+        return () -> {
+            if (row == null || row.isEmpty()) {
+                return;
             }
-        });
+            SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+            String sql = buildInsertQuery(Objects.requireNonNull(row));
+            SQLiteStatement statement = db.compileStatement(sql);
+            try {
+                db.beginTransaction();
+                executeStatement(statement, row);
+                db.setTransactionSuccessful();
+            } finally {
+                db.endTransaction();
+            }
+            db.close();
+        };
     }
 
-    abstract void task();
-
-    public void bulkInsertWithStatement(List<String> names) {
-        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
-        String sql = "INSERT INTO mytable (name) VALUES (?)";
-        SQLiteStatement statement = db.compileStatement(sql);
-        db.beginTransaction();
-        try {
-            for (String name : names) {
-                statement.clearBindings();
-                statement.bindString(1, name);
-                statement.execute();
+    public Runnable bulkInsert(List<HashMap<String, Object>> rows) {
+        throwException();
+        return () -> {
+            if (rows == null || rows.isEmpty()) {
+                return;
             }
-            db.setTransactionSuccessful();
-        } finally {
-            db.endTransaction();
+
+            SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+            String sql = buildInsertQuery(Objects.requireNonNull(rows.get(0)));
+            SQLiteStatement statement = db.compileStatement(sql);
+            try {
+                db.beginTransaction();
+                for (HashMap<String, Object> row : rows) {
+                    executeStatement(statement, row);
+                }
+                db.setTransactionSuccessful();
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                db.endTransaction();
+            }
+//            db.close();
+        };
+    }
+
+    private void throwException() {
+        if (tableName() == null || tableName().isEmpty()) {
+            throw new RuntimeException("Table name is not defined");
         }
-        db.close();
+    }
+
+    private void executeStatement(SQLiteStatement statement, HashMap<String, Object> row) {
+        try {
+            statement.clearBindings();
+            int index = 1;
+            for (String key : row.keySet()) {
+                Object value = row.get(key);
+                if (value instanceof String) {
+                    statement.bindString(index, (String) value);
+                } else if (value instanceof Integer) {
+                    statement.bindLong(index, (Integer) value);
+                } else if (value instanceof Long) {
+                    statement.bindLong(index, (Long) value);
+                } else if (value instanceof Double) {
+                    statement.bindDouble(index, (Double) value);
+                } else if (value instanceof byte[]) {
+                    statement.bindBlob(index, (byte[]) value);
+                } else {
+                    statement.bindNull(index);
+                }
+
+                index++;
+            }
+            statement.execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private String buildInsertQuery(HashMap<String, Object> row) {
+        StringBuilder columns = new StringBuilder();
+        StringBuilder values = new StringBuilder();
+        for (String key : row.keySet()) {
+            columns.append(key).append(", ");
+            values.append("?").append(", ");
+        }
+        columns.deleteCharAt(columns.length() - 2);
+        values.deleteCharAt(values.length() - 2);
+        return "INSERT INTO " + tableName() + " (" + columns + ") VALUES (" + values + ")";
     }
 }

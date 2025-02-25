@@ -100,7 +100,6 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
             nationalID = binding.textInputNationalId.text?.toString()
             occupation = binding.textInputOccupation.text?.toString()
             tmhCaseNumber = binding.textInputTmhCaseNumber.text?.toString()
-            requestId = binding.textInputRequestId.text?.toString()
             discipline = binding.textInputDiscipline.text?.toString()
             department = binding.textInputDepartment.text?.toString()
             relativePhoneNumber = binding.textInputRelativePhoneNumber.text?.toString()
@@ -137,7 +136,6 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
         binding.textInputLayOccupation.hideErrorOnTextChang(binding.textInputOccupation)
 
         binding.textInputLayTmhCaseNumber.hideErrorOnTextChang(binding.textInputTmhCaseNumber)
-        binding.textInputLayRequestId.hideErrorOnTextChang(binding.textInputRequestId)
         binding.textInputLayDiscipline.hideErrorOnTextChang(binding.textInputDiscipline)
         binding.textInputLayDepartment.hideErrorOnTextChang(binding.textInputDepartment)
         binding.textInputLayRelativePhoneNumber.hideDigitErrorOnTextChang(
@@ -236,12 +234,6 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
                 )
             } else true
 
-            val requestId = if (it.requestId?.isEnabled == true && it.requestId?.isMandatory == true) {
-                binding.textInputLayRequestId.validate(
-                    binding.textInputRequestId, error
-                )
-            } else true
-
             val discipline = if (it.discipline?.isEnabled == true && it.discipline?.isMandatory == true) {
                 binding.textInputLayDiscipline.validate(
                     binding.textInputDiscipline, error
@@ -262,7 +254,7 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
 
 
             if (bOccuptions.and(bSocialCategory).and(bEducation).and(bEconomic).and(bNationalId).and(bOccuptions)
-                    .and(tmhCaseNumber).and(requestId).and(discipline).and(relativePhoneNumber).and(bInn)
+                    .and(tmhCaseNumber).and(discipline).and(relativePhoneNumber).and(bInn)
                     .and(bCodeOfHealthyFacility).and(bHealthFacilityName).and(bCodeOfDepartment).and(bDepartment)
             ) block.invoke()
         }

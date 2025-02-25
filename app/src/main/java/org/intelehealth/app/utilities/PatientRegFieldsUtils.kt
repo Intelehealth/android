@@ -123,6 +123,7 @@ object PatientRegFieldsUtils {
                     PatientRegConfigKeys.EM_CONTACT_NAME -> emergencyContactName = it
                     PatientRegConfigKeys.EM_CONTACT_NUMBER -> emergencyContactNumber = it
                     PatientRegConfigKeys.EM_CONTACT_TYPE -> emergencyContactType = it
+                    PatientRegConfigKeys.REQUEST_ID -> requestId = it
                 }
             }
         }
@@ -160,7 +161,6 @@ object PatientRegFieldsUtils {
                     PatientRegConfigKeys.ECONOMIC_CATEGORY -> economicCategory = it
 
                     PatientRegConfigKeys.TMH_CASE_SUMMARY -> tmhCaseNumber = it
-                    PatientRegConfigKeys.REQUEST_ID -> requestId = it
                     PatientRegConfigKeys.RELATIVE_PHONE_NUM -> relativePhoneNumber = it
                     PatientRegConfigKeys.DISCIPLINE -> discipline = it
                     PatientRegConfigKeys.DEPARTMENT -> department = it

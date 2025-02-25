@@ -83,7 +83,7 @@ public class Node implements Serializable {
     public static String bullet_hollow = "\u2022";
     public static String bullet_arrow = "\u25BA";
     public static String right_pointing = "\u25BB";
-    public static String next_line = "<br/>";
+    public static String next_line = "\n<br/>";
     String space = "\t";
     private String engineVersion;
     private boolean needToHide;
@@ -4045,4 +4045,3 @@ public class Node implements Serializable {
 
     /*End*/
 }
-

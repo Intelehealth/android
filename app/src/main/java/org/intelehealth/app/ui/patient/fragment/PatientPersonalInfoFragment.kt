@@ -167,9 +167,9 @@ class PatientPersonalInfoFragment :
         Timber.d { "onPatientDataLoaded" }
         Timber.d { Gson().toJson(patient) }
         fetchPersonalInfoConfig()
-        if(BuildConfig.FLAVOR_client == FlavorKeys.UNFPA){
+        if (BuildConfig.FLAVOR_client == FlavorKeys.UNFPA) {
             patient.apply {
-                gender = gender?:"F"
+                gender = gender ?: "F"
             }
         }
         binding.patient = patient
@@ -218,7 +218,7 @@ class PatientPersonalInfoFragment :
             guardianName = binding.textInputETGuardianName.text?.toString()
             emContactName = binding.textInputETECName.text?.toString()
             emContactNumber = binding.ccpEmContactPhone.fullNumberWithPlus
-
+            requestId = binding.textInputRequestId.text?.toString()
             patientViewModel.updatedPatient(this)
             if (patientViewModel.isEditMode) {
                 saveAndNavigateToDetails()
@@ -253,7 +253,7 @@ class PatientPersonalInfoFragment :
     }
 
     private fun setGender() {
-        if(BuildConfig.FLAVOR_client == FlavorKeys.UNFPA){
+        if (BuildConfig.FLAVOR_client == FlavorKeys.UNFPA) {
             binding.btnMale.isCheckable = false
             binding.btnFemale.isCheckable = false
             binding.btnOther.isCheckable = false
@@ -264,7 +264,7 @@ class PatientPersonalInfoFragment :
         }
     }
 
-    private fun bindGenderValue(){
+    private fun bindGenderValue() {
         patient.gender = when (binding.toggleGender.checkedButtonId) {
             R.id.btnMale -> "M"
             R.id.btnFemale -> "F"
@@ -400,6 +400,7 @@ class PatientPersonalInfoFragment :
             binding.textInputETEMPhoneNumber,
             10
         )
+        binding.textInputLayRequestId.hideErrorOnTextChang(binding.textInputRequestId)
     }
 
     private fun setupGuardianType() {
@@ -529,9 +530,15 @@ class PatientPersonalInfoFragment :
                     )
                 } else true
 
+            val requestId = if (it.requestId?.isEnabled == true && it.requestId?.isMandatory == true) {
+                binding.textInputLayRequestId.validate(
+                    binding.textInputRequestId, error
+                )
+            } else true
+
             if (bProfile.and(bFName).and(bMName).and(bLName).and(bGender)
                     .and(bDob).and(bAge).and(bPhone).and(bGName).and(bGuardianType)
-                    .and(bEmName).and(bEmPhone).and(bEmContactType)
+                    .and(bEmName).and(bEmPhone).and(bEmContactType).and(requestId)
             ) block.invoke()
         }
     }

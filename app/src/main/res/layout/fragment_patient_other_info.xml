@@ -293,50 +293,6 @@
                     </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
                 </LinearLayout>
 
-                <!--request id-->
-                <LinearLayout
-                    android:id="@+id/llRequestId"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/std_12dp"
-                    android:orientation="vertical"
-                    android:visibility="@{otherInfoConfig.requestId.enabled ? View.VISIBLE : View.GONE}"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/llTmhCaseNumber"
-                    tools:visibility="visible">
-
-                    <TextView
-                        android:id="@+id/lblRequestId"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:lineSpacingExtra="3sp"
-                        android:text="@{ otherInfoConfig.requestId.mandatory ? @string/request_id + ` *` : @string/request_id}"
-                        android:textAppearance="@style/blur_txtview"
-                        android:textSize="@null"
-                        tools:text="@string/request_id" />
-
-                    <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
-                        android:id="@+id/textInputLayRequestId"
-                        style="@style/AppTheme.OutlineInputBox"
-                        config="@{otherInfoConfig.requestId}"
-                        editMode="@{isEditMode}"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/margin_4"
-                        app:hintEnabled="false">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/textInputRequestId"
-                            style="@style/AppTheme.InputBox.Address"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/enter_request_id"
-                            android:inputType="text"
-                            android:text="@{patient.requestId}" />
-                    </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
-                </LinearLayout>
-
                 <!--relative phone-->
                 <LinearLayout
                     android:id="@+id/llRelativePhoneNumber"
@@ -347,7 +303,7 @@
                     android:visibility="@{otherInfoConfig.relativePhoneNumber.enabled ? View.VISIBLE : View.GONE}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/llRequestId"
+                    app:layout_constraintTop_toBottomOf="@id/llTmhCaseNumber"
                     tools:visibility="visible">
 
                     <TextView
