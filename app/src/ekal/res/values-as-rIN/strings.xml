@@ -71,7 +71,7 @@
     <string name="religion_muslim">মুছলমান</string>
     <string name="religion_christian">খ্ৰীষ্টান</string>
     <string name="religion_sikh">শিখ</string>
-    <string name="religion_buddhist_neo_buddhist">বৌদ্ধ বা নব্য বৌদ্ধ</string>
+    <string name="religion_buddhist_neo_buddhist">বৌদ্ধ/নৱবৌদ্ধ</string>
     <string name="religion_jain">জৈন</string>
     <string name="religion_jewish">ইহুদী</string>
     <string name="parsi_zoroastrian">পাৰ্চী বা জৰদস্তিয়ান</string>
@@ -87,8 +87,8 @@
     <string name="toilet_facility_shared_toilet_with_other_households">অন্য পৰিয়ালৰ সৈতে ভাগ কৰা শৌচাগাৰ</string>
     <string name="toilet_facility_declined_to_answer">উত্তৰ দিবলৈ অস্বীকাৰ কৰিলে</string>
 
-    <string name="house_structure_kutcha_house">কেচাঁ ঘৰ</string>
-    <string name="house_structure_pakka_house">পকী ঘৰ</string>
+    <string name="house_structure_kutcha_house">কেচা</string>
+    <string name="house_structure_pakka_house">পক্কা</string>
     <string name="house_structure_homeless">গৃহহীন</string>
 
     <string name="cultivable_land_bigha">বিঘা</string>
@@ -104,7 +104,7 @@
     <string name="availability_of_water_supply">পানী যোগানৰ উপলব্ধতা</string>
 
     <string name="hb_check_question">শেষবাৰৰ বাবে কেতিয়া HB লেভেল পৰীক্ষা কৰা হৈছিল?</string>
-    <string name="bp_check_question">শেষবাৰৰ বাবে কেতিয়া বি পি পৰীক্ষা কৰিছিল?</string>
+    <string name="bp_check_question">শেষবাৰৰ বাবে কেতিয়া বি পি পৰীক্ষা কৰা হৈছিল?</string>
     <string name="sugar_check_question">শেষবাৰৰ বাবে কেতিয়া চেনিৰ মাত্ৰা পৰীক্ষা কৰা হৈছিল?</string>
     <string name="bp_label">বি পি</string>
     <string name="diabetes_label">ডায়েবিটিছ</string>
@@ -112,12 +112,12 @@
     <string name="anemia_label">ৰক্তহীনতা</string>
     <string name="surgery_label">কোন চার্জাৰি?</string>
     <string name="surgery_reason_label">অস্ত্ৰোপচাৰৰ কাৰণ</string>
-    <string name="smoking_history_question">ব্যক্তিজনে ধঁপাত চোবাই খায় নেকি?</string>
+    <string name="smoking_history_question">ব্যক্তিজনে ধূমপান কৰে নেকি?</string>
     <string name="smoking_rate_label">ধূমপানৰ হাৰ</string>
     <string name="smoking_duration_question">কিমান দিনৰ পৰা ধূমপান কৰি আছে?</string>
     <string name="smoking_frequency_label">খোৱাৰ কম্পাঙ্ক</string>
     <string name="chew_tobacco_question">ব্যক্তিজনে ধঁপাত চোবাই খায় নেকি?</string>
-    <string name="alcohol_history_question">মদ্যপানৰ ইতিহাস আছে নেকি?</string>
+    <string name="alcohol_history_question">মদ্যপানৰ কোনো ইতিহাস আছেনে?</string>
     <string name="alcohol_rate_label">মদ্যপানৰ হাৰ</string>
     <string name="alcohol_consumption_question">কিমান দিনৰ পৰা মদ্যপান কৰি আছে?</string>
     <string name="alcohol_frequency_label">খোৱাৰ কম্পাঙ্ক</string>
@@ -138,12 +138,12 @@
     <string name="water_availability_hours_per_day">প্ৰতিদিনে ঘণ্টাৰ সংখ্যা</string>
     <string name="water_availability_days_per_week">প্ৰতি সপ্তাহত দিনৰ সংখ্যা</string>
 
-    <string name="source_of_water_question">আপোনাৰ ঘৰৰ সদস্যসকলৰ বাবে খোৱাপানীৰ মূল উৎস কি?</string>
+    <string name="source_of_water_question">আপোনাৰ ঘৰৰ সদস্যসকলৰ খোৱাপানীৰ মূল উৎস কি?</string>
     <string name="safequard_question">সাধাৰণতে পানীখিনি কি কৰে যাতে পানী খাবলৈ সুৰক্ষিত হয়?</string>
     <string name="distance_from_water_question">ঘৰৰ পৰা অহা-যোৱা কৰাৰ ৩০ মিনিটৰ ভিতৰত খোৱাপানীৰ উৎস নেকি?</string>
     <string name="toilet_facility_question">আপোনাৰ ঘৰৰ সদস্যসকলে সাধাৰণতে কেনেধৰণৰ শৌচাগাৰ ব্যৱহাৰ কৰে?</string>
-    <string name="house_structure_label">ঘৰৰ গঠন নিৰ্বাচন কৰক</string>
-    <string name="cultivable_land_question">আপোনাৰ পৰিয়ালৰ কিমান হেক্টৰ খেতিযোগ্য মাটি আছে?</string>
+    <string name="house_structure_label">ঘৰুৱা গঠন প্ৰকাৰ</string>
+    <string name="cultivable_land_question">আপোনাৰ পৰিয়ালৰ কিমান খেতি কৰা মাটি?</string>
     <string name="average_income_label">গড় বাৰ্ষিক পৰিয়ালৰ আয় (INR)</string>
     <string name="fuel_type_question">আপোনাৰ ঘৰখনে মূলতঃ ৰন্ধা-বঢ়াৰ বাবে কি ধৰণৰ ইন্ধন ব্যৱহাৰ কৰে?</string>
     <string name="source_of_lighting_question">এই ঘৰখনত পোহৰৰ মূল উৎস কি?</string>
@@ -221,7 +221,7 @@
     <string name="sugar_random">চেনিৰ মাত্ৰা - যাদৃচ্ছিক</string>
 
     <string name="hint_drop_down_hb_check">সময়কাল নিৰ্ব্বাচন কৰক</string>
-    <string name="enter_number">নম্বৰ দিয়ক</string>
+    <string name="enter_number">সংখ্যা দিয়ক</string>
     <string name="baseline_survey_completed">ভিত্তি ৰেখাৰ জৰীপ সম্পূৰ্ণ হৈছে</string>
 
     <string name="bullet">\u2022</string>
@@ -286,7 +286,7 @@
     <string name="general_economic_status">অৰ্থনৈতিক অৱস্থা</string>
     <string name="ayushman_card_question">আপোনাৰ হাতত আয়ুষ্মান কাৰ্ড আছে নেকি?</string>
     <string name="mgnrega_card_question">আপোনাৰ হাতত MGNREGA কাৰ্ড আছে নেকি?</string>
-    <string name="bank_account_question">আপোনাৰ বেংক একাউণ্ট আছে নেকি?</string>
+    <string name="bank_account_question">আপোনাৰ বেংক একাউণ্ট নম্বৰ আছে নেকি?</string>
     <string name="phone_ownership">ফোন মালিকীস্বত্ব</string>
     <string name="family_whatsapp_question">আপুনি বা আপোনাৰ পৰিয়ালৰ কোনো সদস্যই( হোৱাটচ অ্যাপ)ব্যৱহাৰ কৰে নেকি?</string>
     <string name="marital_status_question">আপোনাৰ বৈবাহিক অৱস্থা কি?</string>
@@ -346,20 +346,20 @@
     <string name="alert_save_and_exit_button">সংৰক্ষণ কৰক আৰু প্ৰস্থান কৰক</string>
     <string name="alert_start_button">আৰম্ভ কৰক</string>
 
-    <string name="piped_into_dwelling">বাসস্থান মধ্য পাইপ</string>
-    <string name="piped_into_yard_plot">পাইপ ইনটু য়াৰ্ড বা প্লট</string>
-    <string name="public_tap_standpipe">ৰাজহুৱা টেপ বা ষ্টেণ্ডপাইপ</string>
-    <string name="tube_well_borehole">টিউব ৱেল বা ব’ৰহ’ল</string>
-    <string name="protected_well_checkbox">সুৰক্ষিত ভাল</string>
-    <string name="unprotected_well">অসুৰক্ষিত কুঁৱা</string>
-    <string name="protected_spring">সুৰক্ষিত বসন্ত</string>
-    <string name="unprotected_spring">অসুৰক্ষিত বসন্ত</string>
+    <string name="piped_into_dwelling">পাইপেৰে বাসস্থানলৈ</string>
+    <string name="piped_into_yard_plot">পাইপেৰে চোতাল/প্লটলৈ</string>
+    <string name="public_tap_standpipe">ৰাজহুৱা টেপ/ষ্টেণ্ডপাইপ</string>
+    <string name="tube_well_borehole">টিউব কুঁৱা/ব’ৰহ’ল</string>
+    <string name="protected_well_checkbox">সুৰক্ষিত কূপ</string>
+    <string name="unprotected_well">অসুৰক্ষিত কূপ</string>
+    <string name="protected_spring">সুৰক্ষিত নিজৰা পানী</string>
+    <string name="unprotected_spring">অসুৰক্ষিত নিজৰা পানী</string>
     <string name="rainwater">বৰষুণৰ পানী</string>
     <string name="tanker_truck">টেংকাৰ ট্ৰাক</string>
-    <string name="cart_with_small_tank">সৰু ট্ৰাকৰ সৈতে কাৰ্ট</string>
-    <string name="surface_water">পৃষ্ঠীয় পানী</string>
+    <string name="cart_with_small_tank">কাৰ্ট সৰু টেংকৰ সৈতে</string>
+    <string name="surface_water">পৃষ্ঠৰ পানী</string>
     <string name="common_hand_pump">সাধাৰণ হেণ্ড পাম্প</string>
-    <string name="hand_pump_at_home">হেণ্ড পাম্প এট হোম</string>
+    <string name="hand_pump_at_home">ঘৰত হেণ্ড পাম্প</string>
 
     <string name="boil">উতলোৱা</string>
     <string name="use_alum">এলুম ব্যৱহাৰ কৰক</string>
@@ -392,20 +392,20 @@
     <string name="wash_before_after_eating">খোৱাৰ আগতে আৰু পিছত ধুব লাগে।</string>
 
     <string name="never_checked">কেতিয়াও পৰীক্ষা কৰা হোৱা নাই</string>
-    <string name="in_past_one_week">যোৱা এসপ্তাহত</string>
+    <string name="in_past_one_week">6 মাহতকৈ অধিক আগতে</string>
     <string name="within_last_month">যোৱা 6 মাহৰ ভিতৰত</string>
 
-    <string name="own_smartphone">স্মাৰ্টফোনৰ মালিক</string>
-    <string name="own_feature_phone">বৈশিষ্ট্য ফোন মালিক</string>
+    <string name="own_smartphone">নিজৰ স্মাৰ্টফোন</string>
+    <string name="own_feature_phone">নিজৰ বৈশিষ্ট্য ফোন</string>
     <string name="shared_smartphone">শ্বেয়াৰ কৰা স্মাৰ্টফোন</string>
     <string name="shared_feature_phone">শ্বেয়াৰ কৰা বৈশিষ্ট্য ফোন</string>
 
-    <string name="cannot_read_and_write">পঢ়িব বা লিখিব নোৱাৰি</string>
+    <string name="cannot_read_and_write">পঢ়িব বা লিখিব নোৱাৰে</string>
     <string name="can_read_and_write">পঢ়িব আৰু লিখিব পাৰে</string>
-    <string name="primary_education_till_class_five">প্ৰাথমিক শিক্ষা (৫ম শ্ৰেণীলৈকে)</string>
-    <string name="middle_school_sixth_eighth">মধ্যবিদ্যালয় (৬ম - ৮ম)</string>
-    <string name="passed_secondary_school">মাধ্যমিক বিদ্যালয় উত্তীৰ্ণ (দশম শ্ৰেণীৰ বৰ্ড)</string>
-    <string name="passed_senior_secondary_school">জ্যেষ্ঠ মাধ্যমিক বিদ্যালয়ত উত্তীৰ্ণ (ক্লাছ দ্বাদশ বৰ্ড)</string>
+    <string name="primary_education_till_class_five">প্ৰাথমিক শিক্ষা (পঞ্চম শ্ৰেণীলৈকে)</string>
+    <string name="middle_school_sixth_eighth">মধ্যবিদ্যালয় (ষষ্ঠ - অষ্টম)</string>
+    <string name="passed_secondary_school">মাধ্যমিক বিদ্যালয়ত উত্তীৰ্ণ (দশম শ্ৰেণীৰ বৰ্ড)</string>
+    <string name="passed_senior_secondary_school">জ্যেষ্ঠ মাধ্যমিক বিদ্যালয়ত উত্তীৰ্ণ (দ্বাদশ শ্ৰেণী বৰ্ড)</string>
     <string name="graduation_and_above">স্নাতক আৰু তাৰ ওপৰৰ</string>
 
     <string name="salaried_government_job">দৰমহা পোৱা চৰকাৰী চাকৰি</string>

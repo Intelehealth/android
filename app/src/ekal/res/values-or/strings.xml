@@ -68,10 +68,10 @@
     <string name="more_than_two_lakh_fifty_thousand">2,50,000 ରୁ ଅଧିକ |</string>
 
     <string name="religion_hindu">ହିନ୍ଦୁ</string>
-    <string name="religion_muslim">ମୁସଲମାନ</string>
+    <string name="religion_muslim">ମୁସଲିମ</string>
     <string name="religion_christian">ଖ୍ରୀଷ୍ଟିଆନ</string>
     <string name="religion_sikh">ଶିଖ</string>
-    <string name="religion_buddhist_neo_buddhist">ବୌଦ୍ଧ</string>
+    <string name="religion_buddhist_neo_buddhist">ବୁଧିଷ୍ଟ / ଅଣ ବୁଧିଷ୍ଟ୍</string>
     <string name="religion_jain">ଜୈନ</string>
     <string name="religion_jewish">ଯିହୁଦୀ</string>
     <string name="parsi_zoroastrian">ପାର୍ସୀ / ଜୋରାଷ୍ଟ୍ରିଆନ୍</string>
@@ -87,11 +87,11 @@
     <string name="toilet_facility_shared_toilet_with_other_households">ଅନ୍ୟ ଘର ର ପାଇଖାନା ର ବ୍ୟବହାର</string>
     <string name="toilet_facility_declined_to_answer">ଉତ୍ତର ଦେବାକୁ ମନା କଲେ</string>
 
-    <string name="house_structure_kutcha_house">କୁଚା ହାଉସ୍</string>
-    <string name="house_structure_pakka_house">ପାକ୍କା ହାଉସ୍</string>
-    <string name="house_structure_homeless">ଗୃହହୀନ</string>
+    <string name="house_structure_kutcha_house">କଚା</string>
+    <string name="house_structure_pakka_house">ପକା</string>
+    <string name="house_structure_homeless">ଘର ବିହୀନ</string>
 
-    <string name="cultivable_land_bigha">ବଡ</string>
+    <string name="cultivable_land_bigha">ବିଘା</string>
     <string name="cultivable_land_gunta">ଗୁଣ୍ଠ</string>
     <string name="cultivable_land_acre">ଏକର</string>
     <string name="cultivable_land_hectare">ହେକ୍ଟର</string>
@@ -104,7 +104,7 @@
     <string name="availability_of_water_supply">ଜଳ ଯୋଗାଣର ବ୍ୟବସ୍ଥା</string>
 
     <string name="hb_check_question">ଶେଷ ଥର କେତେବେଳେ ତୁମର ଏଚ୍.ପି. ସ୍ତର ପରୀକ୍ଷା କରାଗଲା??</string>
-    <string name="bp_check_question">ଶେଷ ଥର ପାଇଁ ଯେତେବେଳେ ତୁମର ବିପି ଯାଞ୍ଚ ହେଲା?</string>
+    <string name="bp_check_question">ଶେଷ ଥର ପାଇଁ ନିଜର ରକ୍ତ ଚାପ ପରୀକ୍ଷା କରିଥିଲ</string>
     <string name="sugar_check_question">ଶେଷ ଥର ଯେତେବେଳେ ତୁମର ଚିନି ସ୍ତର ଯାଞ୍ଚ ହେଲା?</string>
     <string name="bp_label">ବ୍ଲଡ଼ ପ୍ରେସର (ରକ୍ତ ଚାପ)</string>
     <string name="diabetes_label">ମଧୁମେହ</string>
@@ -112,12 +112,12 @@
     <string name="anemia_label">ରକ୍ତହୀନତା</string>
     <string name="surgery_label">କୌଣସି ଅସ୍ତ୍ରୋପଚାର?</string>
     <string name="surgery_reason_label">ଅସ୍ତ୍ରୋପଚାରର କାରଣ</string>
-    <string name="smoking_history_question">ବ୍ୟକ୍ତି ତମାଖୁ ସେବନ କରନ୍ତି କି ?</string>
+    <string name="smoking_history_question">ବ୍ୟକ୍କ୍ତି ଧୁମ୍ରପାନ କରନ୍ତି କି ?</string>
     <string name="smoking_rate_label">ଧୂମପାନର ହାର</string>
     <string name="smoking_duration_question">କେତେ ଦିନ ହେଲାଣି ଆପଣ ଧୁମ୍ରପାନ କରୁଛନ୍ତି?</string>
     <string name="smoking_frequency_label">ବ୍ୟବହାର କରିବାର ପରିମାଣ</string>
-    <string name="chew_tobacco_question">ବ୍ୟକ୍ତି ତମାଖୁ ସେବନ କରନ୍ତି କି?</string>
-    <string name="alcohol_history_question">ରେ କେହି ମଦ୍ୟ ପାନ କରୁଥିବାର ନଜିର ଅଛି କି?</string>
+    <string name="chew_tobacco_question">ବ୍ୟକ୍ତି ତମାଖୁ ସେବନ କରନ୍ତି କି ?</string>
+    <string name="alcohol_history_question">ମଦ୍ୟ ପାନ ର କିଛି ଇତିହାସ ଅଛି କି ?</string>
     <string name="alcohol_rate_label">କେତେ ପରିମାଣର ମଦ୍ୟ ପାନ କରନ୍ତି</string>
     <string name="alcohol_consumption_question">କେତେ ଦିନ ହେବ ଆପଣ ମଦ୍ୟ ପାନ କରୁଛନ୍ତି?</string>
     <string name="alcohol_frequency_label">ବ୍ୟବହାର କରିବାର ପରିମାଣ</string>
@@ -138,17 +138,17 @@
     <string name="water_availability_hours_per_day">ଦିନକୁ କେତେ ଘଣ୍ଟା</string>
     <string name="water_availability_days_per_week">ସପ୍ତାହକୁ କେତେ ଦିନ</string>
 
-    <string name="source_of_water_question">ଆପଣଙ୍କ ଘରର ସଦସ୍ୟମାନଙ୍କ ପାଇଁ ପାନୀୟ ଜଳର ମୁଖ୍ୟ ଉତ୍ସ କ’ଣ?</string>
+    <string name="source_of_water_question">ତୁମ ଘରର ପିଇବା ପାଣିର ମୁଖ୍ୟ ଉତ୍ସ କଣ ?</string>
     <string name="safequard_question">ଏହାକୁ ପିଇବାକୁ ନିରାପଦ କରିବା ପାଇଁ ଆପଣ ସାଧାରଣତ ପାଣିରେ କ’ଣ କରନ୍ତି?</string>
     <string name="distance_from_water_question">ଘର ପାଖରୁ ପିଇବା ପାଣି ଆଣିବାରେ ୩୦ ମିନିଟ୍ ସମୟ ମଧ୍ୟରେ</string>
     <string name="toilet_facility_question">ଆପଣଙ୍କ ଘରର ସଦସ୍ୟ ମାନେ ସାଧାରତଃ କେଉଁ ପ୍ରକାରର ଶୌଚାଳୟ ସୁବିଧା ବ୍ୟବହାର କରନ୍ତି?</string>
-    <string name="house_structure_label">ଘରର ଗଠନ ଚୟନ କରନ୍ତୁ</string>
-    <string name="cultivable_land_question">ଆପଣଙ୍କ ପରିବାର ର କେତେ ଏକର ଚାଷ ଜମି ଅଛି?</string>
+    <string name="house_structure_label">ଘରର ଗଠନ ପ୍ରଣାଳୀ</string>
+    <string name="cultivable_land_question">ନିଜ ପରିବାର ର ଚାଷ ଉପଯୋଗୀ ଜମି କେତେ ?</string>
     <string name="average_income_label">ହାରାହାରି ବାର୍ଷିକ ଘରୋଇ ଆୟ</string>
     <string name="fuel_type_question">ଆପଣଙ୍କ ଘର ମୁଖ୍ୟତ ରୋଷେଇ ପାଇଁ କେଉଁ ପ୍ରକାରର ଇନ୍ଧନ ବ୍ୟବହାର କରନ୍ତି?</string>
     <string name="source_of_lighting_question">ଏହି ଘରେ ଆଲୋକର ମୁଖ୍ୟ ଉତ୍ସ କ’ଣ?</string>
     <string name="hand_wash_Label">ହାତ ସଫା କରିବାର ଅଭ୍ୟାସ</string>
-    <string name="ekal_service_check_question">ଏକଲ୍ ଆପଣଙ୍କ ଗ୍ରାମରେ ଏକ ଟେଲି ମେଡ଼ିସିନ୍ କାର୍ଯ୍ୟକ୍ରମ ଆରମ୍ଭ କରୁଛି ଯାହାକି ପ୍ରାଥମିକ ସ୍ବାସ୍ଥ୍ୟ ସୁବିଧା ଯୋଗାଇ ଦେବା ସହ - HB ପରୀକ୍ଷା , BP ପରୀକ୍ଷା , ସୁଗ।ର ପରୀକ୍ଷା ସହିତ ଡାକ୍ତରୀ ପରାମର୍ଶ ଯାହା ଦରକାର ହୋଇଥାଏ । ଆପଣ ଆମର ସେବା ଗ୍ରହଣ କରିବାକୁ ଆଗ୍ରହୀ ଅଟନ୍ତି?</string>
+    <string name="ekal_service_check_question">ଏକଲ୍ ଆପଣଙ୍କ ଗ୍ରାମରେ ଏକ ଟେଲି ମେଡ଼ିସିନ୍ କାର୍ଯ୍ୟକ୍ରମ ଆରମ୍ଭ କରୁଛି ଯାହାକି ପ୍ରାଥମିକ ସ୍ବାସ୍ଥ୍ୟ ସୁବିଧା ଯୋଗାଇ ଦେବା ସହ - HB ପରୀକ୍ଷା , BP ପରୀକ୍ଷା , ସୁଗ।ର ପରୀକ୍ଷା ସହିତ ଡାକ୍ତରୀ ପରାମର୍ଶ ଯାହା ଦରକାର ହୋଇଥାଏ । ଆପଣ ଆମର ସେବା ଗ୍ରହଣ କରିବାକୁ ଆଗ୍ରହୀ ଅଟନ୍ତି ?</string>
     <string name="relation_with_household">ଘରର ମୁଖ୍ୟଙ୍କ ସହିତ ତୁମର ସମ୍ପର୍କ କଣ?</string>
 
     <string name="which_server_would_you_like_to_connect_to">ଆପଣ ସକଉଁସଭଡରକୁସାଂସଯାଗ କରିବାକୁଚାହୁଁଛନ୍ତି?</string>
@@ -221,7 +221,7 @@
     <string name="sugar_random">ଚିନି ସ୍ତର - ଅନିୟମିତ</string>
 
     <string name="hint_drop_down_hb_check">ଅବଧି ଚୟନ କରନ୍ତୁ</string>
-    <string name="enter_number">ସଂଖ୍ୟା ପ୍ରବେଶ କରନ୍ତୁ</string>
+    <string name="enter_number">କେତେ ଜଣ</string>
     <string name="baseline_survey_completed">ବେସଲାଇନ୍ ସର୍ଭେ ସମାପ୍ତ ହୋଇଛି|</string>
 
     <string name="bullet">\u2022</string>
@@ -288,8 +288,8 @@
     <string name="general_economic_status">ଅର୍ଥନୈତିକ ଅବସ୍ଥା</string>
     <string name="ayushman_card_question">ତୁମର ଆୟୁଷ୍ମାନ କାର୍ଡ ଅଛି କି?</string>
     <string name="mgnrega_card_question">ତୁମର MGNREGA କାର୍ଡ ଅଛି କି?</string>
-    <string name="bank_account_question">ଆପଣଙ୍କର ବ୍ୟାଙ୍କ ଆକାଉଣ୍ଟ ଅଛି କି?</string>
-    <string name="phone_ownership">ନିଜର ଫୋନ୍</string>
+    <string name="bank_account_question">ତୁମର ବ୍ୟାଙ୍କ୍ ଖାତା ଅଛି କି ?</string>
+    <string name="phone_ownership">ନିଜର ଫୋନ</string>
     <string name="family_whatsapp_question">ଆପଣ କିମ୍ବା ଆପଣଙ୍କ ପରିବାର ସଦସ୍ୟ ୱାଟସଆପବ୍ୟବହାର କରନ୍ତି କି?</string>
     <string name="marital_status_question">ବୈବାହିକ ସ୍ଥିତି?</string>
 
@@ -348,18 +348,18 @@
     <string name="alert_save_and_exit_button">ସେଭ୍ କରନ୍ତୁ ଏବଂ ପ୍ରସ୍ଥାନ କରନ୍ତୁ</string>
     <string name="alert_start_button">ଆରମ୍ଭ</string>
 
-    <string name="piped_into_dwelling">ବାସଗୃହକୁ ପାଇପଯୋଗେ ପାଣି</string>
-    <string name="piped_into_yard_plot">ଅଗଣାକୁ ପାଇପ ପାଣି ଯୋଗାଣ</string>
-    <string name="public_tap_standpipe">ସର୍ବସାଧାରଣ ଟ୍ୟାବ</string>
-    <string name="tube_well_borehole">ନଳକୁପ/ ବୋର ୱେଲ </string>
-    <string name="protected_well_checkbox">ସୁରକ୍ଷିତ କୂଅ</string>
-    <string name="unprotected_well">ଅସୁରକ୍ଷିତ ପୂଅ</string>
-    <string name="protected_spring">ଅସୁରକ୍ଷିତ କୁଅ</string>
-    <string name="unprotected_spring">ଅସୁରକ୍ଷିତ ଝରଣା</string>
-    <string name="rainwater">ବର୍ଷାପାଣି</string>
-    <string name="tanker_truck">ଟ୍ୟାଙ୍କର ପାଣି</string>
-    <string name="cart_with_small_tank">ଛୋଟ ଟ୍ୟାଙ୍କର ଗାଡି</string>
-    <string name="surface_water">ଭୂପୃଷ୍ଠ ଜଳ</string>
+    <string name="piped_into_dwelling">ପାଇପ ଲାଇନ୍</string>
+    <string name="piped_into_yard_plot">ଘର ଅଗଣାରେ ପାଇପ ଜଳ</string>
+    <string name="public_tap_standpipe">ସାର୍ବଜନୀନ ପାଇପ ଲାଇନ୍</string>
+    <string name="tube_well_borehole">ନଳ କୁପ</string>
+    <string name="protected_well_checkbox">ସୁରକ୍ଷିତ କୂପ</string>
+    <string name="unprotected_well">ଅଣ ସୁରକ୍ଷିତ କୂପ</string>
+    <string name="protected_spring">ସୁରକ୍ଷିତ ଝରଣା</string>
+    <string name="unprotected_spring">ଅଣ ସୁରକ୍ଷିତ ଝରଣା</string>
+    <string name="rainwater">ବର୍ଷା ପାଣି</string>
+    <string name="tanker_truck">ଟ୍ୟାଙ୍କର ( ତୈଳ ପୋତ ) ଟ୍ରକ୍</string>
+    <string name="cart_with_small_tank">ଛୋଟ ଟାଙ୍କି ଯୁକ୍ତ ଗାଡ଼ି</string>
+    <string name="surface_water">ଉପରିଭାଗ ଜଳ</string>
     <string name="common_hand_pump">ସାଧାରଣ ହାତ ପମ୍ପ</string>
     <string name="hand_pump_at_home">ଘରେ ଥିବା ହାତ ପମ୍ପ</string>
 
@@ -393,21 +393,21 @@
     <string name="wash_before_cooking">ରାନ୍ଧିବା ଆଗରୁ ହାତ ଧୋଇବା</string>
     <string name="wash_before_after_eating">ଖାଇବା ଆଗରୁ ଓ ପରେ ହାତ ଧୋଇବା</string>
 
-    <string name="never_checked">କଦାପି ଯାଞ୍ଚ କରାଯାଇ ନାହିଁ</string>
-    <string name="in_past_one_week">ଗତ ଏକ ସପ୍ତାହରେ</string>
+    <string name="never_checked">କେବେ ଯାଞ୍ଚ କରିନି</string>
+    <string name="in_past_one_week">୬ ମାସରୁ ଅଧିକ ସମୟ</string>
     <string name="within_last_month">ଗତ ୬ ମାସ ଭିତରେ</string>
 
-    <string name="own_smartphone">ନିଜର ସ୍ମାର୍ଟ ଫୋନ୍</string>
+    <string name="own_smartphone">ନିଜର ସ୍ମାର୍ଟ ଫୋନ</string>
     <string name="own_feature_phone">ନିଜର ସ୍ଵତନ୍ତ୍ର ଫୋନ୍</string>
-    <string name="shared_smartphone">ଅନ୍ୟ ସହ ଅଂଶୀଦାର ସ୍ମାର୍ଟ ଫୋନ୍</string>
-    <string name="shared_feature_phone">ଅନ୍ୟ ସହ ଅଂଶୀଦାର ସ୍ଵତନ୍ତ୍ର ଫୋନ୍</string>
+    <string name="shared_smartphone">ସହଭାଗୀ ସ୍ମାର୍ଟ ଫୋନ</string>
+    <string name="shared_feature_phone">ଅଂଶୀଦାର ଫିଚର୍ ଫୋନ୍</string>
 
-    <string name="cannot_read_and_write">ପଢିବା ଏବଂ ଲେଖିବା ଜାଣେନାହିଁ</string>
-    <string name="can_read_and_write">ପଢିପାରେ ଏବଂ ଲେଖିପାରେ</string>
-    <string name="primary_education_till_class_five">ପ୍ରାଥମିକ ଶିକ୍ଷା( ୫ମ ଶ୍ରେଣୀ ପର୍ଯ୍ୟନ୍ତ)</string>
-    <string name="middle_school_sixth_eighth">ଉଚ୍ଚ ପ୍ରାଥମିକ ଶିକ୍ଷା( ଷଷ୍ଠ ରୁ ଅଷ୍ଟମ ପର୍ଯ୍ୟନ୍ତ)</string>
-    <string name="passed_secondary_school">ମାଧ୍ୟମିକ ଶତକ୍ଷା (ଦଶମ)</string>
-    <string name="passed_senior_secondary_school">ଯୁକ୍ତ ଦୁଇ (ଦ୍ୱାଦଶ)</string>
+    <string name="cannot_read_and_write">ଲେଖି ପଢ଼ି ପାରେ ନାହିଁ</string>
+    <string name="can_read_and_write">ଲେଖି ପଢ଼ି ପାରେ</string>
+    <string name="primary_education_till_class_five">ପ୍ରାଥମିକ ଶିକ୍ଷା ( ୫ ମ ଶ୍ରେଣୀ ଯାଏଁ )</string>
+    <string name="middle_school_sixth_eighth">ମାଧ୍ୟମିକ ବିଦ୍ୟାଳୟ ( ୬ ରୁ ୮ )</string>
+    <string name="passed_secondary_school">୧୦ ମ ଶ୍ରେଣୀ ଉତିର୍ଣ୍ଣ</string>
+    <string name="passed_senior_secondary_school">୧୨ ଶ୍ରେଣୀ ଉତ୍ତୀର୍ଣ୍ଣ</string>
     <string name="graduation_and_above">ସ୍ନାତକ ଓ ଅଧିକ</string>
 
     <string name="salaried_government_job">ଦରମାପ୍ରାପ୍ତ ସରକାରୀ କର୍ମଚାରୀ</string>

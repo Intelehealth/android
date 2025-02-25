@@ -36,7 +36,7 @@
 
     <string name="smoker">ಧೂಮಪಾನಿ</string>
     <string name="non_smoker">ಧೂಮಪಾನ ಮಾಡದವ</string>
-    <string name="denied_to_answer">ಉತ್ತರಿಸಲು ನಿರಾಕರಿಸಲಾಗಿದೆ</string>
+    <string name="denied_to_answer">ಉತ್ತರಿಸಲು ನಿರಾಕರಿಸಿದರು</string>
     <string name="medical_history">ಹಿಂದಿನ ವೈದ್ಯಕೀಯ ಇತಿಹಾಸ</string>
 
     <string name="less_than_5_bidis_or_cigarette">೫ ಬೀಡಿ/ಸಿಗರೇಟ್‌ಗಳಿಗಿಂತ ಕಡಿಮೆ</string>
@@ -69,10 +69,10 @@
 
     <string name="religion_hindu">ಹಿಂದೂ</string>
     <string name="religion_muslim">ಮುಸ್ಲಿಂ</string>
-    <string name="religion_christian">ಕ್ರಿಶ್ಚಿಯನ್</string>
+    <string name="religion_christian">ಮುಸ್ಲಿಂ</string>
     <string name="religion_sikh">ಸಿಖ್</string>
-    <string name="religion_buddhist_neo_buddhist">ಬೌದ್ಧ ಅಥವಾ ನವ-ಬೌದ್ಧ</string>
-    <string name="religion_jain">ಜೈನ್</string>
+    <string name="religion_buddhist_neo_buddhist">ಜೈನ್</string>
+    <string name="religion_jain">ಇತರೆ</string>
     <string name="religion_jewish">ಯಹೂದಿ</string>
     <string name="parsi_zoroastrian">ಪಾರ್ಸಿ ಅಥವಾ ಜೊರಾಸ್ಟ್ರಿಯನ್</string>
     <string name="no_religion">ಧರ್ಮವಿಲ್ಲ</string>
@@ -87,8 +87,8 @@
     <string name="toilet_facility_shared_toilet_with_other_households">ಇತರ ಮನೆಗಳೊಂದಿಗೆ ಹಂಚಿದ ಶೌಚಾಲಯ</string>
     <string name="toilet_facility_declined_to_answer">ಉತ್ತರಿಸಲು ನಿರಾಕರಿಸಿದರು</string>
 
-    <string name="house_structure_kutcha_house">ಕಚ್ಚಾ ಮನೆ</string>
-    <string name="house_structure_pakka_house">ಪಕ್ಕಾ ಮನೆ</string>
+    <string name="house_structure_kutcha_house">ಕುಚಾ</string>
+    <string name="house_structure_pakka_house">ಪಕ್ಕಾ</string>
     <string name="house_structure_homeless">ಮನೆಯಿಲ್ಲದವರು</string>
 
     <string name="cultivable_land_bigha">ಬಿಘಾ</string>
@@ -117,7 +117,7 @@
     <string name="smoking_duration_question">ನೀವು ಎಷ್ಟು ಸಮಯದಿಂದ ಧೂಮಪಾನ ಮಾಡುತ್ತಿದ್ದೀರಿ?</string>
     <string name="smoking_frequency_label">ಬಳಕೆಯ ಆವರ್ತನ</string>
     <string name="chew_tobacco_question">ವ್ಯಕ್ತಿಯು ತಂಬಾಕು ಅಗಿಯುತ್ತಾರೆಯೇ?</string>
-    <string name="alcohol_history_question">ಆಲ್ಕೊಹಾಲ್ ಸೇವನೆಯ ಇತಿಹಾಸ?</string>
+    <string name="alcohol_history_question">ಮನೆಯಲ್ಲಿ ಆಲ್ಕೊಹಾಲ್ ಸೇವನೆಯ ಇತಿಹಾಸವಿದೆಯೇ?</string>
     <string name="alcohol_rate_label">ಆಲ್ಕೋಹಾಲ್ ಸೇವನೆಯ ದರ</string>
     <string name="alcohol_consumption_question">ನೀವು ಎಷ್ಟು ಸಮಯದಿಂದ ಮದ್ಯ ಸೇವಿಸುತ್ತಿದ್ದೀರಿ?</string>
     <string name="alcohol_frequency_label">ಬಳಕೆಯ ಆವರ್ತನ</string>
@@ -142,8 +142,8 @@
     <string name="safequard_question">ಕುಡಿಯುವ ನೀರನ್ನು ಸುರಕ್ಷಿತಗೊಳಿಸಲು ಏನು ಮಾಡುತ್ತೀರಿ?</string>
     <string name="distance_from_water_question">ಅಲ್ಲಿಗೆ ಹೋಗಿ, ನೀರು ತೆಗೆದುಕೊಂಡು, ಒಂದೇ ಟ್ರಿಪ್‌ನಲ್ಲಿ ಹಿಂತಿರುಗಲು ಎಷ್ಟು ಸಮಯ ತೆಗೆದುಕೊಳ್ಳುತ್ತದೆ?</string>
     <string name="toilet_facility_question">ನಿಮ್ಮ ಮನೆಯ ಸದಸ್ಯರು ಸಾಮಾನ್ಯವಾಗಿ ಯಾವ ರೀತಿಯ ಶೌಚಾಲಯ ಸೌಲಭ್ಯವನ್ನು ಬಳಸುತ್ತಾರೆ?</string>
-    <string name="house_structure_label">ಮನೆಯ ರಚನೆಯನ್ನು ಆಯ್ಕೆಮಾಡಿ</string>
-    <string name="cultivable_land_question">ನಿಮ್ಮ ಕುಟುಂಬವು ಎಷ್ಟು ಹೆಕ್ಟೇರ್ ಕೃಷಿಯೋಗ್ಯ ಭೂಮಿಯನ್ನು ಹೊಂದಿದೆ?</string>
+    <string name="house_structure_label">ಮನೆಯ ರಚನೆಯ ಪ್ರಕಾರ</string>
+    <string name="cultivable_land_question">ನಿಮ್ಮ ಕುಟುಂಬವು ಎಷ್ಟು ಕೃಷಿ ಭೂಮಿಯನ್ನು ಹೊಂದಿದೆ?</string>
     <string name="average_income_label">ಸರಾಸರಿ ವಾರ್ಷಿಕ ಮನೆಯ ಆದಾಯ (ಐಎನ್ ಆರ್)</string>
     <string name="fuel_type_question">ನಿಮ್ಮ ಮನೆಯವರು ಯಾವ ರೀತಿಯ ಇಂಧನವನ್ನು ಮುಖ್ಯವಾಗಿ ಅಡುಗೆಗೆ ಬಳಸುತ್ತಾರೆ?</string>
     <string name="source_of_lighting_question">ಈ ಮನೆಯಲ್ಲಿ ಬೆಳಕಿನ ಮುಖ್ಯ ಮೂಲ ಯಾವುದು?</string>
@@ -287,7 +287,7 @@
     <string name="ayushman_card_question">ಈ ಮನೆಯವರು ಆಯುಷ್ಮಾನ್ ಕಾರ್ಡ್ ಹೊಂದಿದ್ದಾರೆಯೇ?</string>
     <string name="mgnrega_card_question">ಈ ಮನೆಯವರು ಎಮ್ ಜಿ ಎನ್ ಆರ್ ಇ ಜಿ ಎ ಕಾರ್ಡ್ ಅನ್ನು ಹೊಂದಿದ್ದಾರೆಯೇ?</string>
     <string name="bank_account_question">ನಿಮ್ಮ ಬಳಿ ಬ್ಯಾಂಕ್ ಖಾತೆ ಇದೆಯೇ?</string>
-    <string name="phone_ownership">ಫೋನ್ ಮಾಲೀಕತ್ವ</string>
+    <string name="phone_ownership">ಫೋನ್ ಮಾಲೀಕತ್ವ*</string>
     <string name="family_whatsapp_question">ನೀವು ಅಥವಾ ನಿಮ್ಮ ಕುಟುಂಬದ ಯಾರಾದರೂ ವಾಟ್ಸಪ್ ಬಳಸುತ್ತೀರಾ?</string>
     <string name="marital_status_question">ನಿಮ್ಮ ವೈವಾಹಿಕ ಸ್ಥಿತಿ ಏನು?</string>
 
@@ -352,10 +352,10 @@
     <string name="tube_well_borehole">ಕೊಳವೆ ಬಾವಿ ಅಥವಾ ಕೊಳವೆಬಾವಿ</string>
     <string name="protected_well_checkbox">ಚೆನ್ನಾಗಿ ರಕ್ಷಿಸಲಾಗಿದೆ</string>
     <string name="unprotected_well">ರಕ್ಷಣೆಯಿಲ್ಲದ ಬಾವಿ</string>
-    <string name="protected_spring">ರಕ್ಷಿತ ವಸಂತ</string>
+    <string name="protected_spring">ರಕ್ಷಣೆಯಿಲ್ಲದ ಬಾವಿ</string>
     <string name="unprotected_spring">ಅಸುರಕ್ಷಿತ ವಸಂತ</string>
     <string name="rainwater">ಮಳೆನೀರು</string>
-    <string name="tanker_truck">ಟ್ಯಾಂಕರ್ ಟ್ರಕ್</string>
+    <string name="tanker_truck">ಮಳೆನೀರು</string>
     <string name="cart_with_small_tank">ಸಣ್ಣ ಟ್ರಕ್ ಜೊತೆ ಕಾರ್ಟ್</string>
     <string name="surface_water">ಮೇಲ್ಮೈ ನೀರು</string>
     <string name="common_hand_pump">ಸಾಮಾನ್ಯ ಕೈ ಪಂಪ್</string>
@@ -392,7 +392,7 @@
     <string name="wash_before_after_eating">ತಿನ್ನುವ ಮೊದಲು ಮತ್ತು ನಂತರ ತೊಳೆಯಿರಿ.</string>
 
     <string name="never_checked">ಎಂದಿಗೂ ಪರಿಶೀಲಿಸಲಾಗಿಲ್ಲ</string>
-    <string name="in_past_one_week">ಕಳೆದ ಒಂದು ವಾರದಲ್ಲಿ</string>
+    <string name="in_past_one_week">6 ತಿಂಗಳ ಹಿಂದೆ</string>
     <string name="within_last_month">ಕಳೆದ 6 ತಿಂಗಳೊಳಗೆ</string>
 
     <string name="own_smartphone">ಸ್ಮಾರ್ಟ್‌ಫೋನ್ ಹೊಂದಿದ್ದಾರೆ</string>
@@ -405,7 +405,7 @@
     <string name="primary_education_till_class_five">ಪ್ರಾಥಮಿಕ ಶಿಕ್ಷಣ (5  ನೇ ತರಗತಿಯವರೆಗೆ)</string>
     <string name="middle_school_sixth_eighth">ಮಧ್ಯಮ ಶಾಲೆ ( 6ನೇ - 8ನೇ)</string>
     <string name="passed_secondary_school">ಮಾಧ್ಯಮಿಕ ಶಾಲೆಯಲ್ಲಿ ಉತ್ತೀರ್ಣರಾಗಿದ್ದಾರೆ (10 ನೇ ತರಗತಿ ಬೋರ್ಡ್‌ಗಳು)</string>
-    <string name="passed_senior_secondary_school">ಹಿರಿಯ ಮಾಧ್ಯಮಿಕ ಶಾಲೆಯಲ್ಲಿ ಉತ್ತೀರ್ಣರಾಗಿದ್ದಾರೆ (12 ನೇ ತರಗತಿ ಮಂಡಳಿಗಳು)</string>
+    <string name="passed_senior_secondary_school">ಮಾಧ್ಯಮಿಕ ಶಾಲೆಯಲ್ಲಿ ಉತ್ತೀರ್ಣರಾಗಿದ್ದಾರೆ (10 ನೇ ತರಗತಿ ಬೋರ್ಡ್‌ಗಳು)</string>
     <string name="graduation_and_above">ಪದವಿ ಮತ್ತು ಮೇಲ್ಪಟ್ಟವರು</string>
 
     <string name="salaried_government_job">ಸಂಬಳದ ಸರ್ಕಾರಿ ಕೆಲಸ</string>

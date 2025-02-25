@@ -104,7 +104,7 @@
     <string name="availability_of_water_supply">Availability of water supply</string>
 
     <string name="hb_check_question">When was the last time you got your HB level checked?</string>
-    <string name="bp_check_question">When was the last time you got your BP level checked?</string>
+    <string name="bp_check_question">When was the last time you got your BP checked?</string>
     <string name="sugar_check_question">When was the last time you got your sugar level checked?</string>
     <string name="bp_label">BP</string>
     <string name="diabetes_label">Diabetes</string>
@@ -112,12 +112,12 @@
     <string name="anemia_label">Anemia</string>
     <string name="surgery_label">Any Surgery?</string>
     <string name="surgery_reason_label">Reason for surgery</string>
-    <string name="smoking_history_question">Is there a history of smoking?</string>
+    <string name="smoking_history_question">Does the person smoke?</string>
     <string name="smoking_rate_label">Rate of smoking</string>
     <string name="smoking_duration_question">How long have you been smoking?</string>
     <string name="smoking_frequency_label">Frequency of consumption</string>
     <string name="chew_tobacco_question">Does the person chew tobacco?</string>
-    <string name="alcohol_history_question">Is there a history of alcohol consumption?</string>
+    <string name="alcohol_history_question">Is there any history of alcohol consumption?</string>
     <string name="alcohol_rate_label">Rate of alcohol consumption</string>
     <string name="alcohol_consumption_question">How long have you been consuming alcohol?</string>
     <string name="alcohol_frequency_label">Frequency of consumption</string>
@@ -138,17 +138,17 @@
     <string name="water_availability_hours_per_day">No. of hours per day</string>
     <string name="water_availability_days_per_week">No. of days per week</string>
 
-    <string name="source_of_water_question">What is the main source of drinking water for members in your household?</string>
+    <string name="source_of_water_question">What is the main source of drinking water for members of your household?</string>
     <string name="safequard_question">What do you actually do to the water to make it safer to drink?</string>
     <string name="distance_from_water_question">Is the source of drinking water within 30 minutes of round trip from the household?</string>
     <string name="toilet_facility_question">What kind of toilet facility do members of your household usually use?</string>
-    <string name="house_structure_label">Select the structure of house</string>
-    <string name="cultivable_land_question">How much cultivable land does your family own?</string>
+    <string name="house_structure_label">Household structure Type</string>
+    <string name="cultivable_land_question">How much cultivated land does your family own?</string>
     <string name="average_income_label">Average Annual Household Income (INR)</string>
     <string name="fuel_type_question">What type of fuel does your household mainly used for cooking?</string>
     <string name="source_of_lighting_question">What is the main source of lighting in this household?</string>
     <string name="hand_wash_Label">Describe your hand wash practice</string>
-    <string name="ekal_service_check_question">Ekal is starting a telemedicine program in your village to provide primary health care including - HB testing, Sugar testing and doctor consultations as needed. Would you like to take our service?</string>
+    <string name="ekal_service_check_question">Ekal is starting a telemedicine program in your village to provide primary health care including - HB testing, BP testing, Sugar testing, and doctor consultations as needed. would you like to take our service?</string>
     <string name="relation_with_household">What is your relationship with the head of household?</string>
 
     <string name="which_server_would_you_like_to_connect_to">Which server would you like to connect to?</string>
@@ -288,7 +288,7 @@
     <string name="general_economic_status">Economic status</string>
     <string name="ayushman_card_question">Do you have an Ayushman Card?</string>
     <string name="mgnrega_card_question">Do you have an MGNREGA Card?</string>
-    <string name="bank_account_question">Do you have a bank account?</string>
+    <string name="bank_account_question">Do you have bank account number?</string>
     <string name="phone_ownership">Phone ownership</string>
     <string name="family_whatsapp_question">Do you or any of your family member use Whatsapp?</string>
     <string name="marital_status_question">What is your marital status?</string>
@@ -394,7 +394,7 @@
     <string name="wash_before_after_eating">Wash before and after eating</string>
 
     <string name="never_checked">Never Checked</string>
-    <string name="in_past_one_week">In past one week</string>
+    <string name="in_past_one_week">More than 6 months ago</string>
     <string name="within_last_month">Within the last 6 months</string>
 
     <string name="own_smartphone">Own Smartphone</string>
@@ -402,12 +402,12 @@
     <string name="shared_smartphone">Shared Smartphone</string>
     <string name="shared_feature_phone">Shared Feature Phone</string>
 
-    <string name="cannot_read_and_write">Cannot read or write</string>
+    <string name="cannot_read_and_write">Can not read or write</string>
     <string name="can_read_and_write">Can read and write</string>
     <string name="primary_education_till_class_five">Primary education (Till Class 5)</string>
     <string name="middle_school_sixth_eighth">Middle school (6th - 8th)</string>
-    <string name="passed_secondary_school">Passed secondary school (Class 10th boards)</string>
-    <string name="passed_senior_secondary_school">Passed senior secondary school (Class 12th boards)</string>
+    <string name="passed_secondary_school">Passed Secondary school (Class 10th Boards)</string>
+    <string name="passed_senior_secondary_school">Passed Senior Secondary school (Class 12th boards)</string>
     <string name="graduation_and_above">Graduation and above</string>
 
     <string name="salaried_government_job">Salaried Government Job</string>

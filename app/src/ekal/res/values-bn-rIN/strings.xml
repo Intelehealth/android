@@ -71,7 +71,7 @@
     <string name="religion_muslim">মুসলিম</string>
     <string name="religion_christian">খ্রিস্টান</string>
     <string name="religion_sikh">শিখ</string>
-    <string name="religion_buddhist_neo_buddhist">বৌদ্ধ বা নব্য-বৌদ্ধ</string>
+    <string name="religion_buddhist_neo_buddhist">বৌদ্ধ/নব-বৌদ্ধ</string>
     <string name="religion_jain">জৈন</string>
     <string name="religion_jewish">ইহুদি</string>
     <string name="parsi_zoroastrian">পারসি বা জরথুস্ট্রিয়ান</string>
@@ -85,14 +85,14 @@
     <string name="toilet_facility_use_toilet_at_home">বাড়িতে টয়লেট ব্যবহার করুন।</string>
     <string name="toilet_facility_use_community_toilet">কমিউনিটি টয়লেট ব্যবহার করুন</string>
     <string name="toilet_facility_shared_toilet_with_other_households">অন্যান্য পরিবারের সাথে শেয়ারড টয়লেট</string>
-    <string name="toilet_facility_declined_to_answer">উত্তৰ দিবলৈ অস্বীকাৰ কৰিলে</string>
+    <string name="toilet_facility_declined_to_answer">উত্তর দিতে অস্বীকার করেছে</string>
 
-    <string name="house_structure_kutcha_house">কাচ্ছা বাড়ি</string>
-    <string name="house_structure_pakka_house">পাক্কা বাড়ি</string>
+    <string name="house_structure_kutcha_house">কুচা</string>
+    <string name="house_structure_pakka_house">পাকা</string>
     <string name="house_structure_homeless">গৃহহীন</string>
 
     <string name="cultivable_land_bigha">বিঘা</string>
-    <string name="cultivable_land_gunta">গুন্তা</string>
+    <string name="cultivable_land_gunta">গুন্টা</string>
     <string name="cultivable_land_acre">একর</string>
     <string name="cultivable_land_hectare">হেক্টর</string>
     <string name="cultivable_land_landless">ভূমিহীন</string>
@@ -104,7 +104,7 @@
     <string name="availability_of_water_supply">জল সরবরাহের প্রাপ্যতা</string>
 
     <string name="hb_check_question">শেষবার কখন আপনি আপনার HB স্তর পরীক্ষা করেছিলেন?</string>
-    <string name="bp_check_question">শেষবার কখন আপনার রক্তচাপ পরীক্ষা করা হয়েছিল?</string>
+    <string name="bp_check_question">শেষ কবে আপনার রক্তচাপ পরীক্ষা করা হয়েছিল?</string>
     <string name="sugar_check_question">শেষবার কখন আপনি আপনার চিনির মাত্রা পরীক্ষা করেছিলেন?</string>
     <string name="bp_label">BP</string>
     <string name="diabetes_label">ডায়াবেটিস</string>
@@ -112,12 +112,12 @@
     <string name="anemia_label">রক্তশূন্যতা</string>
     <string name="surgery_label">কোন সার্জারি?</string>
     <string name="surgery_reason_label">অস্ত্রোপচারের কারণ</string>
-    <string name="smoking_history_question">ধূমপানের ইতিহাস আছে কি?</string>
+    <string name="smoking_history_question">ব্যক্তি কি ধূমপান করে?</string>
     <string name="smoking_rate_label">ধূমপানের হার</string>
     <string name="smoking_duration_question">আপনি কতদিন ধরে ধূমপান করছেন?</string>
     <string name="smoking_frequency_label">খরচের ফ্রিকোয়েন্সি</string>
     <string name="chew_tobacco_question">ব্যক্তি কি তামাক চিবিয়ে খায়?</string>
-    <string name="alcohol_history_question">বাড়িতে অ্যালকোহল সেবনের ইতিহাস আছে কি?</string>
+    <string name="alcohol_history_question">অ্যালকোহল সেবনের কোন ইতিহাস আছে কি?</string>
     <string name="alcohol_rate_label">অ্যালকোহল সেবনের হার</string>
     <string name="alcohol_consumption_question">আপনি কতদিন ধরে অ্যালকোহল পান করছেন??</string>
     <string name="alcohol_frequency_label">খরচের ফ্রিকোয়েন্সি</string>
@@ -142,8 +142,8 @@
     <string name="safequard_question">পানি পান করা নিরাপদ করার জন্য আপনি সাধারণত কী করেন?</string>
     <string name="distance_from_water_question">রাউন্ড ট্রিপের 30 মিনিটের মধ্যে পানীয় জলের উৎস কি ,পরিবার থেকে?</string>
     <string name="toilet_facility_question">আপনার পরিবারের সদস্যরা সাধারণত কোন ধরনের টয়লেট সুবিধা ব্যবহার করেন?</string>
-    <string name="house_structure_label">বাড়ির কাঠামো নির্বাচন করুন</string>
-    <string name="cultivable_land_question">আপনার পরিবার কত চাষের জমির মালিক?</string>
+    <string name="house_structure_label">পরিবারের কাঠামোর ধরন</string>
+    <string name="cultivable_land_question">আপনার পরিবারের কত চাষের জমি আছে?</string>
     <string name="average_income_label">গড় বার্ষিক পারিবারিক আয় (INR)</string>
     <string name="fuel_type_question">আপনার পরিবার প্রধানত রান্নার জন্য কোন ধরনের জ্বালানী ব্যবহার করে?</string>
     <string name="source_of_lighting_question">এই পরিবারের আলোর প্রধান উৎস কি?</string>
@@ -286,7 +286,7 @@
     <string name="general_economic_status">অর্থনৈতিক অবস্থা</string>
     <string name="ayushman_card_question">আপনার কি আয়ুষ্মান কার্ড আছে?</string>
     <string name="mgnrega_card_question">আপনার কি MGNREGA কার্ড আছে?</string>
-    <string name="bank_account_question">আপনার কি একটি ব্যাংক অ্যাকাউন্ট আছে?</string>
+    <string name="bank_account_question">আপনার কি ব্যাঙ্ক অ্যাকাউন্ট নম্বর আছে?</string>
     <string name="phone_ownership">ফোনের মালিক কে</string>
     <string name="family_whatsapp_question">আপনি বা আপনার পরিবারের কেউ কি WhatsApp ব্যবহার করেন?</string>
     <string name="marital_status_question">আপনার বৈবাহিক অবস্থা কি?</string>
@@ -347,19 +347,19 @@
     <string name="alert_start_button">শুরু করুন</string>
 
     <string name="piped_into_dwelling">বাসস্থান মধ্যে পাইপ</string>
-    <string name="piped_into_yard_plot">ইয়ার্ড বা প্লট মধ্যে পাইপ</string>
-    <string name="public_tap_standpipe">পাবলিক ট্যাপ বা স্ট্যান্ডপাইপ</string>
-    <string name="tube_well_borehole">নলকূপ বা বোরয়েল </string>
-    <string name="protected_well_checkbox">সুরক্ষিত ওয়েল</string>
+    <string name="piped_into_yard_plot">গজ/প্লটে পাইপ করা</string>
+    <string name="public_tap_standpipe">পাবলিক ট্যাপ/স্ট্যান্ডপাইপ</string>
+    <string name="tube_well_borehole">নলকূপ/বোরহোল</string>
+    <string name="protected_well_checkbox">ভাল সুরক্ষিত</string>
     <string name="unprotected_well">অরক্ষিত কূপ</string>
     <string name="protected_spring">সুরক্ষিত বসন্ত</string>
     <string name="unprotected_spring">অরক্ষিত বসন্ত</string>
     <string name="rainwater">বৃষ্টির জল</string>
     <string name="tanker_truck">ট্যাঙ্কার ট্রাক</string>
-    <string name="cart_with_small_tank">ছোট ট্রাক সঙ্গে কার্ট</string>
-    <string name="surface_water">ভূগর্ভস্থ পানি</string>
-    <string name="common_hand_pump">কমন হ্যান্ড পাম্প</string>
-    <string name="hand_pump_at_home">বাড়িতে হ্যান্ড পাম্প</string>
+    <string name="cart_with_small_tank">ছোট ট্যাঙ্ক সহ কার্ট</string>
+    <string name="surface_water">পৃষ্ঠ জল</string>
+    <string name="common_hand_pump">সাধারণ হাত পাম্প</string>
+    <string name="hand_pump_at_home">বাড়িতে হাত পাম্প</string>
 
     <string name="boil">ফুটান</string>
     <string name="use_alum">অ্যালুম ব্যবহার করুন</string>
@@ -392,20 +392,20 @@
     <string name="wash_before_after_eating">খাওয়ার আগে এবং পরে ধুয়ে ফেলুন।</string>
 
     <string name="never_checked">কখনই চেক করা হয়নি</string>
-    <string name="in_past_one_week">গত এক সপ্তাহে</string>
+    <string name="in_past_one_week">6 মাসেরও বেশি আগে</string>
     <string name="within_last_month">গত 6 মাসের মধ্যে</string>
 
-    <string name="own_smartphone">স্মার্টফোনের মালিক</string>
-    <string name="own_feature_phone">ফিচার ফোনের মালিক</string>
+    <string name="own_smartphone">নিজস্ব স্মার্টফোন</string>
+    <string name="own_feature_phone">নিজস্ব ফিচার ফোন</string>
     <string name="shared_smartphone">শেয়ার করা স্মার্টফোন</string>
     <string name="shared_feature_phone">শেয়ার করা ফিচার ফোন</string>
 
     <string name="cannot_read_and_write">পড়তে বা লিখতে পারে না</string>
-    <string name="can_read_and_write">পড়তে ও লিখতে পারে</string>
-    <string name="primary_education_till_class_five">প্রাথমিক শিক্ষা (5 শ্রেণী পর্যন্ত)</string>
+    <string name="can_read_and_write">পড়তে এবং লিখতে পারে</string>
+    <string name="primary_education_till_class_five">প্রাথমিক শিক্ষা (5ম শ্রেণী পর্যন্ত)</string>
     <string name="middle_school_sixth_eighth">মাধ্যমিক বিদ্যালয় (৬ষ্ঠ - ৮ম)</string>
     <string name="passed_secondary_school">মাধ্যমিক বিদ্যালয়ে উত্তীর্ণ (দশম শ্রেণী বোর্ড)</string>
-    <string name="passed_senior_secondary_school">সিনিয়র সেকেন্ডারি স্কুল পাশ (দ্বাদশ বোর্ড)</string>
+    <string name="passed_senior_secondary_school">সিনিয়র সেকেন্ডারি স্কুল পাস (দ্বাদশ বোর্ড)</string>
     <string name="graduation_and_above">স্নাতক এবং তার উপরে</string>
 
     <string name="salaried_government_job">বেতনভুক্ত সরকারি চাকরি</string>
