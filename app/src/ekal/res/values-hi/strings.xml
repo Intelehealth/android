@@ -30,7 +30,7 @@
 
     <string name="smoker">धूम्रपान करने</string>
     <string name="non_smoker">धूम्रपान न करने वाला</string>
-    <string name="denied_to_answer">जवाब देने से इनकार</string>
+    <string name="denied_to_answer">जवाब देने से इंकार कर दिया</string>
     <string name="medical_history">इतिहास</string>
 
     <string name="less_than_5_bidis_or_cigarette">5 से कम बीड़ी / सिगरेट</string>
@@ -85,11 +85,11 @@
     <string name="toilet_facility_use_toilet_at_home">घर में शौचालय का प्रयोग करते है</string>
     <string name="toilet_facility_use_community_toilet">सामुदायिक शौचालय का प्रयोग करते है</string>
     <string name="toilet_facility_shared_toilet_with_other_households">अन्य घरों के साथ साझा शौचालय है</string>
-    <string name="toilet_facility_declined_to_answer">जवाब देने से मना कर दिया</string>
+    <string name="toilet_facility_declined_to_answer">उत्तर देने से इंकार</string>
 
-    <string name="house_structure_kutcha_house">कच्चा घर</string>
-    <string name="house_structure_pakka_house">पक्का घर</string>
-    <string name="house_structure_homeless">घर नहीं है</string>
+    <string name="house_structure_kutcha_house">कच्चा</string>
+    <string name="house_structure_pakka_house">पक्का</string>
+    <string name="house_structure_homeless">बेघर/गृहहीन</string>
 
     <string name="cultivable_land_bigha">बीघा</string>
     <string name="cultivable_land_gunta">गुंटा</string>
@@ -112,12 +112,12 @@
     <string name="anemia_label">एनीमिया</string>
     <string name="surgery_label">कोई सर्जरी?</string>
     <string name="surgery_reason_label">सर्जरी का कारण </string>
-    <string name="smoking_history_question">क्या धूम्रपान की खपत का इतिहास है?</string>
+    <string name="smoking_history_question">क्या आप धूम्रपान करते है?</string>
     <string name="smoking_rate_label">धूम्रपान की दर</string>
     <string name="smoking_duration_question">आप कब से धूम्रपान कर रहे हैं?</string>
     <string name="smoking_frequency_label">सेवन की आवृत्ति</string>
-    <string name="chew_tobacco_question"> आप तम्बाकू चबाते है?</string>
-    <string name="alcohol_history_question">तंबाकू की खपत का इतिहास</string>
+    <string name="chew_tobacco_question">क्या आप तम्बाकू चबाते है ?</string>
+    <string name="alcohol_history_question">क्या शराब के सेवन का कोई इतिहास है?</string>
     <string name="alcohol_rate_label">शराब की खपत की दर</string>
     <string name="alcohol_consumption_question">आप कब से शराब का सेवन कर रहे हैं?</string>
     <string name="alcohol_frequency_label">सेवन की आवृत्ति</string>
@@ -142,8 +142,8 @@
     <string name="safequard_question">आप आमतौर पर पानी को पीने के लिए सुरक्षित बनाने के लिए क्या करते हैं?</string>
     <string name="distance_from_water_question">क्या घर से आने-जाने के 30 मिनट के भीतर पीने के पानी का स्रोत है?</string>
     <string name="toilet_facility_question">आपके घर के सदस्य आमतौर पर किस प्रकार की शौचालय सुविधा का उपयोग करते हैं?</string>
-    <string name="house_structure_label">घर की संरचना</string>
-    <string name="cultivable_land_question">आपके परिवार के पास खेती लायक कितनी ज़मीन है?</string>
+    <string name="house_structure_label">घर का प्रकार</string>
+    <string name="cultivable_land_question">परिवार के स्वामित्व वाली कृषि योग्य भूमि कितनी हैं?</string>
     <string name="average_income_label">औसत वार्षिक घरेलू आय (रु)</string>
     <string name="fuel_type_question">आपके घर मुख्य रूप से खाना पकाने के लिए किस प्रकार के ईंधन का उपयोग करते है?</string>
     <string name="source_of_lighting_question">आपके घर में रोशनी का मुख्य स्रोत क्या है?</string>
@@ -221,7 +221,7 @@
     <string name="sugar_random">शुगर लेवल - रैंडम</string>
 
     <string name="hint_drop_down_hb_check">Select Duration</string>
-    <string name="enter_number">कृपया नंबर दर्ज करें</string>
+    <string name="enter_number">संख्या दर्ज करें</string>
     <string name="baseline_survey_completed">बेसलाइन सर्वे पूरा हो गया</string>
 
     <string name="bullet">\u2022</string>
@@ -288,8 +288,8 @@
     <string name="general_economic_status">आर्थिक स्थिति</string>
     <string name="ayushman_card_question">क्या आपके पास आयुष्मान कार्ड है?</string>
     <string name="mgnrega_card_question">क्या आपके पास मनरेगा कार्ड है?</string>
-    <string name="bank_account_question">क्या आपके पास एक बैंक खाता है?</string>
-    <string name="phone_ownership">फोन स्वामित्व</string>
+    <string name="bank_account_question">क्या आपके पास बैंक खाता है?</string>
+    <string name="phone_ownership">फ़ोन का स्वामित्व</string>
     <string name="family_whatsapp_question">क्या आप या आपके परिवार का कोई सदस्य व्हाट्सएप का उपयोग करता है?</string>
     <string name="marital_status_question">वैवाहिक स्थिति क्या है?</string>
 
@@ -349,15 +349,15 @@
     <string name="alert_start_button">प्रारंभ</string>
 
     <string name="piped_into_dwelling">आवास में बोर किया गया</string>
-    <string name="piped_into_yard_plot">यार्ड/प्लॉट में बोर किया गया</string>
+    <string name="piped_into_yard_plot">बाड़े/प्लॉट में बोर किया गया</string>
     <string name="public_tap_standpipe">सार्वजनिक नल/स्टैंडपाइप</string>
     <string name="tube_well_borehole">ट्यूब वेल/बोरहोल</string>
     <string name="protected_well_checkbox">संरक्षित कुआं</string>
     <string name="unprotected_well">असुरक्षित कुआं</string>
     <string name="protected_spring">संरक्षित झरना</string>
     <string name="unprotected_spring">असुरक्षित झरना</string>
-    <string name="rainwater">वर्षा जल</string>
-    <string name="tanker_truck">टैंकर ट्रक</string>
+    <string name="rainwater">वर्षा जल ट्रक</string>
+    <string name="tanker_truck">टैंकर</string>
     <string name="cart_with_small_tank">टैंकर छोटे टैंक के साथ</string>
     <string name="surface_water">सतही जल</string>
     <string name="common_hand_pump">सामान्य हैंड पंप</string>
@@ -394,7 +394,7 @@
     <string name="wash_before_after_eating">खाने से पहले और बाद में धो लेते है</string>
 
     <string name="never_checked">कभी चेक नहीं किया गया</string>
-    <string name="in_past_one_week">पिछले एक सप्ताह में</string>
+    <string name="in_past_one_week">6 महीने से अधिक पहले</string>
     <string name="within_last_month">पिछले 6 महीनों के भीतर</string>
 
     <string name="own_smartphone">खुद का स्मार्टफोन</string>

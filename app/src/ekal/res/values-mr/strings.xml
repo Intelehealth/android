@@ -87,8 +87,8 @@
     <string name="toilet_facility_shared_toilet_with_other_households">इतर कुटुंबांसह सामायिक शौचालय</string>
     <string name="toilet_facility_declined_to_answer">उत्तर देण्यास नकार दिला</string>
 
-    <string name="house_structure_kutcha_house">कच्चा घर</string>
-    <string name="house_structure_pakka_house">पक्का घर</string>
+    <string name="house_structure_kutcha_house">कच्चे</string>
+    <string name="house_structure_pakka_house">पक्के</string>
     <string name="house_structure_homeless">बेघर</string>
 
     <string name="cultivable_land_bigha">बिघा</string>
@@ -105,7 +105,7 @@
     <string name="availability_of_water_supply">पाणी पुरवठ्याची उपलब्धता</string>
 
     <string name="hb_check_question">तुमची एचबी पातळी या आधी कधी तपासली गेली?</string>
-    <string name="bp_check_question">तुमचा BMI (उंची आणि वजन) या आधी कधी तपासला गेला?</string>
+    <string name="bp_check_question">तुमची बीपी या आधी कधी तपासली होती?</string>
     <string name="sugar_check_question">तुम्ही तुमची साखर पातळी या आधी कधी तपासली?</string>
     <string name="bp_label">बीपी</string>
     <string name="diabetes_label">मधुमेह</string>
@@ -118,7 +118,7 @@
     <string name="smoking_duration_question">तुम्ही किती काळापासून धूम्रपान करत आहात?</string>
     <string name="smoking_frequency_label">सेवनाची/वापराची वारंवारता</string>
     <string name="chew_tobacco_question">व्यक्ती तंबाखू चघळते का?</string>
-    <string name="alcohol_history_question">तुम्ही कधी दारू चे सेवन केले आहे का?</string>
+    <string name="alcohol_history_question">मद्य सेवनाचा इतिहास</string>
     <string name="alcohol_rate_label">मद्य सेवनाची वारंवारता</string>
     <string name="alcohol_consumption_question">तुम्ही किती काळापासून दारूचे सेवन करत आहात?</string>
     <string name="alcohol_frequency_label">सेवनाची/वापराची वारंवारता</string>
@@ -144,7 +144,7 @@
     <string name="distance_from_water_question">घरापासून पिण्याच्या पाण्याच्या स्रोतांमधील अंतर जाऊन-येऊन ३० मिनिटांच्या आत पार करता येण्यासारखे आहे का?</string>
     <string name="toilet_facility_question">आपल्या घरातील सदस्य सहसा कोणत्या प्रकारची शौचालय सुविधा वापरतात?</string>
     <string name="house_structure_label">घराची रचना निवडा</string>
-    <string name="cultivable_land_question">तुमच्या कुटुंबाच्या मालकीची किती शेतीयोग्य जमीन आहे?</string>
+    <string name="cultivable_land_question">आपल्या कुटुंबाची किती हेक्टर शेती योग्य आहे?</string>
     <string name="average_income_label">घरातील सरासरी वार्षिक उत्पन्न/मिळकत</string>
     <string name="fuel_type_question">मुख्यतः स्वयंपाक करण्यासाठी वापरले जाणारे इंधन</string>
     <string name="source_of_lighting_question">या घरात प्रकाशाचा मुख्य स्त्रोत काय आहे?</string>
@@ -349,20 +349,20 @@
     <string name="alert_save_and_exit_button">सेव्ह करा आणि बाहेर पडा</string>
     <string name="alert_start_button">प्रारंभ करा</string>
 
-    <string name="piped_into_dwelling">आवास में बोर किया गया</string>
-    <string name="piped_into_yard_plot">यार्ड/प्लॉट में बोर किया गया</string>
-    <string name="public_tap_standpipe">सार्वजनिक नल/स्टैंडपाइप</string>
-    <string name="tube_well_borehole">ट्यूब वेल/बोरहोल</string>
-    <string name="protected_well_checkbox">संरक्षित कुआं</string>
-    <string name="unprotected_well">असुरक्षित कुआं</string>
-    <string name="protected_spring">संरक्षित झरना</string>
-    <string name="unprotected_spring">असुरक्षित झरना</string>
-    <string name="rainwater">वर्षा जल</string>
-    <string name="tanker_truck">टैंकर ट्रक</string>
-    <string name="cart_with_small_tank">टैंकर छोटे टैंक के साथ</string>
-    <string name="surface_water">सतही जल</string>
-    <string name="common_hand_pump">सामान्य हैंड पंप</string>
-    <string name="hand_pump_at_home">घर पर हैंड पंप</string>
+    <string name="piped_into_dwelling">घरामध्येच पाइपद्वारे</string>
+    <string name="piped_into_yard_plot">अंगणात किंवा आसपास परिसरात पाइपद्वारे</string>
+    <string name="public_tap_standpipe">सार्वजनिक नळ / स्टँडपाइप</string>
+    <string name="tube_well_borehole">कूपनलिका / विंधन विहीर / बोअरवेल</string>
+    <string name="protected_well_checkbox">संरक्षित विहिर</string>
+    <string name="unprotected_well">असंरक्षित विहिर</string>
+    <string name="protected_spring">संरक्षित झऱ्याचे पाणीी</string>
+    <string name="unprotected_spring">असंरक्षित झऱ्याचे पाणी</string>
+    <string name="rainwater">पावसाचे पाणी</string>
+    <string name="tanker_truck">टँकर ट्रक</string>
+    <string name="cart_with_small_tank">लहान टाकी-गाडी</string>
+    <string name="surface_water">पृष्ठभागाचे पाणी</string>
+    <string name="common_hand_pump">सामान्य हात पंप/ हापसा</string>
+    <string name="hand_pump_at_home">हँड पंप (घरी)</string>
 
     <string name="boil">उकळणे</string>
     <string name="use_alum">तुरटी वापरणे</string>
@@ -395,7 +395,7 @@
     <string name="wash_before_after_eating">खाण्यापूर्वी आणि नंतर हात स्वच्छ धुतो </string>
 
     <string name="never_checked">कधीही तपासले नाही</string>
-    <string name="in_past_one_week">गेल्या एका आठवड्यात</string>
+    <string name="in_past_one_week">6 महिन्यांहून अधिक</string>
     <string name="within_last_month">गेल्या महिन्यात</string>
 
     <string name="own_smartphone">स्वतःचा स्मार्टफोन</string>

@@ -36,7 +36,7 @@
 
     <string name="smoker">ધૂમ્રપાન કરવાવાળા</string>
     <string name="non_smoker">ધૂમ્રપાન ના કરવાવાળા</string>
-    <string name="denied_to_answer">5 – 10 બીડી/સિગારેટ</string>
+    <string name="denied_to_answer">ଉତ୍ତର ଦେବାକୁ ମନା କଲେ</string>
     <string name="medical_history">ભૂતકાળનો તબીબી ઇતિહાસ</string>
 
     <string name="less_than_5_bidis_or_cigarette">5 કરતાં ઓછી બીડી/સિગારેટ</string>
@@ -85,16 +85,16 @@
     <string name="toilet_facility_use_toilet_at_home">ઘરમાં શૌચાલયનો ઉપયોગ કરો.</string>
     <string name="toilet_facility_use_community_toilet">સામુદાયિક શૌચાલયનો ઉપયોગ કરો</string>
     <string name="toilet_facility_shared_toilet_with_other_households">અન્ય ઘરો સાથે વહેંચાયેલ શૌચાલય</string>
-    <string name="toilet_facility_declined_to_answer">જવાબ આપવાનો ઇનકાર કર્યો</string>
+    <string name="toilet_facility_declined_to_answer">જવાબ આપવાની ના પાડી</string>
 
-    <string name="house_structure_kutcha_house">કાચું ઘર</string>
-    <string name="house_structure_pakka_house">પાકું ઘર</string>
+    <string name="house_structure_kutcha_house">કાચું</string>
+    <string name="house_structure_pakka_house">પાકું</string>
     <string name="house_structure_homeless">બેઘર</string>
 
     <string name="cultivable_land_bigha">વીઘા</string>
-    <string name="cultivable_land_gunta">ગુંઠા</string>
+    <string name="cultivable_land_gunta">ઘુંઠા</string>
     <string name="cultivable_land_acre">એકર</string>
-    <string name="cultivable_land_hectare">હેક્ટર</string>
+    <string name="cultivable_land_hectare">હેકટર</string>
     <string name="cultivable_land_landless">જમીન વિહોણા</string>
 
     <string name="error_number_of_people_living_cannot_be_greater_than_the_total_number_of_members_in_the_household">રહેતા સભ્યોની સંખ્યા ઘરના કુલ સભ્યોની સંખ્યા કરતા વધારે ન હોઈ શકે</string>
@@ -104,7 +104,7 @@
     <string name="availability_of_water_supply">પાણી આપૂર્તિની ઉપલબ્ધતા</string>
 
     <string name="hb_check_question">છેલ્લી વાર તમે તમારું સુગર લેવલ  ક્યારે તપાસ્યું હતું?</string>
-    <string name="bp_check_question">શું પરિવારની પાસે બેન્ક ખાતું છે?</string>
+    <string name="bp_check_question">છેલ્લી વાર તમે તમારું બીપી ક્યારે તપાસ્યું હતું?</string>
     <string name="sugar_check_question">છેલ્લી વાર તમે તમારું બીપી ક્યારે તપાસ્યું હતું?</string>
     <string name="bp_label">બી.પી</string>
     <string name="diabetes_label">સુગર</string>
@@ -112,12 +112,12 @@
     <string name="anemia_label">એનીમિયા</string>
     <string name="surgery_label">કોઈ સર્જરી?</string>
     <string name="surgery_reason_label">સર્જરીનું કારણ</string>
-    <string name="smoking_history_question">શું આ વ્યક્તિ તંબાકુ ચાવે છે?</string>
+    <string name="smoking_history_question">શું આ વ્યક્તિ ધૂમ્રપાન કરે છે?</string>
     <string name="smoking_rate_label">ધૂમ્રપાનનો દર</string>
     <string name="smoking_duration_question">તમે કેટલા સમયથી ધૂમ્રપાન કરો છો?</string>
     <string name="smoking_frequency_label">વપરાશની આવર્તન</string>
     <string name="chew_tobacco_question">શું આ વ્યક્તિ તંબાકુ ચાવે છે?</string>
-    <string name="alcohol_history_question">દારૂ પીવાનો ઇતિહાસ ધરાવો છો</string>
+    <string name="alcohol_history_question">શું કોઈ આલ્કોહોલનો ઇતિહાસ છે?</string>
     <string name="alcohol_rate_label">આલ્કોહોલ વપરાશ દર</string>
     <string name="alcohol_consumption_question">તમે કેટલા સમયથી દારૂનું સેવન કરો છો?</string>
     <string name="alcohol_frequency_label">વપરાશની આવર્તન</string>
@@ -138,12 +138,12 @@
     <string name="water_availability_hours_per_day">દરરોજ કલાકની સંખ્યા</string>
     <string name="water_availability_days_per_week">દર અઠવાડિયે દિવસોની સંખ્યા</string>
 
-    <string name="source_of_water_question">તમારા ઘરના સભ્યો માટે પીવાના પાણીનો મુખ્ય સ્ત્રોત કયો છે?</string>
+    <string name="source_of_water_question">તમારા ઘરમાં સભ્યો માટે પીવાના પાણીનો મુખ્ય સ્ત્રોત કયો છે?</string>
     <string name="safequard_question">પીવાના પાણીને સુરક્ષિત કરવા તમે શું કરો છો?</string>
     <string name="distance_from_water_question">શું ત્યાં જવામાં અને પાછા આવામાં 30 મિનિટ થી વધારે સમય લાગે છે?</string>
     <string name="toilet_facility_question">તમારા ઘરના સભ્યો સામાન્ય રીતે કેવા પ્રકારની શૌચાલય સુવિધાનો ઉપયોગ કરે છે?</string>
     <string name="house_structure_label">ઘરની રચના પસંદ કરો</string>
-    <string name="cultivable_land_question">તમારા કુટુંબની કેટલી હેક્ટર ખેતીલાયક જમીન છે?</string>
+    <string name="cultivable_land_question">તમારું કુટુંબ કેટલી ખેતીલાયક જમીન ધરાવે છે?</string>
     <string name="average_income_label">અંદાજિત ઘરની વાર્ષિક આવક(રૂ.)</string>
     <string name="fuel_type_question">આપના ઘરમાં મુખ્ય રીતે રસોઈ બનાવા માટે કયા પ્ર્કારના ઈંધણનો ઉપયોગ કરવામાં આવે છે?</string>
     <string name="source_of_lighting_question">તમારા ઘરમાં લાઇટનો મુખ્ય સ્ત્રોત કયો છે?</string>
@@ -289,7 +289,7 @@
     <string name="ayushman_card_question">શું તમારી પાસે આયુષ્યમાન કાર્ડ છે?</string>
     <string name="mgnrega_card_question">શશું તમારી પાસે મનરેગા કાર્ડ/કુપન છે?</string>
     <string name="bank_account_question">શું તમારી પાસે બેંક ખાતું છે?</string>
-    <string name="phone_ownership">ફોનની માલિકી</string>
+    <string name="phone_ownership">ફોન ની માલિકી</string>
     <string name="family_whatsapp_question">શું તમે અથવા તમારા પરિવારના કોઈ સભ્ય વોટ્સેપ નો ઉપયોગ કરો છો?</string>
     <string name="marital_status_question">ની વૈવાહિક સ્થિતિ શું છે?</string>
 
@@ -348,19 +348,19 @@
     <string name="alert_save_and_exit_button">સાચવો અને આગળ વધો</string>
     <string name="alert_start_button">શરૂઆત</string>
 
-    <string name="piped_into_dwelling">રહેઠાણમાં પાઈપ</string>
-    <string name="piped_into_yard_plot">પાઈપ ટુ યાર્ડ/પ્લોટ</string>
-    <string name="public_tap_standpipe">પબ્લિક ટેપ/સ્ટેન્ડપાઈપ</string>
-    <string name="tube_well_borehole">ટ્યુબ વેલ/બોરહોલ</string>
+    <string name="piped_into_dwelling">રહેઠાણમાં પાઇપ</string>
+    <string name="piped_into_yard_plot">પાઇપ ટુ યાર્ડ/ પ્લોટ</string>
+    <string name="public_tap_standpipe">પબ્લિક ટેપ/ સ્ટેન્ડ પાઇપ</string>
+    <string name="tube_well_borehole">ટ્યુબ વેલ / બોરહોલ</string>
     <string name="protected_well_checkbox">સંરક્ષિત કૂવો</string>
-    <string name="unprotected_well">અસુરક્ષિત કૂવો</string>
-    <string name="protected_spring">સુરક્ષિત ઝરણું</string>
-    <string name="unprotected_spring">અસુરક્ષિત ઝરણું</string>
-    <string name="rainwater">વરસાદી પાણી</string>
-    <string name="tanker_truck">ટેન્કર ટ્રક</string>
-    <string name="cart_with_small_tank">નાની ટાંકી સાથેનું કાર્ટ</string>
-    <string name="surface_water">સપાટીનું પાણી</string>
-    <string name="common_hand_pump">કોમન હેન્ડ પંપ</string>
+    <string name="unprotected_well">અસંરક્ષિત કૂવો</string>
+    <string name="protected_spring">વરસાદી પાણી</string>
+    <string name="unprotected_spring">ટેન્કર ટ્રક</string>
+    <string name="rainwater">નાની ટાંકી સાથેનું કાર્ટ</string>
+    <string name="tanker_truck">સપાટીનું પાણી</string>
+    <string name="cart_with_small_tank">કોમન હેન્ડપંપ</string>
+    <string name="surface_water">ઘરે હેન્ડપંપ</string>
+    <string name="common_hand_pump">અન્ય</string>
     <string name="hand_pump_at_home">ઘરે હેન્ડ પંપ</string>
 
     <string name="boil">ઉકાળો</string>
@@ -393,21 +393,21 @@
     <string name="wash_before_cooking">જમવાનું બનાવવા પહેલા</string>
     <string name="wash_before_after_eating">જમ્યા પહેલાં અને જમ્યા પછી</string>
 
-    <string name="never_checked">ક્યારે તપાસવામાં આવ્યું નથી </string>
-    <string name="in_past_one_week">પાછલા એક અઠવાડિયામાં</string>
+    <string name="never_checked">ક્યારેય તપાસ્યું નથી</string>
+    <string name="in_past_one_week">6 મહિના કરતાં પહેલાં</string>
     <string name="within_last_month">છેલ્લા 6 મહિનાની અંદર</string>
 
     <string name="own_smartphone">પોતાનો સ્માર્ટફોન</string>
     <string name="own_feature_phone">પોતાનો ફીચર ફોન</string>
-    <string name="shared_smartphone">શેર કરેલ સ્માર્ટફોન</string>
-    <string name="shared_feature_phone">શેર કરેલ ફીચર ફોન</string>
+    <string name="shared_smartphone">શેર કરેલો સ્માર્ટફોન</string>
+    <string name="shared_feature_phone">શેર કરેલો ફીચર ફોન</string>
 
-    <string name="cannot_read_and_write">વાંચી કે લખી શકતા નથી</string>
-    <string name="can_read_and_write">વાંચી અને લખી શકે છે</string>
-    <string name="primary_education_till_class_five">પ્રાથમિક શિક્ષા(ધોરણ 5 સુધી)</string>
-    <string name="middle_school_sixth_eighth">મિડલ સ્કૂલ (6ઠ્ઠી-8મી)</string>
-    <string name="passed_secondary_school">માધ્યમિક શાળા(10 બોર્ડ ) પાસ</string>
-    <string name="passed_senior_secondary_school">ઉચ્ચતર માધ્યમિક શાળા(12 બોર્ડ) પાસ</string>
+    <string name="cannot_read_and_write">લખી કે વાંચી શકતા નથી</string>
+    <string name="can_read_and_write">લખી અને વાંચી શકે છે.</string>
+    <string name="primary_education_till_class_five">પ્રાથમિક શિક્ષા ( ધોરણ 5 સુધી)</string>
+    <string name="middle_school_sixth_eighth">મધ્યમ શાળા ( 6 થી 8)</string>
+    <string name="passed_secondary_school">માધ્યમિક શાળા પાસ ( ધોરણ 10 બોર્ડ)</string>
+    <string name="passed_senior_secondary_school">ઉચ્ચતર માધ્યમિક શાળા પાસ( ધોરણ 12 બોર્ડ )</string>
     <string name="graduation_and_above">સ્નાતક અને વધુ</string>
 
     <string name="salaried_government_job">પગારવાળી સરકારી નોકરી</string>
