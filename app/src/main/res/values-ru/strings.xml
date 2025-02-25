@@ -829,7 +829,7 @@
     <string name="add_image_by">Добавить изображение</string>
     <string name="please_take">Пожалуйста примите</string>
     <string name="s_follow_up_visit">\'s последующий визит.</string>
-    <string name="nurse_whatsapp_message">Здравствуйте, это %1$ из телемедицинского проекта. Я на связи по поводу Вашего недавнего запроса.</string>
+    <string name="nurse_whatsapp_message">Здравствуйте, это %1$s из телемедицинского проекта. Я на связи по поводу Вашего недавнего запроса.</string>
     <string name="wait_for_the_doctor_message">Пожалуйста, дождитесь сообщения от врача!</string>
     <string name="doctor_yet_to_send_prescription">Специалист еще не отправил рекомендации для</string>
     <string name="patients">пациенты</string>
