@@ -323,9 +323,9 @@ public class PrintBillUsingThermalPrinter implements PrinterObserver {
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 binding.contentGenerateBill.buttonPrint.setEnabled(true);
                                 binding.contentGenerateBill.buttonPrint.setClickable(true);
-                                activity.finish();
+                                /*activity.finish();
                                 Intent intent = new Intent(context, HomeScreenActivity_New.class);
-                                context.startActivity(intent);
+                                context.startActivity(intent);*/
                             }
                         });
 

@@ -37,7 +37,7 @@
 
     //Identification Screen
     <string name="title_activity_identification">नवीन रुग्ण जोडा</string>
-    <string name="identification_screen_checkbox_male">नर</string>
+    <string name="identification_screen_checkbox_male">पुरुष</string>
     <string name="identification_screen_checkbox_female">स्त्री</string>
     <string name="identification_screen_checkbox_other">इतर</string>
     <string name="identification_screen_prompt_age">वय: *</string>
@@ -355,16 +355,16 @@
     <string name="additional_doc_image_picker_title">अतिरिक्त दस्तऐवज जोडा!</string>
 
     <string name="loading_more">अधिक लोड करत आहे...</string>
-    <string name="warning_app_update">कृपया अॅप नवीनतम आवृत्तीवर अपडेट करा.</string>
+    <string name="warning_app_update">कृपया ॲप नवीनतम आवृत्तीवर अपडेट करा.</string>
     <string name="title_follow_up">फॉलो अप भेटी</string>
 
     //----------reset app strings-------------
-    <string name="resetting_app_dialog">अॅप रीसेट करत आहे</string>
-    <string name="sure_to_reset_app">तुम्हाला खात्री आहे की तुम्ही अॅप रीसेट करू इच्छिता?</string>
+    <string name="resetting_app_dialog">ॲप रीसेट करत आहे</string>
+    <string name="sure_to_reset_app">तुम्हाला खात्री आहे की तुम्ही ॲप रीसेट करू इच्छिता?</string>
 
-    // अॅप कार्यक्षमता रीसेट करा
+    // ॲप कार्यक्षमता रीसेट करा
     <string name="sync_failed">सिंक अयशस्वी! कृपया नंतर पुन्हा प्रयत्न करा.</string>
-    <string name="app_sync"> अॅप सिंक करत आहे..</string>
+    <string name="app_sync"> ॲप सिंक करत आहे..</string>
 
 
     <string name="slot_info">स्लॉट माहिती</string>
@@ -875,13 +875,13 @@
     <string name="generally_which_is_the_primary_health_provider_you_interacted_with_for_health_issues">सर्वसाधारणपणे, आरोग्याशी संबंधित समस्यांसाठी तुम्ही कोणत्या प्राथमिक
 आरोग्य प्रदात्याचा सल्ला घेतला आहे का?</string>
     <string name="first_location_of_visit_interaction">भेट / संवादाचे पहिले स्थान</string>
-    <string name="referred_to">ेफर केले / पुढील उपचारासाठी पाठवले</string>
+    <string name="referred_to">रेफर केले / पुढील उपचारासाठी पाठवले</string>
     <string name="mode_of_transportation_used_to_reach_facility">सुविधेपर्यंत पोहोचण्यासाठी वापरला जाणारा वाहतुकीचा प्रकार</string>
-    <string name="average_cost_incurred_on_travel_and_stay_per_episode">्रवास आणि मुक्कामासाठी प्रति एपिसोडचा सरासरी खर्च</string>
+    <string name="average_cost_incurred_on_travel_and_stay_per_episode">प्रवास आणि मुक्कामासाठी प्रति एपिसोडचा सरासरी खर्च</string>
     <string name="average_cost_incurred_on_consultation_fee_per_episode">सल्लामसलत शुल्क प्रति एपिसोड सरासरी खर्च</string>
     <string name="average_cost_incurred_on_medicines_per_episode">प्रत्येक वेळी अशा तक्रारींवर/ आजारपणावर होणारा  सरासरी खर्च</string>
     <string name="score_for_experience_of_treatment">उपचार अनुभवासाठी स्कोअर</string>
-    <string name="hemoglobin_error">िमोग्लोबीन दरम्यान असावे %1$s आणि %2$s</string>
+    <string name="hemoglobin_error">हिमोग्लोबिन दरम्यान असावे %1$s आणि %2$s</string>
     <string name="diagnostics_section">%1$d/%2$d निदान</string>
     <string name="household_no">घर क्रमांक</string>
     <string name="within_ten_km">10 किमी च्या आत</string>
@@ -1203,7 +1203,7 @@
     <string name="missed_questions">तुम्ही अनिवार्य प्रश्न विसरलात, कृपया त्यांची उत्तरे द्या.</string>
     <string name="do_you_have_family_history">तुमच्या कुटुंबात खालीलपैकी कोणाचा इतिहास आहे का?</string>
     <string name="chw_worker">सी.एच.डब्ल्यू कामगार</string>
-    <string name="chief_complaints">मुख्य तक्रार(ा)</string>
+    <string name="chief_complaints">मुख्य तक्रारी</string>
     <string name="additional_notes">अतिरिक्त नोट्स</string>
     <string name="leave_a_note_for_doctor">डॉक्टरांसाठी एक नोट सोडा</string>
     <string name="add_additional_documents_like">अतिरिक्त दस्तऐवज जसे की रिपोर्ट, प्रिस्क्रिप्शन इ. जोडा.</string>
@@ -1286,7 +1286,7 @@
     <string name="appointment_booked_successfully">अपॉइंटमेंट यशस्वीरीत्या बुक झाली!</string>
     <string name="please_enter_reason_txt">कृपया कारण प्रविष्ट करा!</string>
     <string name="compulsory_questions">खालील अनिवार्य प्रश्न आहेत, कृपया त्यांची उत्तरे द्या.</string>
-    <string name="app_version_string">अॅप आवृत्ती - %1$s</string>
+    <string name="app_version_string">ॲप आवृत्ती - %1$s</string>
     <string name="my_appointments">माझ्या अपॉइंटमेंट्स</string>
     <string name="todays">आजचे</string>
     <string name="all">सर्व</string>
@@ -1401,7 +1401,7 @@
     <string name="dr_speciality">डॉक्टरांची तज्ञता</string>
     <string name="visitDetails_text">विजीटचा सारांश</string>
     <string name="why_intelehealth_exist">इंटेलहेल्थ का अस्तित्वात आहे?</string>
-    <string name="how_intelehealth_help_ans">आमच्या टेलिमेडिसिन अॅपमुळे प्राथमिक आरोग्यसेवा मिळवू इच्छिणाऱ्या ग्रामीण समुदायांना आता तज्ञांशी सल्लामसलत करता येईल. आरोग्य कर्मचारी रुग्णाच्या औषधांचा इतिहास, निदान, प्रिस्क्रिप्शन आणि उपचारांबद्दलची माहिती अॅप वापरून रेकॉर्ड करू शकतात. त्यानंतर, ही सर्व माहिती दूरच्या डॉक्टरांना सल्लामसलतसाठी दिली जाते. यामुळे रुग्णांना वैद्यकीय मदतीसाठी दूर प्रवास करावा लागत नाही.</string>
+    <string name="how_intelehealth_help_ans">आमच्या टेलिमेडिसिन ॲपमुळे प्राथमिक आरोग्यसेवा मिळवू इच्छिणाऱ्या ग्रामीण समुदायांना आता तज्ञांशी सल्लामसलत करता येईल. आरोग्य कर्मचारी रुग्णाच्या औषधांचा इतिहास, निदान, प्रिस्क्रिप्शन आणि उपचारांबद्दलची माहिती ॲप वापरून रेकॉर्ड करू शकतात. त्यानंतर, ही सर्व माहिती दूरच्या डॉक्टरांना सल्लामसलतसाठी दिली जाते. यामुळे रुग्णांना वैद्यकीय मदतीसाठी दूर प्रवास करावा लागत नाही.</string>
     <string name="how_to_add_new_visit_ans">एकदा रुग्णाची नोंदणी झाल्यानंतर, रुग्णाच्या तपशीलाच्या स्क्रीनवर, रुग्णासाठी नवीन विजीट तयार करण्यासाठी "विजीट सुरू करा" बटणावर क्लिक करा.</string>
     <string name="notifi_title">सूचना</string>
     <string name="lbl_clear_all">सर्व साफ करा</string>

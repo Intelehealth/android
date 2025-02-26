@@ -653,14 +653,20 @@ public final class StringUtils {
             case "Illiterate":
                 val = "निरक्षर";
                 break;
+            case "Pre-Primary":
+                val = "पूर्व-प्राथमिक";
+                break;
             case "Primary":
                 val = "प्राथमिक";
                 break;
             case "Secondary":
-                val = "दुय्यम";
+                val = "माध्यमिक";
                 break;
             case "Higher Secondary":
                 val = "उच्च माध्यमिक";
+                break;
+            case "Graduate":
+                val = "पदवीधर";
                 break;
             case "Graduation & Higher":
                 val = "पदवी आणि उच्च";
@@ -678,14 +684,20 @@ public final class StringUtils {
             case "निरक्षर":
                 val = "Illiterate";
                 break;
+            case "पूर्व-प्राथमिक":
+                val = "Pre-Primary";
+                break;
             case "प्राथमिक":
                 val = "Primary";
                 break;
-            case "दुय्यम":
+            case "माध्यमिक":
                 val = "Secondary";
                 break;
             case "उच्च माध्यमिक":
                 val = "Higher Secondary";
+                break;
+            case "पदवीधर":
+                val = "Graduate";
                 break;
             case "पदवी आणि उच्च":
                 val = "Graduation & Higher";
