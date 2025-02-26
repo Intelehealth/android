@@ -1489,5 +1489,18 @@
     <string name="click_notification_to_see">सूचना पाहण्यासाठी क्लिक करा!</string>
     <string name="appointment_reschedule_for_notification">%1$s साठी अपॉइंटमेंट पुन्हा शेड्यूल केले</string>
     <string name="appointment_cancelled_for_notification">%1$s साठी अपॉइंटमेंट रद्द केले</string>
-
+    <string name="no_address_added">पत्ता समाविष्ट केलेला नाही</string>
+    <string name="no_country_added">देश समाविष्ट केलेला नाही</string>
+    <string name="no_state_added">राज्य समाविष्ट केलेले नाही</string>
+    <string name="no_district_added">जिल्हा समाविष्ट केलेला नाही</string>
+    <string name="no_city_added">शहर समाविष्ट केलेले नाही</string>
+    <string name="no_postal_code_added">पिनकोड समाविष्ट केलेला नाही</string>
+    <string name="no_mobile_number_added">फोन नंबर समाविष्ट केलेला नाही</string>
+    <string name="open_visit">ओपन विजिट</string>
+    <string name="change_language">भाषा बदलायची?</string>
+    <string name="sure_change_language">तुम्हाला खात्री आहे की तुम्ही भाषा %1$s मध्ये बदलू इच्छिता?</string>
+    <string name="patients_added">तुम्ही जोडलेले रुग्ण</string>
+    <string name="your_patient_score">तुमचा रुग्ण\nसमाधान स्कोअर</string>
+    <string name="your_time_spent_today">तुम्ही आज घालवलेला वेळ</string>
+    <string name="total_time_spent">एकूण घालवलेला वेळ</string>
 </resources>

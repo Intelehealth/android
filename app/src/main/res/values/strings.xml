@@ -901,8 +901,8 @@
     <string name="country">Country</string>
     <string name="state">State</string>
     <string name="village_town_city">Village/Town/City</string>
-    <string name="_corresponding_address_1">Corresponding \nAddress 1</string>
-    <string name="_corresponding_address_2">Corresponding \nAddress 2</string>
+    <string name="_corresponding_address_1">संबंधित पत्ता १</string>
+    <string name="_corresponding_address_2">संबंधित पत्ता २</string>
     <string name="other_details">Other details</string>
     <string name="camera">Camera</string>
     <string name="gallery">Gallery</string>
@@ -1732,7 +1732,6 @@
     <string name="click_notification_to_see">Click notification to see!</string>
     <string name="appointment_reschedule_for_notification">Appointment rescheduled for %1$s</string>
     <string name="appointment_cancelled_for_notification">Appointment cancelled for %1$s</string>
-
 
 
 </resources>
