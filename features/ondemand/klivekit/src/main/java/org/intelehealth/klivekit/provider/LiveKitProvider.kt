@@ -15,8 +15,8 @@ import io.livekit.android.room.track.LocalAudioTrackOptions
 import io.livekit.android.room.track.LocalVideoTrackOptions
 import io.livekit.android.room.track.VideoPreset169
 import io.livekit.android.room.track.VideoPreset43
-import livekit.org.webrtc.EglBase
-import livekit.org.webrtc.HardwareVideoEncoderFactory
+//import livekit.org.webrtc.EglBase
+//import livekit.org.webrtc.HardwareVideoEncoderFactory
 
 /**
  * Created by Vaghela Mithun R. on 16-09-2023 - 20:32.
@@ -81,9 +81,9 @@ object LiveKitProvider {
         appContext = context, options = options, overrides = LiveKitOverrides(
             okHttpClient = RetrofitProvider.getOkHttpClient(), audioOptions = AudioOptions(
                 audioHandler = audioSwitchHandler, audioOutputType = io.livekit.android.AudioType.CallAudioType()
-            ), videoEncoderFactory = HardwareVideoEncoderFactory(
+            ), /*videoEncoderFactory = HardwareVideoEncoderFactory(
                 EglBase.create().eglBaseContext, true, true
-            )
+            )*/
         )
     )
 
