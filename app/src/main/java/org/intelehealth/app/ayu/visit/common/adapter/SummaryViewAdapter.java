@@ -34,7 +34,8 @@ public class SummaryViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     private OnItemSelection mOnItemSelection;
 
-    public SummaryViewAdapter(RecyclerView recyclerView, Context context, List<VisitSummaryData> itemList, OnItemSelection onItemSelection) {
+    public SummaryViewAdapter(RecyclerView recyclerView, Context context,
+                              List<VisitSummaryData> itemList, OnItemSelection onItemSelection) {
         mContext = context;
         mItemList = itemList;
         mOnItemSelection = onItemSelection;
@@ -47,7 +48,9 @@ public class SummaryViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(mIsSupportLocalLang ? R.layout.ui2_summary_qa_row_item_view_v2 : R.layout.ui2_summary_qa_row_item_view, parent, false);
+                .inflate(mIsSupportLocalLang ? R.layout.ui2_summary_qa_row_item_view_v2
+                                             : R.layout.ui2_summary_qa_row_item_view, parent,
+                        false);
         /**
          * First item's entrance animations.
          */
@@ -57,27 +60,38 @@ public class SummaryViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder,
+                                 @SuppressLint("RecyclerView") int position) {
         if (holder instanceof GenericViewHolder) {
             GenericViewHolder genericViewHolder = (GenericViewHolder) holder;
             genericViewHolder.summaryData = mItemList.get(position);
             genericViewHolder.index = position;
             genericViewHolder.questionTextView.setText(genericViewHolder.summaryData.getQuestion());
-            genericViewHolder.answerTextView.setText(genericViewHolder.summaryData.getDisplayValue());
-            genericViewHolder.answerTextView.setTypeface(genericViewHolder.answerTextView.getTypeface(), Typeface.NORMAL);
-            if(genericViewHolder.summaryData.getDisplayValue().isEmpty() || genericViewHolder.summaryData.getDisplayValue()==null){
+            genericViewHolder.answerTextView.setText(
+                    genericViewHolder.summaryData.getDisplayValue());
+            genericViewHolder.answerTextView.setTypeface(
+                    genericViewHolder.answerTextView.getTypeface(), Typeface.NORMAL);
+            if (genericViewHolder.summaryData.getDisplayValue().isEmpty() ||
+                genericViewHolder.summaryData.getDisplayValue() == null) {
                 genericViewHolder.answerTextView.setVisibility(View.GONE);
                 genericViewHolder.bulletImageView.setVisibility(View.GONE);
-                genericViewHolder.questionTextView.setTextColor(ContextCompat.getColor(mContext,R.color.black));
-                genericViewHolder.questionTextView.setTypeface(genericViewHolder.questionTextView.getTypeface(), Typeface.BOLD);
-            }else {
+                genericViewHolder.questionTextView.setTextColor(
+                        ContextCompat.getColor(mContext, R.color.black));
+                genericViewHolder.questionTextView.setTypeface(genericViewHolder
+                        .questionTextView.getTypeface(), Typeface.BOLD);
+            } else if (genericViewHolder.summaryData.getQuestion().isEmpty() ||
+                       genericViewHolder.summaryData.getQuestion() == null) {
+                genericViewHolder.questionTextView.setVisibility(View.GONE);
+                genericViewHolder.bulletImageView.setVisibility(View.GONE);
+            } else {
                 genericViewHolder.answerTextView.setVisibility(View.VISIBLE);
                 genericViewHolder.bulletImageView.setVisibility(View.VISIBLE);
-                genericViewHolder.questionTextView.setTextColor(ContextCompat.getColor(mContext,R.color.gray_4));
-                genericViewHolder.questionTextView.setTypeface(genericViewHolder.questionTextView.getTypeface(), Typeface.NORMAL);
+                genericViewHolder.questionTextView.setTextColor(
+                        ContextCompat.getColor(mContext, R.color.gray_4));
+                genericViewHolder.questionTextView.setTypeface(
+                        genericViewHolder.questionTextView.getTypeface(), Typeface.NORMAL);
 
             }
-
 
 
         }
@@ -102,4 +116,3 @@ public class SummaryViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
     }
 }
-

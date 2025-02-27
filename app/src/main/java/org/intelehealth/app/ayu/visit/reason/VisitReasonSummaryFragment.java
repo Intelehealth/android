@@ -211,9 +211,14 @@ public class VisitReasonSummaryFragment extends Fragment {
                         complainName = value.replace("::", "");
                         System.out.println(complainName);
                     } else {
+                        Timber.tag(TAG).d("Value - %s", value);
 //                        String[] qa = value.split("•", 2);
-                        String question = value.substring(0, value.indexOf("•")).trim();
-                        String answer = value.substring(value.indexOf("•") + 1).trim();
+                        String question = "";
+                        String answer = "• " + value.trim();
+                        if (value.contains("•")) {
+                            question = value.substring(0, value.indexOf("•")).trim();
+                            answer = value.substring(value.indexOf("•") + 1).trim();
+                        }
                         VisitSummaryData summaryData = new VisitSummaryData();
                         summaryData.setQuestion(question);
                         summaryData.setDisplayValue(answer);
