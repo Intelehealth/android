@@ -5954,7 +5954,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 TextView complainLabelTextView = view.findViewById(R.id.tv_complain_label);
                 complainLabelTextView.setText(getFormattedComplain(_complain));
                 CustomLog.v("PH0_complain", _complain);
-                if (_complain.trim().equalsIgnoreCase(VisitUtils.getTranslatedGeneralExamString(sessionManager.getAppLanguage()))) {
+                if (_complain.trim().equalsIgnoreCase(VisitUtils.getTranslatedGeneralExamString(sessionManager.getAppLanguage()))
+                        || BuildConfig.FLAVOR_client == FlavorKeys.UNFPA) {
                     complainLabelTextView.setVisibility(View.GONE);
                 }
                 view.findViewById(R.id.height_adjust_view).setVisibility(View.GONE);
