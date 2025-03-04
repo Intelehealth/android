@@ -14,6 +14,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.models.PrescriptionModel;
+import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.models.dto.VisitAttributeDTO;
 import org.intelehealth.app.models.dto.VisitAttribute_Speciality;
 import org.intelehealth.app.models.dto.VisitDTO;
@@ -23,17 +24,26 @@ import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.exception.DAOException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
-public class VisitsDAO {
+public class VisitsDAO extends BaseDao{
 
 
     private long createdRecordsCount = 0;
 
     private static final String TAG = "VisitsDAO";
+    private String currentTableName;
 
     public boolean insertVisit(List<VisitDTO> visitDTOS) throws DAOException {
+        setTableName("tbl_visit");
         boolean isInserted = true;
+        List<HashMap<String, Object>> visitsList = new ArrayList<>();
+        for (VisitDTO visitDTO : visitDTOS) {
+            visitsList.add(createVisitMap(visitDTO));
+        }
+        executeInBackground(bulkInsert(visitsList));
+        /*boolean isInserted = true;
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         try {
@@ -49,7 +59,7 @@ public class VisitsDAO {
         } finally {
             db.endTransaction();
 
-        }
+        }*/
 
         return isInserted;
     }
@@ -1126,4 +1136,29 @@ public class VisitsDAO {
 
         return count;
     }
+    public void setTableName(String tableName) {
+        this.currentTableName = tableName;
+    }
+
+    @Override
+    String tableName() {
+        if (currentTableName == null || currentTableName.isEmpty()) {
+            throw new RuntimeException("Table name is not set");
+        }
+        return currentTableName;
+    }
+    public HashMap<String, Object> createVisitMap(VisitDTO visitDTO) {
+        HashMap<String, Object> values = new HashMap<>();
+        values.put("uuid", visitDTO.getUuid());
+        values.put("patientuuid", visitDTO.getPatientuuid());
+        values.put("locationuuid", visitDTO.getLocationuuid());
+        values.put("visit_type_uuid", visitDTO.getVisitTypeUuid());
+        values.put("creator", visitDTO.getCreatoruuid());
+        values.put("startdate", visitDTO.getStartdate());
+        values.put("enddate", visitDTO.getEnddate());
+        values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
+        values.put("sync", visitDTO.getSyncd());
+        return values;
+    }
+
 }

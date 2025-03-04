@@ -39,6 +39,7 @@ import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.config.data.ConfigRepository;
 import org.intelehealth.config.network.response.ConfigResponse;
+import org.intelehealth.config.worker.ConfigSyncWorker;
 import org.intelehealth.klivekit.data.PreferenceHelper;
 
 import java.text.ParsePosition;
@@ -59,6 +60,7 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import timber.log.Timber;
 
 public class SyncDAO {
     public static final String TAG = "SyncDAO";
@@ -69,6 +71,7 @@ public class SyncDAO {
     String appLanguage;
 
     private static final SyncProgress liveDataSync = new SyncProgress();
+    boolean isTheConfigUpdated = false;
 
 
     public boolean SyncData(ResponseDTO responseDTO) throws DAOException {
@@ -89,7 +92,7 @@ public class SyncDAO {
 
         try {
             Logger.logD(TAG, "pull sync started");
-            saveConfig(responseDTO.getData().getConfigResponse());
+            //saveConfig(responseDTO.getData().getConfigResponse());
 
             patientsDAO.patinetAttributeMaster(
                     responseDTO.getData().getPatientAttributeTypeMasterDTO());
@@ -336,6 +339,8 @@ public class SyncDAO {
         boolean sync = false;
 
         try {
+            if (!isTheConfigUpdated)
+                loadConfig();
             sync = SyncData(response.body());
             CustomLog.d(TAG, "onResponse: response body : " + response.body().toString());
 
@@ -978,5 +983,13 @@ public class SyncDAO {
 
     public static SyncProgress getSyncProgress_LiveData() {
         return liveDataSync;
+    }
+    private void loadConfig() {
+        ConfigSyncWorker.Companion.startConfigSyncWorker(IntelehealthApplication.getAppContext(), it -> {
+            Timber.d("Worker state sync " + it);
+            return Unit.INSTANCE;
+        });
+        isTheConfigUpdated = true;
+
     }
 }

@@ -114,6 +114,8 @@ abstract class BaseDao {
         }
         columns.deleteCharAt(columns.length() - 2);
         values.deleteCharAt(values.length() - 2);
-        return "INSERT INTO " + tableName() + " (" + columns + ") VALUES (" + values + ")";
+        //return "INSERT INTO " + tableName() + " (" + columns + ") VALUES (" + values + ")";
+        return "INSERT OR REPLACE INTO " + tableName() + " (" + columns + ") VALUES (" + values + ")";
+
     }
 }
