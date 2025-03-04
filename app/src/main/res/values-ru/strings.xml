@@ -940,7 +940,7 @@
     <string name="enter_age">Введите Возраст</string>
     <string name="auto_calculate">Автоподсчет</string>
     <string name="bpm_eg">Например, 72 уд. в мин.</string>
-    <string name="temp_eg">Например, 36.6 С</string>
+    <string name="temp_eg">Например, 98 F</string>
     <string name="spo2_eg">Например, 98%</string>
     <string name="respiratory_eg">Например, 24 вдоха в мин</string>
     <string name="alert_label_txt">Внимание!</string>
@@ -1125,5 +1125,6 @@
     <string name="type_name_to_generate_signature">Напините свое имя для генерирования подписи.</string>
     <string name="enter_signature">Поставить подпись</string>
     <string name="from_9_00_pm_to_6_00_am">от 9:00 PM до 6:00 AM</string>
+    <string name="temp_eg_c">Например, 36.6 С</string>
     <!-- UNFPA Strings end  -->
 </resources>
