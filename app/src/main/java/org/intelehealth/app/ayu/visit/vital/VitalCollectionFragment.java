@@ -332,6 +332,12 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
 
         setDataIfExist();
 
+        if (new ConfigUtils(getActivity()).fahrenheit()) {
+            mTemperatureEditText.setHint(getString(R.string.temp_eg));
+        } else {
+            mTemperatureEditText.setHint(getString(R.string.temp_eg_c));
+        }
+
         return mRootView;
     }
 
