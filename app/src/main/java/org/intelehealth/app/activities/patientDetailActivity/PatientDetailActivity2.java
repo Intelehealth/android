@@ -670,13 +670,16 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
      * changing fields status based on config data
      */
     private void configAllFields() {
-        String[] ymdData = DateAndTimeUtils.getAgeInYearMonth(patientDTO.getDateofbirth()).split(" ");
         boolean isGuardianRequire = false;
-        if (ymdData.length > 2) {
-            int mAgeYears = ymdData[0] != null && !ymdData[0].isEmpty() ? Integer.parseInt(ymdData[0]) : 0;
-            int mAgeMonths = ymdData[1] != null && !ymdData[1].isEmpty() ? Integer.parseInt(ymdData[1]) : 0;
-            int mAgeDays = ymdData[2] != null && !ymdData[2].isEmpty() ? Integer.parseInt(ymdData[2]) : 0;
-            isGuardianRequire = AgeUtils.INSTANCE.isGuardianRequired(mAgeYears, mAgeMonths, mAgeDays);
+
+        if (patientDTO.getDateofbirth() != null && !patientDTO.getDateofbirth().isEmpty()) {
+            String[] ymdData = DateAndTimeUtils.getAgeInYearMonth(patientDTO.getDateofbirth()).split(" ");
+            if (ymdData.length > 2) {
+                int mAgeYears = ymdData[0] != null && !ymdData[0].isEmpty() ? Integer.parseInt(ymdData[0]) : 0;
+                int mAgeMonths = ymdData[1] != null && !ymdData[1].isEmpty() ? Integer.parseInt(ymdData[1]) : 0;
+                int mAgeDays = ymdData[2] != null && !ymdData[2].isEmpty() ? Integer.parseInt(ymdData[2]) : 0;
+                isGuardianRequire = AgeUtils.INSTANCE.isGuardianRequired(mAgeYears, mAgeMonths, mAgeDays);
+            }
         }
 
         for (PatientRegistrationFields fields : patientAllFields) {
@@ -1459,7 +1462,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         CustomLog.e(TAG, "patientDTO - " + new Gson().toJson(patientDTO));
         int mAgeYears = -1, mAgeMonths = 0, mAgeDays = 0;
         // setting age
-        if (patientDTO.getDateofbirth() != null) {
+        if (patientDTO.getDateofbirth() != null && !patientDTO.getDateofbirth().isEmpty()) {
             String[] ymdData = DateAndTimeUtils.getAgeInYearMonth(patientDTO.getDateofbirth()).split(" ");
             mAgeYears = Integer.parseInt(ymdData[0]);
             mAgeMonths = Integer.parseInt(ymdData[1]);
@@ -1506,6 +1509,9 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             } else {
                 patientdob.setText(dob);
             }
+        }else {
+            patientdob.setText(getString(R.string.no_data_found));
+            patientage.setText(getString(R.string.no_data_found));
         }
 
         // setting gender
