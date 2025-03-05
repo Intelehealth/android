@@ -40,8 +40,8 @@ android {
         biocon {
             dimension client
             applicationId "org.intelehealth.biocon"
-            versionCode 1
-            versionName '1.0'
+            versionCode 3
+            versionName '1.2'
             archivesBaseName = "intelehealth_biocon-" + versionName + " - " + date
         }
 

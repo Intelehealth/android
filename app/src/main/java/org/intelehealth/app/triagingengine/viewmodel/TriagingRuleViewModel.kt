@@ -5,6 +5,7 @@ package org.intelehealth.app.triagingengine.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import org.apache.commons.jexl3.JexlBuilder
 import org.apache.commons.jexl3.MapContext
@@ -24,6 +25,7 @@ import javax.inject.Inject
 /**
  * Created by Lincon Pradhan on  03-02-2025.
  **/
+@HiltViewModel
 class TriagingRuleViewModel @Inject constructor(private val repository: TriagingRepository) :
     BaseViewModel() {
     private val _triagingReferralRuleData = MutableLiveData<Resource<TriagingReferralRule>>()
