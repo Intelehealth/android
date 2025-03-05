@@ -1,7 +1,6 @@
 package org.intelehealth.klivekit.provider
 
 import android.content.Context
-import dagger.hilt.android.qualifiers.ApplicationContext
 import io.livekit.android.LiveKit
 import io.livekit.android.LiveKitOverrides
 import io.livekit.android.RoomOptions
@@ -25,7 +24,7 @@ import org.webrtc.HardwareVideoEncoderFactory
  **/
 object LiveKitProvider {
 
-    fun createRoom(@ApplicationContext context: Context) = provideLiveKitRoom(
+    fun createRoom(context: Context) = provideLiveKitRoom(
         context = context,
         options = provideRoomOptions(
             provideLocalAudioTrackOptions(),
@@ -72,11 +71,11 @@ object LiveKitProvider {
         adaptiveStream = true
     )
 
-    private fun provideAudioSwitchHandler(@ApplicationContext context: Context) =
+    private fun provideAudioSwitchHandler(context: Context) =
         AudioSwitchHandler(context)
 
     private fun provideLiveKitRoom(
-        @ApplicationContext context: Context,
+        context: Context,
         options: RoomOptions, audioSwitchHandler: AudioSwitchHandler
     ): Room = LiveKit.create(
         appContext = context,

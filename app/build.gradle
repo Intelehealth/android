@@ -4,7 +4,7 @@ apply plugin: 'com.google.firebase.crashlytics'
 apply plugin: 'androidx.navigation.safeargs'
 apply plugin: 'org.jetbrains.kotlin.android'
 apply plugin: "kotlin-kapt"
-apply plugin: "dagger.hilt.android.plugin"
+apply plugin: "com.google.dagger.hilt.android"
 apply plugin: "kotlin-parcelize"
 apply from: "resdir.gradle"
 apply from: "whitelabel.gradle"
@@ -35,8 +35,8 @@ android {
         archivesBaseName = "IDA-" + versionName + "-" + getDateTime()
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
+        sourceCompatibility JavaVersion.VERSION_21
+        targetCompatibility JavaVersion.VERSION_21
     }
 
     buildTypes {
@@ -80,7 +80,7 @@ android {
     }
 
     kotlinOptions {
-        jvmTarget = '17'
+        jvmTarget = '21'
     }
 
 
@@ -186,11 +186,13 @@ dependencies {
     //implementation("org.openjdk.nashorn:nashorn-core:15.2")
     implementation 'org.apache.commons:commons-jexl3:3.2'
 
+    implementation "com.google.dagger:hilt-android:2.51.1"
+    kapt "com.google.dagger:hilt-compiler:2.51.1"
 
-    def hiltVersion = '2.47'
-    implementation "com.google.dagger:hilt-android:$hiltVersion"
-    annotationProcessor "com.google.dagger:hilt-compiler:$hiltVersion"
-    kapt "com.google.dagger:hilt-compiler:$hiltVersion"
+//    def hiltVersion = '2.47'
+//    implementation "com.google.dagger:hilt-android:$hiltVersion"
+//    annotationProcessor "com.google.dagger:hilt-compiler:$hiltVersion"
+//    kapt "com.google.dagger:hilt-compiler:$hiltVersion"
 
 }
 apply plugin: 'com.google.gms.google-services'  // Google Play services Gradle plugin

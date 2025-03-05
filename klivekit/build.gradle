@@ -2,7 +2,7 @@ plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
-    id 'dagger.hilt.android.plugin'
+//    id 'dagger.hilt.android.plugin'
     id 'kotlin-parcelize'
 //    id("com.google.devtools.ksp")
 }
@@ -27,12 +27,12 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
+        sourceCompatibility JavaVersion.VERSION_21
+        targetCompatibility JavaVersion.VERSION_21
     }
 
     kotlinOptions {
-        jvmTarget = '17'
+        jvmTarget = '21'
     }
 
     buildFeatures {
@@ -41,9 +41,9 @@ android {
         buildConfig true
     }
 
-    hilt {
-        enableAggregatingTask = true
-    }
+//    hilt {
+//        enableAggregatingTask = true
+//    }
 }
 
 dependencies {
@@ -100,17 +100,17 @@ dependencies {
     api 'com.squareup.retrofit2:converter-gson:2.9.0'
     api "com.squareup.okhttp3:logging-interceptor:4.10.0"
 
-    def hiltVersion = '2.47'
-    api "com.google.dagger:hilt-android:$hiltVersion"
-    annotationProcessor "com.google.dagger:hilt-compiler:$hiltVersion"
-    kapt "com.google.dagger:hilt-compiler:$hiltVersion"
+//    def hiltVersion = '2.47'
+//    api "com.google.dagger:hilt-android:$hiltVersion"
+//    annotationProcessor "com.google.dagger:hilt-compiler:$hiltVersion"
+//    kapt "com.google.dagger:hilt-compiler:$hiltVersion"
 
     // WorkManager
-    def work_version = "2.9.0"
-    api "androidx.work:work-runtime-ktx:$work_version"
-    api 'androidx.hilt:hilt-work:1.1.0'
-    // When using Kotlin.
-    kapt 'androidx.hilt:hilt-compiler:1.1.0'
+//    def work_version = "2.9.0"
+//    api "androidx.work:work-runtime-ktx:$work_version"
+//    api 'androidx.hilt:hilt-work:1.1.0'
+//    // When using Kotlin.
+//    kapt 'androidx.hilt:hilt-compiler:1.1.0'
 
 
     testApi 'junit:junit:4.13.2'

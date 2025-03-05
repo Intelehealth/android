@@ -45,7 +45,7 @@ import org.intelehealth.app.ui.splash.adapter.LanguageAdapter
 import org.intelehealth.app.utilities.DialogUtils
 import org.intelehealth.app.utilities.DialogUtils.CustomDialogListener
 import org.intelehealth.app.utilities.Logger
-import org.intelehealth.common.triagingrule.viewmodel.TriagingRuleViewModel
+import org.intelehealth.app.triagingengine.viewmodel.TriagingRuleViewModel
 import org.intelehealth.config.room.entity.ActiveLanguage
 import org.intelehealth.config.worker.ConfigSyncWorker
 import org.intelehealth.core.shared.ui.viewholder.BaseViewHolder

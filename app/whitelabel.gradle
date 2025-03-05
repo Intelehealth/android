@@ -48,8 +48,8 @@ android {
         bmgf {
             dimension client
             applicationId "org.intelehealth.bmgf"
-            versionCode 2
-            versionName '1.1'
+            versionCode 3
+            versionName '1.2'
             archivesBaseName = "intelehealth_bmgf-" + versionName + " - " + date
         }
 
