@@ -15,7 +15,7 @@
     <string name="please_select_the_abha_account_through_which_you_wish_to_login">*Please select the ABHA account through which you wish to login.</string>
     <string name="mobile_login">Mobile Login</string>
     <string name="enter_abha_number">Enter ABHA number</string>
-    <string name="enter_abha_address">Enter ABHA address</string>
+    <string name="enter_abha_address">Enter ABHA address (e.g. address@sbx)</string>
     <string name="enter_valid_aadhar_number">Enter valid AADHAAR number</string>
     <string name="abha_card_is_downloaded_successfully">ABHA Card is downloaded successfully!</string>
     <string name="abhanumber">ABHA number</string>
