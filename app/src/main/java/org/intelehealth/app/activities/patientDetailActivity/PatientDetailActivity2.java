@@ -179,7 +179,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     float float_ageYear_Month;
     ImageView profile_image;
     LinearLayout personal_edit, address_edit, others_edit;
-//    Myreceiver reMyreceive;
+    //    Myreceiver reMyreceive;
     IntentFilter filter;
     Button startVisitBtn, btnViewAbhaCard;
 
@@ -437,7 +437,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             String X_TOKEN = BEARER_AUTH + otpVerificationResponse.getTokens().getToken();
             callGETAbhaCardApi(X_TOKEN, accessToken, patientAbhaNumber.getText().toString());
             Timber.tag(TAG).d("viewDownloadABHACard: %s", X_TOKEN + " and " + patientAbhaNumber);
-        } else if (abhaProfileResponse.getToken() != null && !abhaProfileResponse.getToken().isEmpty() &&
+        } else if (abhaProfileResponse!=null && abhaProfileResponse.getToken() != null && !abhaProfileResponse.getToken().isEmpty() &&
                 patientAbhaNumber != null && !patientAbhaNumber.getText().toString().isEmpty()) {
             callGETAbhaCardApi(BEARER + abhaProfileResponse.getToken(), accessToken, patientAbhaNumber.getText().toString());
         } else if (xToken != null && !xToken.isEmpty() && patientAbhaNumber != null && !patientAbhaNumber.getText().toString().isEmpty()) {
@@ -542,7 +542,11 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     @Override
     protected void onResume() {
         super.onResume();
-        setDisplay(patientDTO.getUuid());
+        try {
+            setDisplay(patientDTO.getUuid());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private RelativeLayout mPersonalHeaderRelativeLayout, mAddressHeaderRelativeLayout, mOthersHeaderRelativeLayout;

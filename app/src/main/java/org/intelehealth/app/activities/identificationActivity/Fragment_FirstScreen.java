@@ -604,7 +604,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
         patient_imgview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                checkPerm();
+//                checkPerm();
             }
         });
 

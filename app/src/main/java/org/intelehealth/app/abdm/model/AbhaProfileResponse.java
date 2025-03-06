@@ -22,9 +22,17 @@ public class AbhaProfileResponse implements Serializable {
     @SerializedName("ABHANumber")
     @Expose
     private String aBHANumber;
+
+    @SerializedName("abhaNumber")
+    @Expose
+    private String abhaNumber;
     @SerializedName("preferredAbhaAddress")
     @Expose
     private String preferredAbhaAddress;
+
+    @SerializedName("abhaAddress")
+    @Expose
+    private String abhaAddress;
     @SerializedName("healthIdNumber")
     @Expose
     private String healthIdNumber;
@@ -144,7 +152,7 @@ public class AbhaProfileResponse implements Serializable {
     }
 
     public String getABHANumber() {
-        return TextUtils.isEmpty(aBHANumber) ? healthIdNumber : aBHANumber;
+        return TextUtils.isEmpty(aBHANumber) ? abhaNumber : aBHANumber;
     }
 
     public void setABHANumber(String aBHANumber) {
@@ -152,7 +160,7 @@ public class AbhaProfileResponse implements Serializable {
     }
 
     public String getPreferredAbhaAddress() {
-        return TextUtils.isEmpty(preferredAbhaAddress)?healthId:preferredAbhaAddress;
+        return TextUtils.isEmpty(preferredAbhaAddress)?abhaAddress:preferredAbhaAddress;
     }
 
     public void setPreferredAbhaAddress(String preferredAbhaAddress) {

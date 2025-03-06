@@ -1,6 +1,7 @@
 package org.intelehealth.app.abdm.activity
 
 import android.content.Context
+import android.content.DialogInterface
 import android.os.Build
 import android.os.Bundle
 import android.os.LocaleList
@@ -23,6 +24,7 @@ import java.util.Locale
 @Suppress("DEPRECATION")
 class ConsentDialog : DialogFragment() {
 
+    private var IS_ACCEPTED: Boolean = false
     private var clickable: Clickable? = null
     private var checkboxAdapter: CheckboxAdapter? = null
     private lateinit var modelList: MutableList<CheckBoxRecyclerModel>
@@ -124,14 +126,24 @@ class ConsentDialog : DialogFragment() {
 
 
         binding.btnAcceptPrivacy.setOnClickListener {
-            clickable?.isChecked(true)
+            IS_ACCEPTED = true
             dismiss()
         }
         binding.btnDecline.setOnClickListener {
-            clickable?.isChecked(false)
+            IS_ACCEPTED = false
             dismiss()
         }
         return binding.root
+    }
+
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+        if (IS_ACCEPTED) {
+            clickable?.isChecked(true)
+        } else {
+            clickable?.isChecked(false)
+        }
+
     }
 
     fun setListeners(clickable: Clickable) {
@@ -165,12 +177,6 @@ class ConsentDialog : DialogFragment() {
         return "(health worker)"
     }
 
-
-    private fun declinePP() {  // DECLINE BTN
-        //  setResult(AppConstants.CONSENT_DECLINE);
-
-        dismiss()
-    }
 
     fun setLocale(context: Context): Context {
         val sessionManager1 = SessionManager(context)

@@ -224,7 +224,14 @@ public class Fragment_SecondScreen extends Fragment {
         String village_town = (abhaProfileResponse.getTownName() != null) ?
                 abhaProfileResponse.getTownName() :
                 (abhaProfileResponse.getVillageName() != null) ? abhaProfileResponse.getVillageName() : ""; // checks if both are not null town and village.
-        mCityVillageET.setText(village_town);
+        if (!TextUtils.isEmpty(village_town))
+        {
+            mCityVillageET.setText(village_town);
+            mCityVillageET.setClickable(false);
+            mCityVillageET.setCursorVisible(false);
+            mCityVillageET.setEnabled(false);
+        }
+
 
         mAddress1EditText.setText(abhaProfileResponse.getAddress());
     }
@@ -358,6 +365,7 @@ public class Fragment_SecondScreen extends Fragment {
             mCountryNameSpinner.setAdapter(countryAdapter); // keeping this is setting textcolor to white so comment this and add android:entries in xml
             mCountryNameSpinner.setPopupBackgroundDrawable(getActivity().getDrawable(R.drawable.popup_menu_background));
             mCountryNameSpinner.setSelection(countryAdapter.getPosition(sessionManager.getAppLanguage().equals("en") ? "India" : "भारत"));
+            mCountryNameSpinner.setEnabled(false);
         } catch (Exception e) {
             Logger.logE("Identification", "#648", e);
         }
@@ -383,7 +391,15 @@ public class Fragment_SecondScreen extends Fragment {
                 if (district_city.length == 2) {
                     district = mDistName = district_city[0];
                     city_village = mCityVillageName = district_city[1];
-                    mCityVillageET.setText(city_village);
+
+                    if (!TextUtils.isEmpty(city_village))
+                    {
+                        mCityVillageET.setText(city_village);
+                        mCityVillageET.setClickable(false);
+                        mCityVillageET.setCursorVisible(false);
+                        mCityVillageET.setEnabled(false);
+                    }
+
                 }
             }
 
@@ -622,7 +638,7 @@ public class Fragment_SecondScreen extends Fragment {
                             mStateNameSpinner.setSelection(itemPosition);
                         } else
                             mStateNameSpinner.setSelection(stateAdapter.getPosition(getResources().getString(R.string.select_spinner)));
-
+                        mStateNameSpinner.setEnabled(false);
 
                     } else {
                         mIsIndiaSelected = false;
@@ -708,6 +724,7 @@ public class Fragment_SecondScreen extends Fragment {
 
         mDistrictNameSpinner.setAdapter(districtAdapter);
         mDistrictNameSpinner.setPopupBackgroundDrawable(getActivity().getDrawable(R.drawable.popup_menu_background));
+        mDistrictNameSpinner.setEnabled(false);
     }
 
     private void onBackInsertIntoPatientDTO() {
