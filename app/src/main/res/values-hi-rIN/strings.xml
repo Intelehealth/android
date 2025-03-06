@@ -1056,4 +1056,6 @@
     <string name="enter_signature">Enter Signature</string>
     <string name="from_9_00_pm_to_6_00_am">From 9:00 PM To 6:00 AM</string>
     <string name="temp_eg_c">E.g., 36.6 C</string>
+    <string name="other_diagnosis">Other Diagnosis</string>
+    <string name="select_diagnosis">Select Diagnosis</string>
 </resources>

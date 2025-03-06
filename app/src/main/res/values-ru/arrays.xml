@@ -25,4 +25,19 @@
         <item>Срочная консультация от 3 до 24 часов</item>
         <item>Запланированная консультация</item>
     </string-array>
+
+    <string-array name="diagnosis_type">
+        <item>Select Diagnosis</item>
+        <item>Chronic Arterial Hypertension (CAH)</item>
+        <item>Gestational Arterial Hypertension (GAH)</item>
+        <item>Pre-eclampsia (Moderate)</item>
+        <item>Pre-eclampsia (Severe)</item>
+        <item>Pre-eclampsia with Chronic Arterial Hypertension</item>
+        <item>Eclampsia</item>
+        <item>Early Postpartum Hemorrhage (Early PPH)</item>
+        <item>Late Postpartum Hemorrhage (Late PPH)</item>
+        <item>Postpartum Hemorrhage (PPH)</item>
+        <item>Postpartum Sepsis</item>
+        <item>Other</item>
+    </string-array>
 </resources>

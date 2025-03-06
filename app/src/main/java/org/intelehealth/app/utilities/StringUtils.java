@@ -4574,7 +4574,19 @@ public final class StringUtils {
 
     public static String getTypeOfConsultation(String consultationType, String lan) {
         if (consultationType == null || consultationType.isEmpty()) return "";
-        if (lan.equalsIgnoreCase("ru")) {
+        if (lan.equalsIgnoreCase("en")) {
+            switch (consultationType) {
+                case "Экстренная консультация от 30 минут до 3 часов" ->
+                        consultationType = "In emergency form – from 30 minutes to 2 hours";
+                case "Срочная консультация от 3 до 24 часов" ->
+                        consultationType = "In urgent form - from 3 to 24 hours";
+                case "Запланированная консультация" ->
+                        consultationType = "In planned form – for a day or more";
+                default -> {
+                    return consultationType;
+                }
+            }
+        }else if (lan.equalsIgnoreCase("ru")) {
             switch (consultationType) {
                 case "In emergency form – from 30 minutes to 2 hours" ->
                         consultationType = "Экстренная консультация от 30 минут до 3 часов";

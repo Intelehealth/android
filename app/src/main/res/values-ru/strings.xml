@@ -1126,5 +1126,7 @@
     <string name="enter_signature">Поставить подпись</string>
     <string name="from_9_00_pm_to_6_00_am">от 9:00 PM до 6:00 AM</string>
     <string name="temp_eg_c">Например, 36.6 С</string>
+    <string name="other_diagnosis">Другой диагноз</string>
+    <string name="select_diagnosis">Выберите Диагноз</string>
     <!-- UNFPA Strings end  -->
 </resources>

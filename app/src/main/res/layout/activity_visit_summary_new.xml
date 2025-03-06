@@ -353,6 +353,9 @@
 
 
                 <!--Vitals and Other cards - start-->
+                <!--Vitals and Other cards - end-->
+
+                <!--Additional notes - start-->
                 <RelativeLayout
                     android:id="@+id/vitalsRelativeLayout"
                     android:layout_width="match_parent"
@@ -378,9 +381,7 @@
                     <include layout="@layout/visit_summary_itemscard" />
 
                 </RelativeLayout>
-                <!--Vitals and Other cards - end-->
 
-                <!--Additional notes - start-->
                 <RelativeLayout
                     android:id="@+id/add_notes_relative"
                     android:layout_width="match_parent"
@@ -718,42 +719,85 @@
                             app:cardCornerRadius="@dimen/margin_5"
                             app:cardElevation="@dimen/margin_5">
 
-                            <RelativeLayout
+                            <androidx.constraintlayout.widget.ConstraintLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_margin="@dimen/fu_card_margin_sides">
+                                android:layout_height="wrap_content">
 
-                                <TextView
-                                    android:id="@+id/diagnosis_title"
-                                    style="@style/vs_title_head_14sp"
+                                <RelativeLayout
+                                    android:id="@+id/diagnosis_sp_layout"
                                     android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:text="@string/diagnosis"
-                                    android:textColor="@color/colorPrimary"
-                                    android:textStyle="bold" />
+                                    android:layout_height="match_parent"
+                                    android:layout_margin="@dimen/fu_card_margin_sides"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent">
 
-
-                                <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
-                                    android:id="@+id/diagnosis_text_input_lay"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_below="@id/diagnosis_title"
-                                    android:layout_marginTop="@dimen/fu_margin_start"
-                                    android:layout_marginBottom="@dimen/margin_16dp"
-                                    app:hintEnabled="false"
-                                  >
-
-                                    <com.google.android.material.textfield.TextInputEditText
-                                        android:id="@+id/diagnosis_text_input"
-                                        android:background="@drawable/input_edittext_border"
+                                    <TextView
+                                        android:id="@+id/diagnosis_title"
+                                        style="@style/vs_title_head_14sp"
                                         android:layout_width="match_parent"
-                                        android:padding="@dimen/fu_margin_start"
                                         android:layout_height="wrap_content"
-                                        android:hint="@string/enter_diagnosis"
-                                        />
+                                        android:text="@string/diagnosis"
+                                        android:textColor="@color/colorPrimary"
+                                        android:textStyle="bold" />
 
-                                </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
-                            </RelativeLayout>
+
+                                    <Spinner
+                                        android:id="@+id/diagnosis_spinner"
+                                        style="@style/AppTheme"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="@dimen/edittext_height_44dp"
+                                        android:layout_below="@+id/diagnosis_title"
+                                        android:layout_marginTop="@dimen/fu_margin_start"
+                                        android:layout_marginBottom="@dimen/margin_16dp"
+                                        android:entries="@array/diagnosis_type"
+                                        android:gravity="center_vertical"
+                                        android:hint="@string/select_diagnosis"
+                                        android:paddingTop="@dimen/margin_10"
+                                        android:paddingBottom="@dimen/margin_10" />
+                                </RelativeLayout>
+
+                                <RelativeLayout
+                                    android:id="@+id/other_diagnosis_lay"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:visibility="gone"
+                                    android:layout_margin="@dimen/fu_card_margin_sides"
+                                    android:layout_marginTop="@dimen/fu_card_margin_sides"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@+id/diagnosis_sp_layout">
+
+                                    <TextView
+                                        android:id="@+id/other_diagnosis_title"
+                                        style="@style/vs_title_head_14sp"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/other_diagnosis"
+                                        android:textColor="@color/colorPrimary"
+                                        android:textStyle="bold" />
+
+
+                                    <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
+                                        android:id="@+id/diagnosis_text_input_lay"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_below="@id/other_diagnosis_title"
+                                        android:layout_marginTop="@dimen/fu_margin_start"
+                                        android:layout_marginBottom="@dimen/margin_16dp"
+                                        app:hintEnabled="false">
+
+                                        <com.google.android.material.textfield.TextInputEditText
+                                            android:id="@+id/other_diagnosis_text_input"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:background="@drawable/input_edittext_border"
+                                            android:hint="@string/enter_diagnosis"
+                                            android:padding="@dimen/fu_margin_start" />
+
+                                    </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
+                                </RelativeLayout>
+                            </androidx.constraintlayout.widget.ConstraintLayout>
                         </androidx.cardview.widget.CardView>
                     </FrameLayout>
 

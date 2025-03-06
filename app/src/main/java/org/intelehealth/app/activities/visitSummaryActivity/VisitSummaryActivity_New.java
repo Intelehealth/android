@@ -344,7 +344,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     String gender_tv;
     String mFileName = CONFIG_FILE_NAME;
     String mHeight, mWeight, mBMI, mBP, mPulse, mTemp, mSPO2, mresp;
-    String speciality_selected = "", selectedConsultationType = "";
+    String speciality_selected = "", selectedConsultationType = "",selectedDiagnosis = "";
     private TextView physcialExaminationDownloadText, vd_special_value;
     NetworkChangeReceiver receiver;
     public static final String FILTER = "io.intelehealth.client.activities.visit_summary_activity.REQUEST_PROCESSED";
@@ -661,8 +661,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         viewModel.fetchSpecialization().observe(this, specializations -> {
             CustomLog.d(TAG, new Gson().toJson(specializations));
             setupSpecializationDataSpinner(specializations);
-            setupDiagnosisData();
             setupTypeOfConsultationSpinner();
+            setupDiagnosisSpinner();
             setFacilityToVisitSpinner();
             setSeveritySpinner();
             setupSignature();
@@ -935,7 +935,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         }
 
 
-        setupDiagnosisData();
+        setupDiagnosisSpinner();
         setupTypeOfConsultationSpinner();
         setupSignature();
     }
@@ -2180,15 +2180,6 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         });
     }
 
-    private void setupDiagnosisData() {
-        String diagnosis = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, DIAGNOSIS);
-        if (!TextUtils.isEmpty(diagnosis)) {
-            mBinding.vdDiagnosisValue.setText(" " + Node.bullet + "  " + diagnosis);
-        } else {
-            mBinding.vdDiagnosisValue.setText(getString(R.string.no_data_found));
-        }
-    }
-
     private void setupTypeOfConsultationSpinner() {
         String consultationType = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, CONSULTATION_TYPE);
         if (!TextUtils.isEmpty(consultationType)) {
@@ -2202,9 +2193,43 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (i != 0) {
                     CustomLog.d("SPINNER", "SPINNER_Selected: " + adapterView.getItemAtPosition(i).toString());
-                    selectedConsultationType = adapterView.getItemAtPosition(i).toString();
+                    Resources resources = LanguageUtils.getSpecificLocalResource(VisitSummaryActivity_New.this, "en");
+                    selectedConsultationType = resources.getStringArray(R.array.type_of_consultations)[i];
                 } else {
                     selectedConsultationType = "";
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+    }
+
+    private void setupDiagnosisSpinner() {
+        String diagnosis = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, DIAGNOSIS);
+        if (!TextUtils.isEmpty(diagnosis)) {
+            mBinding.vdDiagnosisValue.setText(" " + Node.bullet + "  " + diagnosis);
+        } else {
+            mBinding.vdDiagnosisValue.setText(getString(R.string.no_data_found));
+        }
+
+        mBinding.diagnosisSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (i != 0) {
+                    CustomLog.d("SPINNER", "SPINNER_Selected: " + adapterView.getItemAtPosition(i).toString());
+                    Resources resources = LanguageUtils.getSpecificLocalResource(VisitSummaryActivity_New.this, "en");
+                    selectedDiagnosis = resources.getStringArray(R.array.diagnosis_type)[i];
+                    if(selectedDiagnosis.equals("Other")){
+                        mBinding.otherDiagnosisLay.setVisibility(View.VISIBLE);
+                    }else {
+                        mBinding.otherDiagnosisLay.setVisibility(View.GONE);
+                    }
+                } else {
+                    selectedDiagnosis = "";
                 }
 
             }
@@ -3128,8 +3153,19 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
     private void visitSendDialog(Context context, Drawable drawable, String title, String subTitle, String positiveBtnTxt, String negativeBtnTxt) {
         //validate diagnosis and type of consultation
-        if (mBinding.diagnosisTextInput.getText().toString().isEmpty()) {
-            mBinding.diagnosisTextInput.setError(getString(R.string.enter_diagnosis));
+
+        if(selectedDiagnosis.equals("Other")){
+            if (mBinding.otherDiagnosisTextInput.getText().toString().isEmpty()) {
+                mBinding.otherDiagnosisTextInput.setError(getString(R.string.enter_diagnosis));
+            }
+        }else {
+            if (selectedDiagnosis.isEmpty()) {
+                TextView view = (TextView) mBinding.diagnosisSpinner.getSelectedView();
+                if (view != null) {
+                    view.setError(getString(R.string.select_diagnosis));
+                    view.setTextColor(Color.RED);
+                }
+            }
         }
 
         if (mBinding.signatureTextInput.getText().toString().trim().isEmpty()) {
@@ -3147,9 +3183,18 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             showSelectSpeciliatyErrorDialog();
         }
 
-        if (mFeatureActiveStatus.getDiagnosisAtSecondaryLevel() && mBinding.diagnosisTextInput.getText().toString().isEmpty()) {
+        if (mFeatureActiveStatus.getDiagnosisAtSecondaryLevel()) {
+            if(selectedDiagnosis.equals("Other")){
+                if (mBinding.otherDiagnosisTextInput.getText().toString().isEmpty()) {
+                    return;
+                }
+            }else {
+                if (selectedDiagnosis.isEmpty()) {
+                    return;
+                }
+            }
             Timber.tag(TAG).d("DiagnosisAtSecondaryLevel");
-            return;
+            //return;
         } else if (mFeatureActiveStatus.getTypeOfConsultation() && selectedConsultationType.isEmpty()) {
             Timber.tag(TAG).d("TypeOfConsultation");
             return;
@@ -3230,9 +3275,17 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
                 visitAttributeListDAO.insertVisitAttributes(visitUuid, AppConstants.dateAndTimeUtils.currentDateTime(), VISIT_UPLOAD_TIME);
 
-                if (!mBinding.diagnosisTextInput.getText().toString().isEmpty()) {
-                    visitAttributeListDAO.insertVisitAttributes(visitUuid, mBinding.diagnosisTextInput.getText().toString(), DIAGNOSIS);
+                if(selectedDiagnosis.equals("Other")){
+                    if (!mBinding.otherDiagnosisTextInput.getText().toString().isEmpty()) {
+                        visitAttributeListDAO.insertVisitAttributes(visitUuid, mBinding.otherDiagnosisTextInput.getText().toString(), DIAGNOSIS);
+                    }
+                }else {
+                    if (!selectedDiagnosis.isEmpty()) {
+                        visitAttributeListDAO.insertVisitAttributes(visitUuid, selectedDiagnosis.toString(), DIAGNOSIS);
+                    }
+
                 }
+
 
                 if (!selectedConsultationType.isEmpty()) {
                     visitAttributeListDAO.insertVisitAttributes(visitUuid, selectedConsultationType, CONSULTATION_TYPE);
