@@ -155,7 +155,9 @@ public class HomeScreenActivity_New extends LocalConfigActivity implements Netwo
     private void saveToken() {
         Manager.getInstance().setBaseUrl("https://" + sessionManager.getServerUrl());
         // save fcm reg. token for chat (Video)
-        FirebaseUtils.saveToken(this, sessionManager.getProviderID(), IntelehealthApplication.getInstance().refreshedFCMTokenID, sessionManager.getAppLanguage());
+        FirebaseUtils.saveToken(this, sessionManager.getProviderID(),
+                IntelehealthApplication.getInstance().refreshedFCMTokenID,
+                sessionManager.getAppLanguage());
     }
 
     @Override
@@ -171,7 +173,8 @@ public class HomeScreenActivity_New extends LocalConfigActivity implements Netwo
 //            Logger.logV(TAG, " getIntent - " + getIntent().getExtras().getString("actionType"));
 //            Bundle remoteMessage = getIntent().getExtras();
 //            try {
-//                if (remoteMessage.containsKey("actionType") && remoteMessage.getString("actionType").equals("TEXT_CHAT")) {
+//                if (remoteMessage.containsKey("actionType") && remoteMessage.getString
+//                ("actionType").equals("TEXT_CHAT")) {
 //                    //Log.d(TAG, "actionType : TEXT_CHAT");
 //                    String fromUUId = remoteMessage.getString("toUser");
 //                    String toUUId = remoteMessage.getString("fromUser");
@@ -186,7 +189,8 @@ public class HomeScreenActivity_New extends LocalConfigActivity implements Netwo
 //                    Intent intent = new Intent(ACTION_NAME);
 //                    intent.putExtra("visit_uuid", visitUUID);
 //                    intent.putExtra("connection_info", connectionInfoObject.toString());
-//                    intent.setComponent(new ComponentName("org.intelehealth.unicef", "org.intelehealth.unicef.utilities.RTCMessageReceiver"));
+//                    intent.setComponent(new ComponentName("org.intelehealth.unicef", "org
+//                    .intelehealth.unicef.utilities.RTCMessageReceiver"));
 //                    getApplicationContext().sendBroadcast(intent);
 //
 //                    Intent chatIntent = new Intent(this, ChatActivity.class);
@@ -198,7 +202,8 @@ public class HomeScreenActivity_New extends LocalConfigActivity implements Netwo
 //                    chatIntent.putExtra("toUuid", toUUId);
 //                    startActivity(chatIntent);
 //
-//                } else if (remoteMessage.containsKey("actionType") && remoteMessage.getString("actionType").equals("VIDEO_CALL")) {
+//                } else if (remoteMessage.containsKey("actionType") && remoteMessage.getString
+//                ("actionType").equals("VIDEO_CALL")) {
 //                    //Log.d(TAG, "actionType : VIDEO_CALL");
 //                    Intent in = new Intent(this, CompleteActivity.class);
 //                    String roomId = remoteMessage.getString("roomId");
@@ -213,14 +218,16 @@ public class HomeScreenActivity_New extends LocalConfigActivity implements Netwo
 //                        Date date = new Date();
 //                        if (timestamp != null) {
 //                            date.setTime(Long.parseLong(timestamp));
-//                            SimpleDateFormat dateFormatter = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss"); //this format changeable
+//                            SimpleDateFormat dateFormatter = new SimpleDateFormat("MM-dd-yyyy
+//                            HH:mm:ss"); //this format changeable
 //                            dateFormatter.setTimeZone(TimeZone.getDefault());
 //
 //                            try {
 //                                Date ourDate = dateFormatter.parse(dateFormatter.format(date));
 //                                long seconds = 0;
 //                                if (ourDate != null) {
-//                                    seconds = Math.abs(new Date().getTime() - ourDate.getTime()) / 1000;
+//                                    seconds = Math.abs(new Date().getTime() - ourDate.getTime()
+//                                    ) / 1000;
 //                                }
 //                                Log.v(TAG, "Current time - " + new Date());
 //                                Log.v(TAG, "Notification time - " + ourDate);
@@ -242,7 +249,8 @@ public class HomeScreenActivity_New extends LocalConfigActivity implements Netwo
 //                    in.putExtra("visitId", visitId);
 //                    in.putExtra("doctorId", doctorId);
 //
-//                    //int callState = ((TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE)).getCallState();
+//                    //int callState = ((TelephonyManager) getSystemService(Context
+//                    .TELEPHONY_SERVICE)).getCallState();
 //                    //if (callState == TelephonyManager.CALL_STATE_IDLE && !isOldNotification) {
 //                    startActivity(in);
 //                    //}
@@ -269,6 +277,7 @@ public class HomeScreenActivity_New extends LocalConfigActivity implements Netwo
         DeviceInfoUtils.saveDeviceInfo(this);
         FcmTokenGenerator.INSTANCE.getDeviceToken(s -> {
             IntelehealthApplication.getInstance().refreshedFCMTokenID = s;
+            saveToken();
             return Unit.INSTANCE;
         });
 //        catchFCMMessageData();
@@ -300,7 +309,8 @@ public class HomeScreenActivity_New extends LocalConfigActivity implements Netwo
             if (intentTag != null) {
                 if (intentTag.equalsIgnoreCase("Feedback screen with feedback"))
                     showSnackBarAndRemoveLater();
-                else survey_snackbar_cv.setVisibility(View.GONE);
+                else
+                    survey_snackbar_cv.setVisibility(View.GONE);
             }
         }
         if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
@@ -312,7 +322,8 @@ public class HomeScreenActivity_New extends LocalConfigActivity implements Netwo
         /*tvTitleHomeScreenCommon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(HomeScreenActivity_New.this, MyAppointmentActivity.class);
+                Intent intent = new Intent(HomeScreenActivity_New.this, MyAppointmentActivity
+                .class);
                 startActivity(intent);
             }
         });*/
@@ -370,10 +381,14 @@ public class HomeScreenActivity_New extends LocalConfigActivity implements Netwo
     }
 
     private void showResetConfirmationDialog() {
-        patientRegistrationDialog(context, getResources().getDrawable(R.drawable.ui2_ic_warning_internet), getString(R.string.reset_app_new_title), getString(R.string.sure_to_reset_app), getString(R.string.generic_yes), getString(R.string.no), action -> {
-            if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
-                checkNetworkConnectionAndPerformSync();
-                //  showSimpleDialog(getString(R.string.resetting_app_dialog), getString(R.string.please_wait_app_reset));
+        patientRegistrationDialog(context,
+                getResources().getDrawable(R.drawable.ui2_ic_warning_internet),
+                getString(R.string.reset_app_new_title), getString(R.string.sure_to_reset_app),
+                getString(R.string.generic_yes), getString(R.string.no), action -> {
+                    if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
+                        checkNetworkConnectionAndPerformSync();
+                        //  showSimpleDialog(getString(R.string.resetting_app_dialog), getString
+                        //  (R.string.please_wait_app_reset));
 //                            deleteCache(getApplicationContext());
 /*
                         new Handler(Looper.getMainLooper())
@@ -385,15 +400,17 @@ public class HomeScreenActivity_New extends LocalConfigActivity implements Netwo
                                     }
                                 }, 2000);
 */
-            }
-        });
+                    }
+                });
     }
 
     private void checkNetworkConnectionAndPerformSync() {
         if ((isNetworkConnected())) {
 
             // first we're showing the sync in progress dialog - Added by Arpan Sircar
-            showSimpleDialog(resetAlertDialogBuilder, getString(R.string.app_sync_dialog_title), getString(R.string.please_wait_sync_progress), getResources().getDrawable(R.drawable.ui2_icon_logging_in));
+            showSimpleDialog(resetAlertDialogBuilder, getString(R.string.app_sync_dialog_title),
+                    getString(R.string.please_wait_sync_progress),
+                    getResources().getDrawable(R.drawable.ui2_icon_logging_in));
 
             boolean isSynced = syncUtils.syncForeground("home");
             if (isSynced) {
@@ -401,7 +418,9 @@ public class HomeScreenActivity_New extends LocalConfigActivity implements Netwo
                 new Handler().postDelayed(() -> {
 
                     // next we're displaying the sync successful message - Added by Arpan Sircar
-                    updateSimpleDialog(resetDialog, getString(R.string.sync_successful), getString(R.string.please_wait_app_reset), getResources().getDrawable(R.drawable.ui2_icon_login_success));
+                    updateSimpleDialog(resetDialog, getString(R.string.sync_successful),
+                            getString(R.string.please_wait_app_reset),
+                            getResources().getDrawable(R.drawable.ui2_icon_login_success));
 
                     new Handler().postDelayed(() -> {
 
@@ -409,8 +428,13 @@ public class HomeScreenActivity_New extends LocalConfigActivity implements Netwo
                         showResetProgressbar();
 
                         new Handler().postDelayed(() -> { //Do something after 100ms
-                            Toast.makeText(getApplicationContext(), getString(R.string.app_reset_successfully), Toast.LENGTH_SHORT).show();
-                            Toast.makeText(getApplicationContext(), getString(R.string.please_open_the_app_again), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(),
+                                            getString(R.string.app_reset_successfully),
+                                            Toast.LENGTH_SHORT)
+                                    .show();
+                            Toast.makeText(getApplicationContext(),
+                                    getString(R.string.please_open_the_app_again),
+                                    Toast.LENGTH_SHORT).show();
                             deleteCache(getApplicationContext());
                         }, 1000);
 
@@ -420,29 +444,42 @@ public class HomeScreenActivity_New extends LocalConfigActivity implements Netwo
             } else {
                 // mResetSyncDialog.dismiss();
                 DialogUtils dialogUtils = new DialogUtils();
-                dialogUtils.showOkDialog(this, getString(R.string.error), getString(R.string.sync_failed), getString(R.string.generic_ok));
+                dialogUtils.showOkDialog(this, getString(R.string.error),
+                        getString(R.string.sync_failed), getString(R.string.generic_ok));
             }
         } else {
-            MaterialAlertDialogBuilder builder = new DialogUtils().showErrorDialogWithTryAgainButton(this, getDrawable(R.drawable.ui2_icon_logging_in), getString(R.string.network_failure), getString(R.string.reset_app_requires_internet_message), getString(R.string.try_again));
+            MaterialAlertDialogBuilder builder
+                    = new DialogUtils().showErrorDialogWithTryAgainButton(this,
+                    getDrawable(R.drawable.ui2_icon_logging_in),
+                    getString(R.string.network_failure),
+                    getString(R.string.reset_app_requires_internet_message),
+                    getString(R.string.try_again));
             AlertDialog networkFailureDialog = builder.show();
 
-            networkFailureDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
-            networkFailureDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
-            int width = context.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
-            networkFailureDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
+            networkFailureDialog.getWindow().setBackgroundDrawableResource(
+                    R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
+            networkFailureDialog.getWindow()
+                    .addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
+            int width = context.getResources().getDimensionPixelSize(
+                    R.dimen.internet_dialog_width);    // set width to your dialog.
+            networkFailureDialog.getWindow()
+                    .setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
 
             Button tryAgainButton = networkFailureDialog.findViewById(R.id.positive_btn);
-            if (tryAgainButton != null) tryAgainButton.setOnClickListener(v -> {
-                networkFailureDialog.dismiss();
-                checkNetworkConnectionAndPerformSync();
-            });
+            if (tryAgainButton != null)
+                tryAgainButton.setOnClickListener(v -> {
+                    networkFailureDialog.dismiss();
+                    checkNetworkConnectionAndPerformSync();
+                });
         }
     }
 
     private void showResetProgressbar() {
         resetDialog.dismiss();
         MaterialAlertDialogBuilder resetDialogBuilder = new MaterialAlertDialogBuilder(context);
-        showSimpleDialog(resetDialogBuilder, getString(R.string.resetting_app_dialog), getString(R.string.please_wait_app_reset), getResources().getDrawable(R.drawable.ui2_icon_logging_in));
+        showSimpleDialog(resetDialogBuilder, getString(R.string.resetting_app_dialog),
+                getString(R.string.please_wait_app_reset),
+                getResources().getDrawable(R.drawable.ui2_icon_logging_in));
     }
 
     public void deleteCache(Context context) {
@@ -479,7 +516,9 @@ public class HomeScreenActivity_New extends LocalConfigActivity implements Netwo
         try {
             // clearing app data
             if (Build.VERSION_CODES.KITKAT <= Build.VERSION.SDK_INT) {
-                ((ActivityManager) getSystemService(ACTIVITY_SERVICE)).clearApplicationUserData(); // note: it has a return value!
+                ((ActivityManager) getSystemService(
+                        ACTIVITY_SERVICE)).clearApplicationUserData(); // note: it has a return
+                // value!
             } else {
                 String packageName = getApplicationContext().getPackageName();
                 Runtime runtime = Runtime.getRuntime();
@@ -491,7 +530,8 @@ public class HomeScreenActivity_New extends LocalConfigActivity implements Netwo
         }
     }
 
-    private void showSimpleDialog(MaterialAlertDialogBuilder alertDialog, String title, String subtitle, Drawable dialogIcon) {
+    private void showSimpleDialog(MaterialAlertDialogBuilder alertDialog, String title,
+                                  String subtitle, Drawable dialogIcon) {
         final LayoutInflater inflater = LayoutInflater.from(context);
         View convertView = inflater.inflate(R.layout.dialog_patient_registration, null);
         alertDialog.setView(convertView);
@@ -508,15 +548,19 @@ public class HomeScreenActivity_New extends LocalConfigActivity implements Netwo
         negative_btn.setVisibility(View.GONE);
 
         resetDialog = alertDialog.create();
-        resetDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
-        resetDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
-        int width = context.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
+        resetDialog.getWindow().setBackgroundDrawableResource(
+                R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
+        resetDialog.getWindow()
+                .addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
+        int width = context.getResources().getDimensionPixelSize(
+                R.dimen.internet_dialog_width);    // set width to your dialog.
         resetDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
         resetDialog.setCancelable(false);
         resetDialog.show();
     }
 
-    private void updateSimpleDialog(Dialog dialog, String title, String subtitle, Drawable dialogIcon) {
+    private void updateSimpleDialog(Dialog dialog, String title, String subtitle,
+                                    Drawable dialogIcon) {
         ImageView icon = dialog.findViewById(R.id.dialog_icon);
         TextView dialogTitle = dialog.findViewById(R.id.dialog_title);
         TextView dialogSubtitle = dialog.findViewById(R.id.dialog_subtitle);
@@ -569,23 +613,28 @@ public class HomeScreenActivity_New extends LocalConfigActivity implements Netwo
         setupDrawerContent(mNavigationView);
 
         //code from old home activity
-        syncAnimator = ObjectAnimator.ofFloat(imageViewIsInternet, View.ROTATION, 0f, 359f).setDuration(1200);
+        syncAnimator = ObjectAnimator.ofFloat(imageViewIsInternet, View.ROTATION, 0f, 359f)
+                .setDuration(1200);
         syncAnimator.setRepeatCount(ValueAnimator.INFINITE);
         syncAnimator.setInterpolator(new LinearInterpolator());
         imageViewIsInternet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                AppConstants.notificationUtils.showNotifications(getString(R.string.sync), getString(R.string.syncInProgress), 1, context);
+//                AppConstants.notificationUtils.showNotifications(getString(R.string.sync),
+//                getString(R.string.syncInProgress), 1, context);
 
                 if (isNetworkConnected()) {
-//                    Toast.makeText(context, getString(R.string.syncInProgress), Toast.LENGTH_LONG).show();
+//                    Toast.makeText(context, getString(R.string.syncInProgress), Toast
+//                    .LENGTH_LONG).show();
                     imageViewIsInternet.clearAnimation();
                     syncAnimator.start();
                     syncUtils.syncForeground("home");
                 } else {
-//                    Toast.makeText(context, context.getString(R.string.failed_synced), Toast.LENGTH_LONG).show();
+//                    Toast.makeText(context, context.getString(R.string.failed_synced), Toast
+//                    .LENGTH_LONG).show();
                     if (!tipWindow.isTooltipShown())
-                        tipWindow.showToolTip(imageViewIsInternet, getResources().getString(R.string.no_network_tooltip));
+                        tipWindow.showToolTip(imageViewIsInternet,
+                                getResources().getString(R.string.no_network_tooltip));
 //                    showRefreshFailedDialog();
                 }
 //                if (!sessionManager.getLastSyncDateTime().equalsIgnoreCase("- - - -")
@@ -594,9 +643,11 @@ public class HomeScreenActivity_New extends LocalConfigActivity implements Netwo
 //                }
             }
         });
-        //WorkManager.getInstance().enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
+        //WorkManager.getInstance().enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME,
+        // ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
         if (sessionManager.isFirstTimeLaunched()) {
-            /*mSyncProgressDialog = new ProgressDialog(HomeScreenActivity_New.this, R.style.AlertDialogStyle); //thats how to add a style!
+            /*mSyncProgressDialog = new ProgressDialog(HomeScreenActivity_New.this, R.style
+            .AlertDialogStyle); //thats how to add a style!
             mSyncProgressDialog.setTitle(R.string.syncInProgress);
             mSyncProgressDialog.setCancelable(false);
             mSyncProgressDialog.setProgress(i);
@@ -605,8 +656,9 @@ public class HomeScreenActivity_New extends LocalConfigActivity implements Netwo
             syncUtils.initialSync("home");
         } else {
             // if initial setup done then we can directly set the periodic background sync job
-            WorkManager.getInstance().enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
-            saveToken();
+            WorkManager.getInstance().enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME,
+                    ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
+//            saveToken();
 //            requestPermission();
         }
         /*sessionManager.setMigration(true);
@@ -622,7 +674,8 @@ public class HomeScreenActivity_New extends LocalConfigActivity implements Netwo
         bottomNav.getMenu().findItem(R.id.bottom_nav_home_menu).setChecked(true);
 
 
-       /* String sync_text = setLastSyncTime(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
+       /* String sync_text = setLastSyncTime(getString(R.string.last_synced) + " \n" +
+       sessionManager.getLastSyncDateTime());
         tvAppLastSync.setText(sync_text);
         Log.d(TAG, "onReceive: sync_text initui : " + sessionManager.getLastSyncDateTime());
 */
@@ -659,11 +712,14 @@ public class HomeScreenActivity_New extends LocalConfigActivity implements Netwo
         String topFragmentTag = getTopFragmentTag();
         if (topFragmentTag.equalsIgnoreCase(TAG_HOME)) {
             // finish();
-            wantToExitApp(this, getResources().getString(R.string.exit_app), getResources().getString(R.string.sure_to_exit), getResources().getString(R.string.yes), getResources().getString(R.string.no));
+            wantToExitApp(this, getResources().getString(R.string.exit_app),
+                    getResources().getString(R.string.sure_to_exit),
+                    getResources().getString(R.string.yes), getResources().getString(R.string.no));
 
         } else {
             //super.onBackPressed();
-            getSupportFragmentManager().popBackStackImmediate(topFragmentTag, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            getSupportFragmentManager().popBackStackImmediate(topFragmentTag,
+                    FragmentManager.POP_BACK_STACK_INCLUSIVE);
             loadLastSelectedFragment();
         }
 
@@ -674,7 +730,8 @@ public class HomeScreenActivity_New extends LocalConfigActivity implements Netwo
         if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
             return null;
         }
-        String fragmentTag = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
+        String fragmentTag = getSupportFragmentManager().getBackStackEntryAt(
+                getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
         return getSupportFragmentManager().findFragmentByTag(fragmentTag);
     }
 
@@ -682,13 +739,15 @@ public class HomeScreenActivity_New extends LocalConfigActivity implements Netwo
         if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
             return "";
         }
-        String topFragment = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
+        String topFragment = getSupportFragmentManager().getBackStackEntryAt(
+                getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
         Log.v(TAG, topFragment);
         return topFragment;
 
     }
 
-    public void wantToExitApp(Context context, String title, String subTitle, String positiveBtnTxt, String negativeBtnTxt) {
+    public void wantToExitApp(Context context, String title, String subTitle, String positiveBtnTxt,
+                              String negativeBtnTxt) {
         MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(context);
         final LayoutInflater inflater = LayoutInflater.from(context);
         View convertView = inflater.inflate(R.layout.dialog_book_appointment_dialog_ui2, null);
@@ -708,7 +767,8 @@ public class HomeScreenActivity_New extends LocalConfigActivity implements Netwo
 
 
         AlertDialog alertDialog = alertdialogBuilder.create();
-        alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg);
+        alertDialog.getWindow()
+                .setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg);
         alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
         int width = context.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);
         alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
@@ -727,7 +787,8 @@ public class HomeScreenActivity_New extends LocalConfigActivity implements Netwo
         alertDialog.show();
     }
 
-    public void wantToLogoutFromApp(Context context, String title, String subTitle, String positiveBtnTxt, String negativeBtnTxt) {
+    public void wantToLogoutFromApp(Context context, String title, String subTitle,
+                                    String positiveBtnTxt, String negativeBtnTxt) {
         MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(context);
         final LayoutInflater inflater = LayoutInflater.from(context);
         View convertView = inflater.inflate(R.layout.dialog_book_appointment_dialog_ui2, null);
@@ -747,7 +808,8 @@ public class HomeScreenActivity_New extends LocalConfigActivity implements Netwo
 
 
         AlertDialog alertDialog = alertdialogBuilder.create();
-        alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg);
+        alertDialog.getWindow()
+                .setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg);
         alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
         int width = context.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);
         alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
@@ -778,10 +840,12 @@ public class HomeScreenActivity_New extends LocalConfigActivity implements Netwo
         View customLayout = inflater.inflate(R.layout.ui2_layout_dialog_refresh, null);
         builder.setView(customLayout);
         dialogRefreshInProgress = builder.create();
-        dialogRefreshInProgress.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg);
+        dialogRefreshInProgress.getWindow()
+                .setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg);
         dialogRefreshInProgress.show();
         int width = getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);
-        dialogRefreshInProgress.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
+        dialogRefreshInProgress.getWindow()
+                .setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -798,10 +862,12 @@ public class HomeScreenActivity_New extends LocalConfigActivity implements Netwo
         View customLayout = inflater.inflate(R.layout.ui2_layout_dialog_failed_refresh, null);
         builder.setView(customLayout);
         dialogRefreshInProgress = builder.create();
-        dialogRefreshInProgress.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg);
+        dialogRefreshInProgress.getWindow()
+                .setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg);
         dialogRefreshInProgress.show();
         int width = getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);
-        dialogRefreshInProgress.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
+        dialogRefreshInProgress.getWindow()
+                .setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -860,7 +926,8 @@ public class HomeScreenActivity_New extends LocalConfigActivity implements Netwo
         builder.setView(customLayout);
 
         dialogLoginSuccess = builder.create();
-        dialogLoginSuccess.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg);
+        dialogLoginSuccess.getWindow()
+                .setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg);
         dialogLoginSuccess.show();
         int width = getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);
         dialogLoginSuccess.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
@@ -875,13 +942,14 @@ public class HomeScreenActivity_New extends LocalConfigActivity implements Netwo
     }
 
     private void setupDrawerContent(NavigationView navigationView) {
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(MenuItem menuItem) {
-                selectDrawerItem(menuItem);
-                return false;
-            }
-        });
+        navigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem menuItem) {
+                        selectDrawerItem(menuItem);
+                        return false;
+                    }
+                });
     }
 
     public void selectDrawerItem(MenuItem menuItem) {
@@ -902,7 +970,8 @@ public class HomeScreenActivity_New extends LocalConfigActivity implements Netwo
             tvTitleHomeScreenCommon.setText(getResources().getString(R.string.videos));
             fragment = new InformativeVideosFragment_New();
         } else if (itemId == R.id.menu_change_language) {
-            Intent intent = new Intent(HomeScreenActivity_New.this, Language_ProtocolsActivity.class);
+            Intent intent = new Intent(HomeScreenActivity_New.this,
+                    Language_ProtocolsActivity.class);
             startActivity(intent);
         } else if (itemId == R.id.menu_view_call_log) {
             Intent intent = new Intent(HomeScreenActivity_New.this, UnicefCallLogActivity.class);
@@ -911,7 +980,9 @@ public class HomeScreenActivity_New extends LocalConfigActivity implements Netwo
             Intent i = new Intent(HomeScreenActivity_New.this, AboutUsActivity.class);
             startActivity(i);
         } else if (itemId == R.id.menu_logout) {
-            wantToLogoutFromApp(this, getResources().getString(R.string.menu_option_logout), getResources().getString(R.string.sure_to_logout), getResources().getString(R.string.yes), getResources().getString(R.string.no));
+            wantToLogoutFromApp(this, getResources().getString(R.string.menu_option_logout),
+                    getResources().getString(R.string.sure_to_logout),
+                    getResources().getString(R.string.yes), getResources().getString(R.string.no));
         }
 
         mDrawerLayout.closeDrawers();
@@ -930,7 +1001,8 @@ public class HomeScreenActivity_New extends LocalConfigActivity implements Netwo
 
     @Override
     protected void onResume() {
-        if (mIsFirstTimeSyncDone && dialogRefreshInProgress != null && dialogRefreshInProgress.isShowing()) {
+        if (mIsFirstTimeSyncDone && dialogRefreshInProgress != null &&
+            dialogRefreshInProgress.isShowing()) {
             dialogRefreshInProgress.dismiss();
         }
         Log.d(TAG, "check11onResume: home");
@@ -949,7 +1021,8 @@ public class HomeScreenActivity_New extends LocalConfigActivity implements Netwo
 //        updateNavHeaderUserDetails();
         firstLogin = getIntent().getStringExtra("firstLogin");
         Log.d(TAG, "onCreate: firstLogin : " + firstLogin);
-        if (sessionManager.getIsLoggedIn() && firstLogin != null && !firstLogin.isEmpty() && firstLogin.equalsIgnoreCase("firstLogin")) {
+        if (sessionManager.getIsLoggedIn() && firstLogin != null && !firstLogin.isEmpty() &&
+            firstLogin.equalsIgnoreCase("firstLogin")) {
             firstLogin = "";
             getIntent().putExtra("firstLogin", "");
 
@@ -993,52 +1066,84 @@ public class HomeScreenActivity_New extends LocalConfigActivity implements Netwo
             e.printStackTrace();
         }
 
-        disposable.add((Disposable) AppConstants.apiInterface.checkAppUpdate().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribeWith(new DisposableSingleObserver<CheckAppUpdateRes>() {
-            @Override
-            public void onSuccess(CheckAppUpdateRes res) {
-                int latestVersionCode = 0;
-                if (!res.getLatestVersionCode().isEmpty()) {
-                    latestVersionCode = Integer.parseInt(res.getLatestVersionCode());
-                }
+        disposable.add(
+                (Disposable) AppConstants.apiInterface.checkAppUpdate().subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribeWith(new DisposableSingleObserver<CheckAppUpdateRes>() {
+                            @Override
+                            public void onSuccess(CheckAppUpdateRes res) {
+                                int latestVersionCode = 0;
+                                if (!res.getLatestVersionCode().isEmpty()) {
+                                    latestVersionCode = Integer.parseInt(
+                                            res.getLatestVersionCode());
+                                }
 
-                if (latestVersionCode > versionCode) {
-                    android.app.AlertDialog.Builder builder;
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        builder = new android.app.AlertDialog.Builder(HomeScreenActivity_New.this, android.R.style.Theme_Material_Dialog_Alert);
-                    } else {
-                        builder = new android.app.AlertDialog.Builder(HomeScreenActivity_New.this);
-                    }
-
-
-                    builder.setTitle(getResources().getString(R.string.new_update_available)).setCancelable(false).setMessage(getResources().getString(R.string.update_app_note)).setPositiveButton(getResources().getString(R.string.update), new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-
-                                    final String appPackageName = getPackageName(); // getPackageName() from Context or Activity object
-                                    try {
-                                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
-                                    } catch (ActivityNotFoundException anfe) {
-                                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+                                if (latestVersionCode > versionCode) {
+                                    android.app.AlertDialog.Builder builder;
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                        builder = new android.app.AlertDialog.Builder(
+                                                HomeScreenActivity_New.this,
+                                                android.R.style.Theme_Material_Dialog_Alert);
+                                    } else {
+                                        builder = new android.app.AlertDialog.Builder(
+                                                HomeScreenActivity_New.this);
                                     }
 
+
+                                    builder.setTitle(
+                                                    getResources().getString(R.string.new_update_available))
+                                            .setCancelable(false).setMessage(
+                                                    getResources().getString(R.string.update_app_note))
+                                            .setPositiveButton(
+                                                    getResources().getString(R.string.update),
+                                                    new DialogInterface.OnClickListener() {
+                                                        public void onClick(DialogInterface dialog,
+                                                                            int which) {
+
+                                                            final String appPackageName
+                                                                    = getPackageName(); //
+                                                            // getPackageName() from Context or
+                                                            // Activity object
+                                                            try {
+                                                                startActivity(new Intent(
+                                                                        Intent.ACTION_VIEW,
+                                                                        Uri.parse(
+                                                                                "market://details" +
+                                                                                "?id=" +
+                                                                                appPackageName)));
+                                                            } catch (
+                                                                    ActivityNotFoundException anfe) {
+                                                                startActivity(new Intent(
+                                                                        Intent.ACTION_VIEW,
+                                                                        Uri.parse(
+                                                                                "https://play" +
+                                                                                ".google" +
+                                                                                ".com/store/apps" +
+                                                                                "/details?id=" +
+                                                                                appPackageName)));
+                                                            }
+
+                                                        }
+                                                    })
+
+                                            .setIcon(android.R.drawable.ic_dialog_alert)
+                                            .setCancelable(false);
+
+                                    Dialog dialog = builder.show();
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                        int textViewId = dialog.getContext().getResources()
+                                                .getIdentifier("android:id/alertTitle", null, null);
+                                        TextView tv = (TextView) dialog.findViewById(textViewId);
+                                        tv.setTextColor(getResources().getColor(R.color.white));
+                                    }
                                 }
-                            })
+                            }
 
-                            .setIcon(android.R.drawable.ic_dialog_alert).setCancelable(false);
-
-                    Dialog dialog = builder.show();
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        int textViewId = dialog.getContext().getResources().getIdentifier("android:id/alertTitle", null, null);
-                        TextView tv = (TextView) dialog.findViewById(textViewId);
-                        tv.setTextColor(getResources().getColor(R.color.white));
-                    }
-                }
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                Log.e("Error", "" + e);
-            }
-        }));
+                            @Override
+                            public void onError(Throwable e) {
+                                Log.e("Error", "" + e);
+                            }
+                        }));
 
     }
 
@@ -1047,10 +1152,12 @@ public class HomeScreenActivity_New extends LocalConfigActivity implements Netwo
     private BroadcastReceiver syncBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Logger.logD("syncBroadcastReceiver", "onReceive! " + intent.hasExtra(AppConstants.SYNC_INTENT_DATA_KEY));
+            Logger.logD("syncBroadcastReceiver",
+                    "onReceive! " + intent.hasExtra(AppConstants.SYNC_INTENT_DATA_KEY));
 
             if (intent.hasExtra(AppConstants.SYNC_INTENT_DATA_KEY)) {
-                int flagType = intent.getIntExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_FAILED);
+                int flagType = intent.getIntExtra(AppConstants.SYNC_INTENT_DATA_KEY,
+                        AppConstants.SYNC_FAILED);
                 mTempSyncHelperList.add(flagType);
                 if (flagType == AppConstants.SYNC_FAILED) {
                     if (sessionManager.isFirstTimeLaunched()) {
@@ -1062,12 +1169,13 @@ public class HomeScreenActivity_New extends LocalConfigActivity implements Netwo
 
                 Log.v("syncBroadcastReceiver", new Gson().toJson(mTempSyncHelperList));
                 if (mTempSyncHelperList.contains(AppConstants.SYNC_PULL_DATA_DONE) &&
-                        mTempSyncHelperList.contains(AppConstants.SYNC_APPOINTMENT_PULL_DATA_DONE)) {
+                    mTempSyncHelperList.contains(AppConstants.SYNC_APPOINTMENT_PULL_DATA_DONE)) {
                     hideSyncProgressBar(true);
                 }
             }
 
-            String sync_text = setLastSyncTime(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
+            String sync_text = setLastSyncTime(
+                    getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
             String lastSyncTime = sessionManager.getLastSyncDateTime();
             if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
                 lastSyncTime = StringUtils.getFullMonthName(lastSyncTime);
@@ -1080,7 +1188,8 @@ public class HomeScreenActivity_New extends LocalConfigActivity implements Netwo
             //ui2.0 update user details in  nav header
 //            updateNavHeaderUserDetails();
 
-//            lastSyncTextView.setText(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
+//            lastSyncTextView.setText(getString(R.string.last_synced) + " \n" + sessionManager
+//            .getLastSyncDateTime());
 //          lastSyncAgo.setText(sessionManager.getLastTimeAgo());
 
             if (syncAnimator != null && syncAnimator.getCurrentPlayTime() > 200) {
@@ -1092,13 +1201,14 @@ public class HomeScreenActivity_New extends LocalConfigActivity implements Netwo
 
     private void hideSyncProgressBar(boolean isSuccess) {
         mIsFirstTimeSyncDone = true;
-        saveToken();
+//        saveToken();
 //        requestPermission();
-        if (mTempSyncHelperList != null) mTempSyncHelperList.clear();
+        if (mTempSyncHelperList != null)
+            mTempSyncHelperList.clear();
         if (dialogRefreshInProgress != null && dialogRefreshInProgress.isShowing()) {
             dialogRefreshInProgress.dismiss();
             if (isSuccess) {
-                saveToken();
+//                saveToken();
                 sessionManager.setFirstTimeLaunched(false);
                 sessionManager.setMigration(true);
                 // initial setup/sync done and now we can set the periodic background sync job
@@ -1107,7 +1217,10 @@ public class HomeScreenActivity_New extends LocalConfigActivity implements Netwo
                     @Override
                     public void run() {
 
-                        WorkManager.getInstance().enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
+                        WorkManager.getInstance()
+                                .enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME,
+                                        ExistingPeriodicWorkPolicy.KEEP,
+                                        AppConstants.PERIODIC_WORK_REQUEST);
                     }
                 }, 10000);
             }
@@ -1191,7 +1304,8 @@ public class HomeScreenActivity_New extends LocalConfigActivity implements Netwo
 //                if (dialogRefreshInProgress != null && dialogRefreshInProgress.isShowing()) {
 //                    dialogRefreshInProgress.dismiss();
 //                }
-//                Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + this.getPackageName()));
+//                Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse
+//                ("package:" + this.getPackageName()));
 //                startActivityForResult(intent, ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE);
 //            } else {
 //                //Permission Granted-System will work
@@ -1201,12 +1315,14 @@ public class HomeScreenActivity_New extends LocalConfigActivity implements Netwo
 //    }
 
     private boolean isNetworkConnected() {
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(
+                Context.CONNECTIVITY_SERVICE);
 
         return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
     }
 
-    BottomNavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
+    BottomNavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener
+            = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             Fragment fragment;
@@ -1214,14 +1330,17 @@ public class HomeScreenActivity_New extends LocalConfigActivity implements Netwo
             switch (item.getItemId()) {
                 case R.id.bottom_nav_home_menu:
                     Log.d(TAG, "onNavigationItemSelected: bottom_nav_home_menu");
-                    tvTitleHomeScreenCommon.setText(getResources().getString(R.string.title_home_screen));
+                    tvTitleHomeScreenCommon.setText(
+                            getResources().getString(R.string.title_home_screen));
                     fragment = new HomeFragment_New();
                     ivHamburger.setVisibility(View.VISIBLE);
                     loadFragment(fragment, TAG_HOME);
                     return true;
                 case R.id.bottom_nav_achievements:
-                    tvTitleHomeScreenCommon.setText(getResources().getString(R.string.my_achievements));
-                    tvTitleHomeScreenCommon.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+                    tvTitleHomeScreenCommon.setText(
+                            getResources().getString(R.string.my_achievements));
+                    tvTitleHomeScreenCommon.setCompoundDrawablesWithIntrinsicBounds(null, null,
+                            null, null);
                     tvAppLastSync.setVisibility(View.GONE);
                     ivHamburger.setVisibility(View.GONE);
                     imageViewIsInternet.setVisibility(View.VISIBLE);
@@ -1232,7 +1351,8 @@ public class HomeScreenActivity_New extends LocalConfigActivity implements Netwo
                     return true;
                 case R.id.bottom_nav_help:
                     tvTitleHomeScreenCommon.setText(getResources().getString(R.string.help_center));
-                    tvTitleHomeScreenCommon.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+                    tvTitleHomeScreenCommon.setCompoundDrawablesWithIntrinsicBounds(null, null,
+                            null, null);
                     tvAppLastSync.setVisibility(View.GONE);
                     imageViewIsInternet.setVisibility(View.VISIBLE);
                     imageViewIsNotification.setVisibility(View.GONE);
@@ -1242,7 +1362,8 @@ public class HomeScreenActivity_New extends LocalConfigActivity implements Netwo
                     loadFragment(fragment, TAG_HELP);
                     return true;
                 case R.id.bottom_nav_add_patient:
-                    Intent intent = new Intent(HomeScreenActivity_New.this, PrivacyPolicyActivity_New.class);
+                    Intent intent = new Intent(HomeScreenActivity_New.this,
+                            PrivacyPolicyActivity_New.class);
                     intent.putExtra("add_patient", "add_patient");
                     startActivity(intent);
                     return false;
@@ -1256,7 +1377,8 @@ public class HomeScreenActivity_New extends LocalConfigActivity implements Netwo
     private void updateNavHeaderUserDetails() {
 //        try {
 //            ProviderDAO providerDAO = new ProviderDAO();
-//            ProviderDTO providerDTO = providerDAO.getLoginUserDetails(sessionManager.getProviderID());
+//            ProviderDTO providerDTO = providerDAO.getLoginUserDetails(sessionManager
+//            .getProviderID());
 //            if (providerDTO != null) {
 //                boolean firstname = isValidField(providerDTO.getFamilyName());
 //                boolean lastname = isValidField(providerDTO.getGivenName());
@@ -1270,18 +1392,23 @@ public class HomeScreenActivity_New extends LocalConfigActivity implements Netwo
 //
 //                }
 //                tvUsername.setText(userFullName);
-//                tvUserId.setText(getString(R.string.chw_id).concat(" ").concat(sessionManager.getChwname()));
+//                tvUserId.setText(getString(R.string.chw_id).concat(" ").concat(sessionManager
+//                .getChwname()));
 //
-////                if (providerDTO.getImagePath() != null && !providerDTO.getImagePath().isEmpty()) {
+////                if (providerDTO.getImagePath() != null && !providerDTO.getImagePath().isEmpty
+// ()) {
 ////
-////                    Glide.with(HomeScreenActivity_New.this).load(providerDTO.getImagePath()).thumbnail(0.3f).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(ivProfileIcon);
+////                    Glide.with(HomeScreenActivity_New.this).load(providerDTO.getImagePath())
+// .thumbnail(0.3f).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true)
+// .into(ivProfileIcon);
 ////
 ////
 ////                }
 //
 //                // if imagepath is not available in local db
 //
-//                if (providerDTO.getImagePath() == null || providerDTO.getImagePath().equalsIgnoreCase("")) {
+//                if (providerDTO.getImagePath() == null || providerDTO.getImagePath()
+//                .equalsIgnoreCase("")) {
 //                    if (NetworkConnection.isOnline(this)) {
 //                        profilePicDownloaded(providerDTO);
 //                    }
@@ -1310,7 +1437,8 @@ public class HomeScreenActivity_New extends LocalConfigActivity implements Netwo
 //        parseLogOut();
 
        /* AccountManager manager = AccountManager.get(HomeActivity.this);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.GET_ACCOUNTS) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.GET_ACCOUNTS) !=
+        PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
             // here to request the missing permissions, and then overriding
@@ -1349,9 +1477,11 @@ public class HomeScreenActivity_New extends LocalConfigActivity implements Netwo
 //        Log.d(TAG, "profilePicDownloaded:: url : " + url);
 //
 //
-//        Observable<ResponseBody> profilePicDownload = AppConstants.apiInterface.PROVIDER_PROFILE_PIC_DOWNLOAD(url, "Basic " + sessionManager.getEncoded());
+//        Observable<ResponseBody> profilePicDownload = AppConstants.apiInterface
+//        .PROVIDER_PROFILE_PIC_DOWNLOAD(url, "Basic " + sessionManager.getEncoded());
 //
-//        profilePicDownload.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new DisposableObserver<ResponseBody>() {
+//        profilePicDownload.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread
+//        ()).subscribe(new DisposableObserver<ResponseBody>() {
 //            @Override
 //            public void onNext(ResponseBody file) {
 //                Log.d(TAG, "onNext: ");
@@ -1370,19 +1500,23 @@ public class HomeScreenActivity_New extends LocalConfigActivity implements Netwo
 //                ProviderDAO providerDAO = new ProviderDAO();
 //                boolean updated = false;
 //                try {
-//                    updated = providerDAO.updateLoggedInUserProfileImage(AppConstants.IMAGE_PATH + uuid + ".jpg", sessionManager.getProviderID());
+//                    updated = providerDAO.updateLoggedInUserProfileImage(AppConstants
+//                    .IMAGE_PATH + uuid + ".jpg", sessionManager.getProviderID());
 //
 //                } catch (DAOException e) {
 //                    e.printStackTrace();
 //                    FirebaseCrashlytics.getInstance().recordException(e);
 //                }
 //                if (updated) {
-//                    Glide.with(HomeScreenActivity_New.this).load(AppConstants.IMAGE_PATH + uuid + ".jpg").thumbnail(0.3f).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(ivProfileIcon);
+//                    Glide.with(HomeScreenActivity_New.this).load(AppConstants.IMAGE_PATH + uuid
+//                    + ".jpg").thumbnail(0.3f).centerCrop().diskCacheStrategy(DiskCacheStrategy
+//                    .NONE).skipMemoryCache(true).into(ivProfileIcon);
 //                }
 //                ImagesDAO imagesDAO = new ImagesDAO();
 //                boolean isImageDownloaded = false;
 //                try {
-//                    isImageDownloaded = imagesDAO.updateLoggedInUserProfileImage(AppConstants.IMAGE_PATH + uuid + ".jpg", sessionManager.getProviderID());
+//                    isImageDownloaded = imagesDAO.updateLoggedInUserProfileImage(AppConstants
+//                    .IMAGE_PATH + uuid + ".jpg", sessionManager.getProviderID());
 //
 //                } catch (DAOException e) {
 //                    e.printStackTrace();
@@ -1396,10 +1530,12 @@ public class HomeScreenActivity_New extends LocalConfigActivity implements Netwo
     @Override
     public void updateUIForInternetAvailability(boolean isInternetAvailable) {
         if (isInternetAvailable) {
-            imageViewIsInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_internet_available));
+            imageViewIsInternet.setImageDrawable(
+                    getResources().getDrawable(R.drawable.ui2_ic_internet_available));
 
         } else {
-            imageViewIsInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
+            imageViewIsInternet.setImageDrawable(
+                    getResources().getDrawable(R.drawable.ui2_ic_no_internet));
 
         }
     }
@@ -1407,7 +1543,8 @@ public class HomeScreenActivity_New extends LocalConfigActivity implements Netwo
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         // put string value
-        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+        Fragment currentFragment = getSupportFragmentManager().findFragmentById(
+                R.id.fragment_container);
         assert currentFragment != null;
         outState.putString("currentFragment", currentFragment.getTag());
         super.onSaveInstanceState(outState);
@@ -1456,7 +1593,8 @@ public class HomeScreenActivity_New extends LocalConfigActivity implements Netwo
             /*if (mSyncProgressDialog != null && mSyncProgressDialog.isShowing()) {
                 mSyncProgressDialog.dismiss();
             }
-            mSyncProgressDialog = new ProgressDialog(HomeScreenActivity_New.this, R.style.AlertDialogStyle); //thats how to add a style!
+            mSyncProgressDialog = new ProgressDialog(HomeScreenActivity_New.this, R.style
+            .AlertDialogStyle); //thats how to add a style!
             mSyncProgressDialog.setTitle(R.string.syncInProgress);
             mSyncProgressDialog.setCancelable(false);
             mSyncProgressDialog.setProgress(i);
@@ -1472,13 +1610,17 @@ public class HomeScreenActivity_New extends LocalConfigActivity implements Netwo
     }
 
     private void insertTimeSpentByUserIntoDb() {
-        long firstLoginTimeInMilliseconds = DateAndTimeUtils.convertStringDateToMilliseconds(sessionManager.getFirstProviderLoginTime(), "yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+        long firstLoginTimeInMilliseconds = DateAndTimeUtils.convertStringDateToMilliseconds(
+                sessionManager.getFirstProviderLoginTime(), "yyyy-MM-dd'T'HH:mm:ss.SSSZ");
         long todaysDateInMilliseconds = DateAndTimeUtils.getTodaysDateInMilliseconds();
-        long startTimeInMilliseconds = Math.max(todaysDateInMilliseconds, firstLoginTimeInMilliseconds);
+        long startTimeInMilliseconds = Math.max(todaysDateInMilliseconds,
+                firstLoginTimeInMilliseconds);
         long endTimeInMilliseconds = System.currentTimeMillis();
 
-        UsageStatsManager usageStatsManager = (UsageStatsManager) getSystemService(Context.USAGE_STATS_SERVICE);
-        Map<String, UsageStats> aggregateStatsMap = usageStatsManager.queryAndAggregateUsageStats(startTimeInMilliseconds, endTimeInMilliseconds);
+        UsageStatsManager usageStatsManager = (UsageStatsManager) getSystemService(
+                Context.USAGE_STATS_SERVICE);
+        Map<String, UsageStats> aggregateStatsMap = usageStatsManager.queryAndAggregateUsageStats(
+                startTimeInMilliseconds, endTimeInMilliseconds);
         UsageStats overallUsageStats = aggregateStatsMap.get("org.intelehealth.app");
 
         if (overallUsageStats != null) {
