@@ -14,6 +14,7 @@ import io.livekit.android.room.track.LocalAudioTrackOptions
 import io.livekit.android.room.track.LocalVideoTrackOptions
 import io.livekit.android.room.track.VideoPreset169
 import io.livekit.android.room.track.VideoPreset43
+
 //import livekit.org.webrtc.EglBase
 //import livekit.org.webrtc.HardwareVideoEncoderFactory
 
@@ -44,7 +45,7 @@ object LiveKitProvider {
     private fun provideLocalVideoTrackOptions() = LocalVideoTrackOptions(
         deviceId = "",
         position = CameraPosition.FRONT,
-        captureParams = VideoPreset43.H1440.capture,
+        captureParams = VideoPreset169.H720.capture,
     )
 
     private fun provideAudioPublishDefault() = AudioTrackPublishDefaults(
@@ -68,8 +69,7 @@ object LiveKitProvider {
         audioTrackPublishDefaults = audioTrackPublishDefaults,
         videoTrackCaptureDefaults = localVideoTrackOptions,
         videoTrackPublishDefaults = videoTrackPublishDefaults,
-        adaptiveStream = true,
-        dynacast = false
+        adaptiveStream = true
     )
 
     private fun provideAudioSwitchHandler(context: Context) = AudioSwitchHandler(context)
@@ -78,11 +78,13 @@ object LiveKitProvider {
         context: Context, options: RoomOptions, audioSwitchHandler: AudioSwitchHandler
     ): Room = LiveKit.create(
         appContext = context, options = options, overrides = LiveKitOverrides(
-            okHttpClient = RetrofitProvider.getOkHttpClient(), audioOptions = AudioOptions(
+            okHttpClient = RetrofitProvider.getOkHttpClient(),
+            audioOptions = AudioOptions(
                 audioHandler = audioSwitchHandler, audioOutputType = io.livekit.android.AudioType.CallAudioType()
-            ), /*videoEncoderFactory = HardwareVideoEncoderFactory(
-                EglBase.create().eglBaseContext, true, true
-            )*/
+            ),
+            /*videoEncoderFactory = HardwareVideoEncoderFactory(
+                           EglBase.create().eglBaseContext, true, true
+                       )*/
         )
     )
 

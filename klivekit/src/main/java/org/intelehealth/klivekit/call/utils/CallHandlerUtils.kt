@@ -62,14 +62,16 @@ object CallHandlerUtils {
      * @param callArgs an instance of RtcArgs to send with intent
      * @return PendingIntent type of CallActionHandlerReceiver intent
      */
-    fun operateIncomingCall(context: Context, callArgs: RtcArgs, ) {
+    fun operateIncomingCall(context: Context, callArgs: RtcArgs) {
         Timber.d { "operateIncomingCall ->Url = ${callArgs.url}" }
+        Timber.d { "operateIncomingCall Url: ${callArgs.toJson()}" }
         callArgs.callMode = CallMode.INCOMING
         getCallLogHandler(context).saveLog(generateCallLog(callArgs, context))
         notifyCallNotification(callArgs, context)
     }
 
     fun saveIncomingCall(context: Context, callArgs: RtcArgs) {
+        Timber.d { "saveIncomingCall Url: ${callArgs.toJson()}" }
         getCallLogHandler(context).saveLog(generateCallLog(callArgs, context))
     }
 
@@ -84,7 +86,7 @@ object CallHandlerUtils {
         calleeId = callArgs.nurseId!!,
         calleeName = callArgs.nurseName!!,
         roomId = callArgs.roomId!!,
-        roomName = callArgs.patientName?:"",
+        roomName = callArgs.patientName ?: "",
         callMode = callArgs.callMode,
         callStatus = callArgs.callStatus,
         callTime = System.currentTimeMillis().toString(),
