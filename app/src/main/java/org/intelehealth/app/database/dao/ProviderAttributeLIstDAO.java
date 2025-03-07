@@ -156,12 +156,6 @@ public class ProviderAttributeLIstDAO extends BaseDao{
         values.put("attributetypeuuid", attributeListDTO.getAttributetypeuuid());
         values.put("value", attributeListDTO.getValue());
         values.put("voided", attributeListDTO.getVoided());
-
-        if (attributeListDTO.getVoided() == 0 &&
-                "ed1715f5-93e2-404e-b3c9-2a2d9600f062".equalsIgnoreCase(attributeListDTO.getAttributetypeuuid())) {
-            values.put("special_condition_met", true);
-        }
-
         return values;
     }
 
