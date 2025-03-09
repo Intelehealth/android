@@ -27,17 +27,17 @@
     </string-array>
 
     <string-array name="diagnosis_type">
-        <item>Select Diagnosis</item>
-        <item>Chronic Arterial Hypertension (CAH)</item>
-        <item>Gestational Arterial Hypertension (GAH)</item>
-        <item>Pre-eclampsia (Moderate)</item>
-        <item>Pre-eclampsia (Severe)</item>
-        <item>Pre-eclampsia with Chronic Arterial Hypertension</item>
-        <item>Eclampsia</item>
-        <item>Early Postpartum Hemorrhage (Early PPH)</item>
-        <item>Late Postpartum Hemorrhage (Late PPH)</item>
-        <item>Postpartum Hemorrhage (PPH)</item>
-        <item>Postpartum Sepsis</item>
-        <item>Other</item>
+        <item>Выберите Диагноз</item>
+        <item>Хроническая артериальная гипертензия</item>
+        <item>Гестационная артериальная гипертензия</item>
+        <item>Преэклампсия (умеренная)</item>
+        <item>Преэклампсия (тяжелая)</item>
+        <item>Преэклампсия с Хронической артериальной гипертензией</item>
+        <item>Эклампсия</item>
+        <item>Раннее послеродовое кровотечение</item>
+        <item>Позднее послеродовое кровотечение</item>
+        <item>Послеродовое кровотечение</item>
+        <item>Послеродовой сепсис</item>
+        <item>Другой</item>
     </string-array>
 </resources>

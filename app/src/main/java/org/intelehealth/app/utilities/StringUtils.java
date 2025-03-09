@@ -4603,6 +4603,65 @@ public final class StringUtils {
         return consultationType;
     }
 
+    public static String getDiagnosis(String diagnosis, String lan) {
+        if (diagnosis == null || diagnosis.isEmpty()) return "";
+        if (lan.equalsIgnoreCase("en")) {
+            switch (diagnosis) {
+                case "Хроническая артериальная гипертензия" ->
+                        diagnosis = "Chronic Arterial Hypertension (CAH)";
+                case "Гестационная артериальная гипертензия" ->
+                        diagnosis = "Gestational Arterial Hypertension (GAH)";
+                case "Преэклампсия (умеренная)" ->
+                        diagnosis = "Pre-eclampsia (Moderate)";
+                case "Преэклампсия (тяжелая)" ->
+                        diagnosis = "Pre-eclampsia (Severe)";
+                case "Преэклампсия с Хронической артериальной гипертензией" ->
+                        diagnosis = "Pre-eclampsia with Chronic Arterial Hypertension";
+                case "Эклампсия" ->
+                        diagnosis = "Eclampsia";
+                case "Раннее послеродовое кровотечени" ->
+                        diagnosis = "Early Postpartum Hemorrhage (Early PPH)";
+                case "Позднее послеродовое кровотечение" ->
+                        diagnosis = "Late Postpartum Hemorrhage (Late PPH)";
+                case "Послеродовое кровотечение" ->
+                        diagnosis = "Postpartum Hemorrhage (PPH)";
+                case "Послеродовой сепсис" ->
+                        diagnosis = "Postpartum Sepsis";
+                default -> {
+                    return diagnosis;
+                }
+            }
+        }else if (lan.equalsIgnoreCase("ru")) {
+            switch (diagnosis) {
+                case "Chronic Arterial Hypertension (CAH)" ->
+                        diagnosis = "Хроническая артериальная гипертензия";
+                case "Gestational Arterial Hypertension (GAH)" ->
+                        diagnosis = "Гестационная артериальная гипертензия";
+                case "Pre-eclampsia (Moderate)" ->
+                        diagnosis = "Преэклампсия (умеренная)";
+                case "Pre-eclampsia (Severe)" ->
+                        diagnosis = "Преэклампсия (тяжелая)";
+                case "Pre-eclampsia with Chronic Arterial Hypertension" ->
+                        diagnosis = "Преэклампсия с Хронической артериальной гипертензией";
+                case "Eclampsia" ->
+                        diagnosis = "Эклампсия";
+                case "Early Postpartum Hemorrhage (Early PPH)" ->
+                        diagnosis = "Раннее послеродовое кровотечени";
+                case "Late Postpartum Hemorrhage (Late PPH)" ->
+                        diagnosis = "Позднее послеродовое кровотечение";
+                case "Postpartum Hemorrhage (PPH)" ->
+                        diagnosis = "Послеродовое кровотечение";
+                case "Postpartum Sepsis" ->
+                        diagnosis = "Послеродовой сепсис";
+                default -> {
+                    return diagnosis;
+                }
+            }
+        }
+
+        return diagnosis;
+    }
+
     public static String getHealthyFacilityName(String consultationType, String lan) {
         if (consultationType == null || consultationType.isEmpty()) return "";
         if (lan.equalsIgnoreCase("ru")) {
