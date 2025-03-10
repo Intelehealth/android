@@ -2034,7 +2034,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
 
         });
 
-       // editText.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+        // editText.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
         editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
 
         editText.setFilters(new InputFilter[]{new FirstLetterUpperCaseInputFilter()});
@@ -2042,10 +2042,10 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         editText.setHint(node.getHint());
         editText.setMinLines(node.minLines());
         editText.setLines(node.maxLines());
-        if (!node.isDateType()){
+        if (!node.isDateType()) {
             editText.setMinHeight(320);
             editText.setSingleLine(false);
-        }else{
+        } else {
             editText.setMinHeight(200);
             editText.setSingleLine(true);
         }
@@ -2056,6 +2056,18 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
             submitButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
         }
 */
+        editText.setClickable(true);
+        editText.setEnabled(true);
+        editText.setFocusable(true);
+
+        if (node.isDisabled()) {
+            skipButton.setVisibility(View.GONE);
+            submitButton.setVisibility(View.GONE);
+            editText.setClickable(false);
+            editText.setEnabled(false);
+            editText.setFocusable(false);
+        }
+
         checkAndHideSkipButton(skipButton);
         containerLayout.addView(view);
     }

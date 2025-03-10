@@ -2858,8 +2858,19 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 */
         boolean isParentNodeIsMandatory = mItemList.get(index).isRequired();
 
-        if (isParentNodeIsMandatory || (holder.node.getOptionsList() != null && holder.node.getOptionsList().size() > 1))
+        editText.setClickable(true);
+        editText.setEnabled(true);
+        editText.setFocusable(true);
+
+        if (node.isDisabled()) {
             skipButton.setVisibility(View.GONE);
+            submitButton.setVisibility(View.GONE);
+            editText.setClickable(false);
+            editText.setEnabled(false);
+            editText.setFocusable(false);
+        } else if (isParentNodeIsMandatory || (holder.node.getOptionsList() != null && holder.node.getOptionsList().size() > 1))
+            skipButton.setVisibility(View.GONE);
+
         holder.singleComponentContainer.addView(view);
     }
 

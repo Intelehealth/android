@@ -837,7 +837,8 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
 
             for (Node options : optionList) {
                 if (options.isAutoPopulateField()) {
-                    VisitUtils.prefillNodeValues(options, options.getAutoPopulateDataType(), visitUuid);
+                    // VisitUtils.prefillNodeValues(options, options.getAutoPopulateDataType(), visitUuid);
+                    VisitUtils.prefillNodeValuesFromPreviousVisit(options, options.getAutoPopulateDataType(), patientUuid);
                 }
             }
 
