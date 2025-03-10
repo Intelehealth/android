@@ -750,7 +750,7 @@
                                         android:layout_below="@+id/diagnosis_title"
                                         android:layout_marginTop="@dimen/fu_margin_start"
                                         android:layout_marginBottom="@dimen/margin_16dp"
-                                        android:entries="@array/diagnosis_type"
+                                        android:entries="@array/diagnosis_for_unfpa"
                                         android:gravity="center_vertical"
                                         android:hint="@string/select_diagnosis"
                                         android:paddingTop="@dimen/margin_10"

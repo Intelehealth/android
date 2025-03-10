@@ -2479,7 +2479,7 @@
         <item>In planned form – for a day or more</item>
     </string-array>
 
-    <string-array name="diagnosis_type">
+    <string-array name="diagnosis_for_unfpa">
         <item>Select Diagnosis</item>
         <item>Chronic Arterial Hypertension (CAH)</item>
         <item>Gestational Arterial Hypertension (GAH)</item>

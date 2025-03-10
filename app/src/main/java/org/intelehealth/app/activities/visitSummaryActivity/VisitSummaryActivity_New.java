@@ -234,6 +234,7 @@ import okhttp3.ResponseBody;
 public class VisitSummaryActivity_New extends BaseActivity implements AdapterInterface, NetworkUtils.InternetCheckUpdateInterface {
     private static final String TAG = VisitSummaryActivity_New.class.getSimpleName();
     private static final int PICK_IMAGE_FROM_GALLERY = 2001;
+    static final String OTHER_DIAGNOSIS = "Other";
     //SQLiteDatabase db;
     Button btn_vs_sendvisit;
     private Context context;
@@ -2222,8 +2223,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 if (i != 0) {
                     CustomLog.d("SPINNER", "SPINNER_Selected: " + adapterView.getItemAtPosition(i).toString());
                     Resources resources = LanguageUtils.getSpecificLocalResource(VisitSummaryActivity_New.this, "en");
-                    selectedDiagnosis = resources.getStringArray(R.array.diagnosis_type)[i];
-                    if (selectedDiagnosis.equals("Other")) {
+                    selectedDiagnosis = resources.getStringArray(R.array.diagnosis_for_unfpa)[i];
+                    if (selectedDiagnosis.equals(OTHER_DIAGNOSIS)) {
                         mBinding.otherDiagnosisLay.setVisibility(View.VISIBLE);
                     } else {
                         mBinding.otherDiagnosisLay.setVisibility(View.GONE);
@@ -3154,7 +3155,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     private void visitSendDialog(Context context, Drawable drawable, String title, String subTitle, String positiveBtnTxt, String negativeBtnTxt) {
         //validate diagnosis and type of consultation
 
-        if (selectedDiagnosis.equals("Other")) {
+        if (selectedDiagnosis.equals(OTHER_DIAGNOSIS)) {
             if (mBinding.otherDiagnosisTextInput.getText().toString().isEmpty()) {
                 mBinding.otherDiagnosisTextInput.setError(getString(R.string.enter_diagnosis));
             }
@@ -3184,7 +3185,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         }
 
         if (mFeatureActiveStatus.getDiagnosisAtSecondaryLevel()) {
-            if (selectedDiagnosis.equals("Other")) {
+            if (selectedDiagnosis.equals(OTHER_DIAGNOSIS)) {
                 if (mBinding.otherDiagnosisTextInput.getText().toString().isEmpty()) {
                     return;
                 }
@@ -3275,7 +3276,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
                 visitAttributeListDAO.insertVisitAttributes(visitUuid, AppConstants.dateAndTimeUtils.currentDateTime(), VISIT_UPLOAD_TIME);
 
-                if (selectedDiagnosis.equals("Other")) {
+                if (selectedDiagnosis.equals(OTHER_DIAGNOSIS)) {
                     if (!mBinding.otherDiagnosisTextInput.getText().toString().isEmpty()) {
                         visitAttributeListDAO.insertVisitAttributes(visitUuid, mBinding.otherDiagnosisTextInput.getText().toString(), DIAGNOSIS);
                     }
