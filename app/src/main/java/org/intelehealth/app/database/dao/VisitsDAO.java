@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.util.Log;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
@@ -33,10 +34,8 @@ public class VisitsDAO extends BaseDao{
     private long createdRecordsCount = 0;
 
     private static final String TAG = "VisitsDAO";
-    private String currentTableName;
 
     public boolean insertVisit(List<VisitDTO> visitDTOS) throws DAOException {
-        setTableName("tbl_visit");
         boolean isInserted = true;
         List<HashMap<String, Object>> visitsList = new ArrayList<>();
         for (VisitDTO visitDTO : visitDTOS) {
@@ -1136,16 +1135,11 @@ public class VisitsDAO extends BaseDao{
 
         return count;
     }
-    public void setTableName(String tableName) {
-        this.currentTableName = tableName;
-    }
+
 
     @Override
     String tableName() {
-        if (currentTableName == null || currentTableName.isEmpty()) {
-            throw new RuntimeException("Table name is not set");
-        }
-        return currentTableName;
+       return "tbl_visit";
     }
     public HashMap<String, Object> createVisitMap(VisitDTO visitDTO) {
         HashMap<String, Object> values = new HashMap<>();
@@ -1154,10 +1148,11 @@ public class VisitsDAO extends BaseDao{
         values.put("locationuuid", visitDTO.getLocationuuid());
         values.put("visit_type_uuid", visitDTO.getVisitTypeUuid());
         values.put("creator", visitDTO.getCreatoruuid());
-        values.put("startdate", visitDTO.getStartdate());
+        values.put("startdate", DateAndTimeUtils.formatDateFromOnetoAnother(visitDTO.getStartdate(), "MMM dd, yyyy hh:mm:ss a", "yyyy-MM-dd'T'HH:mm:ss.SSSZ"));
         values.put("enddate", visitDTO.getEnddate());
         values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
-        values.put("sync", visitDTO.getSyncd());
+        values.put("sync", visitDTO.getSyncd().toString());
+        Log.d(TAG, "createVisitMap: sync : "+visitDTO.getSyncd().toString());
         return values;
     }
 

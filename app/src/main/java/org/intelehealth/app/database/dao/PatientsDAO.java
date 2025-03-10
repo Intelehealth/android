@@ -101,7 +101,7 @@ public class PatientsDAO extends BaseDao {
         values.put("em_contact_num", patient.getEmContactNumber());
 
         values.put("dead", patient.getDead());
-        values.put("sync", patient.getSyncd());
+        values.put("sync", patient.getSyncd().toString());
         return values;
     }
 

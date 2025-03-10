@@ -1732,6 +1732,8 @@
     <string name="click_notification_to_see">Click notification to see!</string>
     <string name="appointment_reschedule_for_notification">Appointment rescheduled for %1$s</string>
     <string name="appointment_cancelled_for_notification">Appointment cancelled for %1$s</string>
+    <string name="lbl_retry">Retry</string>
+
 
 
 </resources>
