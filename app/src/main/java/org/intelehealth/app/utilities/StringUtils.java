@@ -2399,9 +2399,6 @@ public final class StringUtils {
                 case "Telemedicine Clinic 3":
                     val = "टेलीमेडिसिन क्लीनिक 3";
                     break;
-                case "Remote":
-                    val = "रिमोट";
-                    break;
                 default:
                     return val;
             }
@@ -2420,6 +2417,19 @@ public final class StringUtils {
                     break;
                 case "Remote":
                     val = "Remote";
+                    break;
+                //unfpa clinics
+                case "Chui Regional United Hospital":
+                    val = "Родильное отделение Чуйской областной объединенной больницы";
+                    break;
+                case "Issyk-Kul Regional United Hospital":
+                    val = "Родильное отделение Иссыкульской областной объединенной больницы";
+                    break;
+                case "Jalal-Abad Regional United Hospital":
+                    val = "Родильный стационар Жалал-Абадской областной объединенной больницы";
+                    break;
+                case "Osh Interregional Clinical Hospital":
+                    val = "Родильный стационар Ошской межобластной клинической больницы";
                     break;
                 default:
                     return val;

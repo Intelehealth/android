@@ -285,7 +285,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:backgroundTint="@color/backgroundWhite"
-                    android:padding="@dimen/card_options_padding"
+                    android:paddingLeft="@dimen/card_options_padding"
+                    android:paddingRight="@dimen/card_options_padding"
+                    android:paddingTop="@dimen/padding_5"
+                    android:paddingBottom="@dimen/padding_5"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent">
 
@@ -352,7 +355,10 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="center_vertical"
                     android:backgroundTint="@color/backgroundWhite"
-                    android:padding="@dimen/card_options_padding">
+                    android:paddingLeft="@dimen/card_options_padding"
+                    android:paddingRight="@dimen/card_options_padding"
+                    android:paddingTop="@dimen/padding_5"
+                    android:paddingBottom="@dimen/padding_5">
 
                     <ImageView
                         android:id="@+id/imageView1"
